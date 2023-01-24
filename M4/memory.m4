@@ -4340,32 +4340,218 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl # number over !
-dnl # dup number swap !
-dnl # ( addr -- addr )
-dnl # store 16-bit number at addr
-define({PUSH_OVER_STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE},{$1 over !},$@){}dnl
+dnl # dup 3 pick !
+dnl # ( addr x2 x1 -- addr x2 x1 )
+dnl # store tos at addr
+define({DUP_3_PICK_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_3_PICK_STORE},{dup 3 pick !},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PUSH_OVER_STORE},{dnl
+define({__ASM_TOKEN_DUP_3_PICK_STORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__{}{
+                        ;[7:49]     __INFO   ( addr x2 x1 -- addr x2 x1 )
+    pop  BC             ; 1:10      __INFO
+    push BC             ; 1:11      __INFO
+    ld    A, L          ; 1:4       __INFO
+    ld  (BC),A          ; 1:7       __INFO   [addr] = lo(x1)
+    inc  BC             ; 1:6       __INFO
+    ld    A, H          ; 1:4       __INFO
+    ld  (BC),A          ; 1:7       __INFO   [addr] = x1}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # x pick !
+dnl # ( addr x3 x2 x1 -- addr x3 x2 )
+dnl # store tos at addr
+define({PUSH_PICK_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_PICK_STORE},{$1 pick !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_PICK_STORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameters!},
 __IS_MEM_REF($1),1,{define({__INFO},__COMPILE_INFO)
-                        ;[8:46]     __INFO   ( addr -- addr )
-    ld   BC,format({%-12s},$1); 4:20      __INFO
+                       ;[14:114]    __INFO   ( x$1 ... x2 x1 x0 -- x$1 ... x2 x1 )  x$1 = addr
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO   DE = x0
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    add  HL, HL         ; 1:11      __INFO   2*$1
+    add  HL, SP         ; 1:11      __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    pop  HL             ; 1:10      __INFO{}__ASM_TOKEN_2DROP},
+__{}__HEX_HL($1),0x0000,{__ASM_TOKEN_DUP_STORE},
+__{}__HEX_HL($1),0x0001,{__ASM_TOKEN_OVER_STORE},
+__{}__HEX_HL($1),0x0002,{__ASM_TOKEN_2_PICK_STORE},
+__{}__HEX_HL($1),0x0003,{__ASM_TOKEN_3_PICK_STORE},
+__{}{dnl
+__{}ifelse(__IS_NUM($1),1,{
+__{}                       ;[11:63]     __INFO   ( x$1 ... x2 x1 x0 -- x$1 ... x2 x1 )  x$1 = addr
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, H          ; 1:4       __INFO   BC = x0
+__{}    ld   HL, __HEX_HL(2*($1-2))     ; 3:10      __INFO},
+__{}{
+__{}                       ;[11:63]     __INFO   ( x_$1 ... x2 x1 x0 -- x_$1 ... x2 x1 )  x_$1 = addr
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, H          ; 1:4       __INFO   BC = x0
+__{}    ld   HL, format({%-11s},2*($1-2)); 3:10      __INFO})
+    add  HL, SP         ; 1:11      __INFO
+    ld  (HL),C          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),B          ; 1:7       __INFO{}__ASM_TOKEN_DROP}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 3 pick !
+dnl # ( addr x2 x1 x0 -- addr x2 x1 )
+dnl # store tos at addr
+define({_3_PICK_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_3_PICK_STORE},{3 pick !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_3_PICK_STORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__{}{
+                       ;[10:69]     __INFO   ( addr x2 x1 x0 -- addr x2 x1 )
+    ld    C, L          ; 1:4       __INFO
+    ld    B, H          ; 1:4       __INFO   BC = x0
+    pop  AF             ; 1:10      __INFO   x3
+    pop  HL             ; 1:10      __INFO   addr
+    push AF             ; 1:11      __INFO   x3
     ld  (HL),C          ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     ld  (HL),B          ; 1:7       __INFO
-    dec  HL             ; 1:6       __INFO},
-{define({__INFO},__COMPILE_INFO)
-                        ;[6:32]     __INFO   ( addr -- addr )
-    ld  (HL),low format({%-7s},$1); 2:10      __INFO
+    dec  HL             ; 1:6       __INFO
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2 pick !
+dnl # ( addr x2 x1 -- addr x2 )
+dnl # store tos at addr
+define({_2_PICK_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2_PICK_STORE},{2 pick !},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2_PICK_STORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__{}{
+                        ;[8:48]     __INFO   ( addr x1 x0 -- addr x1 )
+    ld    C, L          ; 1:4       __INFO
+    ld    B, H          ; 1:4       __INFO   BC = x0
+    pop  HL             ; 1:10      __INFO   addr
+    ld  (HL),C          ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld  (HL),high format({%-6s},$1); 2:10      __INFO
-    dec  HL             ; 1:6       __INFO})}){}dnl
+    ld  (HL),B          ; 1:7       __INFO
+    dec  HL             ; 1:6       __INFO
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # over !
+dnl # 1 pick !
+dnl # ( addr x -- addr )
+dnl # store tos at nos
+define({OVER_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_STORE_1ADD},{over !},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_1SUB},{__dtto}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_STORE},{dnl
+__{}__ASM_TOKEN_OVER_STORE_1ADD{}dnl
+__{}__ASM_TOKEN_1SUB{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # over !
+dnl # ( addr x -- addr )
+dnl # store tos at nos
+define({OVER_STORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_STORE_1ADD},{over ! 1+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_STORE_1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__{}{
+                        ;[5:34]     __INFO   ( addr x -- addr+1 )
+    ex   DE, HL         ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # dup !
+dnl # 0 pick !
+dnl # ( addr -- )
+dnl # store tos at nos
+define({DUP_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_DUP_STORE_1ADD},{dup !},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DROP},__dtto){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_STORE},{dnl
+__{}__ASM_TOKEN_DUP_DUP_STORE_1ADD{}dnl
+__{}__ASM_TOKEN_DROP{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # dup dup ! 1+
+dnl # ( addr -- addr+1 )
+dnl # store tos at tos
+define({DUP_DUP_STORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_DUP_STORE_1ADD},{dup dup ! 1+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_DUP_STORE_1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__{}{
+                        ;[4:24]     __INFO   ( addr -- addr+1 )
+    ld  (HL),L          ; 1:7       __INFO
+    ld    A, H          ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),A          ; 1:7       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # number over !
+dnl # dup number swap !
+dnl # ( addr -- addr )
+dnl # store 16-bit number at addr
+define({PUSH_OVER_STORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE_1ADD},{$1 over !},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_1SUB},{__dtto}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OVER_STORE},{dnl
+__{}__ASM_TOKEN_PUSH_OVER_STORE_1ADD($1){}dnl
+__{}__ASM_TOKEN_1SUB{}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -4400,34 +4586,59 @@ PUSH_OVER_STORE($1)}){}dnl
 dnl
 dnl
 dnl
+dnl # number over ! 1+
+dnl # dup number swap ! 1+
+dnl # ( addr -- addr+2 )
+dnl # store 16-bit number at addr
+define({PUSH_OVER_STORE_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE_1ADD},{$1 over ! 1+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_OVER_STORE_1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): $# parameters found in macro!},
+__IS_MEM_REF($1),1,{
+                        ;[7:40]     __INFO   ( addr -- addr+1 )
+    ld   BC,format({%-12s},$1); 4:20      __INFO
+    ld  (HL),C          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),B          ; 1:7       __INFO},
+__{}{
+                        ;[5:26]     __INFO   ( addr -- addr+1 )
+    ld  (HL),low format({%-7s},$1); 2:10      __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),high format({%-6s},$1); 2:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # number over ! 2+
 dnl # dup number swap ! 2+
 dnl # ( addr -- addr+2 )
 dnl # store 16-bit number at addr
 define({PUSH_OVER_STORE_2ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE_2ADD},{push_over_store_2add},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE_1ADD},{$1 over ! 2+},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_1ADD},{__dtto}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_OVER_STORE_2ADD},{dnl
-__{}define({__INFO},{push_over_store_2add}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-                        ;[6:32]     $1 over ! 2+ push_over_store_2add($1)   ( addr -- addr+2 )
-    ld  (HL),low format({%-7s},$1); 2:10      $1 over ! 2+ push_over_store_2add($1)
-    inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)
-    ld  (HL),high format({%-6s},$1); 2:10      $1 over ! 2+ push_over_store_2add($1)
-    inc  HL             ; 1:6       $1 over ! 2+ push_over_store_2add($1)}){}dnl
+__{}__ASM_TOKEN_PUSH_OVER_STORE_1ADD($1){}dnl
+__{}__ASM_TOKEN_1ADD{}dnl
+}){}dnl
 dnl
 dnl
 define({DUP_PUSH_SWAP_STORE_2ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_SWAP_STORE_2ADD},{dup_push_swap_store_2add},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_STORE_1ADD},{dup $1 swap ! 2+},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_1ADD},{__dtto}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_SWAP_STORE_2ADD},{dnl
-__{}define({__INFO},{dup_push_swap_store_2add}){}dnl
-PUSH_OVER_STORE_2ADD($1)}){}dnl
+__{}__ASM_TOKEN_PUSH_OVER_STORE_1ADD($1){}dnl
+__{}__ASM_TOKEN_1ADD{}dnl
+}){}dnl
 dnl
 dnl
 dnl # move

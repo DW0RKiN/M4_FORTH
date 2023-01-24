@@ -701,7 +701,7 @@ __{}__ADD_TOKEN({__TOKEN_1SUB},{1-},$@){}dnl
 dnl
 define({__ASM_TOKEN_1SUB},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    dec  HL             ; 1:6       __INFO}){}dnl
+    dec  HL             ; 1:6       __INFO   ( x -- x-1 )}){}dnl
 dnl
 dnl
 dnl # "2+"
