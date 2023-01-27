@@ -1541,15 +1541,23 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH},{$1 c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH},{dnl
-__{}define({__INFO},{push_cfetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      $1 @  push_cfetch($1)
-    ex   DE, HL         ; 1:4       $1 @  push_cfetch($1)
-    ld   HL,format({%-12s},($1)); 3:16      $1 @  push_cfetch($1)
-    ld    H, 0x00       ; 2:7       $1 @  push_cfetch($1)}){}dnl
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),1,{
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    C,(HL)        ; 1:7       __INFO
+    ld    H, 0x00       ; 2:7       __INFO},
+{
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO
+    ld    H, 0x00       ; 2:7       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
