@@ -5020,23 +5020,22 @@ dnl # 2!
 dnl # ( hi lo addr -- )
 dnl # store 32-bit number at addr
 define({_2STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2STORE},{2store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2STORE},{2!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2STORE},{dnl
-__{}define({__INFO},{2store}){}dnl
-
-                        ;[10:76]    2!  _2store   ( hi lo addr -- )
-    ld  (HL),E          ; 1:7       2!  _2store
-    inc  HL             ; 1:6       2!  _2store
-    ld  (HL),D          ; 1:7       2!  _2store
-    inc  HL             ; 1:6       2!  _2store
-    pop  DE             ; 1:10      2!  _2store
-    ld  (HL),E          ; 1:7       2!  _2store
-    inc  HL             ; 1:6       2!  _2store
-    ld  (HL),D          ; 1:7       2!  _2store
-    pop  HL             ; 1:10      2!  _2store
-    pop  DE             ; 1:10      2!  _2store}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[10:76]    __INFO   ( hi lo addr -- )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    pop  DE             ; 1:10      __INFO
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -5044,38 +5043,40 @@ dnl # addr 2!
 dnl # ( hi lo -- )
 dnl # store(addr) store 32-bit number at addr
 define({PUSH_2STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_2STORE},{push_2store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_2STORE},{$1 2!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_2STORE},{dnl
-__{}define({__INFO},{push_2store}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(dnl
 $1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
 __IS_MEM_REF($1),{1},{
-__{}                        ;[14:90]    $1 2!  push_2store($1)   ( hi lo -- )  addr=$1
-__{}    ld    C, L          ; 1:4       $1 2!  push_2store($1)
-__{}    ld    B, H          ; 1:4       $1 2!  push_2store($1)
-__{}    ld   HL, format({%-11s},$1); 3:16      $1 2!  push_2store($1)
-__{}    ld  (HL), C         ; 1:7       $1 2!  push_2store($1)
-__{}    inc  HL             ; 1:6       $1 2!  push_2store($1)
-__{}    ld  (HL), B         ; 1:7       $1 2!  push_2store($1)
-__{}    inc  HL             ; 1:6       $1 2!  push_2store($1)
-__{}    ld  (HL), E         ; 1:7       $1 2!  push_2store($1)
-__{}    inc  HL             ; 1:6       $1 2!  push_2store($1)
-__{}    ld  (HL), D         ; 1:7       $1 2!  push_2store($1)
-__{}    pop  HL             ; 1:10      $1 2!  push_2store($1)
-__{}    pop  DE             ; 1:10      $1 2!  push_2store($1)},
+__{}                        ;[14:90]    __INFO   ( hi lo -- )  addr=$1
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, H          ; 1:4       __INFO
+__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}    ld  (HL), C         ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL), B         ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL), E         ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL), D         ; 1:7       __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
 {
-__{}                        ;[9:56]     $1 2!  push_2store($1)   ( hi lo -- ) adr = $1
-__{}    ld   format({%-15s},{($1), HL}); 3:16      $1 2!  push_2store($1)   lo
+__{}                        ;[9:56]     __INFO   ( hi lo -- )  addr=$1
+__{}    ld   format({%-15s},{($1), HL}); 3:16      __INFO   lo
 __{}ifelse(__IS_NUM($1),{0},{dnl
-__{}    ld   format({%-15s},{(2+$1), DE}); 4:20      $1 2!  push_2store($1)   hi},{dnl
-__{}    ld   (__HEX_HL($1+2)), DE   ; 4:20      $1 2!  push_2store($1)   hi})
-__{}    pop  HL             ; 1:10      $1 2!  push_2store($1)
-__{}    pop  DE             ; 1:10      $1 2!  push_2store($1)})}){}dnl
+__{}__{}    ld   format({%-15s},{(2+$1), DE}); 4:20      __INFO   hi},
+__{}{dnl
+__{}__{}    ld   (__HEX_HL($1+2)), DE   ; 4:20      __INFO   hi})
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # hi lo addr 2!
