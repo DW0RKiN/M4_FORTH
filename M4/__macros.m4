@@ -572,10 +572,15 @@ dnl
 dnl
 dnl
 dnl # __DROP_2_PAR(1,2,3,4,5) --> 1,2,3
-define({__DROP_1_PAR},      {ifelse(eval($#>2),1,{$1,$0(shift($@))},{ifelse($#,2,{$1})})}){}dnl
-define({__DROP_2_PAR},      {ifelse(eval($#>3),1,{$1,$0(shift($@))},{ifelse($#,3,{$1})})}){}dnl
-define({__DROP_3_PAR},      {ifelse(eval($#>4),1,{$1,$0(shift($@))},{ifelse($#,4,{$1})})}){}dnl
-define({__DROP_4_PAR},      {ifelse(eval($#>5),1,{$1,$0(shift($@))},{ifelse($#,5,{$1})})}){}dnl
+define({__DROP_1_PAR},      {ifelse(eval($#>2), 1,{$1,$0(shift($@))},{ifelse($#, 2,{$1})})}){}dnl
+define({__DROP_2_PAR},      {ifelse(eval($#>3), 1,{$1,$0(shift($@))},{ifelse($#, 3,{$1})})}){}dnl
+define({__DROP_3_PAR},      {ifelse(eval($#>4), 1,{$1,$0(shift($@))},{ifelse($#, 4,{$1})})}){}dnl
+define({__DROP_4_PAR},      {ifelse(eval($#>5), 1,{$1,$0(shift($@))},{ifelse($#, 5,{$1})})}){}dnl
+define({__DROP_5_PAR},      {ifelse(eval($#>6), 1,{$1,$0(shift($@))},{ifelse($#, 6,{$1})})}){}dnl
+define({__DROP_6_PAR},      {ifelse(eval($#>7), 1,{$1,$0(shift($@))},{ifelse($#, 7,{$1})})}){}dnl
+define({__DROP_7_PAR},      {ifelse(eval($#>8), 1,{$1,$0(shift($@))},{ifelse($#, 8,{$1})})}){}dnl
+define({__DROP_8_PAR},      {ifelse(eval($#>9), 1,{$1,$0(shift($@))},{ifelse($#, 9,{$1})})}){}dnl
+define({__DROP_9_PAR},      {ifelse(eval($#>10),1,{$1,$0(shift($@))},{ifelse($#,10,{$1})})}){}dnl
 dnl
 dnl # nepouzito, dodelat, zatim shodne s predchozim
 define({__DROP_1_PAR_COMMA},{ifelse(eval($#>2),1,{$1,$0(shift($@))},{ifelse($#,2,{$1})})}){}dnl
