@@ -1158,6 +1158,79 @@ __{}}){}dnl
 }){}dnl
 dnl
 dnl
+dnl # nip $1 swap $2 swap $3 swap $4 swap $5 swap $6 swap
+dnl # ( x1 x0 -- $1 $2 $3 $4 $5 $6 x0 )
+define({NIP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_NIP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},{nip $1 swap $2 swap $3 swap $4 swap $5 swap $6 swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NIP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<6),{1},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>6),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_INFO},__INFO   ( x1 x0 -- $1 $2 $3 $4 $5 $6 x0 )){}dnl
+__{}__{}__LD_REG16({DE},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({DE},$2,{DE},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$3,{DE},$2){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$4,{DE},$3){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$5,{DE},$4){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$6,{DE},$5){}dnl
+__{}__{}__CODE_16BIT{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # $1 swap $2 swap $3 swap $4 swap $5 swap $6 swap
+dnl # ( x0 -- $1 $2 $3 $4 $5 $6 x0 )
+define({PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},{$1 swap $2 swap $3 swap $4 swap $5 swap $6 swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<6),{1},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>6),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_INFO},__INFO   ( x0 -- $1 $2 $3 $4 $5 $6 x0 ))
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({DE},$2,{DE},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$3,{DE},$2){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$4,{DE},$3){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$5,{DE},$4){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({DE},$6,{DE},$5){}dnl
+__{}__{}__CODE_16BIT{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # swap drop 3 swap
 dnl # ( b a -- 3 a )
 define({SWAP_DROP_PUSH_SWAP},{dnl

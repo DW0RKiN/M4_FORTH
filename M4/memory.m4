@@ -1520,16 +1520,15 @@ __{}__ADD_TOKEN({__TOKEN_OVER_CFETCH_OVER_CFETCH},{over c@ over c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_CFETCH_OVER_CFETCH},{dnl
-__{}define({__INFO},{over_cfetch_over_cfetch}){}dnl
-
-                        ;[8:51]     over @C over @C over_cfetch_over_cfetch ( addr2 addr1 -- addr2 addr1 char2 char1 )
-    push DE             ; 1:11      over @C over @C over_cfetch_over_cfetch
-    push HL             ; 1:11      over @C over @C over_cfetch_over_cfetch
-    ld    L, (HL)       ; 1:7       over @C over @C over_cfetch_over_cfetch
-    ld    H, 0x00       ; 2:7       over @C over @C over_cfetch_over_cfetch
-    ld    A, (DE)       ; 1:7       over @C over @C over_cfetch_over_cfetch
-    ld    E, A          ; 1:4       over @C over @C over_cfetch_over_cfetch
-    ld    D, H          ; 1:4       over @C over @C over_cfetch_over_cfetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:51]     __INFO   ( addr2 addr1 -- addr2 addr1 char2 char1 )
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld    L, (HL)       ; 1:7       __INFO
+    ld    H, 0x00       ; 2:7       __INFO
+    ld    A, (DE)       ; 1:7       __INFO
+    ld    E, A          ; 1:4       __INFO
+    ld    D, H          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -1727,11 +1726,12 @@ __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_HSTORE},{dup $1 h!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_HSTORE},{dnl
-ifelse($1,{},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
-eval($#>1),{1},{
+__{}eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-{define({__INFO},__COMPILE_INFO)
+__{}{
 __{}    ld    A, H          ; 1:4       __INFO   ( x -- x ){}dnl
 __{}ifelse(__IS_MEM_REF($1),1,{
 __{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
