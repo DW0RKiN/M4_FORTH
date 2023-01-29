@@ -588,11 +588,41 @@ define({__DROP_2_PAR_COMMA},{ifelse(eval($#>3),1,{$1,$0(shift($@))},{ifelse($#,3
 define({__DROP_3_PAR_COMMA},{ifelse(eval($#>4),1,{$1,$0(shift($@))},{ifelse($#,4,{$1})})}){}dnl
 define({__DROP_4_PAR_COMMA},{ifelse(eval($#>5),1,{$1,$0(shift($@))},{ifelse($#,5,{$1})})}){}dnl
 dnl
-dnl # __LAST_2_PAR_1(1,2,3) --> 2,3
-define({__LAST_1_PAR},{ifelse($#,0,{},$#,1,{$1},                                                {$0(shift($@))})}){}dnl
-define({__LAST_2_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},                                   {$0(shift($@))})}){}dnl
-define({__LAST_3_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},                   {$0(shift($@))})}){}dnl
-define({__LAST_4_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},$#,4,{$1,$2,$3,$4},{$0(shift($@))})}){}dnl
+dnl # __LAST_2_PAR(1,2,3) --> 2,3
+dnl # define({__LAST_1_PAR},{ifelse($#,0,{},$#,1,{$1},                                                                                                                                                                                            {$0(shift($@))})}){}dnl
+dnl # define({__LAST_2_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},                                                                                                                                                                               {$0(shift($@))})}){}dnl
+dnl # define({__LAST_3_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},                                                                                                                                                               {$0(shift($@))})}){}dnl
+dnl # define({__LAST_4_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},$#,4,{$1,$2,$3,$4},                                                                                                                                            {$0(shift($@))})}){}dnl
+dnl # define({__LAST_5_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},$#,4,{$1,$2,$3,$4},$#,5,{$1,$2,$3,$4,$5},                                                                                                                      {$0(shift($@))})}){}dnl
+dnl # define({__LAST_6_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},$#,4,{$1,$2,$3,$4},$#,5,{$1,$2,$3,$4,$5},$#,6,{$1,$2,$3,$4,$5,$6},                                                                                             {$0(shift($@))})}){}dnl
+dnl # define({__LAST_7_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},$#,4,{$1,$2,$3,$4},$#,5,{$1,$2,$3,$4,$5},$#,6,{$1,$2,$3,$4,$5,$6},$#,7,{$1,$2,$3,$4,$5,$6,$7},                                                                 {$0(shift($@))})}){}dnl
+dnl # define({__LAST_8_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},$#,4,{$1,$2,$3,$4},$#,5,{$1,$2,$3,$4,$5},$#,6,{$1,$2,$3,$4,$5,$6},$#,7,{$1,$2,$3,$4,$5,$6,$7},$#,8,{$1,$2,$3,$4,$5,$6,$7,$8},                                  {$0(shift($@))})}){}dnl
+dnl # define({__LAST_9_PAR},{ifelse($#,0,{},$#,1,{$1},$#,2,{$1,$2},$#,3,{$1,$2,$3},$#,4,{$1,$2,$3,$4},$#,5,{$1,$2,$3,$4,$5},$#,6,{$1,$2,$3,$4,$5,$6},$#,7,{$1,$2,$3,$4,$5,$6,$7},$#,8,{$1,$2,$3,$4,$5,$6,$7,$8},$#,9,{$1,$2,$3,$4,$5,$6,$7,$8,$9},{$0(shift($@))})}){}dnl
+dnl
+dnl # __LAST_2_PAR(1,2,3) --> 2,3
+define({__LAST_1_PAR},{ifelse(eval($#<2), 1,{$@},{$0(shift($@))})}){}dnl
+define({__LAST_2_PAR},{ifelse(eval($#<3), 1,{$@},{$0(shift($@))})}){}dnl
+define({__LAST_3_PAR},{ifelse(eval($#<4), 1,{$@},{$0(shift($@))})}){}dnl
+define({__LAST_4_PAR},{ifelse(eval($#<5), 1,{$@},{$0(shift($@))})}){}dnl
+define({__LAST_5_PAR},{ifelse(eval($#<6), 1,{$@},{$0(shift($@))})}){}dnl
+define({__LAST_6_PAR},{ifelse(eval($#<7), 1,{$@},{$0(shift($@))})}){}dnl
+define({__LAST_7_PAR},{ifelse(eval($#<8), 1,{$@},{$0(shift($@))})}){}dnl
+define({__LAST_8_PAR},{ifelse(eval($#<9), 1,{$@},{$0(shift($@))})}){}dnl
+define({__LAST_9_PAR},{ifelse(eval($#<10),1,{$@},{$0(shift($@))})}){}dnl
+dnl
+dnl # __COMMA_LAST_2_PAR(1,2,3) --> ,2,3
+dnl # __COMMA_LAST_2_PAR(2,3)   --> ,2,3
+dnl # __COMMA_LAST_2_PAR(3)     --> ,3
+dnl # __COMMA_LAST_2_PAR()      --> 
+define({__COMMA_LAST_1_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<2), 1,{,$@},{$0(shift($@))})}){}dnl
+define({__COMMA_LAST_2_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<3), 1,{,$@},{$0(shift($@))})}){}dnl
+define({__COMMA_LAST_3_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<4), 1,{,$@},{$0(shift($@))})}){}dnl
+define({__COMMA_LAST_4_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<5), 1,{,$@},{$0(shift($@))})}){}dnl
+define({__COMMA_LAST_5_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<6), 1,{,$@},{$0(shift($@))})}){}dnl
+define({__COMMA_LAST_6_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<7), 1,{,$@},{$0(shift($@))})}){}dnl
+define({__COMMA_LAST_7_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<8), 1,{,$@},{$0(shift($@))})}){}dnl
+define({__COMMA_LAST_8_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<9), 1,{,$@},{$0(shift($@))})}){}dnl
+define({__COMMA_LAST_9_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<10),1,{,$@},{$0(shift($@))})}){}dnl
 dnl
 dnl # __REVERSE_2_PAR(1,2,3) --> 2
 define({__REVERSE_1_PAR},    {ifelse($#,0,{},$#,1,{$1},$#,2,{$2},$#,3,{$3},$#,4,{$4},$#,5,{$5},$#,6,{$6},{$0(shift(shift(shift(shift(shift(shift($@)))))))})}){}dnl
