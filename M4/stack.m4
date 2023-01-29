@@ -3227,17 +3227,16 @@ __{}__ADD_TOKEN({__TOKEN_DEPTH},{depth},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DEPTH},{dnl
-__{}define({__INFO},{depth}){}dnl
-
-                        ;[13:72]    depth   ( -- +n )
-    push DE             ; 1:11      depth
-    ex   DE, HL         ; 1:4       depth
-    ld   HL,(Stop+1)    ; 3:16      depth
-    or    A             ; 1:4       depth
-    sbc  HL, SP         ; 2:15      depth
-    srl   H             ; 2:8       depth
-    rr    L             ; 2:8       depth
-    dec  HL             ; 1:6       depth}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[13:72]    __INFO   ( -- +n )
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,(Stop+1)    ; 3:16      __INFO
+    or    A             ; 1:4       __INFO
+    sbc  HL, SP         ; 2:15      __INFO
+    srl   H             ; 2:8       __INFO
+    rr    L             ; 2:8       __INFO
+    dec  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
 dnl
