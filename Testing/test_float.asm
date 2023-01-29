@@ -6,774 +6,773 @@
 
 ORG 0x8000
     
+
+    
+    
+             
+        
+        
+        
+          
+        
+    
+    
+    
+    
+        
+        
+    
+    
+     
+     
+     
+     
+     
+     
+     
+    
+    
+     
+               
+    
+    
+
+           
+             
+           
+           
+           
+             
+           
+           
+           
+             
+           
+    
+    
+
+       
+       
+       
+      
+     
+
+    
+            
+       
+          
+           
+                 
+    
+      
+      
+      
+      
+      
+    
+                        
+
+    
+                     
+                     
+                     
+                     
+    
+              
+              
+              
+              
+
+          
+
+      
+       
+    
+    
+
+                 
+
+
+
+                   
+
+    
+
+               
+
+
+    
+
 ;   ===  b e g i n  ===
     ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
     ld    L, 0x1A       ; 2:7       init   Upper screen
     call 0x1605         ; 3:17      init   Open channel
     ld   HL, 60000      ; 3:10      init   Init Return address stack
     exx                 ; 1:4       init
-
-    
-    push DE             ; 1:11      push2(0x4000,49)
-    ld   DE, 0x4000     ; 3:10      push2(0x4000,49)
-    push HL             ; 1:11      push2(0x4000,49)
-    ld   HL, 49         ; 3:10      push2(0x4000,49)
-    
-sfor101:                ;           sfor 101 ( index -- index )
-        
+                        ;[8:42]     0x4000 49   ( -- 0x4000 49 )
+    push DE             ; 1:11      0x4000 49
+    push HL             ; 1:11      0x4000 49
+    ld   DE, 0x4000     ; 3:10      0x4000 49
+    ld   HL, 0x0031     ; 3:10      0x4000 49
+for101:                 ;           for_101(s) ( index -- index )
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
-    call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      push(50)
-    ex   DE, HL         ; 1:4       push(50)
-    ld   HL, 50         ; 3:10      push(50) 
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    call PRINT_STRING_Z ; 3:17      print_z
+    push DE             ; 1:11      50 over   ( a -- a 50 a )
+    push HL             ; 1:11      50 over
+    ld   DE, 50         ; 3:10      50 over
     ex   DE, HL         ; 1:4       -
     or    A             ; 1:4       -
     sbc  HL, DE         ; 2:15      -
-    pop  DE             ; 1:10      - 
-    call PRT_U16        ; 3:17      u.   ( u -- ) 
-    ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM
-        
-    ex   DE, HL         ; 1:4       swap ( b a -- a b )
-        
-    push DE             ; 1:11      push(0x4100)
-    ex   DE, HL         ; 1:4       push(0x4100)
-    ld   HL, 0x4100     ; 3:10      push(0x4100)
-        
+    pop  DE             ; 1:10      -
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ld    A, '='        ; 2:7       putchar('=')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar('=')   putchar(reg A) with ZX 48K ROM
+    push HL             ; 1:11      swap 0x4100
+    ld   HL, 0x4100     ; 3:10      swap 0x4100   ( b a -- a b 0x4100 )
     ld    B, D          ; 1:4       f/
     ld    C, E          ; 1:4       f/
     call fDiv           ; 3:17      f/ HL = BC/HL
     pop  DE             ; 1:10      f/
-        
-    push DE             ; 1:11      dup
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-        
-    ex   DE, HL         ; 1:4       swap ( b a -- a b )
-    
-    ld   A, H           ; 1:4       snext 101
-    or   L              ; 1:4       snext 101
-    dec  HL             ; 1:6       snext 101 index--
-    jp  nz, sfor101     ; 3:10      snext 101
-snext101:               ;           snext 101
-    ex   DE, HL         ; 1:4       sfor unloop 101
-    pop  DE             ; 1:10      sfor unloop 101
-    
+    ex   DE, HL         ; 1:4       swap   ( b a -- a b )
+    ld    A, H          ; 1:4       next_101(s)
+    or    L             ; 1:4       next_101(s)
+    dec  HL             ; 1:6       next_101(s)   index--
+    jp  nz, for101      ; 3:10      next_101(s)
+leave101:               ;           next_101(s)
+    ex   DE, HL         ; 1:4       unloop_101(s)   ( i -- )
+    pop  DE             ; 1:10      unloop_101(s)
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- )
-    
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      drop   ( a -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    
     ld   BC, string102  ; 3:10      print_z   Address of null-terminated string102
-    call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      push2(0x4000,0x4100)
-    ld   DE, 0x4000     ; 3:10      push2(0x4000,0x4100)
-    push HL             ; 1:11      push2(0x4000,0x4100)
-    ld   HL, 0x4100     ; 3:10      push2(0x4000,0x4100) 
+    call PRINT_STRING_Z ; 3:17      print_z
+                        ;[8:42]     0x4000 0x4100   ( -- 0x4000 0x4100 )
+    push DE             ; 1:11      0x4000 0x4100
+    push HL             ; 1:11      0x4000 0x4100
+    ld   DE, 0x4000     ; 3:10      0x4000 0x4100
+    ld   HL, 0x4100     ; 3:10      0x4000 0x4100
     call fAdd           ; 3:17      f+
-    pop  DE             ; 1:10      f+ 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      f+
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
     ld   BC, string103  ; 3:10      print_z   Address of null-terminated string103
-    call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      push2(0x4000,0x4100)
-    ld   DE, 0x4000     ; 3:10      push2(0x4000,0x4100)
-    push HL             ; 1:11      push2(0x4000,0x4100)
-    ld   HL, 0x4100     ; 3:10      push2(0x4000,0x4100) 
+    call PRINT_STRING_Z ; 3:17      print_z
+                        ;[8:42]     0x4000 0x4100   ( -- 0x4000 0x4100 )
+    push DE             ; 1:11      0x4000 0x4100
+    push HL             ; 1:11      0x4000 0x4100
+    ld   DE, 0x4000     ; 3:10      0x4000 0x4100
+    ld   HL, 0x4100     ; 3:10      0x4000 0x4100
     call fSub           ; 3:17      f-
-    pop  DE             ; 1:10      f- 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      f-
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    
-    push DE             ; 1:11      push(0)
-    ex   DE, HL         ; 1:4       push(0)
-    ld   HL, 0          ; 3:10      push(0) 
+    push DE             ; 1:11      0
+    ex   DE, HL         ; 1:4       0
+    ld   HL, 0          ; 3:10      0
     call test_s2f_f2s   ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
+    push DE             ; 1:11      3
+    ex   DE, HL         ; 1:4       3
+    ld   HL, 3          ; 3:10      3
     call test_s2f_f2s   ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(-3)
-    ex   DE, HL         ; 1:4       push(-3)
-    ld   HL, -3         ; 3:10      push(-3) 
+    push DE             ; 1:11      -3
+    ex   DE, HL         ; 1:4       -3
+    ld   HL, 0-3        ; 3:10      -3
     call test_s2f_f2s   ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(-503)
-    ex   DE, HL         ; 1:4       push(-503)
-    ld   HL, -503       ; 3:10      push(-503) 
+    push DE             ; 1:11      -503
+    ex   DE, HL         ; 1:4       -503
+    ld   HL, 0-503      ; 3:10      -503
     call test_s2f_f2s   ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(503)
-    ex   DE, HL         ; 1:4       push(503)
-    ld   HL, 503        ; 3:10      push(503) 
+    push DE             ; 1:11      503
+    ex   DE, HL         ; 1:4       503
+    ld   HL, 503        ; 3:10      503
     call test_s2f_f2s   ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(-512)
-    ex   DE, HL         ; 1:4       push(-512)
-    ld   HL, -512       ; 3:10      push(-512) 
+    push DE             ; 1:11      -512
+    ex   DE, HL         ; 1:4       -512
+    ld   HL, 0-512      ; 3:10      -512
     call test_s2f_f2s   ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(512)
-    ex   DE, HL         ; 1:4       push(512)
-    ld   HL, 512        ; 3:10      push(512) 
+    push DE             ; 1:11      512
+    ex   DE, HL         ; 1:4       512
+    ld   HL, 512        ; 3:10      512
     call test_s2f_f2s   ; 3:17      call ( -- )
-    
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    
-    push DE             ; 1:11      push(512)
-    ex   DE, HL         ; 1:4       push(512)
-    ld   HL, 512        ; 3:10      push(512) 
-sfor102:                ;           sfor 102 ( index -- index )
-        
-    push DE             ; 1:11      dup
+    push DE             ; 1:11      512
+    ex   DE, HL         ; 1:4       512
+    ld   HL, 512        ; 3:10      512
+for102:                 ;           for_102(s) ( index -- index )
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fIld           ; 3:17      s>f 
-    call fIst           ; 3:17      f>s 
-    push DE             ; 1:11      over
-    ex   DE, HL         ; 1:4       over ( b a -- b a b ) 
+    ld    E, L          ; 1:4       dup
+    call fIld           ; 3:17      s>f
+    call fIst           ; 3:17      f>s
+    push DE             ; 1:11      over   ( b a -- b a b )
+    ex   DE, HL         ; 1:4       over
     or    A             ; 1:4       <> if
     sbc  HL, DE         ; 2:15      <> if
     pop  HL             ; 1:10      <> if
     pop  DE             ; 1:10      <> if
-    jp    z, else101    ; 3:10      <> if 
-    push DE             ; 1:11      dup
+    jp    z, else101    ; 3:10      <> if
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call test_s2f_f2s   ; 3:17      call ( -- ) 
+    ld    E, L          ; 1:4       dup
+    call test_s2f_f2s   ; 3:17      call ( -- )
 else101  EQU $          ;           = endif
 endif101:
-    
-    ld   A, H           ; 1:4       snext 102
-    or   L              ; 1:4       snext 102
-    dec  HL             ; 1:6       snext 102 index--
-    jp  nz, sfor102     ; 3:10      snext 102
-snext102:               ;           snext 102
-    ex   DE, HL         ; 1:4       sfor unloop 102
-    pop  DE             ; 1:10      sfor unloop 102
-    
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, H          ; 1:4       next_102(s)
+    or    L             ; 1:4       next_102(s)
+    dec  HL             ; 1:6       next_102(s)   index--
+    jp  nz, for102      ; 3:10      next_102(s)
+leave102:               ;           next_102(s)
+    ex   DE, HL         ; 1:4       unloop_102(s)   ( i -- )
+    pop  DE             ; 1:10      unloop_102(s)
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-
-    
-    push DE             ; 1:11      push(0x4080)
-    ex   DE, HL         ; 1:4       push(0x4080)
-    ld   HL, 0x4080     ; 3:10      push(0x4080) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
+                        ;[7:40]     0x4080 dup   ( -- 0x4080 0x4080 )
+    push DE             ; 1:11      0x4080 dup
+    push HL             ; 1:11      0x4080 dup
+    ld   DE, 0x4080     ; 3:10      0x4080 dup
+    ld    L, E          ; 1:4       0x4080 dup   L = E = 0x80
+    ld    H, D          ; 1:4       0x4080 dup   H = D = 0x40
     ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
+    pop  DE             ; 1:10      fsin
     ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x4000)
-    ex   DE, HL         ; 1:4       push(0x4000)
-    ld   HL, 0x4000     ; 3:10      push(0x4000)   
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string106
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0x4000 dup   ( -- 0x4000 0x4000 )
+    push DE             ; 1:11      0x4000 dup
+    push HL             ; 1:11      0x4000 dup
+    ld   DE, 0x4000     ; 3:10      0x4000 dup
+    ld    L, E          ; 1:4       0x4000 dup   L = E = 0x00
+    ld    H, D          ; 1:4       0x4000 dup   H = D = 0x40
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string106 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string107
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string107 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x3f9a)
-    ex   DE, HL         ; 1:4       push(0x3f9a)
-    ld   HL, 0x3f9a     ; 3:10      push(0x3f9a) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string108
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0x3f9a dup   ( -- 0x3f9a 0x3f9a )
+    push DE             ; 1:11      0x3f9a dup
+    push HL             ; 1:11      0x3f9a dup
+    ld   DE, 0x3F9A     ; 3:10      0x3f9a dup
+    ld    L, E          ; 1:4       0x3f9a dup   L = E = 0x9A
+    ld    H, D          ; 1:4       0x3f9a dup   H = D = 0x3F
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string108 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string109
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string109 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x3f00)
-    ex   DE, HL         ; 1:4       push(0x3f00)
-    ld   HL, 0x3f00     ; 3:10      push(0x3f00) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string110
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0x3f00 dup   ( -- 0x3f00 0x3f00 )
+    push DE             ; 1:11      0x3f00 dup
+    push HL             ; 1:11      0x3f00 dup
+    ld   DE, 0x3F00     ; 3:10      0x3f00 dup
+    ld    L, E          ; 1:4       0x3f00 dup   L = E = 0x00
+    ld    H, D          ; 1:4       0x3f00 dup   H = D = 0x3F
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string110 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string111
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string111 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x3c9a)
-    ex   DE, HL         ; 1:4       push(0x3c9a)
-    ld   HL, 0x3c9a     ; 3:10      push(0x3c9a) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string112
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0x3c9a dup   ( -- 0x3c9a 0x3c9a )
+    push DE             ; 1:11      0x3c9a dup
+    push HL             ; 1:11      0x3c9a dup
+    ld   DE, 0x3C9A     ; 3:10      0x3c9a dup
+    ld    L, E          ; 1:4       0x3c9a dup   L = E = 0x9A
+    ld    H, D          ; 1:4       0x3c9a dup   H = D = 0x3C
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string112 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string113
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string113 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x0000 )
-    ex   DE, HL         ; 1:4       push(0x0000 )
-    ld   HL, 0x0000     ; 3:10      push(0x0000 )   
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string114
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0x0000  dup   ( -- 0x0000  0x0000  )
+    push DE             ; 1:11      0x0000  dup
+    push HL             ; 1:11      0x0000  dup
+    ld   DE, 0x0000     ; 3:10      0x0000  dup
+    ld    L, D          ; 1:4       0x0000  dup   L = D = 0x00
+    ld    H, L          ; 1:4       0x0000  dup   H = L = 0x00
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string114 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string115
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string115 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0xbc9a)
-    ex   DE, HL         ; 1:4       push(0xbc9a)
-    ld   HL, 0xbc9a     ; 3:10      push(0xbc9a) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string116
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0xbc9a dup   ( -- 0xbc9a 0xbc9a )
+    push DE             ; 1:11      0xbc9a dup
+    push HL             ; 1:11      0xbc9a dup
+    ld   DE, 0xBC9A     ; 3:10      0xbc9a dup
+    ld    L, E          ; 1:4       0xbc9a dup   L = E = 0x9A
+    ld    H, D          ; 1:4       0xbc9a dup   H = D = 0xBC
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string116 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string117
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string117 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0xbf00)
-    ex   DE, HL         ; 1:4       push(0xbf00)
-    ld   HL, 0xbf00     ; 3:10      push(0xbf00) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string118
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0xbf00 dup   ( -- 0xbf00 0xbf00 )
+    push DE             ; 1:11      0xbf00 dup
+    push HL             ; 1:11      0xbf00 dup
+    ld   DE, 0xBF00     ; 3:10      0xbf00 dup
+    ld    L, E          ; 1:4       0xbf00 dup   L = E = 0x00
+    ld    H, D          ; 1:4       0xbf00 dup   H = D = 0xBF
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string118 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string119
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string119 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0xbf9a)
-    ex   DE, HL         ; 1:4       push(0xbf9a)
-    ld   HL, 0xbf9a     ; 3:10      push(0xbf9a) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string120
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0xbf9a dup   ( -- 0xbf9a 0xbf9a )
+    push DE             ; 1:11      0xbf9a dup
+    push HL             ; 1:11      0xbf9a dup
+    ld   DE, 0xBF9A     ; 3:10      0xbf9a dup
+    ld    L, E          ; 1:4       0xbf9a dup   L = E = 0x9A
+    ld    H, D          ; 1:4       0xbf9a dup   H = D = 0xBF
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string120 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string121
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string121 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0xc000)
-    ex   DE, HL         ; 1:4       push(0xc000)
-    ld   HL, 0xc000     ; 3:10      push(0xc000)   
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string122
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0xc000 dup   ( -- 0xc000 0xc000 )
+    push DE             ; 1:11      0xc000 dup
+    push HL             ; 1:11      0xc000 dup
+    ld   DE, 0xC000     ; 3:10      0xc000 dup
+    ld    L, E          ; 1:4       0xc000 dup   L = E = 0x00
+    ld    H, D          ; 1:4       0xc000 dup   H = D = 0xC0
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string122 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string123
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string123 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0xc080)
-    ex   DE, HL         ; 1:4       push(0xc080)
-    ld   HL, 0xc080     ; 3:10      push(0xc080) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string104 == string124
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
+                        ;[7:40]     0xc080 dup   ( -- 0xc080 0xc080 )
+    push DE             ; 1:11      0xc080 dup
+    push HL             ; 1:11      0xc080 dup
+    ld   DE, 0xC080     ; 3:10      0xc080 dup
+    ld    L, E          ; 1:4       0xc080 dup   L = E = 0x80
+    ld    H, D          ; 1:4       0xc080 dup   H = D = 0xC0
+    ld   BC, string104  ; 3:10      print_z   Address of null-terminated string124 == string104
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
     push DE             ; 1:11      fsin
     call fSin           ; 3:17      fsin HL = sin(HL)
-    pop  DE             ; 1:10      fsin 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string125
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fsin
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string125 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-
-    
-    push DE             ; 1:11      push(0)
-    ex   DE, HL         ; 1:4       push(0)
-    ld   HL, 0          ; 3:10      push(0)   
+    push DE             ; 1:11      0
+    ex   DE, HL         ; 1:4       0
+    ld   HL, 0          ; 3:10      0
     call test_sqrt      ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(1)
-    ex   DE, HL         ; 1:4       push(1)
-    ld   HL, 1          ; 3:10      push(1)   
+    push DE             ; 1:11      1
+    ex   DE, HL         ; 1:4       1
+    ld   HL, 1          ; 3:10      1
     call test_sqrt      ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(4)
-    ex   DE, HL         ; 1:4       push(4)
-    ld   HL, 4          ; 3:10      push(4)   
+    push DE             ; 1:11      4
+    ex   DE, HL         ; 1:4       4
+    ld   HL, 4          ; 3:10      4
     call test_sqrt      ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(50)
-    ex   DE, HL         ; 1:4       push(50)
-    ld   HL, 50         ; 3:10      push(50)  
+    push DE             ; 1:11      50
+    ex   DE, HL         ; 1:4       50
+    ld   HL, 50         ; 3:10      50
     call test_sqrt      ; 3:17      call ( -- )
-    
-    push DE             ; 1:11      push(123)
-    ex   DE, HL         ; 1:4       push(123)
-    ld   HL, 123        ; 3:10      push(123) 
+    push DE             ; 1:11      123
+    ex   DE, HL         ; 1:4       123
+    ld   HL, 123        ; 3:10      123
     call test_sqrt      ; 3:17      call ( -- )
-
-    
-    
-    push DE             ; 1:11      push(5)
-    ex   DE, HL         ; 1:4       push(5)
-    ld   HL, 5          ; 3:10      push(5) 
-    call fIld           ; 3:17      s>f 
+    push DE             ; 1:11      5
+    ex   DE, HL         ; 1:4       5
+    ld   HL, 5          ; 3:10      5
+    call fIld           ; 3:17      s>f
     ld   BC, string126  ; 3:10      print_z   Address of null-terminated string126
-    call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      dup
+    call PRINT_STRING_Z ; 3:17      print_z
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string127
-    call PRINT_STRING_Z ; 3:17      print_z 
-    call fSqrt          ; 3:17      fsqrt 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string127 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    call fSqrt          ; 3:17      fsqrt
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(5)
-    ex   DE, HL         ; 1:4       push(5)
-    ld   HL, 5          ; 3:10      push(5) 
-    call fIld           ; 3:17      s>f 
-    call fSqrt          ; 3:17      fsqrt 
-    push DE             ; 1:11      dup
+    push DE             ; 1:11      5
+    ex   DE, HL         ; 1:4       5
+    ld   HL, 5          ; 3:10      5
+    call fIld           ; 3:17      s>f
+    call fSqrt          ; 3:17      fsqrt
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a )
-    
+    ld    E, L          ; 1:4       dup
     ld   BC, string128  ; 3:10      print_z   Address of null-terminated string128
-    call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      dup
+    call PRINT_STRING_Z ; 3:17      print_z
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string129
-    call PRINT_STRING_Z ; 3:17      print_z 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string129 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
     push DE             ; 1:11      fexp
     call fExp           ; 3:17      fexp HL = e^HL
-    pop  DE             ; 1:10      fexp 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fexp
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
     ld   BC, string130  ; 3:10      print_z   Address of null-terminated string130
-    call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      dup
+    call PRINT_STRING_Z ; 3:17      print_z
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string131
-    call PRINT_STRING_Z ; 3:17      print_z 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string131 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
     push DE             ; 1:11      fln
     call fLn            ; 3:17      fln HL = ln(HL)
-    pop  DE             ; 1:10      fln  
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fln
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
-    call fIld           ; 3:17      s>f 
-    push DE             ; 1:11      dup
+    push DE             ; 1:11      3
+    ex   DE, HL         ; 1:4       3
+    ld   HL, 3          ; 3:10      3
+    call fIld           ; 3:17      s>f
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     ld   BC, string132  ; 3:10      print_z   Address of null-terminated string132
-    call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      push(5)
-    ex   DE, HL         ; 1:4       push(5)
-    ld   HL, 5          ; 3:10      push(5) 
-    call fIld           ; 3:17      s>f 
-    call fSqrt          ; 3:17      fsqrt 
-    push DE             ; 1:11      dup
+    call PRINT_STRING_Z ; 3:17      print_z
+    push DE             ; 1:11      5
+    ex   DE, HL         ; 1:4       5
+    ld   HL, 5          ; 3:10      5
+    call fIld           ; 3:17      s>f
+    call fSqrt          ; 3:17      fsqrt
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld    A, '='        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    ld    A, '='        ; 2:7       putchar('=')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar('=')   putchar(reg A) with ZX 48K ROM
     ld    B, D          ; 1:4       fmod
     ld    C, E          ; 1:4       fmod
     call fMod           ; 3:17      fmod HL = BC % HL
-    pop  DE             ; 1:10      fmod 
-    call fDot           ; 3:17      f. 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    pop  DE             ; 1:10      fmod
+    call fDot           ; 3:17      f.
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    
-    push DE             ; 1:11      push(3)
-    ex   DE, HL         ; 1:4       push(3)
-    ld   HL, 3          ; 3:10      push(3) 
-    call test           ; 3:17      scall 
+    push DE             ; 1:11      3
+    ex   DE, HL         ; 1:4       3
+    ld   HL, 3          ; 3:10      3
+    call test           ; 3:17      scall
+    ld   HL, 5          ; 3:10      drop 5
+    call test           ; 3:17      scall
+    ld   HL, 7          ; 3:10      drop 7
+    call test           ; 3:17      scall
+    ld   HL, 8          ; 3:10      drop 8
+    call test           ; 3:17      scall
+    ld   HL, 15         ; 3:10      drop 15
+    call test           ; 3:17      scall
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- )
-    
-    push DE             ; 1:11      push(5)
-    ex   DE, HL         ; 1:4       push(5)
-    ld   HL, 5          ; 3:10      push(5) 
-    call test           ; 3:17      scall 
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- )
-    
-    push DE             ; 1:11      push(7)
-    ex   DE, HL         ; 1:4       push(7)
-    ld   HL, 7          ; 3:10      push(7) 
-    call test           ; 3:17      scall 
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- )
-    
-    push DE             ; 1:11      push(8)
-    ex   DE, HL         ; 1:4       push(8)
-    ld   HL, 8          ; 3:10      push(8) 
-    call test           ; 3:17      scall 
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- )
-    
-    push DE             ; 1:11      push(15)
-    ex   DE, HL         ; 1:4       push(15)
-    ld   HL, 15         ; 3:10      push(15) 
-    call test           ; 3:17      scall 
-    ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- )
-    
-    
-    ld   BC, 0          ; 3:10      xdo(65535,0 ) 103
-xdo103save:             ;           xdo(65535,0 ) 103
-    ld  (idx103),BC     ; 4:20      xdo(65535,0 ) 103
-xdo103:                 ;           xdo(65535,0 ) 103 
-    push DE             ; 1:11      index(103) xi
-    ex   DE, HL         ; 1:4       index(103) xi
-    ld   HL, (idx103)   ; 3:16      index(103) xi   idx always points to a 16-bit index 
+    pop  DE             ; 1:10      drop   ( a -- )
+    ld   BC, 0          ; 3:10      65535 0  do_103(xm)
+do103save:              ;           65535 0  do_103(xm)
+    ld  (idx103),BC     ; 4:20      65535 0  do_103(xm)
+do103:                  ;           65535 0  do_103(xm)
+    push DE             ; 1:11      i_103(m)   ( -- i )
+    ex   DE, HL         ; 1:4       i_103(m)
+    ld   HL, (idx103)   ; 3:16      i_103(m)   idx always points to a 16-bit index
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f 
-    push DE             ; 1:11      dup
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
+    push DE             ; 1:11      dup dup   ( a -- a a a )
+    push HL             ; 1:11      dup dup
+    ld    D, H          ; 1:4       dup dup
+    ld    E, L          ; 1:4       dup dup
+    call fDot           ; 3:17      f.
+    call fIst           ; 3:17      f>s
+    call PRT_SP_S16     ; 3:17      space .   ( s -- )
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    call fIst           ; 3:17      f>s 
-    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    ld    E, L          ; 1:4       dup
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
-    ld    H, A          ; 1:4       fnegate 
-    call fIst           ; 3:17      f>s 
-    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
-    call fSqrt          ; 3:17      fsqrt 
-    call fIst           ; 3:17      f>s 
-    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A 
-                        ;[16:77/57] 777 +xloop 103   variant +X.J: positive step 256+ and hi(real_stop) exclusivity, run 85x
-idx103 EQU $+1          ;           777 +xloop 103   idx always points to a 16-bit index
-    ld   BC, 0x0000     ; 3:10      777 +xloop 103   0 .. +777 ..(65535), real_stop:0x01FD
-    ld    A, C          ; 1:4       777 +xloop 103
-    add   A, low 777    ; 2:7       777 +xloop 103
-    ld    C, A          ; 1:4       777 +xloop 103
-    ld    A, B          ; 1:4       777 +xloop 103
-    adc   A, high 777   ; 2:7       777 +xloop 103
-    ld    B, A          ; 1:4       777 +xloop 103
-    xor  0x01           ; 2:7       777 +xloop 103   hi(real_stop)
-    jp   nz, xdo103save ; 3:10      777 +xloop 103
-xleave103:              ;           777 +xloop 103
-xexit103:               ;           777 +xloop 103
-    
-    
-    push DE             ; 1:11      push(32736 )
-    ex   DE, HL         ; 1:4       push(32736 )
-    ld   HL, 32736      ; 3:10      push(32736 ) 
+    ld    H, A          ; 1:4       fnegate
+    call fIst           ; 3:17      f>s
+    call PRT_SP_S16     ; 3:17      space .   ( s -- )
+    call fSqrt          ; 3:17      fsqrt
+    call fIst           ; 3:17      f>s
+    call PRT_SP_S16     ; 3:17      space .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
+                        ;[16:77/57] 777 +loop_103(xm)   variant +X.J: positive step 256+ and hi(real_stop) exclusivity, run 85x
+idx103 EQU $+1          ;           777 +loop_103(xm)   idx always points to a 16-bit index
+    ld   BC, 0x0000     ; 3:10      777 +loop_103(xm)   0 .. +777 ..(65535), real_stop:0x01FD
+    ld    A, C          ; 1:4       777 +loop_103(xm)
+    add   A, low 777    ; 2:7       777 +loop_103(xm)
+    ld    C, A          ; 1:4       777 +loop_103(xm)
+    ld    A, B          ; 1:4       777 +loop_103(xm)
+    adc   A, high 777   ; 2:7       777 +loop_103(xm)
+    ld    B, A          ; 1:4       777 +loop_103(xm)
+    xor  0x01           ; 2:7       777 +loop_103(xm)   hi(real_stop)
+    jp   nz, do103save  ; 3:10      777 +loop_103(xm)
+leave103:               ;           777 +loop_103(xm)
+exit103:                ;           777 +loop_103(xm)
+    push DE             ; 1:11      32736 
+    ex   DE, HL         ; 1:4       32736 
+    ld   HL, 32736      ; 3:10      32736 
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f         
-    push DE             ; 1:11      dup
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
-    call fIst           ; 3:17      f>s 
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1
+    call fIst           ; 3:17      f>s
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(32737 )
-    ex   DE, HL         ; 1:4       push(32737 )
-    ld   HL, 32737      ; 3:10      push(32737 ) 
+    push DE             ; 1:11      32737 
+    ex   DE, HL         ; 1:4       32737 
+    ld   HL, 32737      ; 3:10      32737 
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f         
-    push DE             ; 1:11      dup
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
-    call fIst           ; 3:17      f>s 
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1
+    call fIst           ; 3:17      f>s
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x7FFF)
-    ex   DE, HL         ; 1:4       push(0x7FFF)
-    ld   HL, 0x7FFF     ; 3:10      push(0x7FFF) 
+    push DE             ; 1:11      0x7FFF
+    ex   DE, HL         ; 1:4       0x7FFF
+    ld   HL, 0x7FFF     ; 3:10      0x7FFF
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f         
-    push DE             ; 1:11      dup
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
-    call fIst           ; 3:17      f>s 
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1
+    call fIst           ; 3:17      f>s
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x8000)
-    ex   DE, HL         ; 1:4       push(0x8000)
-    ld   HL, 0x8000     ; 3:10      push(0x8000) 
+    push DE             ; 1:11      0x8000
+    ex   DE, HL         ; 1:4       0x8000
+    ld   HL, 0x8000     ; 3:10      0x8000
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f         
-    push DE             ; 1:11      dup
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
-    call fIst           ; 3:17      f>s 
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1
+    call fIst           ; 3:17      f>s
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    
-    push DE             ; 1:11      push(32736 )
-    ex   DE, HL         ; 1:4       push(32736 )
-    ld   HL, 32736      ; 3:10      push(32736 ) 
+    push DE             ; 1:11      32736 
+    ex   DE, HL         ; 1:4       32736 
+    ld   HL, 32736      ; 3:10      32736 
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f 
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
-    ld    H, A          ; 1:4       fnegate 
-    push DE             ; 1:11      dup
+    ld    H, A          ; 1:4       fnegate
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
-    call fIst           ; 3:17      f>s 
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1
+    call fIst           ; 3:17      f>s
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(32737 )
-    ex   DE, HL         ; 1:4       push(32737 )
-    ld   HL, 32737      ; 3:10      push(32737 ) 
+    push DE             ; 1:11      32737 
+    ex   DE, HL         ; 1:4       32737 
+    ld   HL, 32737      ; 3:10      32737 
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f 
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
-    ld    H, A          ; 1:4       fnegate 
-    push DE             ; 1:11      dup
+    ld    H, A          ; 1:4       fnegate
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
-    call fIst           ; 3:17      f>s 
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1
+    call fIst           ; 3:17      f>s
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x7FFF)
-    ex   DE, HL         ; 1:4       push(0x7FFF)
-    ld   HL, 0x7FFF     ; 3:10      push(0x7FFF) 
+    push DE             ; 1:11      0x7FFF
+    ex   DE, HL         ; 1:4       0x7FFF
+    ld   HL, 0x7FFF     ; 3:10      0x7FFF
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f 
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
-    ld    H, A          ; 1:4       fnegate 
-    push DE             ; 1:11      dup
+    ld    H, A          ; 1:4       fnegate
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
-    call fIst           ; 3:17      f>s 
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1
+    call fIst           ; 3:17      f>s
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
-    push DE             ; 1:11      push(0x8000)
-    ex   DE, HL         ; 1:4       push(0x8000)
-    ld   HL, 0x8000     ; 3:10      push(0x8000) 
+    push DE             ; 1:11      0x8000
+    ex   DE, HL         ; 1:4       0x8000
+    ld   HL, 0x8000     ; 3:10      0x8000
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fWld           ; 3:17      u>f 
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    call fWld           ; 3:17      u>f
     ld    A, H          ; 1:4       fnegate
     xor  0x80           ; 2:7       fnegate
-    ld    H, A          ; 1:4       fnegate 
-    push DE             ; 1:11      dup
+    ld    H, A          ; 1:4       fnegate
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
     push HL             ; 1:11      dup space u.   x3 x1 x2 x1
     call PRT_SP_U16     ; 3:17      space u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1 
-    call fIst           ; 3:17      f>s 
-    call PRT_S16        ; 3:17      .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ex   DE, HL         ; 1:4       dup space u.   x3 x2 x1
+    call fIst           ; 3:17      f>s
+    call PRT_S16        ; 3:17      .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-
-    
-    push DE             ; 1:11      push(0x8000)
-    ex   DE, HL         ; 1:4       push(0x8000)
-    ld   HL, 0x8000     ; 3:10      push(0x8000) 
-    call fIld           ; 3:17      s>f 
-    push DE             ; 1:11      dup
+    push DE             ; 1:11      0x8000
+    ex   DE, HL         ; 1:4       0x8000
+    ld   HL, 0x8000     ; 3:10      0x8000
+    call fIld           ; 3:17      s>f
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    call fWst           ; 3:17      f>u 
-    call PRT_SP_U16     ; 3:17      space u.   ( u -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    call fWst           ; 3:17      f>u
+    call PRT_SP_U16     ; 3:17      space u.   ( u -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-
-    
     ld   BC, string133  ; 3:10      print_z   Address of null-terminated string133
-    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_STRING_Z ; 3:17      print_z
                         ;[13:72]    depth   ( -- +n )
     push DE             ; 1:11      depth
     ex   DE, HL         ; 1:4       depth
@@ -782,146 +781,126 @@ xexit103:               ;           777 +xloop 103
     sbc  HL, SP         ; 2:15      depth
     srl   H             ; 2:8       depth
     rr    L             ; 2:8       depth
-    dec  HL             ; 1:6       depth 
+    dec  HL             ; 1:6       depth
     call PRT_U16        ; 3:17      u.   ( u -- )
-    
     ld   BC, string134  ; 3:10      print_z   Address of null-terminated string134
-    call PRINT_STRING_Z ; 3:17      print_z 
-    ex   DE, HL         ; 1:4       __ras   ( -- return_address_stack )
-    push HL             ; 1:11      __ras
-    exx                 ; 1:4       __ras
-    push HL             ; 1:11      __ras
-    exx                 ; 1:4       __ras
-    pop  HL             ; 1:10      __ras 
-    call PRT_U16        ; 3:17      u.   ( u -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    call PRINT_STRING_Z ; 3:17      print_z
+    ex   DE, HL         ; 1:4       ras   ( -- return_address_stack )
+    exx                 ; 1:4       ras
+    push HL             ; 1:11      ras
+    exx                 ; 1:4       ras
+    ex  (SP),HL         ; 1:19      ras
+    call PRT_U16        ; 3:17      u.   ( u -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-    
 Stop:                   ;           stop
     ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
     ld   HL, 0x2758     ; 3:10      stop
     exx                 ; 1:4       stop
     ret                 ; 1:10      stop
 ;   =====  e n d  =====
-    
-
 ;   ---  the beginning of a non-recursive function  ---
 test_s2f_f2s:           ;           
     pop  BC             ; 1:10      : ret
     ld  (test_s2f_f2s_end+1),BC; 4:20      : ( ret -- )
-    
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRT_S16        ; 3:17      .   ( s -- )
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
-    ld    A, '>'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    push DE             ; 1:11      dup
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1
+    ld    A, '='        ; 2:7       putchar('=')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar('=')   putchar(reg A) with ZX 48K ROM
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fIld           ; 3:17      s>f 
-    push DE             ; 1:11      dup
+    ld    E, L          ; 1:4       dup
+    call fIld           ; 3:17      s>f
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    ld    A, '>'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    call fIst           ; 3:17      f>s 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    ld    A, '='        ; 2:7       putchar('=')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar('=')   putchar(reg A) with ZX 48K ROM
+    call fIst           ; 3:17      f>s
     push HL             ; 1:11      dup .   x3 x1 x2 x1
     call PRT_S16        ; 3:17      .   ( s -- )
-    ex   DE, HL         ; 1:4       dup .   x3 x2 x1 
+    ex   DE, HL         ; 1:4       dup .   x3 x2 x1
     or    A             ; 1:4       <> if
     sbc  HL, DE         ; 2:15      <> if
     pop  HL             ; 1:10      <> if
     pop  DE             ; 1:10      <> if
-    jp    z, else102    ; 3:10      <> if 
+    jp    z, else102    ; 3:10      <> if
     ld   BC, string135  ; 3:10      print_z   Address of null-terminated string135
-    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   endif102       ; 3:10      else
-else102: 
+else102:
     ld   BC, string136  ; 3:10      print_z   Address of null-terminated string136
-    call PRINT_STRING_Z ; 3:17      print_z 
+    call PRINT_STRING_Z ; 3:17      print_z
 endif102:
-
 test_s2f_f2s_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
-
-
 ;   ---  the beginning of a non-recursive function  ---
 test_sqrt:              ;           
     pop  BC             ; 1:10      : ret
     ld  (test_sqrt_end+1),BC; 4:20      : ( ret -- )
-    
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    push DE             ; 1:11      dup dup   ( a -- a a a )
+    push HL             ; 1:11      dup dup
+    ld    D, H          ; 1:4       dup dup
+    ld    E, L          ; 1:4       dup dup
     call MULTIPLY       ; 3:17      *
-    pop  DE             ; 1:10      * 
-    ld   BC, string126  ; 3:10      print_z   Address of null-terminated string126 == string137
-    call PRINT_STRING_Z ; 3:17      print_z 
+    pop  DE             ; 1:10      *
+    ld   BC, string126  ; 3:10      print_z   Address of null-terminated string137 == string126
+    call PRINT_STRING_Z ; 3:17      print_z
     push HL             ; 1:11      dup u.   x3 x1 x2 x1
     call PRT_U16        ; 3:17      u.   ( u -- )
-    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1 
-    call fIld           ; 3:17      s>f 
-    call fSqrt          ; 3:17      fsqrt 
-    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string105 == string138
-    call PRINT_STRING_Z ; 3:17      print_z 
-    push DE             ; 1:11      dup
+    ex   DE, HL         ; 1:4       dup u.   x3 x2 x1
+    call fIld           ; 3:17      s>f
+    call fSqrt          ; 3:17      fsqrt
+    ld   BC, string105  ; 3:10      print_z   Address of null-terminated string138 == string105
+    call PRINT_STRING_Z ; 3:17      print_z
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    call fIst           ; 3:17      f>s 
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    call fIst           ; 3:17      f>s
     or    A             ; 1:4       <> if
     sbc  HL, DE         ; 2:15      <> if
     pop  HL             ; 1:10      <> if
     pop  DE             ; 1:10      <> if
-    jp    z, else103    ; 3:10      <> if 
-    ld   BC, string135  ; 3:10      print_z   Address of null-terminated string135 == string139
-    call PRINT_STRING_Z ; 3:17      print_z 
+    jp    z, else103    ; 3:10      <> if
+    ld   BC, string135  ; 3:10      print_z   Address of null-terminated string139 == string135
+    call PRINT_STRING_Z ; 3:17      print_z
     jp   endif103       ; 3:10      else
-else103: 
-    ld   BC, string136  ; 3:10      print_z   Address of null-terminated string136 == string140
-    call PRINT_STRING_Z ; 3:17      print_z 
+else103:
+    ld   BC, string136  ; 3:10      print_z   Address of null-terminated string140 == string136
+    call PRINT_STRING_Z ; 3:17      print_z
 endif103:
-
 test_sqrt_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
-    
-
 ;   ---  the beginning of a data stack function  ---
 test:                   ;           
-    
-    call fIld           ; 3:17      s>f 
-    call fSqrt          ; 3:17      fsqrt 
-    push DE             ; 1:11      dup
+    call fIld           ; 3:17      s>f
+    call fSqrt          ; 3:17      fsqrt
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    call fFrac          ; 3:17      ffrac 
-    ld    A, ':'        ; 2:7       putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      putchar(reg A) with ZX 48K ROM 
-    push DE             ; 1:11      dup
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    call fFrac          ; 3:17      ffrac
+    ld    A, ':'        ; 2:7       putchar(':')   Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      putchar(':')   putchar(reg A) with ZX 48K ROM
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call fDot           ; 3:17      f. 
-    call fIst           ; 3:17      f>s 
-    push DE             ; 1:11      dup
+    ld    E, L          ; 1:4       dup
+    call fDot           ; 3:17      f.
+    call fIst           ; 3:17      f>s
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
+    ld    E, L          ; 1:4       dup
+    call PRT_SP_S16     ; 3:17      space .   ( s -- )
+    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
-
 test_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
-
-    
-
 ; Remainder after division
 ;  In: BC dividend, HL modulus
 ; Out: HL = BC % HL = BC - int(BC/HL) * HL = frac(BC/HL) * HL  => does not return correct results with larger exponent difference
@@ -1230,11 +1209,7 @@ fWst_ZERO:
     ld    H, A          ; 1:4
     ld    L, A          ; 1:4
     ret                 ; 1:10      RET with carry
-        ; continue from @
-    ld    B, D          ; 1:4       fmod
-    ld    C, E          ; 1:4       fmod
-    call fMod           ; 3:17      fmod HL = BC % HL
-    pop  DE             ; 1:10      fmod (if it was included)
+        ; continue from @FMOD (if it was included)
 ; Subtract two floating-point numbers
 ;  In: HL, DE numbers to subtract, no restrictions
 ; Out: HL = DE - HL
@@ -1647,14 +1622,7 @@ fDiv_OVER:
     or    A             ; 1:4
     jr    z, fDiv_POW2  ; 2:12/7
     ld    A, H          ; 1:4       NegE - 1 = (0 - (E - bias)) + bias - 1 = 2*bias - E - 1 = 128 - E - 1 = 127 - E
-    xor  0x7F           ; 2:7       NegE = 127 - E = 0x7F - E = 0x7F 
-    ld    A, E          ; 1:4       xor
-    xor   L             ; 1:4       xor
-    ld    L, A          ; 1:4       xor
-    ld    A, D          ; 1:4       xor
-    xor   H             ; 1:4       xor
-    ld    H, A          ; 1:4       xor
-    pop  DE             ; 1:10      xor E
+    xor  0x7F           ; 2:7       NegE = 127 - E = 0x7F - E = 0x7F xor E
     ld    D, A          ; 1:4
 
     ld    H, DIVTAB/256 ; 2:7
@@ -2398,7 +2366,7 @@ db 0xbb,0xba,0xba,0xba,0xba,0xba,0xba,0xba,0xba,0xb9,0xb9,0xb9,0xb9,0xb8,0xb8,0x
 ; Output: Print space and signed decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
 PRT_SP_S16:             ;           prt_sp_s16
-    ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, DE', BC'
+    ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with ZX 48K ROM
     ; fall to prt_s16
 ;------------------------------------------------------------------------------
@@ -2409,7 +2377,7 @@ PRT_S16:                ;           prt_s16
     ld    A, H          ; 1:4       prt_s16
     add   A, A          ; 1:4       prt_s16
     jr   nc, PRT_U16    ; 2:7/12    prt_s16
-    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      prt_s16   putchar(reg A) with ZX 48K ROM
     xor   A             ; 1:4       prt_s16   neg
     sub   L             ; 1:4       prt_s16   neg
@@ -2423,7 +2391,7 @@ PRT_S16:                ;           prt_s16
 ; Output: Print space and unsigned decimal number in HL
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
 PRT_SP_U16:             ;           prt_sp_u16
-    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, DE', BC'
+    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      prt_sp_u16   putchar with ZX 48K ROM in, this will print char in A
     ; fall to prt_u16
 ;------------------------------------------------------------------------------
@@ -2500,55 +2468,109 @@ MULTIPLY2:              ;           0L*DE
 
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY
-;==============================================================================
+;------------------------------------------------------------------------------
 ; Print C-style stringZ
 ; In: BC = addr
-; Out: BC = addr zero
+; Out: BC = addr zero + 1
     rst  0x10           ; 1:11      print_string_z putchar with ZX 48K ROM in, this will print char in A
-    inc  BC             ; 1:6       print_string_z
 PRINT_STRING_Z:         ;           print_string_z
     ld    A,(BC)        ; 1:7       print_string_z
+    inc  BC             ; 1:6       print_string_z
     or    A             ; 1:4       print_string_z
     jp   nz, $-4        ; 3:10      print_string_z
     ret                 ; 1:10      print_string_z
 
 STRING_SECTION:
+string140   EQU  string136
+  size140   EQU    size136
+string139   EQU  string135
+  size139   EQU    size135
+string138   EQU  string105
+  size138   EQU    size105
+string137   EQU  string126
+  size137   EQU    size126
 string136:
-db " ok", 0x0D, 0x00
-size136 EQU $ - string136
+    db " ok", 0x0D, 0x00
+  size136   EQU  $ - string136
 string135:
-db " false", 0x0D, 0x00
-size135 EQU $ - string135
+    db " false", 0x0D, 0x00
+  size135   EQU  $ - string135
 string134:
-db 0x0D, "RAS:", 0x00
-size134 EQU $ - string134
+    db 0x0D, "RAS:", 0x00
+  size134   EQU  $ - string134
 string133:
-db "Data stack:", 0x00
-size133 EQU $ - string133
+    db "Data stack:", 0x00
+  size133   EQU  $ - string133
 string132:
-db " % ", 0x00
-size132 EQU $ - string132
+    db " % ", 0x00
+  size132   EQU  $ - string132
+string131   EQU  string105
+  size131   EQU    size105
 string130:
-db "  ln(", 0x00
-size130 EQU $ - string130
+    db "  ln(", 0x00
+  size130   EQU  $ - string130
+string129   EQU  string105
+  size129   EQU    size105
 string128:
-db " exp(", 0x00
-size128 EQU $ - string128
+    db " exp(", 0x00
+  size128   EQU  $ - string128
+string127   EQU  string105
+  size127   EQU    size105
 string126:
-db "sqrt(", 0x00
-size126 EQU $ - string126
+    db "sqrt(", 0x00
+  size126   EQU  $ - string126
+string125   EQU  string105
+  size125   EQU    size105
+string124   EQU  string104
+  size124   EQU    size104
+string123   EQU  string105
+  size123   EQU    size105
+string122   EQU  string104
+  size122   EQU    size104
+string121   EQU  string105
+  size121   EQU    size105
+string120   EQU  string104
+  size120   EQU    size104
+string119   EQU  string105
+  size119   EQU    size105
+string118   EQU  string104
+  size118   EQU    size104
+string117   EQU  string105
+  size117   EQU    size105
+string116   EQU  string104
+  size116   EQU    size104
+string115   EQU  string105
+  size115   EQU    size105
+string114   EQU  string104
+  size114   EQU    size104
+string113   EQU  string105
+  size113   EQU    size105
+string112   EQU  string104
+  size112   EQU    size104
+string111   EQU  string105
+  size111   EQU    size105
+string110   EQU  string104
+  size110   EQU    size104
+string109   EQU  string105
+  size109   EQU    size105
+string108   EQU  string104
+  size108   EQU    size104
+string107   EQU  string105
+  size107   EQU    size105
+string106   EQU  string104
+  size106   EQU    size104
 string105:
-db ")=", 0x00
-size105 EQU $ - string105
+    db ")=", 0x00
+  size105   EQU  $ - string105
 string104:
-db "sin(", 0x00
-size104 EQU $ - string104
+    db "sin(", 0x00
+  size104   EQU  $ - string104
 string103:
-db "1.0-2.0=", 0x00
-size103 EQU $ - string103
+    db "1.0-2.0=", 0x00
+  size103   EQU  $ - string103
 string102:
-db "1.0+2.0=", 0x00
-size102 EQU $ - string102
+    db "1.0+2.0=", 0x00
+  size102   EQU  $ - string102
 string101:
-db "1.0/2**", 0x00
-size101 EQU $ - string101
+    db "1.0/2**", 0x00
+  size101   EQU  $ - string101
