@@ -613,7 +613,7 @@ dnl
 dnl # __COMMA_LAST_2_PAR(1,2,3) --> ,2,3
 dnl # __COMMA_LAST_2_PAR(2,3)   --> ,2,3
 dnl # __COMMA_LAST_2_PAR(3)     --> ,3
-dnl # __COMMA_LAST_2_PAR()      --> 
+dnl # __COMMA_LAST_2_PAR()      -->
 define({__COMMA_LAST_1_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<2), 1,{,$@},{$0(shift($@))})}){}dnl
 define({__COMMA_LAST_2_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<3), 1,{,$@},{$0(shift($@))})}){}dnl
 define({__COMMA_LAST_3_PAR},{ifelse($#,0,{},$#:$1,{1:},{},eval($#<4), 1,{,$@},{$0(shift($@))})}){}dnl

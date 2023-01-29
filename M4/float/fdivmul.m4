@@ -57,7 +57,7 @@ fDiv_OVER:
     or    A             ; 1:4
     jr    z, fDiv_POW2  ; 2:12/7
     ld    A, H          ; 1:4       NegE - 1 = (0 - (E - bias)) + bias - 1 = 2*bias - E - 1 = 128 - E - 1 = 127 - E
-    xor  0x7F           ; 2:7       NegE = 127 - E = 0x7F - E = 0x7F XOR E
+    xor  0x7F           ; 2:7       NegE = 127 - E = 0x7F - E = 0x7F xor E
     ld    D, A          ; 1:4
 
     ld    H, DIVTAB/256 ; 2:7
