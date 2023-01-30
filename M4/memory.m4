@@ -2453,21 +2453,20 @@ dnl # cmove>
 dnl # ( addr1 addr2 u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive characters at addr1 to the u consecutive characters at addr2.
 define({CMOVEGT},{dnl
-__{}__ADD_TOKEN({__TOKEN_CMOVEGT},{cmovegt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CMOVEGT},{cmove>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CMOVEGT},{dnl
-__{}define({__INFO},{cmovegt}){}dnl
-
-    ld    A, H          ; 1:4       cmove>   ( from_addr to_addr u_chars -- )
-    or    L             ; 1:4       cmove>
-    ld    B, H          ; 1:4       cmove>
-    ld    C, L          ; 1:4       cmove>   BC = u
-    pop  HL             ; 1:10      cmove>   HL = from = addr1
-    jr    z, $+4        ; 2:7/12    cmove>
-    lddr                ; 2:u*21/16 cmove>   addr--
-    pop  HL             ; 1:10      cmove>
-    pop  DE             ; 1:10      cmove>}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, H          ; 1:4       __INFO   ( from_addr to_addr u_chars -- )
+    or    L             ; 1:4       __INFO
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO   BC = u
+    pop  HL             ; 1:10      __INFO   HL = from = addr1
+    jr    z, $+4        ; 2:7/12    __INFO
+    lddr                ; 2:u*21/16 __INFO   addr--
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
