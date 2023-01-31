@@ -92,18 +92,18 @@ __{}__ADD_TOKEN({__TOKEN_FABS},{fabs},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FABS},{dnl
-__{}define({__INFO},{fabs}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
     res   7, H          ; 2:8       fabs}){}dnl
 dnl
 dnl
 dnl # ( f1 -- )
 define({FDOT},{dnl
-__{}__ADD_TOKEN({__TOKEN_FDOT},{fdot},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_FDOT},{f.},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FDOT},{dnl
-__{}define({__INFO},{fdot}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fDot},,define({USE_fDot},{}))dnl
     call fDot           ; 3:17      f.}){}dnl
@@ -112,11 +112,11 @@ dnl
 dnl # ( f2 f1 -- f )
 dnl # f = f2 * f1
 define({FMUL},{dnl
-__{}__ADD_TOKEN({__TOKEN_FMUL},{fmul},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_FMUL},{f*},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FMUL},{dnl
-__{}define({__INFO},{fmul}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fMul},,define({USE_fMul},{}))dnl
     ld    B, H          ; 1:4       f*
@@ -128,11 +128,11 @@ dnl
 dnl # ( f2 f1 -- f )
 dnl # f = f2 / f1
 define({FDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_FDIV},{fdiv},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_FDIV},{f/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FDIV},{dnl
-__{}define({__INFO},{fdiv}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fDiv},,define({USE_fDiv},{}))dnl
     ld    B, D          ; 1:4       f/
@@ -148,7 +148,7 @@ __{}__ADD_TOKEN({__TOKEN_FSQRT},{fsqrt},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FSQRT},{dnl
-__{}define({__INFO},{fsqrt}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fSqrt},,define({USE_fSqrt},{}))dnl
     call fSqrt          ; 3:17      fsqrt}){}dnl
@@ -161,7 +161,7 @@ __{}__ADD_TOKEN({__TOKEN_FTRUNC},{ftrunc},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FTRUNC},{dnl
-__{}define({__INFO},{ftrunc}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fTrunc},,define({USE_fTrunc},{}))dnl
     call fTrunc         ; 3:17      ftrunc}){}dnl
@@ -174,7 +174,7 @@ __{}__ADD_TOKEN({__TOKEN_FFRAC},{ffrac},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FFRAC},{dnl
-__{}define({__INFO},{ffrac}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fFrac},,define({USE_fFrac},{}))dnl
     call fFrac          ; 3:17      ffrac}){}dnl
@@ -187,7 +187,7 @@ __{}__ADD_TOKEN({__TOKEN_FEXP},{fexp},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FEXP},{dnl
-__{}define({__INFO},{fexp}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fExp},,define({USE_fExp},{}))dnl
     push DE             ; 1:11      fexp
@@ -202,7 +202,7 @@ __{}__ADD_TOKEN({__TOKEN_FLN},{fln},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FLN},{dnl
-__{}define({__INFO},{fln}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fLn},,define({USE_fLn},{}))dnl
     push DE             ; 1:11      fln
@@ -217,7 +217,7 @@ __{}__ADD_TOKEN({__TOKEN_FSIN},{fsin},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FSIN},{dnl
-__{}define({__INFO},{fsin}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fSin},,define({USE_fSin},{}))dnl
     push DE             ; 1:11      fsin
@@ -232,7 +232,7 @@ __{}__ADD_TOKEN({__TOKEN_FMOD},{fmod},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FMOD},{dnl
-__{}define({__INFO},{fmod}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
 ifdef({USE_fMod},,define({USE_fMod},{}))dnl
     ld    B, D          ; 1:4       fmod
@@ -244,11 +244,11 @@ dnl
 dnl # ( f1 -- f2 )
 dnl # f2 = f1 * 2.0
 define({F2MUL},{dnl
-__{}__ADD_TOKEN({__TOKEN_F2MUL},{f2mul},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_F2MUL},{f2*},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_F2MUL},{dnl
-__{}define({__INFO},{f2mul}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
     inc   H             ;  1:4      f2*
     .WARNING The exponent is not tested and may overflow!}){}dnl
@@ -257,11 +257,11 @@ dnl
 dnl # ( f1 -- f2 )
 dnl # f2 = f1 / 2.0
 define({F2DIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_F2DIV},{f2div},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_F2DIV},{f2/},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_F2DIV},{dnl
-__{}define({__INFO},{f2div}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 
     dec   H             ;  1:4      f2/
     .WARNING The exponent is not tested and may underflow!}){}dnl
