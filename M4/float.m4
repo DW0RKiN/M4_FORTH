@@ -6,78 +6,72 @@ dnl
 dnl
 dnl # ( s1 -- f1 )
 define({S2F},{dnl
-__{}__ADD_TOKEN({__TOKEN_S2F},{s2f},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_S2F},{s>f},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_S2F},{dnl
-__{}define({__INFO},{s2f}){}dnl
-
-ifdef({USE_fIld},,define({USE_fIld},{}))dnl
-    call fIld           ; 3:17      s>f}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_fIld})
+    call fIld           ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # ( u1 -- f1 )
 define({U2F},{dnl
-__{}__ADD_TOKEN({__TOKEN_U2F},{u2f},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_U2F},{u>f},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_U2F},{dnl
-__{}define({__INFO},{u2f}){}dnl
-
-ifdef({USE_fWld},,define({USE_fWld},{}))dnl
-    call fWld           ; 3:17      u>f}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_fWld})
+    call fWld           ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # ( f1 -- s1 )
 define({F2S},{dnl
-__{}__ADD_TOKEN({__TOKEN_F2S},{f2s},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_F2S},{f>s},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_F2S},{dnl
-__{}define({__INFO},{f2s}){}dnl
-
-ifdef({USE_fIst},,define({USE_fIst},{}))dnl
-    call fIst           ; 3:17      f>s}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_fIst})
+    call fIst           ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # ( f1 -- u1 )
 define({F2U},{dnl
-__{}__ADD_TOKEN({__TOKEN_F2U},{f2u},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_F2U},{f>u},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_F2U},{dnl
-__{}define({__INFO},{f2u}){}dnl
-
-ifdef({USE_fWst},,define({USE_fWst},{}))dnl
-    call fWst           ; 3:17      f>u}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_fWst})
+    call fWst           ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # ( f2 f1 -- f )
 dnl # f = f2 + f1
 define({FADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_FADD},{fadd},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_FADD},{f+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FADD},{dnl
-__{}define({__INFO},{fadd}){}dnl
-
-ifdef({USE_fAdd},,define({USE_fAdd},{}))dnl
-    call fAdd           ; 3:17      f+
-    pop  DE             ; 1:10      f+}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_fAdd})
+    call fAdd           ; 3:17      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( f2 f1 -- f )
 dnl # f = f2 + f1
 define({FSUB},{dnl
-__{}__ADD_TOKEN({__TOKEN_FSUB},{fsub},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_FSUB},{f-},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FSUB},{dnl
-__{}define({__INFO},{fsub}){}dnl
-
-ifdef({USE_fSub},,define({USE_fSub},{}))dnl
-    call fSub           ; 3:17      f-
-    pop  DE             ; 1:10      f-}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_fSub})
+    call fSub           ; 3:17      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( f1 -- -f1 )
@@ -86,11 +80,10 @@ __{}__ADD_TOKEN({__TOKEN_FNEGATE},{fnegate},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FNEGATE},{dnl
-__{}define({__INFO},{fnegate}){}dnl
-
-    ld    A, H          ; 1:4       fnegate
-    xor  0x80           ; 2:7       fnegate
-    ld    H, A          ; 1:4       fnegate}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, H          ; 1:4       __INFO
+    xor  0x80           ; 2:7       __INFO
+    ld    H, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( f1 -- f2 )
