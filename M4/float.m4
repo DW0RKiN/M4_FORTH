@@ -103,8 +103,7 @@ __{}__ADD_TOKEN({__TOKEN_FDOT},{f.},$@){}dnl
 dnl
 define({__ASM_TOKEN_FDOT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fDot})dnl
+__{}__def({USE_fDot})
     call fDot           ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -116,8 +115,7 @@ __{}__ADD_TOKEN({__TOKEN_FMUL},{f*},$@){}dnl
 dnl
 define({__ASM_TOKEN_FMUL},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fMul})dnl
+__{}__def({USE_fMul})
     ld    B, H          ; 1:4       __INFO
     ld    C, L          ; 1:4       __INFO
     call fMul           ; 3:17      __INFO   HL = BC*DE
@@ -132,8 +130,7 @@ __{}__ADD_TOKEN({__TOKEN_FDIV},{f/},$@){}dnl
 dnl
 define({__ASM_TOKEN_FDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fDiv})dnl
+__{}__def({USE_fDiv})
     ld    B, D          ; 1:4       __INFO
     ld    C, E          ; 1:4       __INFO
     call fDiv           ; 3:17      __INFO   HL = BC/HL
@@ -148,8 +145,7 @@ __{}__ADD_TOKEN({__TOKEN_FSQRT},{fsqrt},$@){}dnl
 dnl
 define({__ASM_TOKEN_FSQRT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fSqrt})dnl
+__{}__def({USE_fSqrt})
     call fSqrt          ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -161,8 +157,7 @@ __{}__ADD_TOKEN({__TOKEN_FTRUNC},{ftrunc},$@){}dnl
 dnl
 define({__ASM_TOKEN_FTRUNC},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fTrunc})dnl
+__{}__def({USE_fTrunc})
     call fTrunc         ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -174,8 +169,7 @@ __{}__ADD_TOKEN({__TOKEN_FFRAC},{ffrac},$@){}dnl
 dnl
 define({__ASM_TOKEN_FFRAC},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fFrac})dnl
+__{}__def({USE_fFrac})
     call fFrac          ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -187,8 +181,7 @@ __{}__ADD_TOKEN({__TOKEN_FEXP},{fexp},$@){}dnl
 dnl
 define({__ASM_TOKEN_FEXP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fExp})dnl
+__{}__def({USE_fExp})
     push DE             ; 1:11      __INFO
     call fExp           ; 3:17      __INFO   HL = e^HL
     pop  DE             ; 1:10      __INFO}){}dnl
@@ -202,8 +195,7 @@ __{}__ADD_TOKEN({__TOKEN_FLN},{fln},$@){}dnl
 dnl
 define({__ASM_TOKEN_FLN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fLn})dnl
+__{}__def({USE_fLn})
     push DE             ; 1:11      __INFO
     call fLn            ; 3:17      __INFO   HL = ln(HL)
     pop  DE             ; 1:10      __INFO}){}dnl
@@ -217,8 +209,7 @@ __{}__ADD_TOKEN({__TOKEN_FSIN},{fsin},$@){}dnl
 dnl
 define({__ASM_TOKEN_FSIN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fSin})dnl
+__{}__def({USE_fSin})
     push DE             ; 1:11      __INFO
     call fSin           ; 3:17      __INFO   HL = sin(HL)
     pop  DE             ; 1:10      __INFO}){}dnl
@@ -232,8 +223,7 @@ __{}__ADD_TOKEN({__TOKEN_FMOD},{fmod},$@){}dnl
 dnl
 define({__ASM_TOKEN_FMOD},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-
-__{}__def({USE_fMod})dnl
+__{}__def({USE_fMod})
     ld    B, D          ; 1:4       __INFO
     ld    C, E          ; 1:4       __INFO
     call fMod           ; 3:17      __INFO   HL = BC % HL
