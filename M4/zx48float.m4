@@ -38,12 +38,12 @@ __{}ifelse(ZXTEMP_CHAR,{p},{dnl
 __{}__{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
 __{}})dnl
 __{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
-__{}define({ZXTEMP_EXP},__HEX_L(ZXTEMP_EXP+129)){}dnl
+__{}define({ZXTEMP_EXP},substr(__HEX_L(ZXTEMP_EXP+129),2)){}dnl
 __{}ifelse(format({%a},$1),{0x0p+0},{define({ZXTEMP_EXP},{00})}){}dnl
 __{}define({ZXTEMP_MANTISSA_1},format({%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F)))){}dnl
-__{}define({ZXTEMP_MANTISSA_2},__HEX_E(ZXTEMP_MANTISSA)){}dnl
-__{}define({ZXTEMP_MANTISSA_3},__HEX_H(ZXTEMP_MANTISSA)){}dnl
-__{}define({ZXTEMP_MANTISSA_4},__HEX_L(ZXTEMP_MANTISSA)){}dnl
+__{}define({ZXTEMP_MANTISSA_2},substr(__HEX_E(ZXTEMP_MANTISSA),2)){}dnl
+__{}define({ZXTEMP_MANTISSA_3},substr(__HEX_H(ZXTEMP_MANTISSA),2)){}dnl
+__{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L(ZXTEMP_MANTISSA),2)){}dnl
 }){}dnl
 dnl
 dnl # ---------------------
@@ -547,90 +547,95 @@ __{}    call _ZX48BBC_TO_F  ; 3:17      push_zx48s>f($1)   $1 == 1 1??????? ????
 dnl
 dnl
 define({PUSH_ZX48F},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_ZX48F},{push_zx48f},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ZX48F},{push_zx48f($1)},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_ZX48F},{dnl
-__{}define({__INFO},{push_zx48f}){}dnl
-ZX48FSTRING_TO_FHEX($1)
-                       ;[15:195]    push_zx48f($1)   = format({%a},$1)
-    push DE             ; 1:11      push_zx48f($1)
-    push HL             ; 1:11      push_zx48f($1)
-    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       push_zx48f($1)
-    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      push_zx48f($1)
-    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      push_zx48f($1)
-    call 0x2ABB         ; 3:124     push_zx48f($1)   new float = a,e,d,c,b
-    pop  HL             ; 1:11      push_zx48f($1)
-    pop  DE             ; 1:11      push_zx48f($1)
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}{ZX48FSTRING_TO_FHEX($1)
+                       ;[15:195]    __INFO   = format({%a},$1)
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       __INFO
+    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      __INFO
+    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      __INFO
+    call 0x2ABB         ; 3:124     __INFO   new float = a,e,d,c,b
+    pop  HL             ; 1:11      __INFO
+    pop  DE             ; 1:11      __INFO
+}){}dnl
 }){}dnl
 dnl
 dnl
-dnl # F>S
+dnl # f>s
 define({ZX48F_TO_S},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48F_TO_S},{zx48f_to_s},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZX48F_TO_S},{zx48f>s},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZX48F_TO_S},{dnl
-__{}define({__INFO},{zx48f_to_s}){}dnl
-define({USE_ZX48F_TO_S},{})
-    call _ZX48F_TO_S    ; 3:17      zx48f>s   ( -- x ) ( F: r -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZX48F_TO_S})
+    call _ZX48F_TO_S    ; 3:17      __INFO   ( -- x ) ( F: r -- )}){}dnl
 dnl
 dnl
-dnl # D>F
+dnl # d>f
 define({ZX48D_TO_F},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48D_TO_F},{zx48d_to_f},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZX48D_TO_F},{zx48d>f},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZX48D_TO_F},{dnl
-__{}define({__INFO},{zx48d_to_f}){}dnl
-define({USE_ZX48D_TO_F},{})
-    call _ZX48D_TO_F    ; 3:17      zx48d>f   ( d -- ) ( F: -- r )}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZX48D_TO_F})
+    call _ZX48D_TO_F    ; 3:17      __INFO   ( d -- ) ( F: -- r )}){}dnl
 dnl
 dnl
-dnl # F>D
+dnl # f>d
 define({ZX48F_TO_D},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48F_TO_D},{zx48f_to_d},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZX48F_TO_D},{zx48f>d},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZX48F_TO_D},{dnl
-__{}define({__INFO},{zx48f_to_d}){}dnl
-define({USE_ZX48F_TO_D},{})
-    call _ZX48F_TO_D    ; 3:17      zx48f>d   ( -- d ) ( F: r -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZX48F_TO_D})
+    call _ZX48F_TO_D    ; 3:17      __INFO   ( -- d ) ( F: r -- )}){}dnl
 dnl
 dnl
 dnl
-dnl # FLOAT+
+dnl # float+
+dnl # sizeof(zxfloat) = 5
 define({ZX48FLOATADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FLOATADD},{zx48floatadd},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZX48FLOATADD},{zx48float+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZX48FLOATADD},{dnl
-__{}define({__INFO},{zx48floatadd}){}dnl
-
-    ld   BC, 0x0005     ; 3:10      zx48float+   ( a1 -- a2 ) ( F: -- )
-    add  HL, BC         ; 1:11      zx48float+}){}dnl}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld   BC, 0x0005     ; 3:10      __INFO   ( a1 -- a2 ) ( F: -- )
+    add  HL, BC         ; 1:11      __INFO}){}dnl
 dnl
 dnl
-dnl # F0=
+dnl # f0=
 define({ZX48F0EQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48F0EQ},{zx48f0eq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZX48F0EQ},{zx48f0=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZX48F0EQ},{dnl
-__{}define({__INFO},{zx48f0eq}){}dnl
-define({USE_ZX48F0EQ},{})
-    call _ZX48F0EQ      ; 3:17      zx48f0=   ( -- flag ) ( F: r -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__def({USE_ZX48F0EQ})
+    call _ZX48F0EQ      ; 3:17      __INFO   ( -- flag ) ( F: r -- )}){}dnl
 dnl
 dnl
-dnl # F0<
+dnl # f0<
 define({ZX48F0LT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48F0LT},{zx48f0lt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZX48F0LT},{zx48f0<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZX48F0LT},{dnl
-__{}define({__INFO},{zx48f0lt}){}dnl
-define({USE_ZX48F0LT},{})
-    call _ZX48F0LT      ; 3:17      zx48f0<   ( -- flag ) ( F: r -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZX48F0LT})
+    call _ZX48F0LT      ; 3:17      __INFO   ( -- flag ) ( F: r -- )}){}dnl
 dnl
 dnl
 dnl

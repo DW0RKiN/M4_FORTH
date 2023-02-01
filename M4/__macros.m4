@@ -48,6 +48,15 @@ dnl #           --> 0
 dnl # abc       --> 0
 dnl # 0a        --> 0
 dnl # 0g        --> 0
+dnl # 3.14159   --> 0 no integer!
+dnl # 1.0E1     --> 0 fail
+dnl # 1E1       --> 0 fail
+dnl # 10.0E0    --> 0 fail
+dnl # 10E0      --> 0 fail
+dnl # [0        --> 0 but with error message
+dnl # 10+0x0A   --> 1
+dnl # 2*(0x0A)  --> 1
+dnl # 10+(0x0A) --> 1
 dnl # 0xa       --> 1
 dnl # 5         --> 1
 dnl # 25*3      --> 1
@@ -57,7 +66,7 @@ __{}{$1},{},{0},
 __{}{$1},(),{0},
 __{}eval( regexp({$1},{[0-9]}) == -1 ),{1},{0},dnl # ( -- )
 __{}eval( regexp({$1},{()}) != -1 ),{1},{0},dnl #
-__{}eval( regexp({$1},{[?'",yzYZ_g-wG-W]}) != -1 ),{1},{0},dnl # Any letter and underscore _ except a,b,c,d,e,f,x
+__{}eval( regexp({$1},{[?'",yzYZ_g-wG-W.]}) != -1 ),{1},{0},dnl # Any letter (except a,b,c,d,e,f,x) or underscore (_) or dot (.)  
 __{}eval( regexp({$1},{\(^\|[^0]\)[xX]}) != -1 ),{1},{0},dnl # x without leading zero
 __{}eval( regexp({$1},{[a-fA-F0-9]0[xX]}) != -1 ),{1},{0},dnl # 0x inside hex characters or numbers, like 3210x or abc0x
 __{}eval( regexp({$1},{\(^\|[^xX0-9a-fA-F]+\)[0-9a-fA-F]*[a-fA-F]}) != -1 ),{1},{0},dnl # hex characters without leading 0x
