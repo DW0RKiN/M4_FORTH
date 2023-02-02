@@ -666,16 +666,16 @@ _ZINT:                  ;           _zint
 }){}dnl
 dnl
 dnl
-dnl # z+r
+dnl # zaddr
 ifdef({USE_ZADDR},{
-_ZADDR:                 ;           _z+r
-    push DE             ; 1:11      _z+r
-    ex   DE, HL         ; 1:4       _z+r
-    ld   HL,(0x5C65)    ; 3:16      _z+r   {HL= stkend}
-    UDOTZXROM
-    ld    A, 0x0D       ; 2:7       _z+r-cr   {Pollutes: AF, AF', DE', BC'}
-    rst  0x10           ; 1:11      _z+r-cr   {with 48K ROM in, this will print char in A}
-    ret                 ; 1:10      _z+r
+_ZADDR:                 ;           _zaddr
+    push DE             ; 1:11      _zaddr
+    ex   DE, HL         ; 1:4       _zaddr
+    ld   HL,(0x5C65)    ; 3:16      _zaddr   {HL= stkend}
+__ASM_TOKEN_UDOTZXROM
+    ld    A, 0x0D       ; 2:7       _zaddr-cr   {Pollutes: AF, AF', DE', BC'}
+    rst  0x10           ; 1:11      _zaddr-cr   {with 48K ROM in, this will print char in A}
+    ret                 ; 1:10      _zaddr
 }){}dnl
 dnl
 dnl
