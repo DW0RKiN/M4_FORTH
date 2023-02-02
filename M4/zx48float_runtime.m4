@@ -431,7 +431,7 @@ ifdef({USE_ZCOMPARE},{
 ; compare 0x14: > (strings)
 ; compare 0x15: < (strings)
 ; compare 0x16: = (strings)
-_ZCOMPARE:
+_ZCOMPARE:              ;           _zcompare
     push DE             ; 1:11      _zcompare
     push HL             ; 1:11      _zcompare
 if 1

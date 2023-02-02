@@ -446,28 +446,28 @@ define({USE_ZX48FCOMPARE},{})
     call _ZX48FCOMPARE  ; 3:17      zx48f>}){}dnl
 dnl
 dnl
-dnl # F<
-define({ZX48FLT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FLT},{zx48flt},$@){}dnl
+dnl # Z<
+define({ZLT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZX48FLT},{z<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZX48FLT},{dnl
-__{}define({__INFO},{zx48flt}){}dnl
-define({USE_ZX48FCOMPARE},{})
-    ld    B, 0x0D       ; 2:7       zx48f<   ( F: r1 r2 -- 1 or 0 )
-    call _ZX48FCOMPARE  ; 3:17      zx48f<}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZCOMPARE})
+    ld    B, 0x0D       ; 2:7       __INFO   ( F: r1 r2 -- 1 or 0 )
+    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
-dnl # F=
-define({ZX48FEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FEQ},{zx48feq},$@){}dnl
+dnl # Z=
+define({ZEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZEQ},{z=},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FEQ},{dnl
-__{}define({__INFO},{zx48feq}){}dnl
-define({USE_ZX48FCOMPARE},{})
-    ld    B, 0x0E       ; 2:7       zx48f=   ( F: r1 r2 -- 1 or 0 )
-    call _ZX48FCOMPARE  ; 3:17      zx48f=}){}dnl
+define({__ASM_TOKEN_ZEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZCOMPARE})
+    ld    B, 0x0E       ; 2:7       __INFO   ( F: r1 r2 -- 1 or 0 )
+    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # U>Z
