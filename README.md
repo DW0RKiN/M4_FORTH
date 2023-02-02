@@ -397,49 +397,49 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
-|<sub>   Original   |<sub>      M4 FORTH       |<sub>  Data stack               |<sub>  Comment                    |
-| :---------------: | :----------------------: | :----------------------------- | :------------------------------- |
-|<sub>     d>f      |<sub>      ZX48D_TO_F     |<sub>( d -- ) ( F: -- d )       |<sub> -2147483648..2147483647     |
-|<sub>     s>f      |<sub>      ZX48S_TO_F     |<sub>( x -- ) ( F: -- x )       |<sub> -32768..32767               |
-|<sub>   `4` s>f    |<sub> PUSH_ZX48S_TO_F(`4`)|<sub>  ( -- ) ( F: -- `4` )     |<sub> -65535..65535               |
-|<sub>     f>d      |<sub>      ZX48F_TO_D     |<sub>  ( -- d ) ( F: r -- )     |<sub>                             |
-|<sub>     f>s      |<sub>      ZX48F_TO_S     |<sub>  ( -- x ) ( F: r -- )     |<sub>                             |
-|<sub>     fabs     |<sub>      ZX48FABS       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = abs(r1)                |
-|<sub>    facos     |<sub>      ZX48FACOS      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arccos(r1)             |
-|<sub>      f+      |<sub>      ZX48FADD       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 + r2                |
-|<sub>    fasin     |<sub>      ZX48FASIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arcsin(r1)             |
-|<sub>    fatan     |<sub>      ZX48FATAN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arctan(r1)             |
-|<sub>     fcos     |<sub>      ZX48FCOS       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = cos(r1)                |
-|<sub>      f/      |<sub>      ZX48FDIV       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 / r2                |
-|<sub>      f.      |<sub>      ZX48FDOT       |<sub>  ( -- ) ( F: r -- )       |<sub> fprintf("%f", r);           |
-|<sub>    fdrop     |<sub>      ZX48FDROP      |<sub>  ( -- ) ( F: r -- )       |<sub>                             |
-|<sub>     fdup     |<sub>      ZX48FDUP       |<sub>  ( -- ) ( F: r -- r r )   |<sub>                             |
-|<sub>     fexp     |<sub>      ZX48FEXP       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = exp(r1)                |
-|<sub>      f@      |<sub>      ZX48FFETCH     |<sub>( a -- ) ( F: -- r )       |<sub>                             |
-|<sub>     fint     |<sub>      ZX48FINT       |<sub>  ( -- ) ( F: r -- i )     |<sub>                             |
-|<sub>     fln      |<sub>       ZX48FLN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = ln(r1)                 |
-|<sub>      f*      |<sub>      ZX48FMUL       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 * r2                |
-|<sub>     f**      |<sub>     ZX48FMULMUL     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1^r2                  |
-|<sub>   fnegate    |<sub>     ZX48FNEGATE     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1                    |
-|<sub>    fover     |<sub>      ZX48FOVER      |<sub>  ( F: r1 r2 -- r1 r2 r1 ) |<sub>                             |
-|<sub>     frot     |<sub>      ZX48FROT       |<sub>( F: r1 r2 r3 -- r2 r3 r1 )|<sub>                             |
-|<sub>     fsin     |<sub>      ZX48FSIN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)                |
-|<sub>    fsqrt     |<sub>      ZX48FSQRT      |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5                 |
-|<sub>      f!      |<sub>     ZX48FSTORE      |<sub>( a -- ) ( F: r -- )       |<sub>                             |
-|<sub>      f-      |<sub>      ZX48FSUB       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 - r2                |
-|<sub>    fswap     |<sub>      ZX48FSWAP      |<sub>  ( -- ) ( F: r1 r2 -- r2 r1 )|<sub>                          |
-|<sub>     ftan     |<sub>      ZX48FTAN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = tan(r1)                |
-|<sub>name fvariable|<sub>  ZX48FVARIABLE(name)|<sub>  ( -- ) ( F: -- )         |<sub> name: db 0,0,0,0,0          |
-|<sub>              |<sub>ZX48FVARIABLE(name,r)|<sub>  ( -- ) ( F: -- )         |<sub> name: db exp,m1,m2,m3,m4 ;=r|
-|<sub>     f<=      |<sub>       ZX48FLE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<=r2 then r3=1 else r3=0|
-|<sub>     f>=      |<sub>       ZX48FGE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1>=r2 then r3=1 else r3=0|
-|<sub>     f<>      |<sub>       ZX48FNE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<>r2 then r3=1 else r3=0|
-|<sub>     f>       |<sub>       ZX48FGT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1> r2 then r3=1 else r3=0|
-|<sub>     f<       |<sub>       ZX48FLT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1< r2 then r3=1 else r3=0|
-|<sub>     f=       |<sub>       ZX48FEQ       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1= r2 then r3=1 else r3=0|
-|<sub>    f0<       |<sub>      ZX48F0LT       |<sub>  ( -- flag ) ( F: r -- )  |<sub> flag = r < 0                |
-|<sub>    f0=       |<sub>      ZX48F0EQ       |<sub>  ( -- flag ) ( F: r -- )  |<sub> flag = r == 0               |
-|<sub>   float+     |<sub>    ZX48FLOATADD     |<sub>  ( a1 -- a2 ) ( F: -- )   |<sub> a2 = a1 + 5                 |
+|<sub>   Original   |<sub>    M4 FORTH     |<sub>  Data stack               |<sub>  Comment                    |
+| :---------------: | :------------------: | :----------------------------- | :------------------------------- |
+|<sub>     d>f      |<sub>      D_TO_Z     |<sub>( d -- ) ( F: -- d )       |<sub> -2147483648..2147483647     |
+|<sub>     s>f      |<sub>      S_TO_Z     |<sub>( x -- ) ( F: -- x )       |<sub> -32768..32767               |
+|<sub>   `4` s>f    |<sub> PUSH_S_TO_Z(`4`)|<sub>  ( -- ) ( F: -- `4` )     |<sub> -65535..65535               |
+|<sub>     f>d      |<sub>      Z_TO_D     |<sub>  ( -- d ) ( F: r -- )     |<sub>                             |
+|<sub>     f>s      |<sub>      Z_TO_S     |<sub>  ( -- x ) ( F: r -- )     |<sub>                             |
+|<sub>     fabs     |<sub>      ZABS       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = abs(r1)                |
+|<sub>    facos     |<sub>      ZACOS      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arccos(r1)             |
+|<sub>      f+      |<sub>      ZADD       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 + r2                |
+|<sub>    fasin     |<sub>      ZASIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arcsin(r1)             |
+|<sub>    fatan     |<sub>      ZATAN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arctan(r1)             |
+|<sub>     fcos     |<sub>      ZCOS       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = cos(r1)                |
+|<sub>      f/      |<sub>      ZDIV       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 / r2                |
+|<sub>      f.      |<sub>      ZDOT       |<sub>  ( -- ) ( F: r -- )       |<sub> fprintf("%f", r);           |
+|<sub>    fdrop     |<sub>      ZDROP      |<sub>  ( -- ) ( F: r -- )       |<sub>                             |
+|<sub>     fdup     |<sub>      ZDUP       |<sub>  ( -- ) ( F: r -- r r )   |<sub>                             |
+|<sub>     fexp     |<sub>      ZEXP       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = exp(r1)                |
+|<sub>      f@      |<sub>     ZFETCH      |<sub>( a -- ) ( F: -- r )       |<sub>                             |
+|<sub>     fint     |<sub>      ZINT       |<sub>  ( -- ) ( F: r -- i )     |<sub>                             |
+|<sub>     fln      |<sub>       ZLN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = ln(r1)                 |
+|<sub>      f*      |<sub>      ZMUL       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 * r2                |
+|<sub>     f**      |<sub>     ZMULMUL     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1^r2                  |
+|<sub>   fnegate    |<sub>     ZNEGATE     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1                    |
+|<sub>    fover     |<sub>      ZOVER      |<sub>  ( F: r1 r2 -- r1 r2 r1 ) |<sub>                             |
+|<sub>     frot     |<sub>      ZROT       |<sub>( F: r1 r2 r3 -- r2 r3 r1 )|<sub>                             |
+|<sub>     fsin     |<sub>       ZSIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)                |
+|<sub>    fsqrt     |<sub>      ZSQRT      |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5                 |
+|<sub>      f!      |<sub>     ZSTORE      |<sub>( a -- ) ( F: r -- )       |<sub>                             |
+|<sub>      f-      |<sub>      ZSUB       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 - r2                |
+|<sub>    fswap     |<sub>      ZSWAP      |<sub>  ( -- ) ( F: r1 r2 -- r2 r1 )|<sub>                          |
+|<sub>     ftan     |<sub>      ZTAN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = tan(r1)                |
+|<sub>name fvariable|<sub>  ZVARIABLE(name)|<sub>  ( -- ) ( F: -- )         |<sub> name: db 0,0,0,0,0          |
+|<sub>              |<sub>ZVARIABLE(name,r)|<sub>  ( -- ) ( F: -- )         |<sub> name: db exp,m1,m2,m3,m4 ;=r|
+|<sub>     f<=      |<sub>       ZLE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<=r2 then r3=1 else r3=0|
+|<sub>     f>=      |<sub>       ZGE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1>=r2 then r3=1 else r3=0|
+|<sub>     f<>      |<sub>       ZNE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<>r2 then r3=1 else r3=0|
+|<sub>     f>       |<sub>       ZGT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1> r2 then r3=1 else r3=0|
+|<sub>     f<       |<sub>       ZLT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1< r2 then r3=1 else r3=0|
+|<sub>     f=       |<sub>       ZEQ       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1= r2 then r3=1 else r3=0|
+|<sub>    f0<       |<sub>      Z0LT       |<sub>  ( -- flag ) ( F: r -- )  |<sub> flag = r < 0                |
+|<sub>    f0=       |<sub>      Z0EQ       |<sub>  ( -- flag ) ( F: r -- )  |<sub> flag = r == 0               |
+|<sub>   float+     |<sub>    ZFLOATADD    |<sub>  ( a1 -- a2 ) ( F: -- )   |<sub> a2 = a1 + 5                 |
 
 
 |<sub> Original   |<sub>      M4 FORTH      |<sub>  Data stack               |<sub>  Comment                    |
