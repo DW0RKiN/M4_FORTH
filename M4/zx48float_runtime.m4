@@ -3,410 +3,421 @@ define({__},{})dnl
 dnl
 dnl
 dnl
-dnl F@
-ifdef({USE_ZX48FFETCH},{
-_ZX48FFETCH:
-    push DE             ; 1:11      _zx48ffetch   ( addr -- ) ( F: -- r )
-    ld   DE,(0x5C65)    ; 4:20      _zx48ffetch   {STKEND}
-    call 0x33C0         ; 3:17      _zx48ffetch   {call ZX ROM move floating-point number routine HL->DE}
-    ld  (0x5C65),DE     ; 4:20      _zx48ffetch   {STKEND+5}
-    pop  HL             ; 1:10      _zx48ffetch
-    pop  BC             ; 1:10      _zx48ffetch   ret
-    pop  DE             ; 1:10      _zx48ffetch
-    push BC             ; 1:11      _zx48ffetch   ret
-    ret                 ; 1:10      _zx48ffetch
+dnl # z@
+ifdef({USE_ZFETCH},{
+_ZFETCH:                ;           _z@
+    push DE             ; 1:11      _z@   ( addr -- ) ( F: -- r )
+    ld   DE,(0x5C65)    ; 4:20      _z@   {STKEND}
+    call 0x33C0         ; 3:17      _z@   {call ZX ROM move floating-point number routine HL->DE}
+    ld  (0x5C65),DE     ; 4:20      _z@   {STKEND+5}
+    pop  HL             ; 1:10      _z@
+    pop  BC             ; 1:10      _z@   ret
+    pop  DE             ; 1:10      _z@
+    push BC             ; 1:11      _z@   ret
+    ret                 ; 1:10      _z@
 }){}dnl
 dnl
 dnl
-dnl F!
-ifdef({USE_ZX48FSTORE},{
-_ZX48FSTORE:
-    push DE             ; 1:11      _zx48fstore   ( addr -- ) ( F: r -- )
-    push HL             ; 1:11      _zx48fstore   addr
-    call 0x35bf         ; 3:17      _zx48fstore   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld  (0x5C65),HL     ; 3:16      _zx48fstore   {save STKEND}
-    pop  DE             ; 1:10      _zx48fstore   addr
-    ld   BC, 0x0005     ; 3:10      _zx48fstore
-    ldir                ; 2:21/16   _zx48fstore
-    pop  HL             ; 1:10      _zx48fstore
-    pop  BC             ; 1:10      _zx48fstore   ret
-    pop  DE             ; 1:10      _zx48fstore
-    push BC             ; 1:11      _zx48fstore   ret
-    ret                 ; 1:10      _zx48fstore
+dnl # z!
+ifdef({USE_ZSTORE},{
+_ZSTORE:                ;           _z!
+    push DE             ; 1:11      _z!   ( addr -- ) ( F: r -- )
+    push HL             ; 1:11      _z!   addr
+    call 0x35bf         ; 3:17      _z!   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+    ld  (0x5C65),HL     ; 3:16      _z!   {save STKEND}
+    pop  DE             ; 1:10      _z!   addr
+    ld   BC, 0x0005     ; 3:10      _z!
+    ldir                ; 2:21/16   _z!
+    pop  HL             ; 1:10      _z!
+    pop  BC             ; 1:10      _z!   ret
+    pop  DE             ; 1:10      _z!
+    push BC             ; 1:11      _z!   ret
+    ret                 ; 1:10      _z!
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48F_TO_S},{
-_ZX48F_TO_S:
-    pop  BC             ; 1:10      _zx48f>s   ret
-    push DE             ; 1:11      _zx48f>s
-    push BC             ; 1:11      _zx48f>s   ret
-    push HL             ; 1:11      _zx48f>s
-    call 0x36AF         ; 3:17      _zx48f>s   {call ZX ROM int}
-    ld   HL,(0x5C65)    ; 3:16      _zx48f>s   {load STKEND}
-    dec  HL             ; 1:6       _zx48f>s
-    dec  HL             ; 1:6       _zx48f>s
-    ld    D,(HL)        ; 1:7       _zx48f>s
-    dec  HL             ; 1:6       _zx48f>s
-    ld    E,(HL)        ; 1:7       _zx48f>s
-    dec  HL             ; 1:6       _zx48f>s
-    dec  HL             ; 1:6       _zx48f>s
-    ld  (0x5C65),HL     ; 3:16      _zx48f>s   {save STKEND+5}
-    ex   DE, HL         ; 1:6       _zx48f>s
-    pop  DE             ; 1:10      _zx48f>s
-    ret                 ; 1:10      _zx48f>s
+dnl # z>s
+ifdef({USE_Z_TO_S},{
+_Z_TO_S:                ;           _z>s
+    pop  BC             ; 1:10      _z>s   ret
+    push DE             ; 1:11      _z>s
+    push BC             ; 1:11      _z>s   ret
+    push HL             ; 1:11      _z>s
+    call 0x36AF         ; 3:17      _z>s   {call ZX ROM int}
+    ld   HL,(0x5C65)    ; 3:16      _z>s   {load STKEND}
+    dec  HL             ; 1:6       _z>s
+    dec  HL             ; 1:6       _z>s
+    ld    D,(HL)        ; 1:7       _z>s
+    dec  HL             ; 1:6       _z>s
+    ld    E,(HL)        ; 1:7       _z>s
+    dec  HL             ; 1:6       _z>s
+    dec  HL             ; 1:6       _z>s
+    ld  (0x5C65),HL     ; 3:16      _z>s   {save STKEND+5}
+    ex   DE, HL         ; 1:6       _z>s
+    pop  DE             ; 1:10      _z>s
+    ret                 ; 1:10      _z>s
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48F_TO_D},{define({USE_DNEGATE},{})
-_ZX48F_TO_D:
-    pop  BC             ; 1:10      _zx48f>d   ret
-    push DE             ; 1:11      _zx48f>d
-    push HL             ; 1:11      _zx48f>d
-    push BC             ; 1:11      _zx48f>d   ret
+dnl # z>d
+ifdef({USE_Z_TO_D},{define({USE_DNEGATE},{})
+_Z_TO_D:                ;           _z>d
+    pop  BC             ; 1:10      _z>d   ret
+    push DE             ; 1:11      _z>d
+    push HL             ; 1:11      _z>d
+    push BC             ; 1:11      _z>d   ret
 
-    ld   HL,(0x5C65)    ; 3:16      _zx48f>d   {load STKEND}
-    dec  HL             ; 1:6       _zx48f>d
-    ld    C,(HL)        ; 1:7       _zx48f>d
-    dec  HL             ; 1:6       _zx48f>d
-    ld    B,(HL)        ; 1:7       _zx48f>d
-    dec  HL             ; 1:6       _zx48f>d
-    ld    E,(HL)        ; 1:7       _zx48f>d
-    dec  HL             ; 1:6       _zx48f>d
-    ld    D,(HL)        ; 1:7       _zx48f>d
-    push DE             ; 1:11      _zx48f>d   sign
-    dec  HL             ; 1:6       _zx48f>d
-    ld    A, 0xA0       ; 2:7       _zx48f>d
-    sub (HL)            ; 1:7       _zx48f>d
-    ld  (0x5C65),HL     ; 3:16      _zx48f>d   {save STKEND+5}
+    ld   HL,(0x5C65)    ; 3:16      _z>d   {load STKEND}
+    dec  HL             ; 1:6       _z>d
+    ld    C,(HL)        ; 1:7       _z>d
+    dec  HL             ; 1:6       _z>d
+    ld    B,(HL)        ; 1:7       _z>d
+    dec  HL             ; 1:6       _z>d
+    ld    E,(HL)        ; 1:7       _z>d
+    dec  HL             ; 1:6       _z>d
+    ld    D,(HL)        ; 1:7       _z>d
+    push DE             ; 1:11      _z>d   sign
+    dec  HL             ; 1:6       _z>d
+    ld    A, 0xA0       ; 2:7       _z>d
+    sub (HL)            ; 1:7       _z>d
+    ld  (0x5C65),HL     ; 3:16      _z>d   {save STKEND+5}
 
-    set   7, D          ; 2:8       _zx48f>d
+    set   7, D          ; 2:8       _z>d
 if 1
-    ld    L, C          ; 1:4       _zx48f>d
-    ld    H, B          ; 1:4       _zx48f>d
-    jr    z, $+11       ; 2:7/12    _zx48f>d   -0x1p+31 == -0x80000000
+    ld    L, C          ; 1:4       _z>d
+    ld    H, B          ; 1:4       _z>d
+    jr    z, $+11       ; 2:7/12    _z>d   -0x1p+31 == -0x80000000
 
-    srl   D             ; 2:8       _zx48f>d
-    rr    E             ; 2:8       _zx48f>d
-    rr    H             ; 2:8       _zx48f>d
-    rr    L             ; 2:8       _zx48f>d
-    dec   A             ; 1:4       _zx48f>d
-    jr   nz, $-9        ; 2:7/12    _zx48f>d
+    srl   D             ; 2:8       _z>d
+    rr    E             ; 2:8       _z>d
+    rr    H             ; 2:8       _z>d
+    rr    L             ; 2:8       _z>d
+    dec   A             ; 1:4       _z>d
+    jr   nz, $-9        ; 2:7/12    _z>d
 else
-    ld    H, C          ; 1:4       _zx48f>d
-    ld    C, B          ; 1:4       _zx48f>d
-    ld    B, E          ; 1:4       _zx48f>d
-    ld    E, D          ; 1:4       _zx48f>d
-    ld    D, 0x00       ; 2:7       _zx48f>d
-    sub  0x08           ; 2:7       _zx48f>d
-    jr   nc, $-8        ; 2:7/12    _zx48f>d
+    ld    H, C          ; 1:4       _z>d
+    ld    C, B          ; 1:4       _z>d
+    ld    B, E          ; 1:4       _z>d
+    ld    E, D          ; 1:4       _z>d
+    ld    D, 0x00       ; 2:7       _z>d
+    sub  0x08           ; 2:7       _z>d
+    jr   nc, $-8        ; 2:7/12    _z>d
 
-    ld    L, C          ; 1:4       _zx48f>d
-    ld    C, A          ; 1:4       _zx48f>d
-    ld    A, H          ; 1:4       _zx48f>d
-    ld    H, B          ; 1:4       _zx48f>d
+    ld    L, C          ; 1:4       _z>d
+    ld    C, A          ; 1:4       _z>d
+    ld    A, H          ; 1:4       _z>d
+    ld    H, B          ; 1:4       _z>d
 
-    add   A, A          ; 1:4       _zx48f>d
-    adc  HL, HL         ; 2:15      _zx48f>d
-    rl    E             ; 2:8       _zx48f>d
-    rl    D             ; 2:8       _zx48f>d
-    inc   C             ; 1:4       _zx48f>d
-    jr   nz, $-8        ; 2:7/12    _zx48f>d
+    add   A, A          ; 1:4       _z>d
+    adc  HL, HL         ; 2:15      _z>d
+    rl    E             ; 2:8       _z>d
+    rl    D             ; 2:8       _z>d
+    inc   C             ; 1:4       _z>d
+    jr   nz, $-8        ; 2:7/12    _z>d
 endif
-    pop  AF             ; 1:10      _zx48f>d   sign
-    add   A, A          ; 1:4       _zx48f>d
-    ret  nc             ; 1:5/11    _zx48f>d
+    pop  AF             ; 1:10      _z>d   sign
+    add   A, A          ; 1:4       _z>d
+    ret  nc             ; 1:5/11    _z>d
 
-    jp   NEGATE_32      ; 3:10      _zx48f>d
+    jp   NEGATE_32      ; 3:10      _z>d
 
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48U_TO_F},{
-_ZX48U_TO_F:
-    push DE             ; 1:11      _zx48u>f   ( c ret . b a -- ret . c b )
-    ld    B, H          ; 1:4       _zx48u>f
-    ld    C, L          ; 1:4       _zx48u>f
-    call 0x2D2B         ; 3:17      _zx48u>f   {call ZX ROM stack BC routine}
-    pop  HL             ; 1:10      _zx48u>f
-    pop  BC             ; 1:10      _zx48u>f   ret
-    pop  DE             ; 1:10      _zx48u>f
-    push BC             ; 1:11      _zx48u>f   ret
-    ret                 ; 1:10      _zx48u>f
+dnl # u>z
+ifdef({USE_U_TO_Z},{
+_U_TO_Z:                ;           _u>z
+    push DE             ; 1:11      _u>z   ( c ret . b a -- ret . c b )
+    ld    B, H          ; 1:4       _u>z
+    ld    C, L          ; 1:4       _u>z
+    call 0x2D2B         ; 3:17      _u>z   {call ZX ROM stack BC routine}
+    pop  HL             ; 1:10      _u>z
+    pop  BC             ; 1:10      _u>z   ret
+    pop  DE             ; 1:10      _u>z
+    push BC             ; 1:11      _u>z   ret
+    ret                 ; 1:10      _u>z
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48BC_TO_F},{
-_ZX48BC_TO_F:
-    push DE             ; 1:11      _zx48bc_to_f
-    push HL             ; 1:11      _zx48bc_to_f
-    call 0x2D2B         ; 3:17      _zx48bc_to_f   {call ZX ROM stack BC routine}
-    pop  HL             ; 1:10      _zx48bc_to_f
-    pop  DE             ; 1:10      _zx48bc_to_f
-    ret                 ; 1:10      _zx48bc_to_f
+ifdef({USE_BC_TO_Z},{
+_BC_TO_Z:               ;           _bc>z
+    push DE             ; 1:11      _bc>z
+    push HL             ; 1:11      _bc>z
+    call 0x2D2B         ; 3:17      _bc>z   {call ZX ROM stack BC routine}
+    pop  HL             ; 1:10      _bc>z
+    pop  DE             ; 1:10      _bc>z
+    ret                 ; 1:10      _bc>z
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48S_TO_F},{define({USE_ZX48BBC_TO_F},{})
-_ZX48S_TO_F:            ;           _zx48s>f   ( num ret . de hl -- ret . num de )
-    ld    B, H          ; 1:4       _zx48s>f
-    ld    C, L          ; 1:4       _zx48s>f
-    pop  HL             ; 1:10      _zx48s>f   ( num . de ret )
-    ex  (SP),HL         ; 1:19      _zx48s>f   ( ret . de num )
-    ex   DE, HL         ; 1:4       _zx48s>f   ( ret . num de )
-    ; fall to _zx48bbc_to_f
+dnl # s>z
+ifdef({USE_S_TO_Z},{define({USE_SIGN_BC_TO_Z},{})
+_S_TO_Z:                ;           _s>z   ( num ret . de hl -- ret . num de )
+    ld    B, H          ; 1:4       _s>z
+    ld    C, L          ; 1:4       _s>z
+    pop  HL             ; 1:10      _s>z   ( num . de ret )
+    ex  (SP),HL         ; 1:19      _s>z   ( ret . de num )
+    ex   DE, HL         ; 1:4       _s>z   ( ret . num de )
+    ; fall to _sign_bc_to_z
 }){}dnl
 dnl
-ifdef({USE_ZX48BBC_TO_F},{define({USE_ZX48CFBC_TO_F},{})
-_ZX48BBC_TO_F:          ;[2:8]      _zx48bbc_to_f
-    ld    A, B          ; 1:4       _zx48bbc_to_f
-    add   A, A          ; 1:4       _zx48bbc_to_f
-    ; fall to _zx48cfbc_to_f
+ifdef({USE_SIGN_BC_TO_Z},{define({USE_CF_BC_TO_Z},{})
+_SIGN_BC_TO_Z:          ;[2:8]      _sign_bc>z
+    ld    A, B          ; 1:4       _sign_bc>z
+    add   A, A          ; 1:4       _sign_bc>z
+    ; fall to _cf_bc_to_z
 }){}dnl
 dnl
-ifdef({USE_ZX48CFBC_TO_F},{
+ifdef({USE_CF_BC_TO_Z},{
 if 1
-_ZX48CFBC_TO_F:        ;[14:200]    _zx48cfbc_to_f
-    sbc   A, A          ; 1:4       _zx48cfbc_to_f   0x00 or 0xff
-    push HL             ; 1:11      _zx48cfbc_to_f
-    push DE             ; 1:11      _zx48cfbc_to_f
-    ld    E, A          ; 1:4       _zx48cfbc_to_f
-    ld    D, C          ; 1:4       _zx48cfbc_to_f
-    ld    C, B          ; 1:4       _zx48cfbc_to_f
-    xor   A             ; 1:4       _zx48cfbc_to_f
-    ld    B, A          ; 1:4       _zx48cfbc_to_f
-    call 0x2ABB         ; 3:124     _zx48cfbc_to_f   new float = a,e,d,c,b = 0,0-sign,lo,hi,0
-    pop  DE             ; 1:10      _zx48cfbc_to_f
+_CF_BC_TO_Z:           ;[14:200]    _cf_bc>z
+    sbc   A, A          ; 1:4       _cf_bc>z   0x00 or 0xff
+    push HL             ; 1:11      _cf_bc>z
+    push DE             ; 1:11      _cf_bc>z
+    ld    E, A          ; 1:4       _cf_bc>z
+    ld    D, C          ; 1:4       _cf_bc>z
+    ld    C, B          ; 1:4       _cf_bc>z
+    xor   A             ; 1:4       _cf_bc>z
+    ld    B, A          ; 1:4       _cf_bc>z
+    call 0x2ABB         ; 3:124     _cf_bc>z   new float = a,e,d,c,b = 0,0-sign,lo,hi,0
+    pop  DE             ; 1:10      _cf_bc>z
 else
-_ZX48CFBC_TO_F:        ;[22:138]    _zx48cfbc_to_f
-    sbc   A, A          ; 1:4       _zx48cfbc_to_f   0x00 or 0xff
-    push HL             ; 1:11      _zx48cfbc_to_f
-    ld   HL,(0x5C65)    ; 3:16      _zx48cfbc_to_f   {load STKEND}
-    ld  (HL),0x00       ; 2:10      _zx48cfbc_to_f
-    inc  HL             ; 1:6       _zx48cfbc_to_f
-    ld  (HL), A         ; 1:7       _zx48cfbc_to_f
-    inc  HL             ; 1:6       _zx48cfbc_to_f
-    ld  (HL), C         ; 1:7       _zx48cfbc_to_f
-    inc  HL             ; 1:6       _zx48cfbc_to_f
-    ld  (HL), B         ; 1:7       _zx48cfbc_to_f
-    inc  HL             ; 1:6       _zx48cfbc_to_f
-    ld  (HL),0x00       ; 2:10      _zx48cfbc_to_f
-    inc  HL             ; 1:6       _zx48cfbc_to_f
-    ld  (0x5C65),HL     ; 3:16      _zx48cfbc_to_f   {save STKEND+5}
+_CF_BC_TO_Z:           ;[22:138]    _cf_bc>z
+    sbc   A, A          ; 1:4       _cf_bc>z   0x00 or 0xff
+    push HL             ; 1:11      _cf_bc>z
+    ld   HL,(0x5C65)    ; 3:16      _cf_bc>z   {load STKEND}
+    ld  (HL),0x00       ; 2:10      _cf_bc>z
+    inc  HL             ; 1:6       _cf_bc>z
+    ld  (HL), A         ; 1:7       _cf_bc>z
+    inc  HL             ; 1:6       _cf_bc>z
+    ld  (HL), C         ; 1:7       _cf_bc>z
+    inc  HL             ; 1:6       _cf_bc>z
+    ld  (HL), B         ; 1:7       _cf_bc>z
+    inc  HL             ; 1:6       _cf_bc>z
+    ld  (HL),0x00       ; 2:10      _cf_bc>z
+    inc  HL             ; 1:6       _cf_bc>z
+    ld  (0x5C65),HL     ; 3:16      _cf_bc>z   {save STKEND+5}
 endif
-    pop  HL             ; 1:10      _zx48cfbc_to_f
-    ret                 ; 1:10      _zx48cfbc_to_f
+    pop  HL             ; 1:10      _cf_bc>z
+    ret                 ; 1:10      _cf_bc>z
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48D_TO_F},{define({USE_DNEGATE},{})
-_ZX48D_TO_F:            ;           _zx48d>f   ( num2 num1 ret . de hl -- ret . num2 num1 )
-    ld    A, D          ; 1:4       _zx48d>f
-    or    E             ; 1:4       _zx48d>f
-    or    H             ; 1:4       _zx48d>f
-    or    L             ; 1:4       _zx48d>f
-    jr    z, _ZX48Z_TO_F; 2:7/12    _zx48d>f   zero?
-    ld    A, 0x7F       ; 2:7       _zx48d>f
-    or    D             ; 1:4       _zx48d>f
-    push AF             ; 1:11      _zx48d>f   save sign 0x7f or 0xff
-    call  m, NEGATE_32  ; 3:17      _zx48d>f
-    ld    B, 0xA0       ; 2:7       _zx48d>f
-    jp    m, $+12       ; 3:10      _zx48d>f   0x80000000
+ifdef({USE_D_TO_Z},{define({USE_DNEGATE},{})
+_D_TO_Z:                ;           _d>z   ( num2 num1 ret . de hl -- ret . num2 num1 )
+    ld    A, D          ; 1:4       _d>z
+    or    E             ; 1:4       _d>z
+    or    H             ; 1:4       _d>z
+    or    L             ; 1:4       _d>z
+    jr    z, _ZERO_TO_Z ; 2:7/12    _d>z   zero?
+    ld    A, 0x7F       ; 2:7       _d>z
+    or    D             ; 1:4       _d>z
+    push AF             ; 1:11      _d>z   save sign 0x7f or 0xff
+    call  m, NEGATE_32  ; 3:17      _d>z
+    ld    B, 0xA0       ; 2:7       _d>z
+    jp    m, $+12       ; 3:10      _d>z   0x80000000
 
-    dec   B             ; 1:4       _zx48d>f   exp--
-    add  HL, HL         ; 1:11      _zx48d>f
-    rl    E             ; 2:8       _zx48d>f
-    rl    D             ; 2:8       _zx48d>f
-    jp    p, $-6        ; 3:10      _zx48d>f   wait for sign
+    dec   B             ; 1:4       _d>z   exp--
+    add  HL, HL         ; 1:11      _d>z
+    rl    E             ; 2:8       _d>z
+    rl    D             ; 2:8       _d>z
+    jp    p, $-6        ; 3:10      _d>z   wait for sign
 
-    pop  AF             ; 1:11      _zx48d>f   load sign 0x7f or 0xff
-    and   D             ; 1:4       _zx48d>f
-    ld    D, E          ; 1:4       _zx48d>f
-    ld    E, A          ; 1:4       _zx48d>f   swap D and E
-    ld    A, B          ; 1:4       _zx48d>f   exp
-_ZX48Z_TO_F:            ;           _zx48d>f   zero entry
-    ld    B, L          ; 1:4       _zx48d>f
-    ld    C, H          ; 1:4       _zx48d>f
-    call 0x2ABB         ; 3:124     _zx48d>f   new float = a,e,d,c,b
-    pop  BC             ; 1:10      _zx48d>f   ret
-    pop  HL             ; 1:10      _zx48d>f
-    pop  DE             ; 1:10      _zx48d>f
-    push BC             ; 1:10      _zx48d>f   ret
-    ret                 ; 1:10      _zx48d>f
+    pop  AF             ; 1:11      _d>z   load sign 0x7f or 0xff
+    and   D             ; 1:4       _d>z
+    ld    D, E          ; 1:4       _d>z
+    ld    E, A          ; 1:4       _d>z   swap D and E
+    ld    A, B          ; 1:4       _d>z   exp
+_ZERO_TO_Z:             ;           _d>z   zero entry
+    ld    B, L          ; 1:4       _d>z
+    ld    C, H          ; 1:4       _d>z
+    call 0x2ABB         ; 3:124     _d>z   new float = a,e,d,c,b
+    pop  BC             ; 1:10      _d>z   ret
+    pop  HL             ; 1:10      _d>z
+    pop  DE             ; 1:10      _d>z
+    push BC             ; 1:10      _d>z   ret
+    ret                 ; 1:10      _d>z
 }){}dnl
 dnl
 dnl
-dnl
-ifdef({USE_ZX48FDOT},{
-_ZX48FDOT:
-    push DE             ; 1:11      _zx48fdot
-    push HL             ; 1:11      _zx48fdot
-    call 0x35bf         ; 3:17      _zx48fdot   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    push HL             ; 1:11      _zx48fdot
-    call 0x2de3         ; 3:17      _zx48fdot   {call ZX ROM print a floating-point number routine}
-    pop  HL             ; 1:10      _zx48fdot
-    ld  (0x5C65),HL     ; 3:16      _zx48fdot   {save STKEND}
-    ld    A, ' '        ; 2:7       _zx48fdot   {putchar Pollutes: AF, AF', DE', BC'}
-    rst  0x10           ; 1:11      _zx48fdot   {putchar with ZX 48K ROM in, this will print char in A}
-    pop  HL             ; 1:10      _zx48fdot
-    pop  DE             ; 1:10      _zx48fdot
-    ret                 ; 1:10      _zx48fdot
+dnl # z.
+ifdef({USE_ZDOT},{
+_ZDOT:                  ;           _z.
+    push DE             ; 1:11      _z.
+    push HL             ; 1:11      _z.
+    call 0x35bf         ; 3:17      _z.   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+    push HL             ; 1:11      _z.
+    call 0x2de3         ; 3:17      _z.   {call ZX ROM print a floating-point number routine}
+    pop  HL             ; 1:10      _z.
+    ld  (0x5C65),HL     ; 3:16      _z.   {save STKEND}
+    ld    A, ' '        ; 2:7       _z.   {putchar Pollutes: AF, AF', DE', BC'}
+    rst  0x10           ; 1:11      _z.   {putchar with ZX 48K ROM in, this will print char in A}
+    pop  HL             ; 1:10      _z.
+    pop  DE             ; 1:10      _z.
+    ret                 ; 1:10      _z.
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FHEXDOT},{
-_ZX48FHEX_A:
-    push AF             ; 1:11      _zx48fhexdot
-    rra                 ; 1:4       _zx48fhexdot
-    rra                 ; 1:4       _zx48fhexdot
-    rra                 ; 1:4       _zx48fhexdot
-    rra                 ; 1:4       _zx48fhexdot
-    call _ZX48FHEX_LO   ; 3:17      _zx48fhexdot
-    pop  AF             ; 1:10      _zx48fhexdot
+ifdef({USE_ZHEXDOT},{
+_ZHEX_A:                ;           _zhex.
+    push AF             ; 1:11      _zhex.
+    rra                 ; 1:4       _zhex.
+    rra                 ; 1:4       _zhex.
+    rra                 ; 1:4       _zhex.
+    rra                 ; 1:4       _zhex.
+    call _ZHEX_LO       ; 3:17      _zhex.
+    pop  AF             ; 1:10      _zhex.
     ; fall
 
 ;  In: A = number
 ; Out: (A & $0F) => '0'..'9','A'..'F'
-_ZX48FHEX_LO:
-    or   0xF0           ; 2:7       _zx48fhexdot   reset H flag
-    daa                 ; 1:4       _zx48fhexdot   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
-    add   A, 0xA0       ; 2:7       _zx48fhexdot   $F0..$F9, $100..$105
-    adc   A, 0x40       ; 2:7       _zx48fhexdot   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
-    rst  0x10           ; 1:11      _zx48fhexdot   {putchar with ZX 48K ROM in, this will print char in A}
-    ret                 ; 1:10      _zx48fhexdot
+_ZHEX_LO:               ;           _zhex.
+    or   0xF0           ; 2:7       _zhex.   reset H flag
+    daa                 ; 1:4       _zhex.   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
+    add   A, 0xA0       ; 2:7       _zhex.   $F0..$F9, $100..$105
+    adc   A, 0x40       ; 2:7       _zhex.   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
+    rst  0x10           ; 1:11      _zhex.   {putchar with ZX 48K ROM in, this will print char in A}
+    ret                 ; 1:10      _zhex.
 
-_ZX48FHEXDOT:
-    push HL             ; 1:11      _zx48fhexdot
-    ld   HL,(0x5C65)    ; 3:16      _zx48fhexdot   {HL= stkend}
-    ld   BC, 0xfffb     ; 3:10      _zx48fhexdot
-    add  HL, BC         ; 1:11      _zx48fhexdot
-    ld    B, 0x05       ; 2:7       _zx48fhexdot
-    jr   $+5            ; 2:12      _zx48fhexdot
-    ld    A, ','        ; 2:7       _zx48fhexdot
-    rst  0x10           ; 1:11      _zx48fhexdot   {putchar with ZX 48K ROM in, this will print char in A}
-    ld    A,(HL)        ; 1:7       _zx48fhexdot
-    inc  HL             ; 1:6       _zx48fhexdot
-    call _ZX48FHEX_A    ; 3:17      _zx48fhexdot
-    djnz $-8            ; 2:8/13    _zx48fhexdot
-    ld    A, ' '        ; 2:7       _zx48fhexdot
-    rst  0x10           ; 1:11      _zx48fhexdot   {putchar with ZX 48K ROM in, this will print char in A}
-    pop  HL             ; 1:10      _zx48fhexdot
-    ret                 ; 1:10      _zx48fhexdot
+_ZHEXDOT:               ;           _zhex.
+    push HL             ; 1:11      _zhex.
+    ld   HL,(0x5C65)    ; 3:16      _zhex.   {HL= stkend}
+    ld   BC, 0xfffb     ; 3:10      _zhex.
+    add  HL, BC         ; 1:11      _zhex.
+    ld    B, 0x05       ; 2:7       _zhex.
+    jr   $+5            ; 2:12      _zhex.
+    ld    A, ','        ; 2:7       _zhex.
+    rst  0x10           ; 1:11      _zhex.   {putchar with ZX 48K ROM in, this will print char in A}
+    ld    A,(HL)        ; 1:7       _zhex.
+    inc  HL             ; 1:6       _zhex.
+    call _ZHEX_A        ; 3:17      _zhex.
+    djnz $-8            ; 2:8/13    _zhex.
+    ld    A, ' '        ; 2:7       _zhex.
+    rst  0x10           ; 1:11      _zhex.   {putchar with ZX 48K ROM in, this will print char in A}
+    pop  HL             ; 1:10      _zhex.
+    ret                 ; 1:10      _zhex.
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FSWAP},{
-_ZX48FSWAP:
-    push DE             ; 1:11      _zx48fswap
-    push HL             ; 1:11      _zx48fswap
+dnl # zswap
+ifdef({USE_ZSWAP},{
+_ZSWAP:                 ;           _zswap
+    push DE             ; 1:11      _zswap
+    push HL             ; 1:11      _zswap
 if 1
 if 1
     rst 0x28            ; 1:11      Use the calculator
     db  0x01            ; 1:        calc-exchange
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
 else
-    call 0x35bf         ; 3:17      _zx48fswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    call 0x35c2         ; 3:17      _zx48fswap   {call ZX ROM            DE= HL    , HL = HL-5}
-    call 0x343C         ; 3:17      _zx48fswap   {call ZX ROM exchange rutine}
+    call 0x35bf         ; 3:17      _zswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+    call 0x35c2         ; 3:17      _zswap   {call ZX ROM            DE= HL    , HL = HL-5}
+    call 0x343C         ; 3:17      _zswap   {call ZX ROM exchange rutine}
 endif
 else
-    call 0x35bf         ; 3:17      _zx48fswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld    B,0x05        ; 2:7       _zx48fswap
-    dec  DE             ; 1:6       _zx48fswap
-    dec  HL             ; 1:6       _zx48fswap
-    ld    A,(DE)        ; 1:7       _zx48fswap
-    ld    C,(HL)        ; 1:7       _zx48fswap
-    ld  (HL),A          ; 1:7       _zx48fswap
-    ld    A, C          ; 1:4       _zx48fswap
-    ld  (DE),A          ; 1:7       _zx48fswap
-    djnz $-7            ; 2:8/13    _zx48fswap
+    call 0x35bf         ; 3:17      _zswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+    ld    B,0x05        ; 2:7       _zswap
+    dec  DE             ; 1:6       _zswap
+    dec  HL             ; 1:6       _zswap
+    ld    A,(DE)        ; 1:7       _zswap
+    ld    C,(HL)        ; 1:7       _zswap
+    ld  (HL),A          ; 1:7       _zswap
+    ld    A, C          ; 1:4       _zswap
+    ld  (DE),A          ; 1:7       _zswap
+    djnz $-7            ; 2:8/13    _zswap
 endif
-    pop  HL             ; 1:10      _zx48fswap
-    pop  DE             ; 1:10      _zx48fswap
-    ret                 ; 1:10      _zx48fswap
+    pop  HL             ; 1:10      _zswap
+    pop  DE             ; 1:10      _zswap
+    ret                 ; 1:10      _zswap
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FDROP},{
-_ZX48FDROP:
-    push DE             ; 1:11      _zx48fdrop
-    push HL             ; 1:11      _zx48fdrop
+dnl # zdrop
+ifdef({USE_ZDROP},{
+_ZDROP:                 ;           _zdrop
+    push DE             ; 1:11      _zdrop
+    push HL             ; 1:11      _zdrop
     rst 0x28            ; 1:11      Use the calculator
     db  0x02            ; 1:        calc-delete
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fdrop
-    pop  DE             ; 1:10      _zx48fdrop
-    ret                 ; 1:10      _zx48fdrop
+    pop  HL             ; 1:10      _zdrop
+    pop  DE             ; 1:10      _zdrop
+    ret                 ; 1:10      _zdrop
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FSUB},{
-_ZX48FSUB:
-    push DE             ; 1:11      _zx48fsub
-    push HL             ; 1:11      _zx48fsub
+dnl # z-
+ifdef({USE_ZSUB},{
+_ZSUB:                  ;           _z-
+    push DE             ; 1:11      _z-
+    push HL             ; 1:11      _z-
     rst 0x28            ; 1:11      Use the calculator
     db  0x03            ; 1:        calc-sub
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fsub
-    pop  DE             ; 1:10      _zx48fsub
-    ret                 ; 1:10      _zx48fsub
+    pop  HL             ; 1:10      _z-
+    pop  DE             ; 1:10      _z-
+    ret                 ; 1:10      _z-
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FMUL},{
-_ZX48FMUL:
-    push DE             ; 1:11      _zx48fmul
-    push HL             ; 1:11      _zx48fmul
+dnl # z*
+ifdef({USE_ZMUL},{
+_ZMUL:                  ;           _z*
+    push DE             ; 1:11      _z*
+    push HL             ; 1:11      _z*
 if 1
     rst 0x28            ; 1:11      Use the calculator
     db  0x04            ; 1:        calc-mul
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC', DE'(=DE)}
 else
-    call 0x35bf         ; 3:17      _zx48fmul   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld  (0x5C65),HL     ; 3:16      _zx48fmul   {save STKEND}
-    call 0x35c2         ; 3:17      _zx48fmul   {call ZX ROM            DE= HL    , HL = HL-5}
-    call 0x30ca         ; 3:17      _zx48fmul   {call ZX ROM fmul, adr_HL = adr_DE * adr_HL}
+    call 0x35bf         ; 3:17      _z*   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+    ld  (0x5C65),HL     ; 3:16      _z*   {save STKEND}
+    call 0x35c2         ; 3:17      _z*   {call ZX ROM            DE= HL    , HL = HL-5}
+    call 0x30ca         ; 3:17      _z*   {call ZX ROM fmul, adr_HL = adr_DE * adr_HL}
 endif
-    pop  HL             ; 1:10      _zx48fmul
-    pop  DE             ; 1:10      _zx48fmul
-    ret                 ; 1:10      _zx48fmul
+    pop  HL             ; 1:10      _z*
+    pop  DE             ; 1:10      _z*
+    ret                 ; 1:10      _z*
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FDIV},{
-_ZX48FDIV:
-    push DE             ; 1:11      _zx48fdiv
-    push HL             ; 1:11      _zx48fdiv
+dnl # z/
+ifdef({USE_ZDIV},{
+_ZDIV:                  ;           _z/
+    push DE             ; 1:11      _z/
+    push HL             ; 1:11      _z/
 if 1
     rst 0x28            ; 1:11      Use the calculator
     db  0x05            ; 1:        calc-div
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC', DE'(=DE)}
 else
-    call 0x35bf         ; 3:17      _zx48fdiv   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld  (0x5C65),HL     ; 3:16      _zx48fdiv   {save STKEND}
-    call 0x35c2         ; 3:17      _zx48fdiv   {call ZX ROM            DE= HL    , HL = HL-5}
-    call 0x31af         ; 3:17      _zx48fdiv   {call ZX ROM fdiv}
+    call 0x35bf         ; 3:17      _z/   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+    ld  (0x5C65),HL     ; 3:16      _z/   {save STKEND}
+    call 0x35c2         ; 3:17      _z/   {call ZX ROM            DE= HL    , HL = HL-5}
+    call 0x31af         ; 3:17      _z/   {call ZX ROM fdiv}
 endif
-    pop  HL             ; 1:10      _zx48fdiv
-    pop  DE             ; 1:10      _zx48fdiv
-    ret                 ; 1:10      _zx48fdiv
+    pop  HL             ; 1:10      _z/
+    pop  DE             ; 1:10      _z/
+    ret                 ; 1:10      _z/
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FMULMUL},{
-_ZX48FMULMUL:
-    push DE             ; 1:11      _zx48fmulmul
-    push HL             ; 1:11      _zx48fmulmul
+dnl # z**
+ifdef({USE_ZMULMUL},{
+_ZMULMUL:               ;           _z**
+    push DE             ; 1:11      _z**
+    push HL             ; 1:11      _z**
     rst 0x28            ; 1:11      Use the calculator
     db  0x06            ; 1:        calc-to_power
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fmulmul
-    pop  DE             ; 1:10      _zx48fmulmul
-    ret                 ; 1:10      _zx48fmulmul
+    pop  HL             ; 1:10      _z**
+    pop  DE             ; 1:10      _z**
+    ret                 ; 1:10      _z**
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FCOMPARE},{
+dnl # zcompare
+ifdef({USE_ZCOMPARE},{
 ; Input: B
 ; compare 0x09: <= (numbers)
 ; compare 0x0A: >= (numbers)
@@ -420,9 +431,9 @@ ifdef({USE_ZX48FCOMPARE},{
 ; compare 0x14: > (strings)
 ; compare 0x15: < (strings)
 ; compare 0x16: = (strings)
-_ZX48FCOMPARE:
-    push DE             ; 1:11      _zx48fcompare
-    push HL             ; 1:11      _zx48fcompare
+_ZCOMPARE:
+    push DE             ; 1:11      _zcompare
+    push HL             ; 1:11      _zcompare
 if 1
     rst 0x28            ; 1:11      Use the calculator
     db  0x0D            ; 1:        calc-less   Important is what the register B contains
@@ -432,312 +443,329 @@ else
     db  0x3B            ; 1:        fp_calc_2: (perform the actual operation)
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
 endif
-    pop  HL             ; 1:10      _zx48fcompare
-    pop  DE             ; 1:10      _zx48fcompare
-    ret                 ; 1:10      _zx48fcompare
+    pop  HL             ; 1:10      _zcompare
+    pop  DE             ; 1:10      _zcompare
+    ret                 ; 1:10      _zcompare
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48F0EQ},{
-_ZX48F0EQ:
-    ex   DE, HL         ; 1:4       _zx48f0=   ( ret . de hl -- de ret . hl flag )
-    ex  (SP),HL         ; 1:19      _zx48f0=
-    push HL             ; 1:11      _zx48f0=   ret
-    ld   HL,(0x5C65)    ; 3:16      _zx48f0=   {load STKEND}
-    ld    B, 0x05       ; 2:7       _zx48f0=
-    xor   A             ; 1:4       _zx48f0=
-    dec  HL             ; 1:6       _zx48f0=
-    or  (HL)            ; 1:7       _zx48f0=
-    djnz $-2            ; 2:8/13    _zx48f0=
-    ld  (0x5C65), HL    ; 3:16      _zx48f0=   {save STKEND-5}
-    sub  0x01           ; 2:7       _zx48f0=
-    sbc  HL, HL         ; 2:15      _zx48f0=
-    ret                 ; 1:10      _zx48f0=
+dnl # z0=
+ifdef({USE_Z0EQ},{
+_Z0EQ:                  ;           _z0=
+    ex   DE, HL         ; 1:4       _z0=   ( ret . de hl -- de ret . hl flag )
+    ex  (SP),HL         ; 1:19      _z0=
+    push HL             ; 1:11      _z0=   ret
+    ld   HL,(0x5C65)    ; 3:16      _z0=   {load STKEND}
+    ld    B, 0x05       ; 2:7       _z0=
+    xor   A             ; 1:4       _z0=
+    dec  HL             ; 1:6       _z0=
+    or  (HL)            ; 1:7       _z0=
+    djnz $-2            ; 2:8/13    _z0=
+    ld  (0x5C65), HL    ; 3:16      _z0=   {save STKEND-5}
+    sub  0x01           ; 2:7       _z0=
+    sbc  HL, HL         ; 2:15      _z0=
+    ret                 ; 1:10      _z0=
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48F0LT},{
-_ZX48F0LT:
-    ex   DE, HL         ; 1:4       _zx48f0<   ( ret . de hl -- de ret . hl flag )
-    ex  (SP),HL         ; 1:19      _zx48f0<
-    push HL             ; 1:11      _zx48f0<   ret
-    ld   HL,(0x5C65)    ; 3:16      _zx48f0<   {load STKEND}
-    ld    B, 0x05       ; 2:7       _zx48f0<
-    ld    A,(HL)        ; 1:7       _zx48f0<
-    dec  HL             ; 1:6       _zx48f0<
-    djnz $-2            ; 2:8/13    _zx48f0<
-    ld  (0x5C65), HL    ; 3:16      _zx48f0<   {save STKEND-5}
-    add   A, A          ; 2:7       _zx48f0<
-    sbc  HL, HL         ; 2:15      _zx48f0<
-    ret                 ; 1:10      _zx48f0<
+dnl # z0<
+ifdef({USE_Z0LT},{
+_Z0LT:                  ;           _z0<
+    ex   DE, HL         ; 1:4       _z0<   ( ret . de hl -- de ret . hl flag )
+    ex  (SP),HL         ; 1:19      _z0<
+    push HL             ; 1:11      _z0<   ret
+    ld   HL,(0x5C65)    ; 3:16      _z0<   {load STKEND}
+    ld    B, 0x05       ; 2:7       _z0<
+    ld    A,(HL)        ; 1:7       _z0<
+    dec  HL             ; 1:6       _z0<
+    djnz $-2            ; 2:8/13    _z0<
+    ld  (0x5C65), HL    ; 3:16      _z0<   {save STKEND-5}
+    add   A, A          ; 2:7       _z0<
+    sbc  HL, HL         ; 2:15      _z0<
+    ret                 ; 1:10      _z0<
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FADD},{
-_ZX48FADD:
-    push DE             ; 1:11      _zx48fadd
-    push HL             ; 1:11      _zx48fadd
+dnl # z+
+ifdef({USE_ZADD},{
+_ZADD:                  ;           _z+
+    push DE             ; 1:11      _z+
+    push HL             ; 1:11      _z+
     rst 0x28            ; 1:11      Use the calculator
     db  0x0F            ; 1:        calc-add
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fadd
-    pop  DE             ; 1:10      _zx48fadd
-    ret                 ; 1:10      _zx48fadd
+    pop  HL             ; 1:10      _z+
+    pop  DE             ; 1:10      _z+
+    ret                 ; 1:10      _z+
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FSIN},{
-_ZX48FSIN:
-    push DE             ; 1:11      _zx48fsin
-    push HL             ; 1:11      _zx48fsin
+dnl # zsin
+ifdef({USE_ZSIN},{
+_ZSIN:                  ;           _zsin
+    push DE             ; 1:11      _zsin
+    push HL             ; 1:11      _zsin
     rst 0x28            ; 1:11      Use the calculator
     db  0x1F            ; 1:        calc-sin
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fsin
-    pop  DE             ; 1:10      _zx48fsin
-    ret                 ; 1:10      _zx48fsin
+    pop  HL             ; 1:10      _zsin
+    pop  DE             ; 1:10      _zsin
+    ret                 ; 1:10      _zsin
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FCOS},{
-_ZX48FCOS:
-    push DE             ; 1:11      _zx48fcos
-    push HL             ; 1:11      _zx48fcos
+dnl # zcos
+ifdef({USE_ZCOS},{
+_ZCOS:                  ;           _zcos
+    push DE             ; 1:11      _zcos
+    push HL             ; 1:11      _zcos
     rst 0x28            ; 1:11      Use the calculator
     db  0x20            ; 1:        calc-cos
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fcos
-    pop  DE             ; 1:10      _zx48fcos
-    ret                 ; 1:10      _zx48fcos
+    pop  HL             ; 1:10      _zcos
+    pop  DE             ; 1:10      _zcos
+    ret                 ; 1:10      _zcos
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FTAN},{
-_ZX48FTAN:
-    push DE             ; 1:11      _zx48ftan
-    push HL             ; 1:11      _zx48ftan
+dnl # ztan
+ifdef({USE_ZTAN},{
+_ZTAN:                  ;           _ztan
+    push DE             ; 1:11      _ztan
+    push HL             ; 1:11      _ztan
     rst 0x28            ; 1:11      Use the calculator
     db  0x21            ; 1:        calc-tan
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48ftan
-    pop  DE             ; 1:10      _zx48ftan
-    ret                 ; 1:10      _zx48ftan
+    pop  HL             ; 1:10      _ztan
+    pop  DE             ; 1:10      _ztan
+    ret                 ; 1:10      _ztan
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FASIN},{
-_ZX48FASIN:
-    push DE             ; 1:11      _zx48fasin
-    push HL             ; 1:11      _zx48fasin
+dnl # zasin
+ifdef({USE_ZASIN},{
+_ZASIN:                 ;           _zasin
+    push DE             ; 1:11      _zasin
+    push HL             ; 1:11      _zasin
     rst 0x28            ; 1:11      Use the calculator
     db  0x22            ; 1:        calc-arcsin
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fasin
-    pop  DE             ; 1:10      _zx48fasin
-    ret                 ; 1:10      _zx48fasin
+    pop  HL             ; 1:10      _zasin
+    pop  DE             ; 1:10      _zasin
+    ret                 ; 1:10      _zasin
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FACOS},{
-_ZX48FACOS:
-    push DE             ; 1:11      _zx48facos
-    push HL             ; 1:11      _zx48facos
+dnl # zacos
+ifdef({USE_ZACOS},{
+_ZACOS:                 ;           _zacos
+    push DE             ; 1:11      _zacos
+    push HL             ; 1:11      _zacos
     rst 0x28            ; 1:11      Use the calculator
     db  0x23            ; 1:        calc-arccos
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48facos
-    pop  DE             ; 1:10      _zx48facos
-    ret                 ; 1:10      _zx48facos
+    pop  HL             ; 1:10      _zacos
+    pop  DE             ; 1:10      _zacos
+    ret                 ; 1:10      _zacos
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FATAN},{
-_ZX48FATAN:
-    push DE             ; 1:11      _zx48fatan
-    push HL             ; 1:11      _zx48fatan
+dnl # zatan
+ifdef({USE_ZATAN},{
+_ZATAN:                 ;           _zatan
+    push DE             ; 1:11      _zatan
+    push HL             ; 1:11      _zatan
     rst 0x28            ; 1:11      Use the calculator
     db  0x24            ; 1:        calc-arctan
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fatan
-    pop  DE             ; 1:10      _zx48fatan
-    ret                 ; 1:10      _zx48fatan
+    pop  HL             ; 1:10      _zatan
+    pop  DE             ; 1:10      _zatan
+    ret                 ; 1:10      _zatan
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FLN},{
-_ZX48FLN:
-    push DE             ; 1:11      _zx48fln
-    push HL             ; 1:11      _zx48fln
+dnl # zln
+ifdef({USE_ZLN},{
+_ZLN:                   ;           _zln
+    push DE             ; 1:11      _zln
+    push HL             ; 1:11      _zln
     rst 0x28            ; 1:11      Use the calculator
     db  0x25            ; 1:        calc-ln
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fln
-    pop  DE             ; 1:10      _zx48fln
-    ret                 ; 1:10      _zx48fln
+    pop  HL             ; 1:10      _zln
+    pop  DE             ; 1:10      _zln
+    ret                 ; 1:10      _zln
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FEXP},{
-_ZX48FEXP:
-    push DE             ; 1:11      _zx48fexp
-    push HL             ; 1:11      _zx48fexp
+dnl # zexp
+ifdef({USE_ZEXP},{
+_ZEXP:                  ;           _zexp
+    push DE             ; 1:11      _zexp
+    push HL             ; 1:11      _zexp
     rst 0x28            ; 1:11      Use the calculator
     db  0x26            ; 1:        calc-exp
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fexp
-    pop  DE             ; 1:10      _zx48fexp
-    ret                 ; 1:10      _zx48fexp
+    pop  HL             ; 1:10      _zexp
+    pop  DE             ; 1:10      _zexp
+    ret                 ; 1:10      _zexp
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FSQRT},{
-_ZX48FSQRT:
-    push DE             ; 1:11      _zx48fsqrt
-    push HL             ; 1:11      _zx48fsqrt
+dnl # zsqrt
+ifdef({USE_ZSQRT},{
+_ZSQRT:                 ;           _zsqrt
+    push DE             ; 1:11      _zsqrt
+    push HL             ; 1:11      _zsqrt
     rst 0x28            ; 1:11      Use the calculator
     db  0x28            ; 1:        calc-sqrt
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fsqrt
-    pop  DE             ; 1:10      _zx48fsqrt
-    ret                 ; 1:10      _zx48fsqrt
+    pop  HL             ; 1:10      _zsqrt
+    pop  DE             ; 1:10      _zsqrt
+    ret                 ; 1:10      _zsqrt
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FABS},{
-_ZX48FABS:
-    push DE             ; 1:11      _zx48fabs
-    push HL             ; 1:11      _zx48fabs
+dnl # zabs
+ifdef({USE_ZABS},{
+_ZABS:                  ;           _zabs
+    push DE             ; 1:11      _zabs
+    push HL             ; 1:11      _zabs
     rst 0x28            ; 1:11      Use the calculator
     db  0x2A            ; 1:        calc-abs
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fabs
-    pop  DE             ; 1:10      _zx48fabs
-    ret                 ; 1:10      _zx48fabs
+    pop  HL             ; 1:10      _zabs
+    pop  DE             ; 1:10      _zabs
+    ret                 ; 1:10      _zabs
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FNEGATE},{
-_ZX48FNEGATE:
-    push DE             ; 1:11      _zx48fnegate
-    push HL             ; 1:11      _zx48fnegate
+dnl # znegate
+ifdef({USE_ZNEGATE},{
+_ZNEGATE:               ;           _znegate
+    push DE             ; 1:11      _znegate
+    push HL             ; 1:11      _znegate
     rst 0x28            ; 1:11      Use the calculator
     db  0x1B            ; 1:        calc-negate
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-    pop  HL             ; 1:10      _zx48fnegate
-    pop  DE             ; 1:10      _zx48fnegate
-    ret                 ; 1:10      _zx48fnegate
+    pop  HL             ; 1:10      _znegate
+    pop  DE             ; 1:10      _znegate
+    ret                 ; 1:10      _znegate
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FINT},{
-_ZX48FINT:
-    push DE             ; 1:11      _zx48fint
-    push HL             ; 1:11      _zx48fint
-    call 0x36AF         ; 3:17      _zx48fint   {call ZX ROM int}
-    pop  HL             ; 1:10      _zx48fint
-    pop  DE             ; 1:10      _zx48fint
-    ret                 ; 1:10      _zx48fint
+dnl # zint
+ifdef({USE_ZINT},{
+_ZINT:                  ;           _zint
+    push DE             ; 1:11      _zint
+    push HL             ; 1:11      _zint
+    call 0x36AF         ; 3:17      _zint   {call ZX ROM int}
+    pop  HL             ; 1:10      _zint
+    pop  DE             ; 1:10      _zint
+    ret                 ; 1:10      _zint
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FADDR},{
-_ZX48FADDR:
-    push DE             ; 1:11      _zx48faddr
-    ex   DE, HL         ; 1:4       _zx48faddr
-    ld   HL,(0x5C65)    ; 3:16      _zx48faddr   {HL= stkend}
+dnl # z+r
+ifdef({USE_ZADDR},{
+_ZADDR:                 ;           _z+r
+    push DE             ; 1:11      _z+r
+    ex   DE, HL         ; 1:4       _z+r
+    ld   HL,(0x5C65)    ; 3:16      _z+r   {HL= stkend}
     UDOTZXROM
-    ld    A, 0x0D       ; 2:7       _zx48faddr-cr   {Pollutes: AF, AF', DE', BC'}
-    rst  0x10           ; 1:11      _zx48faddr-cr   {with 48K ROM in, this will print char in A}
-    ret                 ; 1:10      _zx48faddr
+    ld    A, 0x0D       ; 2:7       _z+r-cr   {Pollutes: AF, AF', DE', BC'}
+    rst  0x10           ; 1:11      _z+r-cr   {with 48K ROM in, this will print char in A}
+    ret                 ; 1:10      _z+r
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FDUP},{
-_ZX48FDUP:
-    push DE             ; 1:11      _zx48fdup
-    push HL             ; 1:11      _zx48fdup
+dnl # zdup
+ifdef({USE_ZDUP},{
+_ZDUP:                  ;           _zdup
+    push DE             ; 1:11      _zdup
+    push HL             ; 1:11      _zdup
     rst 0x28            ; 1:11      Use the calculator
     db  0x31            ; 1:        calc-duplicate
     db  0x38            ; 1:        calc-end
-    pop  HL             ; 1:10      _zx48fdup
-    pop  DE             ; 1:10      _zx48fdup
-    ret                 ; 1:10      _zx48fdup
+    pop  HL             ; 1:10      _zdup
+    pop  DE             ; 1:10      _zdup
+    ret                 ; 1:10      _zdup
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FOVER},{
+dnl # zover
+ifdef({USE_ZOVER},{
 if 1
-_ZX48FOVER:            ;[22:144]    _zx48fover
-    push DE             ; 1:11      _zx48fover
-    push HL             ; 1:11      _zx48fover
-    ld   HL,(0x5C65)    ; 3:16      _zx48fover   {load STKEND}
-    ex   DE, HL         ; 1:4       _zx48fover
-    ld   HL,0xFFF6      ; 3:10      _zx48fover   -10
-    add  HL, DE         ; 1:11      _zx48fover
-    ld   BC,0x0005      ; 3:10      _zx48fover   5 bytes
-    ldir                ; 2:21/16   _zx48fover
-    ld  (0x5C65),DE     ; 4:20      _zx48fover   {save STKEND+5}
+_ZOVER:                ;[22:144]    _zover
+    push DE             ; 1:11      _zover
+    push HL             ; 1:11      _zover
+    ld   HL,(0x5C65)    ; 3:16      _zover   {load STKEND}
+    ex   DE, HL         ; 1:4       _zover
+    ld   HL,0xFFF6      ; 3:10      _zover   -10
+    add  HL, DE         ; 1:11      _zover
+    ld   BC,0x0005      ; 3:10      _zover   5 bytes
+    ldir                ; 2:21/16   _zover
+    ld  (0x5C65),DE     ; 4:20      _zover   {save STKEND+5}
 else
-_ZX48FOVER:            ;[20:130]    _zx48fover
-    push DE             ; 1:11      _zx48fover
-    push HL             ; 1:11      _zx48fover
-    ld   HL,(0x5C65)    ; 3:16      _zx48fover   {load STKEND}
-    ex   DE, HL         ; 1:4       _zx48fover
-    ld   HL,0xFFF6      ; 3:10      _zx48fover   -10
-    add  HL, DE         ; 1:11      _zx48fover
-    call 0x33c0         ; 3:17      _zx48fover
-    ld  (0x5C65),DE     ; 4:20      _zx48fover   {save STKEND+5}
+_ZOVER:                ;[20:130]    _zover
+    push DE             ; 1:11      _zover
+    push HL             ; 1:11      _zover
+    ld   HL,(0x5C65)    ; 3:16      _zover   {load STKEND}
+    ex   DE, HL         ; 1:4       _zover
+    ld   HL,0xFFF6      ; 3:10      _zover   -10
+    add  HL, DE         ; 1:11      _zover
+    call 0x33c0         ; 3:17      _zover
+    ld  (0x5C65),DE     ; 4:20      _zover   {save STKEND+5}
 endif
-    pop  HL             ; 1:10      _zx48fover
-    pop  DE             ; 1:10      _zx48fover
-    ret                 ; 1:10      _zx48fover
+    pop  HL             ; 1:10      _zover
+    pop  DE             ; 1:10      _zover
+    ret                 ; 1:10      _zover
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FPICK_C},{define({USE_ZX48FPICK_BC},{})
+ifdef({USE_ZPICK_C},{__def({USE_ZPICK_BC})
 ; Input: C
-_ZX48FPICK_C:
-    ld    B, 0xFF       ; 2:7       _zx48fpick_c
-    ; fall to _zx48fpick_bc
+_ZPICK_C:               ;           _zpick_c
+    ld    B, 0xFF       ; 2:7       _zpick_c
+    ; fall to _zpick_bc
 }){}dnl
 dnl
-ifdef({USE_ZX48FPICK_BC},{
+ifdef({USE_ZPICK_BC},{
 ; Input: BC
-_ZX48FPICK_BC:         ;[20:152]    _zx48fpick_bc
-    push DE             ; 1:11      _zx48fpick_bc
-    push HL             ; 1:11      _zx48fpick_bc
-    ld   HL,(0x5C65)    ; 3:16      _zx48fpick_bc   {load STKEND}
-    ld    D, H          ; 1:11      _zx48fpick_bc
-    ld    E, L          ; 1:11      _zx48fpick_bc
-    add  HL, BC         ; 1:11      _zx48fpick_bc
-    ld   BC,0x0005      ; 3:10      _zx48fpick_bc   5 bytes
-    ldir                ; 2:21/16   _zx48fpick_bc
-    ld  (0x5C65),DE     ; 4:20      _zx48fpick_bc   {save STKEND+5}
-    pop  HL             ; 1:10      _zx48fpick_bc
-    pop  DE             ; 1:10      _zx48fpick_bc
-    ret                 ; 1:10      _zx48fpick_bc
+_ZPICK_BC:             ;[20:152]    _zpick_bc
+    push DE             ; 1:11      _zpick_bc
+    push HL             ; 1:11      _zpick_bc
+    ld   HL,(0x5C65)    ; 3:16      _zpick_bc   {load STKEND}
+    ld    D, H          ; 1:11      _zpick_bc
+    ld    E, L          ; 1:11      _zpick_bc
+    add  HL, BC         ; 1:11      _zpick_bc
+    ld   BC,0x0005      ; 3:10      _zpick_bc   5 bytes
+    ldir                ; 2:21/16   _zpick_bc
+    ld  (0x5C65),DE     ; 4:20      _zpick_bc   {save STKEND+5}
+    pop  HL             ; 1:10      _zpick_bc
+    pop  DE             ; 1:10      _zpick_bc
+    ret                 ; 1:10      _zpick_bc
 }){}dnl
 dnl
 dnl
-ifdef({USE_ZX48FROT},{
-_ZX48FROT:              ;           _zx48frot   ( F: r1 r2 r3 -- r2 r3 r1 )
-    push DE             ; 1:11      _zx48frot
-    push HL             ; 1:11      _zx48frot
-    ld   HL,(0x5C65)    ; 3:16      _zx48frot   {load STKEND}
-    ex   DE, HL         ; 1:4       _zx48frot   {DE = STKEND}
-    ld   HL,0xFFF1      ; 3:10      _zx48frot   -15
-    add  HL, DE         ; 1:11      _zx48frot   {HL = STKEND - 15}
-    push HL             ; 1:11      _zx48frot   {STKEND-15}
-    call 0x33C0         ; 3:17      _zx48frot   (DE++) = (HL++), BC = 0   ( F: r1 r2 r3    -- r1 r2 r3 r1 )
-    pop  DE             ; 1:10      _zx48frot   {DE = STKEND - 15}
-    ld   C,0x0F         ; 2:7       _zx48frot   {BC = 15}
-    ldir                ; 2:21/16   _zx48frot   (DE++) = (HL++)   ( F: r1 r2 r3 r1 -- r2 r3 r1 )
-    pop  HL             ; 1:10      _zx48frot
-    pop  DE             ; 1:10      _zx48frot
-    ret                 ; 1:10      _zx48frot
+dnl # zrot
+ifdef({USE_ZROT},{
+_ZROT:                  ;           _zrot   ( F: r1 r2 r3 -- r2 r3 r1 )
+    push DE             ; 1:11      _zrot
+    push HL             ; 1:11      _zrot
+    ld   HL,(0x5C65)    ; 3:16      _zrot   {load STKEND}
+    ex   DE, HL         ; 1:4       _zrot   {DE = STKEND}
+    ld   HL,0xFFF1      ; 3:10      _zrot   -15
+    add  HL, DE         ; 1:11      _zrot   {HL = STKEND - 15}
+    push HL             ; 1:11      _zrot   {STKEND-15}
+    call 0x33C0         ; 3:17      _zrot   (DE++) = (HL++), BC = 0   ( F: r1 r2 r3    -- r1 r2 r3 r1 )
+    pop  DE             ; 1:10      _zrot   {DE = STKEND - 15}
+    ld   C,0x0F         ; 2:7       _zrot   {BC = 15}
+    ldir                ; 2:21/16   _zrot   (DE++) = (HL++)   ( F: r1 r2 r3 r1 -- r2 r3 r1 )
+    pop  HL             ; 1:10      _zrot
+    pop  DE             ; 1:10      _zrot
+    ret                 ; 1:10      _zrot
 }){}dnl
-dnl
-dnl
 dnl
 dnl
 dnl
