@@ -373,28 +373,27 @@ define({USE_ZX48FMULMUL},{})
     call _ZX48FMULMUL   ; 3:17      zx48fmulmul   ( F: r1 r2 -- r1^r2 )}){}dnl
 dnl
 dnl
-dnl # F/
-define({ZX48FDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FDIV},{zx48fdiv},$@){}dnl
+dnl # Z/
+define({ZDIV},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZDIV},{z/},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FDIV},{dnl
-__{}define({__INFO},{zx48fdiv}){}dnl
-define({USE_ZX48FDIV},{})
-    call _ZX48FDIV      ; 3:17      zx48fdiv   ( F: r1 r2 -- r1/r2 )}){}dnl
+define({__ASM_TOKEN_ZDIV},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZDIV})
+    call _ZDIV          ; 3:17      __INFO   ( F: r1 r2 -- r1/r2 )}){}dnl
 dnl
 dnl
 dnl
-define({ZX48UMUL},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48UMUL},{zx48umul},$@){}dnl
+define({ZUMUL},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZUMUL},{zumul},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48UMUL},{dnl
-__{}define({__INFO},{zx48umul}){}dnl
-
-                        ;[4:27]     zx48umul   ( c b a -- c b*a )
-    call 0x30a9         ; 3:17      zx48umul   {call ZX ROM HL=HL*DE routine}
-    pop  DE             ; 1:10      zx48umul}){}dnl
+define({__ASM_TOKEN_ZUMUL},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[4:27]     __INFO   ( c b a -- c b*a )
+    call 0x30a9         ; 3:17      __INFO   {call ZX ROM HL=HL*DE routine}
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
