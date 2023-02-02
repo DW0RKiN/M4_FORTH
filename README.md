@@ -442,18 +442,18 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>   float+     |<sub>    ZFLOATADD    |<sub>  ( a1 -- a2 ) ( F: -- )   |<sub> a2 = a1 + 5                 |
 
 
-|<sub> Original   |<sub>      M4 FORTH      |<sub>  Data stack               |<sub>  Comment                    |
-| :-------------: | :---------------------: | :----------------------------- | :------------------------------- |
-|<sub>  `1.23e7`  |<sub>PUSH_ZX48F(`1.23e7`)|<sub>  ( -- ) ( F: -- `1.23e7` )|<sub> inline 15 bytes             |
-|<sub>    u>f     |<sub>     ZX48U_TO_F     |<sub>  ( u -- ) ( F: -- u )     |<sub> u = 0..65535                |
-|<sub>            |<sub> PUSH_ZX48U_TO_F(i) |<sub>  ( -- ) ( F: -- i )       |<sub> i = -65535..65535           |
-|<sub>            |<sub>    ZX48BC_TO_F     |<sub>  ( -- ) ( F: -- u )       |<sub> reg BC = u = 0..65535       |
-|<sub>            |<sub>    ZX48BBC_TO_F    |<sub>  ( -- ) ( F: -- i )       |<sub> reg BC = i = -32768..32767  |
-|<sub>            |<sub>    ZX48CFBC_TO_F   |<sub>  ( -- ) ( F: -- 17bit_i ) |<sub> carry+BC = i = -65535..65535|
-|<sub>            |<sub>      ZX48UMUL      |<sub>( b a -- c ) ( F: -- )     |<sub> c = b * a                   |
-|<sub>            |<sub> ZX48FLOAT2ARRAY(r) |<sub>  ( -- ) ( F: -- )         |<sub> r -> DB 1,2,3,4,5           |
-|<sub>            |<sub>    ZX48FHEXDOT     |<sub>  ( -- ) ( F: r -- r )     |<sub> ." 12,45,78,9A,CD "         |
-|<sub> `3` fpick  |<sub> PUSH_ZX48FPICK(`3`)|<sub>  ( -- ) ( F: -- r )       |<sub> only fpick is not supported!|
+|<sub> Original   |<sub>    M4 FORTH    |<sub>  Data stack               |<sub>  Comment                    |
+| :-------------: | :-----------------: | :----------------------------- | :------------------------------- |
+|<sub>  `1.23e7`  |<sub>PUSH_Z(`1.23e7`)|<sub>  ( -- ) ( F: -- `1.23e7` )|<sub> inline 15 bytes             |
+|<sub>    u>f     |<sub>     U_TO_Z     |<sub>  ( u -- ) ( F: -- u )     |<sub> u = 0..65535                |
+|<sub>            |<sub> PUSH_U_TO_Z(i) |<sub>  ( -- ) ( F: -- i )       |<sub> i = -65535..65535           |
+|<sub>            |<sub>    BC_TO_Z     |<sub>  ( -- ) ( F: -- u )       |<sub> reg BC = u = 0..65535       |
+|<sub>            |<sub>  SIGN_BC_TO_Z  |<sub>  ( -- ) ( F: -- i )       |<sub> reg BC = i = -32768..32767  |
+|<sub>            |<sub>   CF_BC_TO_Z   |<sub>  ( -- ) ( F: -- 17bit_i ) |<sub> carry+BC = i = -65535..65535|
+|<sub>            |<sub>      ZUMUL     |<sub>( b a -- c ) ( F: -- )     |<sub> c = b * a                   |
+|<sub>            |<sub> ZFLOAT2ARRAY(r)|<sub>  ( -- ) ( F: -- )         |<sub> r -> DB 1,2,3,4,5           |
+|<sub>            |<sub>    ZHEXDOT     |<sub>  ( -- ) ( F: r -- r )     |<sub> ." 12,45,78,9A,CD "         |
+|<sub> `3` fpick  |<sub> PUSH_ZPICK(`3`)|<sub>  ( -- ) ( F: -- r )       |<sub> only zpick is not supported!|
 
     `1` fpick --> fdup
     `2` fpick --> fover
