@@ -470,38 +470,43 @@ define({USE_ZX48FCOMPARE},{})
     call _ZX48FCOMPARE  ; 3:17      zx48f=}){}dnl
 dnl
 dnl
-dnl # U>F
-define({ZX48U_TO_F},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48U_TO_F},{zx48u_to_f},$@){}dnl
+dnl # U>Z
+define({U_TO_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_U_TO_Z},{u>z},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48U_TO_F},{dnl
-__{}define({__INFO},{zx48u_to_f}){}dnl
-define({USE_ZX48U_TO_F},{})
-    call _ZX48U_TO_F    ; 3:17      zx48u>f   ( u -- ) ( F: -- r )}){}dnl
+define({__ASM_TOKEN_U_TO_Z},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_U_TO_Z})
+    call _U_TO_F        ; 3:17      __INFO   ( u -- ) ( F: -- r )}){}dnl
 dnl
 dnl
-dnl # u U>F
-define({PUSH_ZX48U_TO_F},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_ZX48U_TO_F},{$1 zx48u>f},$@){}dnl
+dnl # u u>z
+define({PUSH_U_TO_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_U_TO_Z},{$1 u>z},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PUSH_ZX48U_TO_F},{dnl
-__{}define({__INFO},{push_zx48u_to_f}){}dnl
-define({USE_ZX48BC_TO_F},{}){}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(__IS_MEM_REF($1),{1},{dnl
-    ld   BC, format({%-11s},$1); 4:20      __INFO   ( F: -- $1 )
-    call _ZX48BC_TO_F   ; 3:17      __INFO},
-eval($1>=0),{1},{dnl
-    ld   BC, format({%-11s},$1); 3:10      __INFO   ( F: -- $1 )
-    call _ZX48BC_TO_F   ; 3:17      __INFO},
-{define({USE_ZX48FNEGATE},{}){}dnl
-    ld   BC, format({%-11s},eval(-($1))); 3:10      __INFO   ( F: -- $1 )
-    call _ZX48BC_TO_F   ; 3:17      __INFO
-    call _ZX48FNEGATE   ; 3:17      __INFO})}){}dnl
+define({__ASM_TOKEN_PUSH_U_TO_Z},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1),1,{dnl
+__{}__{}__def({USE_BC_TO_Z})
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   ( F: -- $1 )
+__{}__{}    call _BC_TO_Z       ; 3:17      __INFO},
+__{}eval($1>=0),{1},{dnl
+__{}__{}__def({USE_BC_TO_Z})
+__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO   ( F: -- $1 )
+__{}__{}    call _BC_TO_Z       ; 3:17      __INFO},
+__{}{dnl
+__{}__{}__def({USE_ZNEGATE}){}dnl
+__{}__{}__def({USE_BC_TO_Z})
+__{}__{}    ld   BC, format({%-11s},eval(-($1))); 3:10      __INFO   ( F: -- $1 )
+__{}__{}    call _BC_TO_Z       ; 3:17      __INFO
+__{}__{}    call _ZNEGATE       ; 3:17      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # S>Z
