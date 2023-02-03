@@ -71,7 +71,7 @@ __{}__def({USE_ZADDR})
     call _ZADDR         ; 3:17      __INFO   ( -- )}){}dnl
 dnl
 dnl
-dnl # Z@
+dnl # z@
 define({ZFETCH},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZFETCH},{z@},$@){}dnl
 }){}dnl
@@ -86,285 +86,292 @@ __{}__{}    call _ZFETCH        ; 3:17      __INFO   ( addr -- ) ( F: -- r )}){}
 }){}dnl
 dnl
 dnl
-dnl # F!
-define({ZX48FSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FSTORE},{zx48fstore},$@){}dnl
+dnl # z!
+define({ZSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZSTORE},{z!},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FSTORE},{dnl
+define({__ASM_TOKEN_ZSTORE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FSTORE},{})ifelse($1,{},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    call _ZX48FSTORE    ; 3:17      __INFO   ( addr -- ) ( F: r -- )}){}dnl
-dnl
-dnl
-dnl # FOVER
-define({ZX48FOVER},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FOVER},{zx48fover},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_ZX48FOVER},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FOVER})
-    call _ZX48FOVER     ; 3:17      __INFO   ( F: r1 r2 -- r1 r2 r1 )}){}dnl
-dnl
-dnl
-define({PUSH_ZX48FPICK},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_ZX48FPICK},{push_zx48fpick},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSH_ZX48FPICK},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-dnl
-__{}ifelse($1,{},{
-__{}    .error {$0}($@): Missing parameter!},
+__{}ifelse(eval($#>0),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}ifelse($#,{1},{dnl
-__{}__{}__{}ifelse(eval(($1)<1),{1},{
-__{}__{}__{}__{}    .error {$0}($@): Bad parameter!},
-__{}__{}__{}eval(($1)>51),{1},{
-__{}__{}__{}__{}__def({USE_ZX48FPICK_BC})
-__{}__{}__{}__{}    ld   BC, __HEX_HL(-5*($1))     ; 3:10      __INFO   ( F: -- r )
-__{}__{}__{}__{}    call _ZX48FPICK_BC  ; 3:17      __INFO},
-__{}__{}__{}{dnl
-__{}__{}__{}__{}__def({USE_ZX48FPICK_C})
-__{}__{}__{}__{}    ld    C, __HEX_L(-5*($1))       ; 2:7       __INFO   ( F: -- r )
-__{}__{}__{}__{}    call _ZX48FPICK_C   ; 3:17      __INFO})},
-__{}__{}{
-__{}__{}    .error zx48fvariable($@): To many parameters!}){}dnl
+__{}__{}__def({USE_ZSTORE})
+__{}__{}    call _ZSTORE        ; 3:17      __INFO   ( addr -- ) ( F: r -- )}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # zover
+define({ZOVER},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZOVER},{zover},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZOVER},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZOVER})
+    call _ZOVER         ; 3:17      __INFO   ( F: r1 r2 -- r1 r2 r1 )}){}dnl
+dnl
+dnl
+define({PUSH_ZPICK},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ZPICK},{$1 zpick},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ZPICK},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}  .error {$0}($@):  Parameter is memory reference!},
+__{}__IS_NUM($1),0,{
+__{}  .error {$0}($@):  Parameter is not number!},
+__{}{dnl
+__{}__{}ifelse(eval($1),0,{
+__{}__{}__{}    .error {$0}($@): Parameter is zero! 1 and higher are supported.},
+__{}__{}eval(($1)<1),{1},{
+__{}__{}__{}    .error {$0}($@): Negative parameter! 1 and higher are supported.},
+__{}__{}eval(($1)>51),{1},{
+__{}__{}__{}__def({USE_ZPICK_BC})
+__{}__{}__{}    ld   BC, __HEX_HL(-5*($1))     ; 3:10      __INFO   ( F: -- r )
+__{}__{}__{}    call _ZPICK_BC      ; 3:17      __INFO},
+__{}__{}{dnl
+__{}__{}__{}__def({USE_ZPICK_C})
+__{}__{}__{}    ld    C, __HEX_L(-5*($1))       ; 2:7       __INFO   ( F: -- r )
+__{}__{}__{}    call _ZPICK_C       ; 3:17      __INFO}){}dnl
 __{}}){}dnl
 })dnl
 dnl
 dnl
-dnl # FROT
-define({ZX48FROT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FROT},{zx48frot},$@){}dnl
+dnl # zrot
+define({ZROT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZROT},{zrot},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FROT},{dnl
+define({__ASM_TOKEN_ZROT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FROT})
-    call _ZX48FROT      ; 3:17      __INFO   ( F: r1 r2 r3 -- r2 r3 r1 )}){}dnl
+__{}__def({USE_ZROT})
+    call _ZROT          ; 3:17      __INFO   ( F: r1 r2 r3 -- r2 r3 r1 )}){}dnl
 dnl
 dnl
-dnl # FDROP
-define({ZX48FDROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FDROP},{zx48fdrop},$@){}dnl
+dnl # zdrop
+define({ZDROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZDROP},{zdrop},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FDROP},{dnl
+define({__ASM_TOKEN_ZDROP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FDROP})
-    call _ZX48FDROP     ; 3:17      __INFO   ( F: r -- )}){}dnl
+__{}__def({USE_ZDROP})
+    call _ZDROP         ; 3:17      __INFO   ( F: r -- )}){}dnl
 dnl
 dnl
-dnl # FABS
-define({ZX48FABS},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FABS},{zx48fabs},$@){}dnl
+dnl # zabs
+define({ZABS},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZABS},{zabs},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FABS},{dnl
+define({__ASM_TOKEN_ZABS},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FABS})
-    call _ZX48FABS      ; 3:17      __INFO   ( F: r1 -- abs(r1) )}){}dnl
+__{}__def({USE_ZABS})
+    call _ZABS          ; 3:17      __INFO   ( F: r1 -- abs(r1) )}){}dnl
 dnl
 dnl
-dnl # F+
-define({ZX48FADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FADD},{zx48fadd},$@){}dnl
+dnl # z+
+define({ZADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZADD},{z+},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FADD},{dnl
+define({__ASM_TOKEN_ZADD},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FADD})
-    call _ZX48FADD      ; 3:17      __INFO   ( F: r1 r2 -- r1+r2 )}){}dnl
+__{}__def({USE_ZADD})
+    call _ZADD          ; 3:17      __INFO   ( F: r1 r2 -- r1+r2 )}){}dnl
 dnl
 dnl
-dnl # F-
-define({ZX48FSUB},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FSUB},{zx48fsub},$@){}dnl
+dnl # z-
+define({ZSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZSUB},{z-},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FSUB},{dnl
+define({__ASM_TOKEN_ZSUB},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FSUB})
-    call _ZX48FSUB      ; 3:17      __INFO   ( F: r1 r2 -- r1-r2 )}){}dnl
+__{}__def({USE_ZSUB})
+    call _ZSUB          ; 3:17      __INFO   ( F: r1 r2 -- r1-r2 )}){}dnl
 dnl
 dnl
-dnl # FNEGATE
-define({ZX48FNEGATE},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FNEGATE},{zx48fnegate},$@){}dnl
+dnl # znegate
+define({ZNEGATE},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZNEGATE},{znegate},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FNEGATE},{dnl
+define({__ASM_TOKEN_ZNEGATE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FNEGATE})
-    call _ZX48FNEGATE   ; 3:17      __INFO   ( F: r1 -- -r1 )}){}dnl
+__{}__def({USE_ZNEGATE})
+    call _ZNEGATE       ; 3:17      __INFO   ( F: r1 -- -r1 )}){}dnl
 dnl
 dnl
-dnl # FSIN
-define({ZX48FSIN},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FSIN},{zx48fsin},$@){}dnl
+dnl # zsin
+define({ZSIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZSIN},{zsin},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FSIN},{dnl
+define({__ASM_TOKEN_ZSIN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FSIN})
-    call _ZX48FSIN      ; 3:17      __INFO   ( F: r1 -- sin(r1) )}){}dnl
+__{}__def({USE_ZSIN})
+    call _ZSIN          ; 3:17      __INFO   ( F: r1 -- sin(r1) )}){}dnl
 dnl
 dnl
-dnl # FCOS
-define({ZX48FCOS},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FCOS},{zx48fcos},$@){}dnl
+dnl # zcos
+define({ZCOS},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZCOS},{zcos},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FCOS},{dnl
+define({__ASM_TOKEN_ZCOS},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FCOS})
-    call _ZX48FCOS      ; 3:17      __INFO   ( F: r1 -- cos(r1) )}){}dnl
+__{}__def({USE_ZCOS})
+    call _ZCOS          ; 3:17      __INFO   ( F: r1 -- cos(r1) )}){}dnl
 dnl
 dnl
-dnl # FTAN
-define({ZX48FTAN},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FTAN},{zx48ftan},$@){}dnl
+dnl # ztan
+define({ZTAN},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZTAN},{ztan},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FTAN},{dnl
+define({__ASM_TOKEN_ZTAN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FTAN})
-    call _ZX48FTAN      ; 3:17      __INFO   ( F: r1 -- tan(r1) )}){}dnl
+__{}__def({USE_ZTAN})
+    call _ZTAN          ; 3:17      __INFO   ( F: r1 -- tan(r1) )}){}dnl
 dnl
 dnl
-dnl # FASIN
-define({ZX48FASIN},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FASIN},{zx48fasin},$@){}dnl
+dnl # zasin
+define({ZASIN},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZASIN},{zasin},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FASIN},{dnl
+define({__ASM_TOKEN_ZASIN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FASIN})
-    call _ZX48FASIN     ; 3:17      __INFO   ( F: r1 -- arcsin(r1) )}){}dnl
+__{}__def({USE_ZASIN})
+    call _ZASIN         ; 3:17      __INFO   ( F: r1 -- arcsin(r1) )}){}dnl
 dnl
 dnl
-dnl # FACOS
-define({ZX48FACOS},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FACOS},{zx48facos},$@){}dnl
+dnl # zacos
+define({ZACOS},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZACOS},{zacos},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FACOS},{dnl
+define({__ASM_TOKEN_ZACOS},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FACOS})
-    call _ZX48FACOS     ; 3:17      __INFO   ( F: r1 -- arccos(r1) )}){}dnl
+__{}__def({USE_ZACOS})
+    call _ZACOS         ; 3:17      __INFO   ( F: r1 -- arccos(r1) )}){}dnl
 dnl
 dnl
-dnl # FATAN
-define({ZX48FATAN},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FATAN},{zx48fatan},$@){}dnl
+dnl # zatan
+define({ZATAN},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZATAN},{zatan},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FATAN},{dnl
+define({__ASM_TOKEN_ZATAN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FATAN})
-    call _ZX48FATAN     ; 3:17      __INFO   ( F: r1 -- arctan(r1) )}){}dnl
+__{}__def({USE_ZATAN})
+    call _ZATAN         ; 3:17      __INFO   ( F: r1 -- arctan(r1) )}){}dnl
 dnl
 dnl
-dnl # FLN
-define({ZX48FLN},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FLN},{zx48fln},$@){}dnl
+dnl # zln
+define({ZLN},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZLN},{zln},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FLN},{dnl
+define({__ASM_TOKEN_ZLN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FLN})
-    call _ZX48FLN       ; 3:17      __INFO   ( F: r1 -- ln(r1) )}){}dnl
+__{}__def({USE_ZLN})
+    call _ZLN           ; 3:17      __INFO   ( F: r1 -- ln(r1) )}){}dnl
 dnl
 dnl
-dnl # FEXP
-define({ZX48FEXP},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FEXP},{zx48fexp},$@){}dnl
+dnl # zexp
+define({ZEXP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZEXP},{zexp},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FEXP},{dnl
+define({__ASM_TOKEN_ZEXP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FEXP})
-    call _ZX48FEXP      ; 3:17      __INFO   ( F: r1 -- e^r1 )}){}dnl
+__{}__def({USE_ZEXP})
+    call _ZEXP          ; 3:17      __INFO   ( F: r1 -- e^r1 )}){}dnl
 dnl
 dnl
-dnl # FSQRT
-define({ZX48FSQRT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FSQRT},{zx48fsqrt},$@){}dnl
+dnl # zsqrt
+define({ZSQRT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZSQRT},{zsqrt},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FSQRT},{dnl
+define({__ASM_TOKEN_ZSQRT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FSQRT})
-    call _ZX48FSQRT     ; 3:17      __INFO   ( F: r1 -- r1^0.5 )}){}dnl
+__{}__def({USE_ZSQRT})
+    call _ZSQRT         ; 3:17      __INFO   ( F: r1 -- r1^0.5 )}){}dnl
 dnl
 dnl
 dnl # ( F: r -- r r )
-define({ZX48FDUP},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FDUP},{zx48fdup},$@){}dnl
+define({ZDUP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZDUP},{zdup},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FDUP},{dnl
+define({__ASM_TOKEN_ZDUP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FDUP})
-    call _ZX48FDUP      ; 3:17      __INFO   ( F: r -- r r )}){}dnl
+__{}__def({USE_ZDUP})
+    call _ZDUP          ; 3:17      __INFO   ( F: r -- r r )}){}dnl
 dnl
 dnl
-dnl # F.
-define({ZX48FDOT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FDOT},{zx48fdot},$@){}dnl
+dnl # z.
+define({ZDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZDOT},{z.},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FDOT},{dnl
+define({__ASM_TOKEN_ZDOT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FDOT})
-    call _ZX48FDOT      ; 3:17      __INFO   ( F: r -- )}){}dnl
+__{}__def({USE_ZDOT})
+    call _ZDOT          ; 3:17      __INFO   ( F: r -- )}){}dnl
 dnl
 dnl
 dnl # ( F: r -- r )  "13,57,9A,CD,EF "
-define({ZX48FHEXDOT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FHEXDOT},{zx48fhexdot},$@){}dnl
+define({ZHEXDOT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZHEXDOT},{zhex.},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FHEXDOT},{dnl
+define({__ASM_TOKEN_ZHEXDOT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FHEXDOT})
-    call _ZX48FHEXDOT   ; 3:17      __INFO   ( F: r -- r )}){}dnl
+__{}__def({USE_ZHEXDOT})
+    call _ZHEXDOT       ; 3:17      __INFO   ( F: r -- r )}){}dnl
 dnl
 dnl
-dnl
-define({ZX48FINT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FINT},{zx48fint},$@){}dnl
+dnl # zint
+define({ZINT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZINT},{zint},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FINT},{dnl
+define({__ASM_TOKEN_ZINT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FINT})
-    call _ZX48FINT      ; 3:17      __INFO   ( F: r -- x )}){}dnl
+__{}__def({USE_ZINT})
+    call _ZINT          ; 3:17      __INFO   ( F: r -- x )}){}dnl
 dnl
 dnl
-dnl # FSWAP
-define({ZX48FSWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FSWAP},{zx48fswap},$@){}dnl
+dnl # zswap
+define({ZSWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZSWAP},{zswap},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FSWAP},{dnl
+define({__ASM_TOKEN_ZSWAP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FSWAP})
-    call _ZX48FSWAP     ; 3:17      __INFO   ( F: r1 r2 -- r2 r1 )}){}dnl
+__{}__def({USE_ZSWAP})
+    call _ZSWAP         ; 3:17      __INFO   ( F: r1 r2 -- r2 r1 )}){}dnl
 dnl
 dnl
-dnl # F*
-define({ZX48FMUL},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FMUL},{zx48fmul},$@){}dnl
+dnl # Z*
+define({ZMUL},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZMUL},{z*},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FMUL},{dnl
+define({__ASM_TOKEN_ZMUL},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZX48FMUL})
-    call _ZX48FMUL      ; 3:17      __INFO   ( F: r1 r2 -- r1*r2 )}){}dnl
+__{}__def({USE_ZMUL})
+    call _ZMUL          ; 3:17      __INFO   ( F: r1 r2 -- r1*r2 )}){}dnl
 dnl
 dnl
 dnl # Z**
