@@ -82,7 +82,7 @@ __{}ifelse(eval($#>0),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}__def({USE_ZFETCH})
-__{}__{}    call _ZFETCH        ; 3:17      __INFO   ( addr -- ) ( F: -- r )}){}dnl
+__{}__{}    call _ZFETCH        ; 3:17      __INFO   ( addr -- ) ( F: -- z )}){}dnl
 }){}dnl
 dnl
 dnl
@@ -97,7 +97,7 @@ __{}ifelse(eval($#>0),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}__def({USE_ZSTORE})
-__{}__{}    call _ZSTORE        ; 3:17      __INFO   ( addr -- ) ( F: r -- )}){}dnl
+__{}__{}    call _ZSTORE        ; 3:17      __INFO   ( addr -- ) ( F: z -- )}){}dnl
 }){}dnl
 dnl
 dnl
@@ -109,7 +109,7 @@ dnl
 define({__ASM_TOKEN_ZOVER},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZOVER})
-    call _ZOVER         ; 3:17      __INFO   ( F: r1 r2 -- r1 r2 r1 )}){}dnl
+    call _ZOVER         ; 3:17      __INFO   ( F: z1 z2 -- z1 z2 z1 )}){}dnl
 dnl
 dnl
 define({PUSH_ZPICK},{dnl
@@ -133,11 +133,11 @@ __{}__{}eval(($1)<1),{1},{
 __{}__{}__{}    .error {$0}($@): Negative parameter! 1 and higher are supported.},
 __{}__{}eval(($1)>51),{1},{
 __{}__{}__{}__def({USE_ZPICK_BC})
-__{}__{}__{}    ld   BC, __HEX_HL(-5*($1))     ; 3:10      __INFO   ( F: -- r )
+__{}__{}__{}    ld   BC, __HEX_HL(-5*($1))     ; 3:10      __INFO   ( F: -- z )
 __{}__{}__{}    call _ZPICK_BC      ; 3:17      __INFO},
 __{}__{}{dnl
 __{}__{}__{}__def({USE_ZPICK_C})
-__{}__{}__{}    ld    C, __HEX_L(-5*($1))       ; 2:7       __INFO   ( F: -- r )
+__{}__{}__{}    ld    C, __HEX_L(-5*($1))       ; 2:7       __INFO   ( F: -- z )
 __{}__{}__{}    call _ZPICK_C       ; 3:17      __INFO}){}dnl
 __{}}){}dnl
 })dnl
@@ -151,7 +151,7 @@ dnl
 define({__ASM_TOKEN_ZROT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZROT})
-    call _ZROT          ; 3:17      __INFO   ( F: r1 r2 r3 -- r2 r3 r1 )}){}dnl
+    call _ZROT          ; 3:17      __INFO   ( F: z1 z2 z3 -- z2 z3 z1 )}){}dnl
 dnl
 dnl
 dnl # zdrop
@@ -162,7 +162,7 @@ dnl
 define({__ASM_TOKEN_ZDROP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZDROP})
-    call _ZDROP         ; 3:17      __INFO   ( F: r -- )}){}dnl
+    call _ZDROP         ; 3:17      __INFO   ( F: z -- )}){}dnl
 dnl
 dnl
 dnl # zabs
@@ -173,7 +173,7 @@ dnl
 define({__ASM_TOKEN_ZABS},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZABS})
-    call _ZABS          ; 3:17      __INFO   ( F: r1 -- abs(r1) )}){}dnl
+    call _ZABS          ; 3:17      __INFO   ( F: z1 -- abs(z1) )}){}dnl
 dnl
 dnl
 dnl # z+
@@ -184,7 +184,7 @@ dnl
 define({__ASM_TOKEN_ZADD},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZADD})
-    call _ZADD          ; 3:17      __INFO   ( F: r1 r2 -- r1+r2 )}){}dnl
+    call _ZADD          ; 3:17      __INFO   ( F: z1 z2 -- z1+z2 )}){}dnl
 dnl
 dnl
 dnl # z-
@@ -195,7 +195,7 @@ dnl
 define({__ASM_TOKEN_ZSUB},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZSUB})
-    call _ZSUB          ; 3:17      __INFO   ( F: r1 r2 -- r1-r2 )}){}dnl
+    call _ZSUB          ; 3:17      __INFO   ( F: z1 z2 -- z1-z2 )}){}dnl
 dnl
 dnl
 dnl # znegate
@@ -206,7 +206,7 @@ dnl
 define({__ASM_TOKEN_ZNEGATE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZNEGATE})
-    call _ZNEGATE       ; 3:17      __INFO   ( F: r1 -- -r1 )}){}dnl
+    call _ZNEGATE       ; 3:17      __INFO   ( F: z1 -- -z1 )}){}dnl
 dnl
 dnl
 dnl # zsin
@@ -217,7 +217,7 @@ dnl
 define({__ASM_TOKEN_ZSIN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZSIN})
-    call _ZSIN          ; 3:17      __INFO   ( F: r1 -- sin(r1) )}){}dnl
+    call _ZSIN          ; 3:17      __INFO   ( F: z1 -- sin(z1) )}){}dnl
 dnl
 dnl
 dnl # zcos
@@ -228,7 +228,7 @@ dnl
 define({__ASM_TOKEN_ZCOS},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOS})
-    call _ZCOS          ; 3:17      __INFO   ( F: r1 -- cos(r1) )}){}dnl
+    call _ZCOS          ; 3:17      __INFO   ( F: z1 -- cos(z1) )}){}dnl
 dnl
 dnl
 dnl # ztan
@@ -239,7 +239,7 @@ dnl
 define({__ASM_TOKEN_ZTAN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZTAN})
-    call _ZTAN          ; 3:17      __INFO   ( F: r1 -- tan(r1) )}){}dnl
+    call _ZTAN          ; 3:17      __INFO   ( F: z1 -- tan(z1) )}){}dnl
 dnl
 dnl
 dnl # zasin
@@ -250,7 +250,7 @@ dnl
 define({__ASM_TOKEN_ZASIN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZASIN})
-    call _ZASIN         ; 3:17      __INFO   ( F: r1 -- arcsin(r1) )}){}dnl
+    call _ZASIN         ; 3:17      __INFO   ( F: z1 -- arcsin(z1) )}){}dnl
 dnl
 dnl
 dnl # zacos
@@ -261,7 +261,7 @@ dnl
 define({__ASM_TOKEN_ZACOS},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZACOS})
-    call _ZACOS         ; 3:17      __INFO   ( F: r1 -- arccos(r1) )}){}dnl
+    call _ZACOS         ; 3:17      __INFO   ( F: z1 -- arccos(z1) )}){}dnl
 dnl
 dnl
 dnl # zatan
@@ -272,7 +272,7 @@ dnl
 define({__ASM_TOKEN_ZATAN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZATAN})
-    call _ZATAN         ; 3:17      __INFO   ( F: r1 -- arctan(r1) )}){}dnl
+    call _ZATAN         ; 3:17      __INFO   ( F: z1 -- arctan(z1) )}){}dnl
 dnl
 dnl
 dnl # zln
@@ -283,7 +283,7 @@ dnl
 define({__ASM_TOKEN_ZLN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZLN})
-    call _ZLN           ; 3:17      __INFO   ( F: r1 -- ln(r1) )}){}dnl
+    call _ZLN           ; 3:17      __INFO   ( F: z1 -- ln(z1) )}){}dnl
 dnl
 dnl
 dnl # zexp
@@ -294,7 +294,7 @@ dnl
 define({__ASM_TOKEN_ZEXP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZEXP})
-    call _ZEXP          ; 3:17      __INFO   ( F: r1 -- e^r1 )}){}dnl
+    call _ZEXP          ; 3:17      __INFO   ( F: z1 -- e^z1 )}){}dnl
 dnl
 dnl
 dnl # zsqrt
@@ -305,10 +305,10 @@ dnl
 define({__ASM_TOKEN_ZSQRT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZSQRT})
-    call _ZSQRT         ; 3:17      __INFO   ( F: r1 -- r1^0.5 )}){}dnl
+    call _ZSQRT         ; 3:17      __INFO   ( F: z1 -- z1^0.5 )}){}dnl
 dnl
 dnl
-dnl # ( F: r -- r r )
+dnl # ( F: z -- z z )
 define({ZDUP},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZDUP},{zdup},$@){}dnl
 }){}dnl
@@ -316,7 +316,7 @@ dnl
 define({__ASM_TOKEN_ZDUP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZDUP})
-    call _ZDUP          ; 3:17      __INFO   ( F: r -- r r )}){}dnl
+    call _ZDUP          ; 3:17      __INFO   ( F: z -- z z )}){}dnl
 dnl
 dnl
 dnl # z.
@@ -327,10 +327,10 @@ dnl
 define({__ASM_TOKEN_ZDOT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZDOT})
-    call _ZDOT          ; 3:17      __INFO   ( F: r -- )}){}dnl
+    call _ZDOT          ; 3:17      __INFO   ( F: z -- )}){}dnl
 dnl
 dnl
-dnl # ( F: r -- r )  "13,57,9A,CD,EF "
+dnl # ( F: z -- z )  "13,57,9A,CD,EF "
 define({ZHEXDOT},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZHEXDOT},{zhex.},$@){}dnl
 }){}dnl
@@ -338,7 +338,7 @@ dnl
 define({__ASM_TOKEN_ZHEXDOT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZHEXDOT})
-    call _ZHEXDOT       ; 3:17      __INFO   ( F: r -- r )}){}dnl
+    call _ZHEXDOT       ; 3:17      __INFO   ( F: z -- z )}){}dnl
 dnl
 dnl
 dnl # zint
@@ -349,7 +349,7 @@ dnl
 define({__ASM_TOKEN_ZINT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZINT})
-    call _ZINT          ; 3:17      __INFO   ( F: r -- x )}){}dnl
+    call _ZINT          ; 3:17      __INFO   ( F: z -- x )}){}dnl
 dnl
 dnl
 dnl # zswap
@@ -360,7 +360,7 @@ dnl
 define({__ASM_TOKEN_ZSWAP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZSWAP})
-    call _ZSWAP         ; 3:17      __INFO   ( F: r1 r2 -- r2 r1 )}){}dnl
+    call _ZSWAP         ; 3:17      __INFO   ( F: z1 z2 -- z2 z1 )}){}dnl
 dnl
 dnl
 dnl # Z*
@@ -371,7 +371,7 @@ dnl
 define({__ASM_TOKEN_ZMUL},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZMUL})
-    call _ZMUL          ; 3:17      __INFO   ( F: r1 r2 -- r1*r2 )}){}dnl
+    call _ZMUL          ; 3:17      __INFO   ( F: z1 z2 -- z1*z2 )}){}dnl
 dnl
 dnl
 dnl # Z**
@@ -382,7 +382,7 @@ dnl
 define({__ASM_TOKEN_ZMULMUL},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZMULMUL})
-    call _ZMULMUL       ; 3:17      __INFO   ( F: r1 r2 -- r1^r2 )}){}dnl
+    call _ZMULMUL       ; 3:17      __INFO   ( F: z1 z2 -- z1^z2 )}){}dnl
 dnl
 dnl
 dnl # Z/
@@ -393,15 +393,15 @@ dnl
 define({__ASM_TOKEN_ZDIV},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZDIV})
-    call _ZDIV          ; 3:17      __INFO   ( F: r1 r2 -- r1/r2 )}){}dnl
+    call _ZDIV          ; 3:17      __INFO   ( F: z1 z2 -- z1/z2 )}){}dnl
 dnl
 dnl
 dnl
-define({ZUMUL},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZUMUL},{zumul},$@){}dnl
+define({ZXROM_UMUL},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZXROM_UMUL},{zxrom_umul},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZUMUL},{dnl
+define({__ASM_TOKEN_ZXROM_UMUL},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[4:27]     __INFO   ( c b a -- c b*a )
     call 0x30a9         ; 3:17      __INFO   {call ZX ROM HL=HL*DE routine}
@@ -417,7 +417,7 @@ dnl
 define({__ASM_TOKEN_ZLE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE})
-    ld    B, 0x09       ; 2:7       __INFO   ( F: r1 r2 -- 1 or 0 )
+    ld    B, 0x09       ; 2:7       __INFO   ( F: z1 z2 -- 1 or 0 )
     call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -429,7 +429,7 @@ dnl
 define({__ASM_TOKEN_ZGE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE})
-    ld    B, 0x0A       ; 2:7       __INFO   ( F: r1 r2 -- 1 or 0 )
+    ld    B, 0x0A       ; 2:7       __INFO   ( F: z1 z2 -- 1 or 0 )
     call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -441,7 +441,7 @@ dnl
 define({__ASM_TOKEN_ZNE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE})
-    ld    B, 0x0B       ; 2:7       __INFO   ( F: r1 r2 -- 1 or 0 )
+    ld    B, 0x0B       ; 2:7       __INFO   ( F: z1 z2 -- 1 or 0 )
     call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -453,19 +453,19 @@ dnl
 define({__ASM_TOKEN_ZGT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE})
-    ld    B, 0x0C       ; 2:7       __INFO   ( F: r1 r2 -- 1 or 0 )
+    ld    B, 0x0C       ; 2:7       __INFO   ( F: z1 z2 -- 1 or 0 )
     call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # Z<
 define({ZLT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZX48FLT},{z<},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZLT},{z<},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX48FLT},{dnl
+define({__ASM_TOKEN_ZLT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE})
-    ld    B, 0x0D       ; 2:7       __INFO   ( F: r1 r2 -- 1 or 0 )
+    ld    B, 0x0D       ; 2:7       __INFO   ( F: z1 z2 -- 1 or 0 )
     call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -477,7 +477,7 @@ dnl
 define({__ASM_TOKEN_ZEQ},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE})
-    ld    B, 0x0E       ; 2:7       __INFO   ( F: r1 r2 -- 1 or 0 )
+    ld    B, 0x0E       ; 2:7       __INFO   ( F: z1 z2 -- 1 or 0 )
     call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
@@ -489,7 +489,7 @@ dnl
 define({__ASM_TOKEN_U_TO_Z},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_U_TO_Z})
-    call _U_TO_F        ; 3:17      __INFO   ( u -- ) ( F: -- r )}){}dnl
+    call _U_TO_F        ; 3:17      __INFO   ( u -- ) ( F: -- z )}){}dnl
 dnl
 dnl
 dnl # u u>z
@@ -528,7 +528,7 @@ dnl
 define({__ASM_TOKEN_S_TO_Z},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_S_TO_Z})
-    call _S_TO_Z        ; 3:17      __INFO   ( x -- ) ( F: -- r )}){}dnl
+    call _S_TO_Z        ; 3:17      __INFO   ( x -- ) ( F: -- z )}){}dnl
 dnl
 dnl
 dnl # x s>z
@@ -599,7 +599,7 @@ dnl
 define({__ASM_TOKEN_R_TO_S},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_R_TO_S})
-    call _R_TO_S        ; 3:17      __INFO   ( -- x ) ( F: r -- )}){}dnl
+    call _R_TO_S        ; 3:17      __INFO   ( -- x ) ( F: z -- )}){}dnl
 dnl
 dnl
 dnl # d>z
@@ -610,7 +610,7 @@ dnl
 define({__ASM_TOKEN_D_TO_Z},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_D_TO_Z})
-    call _D_TO_Z        ; 3:17      __INFO   ( d -- ) ( F: -- r )}){}dnl
+    call _D_TO_Z        ; 3:17      __INFO   ( d -- ) ( F: -- z )}){}dnl
 dnl
 dnl
 dnl # z>d
@@ -621,7 +621,7 @@ dnl
 define({__ASM_TOKEN_Z_TO_D},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_Z_TO_D})
-    call _Z_TO_D        ; 3:17      __INFO   ( -- d ) ( F: r -- )}){}dnl
+    call _Z_TO_D        ; 3:17      __INFO   ( -- d ) ( F: z -- )}){}dnl
 dnl
 dnl
 dnl
@@ -645,7 +645,7 @@ dnl
 define({__ASM_TOKEN_Z0EQ},{dnl
 __{}define({__INFO},__COMPILE_INFO)
 __{}__def({USE_Z0EQ})
-    call _Z0EQ          ; 3:17      __INFO   ( -- flag ) ( F: r -- )}){}dnl
+    call _Z0EQ          ; 3:17      __INFO   ( -- flag ) ( F: z -- )}){}dnl
 dnl
 dnl
 dnl # z0<
@@ -656,7 +656,7 @@ dnl
 define({__ASM_TOKEN_Z0LT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_Z0LT})
-    call _Z0LT          ; 3:17      __INFO   ( -- flag ) ( F: r -- )}){}dnl
+    call _Z0LT          ; 3:17      __INFO   ( -- flag ) ( F: z -- )}){}dnl
 dnl
 dnl
 dnl
