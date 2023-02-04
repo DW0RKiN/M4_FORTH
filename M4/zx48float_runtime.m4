@@ -6,7 +6,7 @@ dnl
 dnl # z@
 ifdef({USE_ZFETCH},{
 _ZFETCH:                ;           _z@
-    push DE             ; 1:11      _z@   ( addr -- ) ( F: -- r )
+    push DE             ; 1:11      _z@   ( addr -- ) ( F: -- z )
     ld   DE,(0x5C65)    ; 4:20      _z@   {STKEND}
     call 0x33C0         ; 3:17      _z@   {call ZX ROM move floating-point number routine HL->DE}
     ld  (0x5C65),DE     ; 4:20      _z@   {STKEND+5}
@@ -21,7 +21,7 @@ dnl
 dnl # z!
 ifdef({USE_ZSTORE},{
 _ZSTORE:                ;           _z!
-    push DE             ; 1:11      _z!   ( addr -- ) ( F: r -- )
+    push DE             ; 1:11      _z!   ( addr -- ) ( F: z -- )
     push HL             ; 1:11      _z!   addr
     call 0x35bf         ; 3:17      _z!   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
     ld  (0x5C65),HL     ; 3:16      _z!   {save STKEND}
@@ -750,7 +750,7 @@ dnl
 dnl
 dnl # zrot
 ifdef({USE_ZROT},{
-_ZROT:                  ;           _zrot   ( F: r1 r2 r3 -- r2 r3 r1 )
+_ZROT:                  ;           _zrot   ( F: z1 z2 z3 -- z2 z3 z1 )
     push DE             ; 1:11      _zrot
     push HL             ; 1:11      _zrot
     ld   HL,(0x5C65)    ; 3:16      _zrot   {load STKEND}
@@ -758,10 +758,10 @@ _ZROT:                  ;           _zrot   ( F: r1 r2 r3 -- r2 r3 r1 )
     ld   HL,0xFFF1      ; 3:10      _zrot   -15
     add  HL, DE         ; 1:11      _zrot   {HL = STKEND - 15}
     push HL             ; 1:11      _zrot   {STKEND-15}
-    call 0x33C0         ; 3:17      _zrot   (DE++) = (HL++), BC = 0   ( F: r1 r2 r3    -- r1 r2 r3 r1 )
+    call 0x33C0         ; 3:17      _zrot   (DE++) = (HL++), BC = 0   ( F: z1 z2 z3    -- z1 z2 z3 z1 )
     pop  DE             ; 1:10      _zrot   {DE = STKEND - 15}
     ld   C,0x0F         ; 2:7       _zrot   {BC = 15}
-    ldir                ; 2:21/16   _zrot   (DE++) = (HL++)   ( F: r1 r2 r3 r1 -- r2 r3 r1 )
+    ldir                ; 2:21/16   _zrot   (DE++) = (HL++)   ( F: z1 z2 z3 z1 -- z2 z3 z1 )
     pop  HL             ; 1:10      _zrot
     pop  DE             ; 1:10      _zrot
     ret                 ; 1:10      _zrot

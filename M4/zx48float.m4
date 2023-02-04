@@ -48,6 +48,29 @@ __{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L(ZXTEMP_MANTISSA),2)){}dnl
 dnl
 dnl # ---------------------
 dnl
+dnl
+dnl # zdepth
+dnl # ( --   0 ) if ( Z: -- ) 
+dnl # ( --   5 ) if ( Z: z -- z )
+dnl # ( --  10 ) if ( Z: z2 z1 -- z2 z1 )
+dnl # ( -- 5*n ) if ( Z: zn .. z1 -- zn .. z1 )
+dnl # n is the number of floating-point values contained in the calculator stack
+define({ZDEPTH},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZDEPTH},{zdepth},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZDEPTH},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[12:70]    __INFO   ( -- 5*n ) if ( Z: zn .. z1 -- zn .. z1 )
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, (0x5C65)   ; 3:16      __INFO   {STKEND} - Address of temporary work space = address of top of calculator stack
+    ld   BC, (0x5C63)   ; 4:20      __INFO   {STKBOT} - Address of bottom of calculator stack
+    or    A             ; 1:4       __INFO
+    sbc  HL, BC         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
 define({ZFLOAT2ARRAY},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZFLOAT2ARRAY},{zfloat2array},$@){}dnl
 }){}dnl
@@ -60,15 +83,15 @@ __{}DB 0x{}ZXTEMP_EXP,0x{}ZXTEMP_MANTISSA_1,0x{}ZXTEMP_MANTISSA_2,0x{}ZXTEMP_MAN
 }){}dnl
 dnl
 dnl
-dnl # ???? wtf :D tiskne neco se zalomenim
-define({ZADDR},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZADDR},{zaddr},$@){}dnl
+dnl # STKEND - Address of start of spare space = address of top of calculator stack
+define({STKEND_DOT_CR},{dnl
+__{}__ADD_TOKEN({__TOKEN_STKEND_DOT_CR},{stkend . cr},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZADDR},{dnl
+define({__ASM_TOKEN_STKEND_DOT_CR},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZADDR})
-    call _ZADDR         ; 3:17      __INFO   ( -- )}){}dnl
+    call _ZADDR         ; 3:17      __INFO   ( -- )  Print address of top of calculator stack}){}dnl
 dnl
 dnl
 dnl # z@
