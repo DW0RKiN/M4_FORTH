@@ -240,10 +240,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
     hi ... high(d)= 16-bit number
     lo ...  low(d)= 16-bit number
     f  ... floating 16-bit number (Danagy format)
-    r  ... floating 40-bit number (ZX Spectrum format)
+    z  ... floating 40-bit number (ZX Spectrum format)
     p  ... pointer
     pu ... pointer to unsigned number
     pd ... pointer to 32-bit number
+    R: ... return address stack
+    Z: ... ZX Spectrum floating-point calculator stack
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |
 | :-------------: | :---------------: | :------------------: | :----------------------------- |
@@ -399,61 +401,62 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
 |<sub>   Original   |<sub>    M4 FORTH     |<sub>  Data stack               |<sub>  Comment                    |
 | :---------------: | :------------------: | :----------------------------- | :------------------------------- |
-|<sub>     d>f      |<sub>      D_TO_Z     |<sub>( d -- ) ( F: -- d )       |<sub> -2147483648..2147483647     |
-|<sub>     s>f      |<sub>      S_TO_Z     |<sub>( x -- ) ( F: -- x )       |<sub> -32768..32767               |
-|<sub>   `4` s>f    |<sub> PUSH_S_TO_Z(`4`)|<sub>  ( -- ) ( F: -- `4` )     |<sub> -65535..65535               |
-|<sub>     f>d      |<sub>      Z_TO_D     |<sub>  ( -- d ) ( F: r -- )     |<sub>                             |
-|<sub>     f>s      |<sub>      Z_TO_S     |<sub>  ( -- x ) ( F: r -- )     |<sub>                             |
-|<sub>     fabs     |<sub>      ZABS       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = abs(r1)                |
-|<sub>    facos     |<sub>      ZACOS      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arccos(r1)             |
-|<sub>      f+      |<sub>      ZADD       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 + r2                |
-|<sub>    fasin     |<sub>      ZASIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arcsin(r1)             |
-|<sub>    fatan     |<sub>      ZATAN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = arctan(r1)             |
-|<sub>     fcos     |<sub>      ZCOS       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = cos(r1)                |
-|<sub>      f/      |<sub>      ZDIV       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 / r2                |
-|<sub>      f.      |<sub>      ZDOT       |<sub>  ( -- ) ( F: r -- )       |<sub> fprintf("%f", r);           |
-|<sub>    fdrop     |<sub>      ZDROP      |<sub>  ( -- ) ( F: r -- )       |<sub>                             |
-|<sub>     fdup     |<sub>      ZDUP       |<sub>  ( -- ) ( F: r -- r r )   |<sub>                             |
-|<sub>     fexp     |<sub>      ZEXP       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = exp(r1)                |
-|<sub>      f@      |<sub>     ZFETCH      |<sub>( a -- ) ( F: -- r )       |<sub>                             |
-|<sub>     fint     |<sub>      ZINT       |<sub>  ( -- ) ( F: r -- i )     |<sub>                             |
-|<sub>     fln      |<sub>       ZLN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = ln(r1)                 |
-|<sub>      f*      |<sub>      ZMUL       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 * r2                |
-|<sub>     f**      |<sub>     ZMULMUL     |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1^r2                  |
-|<sub>   fnegate    |<sub>     ZNEGATE     |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = -r1                    |
-|<sub>    fover     |<sub>      ZOVER      |<sub>  ( F: r1 r2 -- r1 r2 r1 ) |<sub>                             |
-|<sub>     frot     |<sub>      ZROT       |<sub>( F: r1 r2 r3 -- r2 r3 r1 )|<sub>                             |
-|<sub>     fsin     |<sub>       ZSIN      |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = sin(r1)                |
-|<sub>    fsqrt     |<sub>      ZSQRT      |<sub>  ( -- ) ( F: r1 -- r2)    |<sub> r2 = r1^0.5                 |
-|<sub>      f!      |<sub>     ZSTORE      |<sub>( a -- ) ( F: r -- )       |<sub>                             |
-|<sub>      f-      |<sub>      ZSUB       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub> r3 = r1 - r2                |
-|<sub>    fswap     |<sub>      ZSWAP      |<sub>  ( -- ) ( F: r1 r2 -- r2 r1 )|<sub>                          |
-|<sub>     ftan     |<sub>      ZTAN       |<sub>  ( -- ) ( F: r1 -- r2 )   |<sub> r2 = tan(r1)                |
-|<sub>name fvariable|<sub>  ZVARIABLE(name)|<sub>  ( -- ) ( F: -- )         |<sub> name: db 0,0,0,0,0          |
-|<sub>              |<sub>ZVARIABLE(name,r)|<sub>  ( -- ) ( F: -- )         |<sub> name: db exp,m1,m2,m3,m4 ;=r|
-|<sub>     f<=      |<sub>       ZLE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<=r2 then r3=1 else r3=0|
-|<sub>     f>=      |<sub>       ZGE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1>=r2 then r3=1 else r3=0|
-|<sub>     f<>      |<sub>       ZNE       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1<>r2 then r3=1 else r3=0|
-|<sub>     f>       |<sub>       ZGT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1> r2 then r3=1 else r3=0|
-|<sub>     f<       |<sub>       ZLT       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1< r2 then r3=1 else r3=0|
-|<sub>     f=       |<sub>       ZEQ       |<sub>  ( -- ) ( F: r1 r2 -- r3 )|<sub>if r1= r2 then r3=1 else r3=0|
-|<sub>    f0<       |<sub>      Z0LT       |<sub>  ( -- flag ) ( F: r -- )  |<sub> flag = r < 0                |
-|<sub>    f0=       |<sub>      Z0EQ       |<sub>  ( -- flag ) ( F: r -- )  |<sub> flag = r == 0               |
-|<sub>   float+     |<sub>    ZFLOATADD    |<sub>  ( a1 -- a2 ) ( F: -- )   |<sub> a2 = a1 + 5                 |
+|<sub>     d>f      |<sub>      D_TO_Z     |<sub>( d -- ) ( Z: -- d )       |<sub> -2147483648..2147483647     |
+|<sub>     s>f      |<sub>      S_TO_Z     |<sub>( x -- ) ( Z: -- x )       |<sub> -32768..32767               |
+|<sub>   `4` s>f    |<sub> PUSH_S_TO_Z(`4`)|<sub>  ( -- ) ( Z: -- `4` )     |<sub> -65535..65535               |
+|<sub>     f>d      |<sub>      Z_TO_D     |<sub>  ( -- d ) ( Z: z -- )     |<sub>                             |
+|<sub>     f>s      |<sub>      Z_TO_S     |<sub>  ( -- x ) ( Z: z -- )     |<sub>                             |
+|<sub>     fabs     |<sub>      ZABS       |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = abs(z1)                |
+|<sub>    facos     |<sub>      ZACOS      |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = arccos(z1)             |
+|<sub>      f+      |<sub>      ZADD       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub> z3 = z1 + z2                |
+|<sub>    fasin     |<sub>      ZASIN      |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = arcsin(z1)             |
+|<sub>    fatan     |<sub>      ZATAN      |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = arctan(z1)             |
+|<sub>     fcos     |<sub>      ZCOS       |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = cos(z1)                |
+|<sub>      f/      |<sub>      ZDIV       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub> z3 = z1 / z2                |
+|<sub>      f.      |<sub>      ZDOT       |<sub>  ( -- ) ( Z: z -- )       |<sub> fprintf("%f", z);           |
+|<sub>    fdrop     |<sub>      ZDROP      |<sub>  ( -- ) ( Z: z -- )       |<sub>                             |
+|<sub>     fdup     |<sub>      ZDUP       |<sub>  ( -- ) ( Z: z -- z z )   |<sub>                             |
+|<sub>     fexp     |<sub>      ZEXP       |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = exp(z1)                |
+|<sub>      f@      |<sub>     ZFETCH      |<sub>( a -- ) ( Z: -- z )       |<sub>                             |
+|<sub>     fint     |<sub>      ZINT       |<sub>  ( -- ) ( Z: z -- i )     |<sub>                             |
+|<sub>     fln      |<sub>       ZLN       |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = ln(z1)                 |
+|<sub>      f*      |<sub>      ZMUL       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub> z3 = z1 * z2                |
+|<sub>     f**      |<sub>     ZMULMUL     |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub> z3 = z1^z2                  |
+|<sub>   fnegate    |<sub>     ZNEGATE     |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = -z1                    |
+|<sub>    fover     |<sub>      ZOVER      |<sub>  ( Z: z1 z2 -- z1 z2 z1 ) |<sub>                             |
+|<sub>     frot     |<sub>      ZROT       |<sub>( Z: z1 z2 z3 -- z2 z3 z1 )|<sub>                             |
+|<sub>     fsin     |<sub>       ZSIN      |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = sin(z1)                |
+|<sub>    fsqrt     |<sub>      ZSQRT      |<sub>  ( -- ) ( Z: z1 -- z2)    |<sub> z2 = z1^0.5                 |
+|<sub>      f!      |<sub>     ZSTORE      |<sub>( a -- ) ( Z: z -- )       |<sub>                             |
+|<sub>      f-      |<sub>      ZSUB       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub> z3 = z1 - z2                |
+|<sub>    fswap     |<sub>      ZSWAP      |<sub>  ( -- ) ( Z: z1 z2 -- z2 z1 )|<sub>                          |
+|<sub>     ftan     |<sub>      ZTAN       |<sub>  ( -- ) ( Z: z1 -- z2 )   |<sub> z2 = tan(z1)                |
+|<sub>name fvariable|<sub>  ZVARIABLE(name)|<sub>  ( -- ) ( Z: -- )         |<sub> name: db 0,0,0,0,0          |
+|<sub>              |<sub>ZVARIABLE(name,z)|<sub>  ( -- ) ( Z: -- )         |<sub> name: db exp,m1,m2,m3,m4 ;=z|
+|<sub>     f<=      |<sub>       ZLE       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub>if z1<=z2 then z3=1 else z3=0|
+|<sub>     f>=      |<sub>       ZGE       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub>if z1>=z2 then z3=1 else z3=0|
+|<sub>     f<>      |<sub>       ZNE       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub>if z1<>z2 then z3=1 else z3=0|
+|<sub>     f>       |<sub>       ZGT       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub>if z1> z2 then z3=1 else z3=0|
+|<sub>     f<       |<sub>       ZLT       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub>if z1< z2 then z3=1 else z3=0|
+|<sub>     f=       |<sub>       ZEQ       |<sub>  ( -- ) ( Z: z1 z2 -- z3 )|<sub>if z1= z2 then z3=1 else z3=0|
+|<sub>    f0<       |<sub>      Z0LT       |<sub>  ( -- flag ) ( Z: z -- )  |<sub> flag = z < 0                |
+|<sub>    f0=       |<sub>      Z0EQ       |<sub>  ( -- flag ) ( Z: z -- )  |<sub> flag = z == 0               |
+|<sub>   float+     |<sub>    ZFLOATADD    |<sub>  ( a1 -- a2 ) ( Z: -- )   |<sub> a2 = a1 + 5                 |
 
 
-|<sub> Original   |<sub>    M4 FORTH    |<sub>  Data stack               |<sub>  Comment                    |
-| :-------------: | :-----------------: | :----------------------------- | :------------------------------- |
-|<sub>  `1.23e7`  |<sub>PUSH_Z(`1.23e7`)|<sub>  ( -- ) ( F: -- `1.23e7` )|<sub> inline 15 bytes             |
-|<sub>    u>f     |<sub>     U_TO_Z     |<sub>  ( u -- ) ( F: -- u )     |<sub> u = 0..65535                |
-|<sub>            |<sub> PUSH_U_TO_Z(i) |<sub>  ( -- ) ( F: -- i )       |<sub> i = -65535..65535           |
-|<sub>            |<sub>    BC_TO_Z     |<sub>  ( -- ) ( F: -- u )       |<sub> reg BC = u = 0..65535       |
-|<sub>            |<sub>  SIGN_BC_TO_Z  |<sub>  ( -- ) ( F: -- i )       |<sub> reg BC = i = -32768..32767  |
-|<sub>            |<sub>   CF_BC_TO_Z   |<sub>  ( -- ) ( F: -- 17bit_i ) |<sub> carry+BC = i = -65535..65535|
-|<sub>            |<sub>      ZUMUL     |<sub>( b a -- c ) ( F: -- )     |<sub> c = b * a                   |
-|<sub>            |<sub> ZFLOAT2ARRAY(r)|<sub>  ( -- ) ( F: -- )         |<sub> r -> DB 1,2,3,4,5           |
-|<sub>            |<sub>    ZHEXDOT     |<sub>  ( -- ) ( F: r -- r )     |<sub> ." 12,45,78,9A,CD "         |
-|<sub> `3` fpick  |<sub> PUSH_ZPICK(`3`)|<sub>  ( -- ) ( F: -- r )       |<sub> only zpick is not supported!|
+|<sub> Original   |<sub>    M4 FORTH    |<sub>  Data stack                    |<sub>  Comment                    |
+| :-------------: | :-----------------: | :---------------------------------- | :------------------------------- |
+|<sub>  `1.23e7`  |<sub>PUSH_Z(`1.23e7`)|<sub>     ( -- ) ( Z: -- `1.23e7` )  |<sub> inline 15 bytes             |
+|<sub>    u>f     |<sub>     U_TO_Z     |<sub>     ( u -- ) ( Z: -- u )       |<sub> u = 0..65535                |
+|<sub>            |<sub> PUSH_U_TO_Z(i) |<sub>     ( -- ) ( Z: -- i )         |<sub> i = -65535..65535           |
+|<sub>            |<sub>    BC_TO_Z     |<sub>     ( -- ) ( Z: -- u )         |<sub> reg BC = u = 0..65535       |
+|<sub>            |<sub>  SIGN_BC_TO_Z  |<sub>     ( -- ) ( Z: -- i )         |<sub> reg BC = i = -32768..32767  |
+|<sub>            |<sub>   CF_BC_TO_Z   |<sub>     ( -- ) ( Z: -- 17bit_i )   |<sub> carry+BC = i = -65535..65535|
+|<sub>            |<sub>   ZXROM_UMUL   |<sub> ( b a -- c ) ( Z: -- )         |<sub> c = b * a                   |
+|<sub>            |<sub> ZFLOAT2ARRAY(z)|<sub>     ( -- ) ( Z: -- )           |<sub> z -> DB 1,2,3,4,5           |
+|<sub>            |<sub>    ZHEXDOT     |<sub>     ( -- ) ( Z: z -- z )       |<sub> ." 12,45,78,9A,CD "         |
+|<sub>            |<sub>     ZDEPTH     |<sub>( -- u ) ( Z: zn..z1 -- zn..z1 )|<sub> u = values on the calculator|
+|<sub> `3` fpick  |<sub> PUSH_ZPICK(`3`)|<sub>     ( -- ) ( Z: -- z )         |<sub> only zpick is not supported!|
 
     `1` fpick --> fdup
     `2` fpick --> fover
