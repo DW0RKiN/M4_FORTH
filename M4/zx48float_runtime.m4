@@ -35,32 +35,32 @@ __{}    ld   BC, (0x5C63)   ; 4:20      _zdepth   {STKBOT} - Address of bottom o
 __{}    xor   A             ; 1:4       _zdepth
 __{}    sbc  HL, BC         ; 2:15      _zdepth   HL = 5*n
 __{}    ld    B, H          ; 1:4       _zdepth
-__{}    ld    C, L          ; 1:4       _zdepth   1     1x = base
-__{}    add  HL, HL         ; 1:11      _zdepth   1
-__{}    adc   A, A          ; 1:4       _zdepth      *2 AHL = 2x
+__{}    ld    C, L          ; 1:4       _zdepth   1x = base
+__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 2x
 __{}    add  HL, BC         ; 1:11      _zdepth
-__{}    adc   A, 0x00       ; 2:7       _zdepth      +1 AHL = 3x
-__{}    add  HL, HL         ; 1:11      _zdepth   0
-__{}    adc   A, A          ; 1:4       _zdepth      *2 AHL = 6x
-__{}    add  HL, HL         ; 1:11      _zdepth   0
-__{}    adc   A, A          ; 1:4       _zdepth      *2 AHL = 12x
-__{}    add  HL, HL         ; 1:11      _zdepth   1
-__{}    adc   A, A          ; 1:4       _zdepth      *2 AHL = 24x
+__{}    adc   A, 0x00       ; 2:7       _zdepth   +1 AHL = 3x
+__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 6x
+__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 12x
+__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 24x
 __{}    add  HL, BC         ; 1:11      _zdepth
-__{}    adc   A, 0x00       ; 2:7       _zdepth      +1 AHL = 25x
-__{}    add  HL, HL         ; 1:11      _zdepth   1
-__{}    adc   A, A          ; 1:4       _zdepth      *2 AHL = 50x
+__{}    adc   A, 0x00       ; 2:7       _zdepth   +1 AHL = 25x
+__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 50x
 __{}    add  HL, BC         ; 1:11      _zdepth
-__{}    ld   BC, 0x0033     ; 3:10      _zdepth         rounding down constant
-__{}    adc   A, B          ; 1:4       _zdepth      +1 AHL = 51x
+__{}    ld   BC, 0x0033     ; 3:10      _zdepth   rounding down constant
+__{}    adc   A, B          ; 1:4       _zdepth   +1 AHL = 51x
 __{}    add  HL, BC         ; 1:11      _zdepth
-__{}    adc   A, B          ; 1:4       _zdepth      +0 AHL = 51x with rounding down constant
-__{}    ld    B, A          ; 1:4       _zdepth        (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
-__{}    ld    C, H          ; 1:4       _zdepth         BC = "A.H"
-__{}    add  HL, BC         ; 1:11      _zdepth         HL = "H.L" + "A.H"
+__{}    adc   A, B          ; 1:4       _zdepth   +0 AHL = 51x with rounding down constant
+__{}    ld    B, A          ; 1:4       _zdepth   (AHL * 257) >> 16 = (AHL0 + 0AHL) >> 16 = AH.L0 + A.HL = A0 + H.L + A.H
+__{}    ld    C, H          ; 1:4       _zdepth   BC = "A.H"
+__{}    add  HL, BC         ; 1:11      _zdepth   HL = "H.L" + "A.H"
 __{}    ld    L, H          ; 1:4       _zdepth
-__{}    adc   A, 0x00       ; 2:7       _zdepth         + carry
-__{}    ld    H, A          ; 1:4       _zdepth         HL = HL/5 = HL*(65536/65536)/5 = HL*13107/65536 = (HL*(1+256)*51) >> 16
+__{}    adc   A, 0x00       ; 2:7       _zdepth   + carry
+__{}    ld    H, A          ; 1:4       _zdepth   HL = HL/5 = HL*(65536/65536)/5 = HL*13107/65536 = (HL*(1+256)*51) >> 16
 __{}    ret                 ; 1:10      _zdepth}){}dnl
 }){}dnl
 dnl

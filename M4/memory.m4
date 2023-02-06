@@ -77,13 +77,13 @@ __{}__ADD_TOKEN({__TOKEN_CONSTANT},{constant},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CONSTANT},{dnl
-__{}define({__INFO},{constant}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameters!},
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameters!},
 __{}$#,{1},{
-__{}__{}.error {$0}($@): The second parameter is missing!},
+__{}__{}  .error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
+__{}__{}  .error {$0}($@): $# parameters found in macro!})
 __{}format({%-20s},$1) EQU $2{}dnl
 __{}define({$1},{$2})}){}dnl
 dnl
@@ -96,7 +96,7 @@ __{}__ADD_TOKEN({__TOKEN_VALUE},{value }$1,$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_VALUE},{dnl
-__{}define({__INFO},{value}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter with variable name!},
 eval($#>1),{1},{
@@ -122,7 +122,7 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_VALUE},$1{ value }$2,$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_VALUE},{dnl
-__{}define({__INFO},{push_value}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($2,{},{
 dnl # PUSH_VALUE(100,name)    --> (name) = 100
 dnl # PUSH_VALUE(0x2211,name) --> (name) = 0x2211
@@ -339,7 +339,7 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_TO},{push_to},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TO},{dnl
-__{}define({__INFO},{push_to}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse({$2},{},{
 dnl # PUSH_TO(200,name)    --> (name) = 200
 dnl # PUSH_TO(0x4422,name) --> (name) = 0x4422
@@ -363,11 +363,11 @@ dnl
 dnl
 dnl
 define({PUSHDOT_TO},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHDOT_TO},{pushdot_to},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHDOT_TO},{$1. to $2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSHDOT_TO},{dnl
-__{}define({__INFO},{pushdot_to}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse({$2},{},{
 dnl # PUSHDOT_TO(200,name)        --> (name) = 200
 dnl # PUSHDOT_TO(0x44221100,name) --> (name) = 0x1100,0x4422
@@ -399,35 +399,41 @@ dnl # CVARIABLE(name,100)    --> (name) = 100
 dnl # CVARIABLE(name,0x88)   --> (name) = 0x88
 define({CVARIABLE},{dnl
 __{}define({__PSIZE_}$1,1)dnl
-__{}__ADD_TOKEN({__TOKEN_CVARIABLE},{cvariable},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_CVARIABLE},{cvariable $1 $2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CVARIABLE},{dnl
-__{}define({__INFO},{cvariable}){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing  parameter with variable name!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-$#,{1},{dnl
-__{}define({__PSIZE_}$1,1)dnl
-__{}pushdef({LAST_HERE_NAME},$1)dnl
-__{}pushdef({LAST_HERE_ADD},1)dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}$1:
-__{}    db 0x00})},
-{dnl
-__{}define({__PSIZE_}$1,1)dnl
-__{}pushdef({LAST_HERE_NAME},$1)dnl
-__{}pushdef({LAST_HERE_ADD},1)dnl
-__{}ifelse(__IS_NUM($2),{0},{
-__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1:
-__{}__{}    db $2})})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing  parameter with variable name!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_REG($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__{}__IS_INSTRUCTION($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+__{}$#,{1},{dnl
+__{}__{}define({__PSIZE_}$1,1)dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},1)dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},$1:);           }__INFO{
+__{}__{}__{}    db 0x00             ;           }__INFO)},
+__{}__IS_NUM($2),1,{dnl
+__{}__{}define({__PSIZE_}$1,1)dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},1)dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},$1:);           }__INFO{   = ifelse(substr($2,0,2),{0x},eval($2),substr($2,0,2),{0X},eval($2),__HEX_L($2))
+__{}__{}__{}    db __HEX_L($2)             ;           }__INFO)},
+__{}{dnl
+__{}__{}define({__PSIZE_}$1,1)dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},1)dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},$1:);           }__INFO{
+__{}__{}__{}    db format({%-17s},$2);           }__INFO)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -436,35 +442,41 @@ dnl # VARIABLE(name,100)    --> (name) = 100
 dnl # VARIABLE(name,0x2211) --> (name) = 0x2211
 define({VARIABLE},{dnl
 __{}define({__PSIZE_}$1,2)dnl
-__{}__ADD_TOKEN({__TOKEN_VARIABLE},{variable},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_VARIABLE},{variable $1 $2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_VARIABLE},{dnl
-__{}define({__INFO},{variable}){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing  parameter with variable name!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-$#,{1},{dnl
-__{}define({__PSIZE_}$1,2){}dnl
-__{}pushdef({LAST_HERE_NAME},$1)dnl
-__{}pushdef({LAST_HERE_ADD},2)dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}$1:
-__{}    dw 0x0000})},
-{dnl
-__{}define({__PSIZE_}$1,2){}dnl
-__{}pushdef({LAST_HERE_NAME},$1)dnl
-__{}pushdef({LAST_HERE_ADD},2)dnl
-__{}ifelse(__IS_NUM($2),{0},{
-__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1:
-__{}__{}    dw $2})})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing  parameter with variable name!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_REG($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__{}__IS_INSTRUCTION($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+__{}$#,1,{dnl
+__{}__{}define({__PSIZE_}$1,2){}dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},2)dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},$1:);           }__INFO{
+__{}__{}__{}    dw 0x0000           ;           }__INFO)},
+__{}__IS_NUM($2),1,{dnl
+__{}__{}define({__PSIZE_}$1,2){}dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},2)dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},$1:);           }__INFO{   = ifelse(substr($2,0,2),{0x},eval($2),substr($2,0,2),{0X},eval($2),__HEX_HL($2))
+__{}__{}__{}    dw __HEX_HL($2)           ;           }__INFO)},
+__{}{dnl
+__{}__{}define({__PSIZE_}$1,2){}dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},2)dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},$1:);           }__INFO{
+__{}__{}__{}    dw format({%-17s},$2);           }__INFO)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -477,37 +489,37 @@ __{}__ADD_TOKEN({__TOKEN_INLINE_VARIABLE},{inline_variable __REMOVE_COMMA($@)},$
 dnl
 define({__ASM_TOKEN_INLINE_VARIABLE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing  parameter with variable name!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-__IS_MEM_REF($2),1,{
-__{}  .error {$0}($@): The variable value is memory reference!},
-$#,{1},{dnl
-__{}define({__PSIZE_}$1,2)
-    push DE             ; 1:11      __INFO   ( -- $1 )
-    ex   DE, HL         ; 1:4       __INFO
-    db   0x21           ; 3:10      __INFO   ld HL, 0x0000
-format({%-24s},$1:);           __INFO
-    dw   0x0000         ;           __INFO},
-__IS_NUM($2),1,{dnl
-__{}define({__PSIZE_}$1,2)
-    push DE             ; 1:11      __INFO   ( -- $1 )
-    ex   DE, HL         ; 1:4       __INFO
-    db   0x21           ; 3:10      __INFO   ld HL, __HEX_HL($2)
-format({%-24s},$1:);           __INFO
-    dw   __HEX_HL($2)         ;           __INFO},
-{dnl
-__{}define({__PSIZE_}$1,2)
-    push DE             ; 1:11      __INFO   ( -- $1 )
-    ex   DE, HL         ; 1:4       __INFO
-    db   0x21           ; 3:10      __INFO   ld HL, $2
-format({%-24s},$1:);           __INFO
-    dw   format({%-15s},$2);           __INFO}){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing  parameter with variable name!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_REG($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__{}__IS_INSTRUCTION($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+__{}__IS_MEM_REF($2),1,{
+__{}__{}  .error {$0}($@): The variable value is memory reference!},
+__{}$#,{1},{dnl
+__{}__{}define({__PSIZE_}$1,2)
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    db   0x21           ; 3:10      __INFO   = ld HL, 0x0000
+__{}__{}format({%-24s},$1:);           __INFO
+__{}__{}    dw   0x0000         ;           __INFO},
+__{}__IS_NUM($2),1,{dnl
+__{}__{}define({__PSIZE_}$1,2)
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    db   0x21           ; 3:10      __INFO   = ld HL, __HEX_HL($2)
+__{}__{}format({%-24s},$1:);           __INFO
+__{}__{}    dw   __HEX_HL($2)         ;           __INFO},
+__{}{dnl
+__{}__{}define({__PSIZE_}$1,2)
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    db   0x21           ; 3:10      __INFO   = ld HL, $2
+__{}__{}format({%-24s},$1:);           __INFO
+__{}__{}    dw   format({%-15s},$2);           __INFO}){}dnl
 }){}dnl
 dnl
 dnl
@@ -517,41 +529,39 @@ dnl # _DVARIABLE(name,100)         --> (name) = 100
 dnl # _DVARIABLE(name,0x88442211)  --> (name) = 0x88442211
 define({DVARIABLE},{dnl
 __{}define({__PSIZE_}$1,4)dnl
-__{}__ADD_TOKEN({__TOKEN_DVARIABLE},{dvariable},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DVARIABLE},{dvariable $1 $2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DVARIABLE},{dnl
-__{}define({__INFO},{dvariable}){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing parameter with variable name!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-$#,{1},{dnl
-__{}define({__PSIZE_}$1,4){}dnl
-__{}pushdef({LAST_HERE_NAME},$1)dnl
-__{}pushdef({LAST_HERE_ADD},4)dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1:
-__{}__{}    dw 0x0000
-__{}__{}    dw 0x0000})},
-{dnl
-__{}ifelse(eval(ifelse(__IS_NUM($2),{0},{1},{0})),{1},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter with variable name!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_REG($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__{}__IS_INSTRUCTION($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+__{}$#,{1},{dnl
+__{}__{}define({__PSIZE_}$1,4){}dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},4)dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},$1:);           }__INFO{
+__{}__{}__{}    dw 0x0000           ;           }__INFO{
+__{}__{}__{}    dw 0x0000           ;           }__INFO)},
+__{}__IS_NUM($2),0,{
 __{}__{}  .error {$0}($@): M4 does not know $2 parameter value!},
 __{}{dnl
 __{}__{}define({__PSIZE_}$1,4){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}__{}pushdef({LAST_HERE_ADD},4)dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}format({%-24s},$1:); = $2{}dnl
-__{}__{}__{} = ifelse(substr($2,0,2),{0x},eval($2),__HEX_DEHL($2)){}dnl
+__{}__{}format({%-24s},$1:);           }__INFO{   ifelse(substr($2,0,2),{0x},eval($2),substr($2,0,2),{0X},eval($2),__HEX_DEHL($2)){}dnl
 __{}__{}__{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
-__{}__{}__{}    dw __HEX_HL($2)           ; = eval(($2) & 0xffff)
-__{}__{}__{}    dw __HEX_DE($2)           ; = eval((($2) >> 16) & 0xffff)})}){}dnl
-})}){}dnl
+__{}__{}__{}    dw __HEX_HL($2)           ;           }__INFO{   = eval(($2) & 0xffff)
+__{}__{}__{}    dw __HEX_DE($2)           ;           }__INFO{   = eval((($2) >> 16) & 0xffff)})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
