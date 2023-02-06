@@ -455,7 +455,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 |<sub>            |<sub>   ZXROM_UMUL   |<sub> ( b a -- c ) ( Z: -- )         |<sub> c = b * a                   |
 |<sub>            |<sub> ZFLOAT2ARRAY(z)|<sub>     ( -- ) ( Z: -- )           |<sub> z -> DB 1,2,3,4,5           |
 |<sub>            |<sub>    ZHEXDOT     |<sub>     ( -- ) ( Z: z -- z )       |<sub> ." 12,45,78,9A,CD "         |
-|<sub>            |<sub>     ZDEPTH     |<sub>( -- u ) ( Z: zn..z1 -- zn..z1 )|<sub> u = values on the calculator|
+|<sub>            |<sub>     ZDEPTH     |<sub>( -- n ) ( Z: zn..z1 -- zn..z1 )|<sub> n = values on the calculator|
 |<sub> `3` fpick  |<sub> PUSH_ZPICK(`3`)|<sub>     ( -- ) ( Z: -- z )         |<sub> only zpick is not supported!|
 
     `1` fpick --> fdup
