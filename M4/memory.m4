@@ -2242,16 +2242,17 @@ dnl # tuck c! 1+
 dnl # ( char addr -- addr+1 )
 dnl # store 8-bit number at addr and increment
 define({TUCK_CSTORE_1ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_TUCK_CSTORE_1ADD},{tuck_cstore_1add},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{tuck c! 1+}){}dnl
+__{}__ADD_TOKEN({__TOKEN_NIP},{__dtto}){}dnl
+__{}__ADD_TOKEN({__TOKEN_1ADD},{__dtto}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_TUCK_CSTORE_1ADD},{dnl
-__{}define({__INFO},{tuck_cstore_1add}){}dnl
-
-                        ;[3:23]     tuck c! +1  tuck_cstore_1add   ( x addr -- addr+2 )
-    ld  (HL),E          ; 1:7       tuck c! +1  tuck_cstore_1add
-    inc  HL             ; 1:6       tuck c! +1  tuck_cstore_1add
-    pop  DE             ; 1:10      tuck c! +1  tuck_cstore_1add}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[3:23]     __INFO   ( x addr -- addr+2 )
+    ld  (HL),E          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # over swap c!

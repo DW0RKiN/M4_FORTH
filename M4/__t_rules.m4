@@ -1608,8 +1608,7 @@ define({__A},{$1$2}){}dnl
 dnl
 define({__COMPILE_REC},{ifelse(eval(__COUNT_TOKEN>__TOKEN_I),{1},{dnl
 __{}define({__TOKEN_I},eval(__TOKEN_I+1))dnl
-__{}define({__COMPILE_INFO},__GET_TOKEN_INFO(__TOKEN_I))dnl
-__{}ifelse(__COMPILE_INFO,{__dtto},{define({__COMPILE_INFO},__GET_TOKEN_INFO(eval(__TOKEN_I-1)))})dnl
+__{}ifelse(__GET_TOKEN_INFO(__TOKEN_I),{__dtto},,{define({__COMPILE_INFO},__GET_TOKEN_INFO(__TOKEN_I))}){}dnl
 __{}ifelse(__GET_TOKEN_PARAM(__TOKEN_I),{()},{dnl
 __{}__{}__A({__ASM}substr(__GET_TOKEN_NAME(__TOKEN_I),1))},
 __{}{dnl
