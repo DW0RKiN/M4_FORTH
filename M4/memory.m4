@@ -4981,21 +4981,20 @@ dnl # move>
 dnl # ( addr1 addr2 u -- )
 dnl # If u is greater than zero, copy the contents of u consecutive 16-bit words at addr1 to the u consecutive 16-bit words at addr2.
 define({MOVEGT},{dnl
-__{}__ADD_TOKEN({__TOKEN_MOVEGT},{movegt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_MOVEGT},{move>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MOVEGT},{dnl
-__{}define({__INFO},{movegt}){}dnl
-
-    or    A             ; 1:4       move>
-    adc  HL, HL         ; 1:11      move>
-    ld    B, H          ; 1:4       move>
-    ld    C, L          ; 1:4       move>   BC = 2*u
-    pop  HL             ; 1:10      move>   HL = from = addr1
-    jr    z, $+4        ; 2:7/12    move>
-    lddr                ; 2:u*42/32 move>   addr--
-    pop  HL             ; 1:10      move>
-    pop  DE             ; 1:10      move>}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    or    A             ; 1:4       __INFO
+    adc  HL, HL         ; 1:11      __INFO
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO   BC = 2*u
+    pop  HL             ; 1:10      __INFO   HL = from = addr1
+    jr    z, $+4        ; 2:7/12    __INFO
+    lddr                ; 2:u*42/32 __INFO   addr--
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -5007,17 +5006,16 @@ __{}__ADD_TOKEN({__TOKEN_ADDSTORE},{+!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ADDSTORE},{dnl
-__{}define({__INFO},{addstore}){}dnl
-
-    ld    A, E          ; 1:4       +! addstore
-    add   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    inc  HL             ; 1:6       +! addstore
-    ld    A, D          ; 1:4       +! addstore
-    adc   A,(HL)        ; 1:7       +! addstore
-    ld  (HL),A          ; 1:7       +! addstore
-    pop  HL             ; 1:10      +! addstore
-    pop  DE             ; 1:10      +! addstore}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO
+    add   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    A, D          ; 1:4       __INFO
+    adc   A,(HL)        ; 1:7       __INFO
+    ld  (HL),A          ; 1:7       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # num addr +!
