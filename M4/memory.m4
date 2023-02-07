@@ -4859,34 +4859,27 @@ __{}  .error {$0}($@): $# parameters found in macro!},
 {dnl
 __{}ifelse(dnl
 __{}__IS_MEM_REF($3),{1},{dnl
-__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_C},16)dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_HL},{    mov  HL,format({%-12s},$1); 3:16      __INFO   from_addr})},
-__{}__{}__{}{dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_C},10)dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_HL},{    mov  HL, format({%-11s},$1); 3:10      __INFO   from_addr})}){}dnl
-__{}__{}__{}ifelse(__IS_MEM_REF($2),{1},{dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_C},eval(20+PUSH3_MOVE_C))dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_B},25)dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_DE},{    mov  DE,format({%-12s},$2); 4:20      __INFO   to_addr})},
-__{}__{}__{}{
-__{}__{}__{}__{}define({PUSH3_MOVE_C},eval(10+PUSH3_MOVE_C))dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_B},24)dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_DE},{    mov  DE, format({%-11s},$2); 3:10      __INFO   to_addr})}){}dnl
-__{}__{}__{}define({PUSH3_MOVE_C},eval(88+PUSH3_MOVE_C))
-__{}__{}                      ;[PUSH3_MOVE_B:PUSH3_MOVE_C+42*u]__INFO   ( -- ) from = $1, to = $2, u = $3 words
-__{}__{}    ld   BC, format({%-11s},$3); 4:20      __INFO   BC = u_words
-__{}__{}    sla   C             ; 2:8       __INFO
-__{}__{}    rl    B             ; 2:8       __INFO
-__{}__{};   jr    c, $+eval(PUSH3_MOVE_B-6)       ; 2:7/12    __INFO   negative or unsigned overflow?
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__ADD_LD_REG16(                {BC},$3){}dnl
+__{}__{}__ADD_LD_REG16(        {HL},$2,{BC},$3){}dnl
+__{}__{}__ADD_LD_REG16({DE},$1,{HL},$2,{BC},$3){}dnl
+__{}__{}format({%32s},;[eval(__SUM_BYTES_16BIT+14)]:[eval(68+__SUM_CLOCKS_16BIT)+u*42]) __INFO   # default version
+__{}__{}    push DE             ; 1:11      __INFO   ( -- )  from = $1, to = $2, u = $3 words
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({BC},$3){}dnl
+__{}__{}__CODE_16BIT
 __{}__{}    ld    A, C          ; 1:4       __INFO
 __{}__{}    or    B             ; 1:4       __INFO
-__{}__{}    jr    z, $+eval(PUSH3_MOVE_B-10)       ; 2:7/12    __INFO   zero?
-__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}PUSH3_MOVE_HL
-__{}__{}PUSH3_MOVE_DE
-__{}__{}    ldir                ; 2:u*42-5  __INFO   addr++
+__{}__{}    jr    z, $+eval(10+__SUM_BYTES_16BIT-__BYTES_16BIT)       ; 2:7/12    __INFO   zero?{}dnl
+__{}__{}__LD_REG16({HL},$2,{BC},$3){}dnl
+__{}__{}__CODE_16BIT{}dnl
+__{}__{}__LD_REG16({DE},$1,{HL},$2,{BC},$3){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    sla   C             ; 2:8       __INFO
+__{}__{}    rl    B             ; 2:8       __INFO
+__{}__{};   jr    c, $+4        ; 2:7/12    __INFO   negative or unsigned overflow?
+__{}__{}    ldir                ; 2:16/21   __INFO   addr++
 __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__IS_NUM($3),{0},{dnl
@@ -4938,7 +4931,7 @@ __{}__{}__{}    mov (HL),B          ; 1:7       __INFO   to_addr
 __{}__{}__{}    pop  HL             ; 1:10      __INFO},
 __{}__{}__{}{dnl
 __{}__{}__{}    mov format({%-16s},($2){,}BC); 4:20      __INFO   to_addr})},
-__{}__{}1,1,{ifelse(eval(2*($3)>65535),{1},{
+__{}__{}{ifelse(eval(2*($3)>65535),{1},{
 __{}__{}__{}__{}  .warning  {$0}($@): Trying to copy data bigger 64k!})
 __{}__{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}__{}__RESET_ADD_LD_REG16{}dnl
@@ -4956,32 +4949,6 @@ __{}__{}__{}__CODE_16BIT{}dnl
 __{}__{}__{}__LD_REG16({DE},$1,{HL},$2,{BC},2*$3){}dnl
 __{}__{}__{}__CODE_16BIT
 __{}__{}__{}    ldir                ; 2:16/21   __INFO   addr++
-__{}__{}__{}    pop  HL             ; 1:10      __INFO
-__{}__{}__{}    pop  DE             ; 1:10      __INFO},
-__{}__{}{ifelse(eval(2*($3)>65535),{1},{
-__{}__{}__{}__{}  .warning  {$0}($@): Trying to copy data bigger 64k!}){}dnl
-__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_C},16)dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_HL},{    mov  HL,format({%-12s},$1); 3:16      __INFO   from_addr})},
-__{}__{}__{}{dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_C},10)dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_HL},{    mov  HL, format({%-11s},$1); 3:10      __INFO   from_addr})}){}dnl
-__{}__{}__{}ifelse(__IS_MEM_REF($2),{1},{dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_C},eval(20+PUSH3_MOVE_C))dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_B},16)dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_DE},{    mov  DE,format({%-12s},$2); 4:20      __INFO   to_addr})},
-__{}__{}__{}{
-__{}__{}__{}__{}define({PUSH3_MOVE_C},eval(10+PUSH3_MOVE_C))dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_B},15)dnl
-__{}__{}__{}__{}define({PUSH3_MOVE_DE},{    mov  DE, format({%-11s},$2); 3:10      __INFO   to_addr})}){}dnl
-__{}__{}__{}define({PUSH3_MOVE_C},eval(47+42*($3)+PUSH3_MOVE_C))
-__{}__{}__{}                        ;format({%-11s},[PUSH3_MOVE_B:PUSH3_MOVE_C])__INFO   ( -- ) from = $1, to = $2, u = $3 words
-__{}__{}__{}    ld   BC, __HEX_HL(2*($3))     ; 3:10      __INFO   BC = eval(2*($3)) chars
-__{}__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}__{}PUSH3_MOVE_HL
-__{}__{}__{}PUSH3_MOVE_DE
-__{}__{}__{}    ldir                ; 2:u*42-5  __INFO   addr++
 __{}__{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}__{}    pop  DE             ; 1:10      __INFO})})}){}dnl
 }){}dnl
