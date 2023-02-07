@@ -4801,54 +4801,54 @@ dnl # u move
 dnl # ( from_addr to_addr -- )
 dnl # If u is greater than zero, copy the contents of u consecutive words at from_addr to the u consecutive words at to_addr.
 define({PUSH_MOVE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_MOVE},{push_move},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_MOVE},{$1 move},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_MOVE},{dnl
-__{}define({__INFO},{push_move}){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing parameter!},
-eval($#>1),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-{dnl
-__{}ifelse(dnl
-__{}__IS_MEM_REF($1),{1},{
-__{}__{}                       ;[15:70+42*u]$1 move   ( from_addr to_addr -- )
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 move   BC = u_words
-__{}__{}    sla   C             ; 2:8       $1 move
-__{}__{}    rl    B             ; 2:8       $1 move
-__{}__{};   jr    c, $+9        ; 2:7/12    $1 move   negative or unsigned overflow?
-__{}__{}    ld    A, C          ; 1:4       $1 move
-__{}__{}    or    B             ; 1:4       $1 move
-__{}__{}    jr    z, $+5        ; 2:7/12    $1 move   zero?
-__{}__{}    ex   DE, HL         ; 1:4       $1 move   HL = from_addr, DE = to_addr
-__{}__{}    ldir                ; 2:u*42-5  $1 move   addr++
-__{}__{}    pop  HL             ; 1:10      $1 move
-__{}__{}    pop  DE             ; 1:10      $1 move},
-__{}__IS_NUM($1),{0},{dnl
-__{}__{}  .error  {$0}(): Bad parameter!},
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}                       ;[15:70+42*u]__INFO   ( from_addr to_addr -- )
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   BC = u_words
+__{}__{}    sla   C             ; 2:8       __INFO
+__{}__{}    rl    B             ; 2:8       __INFO
+__{}__{};   jr    c, $+9        ; 2:7/12    __INFO   negative or unsigned overflow?
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    or    B             ; 1:4       __INFO
+__{}__{}    jr    z, $+5        ; 2:7/12    __INFO   zero?
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}    ldir                ; 2:u*42-5  __INFO   addr++
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+__{}__IS_NUM($1),0,{dnl
+__{}__{}  .error  {$0}($@): Bad parameter!},
 __{}{dnl
 __{}__{}ifelse(eval(($1)<1),{1},{
-__{}__{}__{}                        ;[2:20]     $1 move   ( from_addr to_addr -- )   u = 0 or negative
-__{}__{}__{}    pop  HL             ; 1:10      $1 move
-__{}__{}__{}    pop  DE             ; 1:10      $1 move},
-__{}__{}eval($1),{1},{
-__{}__{}__{}                        ;[7:56]     $1 move   ( from_addr to_addr -- )   u = 1 word
-__{}__{}__{}    ex   DE, HL         ; 1:4       $1 move   HL = from_addr, DE = to_addr
-__{}__{}__{}    ldi                 ; 2:16      $1 move   addr++
-__{}__{}__{}    ldi                 ; 2:16      $1 move   addr++
-__{}__{}__{}    pop  HL             ; 1:10      $1 move
-__{}__{}__{}    pop  DE             ; 1:10      $1 move},
+__{}__{}__{}                        ;[2:20]     __INFO   ( from_addr to_addr -- )   u = 0 or negative
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO},
+__{}__{}__HEX_HL($1),0x0001,{
+__{}__{}__{}                        ;[7:54]     __INFO   ( from_addr to_addr -- )   u = 1 word
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldi                 ; 2:16      __INFO   addr++
+__{}__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}__{}    ld  (DE),A          ; 1:7       __INFO
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}{
-__{}__{}__{}                        ;format({%-11s},[8:eval(29+42*($1))])$1 move   ( from_addr to_addr -- )   u = $1 words
+__{}__{}__{}                        ;format({%-11s},[8:eval(29+42*($1))])__INFO   ( from_addr to_addr -- )   u = $1 words
 __{}__{}__{}ifelse(eval(2*($1)>65535),{1},{dnl
 __{}__{}__{}    .warning  {$0}($@): Trying to copy data bigger 64k!
 __{}__{}__{}}){}dnl
-__{}__{}__{}    ld   BC, __HEX_HL(2*($1))     ; 3:10      $1 move   BC = eval(2*($1)) chars
-__{}__{}__{}    ex   DE, HL         ; 1:4       $1 move   HL = from_addr, DE = to_addr
-__{}__{}__{}    ldir                ; 2:u*42-5  $1 move   addr++
-__{}__{}__{}    pop  HL             ; 1:10      $1 move
-__{}__{}__{}    pop  DE             ; 1:10      $1 move})})})}){}dnl
+__{}__{}__{}    ld   BC, __HEX_HL(2*($1))     ; 3:10      __INFO   BC = eval(2*($1)) chars
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
+__{}__{}__{}    ldir                ; 2:u*42-5  __INFO   addr++
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
