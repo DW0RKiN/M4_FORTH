@@ -4074,7 +4074,7 @@ __{}__{}__{}    ld  (HL), C         ; 1:7       __INFO
 __{}__{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}__{}    ld  (HL), B         ; 1:7       __INFO
 __{}__{}__{}    pop  HL             ; 1:11      __INFO},
-__{}__{}__{}_TYP_SINGLE,{smal},{
+__{}__{}__{}_TYP_SINGLE,{small},{
 __{}__{}__{}                        ;[10:64]    __INFO   ( -- )  val=$1, addr=$2
 __{}__{}__{}    push HL             ; 1:11      __INFO
 __{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      __INFO
@@ -5003,7 +5003,7 @@ dnl # +!
 dnl # ( num addr -- )
 dnl # Adds num to the 16-bit number stored at addr.
 define({ADDSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_ADDSTORE},{addstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ADDSTORE},{+!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ADDSTORE},{dnl
@@ -5024,71 +5024,116 @@ dnl # num addr +!
 dnl # ( -- )
 dnl # Adds num to the 16-bit number stored at addr.
 define({PUSH2_ADDSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_ADDSTORE},{push2_addstore},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_ADDSTORE},{$1 $2 +!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_ADDSTORE},{dnl
-__{}define({__INFO},{push2_addstore}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{2},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(__IS_NUM($1),{0},{dnl
-    push HL             ; 1:11      push2_addstore($1,$2)
-    .warning {$0}($1): M4 does not know $1 parameter value!
-    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2_addstore($1,$2)
-    ld   HL, format({%-11s},{($2)}); 3:16      push2_addstore($1,$2)
-    add  HL, BC         ; 1:11      push2_addstore($1,$2)
-    ld   format({%-15s},($2){,} HL); 3:16      push2_addstore($1,$2)
-    pop  HL             ; 1:10      push2_addstore($1,$2)},
-__IS_MEM_REF($1),{1},{dnl
-    push HL             ; 1:11      push2_addstore($1,$2)
-    ld   BC, format({%-11s},$1); 4:20      push2_addstore($1,$2)
-    ld   HL, format({%-11s},{($2)}); 3:16      push2_addstore($1,$2)
-    add  HL, BC         ; 1:11      push2_addstore($1,$2)
-    ld   format({%-15s},($2){,} HL); 3:16      push2_addstore($1,$2)
-    pop  HL             ; 1:10      push2_addstore($1,$2)},
-eval($1),0,{dnl
-                        ;           push2_addstore($1,$2)},
-eval($1),1,{dnl
-    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
-    inc  BC             ; 1:6       push2_addstore($1,$2)
-    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
-eval($1),2,{dnl
-    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
-    inc  BC             ; 1:6       push2_addstore($1,$2)
-    inc  BC             ; 1:6       push2_addstore($1,$2)
-    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
-eval($1),3,{dnl
-    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
-    inc  BC             ; 1:6       push2_addstore($1,$2)
-    inc  BC             ; 1:6       push2_addstore($1,$2)
-    inc  BC             ; 1:6       push2_addstore($1,$2)
-    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
-eval((($1) & 0xffff) == 0xffff),1,{dnl
-    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
-    dec  BC             ; 1:6       push2_addstore($1,$2)
-    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
-eval((($1) & 0xffff) == 0xfffe),1,{dnl
-    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
-    dec  BC             ; 1:6       push2_addstore($1,$2)
-    dec  BC             ; 1:6       push2_addstore($1,$2)
-    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
-eval((($1) & 0xffff) == 0xfffd),1,{dnl
-    ld   BC, format({%-11s},{($2)}); 4:20      push2_addstore($1,$2)
-    dec  BC             ; 1:6       push2_addstore($1,$2)
-    dec  BC             ; 1:6       push2_addstore($1,$2)
-    dec  BC             ; 1:6       push2_addstore($1,$2)
-    ld   format({%-15s},($2){,} BC); 4:20      push2_addstore($1,$2)},
-{dnl
-    ld   BC, format({%-11s},$2); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      push2_addstore($1,$2)
-    ld    A,(BC)        ; 1:7       push2_addstore($1,$2)
-    add   A, __HEX_L($1)       ; 2:7       push2_addstore($1,$2)   lo($1)
-    ld  (BC),A          ; 1:7       push2_addstore($1,$2)
-    inc  BC             ; 1:6       push2_addstore($1,$2)
-    ld    A,(BC)        ; 1:7       push2_addstore($1,$2)
-    adc   A, __HEX_H($1)       ; 2:7       push2_addstore($1,$2)   hi($1)
-    ld  (BC),A          ; 1:7       push2_addstore($1,$2)})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{
+__{}__{}                       ;[17:111]    __INFO   ( -- )  $2 += $1
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO   +num
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO   addr
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}    add   A,(HL)        ; 1:7       __INFO   lo
+__{}__{}    ld  (BC),A          ; 1:7       __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}    adc   A,(HL)        ; 1:7       __INFO   hi
+__{}__{}    ld  (BC),A          ; 1:7       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}                       ;[13:84]     __INFO   ( -- )  ($2) += $1
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__{}    ld   HL,format({%-12s},{($2)}); 3:16      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    ld  format({%-16s},{($2), HL}); 3:16      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($2):_TYP_SINGLE,1:small,{
+__{}__{}                       ;[12:74]     __INFO   ( -- )  $2 += $1
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
+__{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO
+__{}__{}    ld  format({%-16s},{$2, HL}); 3:16      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($2),1,{
+__{}__{}                       ;[13:68]     __INFO   ( -- )  $2 += $1
+__{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}ifelse(__IS_NUM($1),1,{dnl
+__{}__{}__{}    add   A, __HEX_L($1)       ; 2:7       __INFO   lo($1)},
+__{}__{}{dnl
+__{}__{}__{}    add   A, format({%-11s},low $1); 2:7       __INFO   lo($1)})
+__{}__{}    ld  (BC),A          ; 1:7       __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}ifelse(__IS_NUM($1),1,{dnl
+__{}__{}__{}    adc   A, __HEX_H($1)       ; 2:7       __INFO   hi($1)},
+__{}__{}{dnl
+__{}__{}__{}    adc   A, format({%-11s},high $1); 2:7       __INFO   hi($1)})
+__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}__HEX_HL($1),0x0000,{
+__{}__{}                        ;           __INFO   ( -- )  ($2) += $1},
+__{}__HEX_HL($1),0x0001,{
+__{}__{}                        ;[9:46]     __INFO   ( -- )  ($2) += $1
+__{}__{}    ld   BC, format({%-11s},{($2)}); 4:20      __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO},
+__{}__HEX_HL($1),0xFFFF,{
+__{}__{}                        ;[9:46]     __INFO   ( -- )  ($2) += $1
+__{}__{}    ld   BC, format({%-11s},{($2)}); 4:20      __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO
+__{}__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO},
+__{}__HEX_HL($1),0x0002,{
+__{}__{}                       ;[10:52]     __INFO   ( -- )  ($2) += $1
+__{}__{}    ld   BC, format({%-11s},{($2)}); 4:20      __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO},
+__{}__HEX_HL($1),0xFFFE,{
+__{}__{}                       ;[10:52]     __INFO   ( -- )  ($2) += $1
+__{}__{}    ld   BC, format({%-11s},{($2)}); 4:20      __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO
+__{}__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO},
+__{}__HEX_HL($1),0x0003,{
+__{}__{}                       ;[11:58]     __INFO   ( -- )  ($2) += $1
+__{}__{}    ld   BC, format({%-11s},{($2)}); 4:20      __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO},
+__{}__HEX_HL($1),0xFFFD,{
+__{}__{}                       ;[11:58]     __INFO   ( -- )  ($2) += $1
+__{}__{}    ld   BC, format({%-11s},{($2)}); 4:20      __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO
+__{}__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO},
+__{}{
+__{}__{}                       ;[12:58]     __INFO   ( -- )  ($2) += $1
+__{}__{}    ld   BC, format({%-11s},$2); 3:10      __INFO   # default version
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}ifelse(__IS_NUM($1),1,{dnl
+__{}__{}__{}    add   A, __HEX_L($1)       ; 2:7       __INFO   lo($1)},
+__{}__{}{dnl
+__{}__{}__{}    add   A, format({%-11s},low $1); 2:7       __INFO   lo($1)})
+__{}__{}    ld  (BC),A          ; 1:7       __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}ifelse(__IS_NUM($1),1,{dnl
+__{}__{}__{}    adc   A, __HEX_H($1)       ; 2:7       __INFO   hi($1)},
+__{}__{}{dnl
+__{}__{}__{}    adc   A, format({%-11s},high $1); 2:7       __INFO   hi($1)})
+__{}__{}    ld  (BC),A          ; 1:7       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # -------------------------------------------------------------------------------------
