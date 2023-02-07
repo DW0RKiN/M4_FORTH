@@ -2339,25 +2339,6 @@ __{}define({__INFO},__COMPILE_INFO)
     inc  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
-dnl # number over c!
-dnl # ( addr -- addr )
-dnl # store 8-bit number at addr with save addr
-define({PUSH_OVER_CSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_OVER_CSTORE},{push_over_cstore},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSH_OVER_CSTORE},{dnl
-__{}define({__INFO},{push_over_cstore}){}dnl
-ifelse(
-$1,{},{
-__{}  .error {$0}(): Missing parameter!},
-eval($#>1),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-{
-__{}                        ;[2:10]     $1 over c!  push_over_cstore($1)   ( addr -- addr )   (addr)=$1
-__{}    ld  (HL),low format({%-7s},$1); 2:10      $1 over c!  push_over_cstore($1)})}){}dnl
-dnl
-dnl
 dnl # over number swap c!
 dnl # ( addr x -- addr x )
 dnl # store 8-bit number at addr with save addr
