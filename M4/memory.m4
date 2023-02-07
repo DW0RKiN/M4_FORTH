@@ -1783,7 +1783,7 @@ __{}__{}    xor   A             ; 1:4       __INFO
 __{}__{}    ld    B, A          ; 1:4       __INFO
 __{}__{}    sbc  HL, BC         ; 1:11      __INFO},
 __{}{
-__{}__{}                        ;[8:40]     __INFO  ( x -- x-$1 )  # default version can be changed with "define({_TYP_SINGLE},{fast})"
+__{}__{}                        ;[8:40]     __INFO  ( x -- x-$1 )
 __{}__{}    ld    A,format({%-12s},($1)); 3:13      __INFO
 __{}__{}    ld    C, A          ; 1:4       __INFO
 __{}__{}    xor   A             ; 1:4       __INFO
@@ -5104,19 +5104,18 @@ __{}__ADD_TOKEN({__TOKEN_2FETCH},{2@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2FETCH},{dnl
-__{}define({__INFO},{2fetch}){}dnl
-
-                        ;[10:65]    2@ _2fetch
-    push DE             ; 1:11      2@ _2fetch
-    ld    E, (HL)       ; 1:7       2@ _2fetch
-    inc  HL             ; 1:6       2@ _2fetch
-    ld    D, (HL)       ; 1:7       2@ _2fetch
-    inc  HL             ; 1:6       2@ _2fetch
-    ld    A, (HL)       ; 1:7       2@ _2fetch
-    inc  HL             ; 1:6       2@ _2fetch
-    ld    H, (HL)       ; 1:7       2@ _2fetch
-    ld    L, A          ; 1:4       2@ _2fetch
-    ex   DE, HL         ; 1:4       2@ _2fetch ( adr -- lo hi )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[10:65]    __INFO   ( adr -- lo hi )
+    push DE             ; 1:11      __INFO
+    ld    E, (HL)       ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    D, (HL)       ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    A, (HL)       ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H, (HL)       ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -5129,18 +5128,34 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_2FETCH},{$1 2@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_2FETCH},{dnl
-__{}define({__INFO},{push_2fetch}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    push DE             ; 1:11      $1 2@ push_2fetch($1)
-    push HL             ; 1:11      $1 2@ push_2fetch($1)
-__{}ifelse(__IS_NUM($1),{0},{dnl
-__{}    ld   DE,format({%-12s},{(2+$1)}); 4:20      $1 2@ push_2fetch($1) hi}dnl
-__{},{dnl
-__{}    ld   DE,format({%-12s},(eval(2+$1))); 4:20      $1 2@ push_2fetch($1) hi})
-    ld   HL,format({%-12s},($1)); 3:16      $1 2@ push_2fetch($1) lo}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}                       ;[13:88]     __INFO   ( -- lo hi )
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},(3+$1)); 3:16      __INFO
+__{}__{}    ld    D, (HL)       ; 1:7       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld    E, (HL)       ; 1:7       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld    A, (HL)       ; 1:7       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld    L, (HL)       ; 1:7       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO},
+__{}{
+__{}__{}                        ;[9:58]     __INFO   ( -- lo hi )
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}ifelse(__IS_NUM($1),1,{
+__{}__{}__{}    ld   DE,(__HEX_HL(2+$1))    ; 4:20      __INFO   hi16 = ($1 + 2)},
+__{}__{}{
+__{}__{}__{}    ld   DE,format({%-12s},{(2+$1)}); 4:20      __INFO   hi16 =  ($1 + 2)})
+__{}__{}    ld   HL,format({%-12s},($1)); 3:16      __INFO   lo16}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -5211,57 +5226,66 @@ dnl # hi lo addr 2!
 dnl # ( hi -- ) lo=$1 addr=$2
 dnl # store(addr) store 32-bit number at addr
 define({PUSH2_2STORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_2STORE},{push2_2store},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_2STORE},{$1 $2 2!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_2STORE},{dnl
-__{}define({__INFO},{push2_2store}){}dnl
-ifelse(dnl
-$1,{},{
-__{}  .error {$0}(): Missing parameters!},
-$#,{1},{
-__{}  .error {$0}($@): The second parameter is missing!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-{dnl
-__{}ifelse(__IS_MEM_REF($2),{1},{
-__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}__{}                        ;[18:118]   $1 $2 2!  push2_2store($1,$2)   ( hi -- )  lo=$1, addr=$2
-__{}__{}__{}    push HL             ; 1:11      $1 $2 2!  push2_2store($1,$2)   save hi
-__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      $1 $2 2!  push2_2store($1,$2)   lo
-__{}__{}__{}    ld  (HL), C         ; 1:7       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld  (HL), B         ; 1:7       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    pop  BC             ; 1:11      $1 $2 2!  push2_2store($1,$2)   load hi
-__{}__{}__{}    ld  (HL), C         ; 1:7       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld  (HL), B         ; 1:7       $1 $2 2!  push2_2store($1,$2)},
-__{}__{}__{}{dnl
-__{}__{}__{}                        ;[16:90]    $1 $2 2!  push2_2store($1,$2)   ( hi -- )  lo=$1, addr=$2
-__{}__{}__{}    ld    C, L          ; 1:4       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld    B, H          ; 1:4       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld   HL, format({%-11s},$2); 3:16      $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld  (HL), format({%-10s}, low $1); 2:10      $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld  (HL),format({%-11s}, high $1); 2:10      $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld  (HL), C         ; 1:7       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    inc  HL             ; 1:6       $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld  (HL), B         ; 1:7       $1 $2 2!  push2_2store($1,$2)})},
-__{}{dnl
-__{}__{}                        ;[11:ifelse(__IS_MEM_REF($1),{1},{62},{56})]    $1 $2 2!  push2_2store($1,$2)   ( hi -- )  lo=$1, addr=$2
-__{}__{}ifelse(__IS_NUM($2),{0},{dnl
-__{}__{}__{}    ld   format({%-15s},{($2+2), HL}); 3:16      $1 $2 2!  push2_2store($1,$2)   hi
-__{}__{}__{}    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld   (format({%-14s},{$2), HL}); 3:16      $1 $2 2!  push2_2store($1,$2)   lo},
-__{}__{}__{}{dnl
-__{}__{}__{}    ld   (__HEX_HL($2+2)), HL   ; 3:16      $1 $2 2!  push2_2store($1,$2)   hi
-__{}__{}__{}    ld   HL, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{3:16},{3:10})      $1 $2 2!  push2_2store($1,$2)
-__{}__{}__{}    ld   (__HEX_HL($2)), HL   ; 3:16      $1 $2 2!  push2_2store($1,$2)   lo})})
-__{}    pop  HL             ; 1:10      $1 $2 2!  push2_2store($1,$2)
-__{}    ex   DE, HL         ; 1:4       $1 $2 2!  push2_2store($1,$2)})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameters!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2),{1:1},{
+__{}__{}                        ;[18:118]   __INFO   ( hi -- )  lo=$1, addr=$2
+__{}__{}    push HL             ; 1:11      __INFO   save hi
+__{}__{}    ld   HL, format({%-11s},$2); 3:16      __INFO
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   lo
+__{}__{}    ld  (HL), C         ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL), B         ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    pop  BC             ; 1:11      __INFO   load hi
+__{}__{}    ld  (HL), C         ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL), B         ; 1:7       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}__IS_MEM_REF($2),{1},{
+__{}__{}                        ;[16:90]    __INFO   ( hi -- )  lo=$1, addr=$2
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld   HL, format({%-11s},$2); 3:16      __INFO
+__{}__{}    ld  (HL), format({%-10s}, low $1); 2:10      __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),format({%-11s}, high $1); 2:10      __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL), C         ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL), B         ; 1:7       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}                        ;[11:62]    __INFO   ( hi -- )  lo=$1, addr=$2
+__{}__{}    ld   format({%-15s},{($2+2), HL}); 3:16      __INFO   hi
+__{}__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}__{}    ld   (format({%-14s},{$2), HL}); 3:16      __INFO   lo
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}__IS_NUM($2),1,{
+__{}__{}                        ;[11:56]    __INFO   ( hi -- )  lo=$1, addr=$2
+__{}__{}    ld   (__HEX_HL($2+2)), HL   ; 3:16      __INFO   hi
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __INFO
+__{}__{}    ld   (__HEX_HL($2)), HL   ; 3:16      __INFO   lo
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}{
+__{}__{}                        ;[11:56]    __INFO   ( hi -- )  lo=$1, addr=$2
+__{}__{}    ld   format({%-15s},{($2+2), HL}); 3:16      __INFO   hi
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __INFO
+__{}__{}    ld   (format({%-14s},{$2), HL}); 3:16      __INFO   lo
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
