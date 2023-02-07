@@ -4938,6 +4938,26 @@ __{}__{}__{}    mov (HL),B          ; 1:7       __INFO   to_addr
 __{}__{}__{}    pop  HL             ; 1:10      __INFO},
 __{}__{}__{}{dnl
 __{}__{}__{}    mov format({%-16s},($2){,}BC); 4:20      __INFO   to_addr})},
+__{}__{}1,1,{ifelse(eval(2*($3)>65535),{1},{
+__{}__{}__{}__{}  .warning  {$0}($@): Trying to copy data bigger 64k!})
+__{}__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__{}__RESET_ADD_LD_REG16{}dnl
+__{}__{}__{}__ADD_LD_REG16(                {BC},2*$3){}dnl
+__{}__{}__{}__ADD_LD_REG16(        {HL},$2,{BC},2*$3){}dnl
+__{}__{}__{}__ADD_LD_REG16({DE},$1,{HL},$2,{BC},2*$3){}dnl
+__{}__{}__{}                      format({%-13s},;[eval(__SUM_BYTES_16BIT+6)]:[eval(37+__SUM_CLOCKS_16BIT+$3*42)]) __INFO   # default version
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- )  from = $1, to = $2, u = $3 words
+__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__{}__LD_REG16({BC},2*$3){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}__LD_REG16({HL},$2,{BC},2*$3){}dnl
+__{}__{}__{}__CODE_16BIT{}dnl
+__{}__{}__{}__LD_REG16({DE},$1,{HL},$2,{BC},2*$3){}dnl
+__{}__{}__{}__CODE_16BIT
+__{}__{}__{}    ldir                ; 2:16/21   __INFO   addr++
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}{ifelse(eval(2*($3)>65535),{1},{
 __{}__{}__{}__{}  .warning  {$0}($@): Trying to copy data bigger 64k!}){}dnl
 __{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl

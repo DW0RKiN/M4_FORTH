@@ -24,23 +24,6 @@ __{}    ld   HL, __FORM({%-11s},{$1}); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-define({__RESET_ADD_LD_REG16},{dnl
-__{}define({__SUM_CLOCKS_16BIT},0){}dnl
-__{}define({__SUM_BYTES_16BIT}, 0){}dnl
-__{}define({__SUM_PRICE_16BIT}, 0){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-define({__ADD_LD_REG16},{dnl
-__{}__LD_REG16($1,$2,$3,$4,$5,$6,$7,$8){}dnl
-__{}__add({__SUM_CLOCKS_16BIT},__CLOCKS_16BIT){}dnl
-__{}__add({__SUM_BYTES_16BIT}, __BYTES_16BIT){}dnl
-__{}__add({__SUM_PRICE_16BIT}, __PRICE_16BIT){}dnl
-}){}dnl
-dnl
-dnl
-dnl
 dnl # Input
 dnl # $1 ...price
 dnl # $2 ...path (like "1121231")

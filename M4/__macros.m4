@@ -304,6 +304,23 @@ define({__add},{define({$1},eval(}$1{+}$2{))}){}dnl
 dnl
 dnl
 dnl
+define({__RESET_ADD_LD_REG16},{dnl
+__{}define({__SUM_CLOCKS_16BIT},0){}dnl
+__{}define({__SUM_BYTES_16BIT}, 0){}dnl
+__{}define({__SUM_PRICE_16BIT}, 0){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__ADD_LD_REG16},{dnl
+__{}__LD_REG16($1,$2,$3,$4,$5,$6,$7,$8){}dnl
+__{}__add({__SUM_CLOCKS_16BIT},__CLOCKS_16BIT){}dnl
+__{}__add({__SUM_BYTES_16BIT}, __BYTES_16BIT){}dnl
+__{}__add({__SUM_PRICE_16BIT}, __PRICE_16BIT){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # print array without comma
 define({__REMOVE_COMMA},{dnl
 __{}$1{}ifelse(eval($#>1),1,{ $0(shift($@))}){}dnl
