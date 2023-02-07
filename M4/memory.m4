@@ -2609,41 +2609,45 @@ __{}__ADD_TOKEN({__TOKEN_FILL},{fill},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_FILL},{dnl
-__{}define({__INFO},{fill}){}dnl
-ifelse({fast},{fast},{
-__{}    ld    A, D          ; 1:4       fill  ( addr u char -- )
-__{}    or    E             ; 1:4       fill
-__{}    ld    A, L          ; 1:4       fill
-__{}    pop  HL             ; 1:10      fill  HL = from
-__{}    jr    z, $+15       ; 2:7/12    fill
-__{}    ld  (HL),A          ; 1:7       fill
-__{}    dec  DE             ; 1:6       fill
-__{}    ld    A, D          ; 1:4       fill
-__{}    or    E             ; 1:4       fill
-__{}    jr    z, $+9        ; 2:7/12    fill
-__{}    ld    C, E          ; 1:4       fill
-__{}    ld    B, D          ; 1:4       fill
-__{}    ld    E, L          ; 1:4       fill
-__{}    ld    D, H          ; 1:4       fill
-__{}    inc  DE             ; 1:6       fill  DE = to
-__{}    ldir                ; 2:u*21/16 fill
-__{}    pop  HL             ; 1:10      fill
-__{}    pop  DE             ; 1:10      fill},
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}_TYP_SINGLE,{small},{
+__{}    ;[17:cca 73+u*26+int(u/256)*24] __INFO  ( addr u char -- )  # small version can be changed with "define({_TYP_SINGLE},{default})"
+__{}    ld    A, L          ; 1:4       __INFO  A  = char
+__{}    pop  HL             ; 1:10      __INFO  HL = addr
+__{}    ld    B, E          ; 1:4       __INFO
+__{}    inc   D             ; 1:4       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    dec   E             ; 1:4       __INFO  u = DE = 0x..00?
+__{}    jr    z, $+6        ; 2:7/12    __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    djnz $-2            ; 2:13/8    __INFO
+__{}    dec   D             ; 1:4       __INFO
+__{}    jr   nz, $-5        ; 2:7/12    __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
 __{}{
-__{}    ld    A, L          ; 1:4       fill  ( addr u char -- )
-__{}    pop  HL             ; 1:10      fill  HL = addr, A = char
-__{}    ld    B, E          ; 1:4       fill
-__{}    inc   D             ; 1:4       fill
-__{}    inc   E             ; 1:4       fill
-__{}    dec   E             ; 1:4       fill
-__{}    jr    z, $+6        ; 2:7/12    fill
-__{}    ld  (HL),A          ; 1:7       fill
-__{}    inc  HL             ; 1:6       fill
-__{}    djnz $-2            ; 2:13/8    fill
-__{}    dec   D             ; 1:4       fill
-__{}    jr   nz, $-5        ; 2:7/12    fill
-__{}    pop  HL             ; 1:10      fill
-__{}    pop  DE             ; 1:10      fill})}){}dnl
+__{}                      ;[21:99+u*21] __INFO  ( addr u char -- )  # default version can be changed with "define({_TYP_SINGLE},{small})"
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    or    E             ; 1:4       __INFO
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    pop  HL             ; 1:10      __INFO  HL = from
+__{}    jr    z, $+15       ; 2:7/12    __INFO  u = 0?
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    dec  DE             ; 1:6       __INFO
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    or    E             ; 1:4       __INFO
+__{}    jr    z, $+9        ; 2:7/12    __INFO  u = 1?
+__{}    ld    C, E          ; 1:4       __INFO
+__{}    ld    B, D          ; 1:4       __INFO
+__{}    ld    E, L          ; 1:4       __INFO
+__{}    ld    D, H          ; 1:4       __INFO
+__{}    inc  DE             ; 1:6       __INFO  DE = to
+__{}    ldir                ; 2:u*21/16 __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
