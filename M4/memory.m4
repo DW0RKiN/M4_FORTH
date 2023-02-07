@@ -2475,24 +2475,26 @@ __{}__{}__{}                        ;[2:20]     __INFO   ( from_addr to_addr -- 
 __{}__{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}eval($1),{1},{
-__{}__{}__{}                        ;[5:40]     __INFO   ( from_addr to_addr -- )   u = 1 char
-__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
-__{}__{}__{}    ldi                 ; 2:16      __INFO   1x
+__{}__{}__{}                        ;[4:34]     __INFO   ( from_addr to_addr -- )   u = 1 char
+__{}__{}__{}    ld    A,(DE)        ; 1:7       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}eval($1),{2},{
-__{}__{}__{}                        ;[7:56]     __INFO   ( from_addr to_addr -- )   u = 2 chars
+__{}__{}__{}                        ;[7:54]     __INFO   ( from_addr to_addr -- )   u = 2 chars
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
 __{}__{}__{}    ldi                 ; 2:16      __INFO   1x
-__{}__{}__{}    ldi                 ; 2:16      __INFO   2x
+__{}__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}__{}    ld  (DE),A          ; 1:7       __INFO   2x
 __{}__{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}eval($1),{3},{
-__{}__{}__{}                        ;[8:72]     __INFO   ( from_addr to_addr -- )   u = 3 chars
+__{}__{}__{}                        ;[9:70]     __INFO   ( from_addr to_addr -- )   u = 3 chars
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
 __{}__{}__{}    ldi                 ; 2:16      __INFO   1x
 __{}__{}__{}    ldi                 ; 2:16      __INFO   2x
-__{}__{}__{}    ldi                 ; 2:16      __INFO   3x
+__{}__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}__{}    ld  (DE),A          ; 1:7       __INFO   3x
 __{}__{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}__{}    pop  DE             ; 1:10      __INFO},
 __{}__{}{
