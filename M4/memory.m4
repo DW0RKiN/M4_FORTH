@@ -2628,7 +2628,7 @@ __{}    jr   nz, $-5        ; 2:7/12    __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __{}{
-__{}                      ;[21:99+u*21] __INFO  ( addr u char -- )  # default version can be changed with "define({_TYP_SINGLE},{small})"
+__{}                      ;[21:94+u*21] __INFO  ( addr u char -- )  # default version can be changed with "define({_TYP_SINGLE},{small})"
 __{}    ld    A, D          ; 1:4       __INFO
 __{}    or    E             ; 1:4       __INFO
 __{}    ld    A, L          ; 1:4       __INFO
@@ -2655,46 +2655,49 @@ dnl # addr u char fill
 dnl # ( addr u -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH_FILL},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_FILL},{push_fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_FILL},{$1 fill},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_FILL},{dnl
-__{}define({__INFO},{push_fill}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse({fast},{fast},{dnl
-__{}    ld    A, H          ; 1:4       $1 fill
-__{}    or    L             ; 1:4       $1 fill
-__{}    jr    z, $+16       ; 2:7/12    $1 fill
-__{}    ld    C, L          ; 1:4       $1 fill
-__{}    ld    B, H          ; 1:4       $1 fill
-__{}    ld    L, E          ; 1:4       $1 fill
-__{}    ld    H, D          ; 1:4       $1 fill HL = from
-__{}    ld  (HL),format({%-11s},$1); 2:10      $1 fill
-__{}    dec  BC             ; 1:6       $1 fill
-__{}    ld    A, B          ; 1:4       $1 fill
-__{}    or    C             ; 1:4       $1 fill
-__{}    jr    z, $+5        ; 2:7/12    $1 fill
-__{}    inc  DE             ; 1:6       $1 fill DE = to
-__{}    ldir                ; 2:u*21/16 $1 fill
-__{}    pop  HL             ; 1:10      $1 fill
-__{}    pop  DE             ; 1:10      $1 fill},
-__{}{dnl
-__{}    ld    A, format({%-11s},$1); 2:7       $1 fill
-__{}    ld    B, L          ; 1:4       $1 fill
-__{}    inc   H             ; 1:4       $1 fill
-__{}    inc   L             ; 1:4       $1 fill
-__{}    dec   L             ; 1:4       $1 fill
-__{}    jr    z, $+6        ; 2:7/12    $1 fill
-__{}    ld  (DE),A          ; 1:7       $1 fill
-__{}    inc  DE             ; 1:6       $1 fill
-__{}    djnz $-2            ; 2:13/8    $1 fill
-__{}    dec   H             ; 1:4       $1 fill
-__{}    jr   nz, $-5        ; 2:7/12    $1 fill
-__{}    pop  HL             ; 1:10      $1 fill
-__{}    pop  DE             ; 1:10      $1 fill})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}_TYP_SINGLE,_TYP_SINGLE,{
+__{}    ;[17:cca 66+u*26+int(u/256)*24] __INFO  ( addr u -- )  char = $1  # small version can be changed with "define({_TYP_SINGLE},{default})"
+__{}    ld    A, format({%-11s},$1); 2:7       __INFO  A = char
+__{}    ld    B, L          ; 1:4       __INFO
+__{}    inc   H             ; 1:4       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    dec   L             ; 1:4       __INFO  u = HL = 0x..00?
+__{}    jr    z, $+6        ; 2:7/12    __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    inc  DE             ; 1:6       __INFO
+__{}    djnz $-2            ; 2:13/8    __INFO
+__{}    dec   H             ; 1:4       __INFO
+__{}    jr   nz, $-5        ; 2:7/12    __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO},
+__{}{
+__{}                      ;[20:83+u*21] __INFO  ( addr u -- )  char = $1  # default version can be changed with "define({_TYP_SINGLE},{small})"
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    jr    z, $+16       ; 2:7/12    __INFO  u  = 0?
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, H          ; 1:4       __INFO
+__{}    ld    L, E          ; 1:4       __INFO
+__{}    ld    H, D          ; 1:4       __INFO  HL = from
+__{}    ld  (HL),format({%-11s},$1); 2:10      __INFO
+__{}    dec  BC             ; 1:6       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    or    C             ; 1:4       __INFO
+__{}    jr    z, $+5        ; 2:7/12    __INFO  u  = 1?
+__{}    inc  DE             ; 1:6       __INFO  DE = to
+__{}    ldir                ; 2:u*21/16 __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
