@@ -333,35 +333,56 @@ __{}    pop  DE             ; 1:10      __INFO},
 __{}  .error {$0}($@): The variable with this name not exist!})}){}dnl
 dnl
 dnl
-dnl
+dnl # PUSH_TO(200,name)    --> (name) = 200
+dnl # PUSH_TO(0x4422,name) --> (name) = 0x4422
 define({PUSH_TO},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TO},{push_to},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TO},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse({$2},{},{
-dnl # PUSH_TO(200,name)    --> (name) = 200
-dnl # PUSH_TO(0x4422,name) --> (name) = 0x4422
-__{}  .error {$0}(): Missing  parameter with variable name!},
-eval(__PSIZE_$2!=2),1,{
-__{}  .error {$0}($@): The single variable with this name not exist!ifelse(ifdef({__PSIZE_$2},4,{ Did you want to write {PUSHDOT_TO}?})},
-$#,{1},{
-__{}  .error {$0}(): The second parameter with the initial value is missing!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($1),{1},{
-__{}    ld   BC, format({%-11s},{$1}); 4:20      $1 to {$2}
-__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 to {$2}},
-{dnl
-__{}ifelse(__IS_NUM($1),{0},{
-__{}  .warning {$0}($@): M4 does not know $1 parameter value!})
-__{}    ld   BC, format({%-11s},{$1}); 3:10      $1 to {$2}
-__{}    ld  format({%-16s},{($2), BC}); 4:20      $1 to {$2}{}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need {$0}(value,name)},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameters!},
+__{}eval(__PSIZE_$2!=2),1,{
+__{}__{}  .error {$0}($@): The single variable with this name not exist!ifelse(ifdef({__PSIZE_$2},4,{ Did you want to write {PUSHDOT_TO}?})},
+__{}{dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({BC},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld  format({%-16s},{($2), BC}); 4:20      __INFO{}dnl
 })}){}dnl
 dnl
 dnl
 dnl
+dnl # PUSH2_TO(hi16,lo16,name)        --> (name) = 200
+define({PUSH2_TO},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_TO},{$1 $2 to $3},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_TO},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need {$0}(hi16,lo16,name)},
+__{}eval($#>3),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameters!},
+__{}eval(__PSIZE_$3!=4),1,{
+__{}__{}  .error {$0}($@): The double variable with this name not exist!ifelse(ifdef({__PSIZE_$3},2,{ Did you want to write {PUSH_TO}?})},
+__{}{dnl
+__{}define({_TMP_INFO},__INFO{   lo}){}dnl
+__{}__LD_REG16({BC},$2){}dnl
+__{}__CODE_16BIT
+__{}    ld  format({%-16s},{($3), BC}); 4:20      __INFO   lo{}dnl
+__{}define({_TMP_INFO},__INFO{   hi}){}dnl
+__{}__LD_REG16({BC},$1,{BC},$2){}dnl
+__{}__CODE_16BIT
+__{}    ld  format({%-16s},{($3+2), BC}); 4:20      __INFO   hi{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # obsolete
 define({PUSHDOT_TO},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSHDOT_TO},{$1. to $2},$@){}dnl
 }){}dnl
@@ -372,7 +393,7 @@ ifelse({$2},{},{
 dnl # PUSHDOT_TO(200,name)        --> (name) = 200
 dnl # PUSHDOT_TO(0x44221100,name) --> (name) = 0x1100,0x4422
 __{}  .error {$0}(): Missing  parameter with variable name!},
-eval({__PSIZE_$2}!=4),1,{
+eval(__PSIZE_$2!=4),1,{
 __{}  .error {$0}($@): The double variable with this name not exist!ifelse(ifdef({__PSIZE_$2},2,{ Did you want to write {PUSH_TO}?})},
 $#,{1},{
 __{}  .error {$0}(): The second parameter with the initial value is missing!},
@@ -606,11 +627,10 @@ __{}__ADD_TOKEN({__TOKEN_HERE},{here},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_HERE},{dnl
-__{}define({__INFO},{here}){}dnl
-
-    push DE             ; 1:11      here
-    ex   DE, HL         ; 1:4       here
-    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      here}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -620,7 +640,7 @@ __{}__ADD_TOKEN({__TOKEN_ALLOT},{allot},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ALLOT},{dnl
-__{}define({__INFO},{allot})
+__{}define({__INFO},__COMPILE_INFO)
 __{}  .error __INFO{($@): Sorry, but ALLOT only supports constant allocation size, such as "PUSH(8) ALLOT"}dnl
 }){}dnl
 dnl
@@ -628,11 +648,11 @@ dnl
 dnl
 dnl # PUSH_ALLOT(8)      --> reserve 8 bytes
 define({PUSH_ALLOT},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_ALLOT},{push_allot},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ALLOT},{$1 allot},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_ALLOT},{dnl
-__{}define({__INFO},{push_allot}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing name parameter!},
 eval($#>1),{1},{
@@ -664,40 +684,43 @@ dnl
 dnl
 dnl # COMMA      --> reserve one word = TOS
 define({COMMA},{dnl
-__{}__ADD_TOKEN({__TOKEN_COMMA},{comma},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_COMMA},{{,}},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_COMMA},{dnl
-__{}define({__INFO},{comma}){}dnl
-ifelse(eval($#>1),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-{
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}HL); 3:16      ,
-__{}    pop  HL             ; 1:10      ,
-__{}    ex   DE, HL         ; 1:4       ,{}dnl
-__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    dw 0x0000})})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}HL); 3:16      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}    dw 0x0000           ;           __INFO})})}){}dnl
 dnl
 dnl
 dnl
 dnl # PUSH_COMMA(8)      --> reserve one word = 8
 define({PUSH_COMMA},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_COMMA},{push_comma},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_COMMA},{$1 {,}},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_COMMA},{dnl
-__{}define({__INFO},{push_comma}){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing value parameter!},
-eval($#>1),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-{
-__{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 ,
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}BC); 4:20      $1 ,{}dnl
-__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    dw $1})})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_INFO},{{__INFO}}){}dnl
+__{}__{}__LD_REG16({BC},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}BC); 4:20      __INFO{}dnl
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}    dw format({%-17s},$1);           }__CONCATENATE_WITH({ },__INFO){comma})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -787,11 +810,11 @@ __{}dnl # __PUSHS_COMMA_ANALYSIS_SUB256
 __{}dnl # __PUSHS_COMMA_ANALYSIS_SUB16
 __{}dnl # __PUSHS_COMMA_ANALYSIS_SAME
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    dw $1}){}dnl
+__{}__{}    dw format({%-17s},$1);           $1 comma}){}dnl
 __{}ifelse(eval($#>2),{1},{__PUSHS_COMMA_ANALYSIS(shift($@))},
 __{}{dnl
 __{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}    dw $2})}){}dnl
+__{}__{}__{}    dw format({%-17s},$2);           $2 comma})}){}dnl
 }){}dnl
 dnl
 dnl
@@ -806,19 +829,25 @@ __{}define({__INFO},{pushs_comma}){}dnl
 ifelse($1,{},{
 __{}  .error {$0}(): Missing value parameter!},
 eval($#),{1},{PUSH_COMMA($1)},
-eval($#),{2},{
-__{}    ld   BC, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 ,
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}BC); 4:20      $1 ,{}dnl
-__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
+eval($#),{2},   {
 __{}undefine({__COMMA}){}dnl
+__{}define({_TMP_INFO},$1{ }__COMMA){}dnl
+__{}__LD_REG16({BC},$1){}dnl
+__{}define({__COMMA},{,}){}dnl
+__{}__CODE_16BIT
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}BC); 4:20      $1 ,{}dnl
+__{}undefine({__COMMA}){}dnl
+__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2)){}dnl
 __{}define({_TMP_INFO},$2{ }__COMMA){}dnl
 __{}__LD_REG16({BC},$2,{BC},$1){}dnl
 __{}define({__COMMA},{,}){}dnl
 __{}__CODE_16BIT
-__{}    ld  format({%-16s},(LAST_HERE_NAME{}+LAST_HERE_ADD){,}BC); 4:20      $2 ,{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
+__{}    ld  format({%-16s},(LAST_HERE_NAME{}+LAST_HERE_ADD){,}BC); 4:20      $2 ,{}dnl
+__{}undefine({__COMMA}){}dnl
+__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
 __{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    dw $1
-__{}__{}    dw $2})},
+__{}__{}    dw format({%-17s},$1);           $1 comma
+__{}__{}    dw format({%-17s},$2);           $2 comma})},
 {dnl
 __{}define({PUSHS_COMMA_SUM},$#){}dnl
 __{}define({__PUSHS_COMMA_ANALYSIS_ADD1},1){}dnl
@@ -1364,27 +1393,31 @@ dnl
 dnl
 dnl # BUFFER(name,8)      --> Reserve 8 bytes
 define({BUFFER},{dnl
-__{}__ADD_TOKEN({__TOKEN_BUFFER},{buffer},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_BUFFER},{buffer $1 $2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_BUFFER},{dnl
-__{}define({__INFO},{buffer}){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing name parameter!},
-eval($#>2),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
-__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-$#,{1},{
-__{}  .error {$0}(): Missing byte size parameter!},
-{dnl
-__{}ifelse(__IS_NUM($2),{0},{
-__{}  .warning {$0}($@): M4 does not know $2 parameter value!}){}dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1:
-__{}__{}    ds $2})})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing name parameter!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_REG($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
+__{}__IS_INSTRUCTION($1),{1},{
+__{}__{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
+__{}$#,{1},{
+__{}__{}  .error {$0}(): Missing byte size parameter!},
+__{}__IS_MEM_REF($2),1,{
+__{}__{}  .error {$0}($@): $2 is memory pointer!},
+__{}__IS_NUM($2),0,{
+__{}__{}  .error {$0}($@): M4 does not know $2 parameter value!},
+__{}{dnl
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$2)){}dnl
+__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}format({%-24s},$1:);           __INFO
+__{}__{}__{}    ds format({%-17s},$2);           __INFO})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # -------------------------------------------------------------------------------------
@@ -1478,12 +1511,11 @@ __{}__ADD_TOKEN({__TOKEN_DUP_CFETCH_SWAP},{dup c@ swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_CFETCH_SWAP},{dnl
-__{}define({__INFO},{dup_cfetch_swap}){}dnl
-
-                        ;[4:25]     dup C@ swap dup_cfetch_swap ( addr -- char addr )
-    push DE             ; 1:11      dup C@ swap dup_cfetch_swap
-    ld    E,(HL)        ; 1:7       dup C@ swap dup_cfetch_swap
-    ld    D, 0x00       ; 2:7       dup C@ swap dup_cfetch_swap}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[4:25]     __INFO   ( addr -- char addr )
+    push DE             ; 1:11      __INFO
+    ld    E,(HL)        ; 1:7       __INFO
+    ld    D, 0x00       ; 2:7       __INFO}){}dnl
 dnl
 dnl
 dnl # C@ swap C@
@@ -1494,14 +1526,13 @@ __{}__ADD_TOKEN({__TOKEN_CFETCH_SWAP_CFETCH},{c@ swap c@},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CFETCH_SWAP_CFETCH},{dnl
-__{}define({__INFO},{cfetch_swap_cfetch}){}dnl
-
-                        ;[6:29]     @C swap @C cfetch_swap_cfetch ( addr2 addr1 -- char1 char2 )
-    ld    L,(HL)        ; 1:7       @C swap @C cfetch_swap_cfetch
-    ld    H, 0x00       ; 2:7       @C swap @C cfetch_swap_cfetch
-    ex   DE, HL         ; 1:4       @C swap @C cfetch_swap_cfetch
-    ld    L,(HL)        ; 1:7       @C swap @C cfetch_swap_cfetch
-    ld    H, D          ; 1:4       @C swap @C cfetch_swap_cfetch}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:29]     __INFO   ( addr2 addr1 -- char1 char2 )
+    ld    L,(HL)        ; 1:7       __INFO
+    ld    H, 0x00       ; 2:7       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    L,(HL)        ; 1:7       __INFO
+    ld    H, D          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # C@ swap C@ swap
@@ -1512,14 +1543,13 @@ __{}__ADD_TOKEN({__TOKEN_CFETCH_SWAP_CFETCH_SWAP},{c@ swap c@ swap},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CFETCH_SWAP_CFETCH_SWAP},{dnl
-__{}define({__INFO},{cfetch_swap_cfetch_swap}){}dnl
-
-                        ;[6:29]     @C swap @C swap cfetch_swap_cfetch_swap ( addr2 addr1 -- char2 char1 )
-    ld    L, (HL)       ; 1:7       @C swap @C swap cfetch_swap_cfetch_swap
-    ld    H, 0x00       ; 2:7       @C swap @C swap cfetch_swap_cfetch_swap
-    ld    A, (DE)       ; 1:7       @C swap @C swap cfetch_swap_cfetch_swap
-    ld    E, A          ; 1:4       @C swap @C swap cfetch_swap_cfetch_swap
-    ld    D, H          ; 1:4       @C swap @C swap cfetch_swap_cfetch_swap}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:29]     __INFO   ( addr2 addr1 -- char2 char1 )
+    ld    L, (HL)       ; 1:7       __INFO
+    ld    H, 0x00       ; 2:7       __INFO
+    ld    A, (DE)       ; 1:7       __INFO
+    ld    E, A          ; 1:4       __INFO
+    ld    D, H          ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # over C@ over C@
@@ -1551,21 +1581,21 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH},{$1 c@},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing address parameter!},
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),1,{
-__{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),1,{
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL,format({%-12s},$1); 3:16      __INFO
-    ld    C,(HL)        ; 1:7       __INFO
-    ld    H, 0x00       ; 2:7       __INFO},
-{
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL,format({%-12s},($1)); 3:16      __INFO
-    ld    H, 0x00       ; 2:7       __INFO}){}dnl
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
+__{}__{}    ld    L,(HL)        ; 1:7       __INFO
+__{}__{}    ld    H, 0x00       ; 2:7       __INFO},
+__{}{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL,format({%-12s},($1)); 3:16      __INFO
+__{}__{}    ld    H, 0x00       ; 2:7       __INFO}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1578,19 +1608,21 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_PUSH},{$1 c@ $2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH_PUSH},{dnl
-__{}define({__INFO},{push_cfetch_push}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address and second parameter!},
-__{}$#,{1},{
-__{}__{}.error {$0}():  The second parameter is missing!},
-__{}$#,{2},{
-    push DE             ; 1:11      $1 @ $2  push_cfetch_push($1,$2)
-    push HL             ; 1:11      $1 @ $2  push_cfetch_push($1,$2)
-    ld    A,format({%-12s},($1)); 3:13      $1 @ $2  push_cfetch_push($1,$2)
-    ld    D, 0x00       ; 2:7       $1 @ $2  push_cfetch_push($1,$2)
-    ld    E, A          ; 1:4       $1 @ $2  push_cfetch_push($1,$2)
-    ld   HL, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:16},{3:10})      $1 @ $2  push_cfetch_push($1,$2)},
-__{}__{}.error {$0}($@): $# parameters found in macro!)}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@):  Unexpected parameter!},
+__{}{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld    A,format({%-12s},($1)); 3:13      __INFO
+__{}__{}    ld    D, 0x00       ; 2:7       __INFO
+__{}__{}    ld    E, A          ; 1:4       __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({HL},$2,{D},0x00){}dnl
+__{}__{}__CODE_16BIT}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1609,21 +1641,35 @@ ifelse($#,0,{
 __{}  .error {$0}(): Missing first and address parameter!},
 __{}$#,1,{
 __{}  .error {$0}($@): Missing address parameter!},
-eval($#>2),1,{
-__{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($2),1,{
-    push DE             ; 1:11      __INFO
-    push HL             ; 1:11      __INFO
-    ld   DE,format({%-12s},$1); ifelse(__IS_MEM_REF($1),1,{4:20},{3:10})      __INFO
-    ld   HL,format({%-12s},$2); 3:16      __INFO
-    ld    L,(HL)        ; 1:7       __INFO
-    ld    H, 0x00       ; 2:7       __INFO},
-{
-    push DE             ; 1:11      __INFO
-    push HL             ; 1:11      __INFO
-    ld   DE,format({%-12s},$1); ifelse(__IS_MEM_REF($1),1,{4:20},{3:10})      __INFO
-    ld   HL,format({%-12s},{($2)}); 3:16      __INFO
-    ld    H, 0x00       ; 2:7       __INFO}){}dnl
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}$1:$2:__IS_MEM_REF($2),$2:$2:1,{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({HL},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    ld    D, 0x00       ; 2:7       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}__IS_MEM_REF($2),1,{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({DE},$1){}dnl
+__{}__{}__CODE_16BIT{}dnl
+__{}__{}__LD_REG16({HL},$2,{DE},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld    L,(HL)        ; 1:7       __INFO{}dnl
+__{}__{}__LD_R_NUM(__INFO,{H},0x00,{D},__HEX_H($1),{E},__HEX_L($1))},
+__{}{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},{($2)}); 3:16      __INFO
+__{}__{}    ld    H, 0x00       ; 2:7       __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({DE},$1,{H},0x00){}dnl
+__{}__{}__CODE_16BIT}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1636,17 +1682,68 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_ADD},{$1 c@ add},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH_ADD},{dnl
-__{}define({__INFO},{push_cfetch_add}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld    A,format({%-12s},($1)); 3:13      $1 @ +  push_cfetch_add($1)   ( x -- x+($1) )
-    add   A, L          ; 1:4       $1 @ +  push_cfetch_add($1)
-    ld    L, A          ; 1:4       $1 @ +  push_cfetch_add($1)
-    adc   A, H          ; 1:4       $1 @ +  push_cfetch_add($1)
-    sub   L             ; 1:4       $1 @ +  push_cfetch_add($1)
-    ld    H, A          ; 1:4       $1 @ +  push_cfetch_add($1)}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1):_TYP_SINGLE,1:fast,{
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({HL},$1){}dnl
+__{}__{}                       ;[10:47]     __INFO  ( x -- x+$1 )  # fast version can be changed with "define({_TYP_SINGLE},{default})"
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO{}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    add   A,(HL)        ; 1:7       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    adc   A, B          ; 1:4       __INFO
+__{}__{}    sub   L             ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({HL},$1){}dnl
+__{}__{}                        ;[9:49]     __INFO  ( x -- x+$1 )  # default version can be changed with "define({_TYP_SINGLE},{fast})"
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO{}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld    L,(HL)        ; 1:7       __INFO
+__{}__{}    ld    H, 0x00       ; 2:7       __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO},
+__{}__IS_MEM_REF($1):_TYP_SINGLE,1:fast,{;# never use
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({BC},$1){}dnl
+__{}__{}                       ;[10:47]     __INFO{}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO   ( x -- x+$1 )
+__{}__{}    add   A, L          ; 1:4       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    adc   A, H          ; 1:4       __INFO
+__{}__{}    sub   L             ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO},
+__{}__IS_MEM_REF($1),1,{;# never use
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({BC},$1){}dnl
+__{}__{}                        ;[9:49]     __INFO{}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO   ( x -- x+$1 )
+__{}__{}    ld    B, 0x00       ; 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO},
+__{}_TYP_SINGLE,fast,{
+__{}__{}                        ;[8:33]     __INFO  ( x -- x+($1) )  # fast version can be changed with "define({_TYP_SINGLE},{default})"
+__{}__{}    ld    A,format({%-12s},($1)); 3:13      __INFO
+__{}__{}    add   A, L          ; 1:4       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    adc   A, H          ; 1:4       __INFO
+__{}__{}    sub   L             ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO},
+__{}{
+__{}__{}                        ;[7:35]     __INFO  ( x -- x+($1) )  # default version can be changed with "define({_TYP_SINGLE},{fast})"
+__{}__{}    ld    A,format({%-12s},($1)); 3:13      __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    ld    B, 0x00       ; 2:7       __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1654,23 +1751,45 @@ dnl # addr C@ -
 dnl # ( x -- x-(addr) )
 dnl # push_cfetch(addr), sub 8-bit char from addr
 define({PUSH_CFETCH_SUB},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_SUB},{$1 c@ sub},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CFETCH_SUB},{$1 c@ -},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_CFETCH_SUB},{dnl
-__{}define({__INFO},{push_cfetch_sub}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-    ld    A,format({%-12s},($1)); 3:13      $1 @ -  push_cfetch_sub($1)   ( x -- x-($1) )
-    ld    B, A          ; 1:4       $1 @ -  push_cfetch_sub($1)
-    ld    A, L          ; 1:4       $1 @ -  push_cfetch_sub($1)
-    sub   B             ; 1:4       $1 @ -  push_cfetch_sub($1)
-    ld    L, A          ; 1:4       $1 @ -  push_cfetch_sub($1)
-    sbc   A, A          ; 1:4       $1 @ -  push_cfetch_sub($1)
-    adc   A, H          ; 1:4       $1 @ -  push_cfetch_sub($1)
-    ld    H, A          ; 1:4       $1 @ -  push_cfetch_sub($1)}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1):_TYP_SINGLE,1:fast,{
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({HL},$1){}dnl
+__{}__{}                       ;[10:47]     __INFO  ( x -- x-$1 )  # fast version can be changed with "define({_TYP_SINGLE},{default})"
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO{}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    sub (HL)            ; 1:7       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    add   A, B          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({BC},$1){}dnl
+__{}__{}                        ;[9:50]     __INFO  ( x -- x-$1 ){}dnl
+__{}__{}__CODE_16BIT{}  # default version can be changed with "define({_TYP_SINGLE},{fast})"
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 1:11      __INFO},
+__{}{
+__{}__{}                        ;[8:40]     __INFO  ( x -- x-$1 )  # default version can be changed with "define({_TYP_SINGLE},{fast})"
+__{}__{}    ld    A,format({%-12s},($1)); 3:13      __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
