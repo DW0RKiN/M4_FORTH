@@ -4785,17 +4785,16 @@ __{}__ADD_TOKEN({__TOKEN_MOVE},{move},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MOVE},{dnl
-__{}define({__INFO},{move}){}dnl
-
-    or    A             ; 1:4       move   ( from_addr to_addr u_words -- )
-    adc  HL, HL         ; 1:11      move
-    ld    B, H          ; 1:4       move
-    ld    C, L          ; 1:4       move   BC = 2*u
-    pop  HL             ; 1:10      move   HL = from = addr1
-    jr    z, $+4        ; 2:7/12    move
-    ldir                ; 2:u*42/32 move   addr++
-    pop  HL             ; 1:10      move
-    pop  DE             ; 1:10      move}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    or    A             ; 1:4       __INFO   ( from_addr to_addr u_words -- )
+    adc  HL, HL         ; 1:11      __INFO
+    ld    B, H          ; 1:4       __INFO
+    ld    C, L          ; 1:4       __INFO   BC = 2*u
+    pop  HL             ; 1:10      __INFO   HL = from = addr1
+    jr    z, $+4        ; 2:7/12    __INFO
+    ldir                ; 2:u*42/32 __INFO   addr++
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # u move
