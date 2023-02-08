@@ -214,6 +214,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[7:32]     __INFO   ( x -- )  flag: x == 0
     ld    A, H          ; 1:4       __INFO
     or    L             ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
@@ -232,6 +233,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[5:18]     __INFO   ( x -- x )  flag: x == 0
     ld    A, H          ; 1:4       __INFO
     or    L             ; 1:4       __INFO
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
@@ -249,6 +251,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[7:32]     __INFO   ( x -- )  flag: x <> 0
     ld    A, H          ; 1:4       __INFO
     or    L             ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
@@ -267,6 +270,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[5:18]     __INFO   ( x -- x )  flag: x <> 0
     ld    A, H          ; 1:4       __INFO
     or    L             ; 1:4       __INFO
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
@@ -283,6 +287,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[7:32]     __INFO   ( x -- )  flag: x < 0
     bit   7, H          ; 2:8       __INFO
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
@@ -300,6 +305,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[5:18]     __INFO   ( x -- x )  flag: x < 0
     bit   7, H          ; 2:8       __INFO
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
@@ -315,14 +321,13 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       __INFO
+                        ;[8:38]     __INFO   ( x -- )  flag: x > 0
+    ld    A, H          ; 1:4       __INFO   save sign
+    dec  HL             ; 1:6       __INFO   zero to negative
     or    H             ; 1:4       __INFO
-    ld    A, H          ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-    add   A, A          ; 1:4       __INFO
-    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x1 -- x1 )
@@ -336,11 +341,12 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       __INFO
+                        ;[7:30]     __INFO   ( x -- x )  flag: x > 0
+    ld    A, H          ; 1:4       __INFO   save sign
+    dec  HL             ; 1:6       __INFO   zero to negative
     or    H             ; 1:4       __INFO
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-    bit   7, H          ; 2:8       __INFO
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+    inc  HL             ; 1:6       __INFO
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl # 0<= if
@@ -354,14 +360,13 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       __INFO
+                        ;[8:38]     __INFO   ( x -- )  flag: x <= 0
+    ld    A, H          ; 1:4       __INFO   save sign
+    dec  HL             ; 1:6       __INFO   zero to negative
     or    H             ; 1:4       __INFO
-    ld    A, H          ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
-    jr    z, $+6        ; 2:7/12    __INFO
-    add   A, A          ; 1:4       __INFO
-    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x1 -- x1 )
@@ -374,12 +379,22 @@ define({__ASM_TOKEN_DUP_0LE_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(1,0,{
+                        ;[9:33/20]  __INFO   ( x -- x )  flag: x <= 0
     ld    A, L          ; 1:4       __INFO
     or    H             ; 1:4       __INFO
     jr    z, $+7        ; 2:7/12    __INFO
     bit   7, H          ; 2:8       __INFO
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+{
+                        ;[7:30]     __INFO   ( x -- )  flag: x <= 0
+    ld    A, H          ; 1:4       __INFO   save sign
+    dec  HL             ; 1:6       __INFO   zero to negative
+    or    H             ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # 0>= if
@@ -393,6 +408,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[7:32]     __INFO   ( x -- )  flag: x >= 0
     bit   7, H          ; 2:8       __INFO
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
@@ -410,6 +426,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[5:18]     __INFO   ( x -- x )  flag: x >= 0
     bit   7, H          ; 2:8       __INFO
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
@@ -421,7 +438,7 @@ dnl
 dnl
 dnl # dup const = if
 define({DUP_PUSH_EQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_IF},{dup_push_eq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_IF},{dup $1 = if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_EQ_IF},{dnl
@@ -431,12 +448,12 @@ __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
 __{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
+__{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
 __{}{dnl
-__{}__{}define({_TMP_INFO},{dup $1 = if}){}dnl
-__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 == HL}){}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 )   $1 == HL}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10,else{}IF_COUNT,0)
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
@@ -445,57 +462,56 @@ dnl
 dnl
 dnl # dup const <> if
 define({DUP_PUSH_NE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_IF},{dup_push_ne_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_IF},{dup $1 <> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_NE_IF},{dnl
-__{}define({__INFO},{dup_push_ne_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
 __{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
+__{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
 __{}{dnl
-__{}__{}define({_TMP_INFO},{dup $1 <> if}){}dnl
-__{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,-10)
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
-dnl dup const < if
+dnl # dup const < if
 define({DUP_PUSH_LT_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LT_IF},{dup_push_lt_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LT_IF},{dup $1 < if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_LT_IF},{dnl
-__{}define({__INFO},{dup_push_lt_if}){}dnl
-dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}                        ;[14:58]    dup $1 < if
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 < if
-__{}__{}    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    sub   C             ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    sbc   A, B          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    rra                 ; 1:4       dup $1 < if
-__{}__{}    xor   H             ; 1:4       dup $1 < if
-__{}__{}    xor   B             ; 1:4       dup $1 < if
-__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if},
-__{}{dnl
-__{}__{}    ld    A, H          ; 1:4       dup $1 < if
-__{}__{}    add   A, A          ; 1:4       dup $1 < if
+__{}__{}  .error {$0}($@): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}                        ;[14:58]    __INFO
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sub   C             ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sbc   A, B          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    xor   B             ; 1:4       __INFO
+__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}{
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
 __{}__{}__{}  .warning {$0}($@): The condition "$1" cannot be evaluated
 __{}__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
@@ -504,14 +520,15 @@ __{}__{}__{}  else
 __{}__{}__{}    jp   nc, else{}IF_COUNT
 __{}__{}__{}  endif},
 __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
-__{}__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 < if    negative HL < positive constant ---> true},
+__{}__{}__{}    jr    c, $+11       ; 2:7/12    __INFO    negative HL < positive constant ---> true},
 __{}__{}__{}{dnl
-__{}__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if    positive HL < negative constant ---> false})
-__{}__{}    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if})}){}dnl
+__{}__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO    positive HL < negative constant ---> false})
+__{}__{}    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
