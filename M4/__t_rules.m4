@@ -534,6 +534,9 @@ i....,,,
             __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_0GT:__TOKEN_IF,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_0GT_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
             __T_NAME(0):$1,                           __TOKEN_0GT:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_0GT_IF},__T_INFO(0){ }$2)},
 
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_0LE:__TOKEN_IF,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_0LE_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                           __TOKEN_0LE:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_0LE_IF},__T_INFO(0){ }$2)},
+
             __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_0GE:__TOKEN_IF,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_0GE_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
             __T_NAME(0):$1,                           __TOKEN_0GE:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_0GE_IF},__T_INFO(0){ }$2)},
 
