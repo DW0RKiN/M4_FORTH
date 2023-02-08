@@ -88,7 +88,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     ld    A, D          ; 1:4       swap if
     or    E             ; 1:4       swap if
     pop  DE             ; 1:10      swap if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      swap if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      swap if}){}dnl
 dnl
 dnl
 dnl # ( x -- )
@@ -116,7 +116,7 @@ __{}__{}                        ;format({%-11s},[eval(5+__WITHIN_B):eval(24+__WI
 __{}__{}PUSH2_WITHIN_IF_CODE
 __{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}    pop  DE             ; 1:10      _TMP_INFO
-__{}__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
+__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl # dup $1 $2 within if
@@ -141,7 +141,7 @@ __{}__{}__{}define({_TMP_INFO},{dup $1 $2 within if}){}dnl
 __{}__{}__{}define({DUP_PUSH2_WITHIN_IF_CODE},__SAVE_HL_WITHIN($1,$2))
 __{}__{}                        ;format({%-11s},[eval(3+__SAVE_HL_WITHIN_B):eval(10+__SAVE_HL_WITHIN_C)])_TMP_INFO   ( x -- x )  true=($1<=x<$2){}dnl
 __{}__{}DUP_PUSH2_WITHIN_IF_CODE
-__{}__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
+__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
@@ -164,7 +164,7 @@ __{}__{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr1
 __{}__{}    push BC             ; 1:11      _TMP_INFO
 __{}__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
 __{}__{}    or    A             ; 1:4       _TMP_INFO
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
@@ -187,7 +187,7 @@ __{}__{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr1
 __{}__{}    push BC             ; 1:11      _TMP_INFO
 __{}__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
 __{}__{}    or    A             ; 1:4       _TMP_INFO
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
@@ -204,7 +204,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     or    L             ; 1:4       0= if
     ex   DE, HL         ; 1:4       0= if
     pop  DE             ; 1:10      0= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      0= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      0= if}){}dnl
 dnl
 dnl
 dnl ( x1 -- x1 )
@@ -218,7 +218,7 @@ __{}define({__INFO},{dup_0eq_if}){}dnl
 define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, H          ; 1:4       dup 0= if
     or    L             ; 1:4       dup 0= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup 0= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup 0= if}){}dnl
 dnl
 dnl
 dnl 0< if
@@ -233,7 +233,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     bit   7, H          ; 2:8       0< if
     ex   DE, HL         ; 1:4       0< if
     pop  DE             ; 1:10      0< if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      0< if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      0< if}){}dnl
 dnl
 dnl
 dnl ( x1 -- x1 )
@@ -246,7 +246,7 @@ define({__ASM_TOKEN_DUP_0LT_IF},{dnl
 __{}define({__INFO},{dup_0lt_if}){}dnl
 define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     bit   7, H          ; 2:8       dup 0< if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup 0< if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup 0< if}){}dnl
 dnl
 dnl
 dnl 0>= if
@@ -261,7 +261,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     bit   7, H          ; 2:8       0>= if
     ex   DE, HL         ; 1:4       0>= if
     pop  DE             ; 1:10      0>= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      0>= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      0>= if}){}dnl
 dnl
 dnl
 dnl ( x1 -- x1 )
@@ -274,7 +274,7 @@ define({__ASM_TOKEN_DUP_0GE_IF},{dnl
 __{}define({__INFO},{dup_0ge_if}){}dnl
 define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     bit   7, H          ; 2:8       dup 0>= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup 0>= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup 0>= if}){}dnl
 dnl
 dnl
 dnl ( x1 x2 -- x1 x2 )
@@ -290,7 +290,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     or    L             ; 1:4       2dup D0= if
     or    D             ; 1:4       2dup D0= if
     or    E             ; 1:4       2dup D0= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      2dup D0= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup D0= if}){}dnl
 dnl
 dnl
 dnl -------- signed ---------
@@ -317,7 +317,7 @@ __{}__{}define({_TMP_INFO},{dup $1 = if}){}dnl
 __{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 == HL}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10,else{}IF_COUNT,0)
 __{}__{}_TMP_BEST_CODE
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
@@ -341,7 +341,7 @@ __{}__{}define({_TMP_INFO},{dup $1 <> if}){}dnl
 __{}__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,-10)
 __{}__{}_TMP_BEST_CODE
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
 dnl
 dnl
@@ -370,7 +370,7 @@ __{}__{}    sbc   A, B          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 -->
 __{}__{}    rra                 ; 1:4       dup $1 < if
 __{}__{}    xor   H             ; 1:4       dup $1 < if
 __{}__{}    xor   B             ; 1:4       dup $1 < if
-__{}__{}    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if},
+__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if},
 __{}{dnl
 __{}__{}    ld    A, H          ; 1:4       dup $1 < if
 __{}__{}    add   A, A          ; 1:4       dup $1 < if
@@ -384,12 +384,12 @@ __{}__{}__{}  endif},
 __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
 __{}__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 < if    negative HL < positive constant ---> true},
 __{}__{}__{}{dnl
-__{}__{}__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if    positive HL < negative constant ---> false})
+__{}__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if    positive HL < negative constant ---> false})
 __{}__{}    ld    A, L          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
 __{}__{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
 __{}__{}    ld    A, H          ; 1:4       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
 __{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 < if    HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if})}){}dnl
+__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 < if})}){}dnl
 dnl
 dnl
 dnl
@@ -418,7 +418,7 @@ __{}__{}    sbc   A, B          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 
 __{}__{}    rra                 ; 1:4       dup $1 >= if
 __{}__{}    xor   H             ; 1:4       dup $1 >= if
 __{}__{}    xor   B             ; 1:4       dup $1 >= if
-__{}__{}    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 >= if},
+__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      dup $1 >= if},
 __{}{dnl
 __{}__{}    ld    A, H          ; 1:4       dup $1 >= if
 __{}__{}    add   A, A          ; 1:4       dup $1 >= if
@@ -430,14 +430,14 @@ __{}__{}__{}  else
 __{}__{}__{}    jr   nc, $+11
 __{}__{}__{}  endif},
 __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
-__{}__{}__{}    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 >= if    negative HL >= positive constant ---> false},
+__{}__{}__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      dup $1 >= if    negative HL >= positive constant ---> false},
 __{}__{}__{}{dnl
 __{}__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 >= if    positive HL >= negative constant ---> true})
 __{}__{}    ld    A, L          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}__{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}__{}    ld    A, H          ; 1:4       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 >= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}__{}    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 >= if})}){}dnl
+__{}__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      dup $1 >= if})}){}dnl
 dnl
 dnl
 dnl dup const <= if
@@ -465,7 +465,7 @@ __{}__{}    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL 
 __{}__{}    rra                 ; 1:4       dup $1 <= if
 __{}__{}    xor   H             ; 1:4       dup $1 <= if
 __{}__{}    xor   B             ; 1:4       dup $1 <= if
-__{}__{}    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 <= if},
+__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      dup $1 <= if},
 __{}{dnl
 __{}__{}    ld    A, H          ; 1:4       dup $1 <= if
 __{}__{}    add   A, A          ; 1:4       dup $1 <= if
@@ -479,12 +479,12 @@ __{}__{}__{}  endif},
 __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
 __{}__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 <= if    negative HL <= positive constant ---> true},
 __{}__{}__{}{dnl
-__{}__{}__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 <= if    positive HL <= negative constant ---> false})
+__{}__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 <= if    positive HL <= negative constant ---> false})
 __{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low __FORM({%-7s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    sub   L             ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high __FORM({%-6s},$1); 2:7 })      dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    sbc   A, H          ; 1:4       dup $1 <= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}__{}    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 <= if})}){}dnl
+__{}__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      dup $1 <= if})}){}dnl
 dnl
 dnl
 dnl dup const > if
@@ -512,7 +512,7 @@ __{}__{}    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL -->
 __{}__{}    rra                 ; 1:4       dup $1 > if
 __{}__{}    xor   H             ; 1:4       dup $1 > if
 __{}__{}    xor   B             ; 1:4       dup $1 > if
-__{}__{}    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 > if},
+__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      dup $1 > if},
 __{}{dnl
 __{}__{}    ld    A, H          ; 1:4       dup $1 > if
 __{}__{}    add   A, A          ; 1:4       dup $1 > if
@@ -524,14 +524,14 @@ __{}__{}__{}  else
 __{}__{}__{}    jr   nc, $+11
 __{}__{}__{}  endif},
 __{}__{}__{}eval(($1)>=0x8000 || ($1)<0),{0},{dnl
-__{}__{}__{}    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 > if    negative HL > positive constant ---> false},
+__{}__{}__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      dup $1 > if    negative HL > positive constant ---> false},
 __{}__{}__{}{dnl
 __{}__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 > if    positive HL > negative constant ---> true})
 __{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low __FORM({%-7s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    sub   L             ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high __FORM({%-6s},$1); 2:7 })      dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    sbc   A, H          ; 1:4       dup $1 > if    HL>$1 --> 0>$1-HL --> carry if true
-__{}__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 > if})}){}dnl
+__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 > if})}){}dnl
 dnl
 dnl -------- unsigned ---------
 dnl
@@ -554,127 +554,127 @@ __{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[14:27/54] dup $1 u= if
 __{}__{}    ld    A, format({%-11s},$1); 3:13      dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(($1) & 0xFFFF),{0},{dnl
 __{}__{}                        ;[5:18]     dup $1 u= if   variant: zero
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    or    H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval((($1) & 0xFFFF) - 0x00FF),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u= if   variant: 0x00FF = 255
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    inc   A             ; 1:4       dup $1 u= if
 __{}__{}    or    H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval((($1) & 0xFFFF) - 0xFF00),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u= if   variant: 0xFF00 = 65280
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    inc   A             ; 1:4       dup $1 u= if
 __{}__{}    or    L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval((($1) & 0xFFFF) - 0xFFFF),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u= if   variant: -1
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    and   L             ; 1:4       dup $1 u= if
 __{}__{}    inc   A             ; 1:4       dup $1 u= if   A = 0xFF --> 0x00 ?
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
 __{}__{}                        ;[11:18/39] dup $1 u= if   variant: lo($1) = 255
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    inc   A             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
 __{}__{}                        ;[11:18/39] dup $1 u= if   variant: hi($1) = 255
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    inc   A             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(($1) ^ 256),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u= if   variant: 0x0100 = 256
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
 __{}__{}    or    L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u= if   variant: lo($1) = zero
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
 __{}__{}    or    L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(($1) ^ 0x0001),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u= if   variant: 0x0001
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
 __{}__{}    or    H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u= if   variant: hi($1) = zero
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
 __{}__{}    or    H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(($1) ^ 0x0101),{0},{dnl
 __{}__{}                        ;[9:18/32]  dup $1 u= if   variant: 0x0101 = 257
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    cp    L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(($1) ^ 0x0201),{0},{dnl
 __{}__{}                       ;[10:22/36]  dup $1 u= if   variant: 0x0201 = 513
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
 __{}__{}    cp    L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(($1) ^ 0x0102),{0},{dnl
 __{}__{}                       ;[10:22/36]  dup $1 u= if   variant: 0x0102 = 258
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
 __{}__{}    cp    H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(((($1) & 0xFF00)>>8)-(($1) & 0xFF)),{0},{dnl
 __{}__{}                       ;[10:18/35]  dup $1 u= if   variant: hi($1) = lo($1) = eval(($1) & 0xFF)
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    cp    L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    xor  low __FORM({%-11s},$1); 2:7       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
 __{}__{}                       ;[11:18/39]  dup $1 u= if   variant: hi($1) = 1
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    xor  low __FORM({%-11s},$1); 2:7       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}eval((($1) & 0xFF)-1),{0},{dnl
 __{}__{}                       ;[11:18/39]  dup $1 u= if   variant: lo($1) = 1
 __{}__{}    ld    A, L          ; 1:4       dup $1 u= if
 __{}__{}    dec   A             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    ld    A, H          ; 1:4       dup $1 u= if
 __{}__{}    xor  high __FORM({%-10s},$1); 2:7       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if},
 __{}{dnl
 __{}__{}                       ;[12:21/42]  dup $1 u= if   variant: default
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   L             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u= if
 __{}__{}    xor   H             ; 1:4       dup $1 u= if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if})}){}dnl
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u= if})}){}dnl
 dnl
 dnl
 dnl dup unum u<> if
@@ -699,30 +699,30 @@ __{}__{}    xor   L             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+9        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A,format({%-12s},(1+$1)); 3:13      dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval($1),{0},{dnl
 __{}__{}                        ;[5:18]     dup $1 u<> if   variant: zero
 __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
 __{}__{}    or    H             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval((($1) & 0xFFFF) - 0x00FF),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u<> if   variant: 0x00FF = 255
 __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
 __{}__{}    inc   A             ; 1:4       dup $1 u<> if
 __{}__{}    or    H             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval((($1) & 0xFFFF) - 0xFF00),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u<> if   variant: 0xFF00 = 65280
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    inc   A             ; 1:4       dup $1 u<> if
 __{}__{}    or    L             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval((($1) & 0xFFFF) - 0xFFFF),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u<> if   variant: -1
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    and   L             ; 1:4       dup $1 u<> if
 __{}__{}    inc   A             ; 1:4       dup $1 u<> if   A = 0xFF --> 0x00 ?
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
 __{}__{}                        ;[10:20/36] dup $1 u<> if   variant: lo($1) = 255
 __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
@@ -730,7 +730,7 @@ __{}__{}    inc   A             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
 __{}__{}                        ;[10:20/36] dup $1 u<> if   variant: hi($1) = 255
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
@@ -738,45 +738,45 @@ __{}__{}    inc   A             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   L             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval(($1) ^ 256),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u<> if   variant: 0x0100 = 256
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    dec   A             ; 1:4       dup $1 u<> if
 __{}__{}    or    L             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u<> if   variant: lo($1) = zero
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
 __{}__{}    or    L             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval(($1) ^ 0x0001),{0},{dnl
 __{}__{}                        ;[6:22]     dup $1 u<> if   variant: 0x0001
 __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
 __{}__{}    dec   A             ; 1:4       dup $1 u<> if
 __{}__{}    or    H             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}                        ;[7:25]     dup $1 u<> if   variant: hi($1) = zero
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   L             ; 1:4       dup $1 u<> if
 __{}__{}    or    H             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval(($1) ^ 0x0101),{0},{dnl
 __{}__{}                        ;[8:20/29]  dup $1 u<> if   variant: 0x0101 = 257
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    cp    L             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+6        ; 2:7/12    dup $1 u<> if
 __{}__{}    dec   A             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval(((($1) & 0xFF00)>>8)-(($1) & 0xFF)),{0},{dnl
 __{}__{}                        ;[9:20/32]  dup $1 u<> if   variant: hi($1) = lo($1) = eval(($1) & 0xFF)
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    cp    L             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    dup $1 u<> if
 __{}__{}    xor  low __FORM({%-11s},$1); 2:7       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
 __{}__{}                       ;[10:20/36]  dup $1 u<> if   variant: hi($1) = 1
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
@@ -784,7 +784,7 @@ __{}__{}    dec   A             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
 __{}__{}    xor  low __FORM({%-11s},$1); 2:7       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}eval((($1) & 0xFF)-1),{0},{dnl
 __{}__{}                       ;[10:20/36]  dup $1 u<> if   variant: lo($1) = 1
 __{}__{}    ld    A, L          ; 1:4       dup $1 u<> if
@@ -792,7 +792,7 @@ __{}__{}    dec   A             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A, H          ; 1:4       dup $1 u<> if
 __{}__{}    xor  high __FORM({%-10s},$1); 2:7       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if},
 __{}{dnl
 __{}__{}                        ;[11:23/39] dup $1 u<> if   variant: default
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       dup $1 u<> if
@@ -800,7 +800,7 @@ __{}__{}    xor   L             ; 1:4       dup $1 u<> if
 __{}__{}    jr   nz, $+8        ; 2:7/12    dup $1 u<> if
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       dup $1 u<> if
 __{}__{}    xor   H             ; 1:4       dup $1 u<> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if})}){}dnl
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<> if})}){}dnl
 dnl
 dnl
 dnl dup 123 u< if
@@ -824,13 +824,13 @@ __{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> ca
 __{}    sub   C             ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    ld    A, H          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    sbc   A, B          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u< if},
+__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u< if},
 __{}{dnl
 __{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    ld    A, H          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
 __{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u< if})}){}dnl
+__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u< if})}){}dnl
 dnl
 dnl
 dnl dup 123 u>= if
@@ -854,13 +854,13 @@ __{}    ld    A, L          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 -->
 __{}    sub   C             ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    ld    A, H          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    sbc   A, B          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u>= if},
+__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u>= if},
 __{}{dnl
 __{}    ld    A, L          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    ld    A, H          ; 1:4       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 u>= if    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u>= if})}){}dnl
+__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u>= if})}){}dnl
 dnl
 dnl
 dnl dup 123 u<= if
@@ -882,7 +882,7 @@ __{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low __F
 __{}    sub   L             ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high __FORM({%-6s},$1); 2:7 })      dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 u<= if    HL<=$1 --> 0<=$1-HL --> not carry if true
-__{}    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<= if}){}dnl
+__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u<= if}){}dnl
 dnl
 dnl
 dnl dup 123 u> if
@@ -904,7 +904,7 @@ __{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 3:13},{low __F
 __{}    sub   L             ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    ld    A, ifelse(__IS_MEM_REF($1),{1},{(format({%-10s},substr($1,1,eval(len($1)-2)){+1)}); 3:13},{high __FORM({%-6s},$1); 2:7 })      dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
 __{}    sbc   A, H          ; 1:4       dup $1 u> if    HL>$1 --> 0>$1-HL --> carry if true
-__{}    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u> if}){}dnl
+__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u> if}){}dnl
 dnl
 dnl
 dnl
@@ -919,10 +919,10 @@ __{}define({__INFO},{2dup_ueq_if}){}dnl
 define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup u= if
     sub   L             ; 1:4       2dup u= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      2dup u= if
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup u= if
     ld    A, D          ; 1:4       2dup u= if
     sub   H             ; 1:4       2dup u= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      2dup u= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup u= if}){}dnl
 dnl
 dnl
 define({_2DUP_UNE_IF},{dnl
@@ -937,7 +937,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     jr   nz, $+7        ; 2:7/12    2dup u<> if
     ld    A, D          ; 1:4       2dup u<> if
     sbc   A, H          ; 1:4       2dup u<> if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      2dup u<> if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      2dup u<> if}){}dnl
 dnl
 dnl
 define({_2DUP_ULT_IF},{dnl
@@ -951,7 +951,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sub   L             ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
     ld    A, D          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
     sbc   A, H          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      2dup u< if}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      2dup u< if}){}dnl
 dnl
 dnl
 define({_2DUP_UGE_IF},{dnl
@@ -965,7 +965,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sub   L             ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     ld    A, D          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     sbc   A, H          ; 1:4       2dup u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      2dup u>= if}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      2dup u>= if}){}dnl
 dnl
 dnl
 define({_2DUP_ULE_IF},{dnl
@@ -979,7 +979,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sub   E             ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     ld    A, H          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     sbc   A, D          ; 1:4       2dup u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      2dup u<= if}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      2dup u<= if}){}dnl
 dnl
 dnl
 define({_2DUP_UGT_IF},{dnl
@@ -993,7 +993,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sub   E             ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     ld    A, H          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
     sbc   A, D          ; 1:4       2dup u> if    DE>HL --> 0>HL-DE --> carry if true
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      2dup u> if}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      2dup u> if}){}dnl
 dnl
 dnl
 dnl ------ 2dup scond if ---------
@@ -1008,10 +1008,10 @@ __{}define({__INFO},{2dup_eq_if}){}dnl
 define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
     ld    A, E          ; 1:4       2dup = if
     sub   L             ; 1:4       2dup = if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      2dup = if
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup = if
     ld    A, D          ; 1:4       2dup = if
     sub   H             ; 1:4       2dup = if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      2dup = if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup = if}){}dnl
 dnl
 dnl
 dnl 2dup <> if
@@ -1027,7 +1027,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     jr   nz, $+7        ; 2:7/12    2dup <> if
     ld    A, D          ; 1:4       2dup <> if
     sub   H             ; 1:4       2dup <> if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      2dup <> if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      2dup <> if}){}dnl
 dnl
 dnl
 dnl 2dup < if
@@ -1045,7 +1045,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     rra                 ; 1:4       2dup < if
     xor   D             ; 1:4       2dup < if
     xor   H             ; 1:4       2dup < if
-    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      2dup < if}){}dnl
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      2dup < if}){}dnl
 dnl
 dnl
 dnl 2dup >= if
@@ -1063,7 +1063,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     rra                 ; 1:4       2dup >= if
     xor   D             ; 1:4       2dup >= if
     xor   H             ; 1:4       2dup >= if
-    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      2dup >= if}){}dnl
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      2dup >= if}){}dnl
 dnl
 dnl
 dnl 2dup <= if
@@ -1081,7 +1081,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     rra                 ; 1:4       2dup <= if
     xor   D             ; 1:4       2dup <= if
     xor   H             ; 1:4       2dup <= if
-    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      2dup <= if}){}dnl
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      2dup <= if}){}dnl
 dnl
 dnl
 dnl 2dup > if
@@ -1099,7 +1099,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     rra                 ; 1:4       2dup > if
     xor   D             ; 1:4       2dup > if
     xor   H             ; 1:4       2dup > if
-    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      2dup > if}){}dnl
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      2dup > if}){}dnl
 dnl
 dnl
 dnl ------ ucond if ---------
@@ -1115,7 +1115,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc  HL, DE         ; 2:15      u= if
     pop  HL             ; 1:10      u= if
     pop  DE             ; 1:10      u= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      u= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      u= if}){}dnl
 dnl
 dnl
 define({UNE_IF},{dnl
@@ -1129,7 +1129,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc  HL, DE         ; 2:15      u<> if
     pop  HL             ; 1:10      u<> if
     pop  DE             ; 1:10      u<> if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      u<> if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      u<> if}){}dnl
 dnl
 dnl
 define({ULT_IF},{dnl
@@ -1145,7 +1145,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc   A, H          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
     pop  HL             ; 1:10      u< if
     pop  DE             ; 1:10      u< if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      u< if}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      u< if}){}dnl
 dnl
 dnl
 define({UGE_IF},{dnl
@@ -1161,7 +1161,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc   A, H          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
     pop  HL             ; 1:10      u>= if
     pop  DE             ; 1:10      u>= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      u>= if}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      u>= if}){}dnl
 dnl
 dnl
 define({ULE_IF},{dnl
@@ -1177,7 +1177,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc   A, D          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
     pop  HL             ; 1:10      u<= if
     pop  DE             ; 1:10      u<= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      u<= if}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      u<= if}){}dnl
 dnl
 dnl
 define({UGT_IF},{dnl
@@ -1193,7 +1193,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc   A, D          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
     pop  HL             ; 1:10      u> if
     pop  DE             ; 1:10      u> if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      u> if}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      u> if}){}dnl
 dnl
 dnl
 dnl ------ scond if ---------
@@ -1210,7 +1210,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc  HL, DE         ; 2:15      = if
     pop  HL             ; 1:10      = if
     pop  DE             ; 1:10      = if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      = if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      = if}){}dnl
 dnl
 dnl
 dnl <> if
@@ -1225,7 +1225,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc  HL, DE         ; 2:15      <> if
     pop  HL             ; 1:10      <> if
     pop  DE             ; 1:10      <> if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      <> if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      <> if}){}dnl
 dnl
 dnl
 dnl < if
@@ -1245,7 +1245,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     xor   D             ; 1:4       < if
     pop  HL             ; 1:10      < if
     pop  DE             ; 1:10      < if
-    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      < if}){}dnl
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      < if}){}dnl
 dnl
 dnl
 dnl >= if
@@ -1265,7 +1265,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     xor   D             ; 1:4       >= if
     pop  HL             ; 1:10      >= if
     pop  DE             ; 1:10      >= if
-    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      >= if}){}dnl
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      >= if}){}dnl
 dnl
 dnl
 dnl <= if
@@ -1285,7 +1285,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     xor   D             ; 1:4       <= if
     pop  HL             ; 1:10      <= if
     pop  DE             ; 1:10      <= if
-    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      <= if}){}dnl
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      <= if}){}dnl
 dnl
 dnl
 dnl > if
@@ -1305,7 +1305,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     xor   D             ; 1:4       > if
     pop  HL             ; 1:10      > if
     pop  DE             ; 1:10      > if
-    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      > if}){}dnl
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      > if}){}dnl
 dnl
 dnl
 dnl ------ push scond if ---------
@@ -1332,14 +1332,14 @@ __{}    or    A             ; 1:4       $1 = if
 __{}    sbc  HL, BC         ; 2:15      $1 = if
 __{}    ex   DE, HL         ; 1:4       $1 = if
 __{}    pop  DE             ; 1:10      $1 = if
-__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval(($1) & 0xFFFF),{0},{dnl
 __{}__{}                        ;[7:32]     $1 = if   variant: zero
 __{}__{}    ld    A, L          ; 1:4       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval((($1) & 0xFFFF) - 0x00FF),{0},{dnl
 __{}__{}                        ;[8:36]     $1 = if   variant: 0x00FF = 255
 __{}__{}    ld    A, L          ; 1:4       $1 = if
@@ -1347,7 +1347,7 @@ __{}__{}    inc   A             ; 1:4       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval((($1) & 0xFFFF) - 0xFF00),{0},{dnl
 __{}__{}                        ;[8:36]     $1 = if   variant: 0xFF00 = 65280
 __{}__{}    ld    A, H          ; 1:4       $1 = if
@@ -1355,7 +1355,7 @@ __{}__{}    inc   A             ; 1:4       $1 = if
 __{}__{}    or    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval((($1) & 0xFFFF) - 0xFFFF),{0},{dnl
 __{}__{}                        ;[8:36]     $1 = if   variant: -1
 __{}__{}    ld    A, H          ; 1:4       $1 = if
@@ -1363,7 +1363,7 @@ __{}__{}    and   L             ; 1:4       $1 = if
 __{}__{}    inc   A             ; 1:4       $1 = if   A = 0xFF --> 0x00 ?
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
 __{}__{}                        ;[10:43] $1 = if   variant: lo($1) = 255
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
@@ -1372,7 +1372,7 @@ __{}__{}    inc   L             ; 1:4       $1 = if
 __{}__{}    or    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
 __{}__{}                        ;[10:43] $1 = if   variant: hi($1) = 255
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
@@ -1381,7 +1381,7 @@ __{}__{}    inc   H             ; 1:4       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval(($1) ^ 256),{0},{dnl
 __{}__{}                        ;[8:36]     $1 = if   variant: 0x0100 = 256
 __{}__{}    ld    A, H          ; 1:4       $1 = if
@@ -1389,7 +1389,7 @@ __{}__{}    dec   A             ; 1:4       $1 = if
 __{}__{}    or    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}                        ;[9:39]     $1 = if   variant: lo($1) = zero
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
@@ -1397,7 +1397,7 @@ __{}__{}    xor   H             ; 1:4       $1 = if
 __{}__{}    or    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval(($1) ^ 0x0001),{0},{dnl
 __{}__{}                        ;[8:36]     $1 = if   variant: 0x0001
 __{}__{}    ld    A, L          ; 1:4       $1 = if
@@ -1405,7 +1405,7 @@ __{}__{}    dec   A             ; 1:4       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}                        ;[9:39]     $1 = if   variant: hi($1) = zero
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       $1 = if
@@ -1413,7 +1413,7 @@ __{}__{}    xor   L             ; 1:4       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval(($1) ^ 0x0101),{0},{dnl
 __{}__{}                        ;[9:40]     $1 = if   variant: 0x0101 = 257
 __{}__{}    dec   H             ; 1:4       $1 = if
@@ -1422,16 +1422,16 @@ __{}__{}    ld    A, H          ; 1:4       $1 = if
 __{}__{}    or    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval(((($1) & 0xFF00)>>8)-(($1) & 0xFF)),{0},{dnl
 __{}__{}                       ;[12:32/49]  $1 = if   variant: hi($1) = lo($1) = eval(($1) & 0xFF)
 __{}__{}    ld    A, H          ; 1:4       $1 = if
 __{}__{}    cp    L             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if
 __{}__{}    xor  low __FORM({%-11s},$1); 2:7       $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
 __{}__{}                       ;[10:43]     $1 = if   variant: hi($1) = 1
 __{}__{}    dec   H             ; 1:4       $1 = if
@@ -1440,7 +1440,7 @@ __{}__{}    xor  low __FORM({%-11s},$1); 2:7       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}eval((($1) & 0xFF)-1),{0},{dnl
 __{}__{}                       ;[10:43]     $1 = if   variant: lo($1) = 1
 __{}__{}    dec   L             ; 1:4       $1 = if
@@ -1449,7 +1449,7 @@ __{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 = if
 __{}__{}    or    H             ; 1:4       $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
 __{}{dnl
 __{}__{}                        ;[11:53]    $1 = if   variant: default
 __{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      $1 = if
@@ -1457,7 +1457,7 @@ __{}__{}    or    A             ; 1:4       $1 = if
 __{}__{}    sbc  HL, BC         ; 2:15      $1 = if
 __{}__{}    ex   DE, HL         ; 1:4       $1 = if
 __{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      $1 = if})}){}dnl
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if})}){}dnl
 dnl
 dnl
 dnl num <> if
@@ -1482,14 +1482,14 @@ __{}__{}    or    A             ; 1:4       $1 <> if
 __{}__{}    sbc  HL, DE         ; 2:15      $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval($1),{0},{dnl
 __{}__{}                        ;[7:32]     $1 <> if   variant: zero
 __{}__{}    ld    A, L          ; 1:4       $1 <> if
 __{}__{}    or    H             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval((($1) & 0xFFFF) - 0x00FF),{0},{dnl
 __{}__{}                        ;[8:36]     $1 <> if   variant: 0x00FF = 255
 __{}__{}    ld    A, L          ; 1:4       $1 <> if
@@ -1497,7 +1497,7 @@ __{}__{}    inc   A             ; 1:4       $1 <> if
 __{}__{}    or    H             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval((($1) & 0xFFFF) - 0xFF00),{0},{dnl
 __{}__{}                        ;[8:36]     $1 <> if   variant: 0xFF00 = 65280
 __{}__{}    ld    A, H          ; 1:4       $1 <> if
@@ -1505,7 +1505,7 @@ __{}__{}    inc   A             ; 1:4       $1 <> if
 __{}__{}    or    L             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval((($1) & 0xFFFF) - 0xFFFF),{0},{dnl
 __{}__{}                        ;[8:36]     $1 <> if   variant: -1
 __{}__{}    ld    A, H          ; 1:4       $1 <> if
@@ -1513,7 +1513,7 @@ __{}__{}    and   L             ; 1:4       $1 <> if
 __{}__{}    inc   A             ; 1:4       $1 <> if   A = 0xFF --> 0x00 ?
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
 __{}__{}ifelse(_TYP_SINGLE,{small},{dnl
 __{}__{}__{}                        ;[10:43]    $1 <> if   variant: lo($1) = 255
@@ -1523,7 +1523,7 @@ __{}__{}__{}    and   L             ; 1:4       $1 <> if
 __{}__{}__{}    inc   A             ; 1:4       $1 <> if
 __{}__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}__{}{dnl
 __{}__{}__{}                        ;[11:34/46] $1 <> if   variant: lo($1) = 255
 __{}__{}__{}    inc   L             ; 1:4       $1 <> if
@@ -1532,7 +1532,7 @@ __{}__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
 __{}__{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 <> if
-__{}__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if})},
+__{}__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if})},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
 __{}__{}ifelse(_TYP_SINGLE,{small},{dnl
 __{}__{}__{}                        ;[10:43]    $1 <> if   variant: hi($1) = 255
@@ -1542,7 +1542,7 @@ __{}__{}__{}    and   H             ; 1:4       $1 <> if
 __{}__{}__{}    inc   A             ; 1:4       $1 <> if
 __{}__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}__{}{dnl
 __{}__{}__{}                        ;[11:34/46] $1 <> if   variant: hi($1) = 255
 __{}__{}__{}    inc   H             ; 1:4       $1 <> if
@@ -1551,7 +1551,7 @@ __{}__{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
 __{}__{}__{}    xor  low __FORM({%-10s},$1); 2:7       $1 <> if
-__{}__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if})},
+__{}__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if})},
 __{}eval(($1) ^ 256),{0},{dnl
 __{}__{}                        ;[8:36]     $1 <> if   variant: 0x0100 = 256
 __{}__{}    ld    A, H          ; 1:4       $1 <> if
@@ -1559,7 +1559,7 @@ __{}__{}    dec   A             ; 1:4       $1 <> if
 __{}__{}    or    L             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}                        ;[9:39]     $1 <> if   variant: lo($1) = zero
 __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 <> if
@@ -1567,7 +1567,7 @@ __{}__{}    xor   H             ; 1:4       $1 <> if
 __{}__{}    or    L             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval(($1) ^ 0x0001),{0},{dnl
 __{}__{}                        ;[8:36]     $1 <> if   variant: 0x0001
 __{}__{}    ld    A, L          ; 1:4       $1 <> if
@@ -1575,7 +1575,7 @@ __{}__{}    dec   A             ; 1:4       $1 <> if
 __{}__{}    or    H             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}                        ;[9:39]     $1 <> if   variant: hi($1) = zero
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       $1 <> if
@@ -1583,7 +1583,7 @@ __{}__{}    xor   L             ; 1:4       $1 <> if
 __{}__{}    or    H             ; 1:4       $1 <> if
 __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval(($1) ^ 0x0101),{0},{dnl
 __{}__{}                       ;[10:34/43]  $1 <> if   variant: 0x0101 = 257
 __{}__{}    dec   L             ; 1:4       $1 <> if
@@ -1592,7 +1592,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+6        ; 2:7/12    $1 <> if
 __{}__{}    dec   A             ; 1:4       $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval(((($1) & 0xFF00)>>8)-(($1) & 0xFF)),{0},{dnl
 __{}__{}                       ;[11:34/46]  $1 <> if   variant: hi($1) = lo($1) = eval(($1) & 0xFF)
 __{}__{}    ld    A, H          ; 1:4       $1 <> if
@@ -1601,7 +1601,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
 __{}__{}    xor   low __FORM({%-10s},$1); 2:7       $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
 __{}__{}                       ;[11:34/46]  $1 <> if   variant: hi($1) = 1
 __{}__{}    dec   H             ; 1:4       $1 <> if
@@ -1610,7 +1610,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
 __{}__{}    xor  low __FORM({%-11s},$1); 2:7       $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}eval((($1) & 0xFF)-1),{0},{dnl
 __{}__{}                       ;[11:34/46]  $1 <> if   variant: lo($1) = 1
 __{}__{}    dec   L             ; 1:4       $1 <> if
@@ -1619,7 +1619,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
 __{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if},
 __{}{dnl
 __{}__{}                        ;[13:41/53] $1 <> if   variant: default
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       $1 <> if
@@ -1629,7 +1629,7 @@ __{}__{}    ex   DE, HL         ; 1:4       $1 <> if
 __{}__{}    pop  DE             ; 1:10      $1 <> if
 __{}__{}    jr   nz, $+7        ; 2:7/12    $1 <> if
 __{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 <> if
-__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if})}){}dnl
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      $1 <> if})}){}dnl
 dnl
 dnl
 dnl
@@ -1796,7 +1796,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     bit   7, D          ; 2:8       D0< if   ( d -- )
     pop  HL             ; 1:10      D0< if
     pop  DE             ; 1:10      D0< if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      D0< if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      D0< if}){}dnl
 dnl
 dnl
 dnl
@@ -1823,7 +1823,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc  HL, DE         ; 2:15      D= if   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if false
     pop  HL             ; 1:10      D= if
     pop  DE             ; 1:10      D= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      D= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      D= if}){}dnl
 dnl
 dnl
 dnl
@@ -1845,7 +1845,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc  HL, DE         ; 2:15      D<> if   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
     pop  HL             ; 1:10      D<> if
     pop  DE             ; 1:10      D<> if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      D<> if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      D<> if}){}dnl
 dnl
 dnl
 dnl
@@ -1868,7 +1868,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{ye
     call FCE_DLT        ; 3:17      D< if   carry if true
     pop  HL             ; 1:10      D< if
     pop  DE             ; 1:10      D< if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      D< if},
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      D< if},
 {
                        ;[18:94]     D< if   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D< if   lo_2
@@ -1886,7 +1886,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{ye
     xor   D             ; 1:4       D< if
     pop  HL             ; 1:10      D< if
     pop  DE             ; 1:10      D< if
-    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      D< if})}){}dnl
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      D< if})}){}dnl
 dnl
 dnl
 dnl
@@ -2114,7 +2114,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{ye
     call FCE_DLT        ; 3:17      D>= if   D< carry if true --> D>= carry if false
     pop  HL             ; 1:10      D>= if
     pop  DE             ; 1:10      D>= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
 {
                        ;[18:94]     D>= if   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D>= if   lo_2
@@ -2132,7 +2132,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{ye
     xor   D             ; 1:4       D>= if
     pop  HL             ; 1:10      D>= if
     pop  DE             ; 1:10      D>= if
-    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      D>= if})}){}dnl
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      D>= if})}){}dnl
 dnl
 dnl
 dnl
@@ -2165,7 +2165,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     xor   D             ; 1:4       D<= if
     pop  HL             ; 1:10      D<= if
     pop  DE             ; 1:10      D<= if
-    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                        ;[10:67]     D<= if   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<= if   l2
@@ -2173,7 +2173,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     call FCE_DGT        ; 3:17      D<= if   D> carry if true --> D<= carry if false
     pop  HL             ; 1:10      D<= if
     pop  DE             ; 1:10      D<= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
 {
                        ;[18:94]     D<= if   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D<= if   lo_2
@@ -2189,7 +2189,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     xor   D             ; 1:4       D<= if
     pop  HL             ; 1:10      D<= if
     pop  DE             ; 1:10      D<= if
-    jp    m,, format({%-11s},else{}IF_COUNT); 3:10      D<= if})}){}dnl
+    jp    m, format({%-11s},else{}IF_COUNT); 3:10      D<= if})}){}dnl
 dnl
 dnl
 dnl
@@ -2222,7 +2222,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     xor   D             ; 1:4       D> if
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
-    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      D> if},
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      D> if},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
                        ;[10:146]    D> if   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D> if   l2
@@ -2230,7 +2230,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     call FCE_DGT        ; 3:17      D> if   carry if true
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      D> if},
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      D> if},
 {
                        ;[17:97]     D> if   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D> if   lo_2
@@ -2246,7 +2246,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     xor   D             ; 1:4       D> if
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
-    jp    p,, format({%-11s},else{}IF_COUNT); 3:10      D> if})}){}dnl
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      D> if})}){}dnl
 dnl
 dnl
 dnl
@@ -2297,7 +2297,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc  HL, DE         ; 2:15      Du< if   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
     pop  HL             ; 1:10      Du< if
     pop  DE             ; 1:10      Du< if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      Du< if}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      Du< if}){}dnl
 dnl
 dnl
 dnl
@@ -2320,7 +2320,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     sbc  HL, DE         ; 2:15      Du>= if   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     pop  HL             ; 1:10      Du>= if
     pop  DE             ; 1:10      Du>= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      Du>= if}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      Du>= if}){}dnl
 dnl
 dnl
 dnl
@@ -2350,7 +2350,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     sbc   A, B          ; 1:4       Du<= if   hi_2<=hi_1 --> BC<=DE --> 0<=DE-BC --> no carry if true
     pop  HL             ; 1:10      Du<= if
     pop  DE             ; 1:10      Du<= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      Du<= if},
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      Du<= if},
 {
                        ;[13:88]     Du<= if   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      Du<= if   lo_2
@@ -2361,7 +2361,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     sbc  HL, BC         ; 2:15      Du<= if   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     pop  HL             ; 1:10      Du<= if
     pop  DE             ; 1:10      Du<= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      Du<= if})}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      Du<= if})}){}dnl
 dnl
 dnl
 dnl
@@ -2391,7 +2391,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     sbc   A, B          ; 1:4       Du> if   hi_2>hi_1 --> BC>DE --> 0>DE-BC --> carry if true
     pop  HL             ; 1:10      Du> if
     pop  DE             ; 1:10      Du> if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      Du> if},
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      Du> if},
 {
                        ;[13:88]     Du> if   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      Du> if   lo_2
@@ -2402,7 +2402,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     sbc  HL, BC         ; 2:15      Du> if   hi_2>hi_1 --> BC>HL --> 0>HL-BC --> carry if true
     pop  HL             ; 1:10      Du> if
     pop  DE             ; 1:10      Du> if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      Du> if})}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      Du> if})}){}dnl
 dnl
 dnl
 dnl
@@ -2427,7 +2427,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{ye
     push AF             ; 1:11      4dup D= if
     push BC             ; 1:11      4dup D= if
     call FCE_DEQ        ; 3:17      4dup D= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      4dup D= if},
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      4dup D= if},
 {
                    ;[16:132/73,132] 4dup D= if   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     or   A              ; 1:4       4dup D= if   h2 l2 . h1 l1
@@ -2440,7 +2440,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{ye
     add  HL, DE         ; 1:11      4dup D= if   l1    . h1 h2  cp h2-h1
     ex  (SP),HL         ; 1:19      4dup D= if   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D= if   h2 l2 . h1 l1
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      4dup D= if   h2 l2 . h1 l1})}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      4dup D= if   h2 l2 . h1 l1})}){}dnl
 dnl
 dnl
 dnl 4dup D<> if
@@ -2461,7 +2461,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{ye
     push AF             ; 1:11      4dup D<> if
     push BC             ; 1:11      4dup D<> if
     call FCE_DEQ        ; 3:17      4dup D<> if   D= zero if true --> D<> zero if false
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if},
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if},
 _TYP_DOUBLE,{small},{
                    ;[16:73,132/132] 4dup D<> if   ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{small})" version can be changed with function,fast,default
     or   A              ; 1:4       4dup D<> if   h2 l2 . h1 l1
@@ -2474,7 +2474,7 @@ _TYP_DOUBLE,{small},{
     add  HL, DE         ; 1:11      4dup D<> if   l1    . h1 h2  cp h2-h1
     ex  (SP),HL         ; 1:19      4dup D<> if   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if   h2 l2 . h1 l1},
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if   h2 l2 . h1 l1},
 _TYP_DOUBLE,{fast},{
             ;[23:41,56,113,126/126] 4dup D<> if  ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{fast})" version can be changed with function,small,default
     pop  BC             ; 1:10      4dup D<> if   h2    . h1 l1  BC= lo(d2) = l2
@@ -2494,7 +2494,7 @@ _TYP_DOUBLE,{fast},{
     jr   nz, $+7        ; 2:7/12    4dup D<> if   h2 l2 . h1 l1  --> exit
     ld    A, B          ; 1:4       4dup D<> if   h2 l2 . h1 l1  A = hi(h2)
     sub   D             ; 1:4       4dup D<> if   h2 l2 . h1 l1  hi(h2) - hi(h1)
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if},
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if},
 {
             ;[21:51,66,123,122/122] 4dup D<> if  ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{default})" version can be changed with function,small,fast,default
     pop  BC             ; 1:10      4dup D<> if   h2    . h1 l1  BC= lo(d2) = l2
@@ -2512,7 +2512,7 @@ _TYP_DOUBLE,{fast},{
     jr   nz, $+3        ; 2:7/12    4dup D<> if   h2    . h1 l1  --> push bc
     sub   D             ; 1:4       4dup D<> if   h2    . h1 l1  hi(h2) - hi(h1)
     push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if})}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if})}){}dnl
 dnl
 dnl
 dnl
@@ -2534,11 +2534,11 @@ __{}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
     push AF             ; 1:11      4dup D< if
     push BC             ; 1:11      4dup D< if
     call FCE_DLT        ; 3:17      4dup D< if   carry if true
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      4dup D< if},
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup D< if},
 {define({USE_FCE_4DUP_DLT},{yes})
                         ;[6:27]     4dup D< if   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DLT   ; 3:17      4dup D< if   carry if true
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      4dup D< if})}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup D< if})}){}dnl
 dnl
 dnl
 dnl
@@ -2560,11 +2560,11 @@ __{}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
     push AF             ; 1:11      4dup D>= if
     push BC             ; 1:11      4dup D>= if
     call FCE_DLT        ; 3:17      4dup D>= if   D< carry if true --> D>= carry if false
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      4dup D>= if},
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup D>= if},
 {define({USE_FCE_4DUP_DLT},{yes})
                         ;[6:27]     4dup D>= if   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DLT   ; 3:17      4dup D>= if   D< carry if true --> D>= carry if false
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      4dup D>= if})}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup D>= if})}){}dnl
 dnl
 dnl
 dnl
@@ -2586,11 +2586,11 @@ __{}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     push AF             ; 1:11      4dup D<= if
     push BC             ; 1:11      4dup D<= if
     call FCE_DGT        ; 3:17      4dup D<= if   D> carry if true --> D<= carry if false
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      4dup D<= if},
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup D<= if},
 {define({USE_FCE_4DUP_DGT},{yes})
                         ;[6:27]     4dup D<= if   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DGT   ; 3:17      4dup D<= if   D> carry if true --> D<= carry if false
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      4dup D<= if})}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup D<= if})}){}dnl
 dnl
 dnl
 dnl
@@ -2612,11 +2612,11 @@ __{}ifelse(_TYP_DOUBLE,{fast},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     push AF             ; 1:11      4dup D> if
     push BC             ; 1:11      4dup D> if
     call FCE_DGT        ; 3:17      4dup D> if   carry if true
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      4dup D> if},
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup D> if},
 {define({USE_FCE_4DUP_DGT},{yes})
                         ;[6:27]     4dup D> if   ( d2 d1 -- d2 d1 )
     call FCE_4DUP_DGT   ; 3:17      4dup D> if   carry if true
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      4dup D> if})}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup D> if})}){}dnl
 dnl
 dnl
 dnl
@@ -2663,7 +2663,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{
     push AF             ; 1:11      4dup Du< if
     push BC             ; 1:11      4dup Du< if
     call FCE_DULT       ; 3:17      4dup Du< if   carry if true
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      4dup Du< if},
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du< if},
 {
                        ;[15:101]    4dup Du< if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du< if   ud2 < ud1 --> ud2-ud1<0 --> (SP)BC-DEHL<0 --> carry if true
@@ -2678,7 +2678,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{
     sbc   A, D          ; 1:4       4dup Du< if   H-D<0 --> carry if true
     ex  (SP),HL         ; 1:19      4dup Du< if
     push BC             ; 1:11      4dup Du< if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      4dup Du< if})}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du< if})}){}dnl
 dnl
 dnl
 dnl
@@ -2700,7 +2700,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{
     push AF             ; 1:11      4dup Du>= if
     push BC             ; 1:11      4dup Du>= if
     call FCE_DULT       ; 3:17      4dup Du>= if   D< carry if true --> D>= carry if false
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      4dup Du>= if},
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du>= if},
 {
                        ;[15:101]    4dup Du>= if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du>= if   ud2 >= ud1 --> ud2-ud1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
@@ -2715,7 +2715,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{
     sbc   A, D          ; 1:4       4dup Du>= if   H-D>=0 --> no carry if true
     ex  (SP),HL         ; 1:19      4dup Du>= if
     push BC             ; 1:11      4dup Du>= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      4dup Du>= if})}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du>= if})}){}dnl
 dnl
 dnl
 dnl
@@ -2737,7 +2737,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{
     push AF             ; 1:11      4dup Du<= if
     push BC             ; 1:11      4dup Du<= if
     call FCE_DUGT       ; 3:17      4dup Du<= if   D> carry if true --> D<= carry if false
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      4dup Du<= if},
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du<= if},
 {
                        ;[15:101]    4dup Du<= if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du<= if   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
@@ -2752,7 +2752,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{
     sbc   A, H          ; 1:4       4dup Du<= if   0<=D-H --> no carry if true
     ex  (SP),HL         ; 1:19      4dup Du<= if
     push BC             ; 1:11      4dup Du<= if
-    jp    c,, format({%-11s},else{}IF_COUNT); 3:10      4dup Du<= if})}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du<= if})}){}dnl
 dnl
 dnl
 dnl
@@ -2774,7 +2774,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{
     push AF             ; 1:11      4dup Du> if
     push BC             ; 1:11      4dup Du> if
     call FCE_DUGT       ; 3:17      4dup Du> if   carry if true
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      4dup Du> if},
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du> if},
 {
                        ;[15:101]    4dup Du> if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du> if   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
@@ -2789,7 +2789,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{
     sbc   A, H          ; 1:4       4dup Du> if   0>D-H --> carry if true
     ex  (SP),HL         ; 1:19      4dup Du> if
     push BC             ; 1:11      4dup Du> if
-    jp   nc,, format({%-11s},else{}IF_COUNT); 3:10      4dup Du> if})}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du> if})}){}dnl
 dnl
 dnl
 dnl
@@ -2817,7 +2817,7 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
     or    L             ; 1:4       2dup D0= if
     or    D             ; 1:4       2dup D0= if
     or    E             ; 1:4       2dup D0= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      2dup D0= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup D0= if}){}dnl
 dnl
 dnl
 dnl
@@ -2839,7 +2839,7 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
     or    L             ; 1:4       2dup D0<> if
     or    D             ; 1:4       2dup D0<> if
     or    E             ; 1:4       2dup D0<> if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      2dup D0<> if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      2dup D0<> if}){}dnl
 dnl
 dnl
 dnl
@@ -2858,7 +2858,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
     bit   7, D          ; 2:8       2dup D0< if
-    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      2dup D0< if}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      2dup D0< if}){}dnl
 dnl
 dnl
 dnl
@@ -2877,7 +2877,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
     bit   7, D          ; 2:8       2dup D0>= if
-    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      2dup D0>= if}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup D0>= if}){}dnl
 dnl
 dnl
 dnl
@@ -2909,7 +2909,7 @@ __{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
-__{}__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO},
+__{}__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO},
 __{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
@@ -2922,10 +2922,10 @@ __{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+10)){}dnl
 __{}__{}__{}define({_TMP_P},eval(8*_TMP_NJ+4*_TMP_J+4*_TMP_J2+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
 __{}__{}__{}ifelse(ifelse(_TYP_DOUBLE,{small},{eval((_TMP_BEST_B<_TMP_B) || ((_TMP_BEST_B==_TMP_B) && (_TMP_BEST_P<_TMP_P)))},{eval(_TMP_BEST_P<=_TMP_P)}),{1},{
 __{}__{}__{}__{}_TMP_BEST_CODE
-__{}__{}__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO   price: _TMP_BEST_P},
+__{}__{}__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO   price: _TMP_BEST_P},
 __{}__{}__{}{
 __{}__{}__{}__{}                     ;[_TMP_B:_TMP_NJ/_TMP_J,_TMP_J2] _TMP_INFO   ( d1 -- d1 )_TMP_HL_CODE
-__{}__{}__{}__{}    jp   nz,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO   price: _TMP_P})})},
+__{}__{}__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO   price: _TMP_P})})},
 __{}{
 __{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
@@ -2958,7 +2958,7 @@ __{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
-__{}__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO},
+__{}__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO},
 __{}__{}__IS_NUM($1),{0},{
 __{}__{}__{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}__{}{dnl
@@ -2971,10 +2971,10 @@ __{}__{}__{}define({_TMP_NJ},eval(_TMP_NJ+10)){}dnl
 __{}__{}__{}define({_TMP_P},eval(8*_TMP_J2+4*_TMP_NJ+4*_TMP_J+64*_TMP_B)){}dnl     price = 16*(clocks + 4*bytes)
 __{}__{}__{}ifelse(ifelse(_TYP_DOUBLE,{small},{eval((_TMP_BEST_B<_TMP_B) || ((_TMP_BEST_B==_TMP_B) && (_TMP_BEST_P<_TMP_P)))},{eval(_TMP_BEST_P<=_TMP_P)}),{1},{
 __{}__{}__{}__{}_TMP_BEST_CODE
-__{}__{}__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO   price: _TMP_BEST_P},
+__{}__{}__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO   price: _TMP_BEST_P},
 __{}__{}__{}{
 __{}__{}__{}__{}                     ;[_TMP_B:_TMP_J,_TMP_NJ/_TMP_J2] _TMP_INFO   ( d1 -- d1 )_TMP_HL_CODE
-__{}__{}__{}__{}    jp    z,, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO   price: _TMP_P})})},
+__{}__{}__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO   price: _TMP_P})})},
 __{}{
 __{}__{}    .error {$0}($@): $# parameters found in macro!})}){}dnl
 dnl
