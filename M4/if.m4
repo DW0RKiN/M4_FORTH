@@ -499,7 +499,7 @@ __{}__{}  .error {$0}($@): Missing address parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
-__{}__{}                        ;[14:58]    __INFO
+__{}__{}                        ;[14:58]    __INFO   ( x -- x )  flag: x < $1
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
 __{}__{}    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
 __{}__{}    sub   C             ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
@@ -512,6 +512,7 @@ __{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__HEX_HL($1),0x0000,{__ASM_TOKEN_DUP_0LT_IF},
 __{}__HEX_HL($1),0x0001,{__ASM_TOKEN_DUP_0LE_IF},
 __{}{
+__{}__{}                       ;[13:47/20]  __INFO   ( x -- x )  flag: x < $1
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
@@ -549,7 +550,7 @@ __{}__{}  .error {$0}($@): Missing address parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
-__{}__{}                        ;[14:58]    __INFO
+__{}__{}                        ;[14:58]    __INFO   ( x -- x )  flag: x >= $1
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
 __{}__{}    ld    A, L          ; 1:4       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
 __{}__{}    sub   C             ; 1:4       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
@@ -562,6 +563,7 @@ __{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__HEX_HL($1),0x0000,{__ASM_TOKEN_DUP_0GE_IF},
 __{}__HEX_HL($1),0x0001,{__ASM_TOKEN_DUP_0GT_IF},
 __{}{
+__{}__{}                       ;[14:50/18]  __INFO   ( x -- x )  flag: x >= $1
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
@@ -598,7 +600,7 @@ __{}__{}  .error {$0}($@): Missing address parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
-__{}__{}                        ;[14:58]    __INFO
+__{}__{}                        ;[14:58]    __INFO   ( x -- x )  flag: x <= $1
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
 __{}__{}    ld    A, C          ; 1:4       __INFO    HL<=$1 --> 0<=$1-HL --> not carry if true
 __{}__{}    sub   L             ; 1:4       __INFO    HL<=$1 --> 0<=$1-HL --> not carry if true
@@ -611,6 +613,7 @@ __{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__HEX_HL($1),0x0000,{__ASM_TOKEN_DUP_0LE_IF},
 __{}__HEX_HL($1),0xFFFF,{__ASM_TOKEN_DUP_0LT_IF},
 __{}{
+__{}__{}                       ;[13:47/20]  __INFO   ( x -- x )  flag: x <= $1
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
@@ -647,7 +650,7 @@ __{}__{}  .error {$0}($@): Missing address parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
-__{}__{}                        ;[14:58]    __INFO
+__{}__{}                       ;[14:58]     __INFO   ( x -- x )  flag: x > $1
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
 __{}__{}    ld    A, C          ; 1:4       __INFO    HL>$1 --> 0>$1-HL --> carry if true
 __{}__{}    sub   L             ; 1:4       __INFO    HL>$1 --> 0>$1-HL --> carry if true
@@ -660,7 +663,7 @@ __{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__HEX_HL($1),0x0000,{__ASM_TOKEN_DUP_0GT_IF},
 __{}__HEX_HL($1),0xFFFF,{__ASM_TOKEN_DUP_0GE_IF},
 __{}{
-__{}__{}                        ;[14:50/18] __INFO
+__{}__{}                        ;[14:50/18] __INFO   ( x -- x )  flag: x > $1
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}__{}ifelse(__IS_NUM($1),{0},{dnl
