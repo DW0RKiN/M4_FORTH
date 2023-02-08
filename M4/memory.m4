@@ -2525,20 +2525,20 @@ __{}    ld  format({%-16s},{($2),A}); 3:13      __INFO})},
 __SAVE_EVAL($3),2,{dnl
 __{}ifelse(__IS_MEM_REF($1),{1},{
 __{}    push HL             ; 1:11      __INFO   ( $1 $2 $3 -- )
-__{}    mov  HL,format({%-12s},{$1}); 3:16      __INFO   from_addr
-__{}    mov   C,(HL)        ; 1:7       __INFO
+__{}    ld   HL,format({%-12s},{$1}); 3:16      __INFO   from_addr
+__{}    ld    C,(HL)        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    mov   B,(HL)        ; 1:7       __INFO},
+__{}    ld    B,(HL)        ; 1:7       __INFO},
 __IS_MEM_REF($2),{1},{
 __{}    push HL             ; 1:11      __INFO   ( $1 $2 $3 -- )
 __{}    ld   BC,format({%-12s},{($1)}); 4:20      __INFO},
 __{}{
 __{}    ld   BC,format({%-12s},{($1)}); 4:20      __INFO   ( $1 $2 $3 -- )}){}dnl
 __{}ifelse(__IS_MEM_REF($2),{1},{
-__{}    mov  HL,format({%-12s},{$2}); 3:16      __INFO   to_addr
-__{}    mov (HL),C          ; 1:7       __INFO
+__{}    ld   HL,format({%-12s},{$2}); 3:16      __INFO   to_addr
+__{}    ld  (HL),C          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    mov (HL),B          ; 1:7       __INFO
+__{}    ld  (HL),B          ; 1:7       __INFO
 __{}    pop  HL             ; 1:10      __INFO},
 __{}__IS_MEM_REF($1),{1},{
 __{}    ld  format({%-16s},{($2),BC}); 4:20      __INFO
@@ -2646,7 +2646,7 @@ ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}_TYP_SINGLE,_TYP_SINGLE,{
+__{}_TYP_SINGLE,small,{
 __{}    ;[17:cca 66+u*26+int(u/256)*24] __INFO  ( addr u -- )  char = $1  # small version can be changed with "define({_TYP_SINGLE},{default})"
 __{}    ld    A, format({%-11s},$1); 2:7       __INFO  A = char
 __{}    ld    B, L          ; 1:4       __INFO
@@ -4804,12 +4804,12 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
 __{}__{}                       ;[15:70+42*u]__INFO   ( from_addr to_addr -- )
 __{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   BC = u_words
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    or    B             ; 1:4       __INFO
+__{}__{}    jr    z, $+11       ; 2:7/12    __INFO   zero?
 __{}__{}    sla   C             ; 2:8       __INFO
 __{}__{}    rl    B             ; 2:8       __INFO
 __{}__{};   jr    c, $+9        ; 2:7/12    __INFO   negative or unsigned overflow?
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    or    B             ; 1:4       __INFO
-__{}__{}    jr    z, $+5        ; 2:7/12    __INFO   zero?
 __{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = from_addr, DE = to_addr
 __{}__{}    ldir                ; 2:u*42-5  __INFO   addr++
 __{}__{}    pop  HL             ; 1:10      __INFO
@@ -4882,55 +4882,53 @@ __{}__{};   jr    c, $+4        ; 2:7/12    __INFO   negative or unsigned overfl
 __{}__{}    ldir                ; 2:16/21   __INFO   addr++
 __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):__HEX_HL($3),1:1:0x0001,{
+__{}__{}                        ;[14:93]    __INFO   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO   from_addr
+__{}__{}    ld    C,(HL)        ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    B,(HL)        ; 1:7       __INFO
+__{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO   to_addr
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),B          ; 1:7       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($1):__HEX_HL($3),1:0x0001,{
+__{}__{}                        ;[12:77]    __INFO   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO   from_addr
+__{}__{}    ld    C,(HL)        ; 1:7       __INFO   from_addr
+__{}__{}    inc  HL             ; 1:6       __INFO   from_addr
+__{}__{}    ld    B,(HL)        ; 1:7       __INFO   from_addr
+__{}__{}    ld  format({%-16s},($2){,}BC); 4:20      __INFO   to_addr
+__{}__{}    pop  HL             ; 1:10      __INFO},
+__{}__IS_MEM_REF($2):__HEX_HL($3),1:0x0001,{
+__{}__{}                        ;[12:77]    __INFO   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   BC,format({%-12s},($1)); 4:20      __INFO   from_addr
+__{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO   to_addr
+__{}__{}    ld  (HL),C          ; 1:7       __INFO   to_addr
+__{}__{}    inc  HL             ; 1:6       __INFO   to_addr
+__{}__{}    ld  (HL),B          ; 1:7       __INFO   to_addr
+__{}__{}    pop  HL             ; 1:10      __INFO},
+__{}__HEX_HL($3),0x0001,{
+__{}__{}                        ;[8:40]     __INFO   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}    ld   BC,format({%-12s},($1)); 4:20      __INFO   from_addr
+__{}__{}    ld  format({%-16s},($2){,}BC); 4:20      __INFO   to_addr},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):__HEX_HL($3),0:0:0x0002,{
+__{}__{}                       ;[14:85]     __INFO   ( -- ) from: $1, to: $2, u: $3 words
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},($1)); 3:16      __INFO   from_addr
+__{}__{}    ld  format({%-16s},($2){,}HL); 3:16      __INFO   to_addr
+__{}__{}    ld   HL,format({%-12s},(2+$1)); 3:16      __INFO   from_addr
+__{}__{}    ld  format({%-16s},(2+$2){,}HL); 3:16      __INFO   to_addr
+__{}__{}    pop  HL             ; 1:10      __INFO},
 __{}__IS_NUM($3),{0},{dnl
-__{}__{}  .error  {$0}(): Bad parameter!},
+__{}__{}  .error  {$0}($@): Bad parameter!},
 __{}{dnl
 __{}__{}ifelse(eval(($3)<1),{1},{
 __{}__{}__{}                        ;[0:0]      __INFO   ( -- ) from: $1, to: $2, u: 0 or negative},
-__{}__{}eval((($3)==1) && ((__IS_MEM_REF($1)+__IS_MEM_REF($2))==2)),{1},{
-__{}__{}__{}                        ;[14:93]    __INFO   ( -- ) from: $1, to: $2, u: $3 words
-__{}__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}__{}    mov  HL,format({%-12s},$1); 3:16      __INFO   from_addr
-__{}__{}__{}    mov   C,(HL)        ; 1:7       __INFO
-__{}__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}__{}    mov   B,(HL)        ; 1:7       __INFO
-__{}__{}__{}    mov  HL,format({%-12s},$2); 3:16      __INFO   to_addr
-__{}__{}__{}    mov (HL),C          ; 1:7       __INFO
-__{}__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}__{}    mov (HL),B          ; 1:7       __INFO
-__{}__{}__{}    pop  HL             ; 1:10      __INFO},
-__{}__{}eval((($3)==1) && ((__IS_MEM_REF($1)+__IS_MEM_REF($2))==0)),{1},{
-__{}__{}__{}                        ;[8:40]     __INFO   ( -- ) from: $1, to: $2, u: $3 words
-__{}__{}__{}    mov  BC,format({%-12s},($1)); 4:20      __INFO   from_addr
-__{}__{}__{}    mov format({%-16s},($2){,}BC); 4:20      __INFO   to_addr},
-__{}__{}eval((($3)==2) && ((__IS_MEM_REF($1)+__IS_MEM_REF($2))==0)),{1},{
-__{}__{}__{}                       ;[14:85]     __INFO   ( -- ) from: $1, to: $2, u: $3 words
-__{}__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}__{}    mov  HL,format({%-12s},($1)); 3:16      __INFO   from_addr
-__{}__{}__{}    mov format({%-16s},($2){,}HL); 3:16      __INFO   to_addr
-__{}__{}__{}    mov  HL,format({%-12s},(2+$1)); 3:16      __INFO   from_addr
-__{}__{}__{}    mov format({%-16s},(2+$2){,}HL); 3:16      __INFO   to_addr
-__{}__{}__{}    pop  HL             ; 1:10      __INFO},
-__{}__{}eval($3),{1},{
-__{}__{}__{}                        ;[12:77]    __INFO   ( -- ) from: $1, to: $2, u: $3 words
-__{}__{}__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}__{}    mov  HL,format({%-12s},$1); 3:16      __INFO   from_addr
-__{}__{}__{}    mov   C,(HL)        ; 1:7       __INFO   from_addr
-__{}__{}__{}    inc  HL             ; 1:6       __INFO   from_addr
-__{}__{}__{}    mov   B,(HL)        ; 1:7       __INFO   from_addr
-__{}__{}__{}    pop  HL             ; 1:10      __INFO},
-__{}__{}__{}{dnl
-__{}__{}__{}    mov  BC,format({%-12s},($1)); 4:20      __INFO   from_addr})
-__{}__{}__{}ifelse(__IS_MEM_REF($2),{1},{dnl
-__{}__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}__{}    mov  HL,format({%-12s},$2); 3:16      __INFO   to_addr
-__{}__{}__{}    mov (HL),C          ; 1:7       __INFO   to_addr
-__{}__{}__{}    inc  HL             ; 1:6       __INFO   to_addr
-__{}__{}__{}    mov (HL),B          ; 1:7       __INFO   to_addr
-__{}__{}__{}    pop  HL             ; 1:10      __INFO},
-__{}__{}__{}{dnl
-__{}__{}__{}    mov format({%-16s},($2){,}BC); 4:20      __INFO   to_addr})},
 __{}__{}{ifelse(eval(2*($3)>65535),{1},{
 __{}__{}__{}__{}  .warning  {$0}($@): Trying to copy data bigger 64k!})
 __{}__{}__{}define({_TMP_INFO},__INFO){}dnl
@@ -4941,7 +4939,6 @@ __{}__{}__{}__ADD_LD_REG16({DE},$1,{HL},$2,{BC},2*$3){}dnl
 __{}__{}__{}                      format({%-13s},;[eval(__SUM_BYTES_16BIT+6)]:[eval(37+__SUM_CLOCKS_16BIT+$3*42)]) __INFO   # default version
 __{}__{}__{}    push DE             ; 1:11      __INFO   ( -- )  from = $1, to = $2, u = $3 words
 __{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}__{}__LD_REG16({BC},2*$3){}dnl
 __{}__{}__{}__CODE_16BIT{}dnl
 __{}__{}__{}__LD_REG16({HL},$2,{BC},2*$3){}dnl
