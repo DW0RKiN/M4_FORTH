@@ -687,7 +687,7 @@ __{}__ADD_TOKEN({__TOKEN_0GT},{0>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_0GT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__INFO},__COMPILE_INFO)
                         ;[9:41/20]  __INFO   ( x -- flag )  flag: x > 0
     ld    A, L          ; 1:4       __INFO
     or    H             ; 1:4       __INFO
