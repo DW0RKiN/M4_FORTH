@@ -414,23 +414,6 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
-dnl ( x1 x2 -- x1 x2 )
-dnl 2dup D0= if
-define({_2DUP_D0EQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_IF},{2dup d0= if},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_2DUP_D0EQ_IF},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, H          ; 1:4       2dup D0= if
-    or    L             ; 1:4       2dup D0= if
-    or    D             ; 1:4       2dup D0= if
-    or    E             ; 1:4       2dup D0= if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup D0= if}){}dnl
-dnl
 dnl
 dnl -------- signed ---------
 dnl
@@ -3001,20 +2984,19 @@ dnl 2dup 0. D= if
 dnl 2dup D0= if
 dnl ( d -- d )
 define({_2DUP_D0EQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_IF},{2dup_d0eq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_D0EQ_IF},{2dup d0= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_D0EQ_IF},{dnl
-__{}define({__INFO},{2dup_d0eq_if}){}dnl
-dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, H          ; 1:4       2dup D0= if  ( d -- d )
-    or    L             ; 1:4       2dup D0= if
-    or    D             ; 1:4       2dup D0= if
-    or    E             ; 1:4       2dup D0= if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup D0= if}){}dnl
+    ld    A, H          ; 1:4       __INFO  ( d -- d )
+    or    L             ; 1:4       __INFO
+    or    D             ; 1:4       __INFO
+    or    E             ; 1:4       __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl
