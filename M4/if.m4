@@ -2,66 +2,69 @@ define({IF_COUNT},100)dnl
 dnl
 dnl
 dnl
+dnl # if
 define({IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_IF},{if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_IF},{dnl
-__{}define({__INFO},{if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, H          ; 1:4       if
-    or    L             ; 1:4       if
-    ex   DE, HL         ; 1:4       if
-    pop  DE             ; 1:10      if
-    jp    z, else{}IF_COUNT    ; 3:10      if}){}dnl
+    ld    A, H          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    jp    z, else{}IF_COUNT    ; 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl
+dnl # else
 define({ELSE},{dnl
 __{}__ADD_TOKEN({__TOKEN_ELSE},{else},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ELSE},{dnl
-__{}define({__INFO},{else}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(ELSE_STACK,{ELSE_STACK},{
     .error {ELSE without IF!
     M4 FORTH does not support the BEGIN WHILE WHILE UNTIL ELSE THEN construction. But it supports the identical design BEGIN IF WHILE UNTIL ELSE THEN.}})
-    jp   endif{}THEN_STACK       ; 3:10      else
-else{}ELSE_STACK:popdef({ELSE_STACK}){}dnl
+    jp   format({%-15s},endif{}THEN_STACK); 3:10      __INFO
+format({%-24s},else{}ELSE_STACK:);           __INFO{}popdef({ELSE_STACK}){}dnl
 }){}dnl
 dnl
 dnl
+dnl # then
 define({THEN},{dnl
 __{}__ADD_TOKEN({__TOKEN_THEN},{then},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_THEN},{dnl
-__{}define({__INFO},{then}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 __{}ifelse(ELSE_STACK, THEN_STACK,{
-__{}__{}else{}ELSE_STACK  EQU $          ;           = endif{}popdef({ELSE_STACK})}){}dnl
+__{}__{}else{}ELSE_STACK  EQU $          ;           __INFO  = endif{}popdef({ELSE_STACK})}){}dnl
 __{}ifelse(THEN_STACK,{THEN_STACK},{
-__{}__{}.error {THEN for non-existent IF}},
+__{}__{}  .error {THEN for non-existent IF}},
 __{}{
-__{}__{}endif{}THEN_STACK:{}popdef({THEN_STACK})})}){}dnl
+__{}__{}format({%-24s},endif{}THEN_STACK:);           __INFO{}popdef({THEN_STACK})})}){}dnl
 dnl
 dnl
 dnl
-dnl ( x1 -- x1 )
-dnl dup if
+dnl # ( x1 -- x1 )
+dnl # dup if
 define({DUP_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_IF},{dup_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_IF},{dup if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_IF},{dnl
-__{}define({__INFO},{dup_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, H          ; 1:4       dup if
-    or    L             ; 1:4       dup if
-    jp    z, else{}IF_COUNT    ; 3:10      dup if}){}dnl
+    ld    A, H          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    jp    z, else{}IF_COUNT    ; 3:10      __INFO}){}dnl
 dnl
 dnl
-dnl over if
+dnl # over if
 define({OVER_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_OVER_IF},{over_if},$@){}dnl
 }){}dnl
@@ -74,6 +77,7 @@ define({IF_COUNT}, incr(IF_COUNT))pushdef({ELSE_STACK}, IF_COUNT)pushdef({THEN_S
     jp    z, else{}IF_COUNT    ; 3:10      over if}){}dnl
 dnl
 dnl
+dnl # swap if
 define({SWAP_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_SWAP_IF},{swap_if},$@){}dnl
 }){}dnl
