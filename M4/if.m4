@@ -381,19 +381,19 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(1,0,{
-                        ;[9:33/20]  __INFO   ( x -- x )  flag: x <= 0
-    ld    A, L          ; 1:4       __INFO
-    or    H             ; 1:4       __INFO
-    jr    z, $+7        ; 2:7/12    __INFO
-    bit   7, H          ; 2:8       __INFO
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-{
-                        ;[7:30]     __INFO   ( x -- )  flag: x <= 0
-    ld    A, H          ; 1:4       __INFO   save sign
-    dec  HL             ; 1:6       __INFO   zero to negative
-    or    H             ; 1:4       __INFO
-    inc  HL             ; 1:6       __INFO
-    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}                        ;[9:33/20]  __INFO   ( x -- x )  flag: x <= 0
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jr    z, $+7        ; 2:7/12    __INFO
+__{}    bit   7, H          ; 2:8       __INFO
+__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}{
+__{}                        ;[7:30]     __INFO   ( x -- )  flag: x <= 0
+__{}    ld    A, H          ; 1:4       __INFO   save sign
+__{}    dec  HL             ; 1:6       __INFO   zero to negative
+__{}    or    H             ; 1:4       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
 dnl

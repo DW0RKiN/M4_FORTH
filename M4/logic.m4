@@ -687,14 +687,23 @@ __{}__ADD_TOKEN({__TOKEN_0GT},{0>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_0GT},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[9:41/20]  __INFO   ( x -- flag )  flag: x > 0
-    ld    A, L          ; 1:4       __INFO
-    or    H             ; 1:4       __INFO
-    jr    z, $+7        ; 2:7/12    __INFO   zero is false and result
-    ld    A, H          ; 1:4       __INFO
-    sub   0x80          ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(1,0,{
+__{}                        ;[9:41/20]  __INFO   ( x -- flag )  flag: x > 0
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jr    z, $+7        ; 2:7/12    __INFO   zero is false and result
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    sub   0x80          ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}{
+__{}                        ;[7:36]     __INFO   ( x -- flag )  flag: x > 0
+__{}    ld    A, H          ; 1:4       __INFO   save sign
+__{}    dec  HL             ; 1:6       __INFO   zero to negative
+__{}    or    H             ; 1:4       __INFO
+__{}    sub   0x80          ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -706,11 +715,9 @@ __{}__ADD_TOKEN({__TOKEN_0LE},{0<=},$@){}dnl
 dnl
 define({__ASM_TOKEN_0LE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[9:42]     __INFO   ( x -- flag )  flag: x <= 0
-    ld    A, L          ; 1:4       __INFO
-    or    H             ; 1:4       __INFO
-    sub  0x01           ; 2:7       __INFO   carry if zero
-    sbc   A, A          ; 1:4       __INFO
+                        ;[6:33]     __INFO   ( x -- flag )  flag: x <= 0
+    ld    A, H          ; 1:4       __INFO
+    dec  HL             ; 1:6       __INFO
     or    H             ; 1:4       __INFO
     add   A, A          ; 1:4       __INFO   carry if zero or negative HL
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
