@@ -200,7 +200,13 @@ a,,,
             __T_NAME(0):$1,{__TOKEN_ULE:__TOKEN_WHILE},{__SET_TOKEN({__TOKEN_ULE_WHILE},__T_INFO(0){ }$2)},
             __T_NAME(0):$1,{__TOKEN_UGE:__TOKEN_WHILE},{__SET_TOKEN({__TOKEN_UGE_WHILE},__T_INFO(0){ }$2)},
 
-__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_EQ,                {__SET_TOKEN({__TOKEN_0EQ},  __T_INFO(0){ }$2)},
+__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_EQ,                {__SET_TOKEN({__TOKEN_0EQ},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
+__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_NE,                {__SET_TOKEN({__TOKEN_0NE},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
+__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_LT,                {__SET_TOKEN({__TOKEN_0LT},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
+__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_GT,                {__SET_TOKEN({__TOKEN_0GT},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
+__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_LE,                {__SET_TOKEN({__TOKEN_0LE},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
+__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_GE,                {__SET_TOKEN({__TOKEN_0GE},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
 __T_NAME(1):__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,  __TOKEN_CFETCH:__TOKEN_PUSHS:1:0x0000:__TOKEN_CEQ,  {define({__TEMP},__T_INFO(1){ }__T_INFO(0){ }$2){}__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_CFETCH_0CEQ},__TEMP)},
 __T_NAME(1):__T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,  __TOKEN_CFETCH:__TOKEN_PUSHS:1:0x0000:__TOKEN_CNE,  {define({__TEMP},__T_INFO(1){ }__T_INFO(0){ }$2){}__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_CFETCH_0CNE},__TEMP)},
 __T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_CEQ,               {__SET_TOKEN({__TOKEN_0CEQ}, __T_INFO(0){ }$2)},
@@ -517,8 +523,17 @@ i....,,,
             __T_NAME(1):__T_NAME(0):$1,   __TOKEN_2OVER_NIP_CFETCH:__TOKEN_0CNE:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_NIP_CFETCH_0CNE_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
 
             __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_0EQ:__TOKEN_IF,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_0EQ_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
-            __T_NAME(0):$1,               __TOKEN_0EQ:__TOKEN_IF,                             {__SET_TOKEN({__TOKEN_0EQ_IF},__T_INFO(0){ }$2)},
+            __T_NAME(0):$1,                           __TOKEN_0EQ:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_0EQ_IF},__T_INFO(0){ }$2)},
+
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_0NE:__TOKEN_IF,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_0NE_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                           __TOKEN_0NE:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_0NE_IF},__T_INFO(0){ }$2)},
             
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_0LT:__TOKEN_IF,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_0LT_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                           __TOKEN_0LT:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_0LT_IF},__T_INFO(0){ }$2)},
+
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_0GE:__TOKEN_IF,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_0GE_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                           __TOKEN_0GE:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_0GE_IF},__T_INFO(0){ }$2)},
+
 dnl # J...
 dnl # K...
 dnl # L...

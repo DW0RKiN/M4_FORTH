@@ -628,12 +628,107 @@ __{}__ADD_TOKEN({__TOKEN_0EQ},{0=},$@){}dnl
 dnl
 define({__ASM_TOKEN_0EQ},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[5:29]     __INFO
+                        ;[5:29]     __INFO   ( x -- flag )  flag: x == 0
     ld    A, H          ; 1:4       __INFO
     dec  HL             ; 1:6       __INFO
     sub   H             ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
+dnl
+dnl # 0<>
+dnl # ( x1 -- flag )
+dnl # if ( x1<>0 ) flag = 0; else flag = 0xFFFF;
+dnl # 0 if 16-bit zero, -1 if not equal zero
+define({_0NE},{dnl
+__{}__ADD_TOKEN({__TOKEN_0NE},{0<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0NE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(_TYP_SINGLE,small,{
+__{}                        ;[6:30]     __INFO   ( x -- flag )  flag: x <> 0  # small version can be changed with "define({TYP_D0EQ},{default})"
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+__{}{
+__{}                        ;[7:25/20]  __INFO   ( x -- flag )  flag: x <> 0  # default version can be changed with "define({TYP_D0EQ},{small})"
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    or    H             ; 1:4       __INFO
+__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = flag}){}dnl
+ }){}dnl
+dnl
+dnl
+dnl # 0<
+dnl # ( x1 -- flag )
+define({_0LT},{dnl
+__{}__ADD_TOKEN({__TOKEN_0LT},{0<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0LT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(TYP_0LT,{small},{
+__{}                        ;[4:23]     __INFO   ( x -- flag )  flag: x < 0  # small version can be changed with "define({TYP_D0EQ},{default})"
+__{}    rl    H             ; 2:8       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}{
+__{}                        ;[5:20]     __INFO   ( x -- flag )  flag: x < 0  # default version can be changed with "define({TYP_D0EQ},{small})"
+__{}    rl    H             ; 2:8       __INFO
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # 0>
+dnl # ( x1 -- flag )
+define({_0GT},{dnl
+__{}__ADD_TOKEN({__TOKEN_0GT},{0>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0GT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+                        ;[9:41/20]  __INFO   ( x -- flag )  flag: x > 0
+    ld    A, L          ; 1:4       __INFO
+    or    H             ; 1:4       __INFO
+    jr    z, $+7        ; 2:7/12    __INFO   zero is false and result
+    ld    A, H          ; 1:4       __INFO
+    sub   0x80          ; 2:7       __INFO
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
+dnl
+dnl
+dnl # 0<=
+dnl # ( x1 -- flag )
+define({_0LE},{dnl
+__{}__ADD_TOKEN({__TOKEN_0LE},{0<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0LE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[9:42]     __INFO   ( x -- flag )  flag: x <= 0
+    ld    A, L          ; 1:4       __INFO
+    or    H             ; 1:4       __INFO
+    sub  0x01           ; 2:7       __INFO   carry if zero
+    sbc   A, A          ; 1:4       __INFO
+    or    H             ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO   carry if zero or negative HL
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # 0>=
+dnl # ( x1 -- flag )
+define({_0GE},{dnl
+__{}__ADD_TOKEN({__TOKEN_0GE},{0>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_0GE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:26]     __INFO   ( x -- flag )  flag: x >= 0
+    ld    A, H          ; 1:4       __INFO
+    sub   0x80          ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl
 dnl # ------------ signed -----------------
@@ -1063,26 +1158,6 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
-dnl # 0<
-dnl # ( x1 -- flag )
-define({_0LT},{dnl
-__{}__ADD_TOKEN({__TOKEN_0LT},{0<},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_0LT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse(TYP_0LT,{small},{
-                        ;[4:23]     __INFO   ( x -- flag x<0 )
-    rl    H             ; 2:8       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}
-,{
-                        ;[5:20]     __INFO   ( x -- flag x<0 )
-    rl    H             ; 2:8       __INFO
-    sbc   A, A          ; 1:4       __INFO
-    ld    L, A          ; 1:4       __INFO
-    ld    H, A          ; 1:4       __INFO})}){}dnl
-dnl
-dnl
 dnl # <=
 dnl # ( x2 x1 -- flag )
 dnl # signed ( x2 <= x1 ) --> ( x2 - 1 < x1 ) --> ( x2 - x1 - 1 < 0 ) --> carry is true
@@ -1179,20 +1254,6 @@ ifelse(TYP_GE,{old},{
     ld    H, A          ; 1:4       __INFO
     ld    L, A          ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO})}){}dnl
-dnl
-dnl
-dnl # 0>=
-dnl # ( x1 -- flag )
-define({_0GE},{dnl
-__{}__ADD_TOKEN({__TOKEN_0GE},{0>=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_0GE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld    A, H          ; 1:4       __INFO
-    sub   0x80          ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl # ------------ unsigned ---------------
 dnl
