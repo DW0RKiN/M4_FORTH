@@ -220,6 +220,9 @@ __T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN
             __T_NAME(0):$1,{__TOKEN_ULE:__TOKEN_IF},{ifelse(__T_NAME(1):__T_ITEMS(1),__TOKEN_DUP_PUSH:1,{__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_DUP_PUSH_ULE_IF},__T_INFO(0){ u<=}$2,__T_ARRAY(0))},{__SET_TOKEN({__TOKEN_ULE_IF},__T_INFO(0){ }$2)})},
             __T_NAME(0):$1,{__TOKEN_UGE:__TOKEN_IF},{ifelse(__T_NAME(1):__T_ITEMS(1),__TOKEN_DUP_PUSH:1,{__DELETE_LAST_TOKEN{}__SET_TOKEN({__TOKEN_DUP_PUSH_UGE_IF},__T_INFO(0){ u>=}$2,__T_ARRAY(0))},{__SET_TOKEN({__TOKEN_UGE_IF},__T_INFO(0){ }$2)})},
 
+dnl # _0...
+_0,,,
+
 dnl # _1...
 _1,,,
 
@@ -508,6 +511,14 @@ h....,,,
             __T_NAME(0):$1,         __TOKEN_HEX:__TOKEN_PUDOT,  {__SET_TOKEN({__TOKEN_HEX_PUDOT},__T_INFO(0){ }$2,$3)},
 
 dnl # I...
+i....,,,
+
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_2OVER_NIP_CFETCH:__TOKEN_0CEQ:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_2OVER_NIP_CFETCH:__TOKEN_0CNE:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_NIP_CFETCH_0CNE_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_0EQ:__TOKEN_IF,                 {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_0EQ_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,               __TOKEN_0EQ:__TOKEN_IF,                             {__SET_TOKEN({__TOKEN_0EQ_IF},__T_INFO(0){ }$2)},
+            
 dnl # J...
 dnl # K...
 dnl # L...

@@ -123,7 +123,7 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}$#,{1},{
 __{}__{}  .error {$0}($@): The second parameter is missing!},
 __{}eval($#>2),{1},{
-__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
 __{}__{}__{}define({PUSH2_WITHIN_IF_CODE},__WITHIN($1,$2))
@@ -161,82 +161,80 @@ dnl
 dnl
 dnl # 2over nip c@ 0 c= if
 define({_2OVER_NIP_CFETCH_0CEQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},{2over_nip_cfetch_0ceq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},{2over nip c@ 0 c= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},{dnl
-__{}define({__INFO},{2over_nip_cfetch_0ceq_if}){}dnl
-dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
 __{}ifelse(eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
-__{}{define({_TMP_INFO},{2over nip c@ 0 c= if})
-__{}__{}                        ;[7:42]     _TMP_INFO   ( addr1 d1 -- addr1 d1 )
-__{}__{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr1
-__{}__{}    push BC             ; 1:11      _TMP_INFO
-__{}__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
-__{}__{}    or    A             ; 1:4       _TMP_INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{define({_TMP_INFO},__INFO)
+__{}__{}                        ;[7:42]     __INFO   ( addr1 d1 -- addr1 d1 )
+__{}__{}    pop  BC             ; 1:10      __INFO   BC = addr1
+__{}__{}    push BC             ; 1:11      __INFO
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
 dnl
 dnl
 dnl
 dnl # 2over nip c@ 0 c<> if
 define({_2OVER_NIP_CFETCH_0CNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CNE_IF},{2over_nip_cfetch_0cne_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CNE_IF},{2over nip c@ 0 c<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_CFETCH_0CNE_IF},{dnl
-__{}define({__INFO},{2over_nip_cfetch_0cne_if}){}dnl
-dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
 __{}ifelse(eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
-__{}{define({_TMP_INFO},{2over nip c@ 0 c<> if})
-__{}__{}                        ;[7:42]     _TMP_INFO   ( addr1 d1 -- addr1 d1 )
-__{}__{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr1
-__{}__{}    push BC             ; 1:11      _TMP_INFO
-__{}__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
-__{}__{}    or    A             ; 1:4       _TMP_INFO
-__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{define({_TMP_INFO},__INFO)
+__{}__{}                        ;[7:42]     __INFO   ( addr1 d1 -- addr1 d1 )
+__{}__{}    pop  BC             ; 1:10      __INFO   BC = addr1
+__{}__{}    push BC             ; 1:11      __INFO
+__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
 dnl
 dnl
 dnl
-dnl 0= if
-dnl ( x1 -- )
+dnl # 0= if
+dnl # ( x1 -- )
 define({_0EQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_0EQ_IF},{0eq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_0EQ_IF},{0= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_0EQ_IF},{dnl
-__{}define({__INFO},{0eq_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, H          ; 1:4       0= if
-    or    L             ; 1:4       0= if
-    ex   DE, HL         ; 1:4       0= if
-    pop  DE             ; 1:10      0= if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      0= if}){}dnl
+    ld    A, H          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
-dnl ( x1 -- x1 )
-dnl dup 0= if
+dnl # ( x1 -- x1 )
+dnl # dup 0= if
 define({DUP_0EQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_0EQ_IF},{dup_0eq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_0EQ_IF},{dup 0= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_0EQ_IF},{dnl
-__{}define({__INFO},{dup_0eq_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, H          ; 1:4       dup 0= if
-    or    L             ; 1:4       dup 0= if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      dup 0= if}){}dnl
+    ld    A, H          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl 0< if
