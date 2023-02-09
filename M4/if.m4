@@ -2030,115 +2030,6 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
-dnl # d<> if
-dnl # ( d2 d1 -- )
-define({DNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DNE_IF},{d<> if},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DNE_IF},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-                       ;[14:91]     __INFO   ( d2 d1 -- )  flag: d2 <> d1
-    pop  BC             ; 1:10      __INFO   lo_2
-    or    A             ; 1:4       __INFO
-    sbc  HL, BC         ; 2:15      __INFO   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if true
-    pop  HL             ; 1:10      __INFO   hi_2
-    jr   nz, $+4        ; 2:7/12    __INFO
-    sbc  HL, DE         ; 2:15      __INFO   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # d< if
-dnl # ( d2 d1 -- )
-define({DLT_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DLT_IF},{d< if},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DLT_IF},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}ifelse(_TYP_DOUBLE,{function},{__def({USE_FCE_DLT})
-                       ;[10:67]     __INFO   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
-    pop  BC             ; 1:10      __INFO   l2
-    pop  AF             ; 1:10      __INFO   h2
-    call FCE_DLT        ; 3:17      __INFO   carry if true
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-{
-                       ;[18:94]     __INFO   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
-    pop  BC             ; 1:10      __INFO   lo_2
-    ld    A, C          ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    sub   L             ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    ld    A, B          ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    pop  HL             ; 1:10      __INFO   hi_2
-    ld    A, L          ; 1:4       __INFO   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
-    sbc   A, E          ; 1:4       __INFO   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
-    ld    A, H          ; 1:4       __INFO   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
-    sbc   A, D          ; 1:4       __INFO   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
-    rra                 ; 1:4       __INFO                                   --> sign  if true
-    xor   H             ; 1:4       __INFO
-    xor   D             ; 1:4       __INFO
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # 2dup $1. d< if
-dnl # ( d -- d )
-define({_2DUP_PUSH2_DLT_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLT_IF},{2dup $1 $2 d< if},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_2DUP_PUSH2_DLT_IF},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}ifelse(eval($#<2),1,{
-__{}__{}  .error {$0}($@): Missing parameter!},
-__{}eval($#>2),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-{dnl
-__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10)
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # 2dup $1. d> if
-dnl # ( d -- d )
-define({_2DUP_PUSH2_DGT_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DGT_IF},{2dup $1 $2 d> if},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_2DUP_PUSH2_DGT_IF},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}ifelse(eval($#<2),1,{
-__{}__{}  .error {$0}($@): Missing parameter!},
-__{}eval($#>2),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-{dnl
-__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10)
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
 dnl # hi lo D=
 dnl # ( d -- d )
 dnl # equal ( d == (hi<<16)+lo )
@@ -2224,6 +2115,30 @@ __{}_TMP_BEST_CODE
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl # d<> if
+dnl # ( d2 d1 -- )
+define({DNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DNE_IF},{d<> if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DNE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+                       ;[14:91]     __INFO   ( d2 d1 -- )  flag: d2 <> d1
+    pop  BC             ; 1:10      __INFO   lo_2
+    or    A             ; 1:4       __INFO
+    sbc  HL, BC         ; 2:15      __INFO   lo_2=lo_1 --> BC=HL --> 0=HL-BC --> nz if true
+    pop  HL             ; 1:10      __INFO   hi_2
+    jr   nz, $+4        ; 2:7/12    __INFO
+    sbc  HL, DE         ; 2:15      __INFO   hi_2=hi_1 --> DE=HL --> 0=HL-DE --> nz if true
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -2320,6 +2235,69 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # d< if
+dnl # ( d2 d1 -- )
+define({DLT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DLT_IF},{d< if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DLT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(_TYP_DOUBLE,{function},{__def({USE_FCE_DLT})
+                       ;[10:67]     __INFO   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+    pop  BC             ; 1:10      __INFO   l2
+    pop  AF             ; 1:10      __INFO   h2
+    call FCE_DLT        ; 3:17      __INFO   carry if true
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+{
+                       ;[18:94]     __INFO   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+    pop  BC             ; 1:10      __INFO   lo_2
+    ld    A, C          ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sub   L             ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    ld    A, B          ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
+    pop  HL             ; 1:10      __INFO   hi_2
+    ld    A, L          ; 1:4       __INFO   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    sbc   A, E          ; 1:4       __INFO   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    ld    A, H          ; 1:4       __INFO   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    sbc   A, D          ; 1:4       __INFO   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
+    rra                 ; 1:4       __INFO                                   --> sign  if true
+    xor   H             ; 1:4       __INFO
+    xor   D             ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d< if
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DLT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLT_IF},{2dup $1 $2 d< if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DLT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10)
+__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl D>= if
 dnl ( d d -- )
 define({DGE_IF},{dnl
@@ -2358,6 +2336,28 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{ye
     pop  HL             ; 1:10      D>= if
     pop  DE             ; 1:10      D>= if
     jp    m, format({%-11s},else{}IF_COUNT); 3:10      D>= if})}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d>= if
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DGE_IF},{2dup $1 $2 d>= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DGE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d >= $1<<16+$2},3,10)
+__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2418,6 +2418,28 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
 dnl
 dnl
 dnl
+dnl # 2dup $1. d<= if
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DLE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLE_IF},{2dup $1 $2 d<= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DLE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d <= $1<<16+$2},3,10)
+__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl D> if
 dnl ( d d -- )
 define({DGT_IF},{dnl
@@ -2472,6 +2494,28 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     pop  HL             ; 1:10      D> if
     pop  DE             ; 1:10      D> if
     jp    p, format({%-11s},else{}IF_COUNT); 3:10      D> if})}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d> if
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DGT_IF},{2dup $1 $2 d> if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DGT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10)
+__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

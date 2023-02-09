@@ -5764,7 +5764,7 @@ dnl # D<
 dnl # ( d2 d1 -- flag )
 dnl # signed ( d2 < d1 ) --> ( d2 - d1 < 0 ) --> carry is true
 define({DLT},{dnl
-__{}__ADD_TOKEN({__TOKEN_DLT},{dlt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DLT},{d<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DLT},{dnl
@@ -5922,7 +5922,7 @@ dnl # 2swap D<=
 dnl # ( d2 d1 -- flag )
 dnl # (d2 >= d1)  -->  (d2 + 1 > d1) -->  (0 > d1 - d2 - 1) -->  carry if true
 define({DGE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DGE},{dge},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DGE},{d>=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DGE},{dnl
@@ -6083,7 +6083,7 @@ dnl # D<=
 dnl # 2swap D>=
 dnl # ( d2 d1 -- f )
 define({DLE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DLE},{dle},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DLE},{d<=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DLE},{dnl
@@ -6248,7 +6248,7 @@ dnl # D>
 dnl # 2swap D<
 dnl # ( d2 d1 -- flag )
 define({DGT},{dnl
-__{}__ADD_TOKEN({__TOKEN_DGT},{dgt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DGT},{d>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DGT},{dnl
