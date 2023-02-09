@@ -3859,6 +3859,8 @@ dnl #    $4 ...+bytes
 dnl #    $5 ...+clocks
 dnl # Output:
 dnl #    print code
+dnl #    z = 1 if DEHL =  $1$2
+dnl #    z = 0 if DEHL <> $1$2, but A can by zero!
 dnl # Pollutes:
 dnl #    AF,BC
 define({__MAKE_CODE_DEQ_SET_ZERO},{dnl
@@ -3894,13 +3896,33 @@ __{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO
 __{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
 __{}__{}    jr   nz{,} $+17       ; 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
-__{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
+__{}__{}    xor   H             ; 1:4       __INFO   ..L. = hi($2)
 __{}__{}    jr   nz{,} $+12       ; 2:7/12    __INFO
 __{}__{}    ld    A{,}format({%-12s},$1); 3:13      __INFO
-__{}__{}    xor   E             ; 1:4       __INFO   D... = hi($1)
+__{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)
 __{}__{}    jr   nz{,} $+6        ; 2:7/12    __INFO
 __{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      __INFO
-__{}__{}    xor   D             ; 1:4       __INFO   .E.. = lo($1)},
+__{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)},
+__{}__IS_NUM($1):__IS_NUM($2),1:1,{dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{ __INFO   {$3}}){}dnl
+__{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),$4,$5,0,0){}dnl
+__{}__{}_TMP_BEST_CODE},
+__{}__IS_NUM($1):__IS_NUM($2),0:0,{dnl
+__{}__{}__SET_BYTES_CLOCKS_PRICES($4+18,$5+65){}dnl
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($5+23){,}eval($5+41){,}eval($5+59)]) __INFO   {$3}
+__{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO
+__{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
+__{}__{}    jr   nz{,} $+17       ; 2:7/12    __INFO
+__{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)
+__{}__{}    jr   nz{,} $+12       ; 2:7/12    __INFO
+__{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
+__{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)
+__{}__{}    jr   nz{,} $+6        ; 2:7/12    __INFO
+__{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)},
+
 __{}{dnl
 __{}ifelse(eval($1):eval($2),0:0,{__ASM_TOKEN_D0EQ},
 __{}{dnl
