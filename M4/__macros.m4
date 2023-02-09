@@ -3765,6 +3765,21 @@ __{}    rra                 ; 1:4       __INFO   --> sign  if true
 __{}    xor   D             ; 1:4       __INFO
 __{}    xor   B             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
+__HEX_H(0x8000 & ($1)):__IS_MEM_REF($2),0x00:1,{
+__{}__SET_BYTES_CLOCKS_PRICES(17+$4,70+$5){}dnl
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
+__{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
+__{}    ld    A{,} C          ; 1:4       __INFO   ..HL > ..BC
+__{}    sub   L             ; 1:4       __INFO      0 > ...C - ...L --> carry if true
+__{}    ld    A{,} B          ; 1:4       __INFO
+__{}    sbc   A{,} H          ; 1:4       __INFO      0 > ..B. - ..H. --> carry if true
+__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO   ...L > lo($1)
+__{}    sbc   A{,} E          ; 1:4       __INFO      0 > .E.. - .C.. --> carry if true
+__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO   ..H. > hi($1)
+__{}    sbc   A{,} D          ; 1:4       __INFO      0 > B... - D... --> carry if true
+__{}    rra                 ; 1:4       __INFO   --> sign  if true
+__{}    xor   D             ; 1:4       __INFO
+__{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 __IS_MEM_REF($1):__IS_MEM_REF($2),0:1,{
 __{}__SET_BYTES_CLOCKS_PRICES(19+$4,74+$5){}dnl
 __{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval(23+$5)])__INFO   {$3}
