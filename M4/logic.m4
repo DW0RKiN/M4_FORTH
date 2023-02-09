@@ -5796,8 +5796,8 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
     pop  DE             ; 1:10      D<})}){}dnl
 dnl
 dnl
-dnl # $1 $2 D<
-dnl # $1. D<
+dnl # $1 $2 d<
+dnl # $1. d<
 dnl # ( d -- flag )
 dnl # signed ( d < $1. ) --> ( d - $1. < 0 ) --> carry is true
 define({PUSH2_DLT},{dnl
@@ -5953,6 +5953,44 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
     pop  DE             ; 1:10      D>=})}){}dnl
 dnl
 dnl
+dnl # $1 $2 d>=
+dnl # $1. d>=
+dnl # ( d -- flag )
+dnl # signed ( d >= $1. ) --> ( d - $1. < 0 ) --> not carry is true
+define({PUSH2_DGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_DGE},{$1 $2 d>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_DGE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}_TYP_DOUBLE,{function},{
+__{}__{}__def({USE_FCE_DLT}){}dnl
+__{}__{}__SET_BYTES_CLOCKS_PRICES(11,74){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({DE},$1,{HL},$2){}dnl
+__{}__LD_REG16({HL},$2){}dnl
+__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+__{}    push HL             ; 1:10      __INFO   hi16(d)
+__{}    ld   C, E           ; 1:4       __INFO
+__{}    ld   B, D           ; 1:4       __INFO   lo16(d){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT
+__{}    pop  AF             ; 1:10      __INFO   hi16(d)
+__{}    call FCE_DLT        ; 3:17      __INFO   carry if true
+__{}    pop  DE             ; 1:10      __INFO
+__{}    ccf                 ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d >= $1*65536+$2},
+__{}{dnl
+__{}__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},4,29)
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    ccf                 ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d >= $1*65536+$2}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # ( pd2 pd1 -- pd2 pd1 flag )
 dnl # signed ( [pd2] >= [pd1] ) --> ( [pd2] - [pd1] >= 0 ) --> not carry is true
 define({PDGE},{dnl
@@ -6077,6 +6115,44 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     ccf                 ; 1:4       D<=                                      --> carry    if true
     sbc  HL, HL         ; 2:15      D<=   set flag d2<d1
     pop  DE             ; 1:10      D<=})}){}dnl
+dnl
+dnl
+dnl # $1 $2 d<=
+dnl # $1. d<=
+dnl # ( d -- flag )
+dnl # signed ( d <= $1. ) --> ( 0 > $1. - d ) --> not carry is true
+define({PUSH2_DLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_DLE},{$1 $2 d<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_DLE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}_TYP_DOUBLE,{function},{
+__{}__{}__def({USE_FCE_DGT}){}dnl
+__{}__{}__SET_BYTES_CLOCKS_PRICES(11,74){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({DE},$1,{HL},$2){}dnl
+__{}__LD_REG16({HL},$2){}dnl
+__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+__{}    push HL             ; 1:10      __INFO   hi16(d)
+__{}    ld   C, E           ; 1:4       __INFO
+__{}    ld   B, D           ; 1:4       __INFO   lo16(d){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT
+__{}    pop  AF             ; 1:10      __INFO   hi16(d)
+__{}    call FCE_DGT        ; 3:17      __INFO   carry if true
+__{}    pop  DE             ; 1:10      __INFO
+__{}    ccf                 ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d <= $1*65536+$2},
+__{}{dnl
+__{}__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},4,29)
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    ccf                 ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d <= $1*65536+$2}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( pd2 pd1 -- pd2 pd1 flag )
@@ -6232,11 +6308,11 @@ __{}    ld   B, D           ; 1:4       __INFO   lo16(d){}__CODE_16BIT{}__LD_REG
 __{}    pop  AF             ; 1:10      __INFO   hi16(d)
 __{}    call FCE_DGT        ; 3:17      __INFO   carry if true
 __{}    pop  DE             ; 1:10      __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d < $1*65536+$2},
+__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d > $1*65536+$2},
 __{}{dnl
 __{}__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},3,25)
 __{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d < $1*65536+$2}){}dnl
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d > $1*65536+$2}){}dnl
 }){}dnl
 dnl
 dnl
@@ -6909,7 +6985,7 @@ __{}{dnl
 __{}__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d flag )},4,30)
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d < $1*65536+$2}){}dnl
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d > $1*65536+$2}){}dnl
 }){}dnl
 dnl
 dnl
@@ -6965,6 +7041,29 @@ __{}    ex   DE, HL         ; 1:4       2dup $1 D<=
 __{}    sbc  HL, HL         ; 2:15      2dup $1 D<=   set flag d1<=$1})},
 {
     .error {$0}($@): $# parameters found in macro!})}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup d. d<=
+dnl # ( d -- d f )
+define({_2DUP_PUSH2_DLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLE},{2dup $1 $2 d<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DLE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d flag )},5,34)
+__{}__{}    ccf                 ; 1:4       __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d <= $1*65536+$2}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -7097,6 +7196,29 @@ __{}    ex   DE, HL         ; 1:4       2dup $1 D>=
 __{}    sbc  HL, HL         ; 2:15      2dup $1 D>=   set flag d1<$1})},
 {
     .error {$0}($@): $# parameters found in macro!})}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup d. d>=
+dnl # ( d -- d f )
+define({_2DUP_PUSH2_DGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DGE},{2dup $1 $2 d>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DGE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d flag )},5,34)
+__{}__{}    ccf                 ; 1:4       __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d >= $1*65536+$2}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
