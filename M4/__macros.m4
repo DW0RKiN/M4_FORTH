@@ -3621,12 +3621,12 @@ dnl # Pollutes:
 dnl #    AF,BC
 define({__MAKE_CODE_DLT_SET_CARRY},{dnl
 ifelse(dnl
-eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{dnl
+__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
 __{}__SET_BYTES_CLOCKS_PRICES(12+$4,48+$5){}dnl
 __{}define({_TMP_INFO},__INFO{   ..BC = $2}){}dnl
 __{}__LD_REG16(BC,$1,BC,$2){}dnl
 __{}__LD_REG16(BC,$2)
-__{}                        ;format({%-11s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}{}dnl
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}{}dnl
 __{}__CODE_16BIT
 __{}    ld    A{,} L          ; 1:4       __INFO   ..HL < ..BC
 __{}    sub   C             ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true
@@ -3640,37 +3640,30 @@ __{}    rra                 ; 1:4       __INFO   --> sign  if true
 __{}    xor   D             ; 1:4       __INFO
 __{}    xor   B             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
-eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{1},{
-__{}ifelse(dnl
-__{}__IS_NUM($1),0,{__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5)},
-__{}__HEX_HL(0x8000 & ($1)),{0x8000},{__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5)},
-__{}{__SET_BYTES_CLOCKS_PRICES(17+$4,70+$5)}){}dnl
-__{}                        ;format({%-11s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}{}dnl
-__{}ifelse(__IS_MEM_REF($2),1,{dnl
-__{}define({_TMP_INFO},__INFO{    ..BC = $2}){}dnl
-__{}__LD_REG16(BC,$2){}dnl
-__{}__CODE_16BIT
-__{}    ld    A{,} L          ; 1:4       __INFO   ..HL < ..BC
-__{}    sub   C             ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true
-__{}    ld    A{,} H          ; 1:4       __INFO   ..HL < ..BC
-__{}    sbc   A{,} B          ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true},
-__{}{
+__IS_MEM_REF($1):__IS_MEM_REF($2),1:0,{dnl
+__{}__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5)
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
 __{}    ld    A{,} L          ; 1:4       __INFO   HL < $2
 __{}    sub  format({%-15s},low $2); 2:7       __INFO   HL - $2 < 0 --> carry if true
 __{}    ld    A{,} H          ; 1:4       __INFO   HL < $2
-__{}    sbc   A{,} format({%-11s},high $2); 2:7       __INFO   HL - $2 < 0 --> carry if true}){}dnl
-__{}ifelse(__IS_MEM_REF($1),1,{dnl
-__{}define({_TMP_INFO},__INFO{    BC.. = $1}){}dnl
-__{}__LD_REG16(BC,$1,BC,$2){}dnl
-__{}__CODE_16BIT
+__{}    sbc   A{,} format({%-11s},high $2); 2:7       __INFO   HL - $2 < 0 --> carry if true
+__{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO   BC.. = $1
 __{}    ld    A{,} E          ; 1:4       __INFO   DE.. < BC..
 __{}    sbc   A{,} C          ; 1:4       __INFO   DE.. - BC.. < 0 --> carry if true
 __{}    ld    A{,} D          ; 1:4       __INFO   DE.. < BC..
 __{}    sbc   A{,} B          ; 1:4       __INFO   DE.. - BC.. < 0 --> carry if true
 __{}    rra                 ; 1:4       __INFO   --> sign  if true
 __{}    xor   D             ; 1:4       __INFO
-__{}    xor   B             ; 1:4       __INFO},
-__{}{
+__{}    xor   B             ; 1:4       __INFO
+__{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
+__IS_MEM_REF($1):__IS_MEM_REF($2),0:1,{dnl
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x00,{__SET_BYTES_CLOCKS_PRICES(17+$4,70+$5)},{__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5)})
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
+__{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
+__{}    ld    A{,} L          ; 1:4       __INFO   ..HL < ..BC
+__{}    sub   C             ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true
+__{}    ld    A{,} H          ; 1:4       __INFO   ..HL < ..BC
+__{}    sbc   A{,} B          ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true
 __{}    ld    A{,} E          ; 1:4       __INFO   DE < $1
 __{}    sbc   A{,} format({%-11s},low $1); 2:7       __INFO   DE - $1 < 0 --> carry if true
 __{}    ld    A{,} D          ; 1:4       __INFO   DE < $1
@@ -3678,19 +3671,19 @@ __{}    sbc   A{,} format({%-11s},high $1); 2:7       __INFO   DE - $1 < 0 --> c
 __{}    rra                 ; 1:4       __INFO   --> sign  if true
 __{}    xor   D             ; 1:4       __INFO{}dnl
 __{}ifelse(__IS_NUM($1),0,{
-__{}  if ((($1) & 0x8000) = 0x8000)
+__{}  if ((0x8000 & ($1)) = 0x8000)
 __{}    ccf                 ; 1:4       __INFO
 __{}  endif},
 __{}__HEX_HL(0x8000 & ($1)),0x8000,{
-__{}    ccf                 ; 1:4       __INFO})})
+__{}    ccf                 ; 1:4       __INFO})
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 {
 __{}__SET_BYTES_CLOCKS_PRICES(16+$4,59+$5){}dnl
-__{}                        ;format({%-11s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval(20+$5)])__INFO   {$3}
 __{}    ld    A{,} D          ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO
 __{}ifelse(__IS_NUM($1),1,{dnl
-__{}ifelse(eval((($1) & 0x8000) - 0x8000),0,{dnl
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
 __{}__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   positive d1 < negative constant --> false},
 __{}__{}{dnl
 __{}__{}    jr    c{,} $+14       ; 2:7/12    __INFO   negative d1 < positive constant --> true})},
@@ -3701,25 +3694,143 @@ __{}  else
 __{}    jr    c{,} $+14       ; 2:7/12    __INFO   negative d1 < positive constant --> true
 __{}  endif}){}dnl
 __{}ifelse(__IS_NUM($2),1,{
-__{}    ld    A{,} L          ; 1:4       __INFO   HL < __HEX_HL($2)
-__{}    sub  format({%-15s},low $2); 2:7       __INFO    L -   __HEX_L($2) < 0 --> carry if true
-__{}    ld    A{,} H          ; 1:4       __INFO   HL < __HEX_HL($2)
-__{}    sbc   A{,} format({%-11s},high $2); 2:7       __INFO   H  - __HEX_H($2)   < 0 --> carry if true},
+__{}__{}    ld    A{,} L          ; 1:4       __INFO   HL < __HEX_HL($2)
+__{}__{}    sub   __HEX_L($2)          ; 2:7       __INFO    L -   __HEX_L($2) < 0 --> carry if true
+__{}__{}    ld    A{,} H          ; 1:4       __INFO   HL < __HEX_HL($2)
+__{}__{}    sbc   A{,} __HEX_H($2)       ; 2:7       __INFO   H  - __HEX_H($2)   < 0 --> carry if true},
 __{}{
-__{}    ld    A{,} L          ; 1:4       __INFO   HL < $2
-__{}    sub  format({%-15s},low $2); 2:7       __INFO   HL - $2 < 0 --> carry if true
-__{}    ld    A{,} H          ; 1:4       __INFO   HL < $2
-__{}    sbc   A{,} format({%-11s},high $2); 2:7       __INFO   HL - $2 < 0 --> carry if true}){}dnl
+__{}__{}    ld    A{,} L          ; 1:4       __INFO   HL < $2
+__{}__{}    sub  format({%-15s},low $2); 2:7       __INFO   HL - $2 < 0 --> carry if true
+__{}__{}    ld    A{,} H          ; 1:4       __INFO   HL < $2
+__{}__{}    sbc   A{,} format({%-11s},high $2); 2:7       __INFO   HL - $2 < 0 --> carry if true}){}dnl
 __{}ifelse(__IS_NUM($1),1,{
-__{}    ld    A{,} E          ; 1:4       __INFO   DE < __HEX_HL($1)
-__{}    sbc   A{,} __HEX_L($1)       ; 2:7       __INFO    E -   __HEX_L($1) < 0 --> carry if true
-__{}    ld    A{,} D          ; 1:4       __INFO   DE < __HEX_HL($1)
-__{}    sbc   A{,} __HEX_H($1)       ; 2:7       __INFO   D  - __HEX_H($1)   < 0 --> carry if true},
+__{}__{}    ld    A{,} E          ; 1:4       __INFO   DE < __HEX_HL($1)
+__{}__{}    sbc   A{,} __HEX_L($1)       ; 2:7       __INFO    E -   __HEX_L($1) < 0 --> carry if true
+__{}__{}    ld    A{,} D          ; 1:4       __INFO   DE < __HEX_HL($1)
+__{}__{}    sbc   A{,} __HEX_H($1)       ; 2:7       __INFO   D  - __HEX_H($1)   < 0 --> carry if true},
 __{}{
-__{}    ld    A{,} E          ; 1:4       __INFO   DE < $1
-__{}    sbc   A{,} format({%-11s},low $1); 2:7       __INFO   DE - $1 < 0 --> carry if true
-__{}    ld    A{,} D          ; 1:4       __INFO   DE < $1
-__{}    sbc   A{,} format({%-11s},high $1); 2:7       __INFO   DE - $1 < 0 --> carry if true})}){}dnl
+__{}__{}    ld    A{,} E          ; 1:4       __INFO   DE < $1
+__{}__{}    sbc   A{,} format({%-11s},low $1); 2:7       __INFO   DE - $1 < 0 --> carry if true
+__{}__{}    ld    A{,} D          ; 1:4       __INFO   DE < $1
+__{}__{}    sbc   A{,} format({%-11s},high $1); 2:7       __INFO   DE - $1 < 0 --> carry if true})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Input:
+dnl #    __INFO
+dnl #    $1 ...hi16
+dnl #    $2 ...lo16
+dnl #    $3 ...head info
+dnl #    $4 ...+bytes
+dnl #    $5 ...+clocks
+dnl # Output:
+dnl #    print code
+dnl # Pollutes:
+dnl #    AF,BC
+define({__MAKE_CODE_DGT_SET_CARRY},{dnl
+ifelse(dnl
+__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
+__{}__SET_BYTES_CLOCKS_PRICES(12+$4,48+$5){}dnl
+__{}define({_TMP_INFO},__INFO{   ..BC = $2}){}dnl
+__{}__LD_REG16(BC,$1,BC,$2){}dnl
+__{}__LD_REG16(BC,$2)
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}{}dnl
+__{}__CODE_16BIT
+__{}    ld    A{,} C          ; 1:4       __INFO   ..HL > ..BC
+__{}    sub   L             ; 1:4       __INFO      0 > ...C - ...L --> carry if true
+__{}    ld    A{,} B          ; 1:4       __INFO
+__{}    sbc   A{,} H          ; 1:4       __INFO      0 > ..B. - ..H. --> carry if true{}define({_TMP_INFO},__INFO{   BC.. = $1}){}__LD_REG16(BC,$1,BC,$2){}__CODE_16BIT
+__{}    ld    A{,} C          ; 1:4       __INFO   DE.. > BC..
+__{}    sbc   A{,} E          ; 1:4       __INFO      0 > .E.. - .C.. --> carry if true
+__{}    ld    A{,} B          ; 1:4       __INFO
+__{}    sbc   A{,} D          ; 1:4       __INFO      0 > B... - D... --> carry if true
+__{}    rra                 ; 1:4       __INFO   --> sign  if true
+__{}    xor   D             ; 1:4       __INFO
+__{}    xor   B             ; 1:4       __INFO
+__{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
+__IS_MEM_REF($1):__IS_MEM_REF($2),1:0,{dnl
+__{}__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5)
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
+__{}    ld   format({%-15s},low $2); 2:7       __INFO   ...L > lo($2)
+__{}    sub   L             ; 1:4       __INFO      0 > ...A - ...L --> carry if true
+__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO   ..H. > hi($2)
+__{}    sbc   A{,} H          ; 1:4       __INFO      0 > ..A. - ..H. --> carry if true
+__{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO   BC.. = $1
+__{}    ld    A{,} C          ; 1:4       __INFO   DE.. > BC..
+__{}    sbc   A{,} E          ; 1:4       __INFO      0 > .E.. - .C.. --> carry if true
+__{}    ld    A{,} B          ; 1:4       __INFO
+__{}    sbc   A{,} D          ; 1:4       __INFO      0 > B... - D... --> carry if true
+__{}    rra                 ; 1:4       __INFO   --> sign  if true
+__{}    xor   D             ; 1:4       __INFO
+__{}    xor   B             ; 1:4       __INFO
+__{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
+__IS_MEM_REF($1):__IS_MEM_REF($2),0:1,{
+__{}__SET_BYTES_CLOCKS_PRICES(19+$4,74+$5){}dnl
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval(23+$5)])__INFO   {$3}
+__{}    ld    A{,} D          ; 1:4       __INFO
+__{}    sub  0x80           ; 2:7       __INFO
+__{}ifelse(__IS_NUM($1),1,{dnl
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
+__{}__{}    jr    c{,} $+14       ; 2:7/12    __INFO   positive d1 > negative constant --> true},
+__{}__{}{dnl
+__{}__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   negative d1 > positive constant --> false})},
+__{}{dnl
+__{}  if ((($1) & 0x8000) = 0x8000)
+__{}    jr    c{,} $+14       ; 2:7/12    __INFO   positive d1 > negative constant --> true
+__{}  else
+__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   negative d1 > positive constant --> false
+__{}  endif})
+__{}    ld    A{,} format({%-11s},$2); 3:13      __INFO   HL > $2
+__{}    sub   L             ; 1:4       __INFO    0 > lo($2) - L --> carry if true
+__{}    ld    A{,} format({%-11s},(1+$2)); 3:13      __INFO   HL > $2
+__{}    sbc   A{,} H          ; 1:4       __INFO    0 > hi($2) - H --> carry if true{}dnl
+__{}ifelse(__IS_NUM($1),1,{
+__{}__{}    ld    A{,} __HEX_L($1)       ; 2:7       __INFO   DE > __HEX_HL($1)
+__{}__{}    sbc   A{,} E          ; 1:4       __INFO    0 >   __HEX_L($1) - E --> carry if true
+__{}__{}    ld    A{,} __HEX_H($1)       ; 2:7       __INFO   DE > __HEX_HL($1)
+__{}__{}    sbc   A{,} D          ; 1:4       __INFO    0 > __HEX_H($1)   - D --> carry if true},
+__{}{
+__{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO   DE > $1
+__{}__{}    sbc   A{,} E          ; 1:4       __INFO    0 > lo($1) - E --> carry if true
+__{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO   DE > $1
+__{}__{}    sbc   A{,} D          ; 1:4       __INFO    0 > hi($1) - D --> carry if true})},
+{
+__{}__SET_BYTES_CLOCKS_PRICES(17+$4,62+$5){}dnl
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval(23+$5)])__INFO   {$3}
+__{}    ld    A{,} D          ; 1:4       __INFO
+__{}    sub  0x80           ; 2:7       __INFO
+__{}ifelse(__IS_NUM($1),1,{dnl
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
+__{}__{}    jr    c{,} $+14       ; 2:7/12    __INFO   positive d1 > negative constant --> true},
+__{}__{}{dnl
+__{}__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   negative d1 > positive constant --> false})},
+__{}{dnl
+__{}  if ((($1) & 0x8000) = 0x8000)
+__{}    jr    c{,} $+14       ; 2:7/12    __INFO   positive d1 > negative constant --> true
+__{}  else
+__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   negative d1 > positive constant --> false
+__{}  endif}){}dnl
+__{}ifelse(__IS_NUM($2),1,{
+__{}__{}    ld    A{,} __HEX_L($2)       ; 2:7       __INFO   HL > __HEX_HL($2)
+__{}__{}    sub   L             ; 1:4       __INFO    0 >   __HEX_L($2) - L --> carry if true
+__{}__{}    ld    A{,} __HEX_H($2)       ; 2:7       __INFO   HL > __HEX_HL($2)
+__{}__{}    sbc   A{,} H          ; 1:4       __INFO    0 > __HEX_H($2)   - H --> carry if true},
+__{}{
+__{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO   HL > $2
+__{}__{}    sub   L             ; 1:4       __INFO    0 > lo($2) - L --> carry if true
+__{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO   HL > $2
+__{}__{}    sbc   A{,} H          ; 1:4       __INFO    0 > hi($2) - H --> carry if true}){}dnl
+__{}ifelse(__IS_NUM($1),1,{
+__{}__{}    ld    A{,} __HEX_L($1)       ; 2:7       __INFO   DE > __HEX_HL($1)
+__{}__{}    sbc   A{,} E          ; 1:4       __INFO    0 >   __HEX_L($1) - E --> carry if true
+__{}__{}    ld    A{,} __HEX_H($1)       ; 2:7       __INFO   DE > __HEX_HL($1)
+__{}__{}    sbc   A{,} D          ; 1:4       __INFO    0 > __HEX_H($1)   - D --> carry if true},
+__{}{
+__{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO   DE > $1
+__{}__{}    sbc   A{,} E          ; 1:4       __INFO    0 > lo($1) - E --> carry if true
+__{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO   DE > $1
+__{}__{}    sbc   A{,} D          ; 1:4       __INFO    0 > hi($1) - D --> carry if true})}){}dnl
 }){}dnl
 dnl
 dnl
