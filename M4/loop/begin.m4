@@ -518,6 +518,103 @@ __{}    or    A             ; 1:4       _TMP_INFO
 __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
 __{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
 dnl
+dnl # ( flag -- )
+define({UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_UNTIL},{until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d< until
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DLT_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLT_UNTIL},{2dup $1 $2 d< until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DLT_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10)
+__{}__{}    jp   nc, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d>= until
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DGE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DGE_UNTIL},{2dup $1 $2 d>= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DGE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d >= $1<<16+$2},3,10)
+__{}__{}    jp    c, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d<= until
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DLE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLE_UNTIL},{2dup $1 $2 d<= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DLE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d <= $1<<16+$2},3,10)
+__{}__{}    jp    c, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d> until
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DGT_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DGT_UNTIL},{2dup $1 $2 d> until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DGT_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10)
+__{}__{}    jp   nc, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
 dnl
 dnl
 dnl # ------ begin while repeat ---------
@@ -2595,6 +2692,90 @@ __{}    jr   nc, $+17       ; 2:7/12    2dup $1 > while BEGIN_STACK    different
     ld    A, __HEX_D($1)       ; 2:7       2dup $1 > while BEGIN_STACK
     sbc   A, D          ; 1:4       2dup $1 > while BEGIN_STACK    D>A --> A-D<0 --> no carry if false
     jp   nc, break{}BEGIN_STACK   ; 3:10      2dup $1 > while BEGIN_STACK})}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d< while
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DLT_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLT_WHILE},{2dup $1 $2 d< while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DLT_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10)
+__{}    jp   nc, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d>= while
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DGE_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DGE_WHILE},{2dup $1 $2 d>= while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DGE_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d >= $1<<16+$2},3,10)
+__{}    jp    c, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d<= while
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DLE_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DLE_WHILE},{2dup $1 $2 d<= while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DLE_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d <= $1<<16+$2},3,10)
+__{}    jp    c, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup $1. d> while
+dnl # ( d -- d )
+define({_2DUP_PUSH2_DGT_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH2_DGT_WHILE},{2dup $1 $2 d> while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PUSH2_DGT_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10)
+__{}    jp   nc, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
