@@ -97,14 +97,22 @@ END {
 }'
 
 else
+   if [ -t 1 ] ; then
+      color=1;
+   else 
+      color=0;
+   fi
+   
    file=`find ./ -name "FIRST.M4" -exec echo {} \;`
+   
    test "$file" = "" && file=`find ../ -name "FIRST.M4" -exec echo {} \;`
+   
    if test "$file" = "" ; then
       printf "$0 error: FIRST.M4 not found!\\n"
       exit 1
    fi
 
-   printf "include(\`$file')${@}" | m4 | awk '
+   printf "include(\`$file')${@}" | m4 | awk -v color=$color '
 BEGIN {
     str_time=strftime("%Y%m%d%H%M%S");
     sum_bytes=0; 
@@ -126,7 +134,11 @@ BEGIN {
 END {
     end_time=strftime("%Y%m%d%H%M%S");
     time=end_time-str_time;
-    printf "\033[1;30m; seconds: %-5i       ;[%2i:%i]\033[0m\n",time,sum_bytes,sum_clock
+    if ( color == 1 ) 
+       printf "\033[1;30m; seconds: %-5i       ;[%2i:%i]\033[0m\n",time,sum_bytes,sum_clock
+    else
+       printf "; seconds: %-5i       ;[%2i:%i]\n",time,sum_bytes,sum_clock
+    endif
 }'
 
 fi
