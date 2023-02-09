@@ -541,19 +541,19 @@ dnl
 dnl
 dnl # ( flag -- )
 define({WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_WHILE},{while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_WHILE},{while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_WHILE},{dnl
-__{}define({__INFO},{while}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0} for non-existent {BEGIN}},
 {
-    ld    A, H          ; 1:4       while BEGIN_STACK
-    or    L             ; 1:4       while BEGIN_STACK
-    ex   DE, HL         ; 1:4       while BEGIN_STACK
-    pop  DE             ; 1:10      while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      while BEGIN_STACK})}){}dnl
+    ld    A, H          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO})}){}dnl
 dnl
 dnl
 dnl # ( flag -- flag )
