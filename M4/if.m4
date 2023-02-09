@@ -3193,16 +3193,16 @@ dnl ----------------------- pointer to 32 bit -----------------------
 dnl
 dnl
 dnl
-dnl ( pd -- pd )
+dnl # ( pd -- pd )
 define({PD0EQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PD0EQ_IF},{pd0= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PD0EQ_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}pushdef({THEN_STACK}, IF_COUNT)
     ld    A,(HL)        ; 1:7       __INFO   ( pd1 -- pd1 )  with align 4
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
@@ -3216,16 +3216,16 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl ( pd -- pd )
+dnl # ( pd -- pd )
 define({PD0NE_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PD0NE_IF},{pd0<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PD0NE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}pushdef({THEN_STACK}, IF_COUNT)
     ld    A,(HL)        ; 1:7       __INFO   ( pd1 -- pd1 )  with align 4
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
@@ -3239,16 +3239,16 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl ( pd2 pd1 -- pd2 pd1 )
+dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDEQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDEQ_IF},{pd= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PDEQ_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}pushdef({THEN_STACK}, IF_COUNT)
     ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
     xor (HL)            ; 1:7       __INFO
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
@@ -3274,16 +3274,16 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl ( pd2 pd1 -- pd2 pd1 )
+dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDNE_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDNE_IF},{pd<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PDNE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}pushdef({THEN_STACK}, IF_COUNT)
     ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
     xor (HL)            ; 1:7       __INFO
     jr   nz, $+25       ; 2:7/12    __INFO
@@ -3309,16 +3309,18 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl ( pd2 pd1 -- pd2 pd1 )
+dnl # [pd2] < [pd1]
+dnl # [pd2] - [pd1] < 0  --> not carry if false
+dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDULT_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDULT_IF},{pdu< if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PDULT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}pushdef({THEN_STACK}, IF_COUNT)
     ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
     sub (HL)            ; 1:7       __INFO
     ld    B, E          ; 1:4       __INFO
@@ -3341,16 +3343,19 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # [pd2] >= [pd1]
+dnl # [pd2] - [pd1] >= 0 --> carry if false
+dnl # ( pd2 pd1 -- pd2 pd1 )
 dnl ( pd2 pd1 -- pd2 pd1 )
 define({PDUGE_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDUGE_IF},{pdu>= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PDUGE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}pushdef({THEN_STACK}, IF_COUNT)
     ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
     sub (HL)            ; 1:7       __INFO
     ld    B, E          ; 1:4       __INFO
@@ -3373,19 +3378,19 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl [pd2] > [pd1]
-dnl [pd2] - [pd1] > 0
-dnl [pd2] - [pd1] - 1 >= 0
-dnl ( pd2 pd1 -- pd2 pd1 )
+dnl # [pd2] > [pd1]
+dnl # [pd2] - [pd1] > 0
+dnl # [pd2] - [pd1] - 1 >= 0
+dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDUGT_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDUGT_IF},{pdu> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PDUGT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}pushdef({THEN_STACK}, IF_COUNT)
     scf                 ; 1:4       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
@@ -3409,19 +3414,19 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl [pd2] <= [pd1]
-dnl [pd2] - [pd1] <= 0
-dnl [pd2] - [pd1] - 1 < 0
-dnl ( pd2 pd1 -- pd2 pd1 )
+dnl # [pd2] <= [pd1]
+dnl # [pd2] - [pd1] <= 0
+dnl # [pd2] - [pd1] - 1 < 0
+dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDULE_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDULE_IF},{pdu<= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PDULE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}pushdef({THEN_STACK}, IF_COUNT)
     scf                 ; 1:4       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
     ld    A,(DE)        ; 1:7       __INFO
     sbc   A,(HL)        ; 1:7       __INFO
