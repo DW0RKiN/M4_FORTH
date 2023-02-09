@@ -716,8 +716,8 @@ dnl
 define({__ASM_TOKEN_0LE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[6:33]     __INFO   ( x -- flag )  flag: x <= 0
-    ld    A, H          ; 1:4       __INFO
-    dec  HL             ; 1:6       __INFO
+    ld    A, H          ; 1:4       __INFO   save sign
+    dec  HL             ; 1:6       __INFO   zero to negative
     or    H             ; 1:4       __INFO
     add   A, A          ; 1:4       __INFO   carry if zero or negative HL
     sbc  HL, HL         ; 2:15      __INFO}){}dnl
