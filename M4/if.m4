@@ -3193,6 +3193,7 @@ dnl ----------------------- pointer to 32 bit -----------------------
 dnl
 dnl
 dnl
+dnl # flag: [pd] == 0
 dnl # ( pd -- pd )
 define({PD0EQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PD0EQ_IF},{pd0= if},$@){}dnl
@@ -3216,6 +3217,7 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
+dnl # flag: [pd] <> 0
 dnl # ( pd -- pd )
 define({PD0NE_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PD0NE_IF},{pd0<> if},$@){}dnl
@@ -3239,6 +3241,7 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
+dnl # flag: [pd2] == [pd1]
 dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDEQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDEQ_IF},{pd= if},$@){}dnl
@@ -3274,6 +3277,7 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
+dnl # flag: [pd2] <> [pd1]
 dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDNE_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDNE_IF},{pd<> if},$@){}dnl
@@ -3309,8 +3313,8 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
-dnl # [pd2] < [pd1]
-dnl # [pd2] - [pd1] < 0  --> not carry if false
+dnl # flag: [pd2] < [pd1]
+dnl # flag: [pd2] - [pd1] < 0  --> not carry if false
 dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDULT_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDULT_IF},{pdu< if},$@){}dnl
@@ -3343,8 +3347,8 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
-dnl # [pd2] >= [pd1]
-dnl # [pd2] - [pd1] >= 0 --> carry if false
+dnl # flag: [pd2] >= [pd1]
+dnl # flag: [pd2] - [pd1] >= 0 --> carry if false
 dnl # ( pd2 pd1 -- pd2 pd1 )
 dnl ( pd2 pd1 -- pd2 pd1 )
 define({PDUGE_IF},{dnl
@@ -3378,9 +3382,9 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
-dnl # [pd2] > [pd1]
-dnl # [pd2] - [pd1] > 0
-dnl # [pd2] - [pd1] - 1 >= 0
+dnl # flag: [pd2] > [pd1]
+dnl # flag: [pd2] - [pd1] > 0
+dnl # flag: [pd2] - [pd1] - 1 >= 0
 dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDUGT_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDUGT_IF},{pdu> if},$@){}dnl
@@ -3414,9 +3418,9 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
-dnl # [pd2] <= [pd1]
-dnl # [pd2] - [pd1] <= 0
-dnl # [pd2] - [pd1] - 1 < 0
+dnl # flag: [pd2] <= [pd1]
+dnl # flag: [pd2] - [pd1] <= 0
+dnl # flag: [pd2] - [pd1] - 1 < 0
 dnl # ( pd2 pd1 -- pd2 pd1 )
 define({PDULE_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PDULE_IF},{pdu<= if},$@){}dnl
