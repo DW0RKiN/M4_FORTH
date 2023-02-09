@@ -56,20 +56,22 @@ dnl
 dnl
 dnl # ( flag -- )
 define({UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_UNTIL},{until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_UNTIL},{until BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UNTIL},{dnl
-__{}define({__INFO},{until}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0} for non-existent {BEGIN}},
-{
-    ld    A, H          ; 1:4       until BEGIN_STACK   ( flag -- )
-    or    L             ; 1:4       until BEGIN_STACK
-    ex   DE, HL         ; 1:4       until BEGIN_STACK
-    pop  DE             ; 1:10      until BEGIN_STACK
-    jp    z, begin{}BEGIN_STACK   ; 3:10      until BEGIN_STACK
-__{}break{}BEGIN_STACK:               ;           until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0} for non-existent {BEGIN}},
+__{}{
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( flag -- )
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    z, begin{}BEGIN_STACK   ; 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( -- )
