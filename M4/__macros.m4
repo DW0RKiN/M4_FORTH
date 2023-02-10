@@ -3935,14 +3935,15 @@ dnl
 dnl
 dnl
 dnl # Input:
-dnl #    __INFO
 dnl #    $1 ...hi16
 dnl #    $2 ...lo16
 dnl #    $3 ...head info
-dnl #    $4 ...+bytes  no jump
-dnl #    $5 ...+clocks no jump
-dnl #    $6 ...+bytes  jump
-dnl #    $7 ...+clocks jump
+dnl #    $4 ...+bytes    after code
+dnl #    $5 ...+clocks   after code
+dnl #    $6 ...+-bytes   no zero jump   if (number) jr else if (name) jp
+dnl #    $7 ...+-clocks  no zero jump
+dnl #    $8 ...+-bytes   zero jump      if (number) jr else if (name) jp
+dnl #    $9 ...+-clocks  zero jump
 dnl # Output:
 dnl #    print code
 dnl #    z = 1 if DEHL =  $1$2
@@ -3951,7 +3952,7 @@ dnl # Pollutes:
 dnl #    AF,BC
 define({__MAKE_CODE_DEQ_SET_ZERO},{dnl
 __{}ifelse(dnl
-__{}__IS_MEM_REF($1):__IS_MEM_REF($2):__HEX_HL(0+$1-$2):regexp({$6},{^[a-zA-Z_]}),1:1:0x0002:-1,{dnl
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):__HEX_HL(0+$1-$2):__IS_NAME($6),1:1:0x0002:0,{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+20,$5+93){}dnl
 __{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+33){,}eval($7+eval($5+0)+57){,}eval($7+eval($5+0)+81)]) __INFO   {$3}
 __{}__{}    ld   BC{,} __HEX_HL(0+$2)     ; 3:10      __INFO
@@ -3969,7 +3970,7 @@ __{}__{}    jr   nz{,} $+format({%-9s},eval($6+5)); 2:7/12    __INFO
 __{}__{}    inc  BC             ; 1:6       __INFO
 __{}__{}    ld    A{,}(BC)        ; 1:7       __INFO
 __{}__{}    cp    D             ; 1:4       __INFO   D... = (BC) = (__HEX_HL(1+$1))},
-__{}__IS_MEM_REF($1):__IS_MEM_REF($2):regexp({$6},{^[a-zA-Z_]}),1:1:0,{dnl
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):__IS_NAME($6),1:1:1,{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+21,$5+100){}dnl
 __{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+27){,}eval($7+eval($5+0)+83)]) __INFO   {$3}
 __{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      __INFO  
