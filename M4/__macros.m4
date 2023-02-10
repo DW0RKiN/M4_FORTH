@@ -3855,8 +3855,10 @@ dnl #    __INFO
 dnl #    $1 ...hi16
 dnl #    $2 ...lo16
 dnl #    $3 ...head info
-dnl #    $4 ...+bytes
-dnl #    $5 ...+clocks
+dnl #    $4 ...+bytes  no jump
+dnl #    $5 ...+clocks no jump
+dnl #    $6 ...+bytes  jump
+dnl #    $7 ...+clocks jump
 dnl # Output:
 dnl #    print code
 dnl #    z = 1 if DEHL =  $1$2
@@ -3865,48 +3867,90 @@ dnl # Pollutes:
 dnl #    AF,BC
 define({__MAKE_CODE_DEQ_SET_ZERO},{dnl
 __{}ifelse(dnl
-__{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
-__{}__{}__SET_BYTES_CLOCKS_PRICES($4+19,$5+94){}dnl
-__{}__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
-__{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      __INFO
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):__HEX_HL(0+$1-$2):regexp({$6},{^[a-zA-Z_]}),1:1:0x0002:-1,{dnl
+__{}__{}__SET_BYTES_CLOCKS_PRICES($4+20,$5+93){}dnl
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+33){,}eval($7+eval($5+0)+57){,}eval($7+eval($5+0)+81)]) __INFO   {$3}
+__{}__{}    ld   BC{,} __HEX_HL(0+$2)     ; 3:10      __INFO
+__{}__{}    ld    A{,}(BC)        ; 1:7       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   ...L = (BC) = $2
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+15)); 2:7/12    __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld    A{,}(BC)        ; 1:7       __INFO
+__{}__{}    cp    H             ; 1:4       __INFO   ..H. = (BC) = (__HEX_HL(1+$2))
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+10)); 2:7/12    __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld    A{,}(BC)        ; 1:7       __INFO
+__{}__{}    cp    E             ; 1:4       __INFO   .E.. = (BC) = $1
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+5)); 2:7/12    __INFO
+__{}__{}    inc  BC             ; 1:6       __INFO
+__{}__{}    ld    A{,}(BC)        ; 1:7       __INFO
+__{}__{}    cp    D             ; 1:4       __INFO   D... = (BC) = (__HEX_HL(1+$1))},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2):regexp({$6},{^[a-zA-Z_]}),1:1:0,{dnl
+__{}__{}__SET_BYTES_CLOCKS_PRICES($4+21,$5+100){}dnl
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+27){,}eval($7+eval($5+0)+83)]) __INFO   {$3}
+__{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      __INFO  
 __{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)
-__{}__{}    jr   nz{,} $+15       ; 2:7/12    __INFO
+__{}__{}    jp   nz{,} format({%-11s},$6); 3:10      __INFO
 __{}__{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
 __{}__{}    sbc  HL{,} BC         ; 2:15      __INFO   cp HL{,} BC
 __{}__{}    add  HL{,} BC         ; 1:11      __INFO   cp HL{,} BC
-__{}__{}    jr   nz{,} $+6        ; 2:7/12    __INFO
+__{}__{}    jp   nz{,} format({%-11s},$6); 3:10      __INFO
 __{}__{}    ld    A{,}format({%-12s},$1); 3:13      __INFO
+__{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
+__{}__{}__SET_BYTES_CLOCKS_PRICES($4+19,$5+94){}dnl
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+29){,}eval($7+eval($5+0)+82)]) __INFO   {$3}
+__{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      __INFO
+__{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+15)); 2:7/12    __INFO
+__{}__{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
+__{}__{}    sbc  HL{,} BC         ; 2:15      __INFO   cp HL{,} BC
+__{}__{}    add  HL{,} BC         ; 1:11      __INFO   cp HL{,} BC
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+6)); 2:7/12    __INFO
+__{}__{}    ld    A{,}format({%-12s},$1); 3:13      __INFO
+__{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)},
+__{}__IS_MEM_REF($2):regexp({$6},{^[a-zA-Z_]}),1:0,{dnl
+__{}__{}__SET_BYTES_CLOCKS_PRICES($4+19,$5+88){}dnl
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+21){,}eval($7+eval($5+0)+77)]) __INFO   {$3}
+__{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)
+__{}__{}    jp   nz{,} format({%-11s},$6); 3:10      __INFO
+__{}__{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
+__{}__{}    sbc  HL{,} BC         ; 2:15      __INFO   cp HL{,} BC
+__{}__{}    add  HL{,} BC         ; 1:11      __INFO   cp HL{,} BC
+__{}__{}    jp   nz{,} format({%-11s},$6); 3:10      __INFO
+__{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
 __{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)},
 __{}__IS_MEM_REF($2),1,{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+17,$5+82){}dnl
-__{}__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+23){,}eval($7+eval($5+0)+76)]) __INFO   {$3}
 __{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO
 __{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)
-__{}__{}    jr   nz{,} $+14       ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+14)); 2:7/12    __INFO
 __{}__{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
 __{}__{}    sbc  HL{,} BC         ; 2:15      __INFO   cp HL{,} BC
 __{}__{}    add  HL{,} BC         ; 1:11      __INFO   cp HL{,} BC
-__{}__{}    jr   nz{,} $+5        ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+5)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
 __{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)},
 __{}__IS_MEM_REF($1),1,{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+20,$5+77){}dnl
-__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($5+23){,}eval($5+41){,}eval($5+65)]) __INFO   {$3}
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+23){,}eval($7+eval($5+0)+41){,}eval($7+eval($5+0)+65)]) __INFO   {$3}
 __{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO
 __{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
-__{}__{}    jr   nz{,} $+17       ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+17)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   ..L. = hi($2)
-__{}__{}    jr   nz{,} $+12       ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+12)); 2:7/12    __INFO
 __{}__{}    ld    A{,}format({%-12s},$1); 3:13      __INFO
 __{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)
-__{}__{}    jr   nz{,} $+6        ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+6)); 2:7/12    __INFO
 __{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      __INFO
 __{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)},
 __{}__IS_NUM($1):__IS_NUM($2),1:1,{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{ __INFO   {$3}}){}dnl
-__{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),$4,$5,0,0){}dnl
+__{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),$4,$5,$6,$7){}dnl
 __{}__{}_TMP_BEST_CODE},
 __{}__IS_NUM($2),1,{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
@@ -3931,10 +3975,10 @@ dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instr
 dnl
 __{}__{}__EQ_MAKE_BEST_CODE($2,eval($4+10),eval($5+36),10,-36){}dnl
 __{}__{}_TMP_BEST_CODE
-__{}__{}    jr   nz{,} $+10       ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+10)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
 __{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)
-__{}__{}    jr   nz{,} $+5        ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+5)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO
 __{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)},
 __{}__IS_NUM($1),1,{dnl
@@ -3946,24 +3990,24 @@ __{}__{}__EQ_MAKE_BEST_CODE($1,eval($4+10),eval($5+36),10,-36){}dnl
 __{}__{}_TMP_BEST_CODE
 __{}__{}undefine({H}){}dnl
 __{}__{}undefine({L}){}dnl
-__{}__{}    jr   nz{,} $+10       ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+10)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO
 __{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
-__{}__{}    jr   nz{,} $+5        ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+5)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)},
 __{}{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+18,$5+65){}dnl
-__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($5+23){,}eval($5+41){,}eval($5+59)]) __INFO   {$3}
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+23){,}eval($7+eval($5+0)+41){,}eval($7+eval($5+0)+59)]) __INFO   {$3}
 __{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO   default version
 __{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
-__{}__{}    jr   nz{,} $+15       ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+15)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)
-__{}__{}    jr   nz{,} $+10       ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+10)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
 __{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)
-__{}__{}    jr   nz{,} $+5        ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+5)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO
 __{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)}){}dnl
 }){}dnl
