@@ -4058,7 +4058,7 @@ dnl #   _TMP_BEST_CODE    asm code
 dnl #   zero flag if const == HL
 dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
-__{}__{}__EQ_MAKE_BEST_CODE($2,eval($4+10),eval($5+36),eval($6+eval($4+0)+10),eval($7+eval($5+0)-36)){}dnl
+__{}__{}__EQ_MAKE_BEST_CODE($2,eval($4+10),eval($5+36),eval($6+10),eval($7-36)){}dnl
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jr   nz{,} $+format({%-9s},eval($6+10)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
@@ -4071,15 +4071,15 @@ __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   {$3}}){}dnl
 __{}__{}define({H},{D}){}dnl
 __{}__{}define({L},{E}){}dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,$4,$5,eval($6+eval($4+0)),eval($7+eval($5+0)))
+__{}__{}__EQ_MAKE_BEST_CODE($1,$4,$5,eval($6+0),eval($7+0))
 __{}__{}undefine({H}){}dnl
 __{}__{}undefine({L}){}dnl
 __{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO
 __{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
-__{}__{}    jr   nz{,} $+format({%-9s},eval($6+7+_TMP_BEST_B)); 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+7+_TMP_BEST_B-($4+0))); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)
-__{}__{}    jr   nz{,} $+format({%-9s},eval($6+2+_TMP_BEST_B)); 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+2+_TMP_BEST_B-($4+0))); 2:7/12    __INFO
 __{}__{}_TMP_BEST_CODE},
 __{}{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+18,$5+65){}dnl
