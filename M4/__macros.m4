@@ -3630,12 +3630,19 @@ dnl #    __INFO
 dnl #    $1 ...hi16
 dnl #    $2 ...lo16
 dnl #    $3 ...head info
-dnl #    $4 ...+bytes
-dnl #    $5 ...+clocks
+dnl #    $4 ...+bytes    after code
+dnl #    $5 ...+clocks   after code
+dnl #    $6 ...+-bytes   carry jump     if (number) jr else if (name) jp
+dnl #    $7 ...+-clocks  carry jump
+dnl #    $8 ...+-bytes   no carry jump  if (number) jr else if (name) jp
+dnl #    $9 ...+-clocks  no carry jump
 dnl # Output:
 dnl #    print code
 dnl # Pollutes:
-dnl #    AF,BC
+dnl #    AF, BC
+dnl # Use:
+dnl #    __MAKE_CODE_DGT_SET_CARRY(hi16,lo16,{( d -- d)  if d > num32},3,10,3,-10,)
+dnl #    jp   nc, else_xxx   ; 3:10      __INFO
 define({__MAKE_CODE_DLT_SET_CARRY},{dnl
 ifelse(dnl
 __IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
@@ -3808,22 +3815,36 @@ __{}    rra                 ; 1:4       __INFO   --> sign  if true
 __{}    xor   D             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 __IS_MEM_REF($1):__IS_MEM_REF($2),0:1,{dnl
-__{}__SET_BYTES_CLOCKS_PRICES(19+$4,74+$5){}dnl
+__{}__SET_BYTES_CLOCKS_PRICES($4+17,$5+67){}dnl
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+7+10)){}define({__JMP_CODE},{    jp    c{,} format({%-11s},$6); 3:10      __INFO   positive d1 > negative constant --> true})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+7+12)){}define({__JMP_CODE},{    jr    c{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 > negative constant --> true})}){}dnl
+__{}},
+__{}__HEX_H(0x8000 & ($1)),0x00,{dnl
+__{}__{}ifelse(__IS_NAME($8),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($9+4+7+10)){}define({__JMP_CODE},{    jp   nc{,} format({%-11s},$8); 3:10      __INFO   negative d1 > positive constant --> false})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($9+4+7+12)){}define({__JMP_CODE},{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 > positive constant --> false})}){}dnl
+__{}},{dnl
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+7+10))},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+7+10))}){}dnl
+__{}__{}define({__JMP_CODE},{dnl
+__{}__{}  if ((($1) & 0x8000) = 0x8000)
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{    jp    c{,} format({%-11s},$6); 3:10      __INFO   positive d1 > negative constant --> true},
+__{}__{}{    jr    c{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 > negative constant --> true})
+__{}__{}  else
+__{}__{}ifelse(__IS_NAME($8),1,
+__{}__{}{    jp   nc{,} format({%-11s},$8); 3:10      __INFO   negative d1 > positive constant --> false},
+__{}__{}{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 > positive constant --> false})
+__{}__{}  endif}){}dnl
+__{}}){}dnl
 __{}ifelse($3,{},,{
-__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/eval($5+23)])__INFO   {$3}})
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/__JMP_CLOCK])__INFO   {$3}})
 __{}    ld    A{,} D          ; 1:4       __INFO
 __{}    sub  0x80           ; 2:7       __INFO
-__{}ifelse(__IS_NUM($1),1,{dnl
-__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
-__{}__{}    jr    c{,} $+14       ; 2:7/12    __INFO   positive d1 > negative constant --> true},
-__{}__{}{dnl
-__{}__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   negative d1 > positive constant --> false})},
-__{}{dnl
-__{}  if ((($1) & 0x8000) = 0x8000)
-__{}    jr    c{,} $+14       ; 2:7/12    __INFO   positive d1 > negative constant --> true
-__{}  else
-__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   negative d1 > positive constant --> false
-__{}  endif})
+__{}__JMP_CODE
 __{}    ld    A{,} format({%-11s},$2); 3:13      __INFO   HL > $2
 __{}    sub   L             ; 1:4       __INFO    0 > lo($2) - L --> carry if true
 __{}    ld    A{,} format({%-11s},(1+$2)); 3:13      __INFO   HL > $2
@@ -3842,17 +3863,17 @@ __{}__{}    sbc   A{,} D          ; 1:4       __INFO    0 > hi($1) - D --> carry
 __{}__SET_BYTES_CLOCKS_PRICES($4+15,$5+55){}dnl
 __{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
 __{}__{}ifelse(__IS_NAME($6),1,
-__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CODE},{    jp    c{,} format({%-11s},$6); 3:10      __INFO   positive d1 > negative constant --> true})},
-__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CODE},{    jr    c{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 > negative constant --> true})}){}dnl
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+7+10)){}define({__JMP_CODE},{    jp    c{,} format({%-11s},$6); 3:10      __INFO   positive d1 > negative constant --> true})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+7+12)){}define({__JMP_CODE},{    jr    c{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 > negative constant --> true})}){}dnl
 __{}},
 __{}__HEX_H(0x8000 & ($1)),0x00,{dnl
 __{}__{}ifelse(__IS_NAME($8),1,
-__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CODE},{    jp   nc{,} format({%-11s},$8); 3:10      __INFO   negative d1 > positive constant --> false})},
-__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CODE},{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 > positive constant --> false})}){}dnl
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($9+4+7+10)){}define({__JMP_CODE},{    jp   nc{,} format({%-11s},$8); 3:10      __INFO   negative d1 > positive constant --> false})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($9+4+7+12)){}define({__JMP_CODE},{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 > positive constant --> false})}){}dnl
 __{}},{dnl
 __{}__{}ifelse(__IS_NAME($6),1,
-__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10)},
-__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7)}){}dnl
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+7+10))},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+7+10))}){}dnl
 __{}__{}define({__JMP_CODE},{dnl
 __{}__{}  if ((($1) & 0x8000) = 0x8000)
 __{}__{}ifelse(__IS_NAME($6),1,
@@ -3865,7 +3886,7 @@ __{}__{}{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negati
 __{}__{}  endif}){}dnl
 __{}}){}dnl
 __{}ifelse($3,{},,{
-__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/eval($5+23)])__INFO   {$3}})
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/__JMP_CLOCK])__INFO   {$3}})
 __{}    ld    A{,} D          ; 1:4       __INFO
 __{}    sub  0x80           ; 2:7       __INFO
 __{}__JMP_CODE{}dnl
