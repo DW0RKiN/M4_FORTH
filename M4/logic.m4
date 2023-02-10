@@ -5429,7 +5429,7 @@ __{}__SET_BYTES_CLOCKS_PRICES(13,70){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({HL},$1,{HL},0x0000,{BC},$2){}dnl
 __{}__LD_REG16({BC},$2){}dnl
-__{}                        ;format({%-11s},[__SUM_BYTES:eval(49+__CLOCKS_16BIT)/__SUM_CLOCKS])__INFO   ( d1 -- flag )  flag: d1 == $1*65536+$2{}__CODE_16BIT
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/eval(49+__CLOCKS_16BIT)])__INFO   ( d1 -- flag )  flag: d1 == $1*65536+$2{}__CODE_16BIT
 __{}    xor   A             ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO{}__LD_REG16({HL},$1,{HL},0x0000,{BC},$2)
 __{}    jr   nz, $+format({%-9s},eval(7+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
@@ -5447,7 +5447,7 @@ __{}define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   (
 __{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
 __{}define({_TMP_P},eval(59+80+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
 __{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
-__{}                        ;[eval(16+__BYTES_16BIT):59/eval(80+__CLOCKS_16BIT)] __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL((__HEX_HL($1)<<16)+__HEX_HL($2))
+__{}format({%28s},;[eval(16+__BYTES_16BIT):)format({%-8s},59/eval(80+__CLOCKS_16BIT)])__INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL((__HEX_HL($1)<<16)+__HEX_HL($2))
 __{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO
 __{}    xor   A             ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO

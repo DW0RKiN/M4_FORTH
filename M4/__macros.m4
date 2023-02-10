@@ -3994,7 +3994,7 @@ __{}__{}    add  HL{,} BC         ; 1:11      __INFO   cp HL{,} BC
 __{}__{}    jr   nz{,} $+format({%-9s},eval($6+6)); 2:7/12    __INFO
 __{}__{}    ld    A{,}format({%-12s},$1); 3:13      __INFO
 __{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)},
-__{}__IS_MEM_REF($2):regexp({$6},{^[a-zA-Z_]}),1:0,{dnl
+__{}__IS_MEM_REF($2):__IS_NAME($6),1:1,{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+19,$5+88){}dnl
 __{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+21){,}eval($7+eval($5+0)+77)]) __INFO   {$3}
 __{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO
