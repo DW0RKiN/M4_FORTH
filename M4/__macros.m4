@@ -38,6 +38,23 @@ __{}eval( 1 + regexp({$1},{^\s*(.+)\s*$}) )}){}dnl
 dnl
 dnl
 dnl
+define({__IS_NAME},{dnl
+dnl #           --> 0
+dnl # (abc)     --> 0
+dnl # abc + 2   --> 1  fail!
+dnl # abc + sd  --> 1  fail!
+dnl # ()        --> 0
+dnl # 0xFF & () --> 0
+dnl # abc       --> 1
+dnl # Abc       --> 1
+dnl # _abc      --> 1
+__{}ifelse(eval($#>1),1,0,
+__{}regexp({$1},{^[a-zA-Z_][a-zA-Z_0-9]*}),0,{ifelse(regexp({$1},{[a-zA-Z_0-9].*\ .*[a-zA-Z_0-9].*}),0,0,1)},
+__{}0){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 define({__IS_NUM},{dnl
 dnl # (abc)     --> 0
 dnl # (123)     --> 0
@@ -3822,22 +3839,36 @@ __{}__{}    sbc   A{,} E          ; 1:4       __INFO    0 > lo($1) - E --> carry
 __{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO   DE > $1
 __{}__{}    sbc   A{,} D          ; 1:4       __INFO    0 > hi($1) - D --> carry if true})},
 {dnl
-__{}__SET_BYTES_CLOCKS_PRICES(17+$4,62+$5){}dnl
+__{}__SET_BYTES_CLOCKS_PRICES($4+15,$5+55){}dnl
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CODE},{    jp    c{,} format({%-11s},$6); 3:10      __INFO   positive d1 > negative constant --> true})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CODE},{    jr    c{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 > negative constant --> true})}){}dnl
+__{}},
+__{}__HEX_H(0x8000 & ($1)),0x00,{dnl
+__{}__{}ifelse(__IS_NAME($8),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CODE},{    jp   nc{,} format({%-11s},$8); 3:10      __INFO   negative d1 > positive constant --> false})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CODE},{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 > positive constant --> false})}){}dnl
+__{}},{dnl
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10)},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7)}){}dnl
+__{}__{}define({__JMP_CODE},{dnl
+__{}__{}  if ((($1) & 0x8000) = 0x8000)
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{    jp    c{,} format({%-11s},$6); 3:10      __INFO   positive d1 > negative constant --> true},
+__{}__{}{    jr    c{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 > negative constant --> true})
+__{}__{}  else
+__{}__{}ifelse(__IS_NAME($8),1,
+__{}__{}{    jp   nc{,} format({%-11s},$8); 3:10      __INFO   negative d1 > positive constant --> false},
+__{}__{}{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 > positive constant --> false})
+__{}__{}  endif}){}dnl
+__{}}){}dnl
 __{}ifelse($3,{},,{
 __{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/eval($5+23)])__INFO   {$3}})
 __{}    ld    A{,} D          ; 1:4       __INFO
 __{}    sub  0x80           ; 2:7       __INFO
-__{}ifelse(__IS_NUM($1),1,{dnl
-__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
-__{}__{}    jr    c{,} $+14       ; 2:7/12    __INFO   positive d1 > negative constant --> true},
-__{}__{}{dnl
-__{}__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   negative d1 > positive constant --> false})},
-__{}{dnl
-__{}  if ((($1) & 0x8000) = 0x8000)
-__{}    jr    c{,} $+14       ; 2:7/12    __INFO   positive d1 > negative constant --> true
-__{}  else
-__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   negative d1 > positive constant --> false
-__{}  endif}){}dnl
+__{}__JMP_CODE{}dnl
 __{}ifelse(__IS_NUM($2),1,{
 __{}__{}    ld    A{,} __HEX_L($2)       ; 2:7       __INFO   HL > __HEX_HL($2)
 __{}__{}    sub   L             ; 1:4       __INFO    0 >   __HEX_L($2) - L --> carry if true
