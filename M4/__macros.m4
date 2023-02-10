@@ -2460,7 +2460,7 @@ dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
 dnl # __EQ_CODE
-dnl # zero flag if const == DEHL
+dnl # zero flag if const == HL
 dnl # A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
 define({__EQ_MAKE_CODE},{dnl
@@ -3908,46 +3908,65 @@ __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{ __INFO   {$3}}){}dnl
 __{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),$4,$5,0,0){}dnl
 __{}__{}_TMP_BEST_CODE},
-__{}__IS_NUM($1):__IS_NUM($2),0:0,{dnl
-__{}__{}__SET_BYTES_CLOCKS_PRICES($4+18,$5+65){}dnl
-__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($5+23){,}eval($5+41){,}eval($5+59)]) __INFO   {$3}
-__{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO
-__{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
-__{}__{}    jr   nz{,} $+17       ; 2:7/12    __INFO
-__{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)
-__{}__{}    jr   nz{,} $+12       ; 2:7/12    __INFO
+__{}__IS_NUM($2),1,{dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{__INFO   {$3}}){}dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #   $1 = 16 bit number
+dnl #   $2 = +-bytes no jump
+dnl #   $3 = +-clocks no jump
+dnl #   $4 = +-bytes jump
+dnl #   $5 = +-clocks jump
+dnl #   _TMP_INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+dnl #   _TMP_BEST_CODE    asm code
+dnl #   zero flag if const == HL
+dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
+dnl
+__{}__{}__EQ_MAKE_BEST_CODE($2,eval($4+10),eval($5+36),10,-36){}dnl
+__{}__{}_TMP_BEST_CODE
+__{}__{}    jr   nz{,} $+10       ; 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
 __{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)
-__{}__{}    jr   nz{,} $+6        ; 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+5        ; 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO
 __{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)},
-
-__{}{dnl
-__{}ifelse(eval($1):eval($2),0:0,{__ASM_TOKEN_D0EQ},
-__{}{dnl
-__{}__{}define({_TMP_INFO},__COMPILE_INFO){}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- flag )  flag: d1 == eval((__HEX_HL($1)<<16)+__HEX_HL($2))}){}__LD_REG16({HL},__HEX_HL($1),{HL},0,{BC},__HEX_HL($2)){}
-__{}__{}__DEQ_MAKE_BEST_CODE(eval((__HEX_HL($1)<<16)+__HEX_HL($2)),6,29,0,0){}dnl
-__{}__{}define({_TMP_P},eval(59+80+__CLOCKS_16BIT+8*(16+__BYTES_16BIT))){}dnl #     price = 16*(clocks + 4*bytes)
-__{}__{}ifelse(eval(8*_TMP_P<_TMP_BEST_P),{1},{
-__{}__{}                        ;[eval(16+__BYTES_16BIT):59/eval(80+__CLOCKS_16BIT)] __INFO   ( d1 -- flag )  flag: d1 == __HEX_DEHL((__HEX_HL($1)<<16)+__HEX_HL($2))
-__{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO
-__{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}__{}    jr   nz, $+format({%-9s},eval(7+__BYTES_16BIT)); 2:7/12    __INFO{}dnl
-__{}__{}__CODE_16BIT
-__{}__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
-__{}__{}    dec   A             ; 1:4       __INFO   A = 0xFF
-__{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO   HL = flag
-__{}__{}    pop  DE             ; 1:10      __INFO},{
+__{}__IS_NUM($1),1,{dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{__INFO   {$3}}){}dnl
+__{}__{}define({H},{D}){}dnl
+__{}__{}define({L},{E}){}dnl
+__{}__{}__EQ_MAKE_BEST_CODE($1,eval($4+10),eval($5+36),10,-36){}dnl
 __{}__{}_TMP_BEST_CODE
-__{}__{}    sub  0x01           ; 2:7       __INFO
-__{}__{}    sbc   A, A          ; 1:4       __INFO
-__{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO   HL = flag
-__{}__{}    pop  DE             ; 1:10      __INFO})})})}){}dnl
+__{}__{}undefine({H}){}dnl
+__{}__{}undefine({L}){}dnl
+__{}__{}    jr   nz{,} $+10       ; 2:7/12    __INFO
+__{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO
+__{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
+__{}__{}    jr   nz{,} $+5        ; 2:7/12    __INFO
+__{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)},
+__{}{dnl
+__{}__{}__SET_BYTES_CLOCKS_PRICES($4+18,$5+65){}dnl
+__{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($5+23){,}eval($5+41){,}eval($5+59)]) __INFO   {$3}
+__{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO   default version
+__{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
+__{}__{}    jr   nz{,} $+15       ; 2:7/12    __INFO
+__{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)
+__{}__{}    jr   nz{,} $+10       ; 2:7/12    __INFO
+__{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
+__{}__{}    xor   E             ; 1:4       __INFO   .E.. = lo($1)
+__{}__{}    jr   nz{,} $+5        ; 2:7/12    __INFO
+__{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
