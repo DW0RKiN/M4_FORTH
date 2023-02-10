@@ -3646,11 +3646,12 @@ dnl #    jp   nc, else_xxx   ; 3:10      __INFO
 define({__MAKE_CODE_DLT_SET_CARRY},{dnl
 ifelse(dnl
 __IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
-__{}__SET_BYTES_CLOCKS_PRICES(12+$4,48+$5){}dnl
+__{}__SET_BYTES_CLOCKS_PRICES($4+12,$5+48){}dnl
 __{}define({_TMP_INFO},__INFO{   ..BC = $2}){}dnl
 __{}__LD_REG16(BC,$1,BC,$2){}dnl
-__{}__LD_REG16(BC,$2)
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}{}dnl
+__{}__LD_REG16(BC,$2){}dnl
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS])__INFO   {$3}}){}dnl
 __{}__CODE_16BIT
 __{}    ld    A{,} L          ; 1:4       __INFO   ..HL < ..BC
 __{}    sub   C             ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true
@@ -3665,7 +3666,9 @@ __{}    xor   D             ; 1:4       __INFO
 __{}    xor   B             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 __IS_MEM_REF($1):__IS_MEM_REF($2),1:0,{dnl
-__{}__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5)
+__{}__SET_BYTES_CLOCKS_PRICES($4+18,$5+74){}dnl
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS])__INFO   {$3}})
 __{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
 __{}    ld    A{,} L          ; 1:4       __INFO   HL < $2
 __{}    sub  format({%-15s},low $2); 2:7       __INFO   HL - $2 < 0 --> carry if true
@@ -3681,8 +3684,9 @@ __{}    xor   D             ; 1:4       __INFO
 __{}    xor   B             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 __IS_MEM_REF($1):__IS_MEM_REF($2),0:1,{dnl
-__{}ifelse(__HEX_H(0x8000 & ($1)),0x00,{__SET_BYTES_CLOCKS_PRICES($4+17,$5+70)},{__SET_BYTES_CLOCKS_PRICES($4+18,$5+74)})
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x00,{__SET_BYTES_CLOCKS_PRICES($4+17,$5+70)},{__SET_BYTES_CLOCKS_PRICES($4+18,$5+74)}){}dnl
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS])__INFO   {$3}})
 __{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
 __{}    ld    A{,} L          ; 1:4       __INFO   ..HL < ..BC
 __{}    sub   C             ; 1:4       __INFO   ..HL - ..BC < 0 --> carry if true
@@ -3701,22 +3705,37 @@ __{}  endif},
 __{}__HEX_HL(0x8000 & ($1)),0x8000,{
 __{}    ccf                 ; 1:4       __INFO})
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
-{
-__{}__SET_BYTES_CLOCKS_PRICES(16+$4,59+$5){}dnl
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval($5+20)])__INFO   {$3}
+{dnl
+__{}__SET_BYTES_CLOCKS_PRICES($4+14,$5+52){}dnl
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+4+10)){}define({__JMP_CODE},{    jp   nc{,} format({%-11s},$6); 3:10      __INFO   positive d1 < negative constant --> false})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+4+12)){}define({__JMP_CODE},{    jr   nc{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 < negative constant --> false})}){}dnl
+__{}},
+__{}__HEX_H(0x8000 & ($1)),0x00,{dnl
+__{}__{}ifelse(__IS_NAME($8),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($9+4+4+10)){}define({__JMP_CODE},{    jp    c{,} format({%-11s},$8); 3:10      __INFO   negative d1 < positive constant --> ture})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($9+4+4+12)){}define({__JMP_CODE},{    jr    c{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 < positive constant --> true})}){}dnl
+__{}},{dnl
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+4+10))},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+4+10))}){}dnl
+__{}__{}define({__JMP_CODE},{dnl
+__{}__{}  if ((($1) & 0x8000) = 0x8000)
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{    jp   nc{,} format({%-11s},$6); 3:10      __INFO   positive d1 < negative constant --> false},
+__{}__{}{    jr   nc{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 < negative constant --> false})
+__{}__{}  else
+__{}__{}ifelse(__IS_NAME($8),1,
+__{}__{}{    jp    c{,} format({%-11s},$8); 3:10      __INFO   negative d1 < positive constant --> true},
+__{}__{}{    jr    c{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 < positive constant --> true})
+__{}__{}  endif}){}dnl
+__{}}){}dnl
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/__JMP_CLOCK])__INFO   {$3}})
 __{}    ld    A{,} D          ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO
-__{}ifelse(__IS_NUM($1),1,{dnl
-__{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
-__{}__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   positive d1 < negative constant --> false},
-__{}__{}{dnl
-__{}__{}    jr    c{,} $+14       ; 2:7/12    __INFO   negative d1 < positive constant --> true})},
-__{}{dnl
-__{}  if ((($1) & 0x8000) = 0x8000)
-__{}    jr   nc{,} $+14       ; 2:7/12    __INFO   positive d1 < negative constant --> false
-__{}  else
-__{}    jr    c{,} $+14       ; 2:7/12    __INFO   negative d1 < positive constant --> true
-__{}  endif}){}dnl
+__{}__JMP_CODE{}dnl
 __{}ifelse(__IS_NUM($2),1,{
 __{}__{}    ld    A{,} L          ; 1:4       __INFO   HL < __HEX_HL($2)
 __{}__{}    sub   __HEX_L($2)          ; 2:7       __INFO    L -   __HEX_L($2) < 0 --> carry if true
