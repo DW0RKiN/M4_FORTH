@@ -540,7 +540,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10)
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10,3,0,begin{}BEGIN_STACK,0)
 __{}__{}    jp   nc, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -563,7 +563,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d >= $1<<16+$2},3,10)
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d >= $1<<16+$2},3,10,begin{}BEGIN_STACK,0,3,0)
 __{}__{}    jp    c, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -586,7 +586,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d <= $1<<16+$2},3,10)
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d <= $1<<16+$2},3,10,begin{}BEGIN_STACK,0,3,0)
 __{}__{}    jp    c, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -609,7 +609,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10)
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10,3,0,begin{}BEGIN_STACK,0)
 __{}__{}    jp   nc, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -2710,7 +2710,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10)
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10,3,0,break{}BEGIN_STACK,0)
 __{}    jp   nc, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
@@ -2731,7 +2731,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d >= $1<<16+$2},3,10)
+__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d >= $1<<16+$2},3,10,break{}BEGIN_STACK,0,3,0)
 __{}    jp    c, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
@@ -2752,7 +2752,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d <= $1<<16+$2},3,10)
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d <= $1<<16+$2},3,10,break{}BEGIN_STACK,0,3,0)
 __{}    jp    c, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
@@ -2773,7 +2773,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 {dnl
-__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10)
+__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10,3,0,break{}BEGIN_STACK,0)
 __{}    jp   nc, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
 }){}dnl
 dnl

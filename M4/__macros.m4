@@ -3641,8 +3641,9 @@ dnl #    print code
 dnl # Pollutes:
 dnl #    AF, BC
 dnl # Use:
-dnl #    __MAKE_CODE_DGT_SET_CARRY(hi16,lo16,{( d -- d)  if d > num32},3,10,3,-10,)
-dnl #    jp   nc, else_xxx   ; 3:10      __INFO
+dnl #    until
+dnl #    __MAKE_CODE_DLT_SET_CARRY($@,{( d -- d )  flag: d < $1<<16+$2},3,10,3,0,begin{}BEGIN_STACK,0)
+dnl #        jp   nc, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
 define({__MAKE_CODE_DLT_SET_CARRY},{dnl
 ifelse(dnl
 __IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
@@ -3708,27 +3709,27 @@ __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 {dnl
 __{}__SET_BYTES_CLOCKS_PRICES($4+14,$5+52){}dnl
 __{}ifelse(__HEX_H(0x8000 & ($1)),0x80,{dnl
-__{}__{}ifelse(__IS_NAME($6),1,
-__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+4+10)){}define({__JMP_CODE},{    jp   nc{,} format({%-11s},$6); 3:10      __INFO   positive d1 < negative constant --> false})},
-__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+4+12)){}define({__JMP_CODE},{    jr   nc{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 < negative constant --> false})}){}dnl
+__{}__{}ifelse(__IS_NAME($8),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($9+4+4+10)){}define({__JMP_CODE},{    jp   nc{,} format({%-11s},$8); 3:10      __INFO   positive d1 < negative constant --> false})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($9+4+4+12)){}define({__JMP_CODE},{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   positive d1 < negative constant --> false})}){}dnl
 __{}},
 __{}__HEX_H(0x8000 & ($1)),0x00,{dnl
-__{}__{}ifelse(__IS_NAME($8),1,
-__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($9+4+4+10)){}define({__JMP_CODE},{    jp    c{,} format({%-11s},$8); 3:10      __INFO   negative d1 < positive constant --> ture})},
-__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($9+4+4+12)){}define({__JMP_CODE},{    jr    c{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 < positive constant --> true})}){}dnl
-__{}},{dnl
 __{}__{}ifelse(__IS_NAME($6),1,
-__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+4+10))},
-__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+4+10))}){}dnl
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($7+4+4+10)){}define({__JMP_CODE},{    jp    c{,} format({%-11s},$6); 3:10      __INFO   negative d1 < positive constant --> ture})},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($7+4+4+12)){}define({__JMP_CODE},{    jr    c{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   negative d1 < positive constant --> true})}){}dnl
+__{}},{dnl
+__{}__{}ifelse(__IS_NAME($8),1,
+__{}__{}{__add({__SUM_BYTES},3){}__add({__SUM_CLOCKS},10){}define({__JMP_CLOCK},eval($9+4+4+10))},
+__{}__{}{__add({__SUM_BYTES},2){}__add({__SUM_CLOCKS}, 7){}define({__JMP_CLOCK},eval($9+4+4+12))}){}dnl
 __{}__{}define({__JMP_CODE},{dnl
 __{}__{}  if ((($1) & 0x8000) = 0x8000)
-__{}__{}ifelse(__IS_NAME($6),1,
-__{}__{}{    jp   nc{,} format({%-11s},$6); 3:10      __INFO   positive d1 < negative constant --> false},
-__{}__{}{    jr   nc{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   positive d1 < negative constant --> false})
-__{}__{}  else
 __{}__{}ifelse(__IS_NAME($8),1,
-__{}__{}{    jp    c{,} format({%-11s},$8); 3:10      __INFO   negative d1 < positive constant --> true},
-__{}__{}{    jr    c{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   negative d1 < positive constant --> true})
+__{}__{}{    jp   nc{,} format({%-11s},$8); 3:10      __INFO   positive d1 < negative constant --> false},
+__{}__{}{    jr   nc{,} format({%-11s},$+eval($8+14)); 2:7/12    __INFO   positive d1 < negative constant --> false})
+__{}__{}  else
+__{}__{}ifelse(__IS_NAME($6),1,
+__{}__{}{    jp    c{,} format({%-11s},$6); 3:10      __INFO   negative d1 < positive constant --> true},
+__{}__{}{    jr    c{,} format({%-11s},$+eval($6+14)); 2:7/12    __INFO   negative d1 < positive constant --> true})
 __{}__{}  endif}){}dnl
 __{}}){}dnl
 __{}ifelse($3,{},,{
