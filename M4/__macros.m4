@@ -3657,7 +3657,7 @@ __{}    xor   D             ; 1:4       __INFO
 __{}    xor   B             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 __IS_MEM_REF($1):__IS_MEM_REF($2),0:1,{dnl
-__{}ifelse(__HEX_H(0x8000 & ($1)),0x00,{__SET_BYTES_CLOCKS_PRICES(17+$4,70+$5)},{__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5)})
+__{}ifelse(__HEX_H(0x8000 & ($1)),0x00,{__SET_BYTES_CLOCKS_PRICES($4+17,$5+70)},{__SET_BYTES_CLOCKS_PRICES($4+18,$5+74)})
 __{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
 __{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
 __{}    ld    A{,} L          ; 1:4       __INFO   ..HL < ..BC
@@ -3679,7 +3679,7 @@ __{}    ccf                 ; 1:4       __INFO})
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 {
 __{}__SET_BYTES_CLOCKS_PRICES(16+$4,59+$5){}dnl
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval(20+$5)])__INFO   {$3}
+__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval($5+20)])__INFO   {$3}
 __{}    ld    A{,} D          ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO
 __{}ifelse(__IS_NUM($1),1,{dnl
@@ -3722,20 +3722,28 @@ dnl #    __INFO
 dnl #    $1 ...hi16
 dnl #    $2 ...lo16
 dnl #    $3 ...head info
-dnl #    $4 ...+bytes
-dnl #    $5 ...+clocks
+dnl #    $4 ...+bytes    after code
+dnl #    $5 ...+clocks   after code
+dnl #    $6 ...+-bytes   carry jump     if (number) jr else if (name) jp
+dnl #    $7 ...+-clocks  carry jump
+dnl #    $8 ...+-bytes   no carry jump  if (number) jr else if (name) jp
+dnl #    $9 ...+-clocks  no carry jump
 dnl # Output:
 dnl #    print code
 dnl # Pollutes:
-dnl #    AF,BC
+dnl #    AF, BC
+dnl # Use:
+dnl #    __MAKE_CODE_DGT_SET_CARRY(hi16,lo16,{( d -- d)  if d > num32},3,10,3,-10,)
+dnl #    jp   nc, else_xxx   ; 3:10      __INFO
 define({__MAKE_CODE_DGT_SET_CARRY},{dnl
 ifelse(dnl
 __IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
-__{}__SET_BYTES_CLOCKS_PRICES(12+$4,48+$5){}dnl
+__{}__SET_BYTES_CLOCKS_PRICES($4+12,$5+48){}dnl
 __{}define({_TMP_INFO},__INFO{   ..BC = $2}){}dnl
 __{}__LD_REG16(BC,$1,BC,$2){}dnl
-__{}__LD_REG16(BC,$2)
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}{}dnl
+__{}__LD_REG16(BC,$2){}dnl
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS])__INFO   {$3}}){}dnl
 __{}__CODE_16BIT
 __{}    ld    A{,} C          ; 1:4       __INFO   ..HL > ..BC
 __{}    sub   L             ; 1:4       __INFO      0 > ...C - ...L --> carry if true
@@ -3750,8 +3758,9 @@ __{}    xor   D             ; 1:4       __INFO
 __{}    xor   B             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
 __IS_MEM_REF($1):__IS_MEM_REF($2),1:0,{dnl
-__{}__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5)
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
+__{}__SET_BYTES_CLOCKS_PRICES(18+$4,74+$5){}dnl
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS])__INFO   {$3}})
 __{}    ld   format({%-15s},low $2); 2:7       __INFO   ...L > lo($2)
 __{}    sub   L             ; 1:4       __INFO      0 > ...A - ...L --> carry if true
 __{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO   ..H. > hi($2)
@@ -3765,9 +3774,10 @@ __{}    rra                 ; 1:4       __INFO   --> sign  if true
 __{}    xor   D             ; 1:4       __INFO
 __{}    xor   B             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
-__HEX_H(0x8000 & ($1)):__IS_MEM_REF($2),0x00:1,{
+__HEX_H(0x8000 & ($1)):__IS_MEM_REF($2),0x00:1,{dnl
 __{}__SET_BYTES_CLOCKS_PRICES(17+$4,70+$5){}dnl
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS])__INFO   {$3}
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS])__INFO   {$3}})
 __{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
 __{}    ld    A{,} C          ; 1:4       __INFO   ..HL > ..BC
 __{}    sub   L             ; 1:4       __INFO      0 > ...C - ...L --> carry if true
@@ -3780,9 +3790,10 @@ __{}    sbc   A{,} D          ; 1:4       __INFO      0 > B... - D... --> carry 
 __{}    rra                 ; 1:4       __INFO   --> sign  if true
 __{}    xor   D             ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO   --> carry if true},
-__IS_MEM_REF($1):__IS_MEM_REF($2),0:1,{
+__IS_MEM_REF($1):__IS_MEM_REF($2),0:1,{dnl
 __{}__SET_BYTES_CLOCKS_PRICES(19+$4,74+$5){}dnl
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval(23+$5)])__INFO   {$3}
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/eval($5+23)])__INFO   {$3}})
 __{}    ld    A{,} D          ; 1:4       __INFO
 __{}    sub  0x80           ; 2:7       __INFO
 __{}ifelse(__IS_NUM($1),1,{dnl
@@ -3810,9 +3821,10 @@ __{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO   DE > $1
 __{}__{}    sbc   A{,} E          ; 1:4       __INFO    0 > lo($1) - E --> carry if true
 __{}__{}    ld    A{,} format({%-11s},high $1); 2:7       __INFO   DE > $1
 __{}__{}    sbc   A{,} D          ; 1:4       __INFO    0 > hi($1) - D --> carry if true})},
-{
+{dnl
 __{}__SET_BYTES_CLOCKS_PRICES(17+$4,62+$5){}dnl
-__{}                       ;format({%-12s},[__SUM_BYTES:__SUM_CLOCKS/eval(23+$5)])__INFO   {$3}
+__{}ifelse($3,{},,{
+__{}__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS/eval($5+23)])__INFO   {$3}})
 __{}    ld    A{,} D          ; 1:4       __INFO
 __{}    sub  0x80           ; 2:7       __INFO
 __{}ifelse(__IS_NUM($1),1,{dnl
@@ -3973,7 +3985,7 @@ dnl #   _TMP_BEST_CODE    asm code
 dnl #   zero flag if const == HL
 dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
-__{}__{}__EQ_MAKE_BEST_CODE($2,eval($4+10),eval($5+36),10,-36){}dnl
+__{}__{}__EQ_MAKE_BEST_CODE($2,eval($4+10),eval($5+36),eval($6+eval($4+0)+10),eval($7+eval($5+0)-36)){}dnl
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jr   nz{,} $+format({%-9s},eval($6+10)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},low $1); 2:7       __INFO
@@ -3986,16 +3998,16 @@ __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   {$3}}){}dnl
 __{}__{}define({H},{D}){}dnl
 __{}__{}define({L},{E}){}dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,eval($4+10),eval($5+36),10,-36){}dnl
-__{}__{}_TMP_BEST_CODE
+__{}__{}__EQ_MAKE_BEST_CODE($1,$4,$5,eval($6+eval($4+0)),eval($7+eval($5+0)))
 __{}__{}undefine({H}){}dnl
 __{}__{}undefine({L}){}dnl
-__{}__{}    jr   nz{,} $+format({%-9s},eval($6+10)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},low $2); 2:7       __INFO
 __{}__{}    xor   L             ; 1:4       __INFO   ...L = lo($2)
-__{}__{}    jr   nz{,} $+format({%-9s},eval($6+5)); 2:7/12    __INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+7+_TMP_BEST_B)); 2:7/12    __INFO
 __{}__{}    ld    A{,} format({%-11s},high $2); 2:7       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)},
+__{}__{}    xor   H             ; 1:4       __INFO   ..H. = hi($2)
+__{}__{}    jr   nz{,} $+format({%-9s},eval($6+2+_TMP_BEST_B)); 2:7/12    __INFO
+__{}__{}_TMP_BEST_CODE},
 __{}{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+18,$5+65){}dnl
 __{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+23){,}eval($7+eval($5+0)+41){,}eval($7+eval($5+0)+59)]) __INFO   {$3}
