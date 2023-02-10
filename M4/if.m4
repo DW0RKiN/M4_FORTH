@@ -2526,24 +2526,24 @@ dnl
 dnl Du= if
 dnl ( ud ud -- )
 define({DUEQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUEQ_IF},{dueq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUEQ_IF},{du= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUEQ_IF},{dnl
 __{}define({__INFO},{dueq_if}){}dnl
-DEQ_IF}){}dnl
+__{}__ASM_TOKEN_DEQ_IF}){}dnl
 dnl
 dnl
 dnl
 dnl Du<> if
 dnl ( ud ud -- )
 define({DUNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUNE_IF},{dune_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUNE_IF},{du<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUNE_IF},{dnl
 __{}define({__INFO},{dune_if}){}dnl
-DNE_IF}){}dnl
+__{}__ASM_TOKEN_DNE_IF}){}dnl
 dnl
 dnl
 dnl
