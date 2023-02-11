@@ -1773,7 +1773,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},14){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    xor   __HEX_L(__N4)          ; 2:7       _TMP_INFO   x[4] = __HEX_L(__N4)  termination of identical values})},
 __{}dnl
 __{}dnl a+1 a - -
@@ -1783,7 +1783,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3] + 1})},
 __{}dnl
@@ -1794,7 +1794,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3] - 1})},
 __{}dnl
@@ -1805,7 +1805,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    add   A{,} __R1          ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3] + x[1]})},
 __{}dnl
@@ -1816,7 +1816,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    sub   __R1             ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3] - x[1]})},
 __{}dnl
@@ -1827,7 +1827,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    add   A{,} __R2          ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3] + x[2]})},
 __{}dnl
@@ -1838,7 +1838,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    sub   __R2             ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3] - x[2]})},
 __{}dnl
@@ -1849,7 +1849,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    add   A{,} __R3          ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3] + x[3]})},
 __{}dnl
@@ -1860,7 +1860,7 @@ __{}__{}define({_TMP_B4},4){}dnl
 __{}__{}define({_TMP_T4},15){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    rra                 ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3]/2})},
 __{}dnl
@@ -1870,7 +1870,7 @@ __{}__{}define({_TMP_B4},5){}dnl
 __{}__{}define({_TMP_T4},18){}dnl
 __{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_4},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __HEX_L(__N4)       ; 2:7       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = __HEX_L(__N4)})}){}dnl
 __{}dnl
@@ -1914,7 +1914,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},14){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    xor   __HEX_L(__N3 ^ 0xFF)          ; 2:7       _TMP_INFO   x[3] = __HEX_L(__N3) = 0xFF ^ __HEX_L(__N3 ^ 0xFF)  termination of identical values})},
 __{}dnl
 __{}dnl 255 1 - -    + send signal 0
@@ -1937,7 +1937,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __R3          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   x[3] + 1 = 0xFF})},
 __{}dnl
@@ -1948,7 +1948,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+5)){}dnl
 __{}__{}define({_TMP_T3},18){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __R3          ; 1:4       _TMP_INFO
 __{}__{}    xor   __HEX_L(__N3 ^ 0xFF)          ; 2:7       _TMP_INFO   x[3] = __HEX_L(__N3) = 0xFF ^ __HEX_L(__N3 ^ 0xFF)})},
 __{}dnl
@@ -1971,7 +1971,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+3)){}dnl
 __{}__{}define({_TMP_T3},11){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    cp    __R4             ; 1:4       _TMP_INFO   x[3] = x[4]  continuation of identical values})},
 __{}dnl
 __{}dnl c c - -    the beginning of identical values (preserves value)
@@ -1981,7 +1981,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __R3          ; 1:4       _TMP_INFO
 __{}__{}    cp    __R4             ; 1:4       _TMP_INFO   x[3] = x[4] the beginning of identical values})},
 __{}dnl
@@ -1992,7 +1992,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},14){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    _TMP_OR3  __HEX_L(__N3)           ; 2:7       _TMP_INFO   x[3] = __HEX_L(__N3)  termination of identical values})},
 __{}dnl
 __{}dnl - b+1 b -
@@ -2002,7 +2002,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}__{}    inc   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2] + 1})},
 __{}dnl
@@ -2013,7 +2013,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2] - 1})},
 __{}dnl
@@ -2024,7 +2024,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    add   A{,} __R1          ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2] + x[1]})},
 __{}dnl
@@ -2035,7 +2035,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    sub   __R1             ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2] - x[1]})},
 __{}dnl
@@ -2046,7 +2046,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    add   A{,} __R2          ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2] + x[2]})},
 __{}dnl
@@ -2057,7 +2057,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
 __{}__{}define({_TMP_T3},15){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    rra                 ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2]/2})},
 __{}dnl
@@ -2067,7 +2067,7 @@ __{}__{}define({_TMP_B3},eval(_TMP_B4+5)){}dnl
 __{}__{}define({_TMP_T3},18){}dnl
 __{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_3},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __HEX_L(__N3)       ; 2:7       _TMP_INFO
 __{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = __HEX_L(__N3)})}){}dnl
 __{}dnl
@@ -2111,7 +2111,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},14){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    xor   __HEX_L(__N2 ^    0xFF)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2) = 0xFF ^ __HEX_L(__N2 ^ 0xFF)      termination of identical values})},
 __{}dnl
 __{}dnl - 255 1 -  and __R1!=L  + send signal 0
@@ -2135,7 +2135,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __R2          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   x[2] + 1 = 0xFF})},
 __{}dnl
@@ -2147,7 +2147,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+5)){}dnl
 __{}__{}define({_TMP_T2},18){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __R2          ; 1:4       _TMP_INFO
 __{}__{}    xor   __HEX_L(__N2 ^    0xFF)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2) = 0xFF ^ __HEX_L(__N2 ^ 0xFF)})},
 __{}dnl
@@ -2170,7 +2170,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+3)){}dnl
 __{}__{}define({_TMP_T2},11){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    cp    __R3             ; 1:4       _TMP_INFO   x[2] = x[3]  continuation of identical values})},
 __{}dnl
 __{}dnl - a a -    + send signal 0 because it can be shorter in number 1, the beginning of identical values (preserves value)
@@ -2181,7 +2181,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __R2          ; 1:4       _TMP_INFO   the beginning of identical values
 __{}__{}    cp    __R3             ; 1:4       _TMP_INFO   x[2] = x[3]})},
 __{}dnl
@@ -2191,7 +2191,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},14){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    _TMP_OR2   __HEX_L(__N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2)  termination of identical values})},
 __{}dnl
 __{}dnl - - a+1 a
@@ -2201,7 +2201,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] + 1})},
 __{}dnl
@@ -2212,7 +2212,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] - 1})},
 __{}dnl
@@ -2223,7 +2223,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    add   A{,} __R1          ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] + x[1]})},
 __{}dnl
@@ -2234,7 +2234,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
 __{}__{}define({_TMP_T2},15){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    rra                 ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})},
 __{}dnl
@@ -2244,7 +2244,7 @@ __{}__{}define({_TMP_B2},eval(_TMP_B3+5)){}dnl
 __{}__{}define({_TMP_T2},18){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__DEQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} __HEX_L(__N2)       ; 2:7       _TMP_INFO
 __{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(__N2)})}){}dnl
 __{}dnl
@@ -2802,7 +2802,7 @@ __{}__IS_NAME($4),0,{dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{,} format({%-11s},$1); 3:13      _TMP_INFO
 __{}__{}    xor   L             ; 1:4       _TMP_INFO
-__{}__{}    jr   nz{,} $+format({%-9s},eval(6+_TMP_B0)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} format({%-11s},$+eval($4+6)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      _TMP_INFO
 __{}__{}    xor   H             ; 1:4       _TMP_INFO}){}dnl
 __{}__{}define({_TMP_J1},eval($5+29)){}dnl
@@ -2855,7 +2855,7 @@ __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{,} low format({%-7s},$1); 2:7       _TMP_INFO
 __{}__{}    xor   L             ; 1:4       _TMP_INFO
-__{}__{}    jr   nz{,} $+format({%-9s},eval(5+_TMP_B0)); 2:7/12    _TMP_INFO
+__{}__{}    jr   nz{,} format({%-11s},$+eval($4+5)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} high format({%-6s},$1); 2:7       _TMP_INFO
 __{}__{}    xor   H             ; 1:4       _TMP_INFO}){}dnl
 __{}__{}define({_TMP_J1},eval($3+23+_TMP_J0)){}dnl
@@ -2978,13 +2978,13 @@ __{}__{}define({_TMP_B2},2){}dnl
 __{}__{}define({_TMP_T2},7){}dnl
 __{}__{}define({_TMP_J1},eval($3+12+_TMP_J0+_TMP_T1)){}dnl
 __{}__{}define({__EQ_CODE_2},{
-__{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2+_TMP_B3)); 2:7/12    _TMP_INFO})},
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2+_TMP_B3)); 2:7/12    _TMP_INFO})},
 __{}{dnl
 __{}__{}define({_TMP_B2},3){}dnl
 __{}__{}define({_TMP_T2},10){}dnl
 __{}__{}define({_TMP_J1},eval(10+_TMP_T1)){}dnl
 __{}__{}define({__EQ_CODE_2},{
-__{}__{}    jp   nz{,} format({%-11s},_TMP_B0); 3:10      _TMP_INFO})}){}dnl
+__{}__{}    jp   nz{,} format({%-11s},$4); 3:10      _TMP_INFO})}){}dnl
 __{}dnl
 __{}ifelse(__HEX_HL($1),0x0000,{dnl
 __{}__{}define({_TMP_B1},2){}dnl
