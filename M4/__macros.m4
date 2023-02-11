@@ -2792,7 +2792,7 @@ __{}__{}    ld   BC{,} format({%-11s},$1); 4:20      _TMP_INFO
 __{}__{}    xor   A             ; 1:4       _TMP_INFO   cp HL{,} BC
 __{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   cp HL{,} BC
 __{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO   cp HL{,} BC}){}dnl
-__{}__{}define({__EQ_CLOCKS_TRUE},eval(50+ifelse($3,{},{0},{$3}))){}dnl
+__{}__{}define({__EQ_CLOCKS_TRUE},eval($3+50)){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},__EQ_CLOCKS_TRUE){}dnl
 __{}__{}define({_TMP_BEST_C},__EQ_CLOCKS_TRUE){}dnl
 __{}__{}define({_TMP_BEST_B},eval(8+ifelse($2,{},{0},{$2}))){}dnl
@@ -2801,21 +2801,21 @@ __{}__{}define({_TMP_BEST_CODE},{                        ;}format({%-10s},[eval(
 __{}__IS_NAME($4),0,{dnl
 __{}__{}define({_TMP_B1},10){}dnl
 __{}__{}define({_TMP_T2},8){}dnl
-__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}define({_TMP_J1},eval($5+12)){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{,} format({%-11s},$1); 3:13      _TMP_INFO
 __{}__{}    xor   L             ; 1:4       _TMP_INFO
 __{}__{}    jr   nz{,} $+format({%-9s},eval(6+_TMP_B0)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      _TMP_INFO
 __{}__{}    xor   H             ; 1:4       _TMP_INFO}){}dnl
-__{}__{}define({_TMP_J1},eval(29+ifelse($3,{},{0},{$3})+_TMP_J0)){}dnl
-__{}__{}define({_TMP_J2},eval(41+ifelse($3,{},{0},{$3}))){}dnl
+__{}__{}define({_TMP_J1},eval($3+29+_TMP_J0)){}dnl
+__{}__{}define({_TMP_J2},eval($3+41)){}dnl
 __{}__{}define({__EQ_CLOCKS_TRUE},eval(_TMP_J1+_TMP_J2)){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},_TMP_J2){}dnl
 __{}__{}define({_TMP_BEST_P},eval(4*__EQ_CLOCKS_TRUE+8*__EQ_CLOCKS_FAIL)){}dnl
 __{}__{}define({__EQ_CLOCKS_TRUE},eval((1+__EQ_CLOCKS_TRUE)/2)){}dnl
 __{}__{}define({_TMP_BEST_C},eval((8+_TMP_BEST_P)/16)){}dnl
-__{}__{}define({_TMP_BEST_B},eval(10+ifelse($2,{},{0},{$2}))){}dnl
+__{}__{}define({_TMP_BEST_B},eval($2+10)){}dnl
 __{}__{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}__{}define({_TMP_BEST_CODE},format({%37s},;[eval(_TMP_BEST_B):_TMP_J1{{,}}_TMP_J2/__EQ_CLOCKS_FAIL]){ _TMP_STACK_INFO{}__EQ_CODE_1})},
 __{}{dnl
@@ -2826,13 +2826,13 @@ __{}__{}    jp   nz{,} format({%-11s},$4); 3:10      _TMP_INFO
 __{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      _TMP_INFO
 __{}__{}    xor   H             ; 1:4       _TMP_INFO}){}dnl
 __{}__{}define({_TMP_J1},eval(27)){}dnl
-__{}__{}define({_TMP_J2},eval(44+ifelse($3,{},{0},{$3}))){}dnl
+__{}__{}define({_TMP_J2},eval($3+44)){}dnl
 __{}__{}define({__EQ_CLOCKS_TRUE},_TMP_J2){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},eval(_TMP_J1+_TMP_J2)){}dnl
 __{}__{}define({_TMP_BEST_P},eval(8*__EQ_CLOCKS_TRUE+4*__EQ_CLOCKS_FAIL)){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}__{}define({_TMP_BEST_C},eval((8+_TMP_BEST_P)/16)){}dnl
-__{}__{}define({_TMP_BEST_B},eval(11+ifelse($2,{},{0},{$2}))){}dnl
+__{}__{}define({_TMP_BEST_B},eval($2+11)){}dnl
 __{}__{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}__{}define({_TMP_BEST_CODE},format({%37s},;[eval(_TMP_BEST_B):__EQ_CLOCKS_TRUE/_TMP_J1{{,}}_TMP_J2]){ _TMP_STACK_INFO{}__EQ_CODE_1})})},
 __IS_NUM($1),{0},{dnl
@@ -2845,10 +2845,10 @@ __{}__{}    ld   BC{,} format({%-11s},$1); 3:10      _TMP_INFO
 __{}__{}    xor   A             ; 1:4       _TMP_INFO   cp HL{,} BC
 __{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   cp HL{,} BC
 __{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO   cp HL{,} BC}){}dnl
-__{}__{}define({__EQ_CLOCKS_TRUE},eval(40+ifelse($3,{},{0},{$3}))){}dnl
+__{}__{}define({__EQ_CLOCKS_TRUE},eval($3+40)){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},__EQ_CLOCKS_TRUE){}dnl
 __{}__{}define({_TMP_BEST_C},__EQ_CLOCKS_TRUE){}dnl
-__{}__{}define({_TMP_BEST_B},eval(7+ifelse($2,{},{0},{$2}))){}dnl
+__{}__{}define({_TMP_BEST_B},eval($2+7)){}dnl
 __{}__{}define({_TMP_BEST_P},eval(16*_TMP_BEST_C+64*_TMP_BEST_B)){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}__{}define({_TMP_BEST_CODE},{
 __{}__{}__{}  .warning {$0}($@): M4 does not know the "$1" value and therefore cannot optimize the code.
@@ -2863,14 +2863,14 @@ __{}__{}    xor   L             ; 1:4       _TMP_INFO
 __{}__{}    jr   nz{,} $+format({%-9s},eval(5+_TMP_B0)); 2:7/12    _TMP_INFO
 __{}__{}    ld    A{,} high format({%-6s},$1); 2:7       _TMP_INFO
 __{}__{}    xor   H             ; 1:4       _TMP_INFO}){}dnl
-__{}__{}define({_TMP_J1},eval(23+ifelse($3,{},{0},{$3})+_TMP_J0)){}dnl
-__{}__{}define({_TMP_J2},eval(29+ifelse($3,{},{0},{$3}))){}dnl
+__{}__{}define({_TMP_J1},eval($3+23+_TMP_J0)){}dnl
+__{}__{}define({_TMP_J2},eval($3+29)){}dnl
 __{}__{}define({__EQ_CLOCKS_TRUE},_TMP_J2){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},eval(_TMP_J1+_TMP_J2)){}dnl
 __{}__{}define({_TMP_BEST_P},eval(8*__EQ_CLOCKS_TRUE+4*__EQ_CLOCKS_FAIL)){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}__{}define({_TMP_BEST_C},eval((8+_TMP_BEST_P)/16)){}dnl
-__{}__{}define({_TMP_BEST_B},eval(8+ifelse($2,{},{0},{$2}))){}dnl
+__{}__{}define({_TMP_BEST_B},eval($2+8)){}dnl
 __{}__{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}__{}define({_TMP_BEST_CODE},{
 __{}__{}__{}  .warning {$0}($@): M4 does not know the "$1" value and therefore cannot optimize the code.
@@ -2883,13 +2883,13 @@ __{}__{}    jp   nz{,} format({%-11s},$4); 3:10      _TMP_INFO
 __{}__{}    ld    A{,} high format({%-6s},$1); 2:7       _TMP_INFO
 __{}__{}    xor   H             ; 1:4       _TMP_INFO}){}dnl
 __{}__{}define({_TMP_J1},eval(21)){}dnl
-__{}__{}define({_TMP_J2},eval(32+ifelse($3,{},{0},{$3}))){}dnl
+__{}__{}define({_TMP_J2},eval($3+32)){}dnl
 __{}__{}define({__EQ_CLOCKS_TRUE},_TMP_J2){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},eval(_TMP_J1+_TMP_J2)){}dnl
 __{}__{}define({_TMP_BEST_P},eval(8*__EQ_CLOCKS_TRUE+4*__EQ_CLOCKS_FAIL)){}dnl
 __{}__{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}__{}define({_TMP_BEST_C},eval((8+_TMP_BEST_P)/16)){}dnl
-__{}__{}define({_TMP_BEST_B},eval(9+ifelse($2,{},{0},{$2}))){}dnl
+__{}__{}define({_TMP_BEST_B},eval($2+9)){}dnl
 __{}__{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}__{}define({_TMP_BEST_CODE},{
 __{}__{}__{}  .warning {$0}($@): M4 does not know the "$1" value and therefore cannot optimize the code.
@@ -2981,7 +2981,7 @@ __{}dnl
 __{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
 __{}__{}define({_TMP_B2},2){}dnl
 __{}__{}define({_TMP_T2},7){}dnl
-__{}__{}define({_TMP_J1},eval(12+_TMP_J0+_TMP_T1+ifelse($3,{},{0},{$3}))){}dnl
+__{}__{}define({_TMP_J1},eval($3+12+_TMP_J0+_TMP_T1)){}dnl
 __{}__{}define({__EQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval(_TMP_B0+_TMP_B2+_TMP_B3)); 2:7/12    _TMP_INFO})},
 __{}{dnl
@@ -2998,7 +2998,7 @@ __{}__{}define({_TMP_B3},0){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({_TMP_T2},0){}dnl
 __{}__{}define({_TMP_T3},0){}dnl
-__{}__{}define({_TMP_J1},eval(8+ifelse($3,{},{0},{$3}))){}dnl
+__{}__{}define({_TMP_J1},eval($3+8)){}dnl
 __{}__{}define({__EQ_CODE_3},{}){}dnl
 __{}__{}define({__EQ_CODE_2},{}){}dnl
 __{}__{}define({__EQ_CODE_1},{
@@ -3007,13 +3007,13 @@ __{}__{}    or    H             ; 1:4       _TMP_INFO   L = H = 0x00})}){}dnl
 __{}dnl
 __{}dnl ---------------------------------
 __{}dnl
-__{}define({_TMP_J2},eval(_TMP_T1+_TMP_T2+_TMP_T3+ifelse($3,{},{0},{$3}))){}dnl
+__{}define({_TMP_J2},eval($3+_TMP_T1+_TMP_T2+_TMP_T3)){}dnl
 __{}define({__EQ_CLOCKS_TRUE},eval(_TMP_J2)){}dnl
 __{}define({__EQ_CLOCKS_FAIL},eval(_TMP_J1+_TMP_J2)){}dnl
 __{}define({_TMP_BEST_P},eval(8*__EQ_CLOCKS_TRUE+4*__EQ_CLOCKS_FAIL)){}dnl
 __{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}define({_TMP_BEST_C},eval((8+_TMP_BEST_P)/16)){}dnl
-__{}define({_TMP_BEST_B},eval(_TMP_B1+_TMP_B2+_TMP_B3+ifelse($2,{},{0},{$2}))){}dnl
+__{}define({_TMP_BEST_B},eval($2+_TMP_B1+_TMP_B2+_TMP_B3)){}dnl
 __{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes)
 __{}define({_TMP_BEST_CODE},format({%39s},;[eval(_TMP_BEST_B):__EQ_CLOCKS_TRUE/_TMP_J1{{{,}}}_TMP_J2]){ _TMP_STACK_INFO   L_first variant{}__EQ_CODE_1{}__EQ_CODE_2{}__EQ_CODE_3})},
 {dnl
