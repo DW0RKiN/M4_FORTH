@@ -910,7 +910,7 @@ define({__ASM_TOKEN_DUP_PUSH_EQ},{dnl
 __{}define({__INFO},{dup_push_eq}){}dnl
 dnl
 __{}define({_TMP_INFO},{dup $1 =}){}dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL}){}dnl
+__{}define({_TMP_STACK_INFO},{_TMP_INFO   ( x -- x f )   __HEX_HL($1) == HL}){}dnl
 __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -926,7 +926,7 @@ __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag x==$1},
 __{}__{}{dnl
-__{}__{}__{}__EQ_MAKE_BEST_CODE($1,6,37,0,0)dnl
+__{}__{}__{}__EQ_MAKE_BEST_CODE($1,6,37,0,37)dnl
 __{}__{}__{}ifelse(eval(_TMP_BEST_P<=1848),{1},{
 __{}__{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}__{}    sub 0x01            ; 2:7       _TMP_INFO
@@ -1106,7 +1106,7 @@ define({__ASM_TOKEN_DUP_PUSH_NE},{dnl
 __{}define({__INFO},{dup_push_ne}){}dnl
 dnl
 __{}define({_TMP_INFO},{dup $1 <>}){}dnl
-__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) <> HL}){}dnl
+__{}define({_TMP_STACK_INFO},{_TMP_INFO   ( x -- x f )   __HEX_HL($1) <> HL}){}dnl
 __{}ifelse($1,{},{dnl
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
@@ -1120,7 +1120,7 @@ __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO
 __{}__{}__{}    jr    z, $+5        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      _TMP_INFO   set flag x<>$1},
 __{}__{}{dnl
-__{}__{}__{}__EQ_MAKE_BEST_CODE($1,6,37,0,0)dnl
+__{}__{}__{}__EQ_MAKE_BEST_CODE($1,6,37,0,37)dnl
 __{}__{}__{}ifelse(eval(_TMP_BEST_P<=1768),{1},{
 __{}__{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}__{}    add   A, 0xFF       ; 2:7       _TMP_INFO
@@ -1128,7 +1128,7 @@ __{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag x<>$1},
 __{}__{}__{}{
-__{}__{}__{}__{}                        ;[13:61/56]{}_TMP_STACK_INFO
+__{}__{}__{}__{}                       ;[13:61/56]  _TMP_STACK_INFO
 __{}__{}__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
 __{}__{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}__{}    ld   HL, __FORM({%-11s},$1); 3:10      _TMP_INFO

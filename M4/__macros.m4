@@ -2467,242 +2467,297 @@ dnl
 dnl
 dnl ============================================
 dnl # Input parameters:
-dnl #   $1 = 16 bit number
-dnl #   $2 = +-bytes no jump
-dnl #   $3 = +-clocks no jump
-dnl #   $4 = +-bytes jump
-dnl #   $5 = +-clocks jump
-dnl #   _TMP_INFO = info
+dnl #   $1 = BC,HL,DE
+dnl #   $2 = 16 bit number
+dnl #   $3 = +-bytes no jump
+dnl #   $4 = +-clocks no jump
+dnl #   $5 = +-bytes jump
+dnl #   $6 = +-clocks jump
+dnl #         _TMP_INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl # __EQ_CODE
-dnl # zero flag if const == HL
-dnl # A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
+dnl #   __EQ_CODE
+dnl #     zero flag if $1 == $2
+dnl #     if zero flag then A = 0
+dnl #
+dnl # Pollutes:
+dnl #
+dnl #  A, flag, can change C if C is not in $1 
 dnl
 define({__EQ_MAKE_CODE},{dnl
-__{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
-__{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
+__{}define({_TMP_R2},substr($1,0,1)){}dnl
+__{}define({_TMP_R1},substr($1,1,1)){}dnl
+__{}define({_TMP_N2},eval(__HEX_H($2))){}dnl
+__{}define({_TMP_N1},eval(__HEX_L($2))){}dnl
+__{}ifelse($5,{},{define({_TMP_B0},0)},{define({_TMP_B0},$5)}){}dnl
 __{}dnl
 __{}dnl --------------- 2 ---------------
 __{}dnl
 __{}define({_TMP_OR1},{cp }){}dnl
-__{}ifelse(__N2,0,{dnl
+__{}ifelse(_TMP_N2,0,{dnl
 __{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},1){}dnl
 __{}__{}define({_TMP_T2},4){}dnl
-__{}__{}define({_TMP_J1},4){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval($4+4)){}dnl      No jump! Multibyte solution
 __{}__{}define({__EQ_CODE_2},{
-__{}__{}    or    __R2             ; 1:4       _TMP_INFO   x[2] = 0})},
-__{}__N2{-}__N1,{2-1},{dnl
-__{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}__{}    or    _TMP_R2             ; 1:4       _TMP_INFO   x[2] = 0})},
+__{}_TMP_N2{-}_TMP_N1,{2-1},{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},3){}dnl
 __{}__{}__{}define({_TMP_T2},11){}dnl
-__{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   x[2] = 2})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},14){}dnl
-__{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   x[2] = 2})})},
-__{}__N2,{255},{dnl
+__{}_TMP_N2,{255},{dnl
 __{}__{}define({_TMP_B2},2){}dnl
 __{}__{}define({_TMP_T2},8){}dnl
-__{}__{}define({_TMP_J1},8){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval($4+8)){}dnl      No jump! Multibyte solution
 __{}__{}define({__EQ_CODE_2},{
-__{}__{}    and   __R2             ; 1:4       _TMP_INFO
+__{}__{}    and   _TMP_R2             ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   x[2] = 0xFF})},
-__{}__N2{-}__N1,{1-1},{dnl
+__{}regexp({$1},{.*[Cc].*}){:}_TMP_N2{-}_TMP_N1,{-1:1-1},{dnl
 __{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},3){}dnl
 __{}__{}define({_TMP_T2},12){}dnl
-__{}__{}define({_TMP_J1},12){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval($4+12)){}dnl      No jump! Multibyte solution
 __{}__{}define({__EQ_CODE_2},{
-__{}__{}    ld    C{{,}} __R2          ; 1:4       _TMP_INFO
+__{}__{}    ld    C{{,}} _TMP_R2          ; 1:4       _TMP_INFO
 __{}__{}    dec   C             ; 1:4       _TMP_INFO
 __{}__{}    or    C             ; 1:4       _TMP_INFO   x[2] = 1})},
-__{}__N2,{1},{dnl
+__{}regexp({$1},{.*[Cc].*}){:}_TMP_N2,{-1:1},{dnl
 __{}__{}define({_TMP_OR1},{xor}){}dnl
 __{}__{}define({_TMP_B2},3){}dnl
 __{}__{}define({_TMP_T2},12){}dnl
-__{}__{}define({_TMP_J1},12){}dnl      No jump! Multibyte solution
+__{}__{}define({_TMP_J1},eval($4+12)){}dnl      No jump! Multibyte solution
 __{}__{}define({__EQ_CODE_2},{
-__{}__{}    ld    C{{,}} __R2          ; 1:4       _TMP_INFO
+__{}__{}    ld    C{{,}} _TMP_R2          ; 1:4       _TMP_INFO
 __{}__{}    dec   C             ; 1:4       _TMP_INFO
 __{}__{}    or    C             ; 1:4       _TMP_INFO   x[2] = 1})},
-__{}__N2,__N1,{dnl
-__{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}_TMP_N2,_TMP_N1,{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},14){}dnl
-__{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    xor   __HEX_L(__N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2)})},
+__{}__{}__{}    xor   __HEX_L(_TMP_N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(_TMP_N2)})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},17){}dnl
-__{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
-__{}__{}__{}    xor   __HEX_L(__N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(__N2)})})},
-__{}eval(__N2==(__N1+1 & 0xFF)),{1},{dnl
-__{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
+__{}__{}__{}    xor   __HEX_L(_TMP_N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(_TMP_N2)})})},
+__{}eval(_TMP_N2==(_TMP_N1+1 & 0xFF)),{1},{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},15){}dnl
-__{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    inc   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] + 1})},
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] + 1})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},18){}dnl
-__{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
 __{}__{}__{}    inc   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] + 1})})},
-__{}eval(__N2==(__N1-1 & 0xFF)),{1},{dnl
-__{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] + 1})})},
+__{}eval(_TMP_N2==(_TMP_N1-1 & 0xFF)),{1},{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},15){}dnl
-__{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] - 1})},
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] - 1})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},18){}dnl
-__{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] - 1})})},
-__{}eval(__N2==(__N1+__N1 & 0xFF)),{1},{dnl
-__{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] - 1})})},
+__{}eval(_TMP_N2==(_TMP_N1+_TMP_N1 & 0xFF)),{1},{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},15){}dnl
-__{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    add   A{{,}} __R1          ; 1:4       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] + x[1]})},
+__{}__{}__{}    add   A{{,}} _TMP_R1          ; 1:4       _TMP_INFO
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] + x[1]})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},18){}dnl
-__{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
-__{}__{}__{}    add   A{{,}} __R1          ; 1:4       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1] + x[1]})})},
-__{}eval(__N2==(__N1/2)),{1},{dnl
-__{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
+__{}__{}__{}    add   A{{,}} _TMP_R1          ; 1:4       _TMP_INFO
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] + x[1]})})},
+__{}eval(_TMP_N2==(_TMP_N1/2)),{1},{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},15){}dnl
-__{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    rra                 ; 1:4       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})},
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},18){}dnl
-__{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
 __{}__{}__{}    rra                 ; 1:4       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})})},
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})})},
 __{}{dnl
-__{}__{}ifelse(regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},18){}dnl
-__{}__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
-__{}__{}__{}    ld    A{{,}} __HEX_L(__N2)       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(__N2)})},
+__{}__{}__{}    ld    A{{,}} __HEX_L(_TMP_N2)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(_TMP_N2)})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},6){}dnl
 __{}__{}__{}define({_TMP_T2},21){}dnl
-__{}__{}__{}define({_TMP_J1},eval(10-$3)){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jp   nz{{,}} format({%-11s},$4); 3:10      _TMP_INFO
-__{}__{}__{}    ld    A{{,}} __HEX_L(__N2)       ; 2:7       _TMP_INFO
-__{}__{}__{}    xor   __R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(__N2)})})}){}dnl
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
+__{}__{}__{}    ld    A{{,}} __HEX_L(_TMP_N2)       ; 2:7       _TMP_INFO
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(_TMP_N2)})})}){}dnl
 __{}dnl
 __{}dnl --------------- 1 ---------------
 __{}dnl
-__{}ifelse(__N1,0,{dnl
+__{}ifelse(_TMP_N1,0,{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+1)){}dnl
 __{}__{}define({_TMP_T1},4){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO   x[1] = 0})},
-__{}__N2{-}__N1,{255-255},{dnl
+__{}__{}    ld    A{{,}} _TMP_R1          ; 1:4       _TMP_INFO   x[1] = 0})},
+__{}_TMP_N2{-}_TMP_N1,{255-255},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+1)){}dnl
 __{}__{}define({_TMP_T1},4){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO   x[1] = 0xFF})},
-__{}__N2{-}__N1,{255-254},{dnl
+__{}__{}    ld    A{{,}} _TMP_R1          ; 1:4       _TMP_INFO   x[1] = 0xFF})},
+__{}_TMP_N2{-}_TMP_N1,{255-254},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO
+__{}__{}    ld    A{{,}} _TMP_R1          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   x[1] = x[2] - 1})},
-__{}__N2,{255},{dnl
+__{}_TMP_N2,{255},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO
-__{}__{}    xor   __HEX_L(__N1 ^ 0xFF)          ; 2:7       _TMP_INFO   x[1] = 0xFF ^ __HEX_L(__N1 ^ 0xFF)})},
-__{}__N2{-}__N1,{0-255},{dnl
+__{}__{}    ld    A{{,}} _TMP_R1          ; 1:4       _TMP_INFO
+__{}__{}    xor   __HEX_L(_TMP_N1 ^ 0xFF)          ; 2:7       _TMP_INFO   x[1] = 0xFF ^ __HEX_L(_TMP_N1 ^ 0xFF)})},
+__{}_TMP_N2{-}_TMP_N1,{0-255},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO
+__{}__{}    ld    A{{,}} _TMP_R1          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   x[1] = 0xFF})},
-__{}__N2{-}__N1,{2-1},{dnl
+__{}_TMP_N2{-}_TMP_N1,{2-1},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},12){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __R2          ; 1:4       _TMP_INFO
+__{}__{}    ld    A{{,}} _TMP_R2          ; 1:4       _TMP_INFO
 __{}__{}    dec   A             ; 1:4       _TMP_INFO
-__{}__{}    cp    __R1             ; 1:4       _TMP_INFO   x[1] = x[2] - 1})},
-__{}__N1,{1},{dnl    255-1 --> 255-x rule priority!
+__{}__{}    cp    _TMP_R1             ; 1:4       _TMP_INFO   x[1] = x[2] - 1})},
+__{}_TMP_N1,{1},{dnl    255-1 --> 255-x rule priority!
 __{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO
+__{}__{}    ld    A{{,}} _TMP_R1          ; 1:4       _TMP_INFO
 __{}__{}    dec   A             ; 1:4       _TMP_INFO   x[1] = 1})},
-__{}__N2,__N1,{dnl
+__{}_TMP_N2,_TMP_N1,{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
 __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __R1          ; 1:4       _TMP_INFO
-__{}__{}    cp    __R2             ; 1:4       _TMP_INFO   x[1] = x[2]})},
+__{}__{}    ld    A{{,}} _TMP_R1          ; 1:4       _TMP_INFO
+__{}__{}    cp    _TMP_R2             ; 1:4       _TMP_INFO   x[1] = x[2]})},
 __{}{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
 __{}__{}define({__EQ_CODE_1},{
-__{}__{}    ld    A{,} __HEX_L(__N1)       ; 2:7       _TMP_INFO
-__{}__{}    _TMP_OR1   __R1             ; 1:4       _TMP_INFO   x[1] = __HEX_L(__N1)})}){}dnl
+__{}__{}    ld    A{{,}} __HEX_L(_TMP_N1)       ; 2:7       _TMP_INFO
+__{}__{}    _TMP_OR1   _TMP_R1             ; 1:4       _TMP_INFO   x[1] = __HEX_L(_TMP_N1)})}){}dnl
 __{}dnl
-__{}dnl ---------------------------------
-__{}dnl
-__{}define({_TMP_J1},eval(_TMP_J1+_TMP_T1+ifelse($3,{},{0},{$3}))){}dnl
-__{}define({_TMP_J2},eval(_TMP_T2+_TMP_T1+ifelse($3,{},{0},{$3}))){}dnl
-__{}define({__EQ_CLOCKS_TRUE},eval(_TMP_J2)){}dnl
+__{}dnl # ---------------------------------
+__{}dnl # $0($1,$2,    $3,             $4,             $5,          $6,          $7,        $8)
+__{}dnl # $0(HL,0x1234,+-bytes no jump,+-clock no jump,+-bytes jump,+-clock jump,old prices,old bytes)
+__{}dnl # jr --> define({_TMP_J1},eval(12+_TMP_J0))
+__{}dnl # jp --> define({_TMP_J1},eval(10-($4+0)))
+__{}dnl # _TMP_J1 = clock jump instruction +-clock jump
+__{}define({_TMP_J1},eval(_TMP_J1+_TMP_T1)){}dnl         # clock for fail with    jmp
+__{}define({_TMP_J2},eval($4+_TMP_T2+_TMP_T1)){}dnl      # clock for fail without jmp = clock true
 __{}define({__EQ_CLOCKS_FAIL},eval(_TMP_J1+_TMP_J2)){}dnl
-__{}define({__EQ_PRICE},eval(8*__EQ_CLOCKS_TRUE+4*__EQ_CLOCKS_FAIL)){}dnl
+__{}define({__EQ_CLOCKS_TRUE},eval(_TMP_J2)){}dnl
+__{}define({__EQ_PRICE},eval(8*__EQ_CLOCKS_FAIL)){}dnl
 __{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}define({__EQ_CLOCKS},eval((8+__EQ_PRICE)/16)){}dnl
-__{}define({__EQ_BYTES},eval(_TMP_B1+ifelse($2,{},{0},{$2}))){}dnl
-__{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(__R1,{L},{0},{1}))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
-__{}define({__EQ_CODE},format({%39s},;[eval(__EQ_BYTES):__EQ_CLOCKS_TRUE/_TMP_J1{{{,}}}_TMP_J2]){ _TMP_STACK_INFO{}__EQ_CODE_1{}__EQ_CODE_2}){}dnl
+__{}define({__EQ_BYTES},eval($3+_TMP_B1)){}dnl
+__{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(_TMP_R2,{L},{1},{0}))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
+__{}ifelse(debug,debug,{
+__{}__{}; ------------
+__{}__{}format({%-20s},{ true:}__EQ_CLOCKS_TRUE)format({%-10s},b1:_TMP_B1)...bytes all  code
+__{}__{}format({%-20s},{ fail:}__EQ_CLOCKS_FAIL)format({%-10s},b2:_TMP_B2)...bytes down code with jump
+__{}__{}format({%-20s},price:__EQ_PRICE)format({%-10s},j2:_TMP_J2)...clock without jump 
+__{}__{}format({%-20s},clock:__EQ_CLOCKS)format({%-10s},j1:_TMP_J1)...clock with    jump 
+__{}__{}format({%-20s},bytes:__EQ_BYTES)format({%-10s},t1:_TMP_T1)...clock up   code
+__{}__{}format({%-20s})format({%-10s},t2:_TMP_T2)...clock down code with fail jump
+__{}}){}dnl
+__{}dnl
+__{}ifelse($7,{},{dnl
+__{}__{}ifelse(__EQ_CLOCKS_TRUE,_TMP_J1,
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE]))},
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1]))}){}dnl
+__{}__{}define({__EQ_HEAD},format({%28s},;[eval(__EQ_BYTES):){}__EQ_HEAD{}_TMP_STACK_INFO){}dnl
+__{}__{}define({__EQ_CODE},__EQ_HEAD{}__EQ_CODE_1{}__EQ_CODE_2){}dnl
+__{}__{}dnl
+__{}__{}define({__TMP_EQ_CLOCKS_TRUE},__EQ_CLOCKS_TRUE){}dnl
+__{}__{}define({__TMP_EQ_CLOCKS_FAIL},__EQ_CLOCKS_FAIL){}dnl
+__{}__{}define(      {__TMP_EQ_PRICE},__EQ_PRICE){}dnl
+__{}__{}define(     {__TMP_EQ_CLOCKS},__EQ_CLOCKS){}dnl
+__{}__{}define(      {__TMP_EQ_BYTES},__EQ_BYTES){}dnl
+__{}__{}$0(substr($1,1,1){}substr($1,1,1),__HEX_HL(__HEX_L($2)*256+__HEX_H($2)),$3,$4,$5,$6,__EQ_PRICE,__EQ_BYTES)},
+__{}_TYP_SINGLE:eval(__EQ_BYTES{}0<$8{}0),{small:1},{
+__{}__{}ifelse(__EQ_CLOCKS_TRUE,_TMP_J1,
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE]))},
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1]))}){}dnl
+__{}__{}define({__EQ_HEAD},format({%28s},;[eval(__EQ_BYTES):){}__EQ_HEAD{}_TMP_STACK_INFO){}dnl
+__{}__{}define({__EQ_CODE},__EQ_HEAD{}__EQ_CODE_1{}__EQ_CODE_2){}dnl
+__{}},
+__{}eval(__EQ_PRICE{}0<$7{}0),1,{dnl
+__{}__{}ifelse(__EQ_CLOCKS_TRUE,_TMP_J1,
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE]))},
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1]))}){}dnl
+__{}__{}define({__EQ_HEAD},format({%26s},;[eval(__EQ_BYTES):){}__EQ_HEAD{}_TMP_STACK_INFO){}dnl
+__{}__{}define({__EQ_CODE},__EQ_HEAD{}__EQ_CODE_1{}__EQ_CODE_2){}dnl
+__{}},
+__{}{dnl
+__{}__{}define({__EQ_CLOCKS_TRUE},__TMP_EQ_CLOCKS_TRUE){}dnl
+__{}__{}define({__EQ_CLOCKS_FAIL},__TMP_EQ_CLOCKS_FAIL){}dnl
+__{}__{}define(      {__EQ_PRICE},__TMP_EQ_PRICE){}dnl
+__{}__{}define(     {__EQ_CLOCKS},__TMP_EQ_CLOCKS){}dnl
+__{}__{}define(      {__EQ_BYTES},__TMP_EQ_BYTES){}dnl
+__{}}){}dnl
 __{}dnl
 __{}dnl debug:__EQ_CODE
 }){}dnl
@@ -2743,7 +2798,7 @@ __{}__{}define({_TMP_BEST_C},__EQ_CLOCKS_TRUE){}dnl
 __{}__{}define({_TMP_BEST_B},eval(8+ifelse($2,{},{0},{$2}))){}dnl
 __{}__{}define({_TMP_BEST_P},eval(16*_TMP_BEST_C+64*_TMP_BEST_B)){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}__{}define({_TMP_BEST_CODE},{                        ;}format({%-10s},[eval(_TMP_BEST_B):_TMP_BEST_C]){ _TMP_STACK_INFO{}__EQ_CODE_1})},
-__{}regexp({$4},{^[a-zA-Z_]}),{-1},{dnl
+__{}__IS_NAME($4),0,{dnl
 __{}__{}define({_TMP_B1},10){}dnl
 __{}__{}define({_TMP_T2},8){}dnl
 __{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
@@ -2962,27 +3017,12 @@ __{}define({_TMP_BEST_B},eval(_TMP_B1+_TMP_B2+_TMP_B3+ifelse($2,{},{0},{$2}))){}
 __{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl              = 16*(clocks + 4*bytes)
 __{}define({_TMP_BEST_CODE},format({%39s},;[eval(_TMP_BEST_B):__EQ_CLOCKS_TRUE/_TMP_J1{{{,}}}_TMP_J2]){ _TMP_STACK_INFO   L_first variant{}__EQ_CODE_1{}__EQ_CODE_2{}__EQ_CODE_3})},
 {dnl
-__{}define({__R1},{L}){}dnl
-__{}define({__R2},{H}){}dnl
-__{}define({__N1},eval(($1) & 0xFF)){}dnl
-__{}define({__N2},eval((($1)>>8) & 0xFF)){}dnl
-__{}ifelse(__N1,{0},{dnl
-__{}__{}__SWAP2DEF({__N1},{__N2}){}dnl
-__{}__{}__SWAP2DEF({__R1},{__R2})}){}dnl
-__{}__EQ_MAKE_CODE($1,$2,$3,$4,$5){}dnl
+__{}__EQ_MAKE_CODE({HL},$1,$2,$3,$4,$5){}dnl
 __{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
 __{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
 __{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
-__{}define({_TMP_BEST_CODE},__EQ_CODE){}dnl
-__{}ifelse(eval(__N2>0),{1},{dnl
-__{}__SWAP2DEF({__N1},{__N2}){}dnl
-__{}__SWAP2DEF({__R1},{__R2}){}dnl
-__{}__EQ_MAKE_CODE($1,$2,$3,$4,$5){}dnl
-__{}__{}ifelse(ifelse(_TYP_SINGLE,{small},{eval((_TMP_BEST_B>__EQ_BYTES) || ((_TMP_BEST_B==__EQ_BYTES) && (_TMP_BEST_P>__EQ_PRICE)))},{eval(_TMP_BEST_P>__EQ_PRICE)}),{1},{dnl
-__{}__{}__{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
-__{}__{}__{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
-__{}__{}__{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
-__{}__{}__{}define({_TMP_BEST_CODE},__EQ_CODE)})})})}){}dnl
+__{}define({_TMP_BEST_CODE},__EQ_CODE)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -3009,29 +3049,12 @@ define({__MAKE_BEST_CODE_R16_CP},{dnl
 __{}dnl ---------------------------------
 __{}define({_TMP_INFO},$1){}dnl
 __{}define({_TMP_STACK_INFO},$2){}dnl
-__{}ifelse($7,{},{define({_TMP_B0},0)},{define({_TMP_B0},$7)}){}dnl
-__{}ifelse($8,{},{define({_TMP_J0},0)},{define({_TMP_J0},$8)}){}dnl
-__{}define({__R1},substr($3,1,1)){}dnl E C L
-__{}define({__R2},substr($3,0,1)){}dnl D B H
-__{}define({__N1},eval(($4) & 0xFF)){}dnl
-__{}define({__N2},eval((($4)>>8) & 0xFF)){}dnl
-__{}ifelse(__N1,{0},{dnl
-__{}__{}__SWAP2DEF({__N1},{__N2}){}dnl
-__{}__{}__SWAP2DEF({__R1},{__R2})}){}dnl
-__{}__EQ_MAKE_CODE($4,$5,$6,$7,$8){}dnl
+__{}__EQ_MAKE_CODE($3,$4,$5,$6,$7,$8){}dnl
 __{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
 __{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
 __{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
 __{}define({_TMP_BEST_CODE},__EQ_CODE){}dnl
-__{}ifelse(eval(__N2>0),{1},{dnl
-__{}__SWAP2DEF({__N1},{__N2}){}dnl
-__{}__SWAP2DEF({__R1},{__R2}){}dnl
-__{}__EQ_MAKE_CODE($4,$5,$6,$7,$8){}dnl
-__{}__{}ifelse(ifelse(_TYP_SINGLE,{small},{eval((_TMP_BEST_B>__EQ_BYTES) || ((_TMP_BEST_B==__EQ_BYTES) && (_TMP_BEST_P>__EQ_PRICE)))},{eval(_TMP_BEST_P>__EQ_PRICE)}),{1},{dnl
-__{}__{}__{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
-__{}__{}__{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
-__{}__{}__{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
-__{}__{}__{}define({_TMP_BEST_CODE},__EQ_CODE)})})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

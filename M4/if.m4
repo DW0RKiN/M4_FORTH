@@ -442,8 +442,7 @@ __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_IF},{dup $1 = if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_EQ_IF},{dnl
-__{}define({__INFO},{dup_push_eq_if}){}dnl
-dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
@@ -467,7 +466,6 @@ __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_IF},{dup $1 <> if},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_NE_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-dnl
 __{}define({IF_COUNT}, incr(IF_COUNT))dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT)dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)dnl
@@ -478,7 +476,7 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,-10)
+__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,0)
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
