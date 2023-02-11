@@ -476,7 +476,7 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,0)
+__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,xxx3,0)
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO})}){}dnl
 dnl
