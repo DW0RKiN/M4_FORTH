@@ -1718,7 +1718,6 @@ dnl # zero flag if const == DEHL
 dnl # A = 0 if const == DEHL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
 define({__DEQ_MAKE_CODE},{dnl
-__{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
 __{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
 __{}define({__R1},_TMP_R1){}dnl Protoze obcas muzeme udelat prohozeni registru tak si udelame kopii
 __{}define({__R2},_TMP_R2){}dnl
@@ -2490,7 +2489,6 @@ __{}define({_TMP_R2},substr($1,0,1)){}dnl
 __{}define({_TMP_R1},substr($1,1,1)){}dnl
 __{}define({_TMP_N2},eval(__HEX_H($2))){}dnl
 __{}define({_TMP_N1},eval(__HEX_L($2))){}dnl
-__{}ifelse($5,{},{define({_TMP_B0},0)},{define({_TMP_B0},$5)}){}dnl
 __{}dnl
 __{}dnl --------------- 2 ---------------
 __{}dnl
@@ -2508,7 +2506,7 @@ __{}__{}__{}define({_TMP_B2},3){}dnl
 __{}__{}__{}define({_TMP_T2},11){}dnl
 __{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO   x[2] = 2})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},4){}dnl
@@ -2548,7 +2546,7 @@ __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},14){}dnl
 __{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    xor   __HEX_L(_TMP_N2)          ; 2:7       _TMP_INFO   x[2] = __HEX_L(_TMP_N2)})},
 __{}__{}{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
@@ -2563,7 +2561,7 @@ __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},15){}dnl
 __{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    inc   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] + 1})},
 __{}__{}{dnl
@@ -2580,7 +2578,7 @@ __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},15){}dnl
 __{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] - 1})},
 __{}__{}{dnl
@@ -2597,7 +2595,7 @@ __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},15){}dnl
 __{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    add   A{{,}} _TMP_R1          ; 1:4       _TMP_INFO
 __{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1] + x[1]})},
 __{}__{}{dnl
@@ -2614,7 +2612,7 @@ __{}__{}__{}define({_TMP_B2},4){}dnl
 __{}__{}__{}define({_TMP_T2},15){}dnl
 __{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    rra                 ; 1:4       _TMP_INFO
 __{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})},
 __{}__{}{dnl
@@ -2631,7 +2629,7 @@ __{}__{}__{}define({_TMP_B2},5){}dnl
 __{}__{}__{}define({_TMP_T2},18){}dnl
 __{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
 __{}__{}__{}define({__EQ_CODE_2},{
-__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval(_TMP_B0+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}__{}    ld    A{{,}} __HEX_L(_TMP_N2)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = __HEX_L(_TMP_N2)})},
 __{}__{}{dnl
@@ -2784,7 +2782,6 @@ dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instr
 dnl
 define({__EQ_MAKE_BEST_CODE},{ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}dnl ---------------------------------
-__{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
 __{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
 __{}ifelse(_TYP_SINGLE,{small},{dnl
 __{}__{}define({__EQ_CODE_1},{
@@ -2832,7 +2829,6 @@ __{}__{}define({_TMP_BEST_P},eval(_TMP_BEST_P+(64*_TMP_BEST_B))){}dnl           
 __{}__{}define({_TMP_BEST_CODE},format({%37s},;[eval(_TMP_BEST_B):_TMP_J1{{,}}__EQ_CLOCKS_FAIL/__EQ_CLOCKS_FAIL]){ _TMP_STACK_INFO{}__EQ_CODE_1})})},
 __IS_NUM($1),{0},{dnl
 __{}dnl ---------------------------------
-__{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
 __{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
 __{}ifelse(_TYP_SINGLE,{small},{dnl
 __{}__{}define({__EQ_CODE_1},{
@@ -2899,7 +2895,6 @@ dnl #   $5 = +-clocks jump
 dnl #   _TMP_INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 __{}dnl ---------------------------------
-__{}ifelse($4,{},{define({_TMP_B0},0)},{define({_TMP_B0},$4)}){}dnl
 __{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
 __{}ifelse(__HEX_L($1),{0x00},{dnl
 __{}__{}define({_TMP_A1},{0x00}){}dnl
