@@ -2711,7 +2711,7 @@ __{}define({__EQ_PRICE},eval(8*__EQ_CLOCKS_FAIL)){}dnl
 __{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}define({__EQ_CLOCKS},eval((8+__EQ_PRICE)/16)){}dnl
 __{}define({__EQ_BYTES},eval($3+_TMP_B1)){}dnl
-__{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(_TMP_R2,{L},{1},{0}))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
+__{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(_TMP_R2,{L},{1},{0}))){}dnl   # = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}ifelse(debug,-debug,{
 __{}__{}; ------------
 __{}__{}format({%-20s},$1=$2)format({%-10s},t2:_TMP_T2)...clock down code with fail jump
@@ -2780,7 +2780,7 @@ dnl #   _TMP_BEST_CODE    asm code
 dnl #   zero flag if const == HL
 dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
 dnl
-define({__EQ_MAKE_BEST_CODE},{
+define({__EQ_MAKE_BEST_CODE},{dnl
 __{}ifelse($5,{},{define({_TMP_J0},0)},{define({_TMP_J0},$5)}){}dnl
 __{}ifelse(dnl
 __{}__IS_MEM_REF($1):_TYP_SINGLE,{1:small},{dnl
