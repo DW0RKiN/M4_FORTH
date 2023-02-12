@@ -2157,9 +2157,12 @@ eval((__IS_NUM($1)+__IS_NUM($2))<2),{1},{
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
-__{}ifelse(__IS_MEM_REF($1),1,{define({_TMP_BEST_B},13)},
+__{}ifelse(dnl
+__{}__IS_MEM_REF($1),1,{define({_TMP_BEST_B},13)},
 __{}__IS_NUM($1),0,{define({_TMP_BEST_B},11)},
-__{}{__EQ_MAKE_BEST_CODE($1,3,10,3,-10)}){}dnl
+__{}{dnl
+__{}__{}__EQ_MAKE_CODE({DE},$1,3,10,3,0){}dnl
+__{}__{}define({_TMP_BEST_B},__EQ_BYTES)}){}dnl
 __{}ifelse(dnl
 __{}_TYP_DOUBLE:__IS_MEM_REF($2),small:1,{dnl
                         ;[11:60]    __INFO   ( d -- d )   HL <> $2
@@ -2169,7 +2172,7 @@ __{}    sbc  HL, BC         ; 2:15      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO   cp HL, BC 
 __{}    jr   nz, format({%-11s},$+eval(2+_TMP_BEST_B)); 2:7/12    __INFO},
 __{}__IS_MEM_REF($2),1,{dnl
-                     ;[14:54/27,54] __INFO   ( d -- d )   HL <> $2
+                     ;[12:48/29,53] __INFO   ( d -- d )   HL <> $2
 __{}    ld    A,format({%-12s},$2); 3:13      __INFO
 __{}    cp    L             ; 1:4       __INFO{}ifelse(__IS_NUM($2),1,{   x[1] = __HEX_L($2)})
 __{}    jr   nz, format({%-11s},$+eval(8+_TMP_BEST_B)); 2:7/12    __INFO
@@ -2177,7 +2180,7 @@ __{}    ld    A,format({%-12s},($2+1)); 3:13      __INFO
 __{}    cp    H             ; 1:4       __INFO{}ifelse(__IS_NUM($2),1,{   x[2] = __HEX_H($2)})
 __{}    jr   nz, format({%-11s},$+eval(2+_TMP_BEST_B)); 2:7/12    __INFO},
 __{}__IS_NUM($2),0,{dnl
-                     ;[12:42/21,42] __INFO   ( d -- d )   HL <> $2
+                     ;[10:36/23,41] __INFO   ( d -- d )   HL <> $2
 __{}    ld    A, format({%-11s},low $2); 2:7       __INFO
 __{}    cp    L             ; 1:4       __INFO   x[1] = lo($2)
 __{}    jr   nz, format({%-11s},$+eval(7+_TMP_BEST_B)); 2:7/12    __INFO
@@ -2185,10 +2188,10 @@ __{}    ld    A, format({%-11s},high $2); 2:7       __INFO
 __{}    cp    H             ; 1:4       __INFO   x[2] = hi($2)
 __{}    jr   nz, format({%-11s},$+eval(2+_TMP_BEST_B)); 2:7/12    __INFO},
 __{}{dnl
-__{}define({_TMP_STACK_INFO},{__INFO   ( d -- d )   HL <> $2}){}dnl
-__{}define({_TMP_SECOND_B},$+eval(2+_TMP_BEST_B)){}dnl
-__{}__EQ_MAKE_BEST_CODE($2,3,10,2+_TMP_BEST_B,0){}dnl
-__{}_TMP_BEST_CODE
+__{}__{}define({_TMP_STACK_INFO},{__INFO   ( d -- d )   HL <> $2}){}dnl
+__{}__{}define({_TMP_SECOND_B},$+eval(2+_TMP_BEST_B)){}dnl
+__{}__{}__EQ_MAKE_BEST_CODE($2,2,7,2+_TMP_BEST_B,0){}dnl
+__{}__{}_TMP_BEST_CODE
 __{}    jr   nz, format({%-11s},_TMP_SECOND_B); 2:7/12    __INFO})
 __{}ifelse(__IS_MEM_REF($1),1,{dnl
                      ;[13:51/29,51] __INFO   ( d -- d )   DE <> $1
@@ -2207,9 +2210,9 @@ __{}    ld    A, format({%-11s},high $1); 2:7       __INFO
 __{}    cp    D             ; 1:4       __INFO   x[4] = hi($1)
 __{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}{dnl
-__{}define({_TMP_STACK_INFO},{__INFO   ( d -- d )   DE <> $1}){}dnl
-__{}__EQ_MAKE_BEST_CODE($1,3,10,3,-10){}dnl
-__{}define({H},{D}){}define({L},{E}){}_TMP_BEST_CODE{}undefine({H}){}undefine({L})
+__{}__{}define({_TMP_STACK_INFO},{__INFO   ( d -- d )   DE <> $1}){}dnl
+__{}__{}__EQ_MAKE_CODE({DE},$1,3,10,3,0){}dnl
+__{}__{}__EQ_CODE
 __{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO})},
 __HEX_HL($1):__HEX_HL($2),0x0000:0x0000,{
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl

@@ -2712,7 +2712,7 @@ __{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}define({__EQ_CLOCKS},eval((8+__EQ_PRICE)/16)){}dnl
 __{}define({__EQ_BYTES},eval($3+_TMP_B1)){}dnl
 __{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(_TMP_R2,{L},{1},{0}))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
-__{}ifelse(debug,debug,{
+__{}ifelse(debug,-debug,{
 __{}__{}; ------------
 __{}__{}format({%-20s},$1=$2)format({%-10s},t2:_TMP_T2)...clock down code with fail jump
 __{}__{}format({%-20s},{ true:}__EQ_CLOCKS_TRUE)format({%-10s},b1:_TMP_B1)...bytes all  code
@@ -3006,12 +3006,13 @@ __{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
 __{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
 __{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
 __{}define({_TMP_BEST_CODE},__EQ_CODE)}){}dnl
-__{}ifelse(debug,debug,{
+__{}ifelse(debug,-debug,{
 __{}__{}; bytes: _TMP_BEST_B
 __{}__{}; prize: _TMP_BEST_P
 __{}__{}; clock: _TMP_BEST_C
 __{}__{}; true: __EQ_CLOCKS_TRUE
-__{}__{}; false: __EQ_CLOCKS_FAIL}){}dnl  
+__{}__{}; false: __EQ_CLOCKS_FAIL
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
