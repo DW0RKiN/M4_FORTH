@@ -2714,19 +2714,19 @@ __{}define({__EQ_BYTES},eval($3+_TMP_B1)){}dnl
 __{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(_TMP_R2,{L},{1},{0}))){}dnl              = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}ifelse(debug,debug,{
 __{}__{}; ------------
+__{}__{}format({%-20s},$1=$2)format({%-10s},t2:_TMP_T2)...clock down code with fail jump
 __{}__{}format({%-20s},{ true:}__EQ_CLOCKS_TRUE)format({%-10s},b1:_TMP_B1)...bytes all  code
 __{}__{}format({%-20s},{ fail:}__EQ_CLOCKS_FAIL)format({%-10s},b2:_TMP_B2)...bytes down code with jump
 __{}__{}format({%-20s},price:__EQ_PRICE)format({%-10s},j2:_TMP_J2)...clock without jump 
 __{}__{}format({%-20s},clock:__EQ_CLOCKS)format({%-10s},j1:_TMP_J1)...clock with    jump 
 __{}__{}format({%-20s},bytes:__EQ_BYTES)format({%-10s},t1:_TMP_T1)...clock up   code
-__{}__{}format({%-20s})format({%-10s},t2:_TMP_T2)...clock down code with fail jump
 __{}}){}dnl
 __{}dnl
 __{}ifelse($7,{},{dnl
 __{}__{}ifelse(__EQ_CLOCKS_TRUE,_TMP_J1,
-__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE]))},
-__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1]))}){}dnl
-__{}__{}define({__EQ_HEAD},format({%28s},;[eval(__EQ_BYTES):){}__EQ_HEAD{}_TMP_STACK_INFO){}dnl
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE] ))},
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1] ))}){}dnl
+__{}__{}define({__EQ_HEAD},format({%28s},;[eval(__EQ_BYTES):)__EQ_HEAD{}_TMP_STACK_INFO){}dnl
 __{}__{}define({__EQ_CODE},__EQ_HEAD{}__EQ_CODE_1{}__EQ_CODE_2){}dnl
 __{}__{}dnl
 __{}__{}define({__TMP_EQ_CLOCKS_TRUE},__EQ_CLOCKS_TRUE){}dnl
@@ -2734,19 +2734,19 @@ __{}__{}define({__TMP_EQ_CLOCKS_FAIL},__EQ_CLOCKS_FAIL){}dnl
 __{}__{}define(      {__TMP_EQ_PRICE},__EQ_PRICE){}dnl
 __{}__{}define(     {__TMP_EQ_CLOCKS},__EQ_CLOCKS){}dnl
 __{}__{}define(      {__TMP_EQ_BYTES},__EQ_BYTES){}dnl
-__{}__{}$0(substr($1,1,1){}substr($1,1,1),__HEX_HL(__HEX_L($2)*256+__HEX_H($2)),$3,$4,$5,$6,__EQ_PRICE,__EQ_BYTES)},
+__{}__{}$0(substr($1,1,1){}substr($1,0,1),__HEX_HL(__HEX_L($2)*256+__HEX_H($2)),$3,$4,$5,$6,__EQ_PRICE,__EQ_BYTES)},
 __{}_TYP_SINGLE:eval(__EQ_BYTES{}0<$8{}0),{small:1},{
 __{}__{}ifelse(__EQ_CLOCKS_TRUE,_TMP_J1,
-__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE]))},
-__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1]))}){}dnl
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE] ))},
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1] ))}){}dnl
 __{}__{}define({__EQ_HEAD},format({%28s},;[eval(__EQ_BYTES):){}__EQ_HEAD{}_TMP_STACK_INFO){}dnl
 __{}__{}define({__EQ_CODE},__EQ_HEAD{}__EQ_CODE_1{}__EQ_CODE_2){}dnl
 __{}},
 __{}eval(__EQ_PRICE{}0<$7{}0),1,{dnl
 __{}__{}ifelse(__EQ_CLOCKS_TRUE,_TMP_J1,
-__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE]))},
-__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1]))}){}dnl
-__{}__{}define({__EQ_HEAD},format({%26s},;[eval(__EQ_BYTES):){}__EQ_HEAD{}_TMP_STACK_INFO){}dnl
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE] ))},
+__{}__{}__{}{define({__EQ_HEAD},format({%-8s},__EQ_CLOCKS_TRUE/_TMP_J1] ))}){}dnl
+__{}__{}define({__EQ_HEAD},format({%28s},;[eval(__EQ_BYTES):){}__EQ_HEAD{}_TMP_STACK_INFO){}dnl
 __{}__{}define({__EQ_CODE},__EQ_HEAD{}__EQ_CODE_1{}__EQ_CODE_2){}dnl
 __{}},
 __{}{dnl

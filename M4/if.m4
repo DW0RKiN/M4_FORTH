@@ -2070,7 +2070,7 @@ __{}    cp    H             ; 1:4       __INFO   x[2] = hi($2)
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}{dnl
 __{}define({_TMP_STACK_INFO},{__INFO   ( d -- d )   HL == $2}){}dnl
-__{}__EQ_MAKE_BEST_CODE($2,3,10,else{}IF_COUNT,0){}dnl
+__{}__EQ_MAKE_BEST_CODE($2,3,10,else{}IF_COUNT,0)
 __{}_TMP_BEST_CODE
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO})
 __{}ifelse(__IS_MEM_REF($1),1,{dnl
