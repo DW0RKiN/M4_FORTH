@@ -464,8 +464,12 @@ d...,,,
             __T_NAME(0)-$1,{__TOKEN_2DUP_D0EQ-__TOKEN_WHILE},      {__SET_TOKEN({__TOKEN_2DUP_D0EQ_WHILE},__T_INFO(0){ }$2)},
             __T_NAME(0)-$1,{__TOKEN_2DUP_D0NE-__TOKEN_WHILE},      {__SET_TOKEN({__TOKEN_2DUP_D0NE_WHILE},__T_INFO(0){ }$2)},
 
-            __T_NAME(0)-$1,{__TOKEN_D0EQ-__TOKEN_IF},           {__SET_TOKEN({__TOKEN_D0EQ_IF},__T_INFO(0){ }$2)},
-            __T_NAME(0)-$1,{__TOKEN_D0NE-__TOKEN_IF},           {__SET_TOKEN({__TOKEN_D0NE_IF},__T_INFO(0){ }$2)},
+            __T_NAME(1):__T_NAME(0):$1, __TOKEN_2DUP:__TOKEN_D0EQ:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_D0EQ_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+                        __T_NAME(0):$1,              __TOKEN_D0EQ:__TOKEN_IF,   {__SET_TOKEN({__TOKEN_D0EQ_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            
+            __T_NAME(1):__T_NAME(0):$1, __TOKEN_2DUP:__TOKEN_D0NE:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2DUP_D0NE_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+                        __T_NAME(0):$1,              __TOKEN_D0NE:__TOKEN_IF,   {__SET_TOKEN({__TOKEN_D0NE_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
             __T_NAME(0)-$1,{__TOKEN_4DUP_DEQ-__TOKEN_IF},       {__SET_TOKEN({__TOKEN_4DUP_DEQ_IF},__T_INFO(0){ }$2)},
             __T_NAME(0)-$1,{__TOKEN_4DUP_DNE-__TOKEN_IF},       {__SET_TOKEN({__TOKEN_4DUP_DNE_IF},__T_INFO(0){ }$2)},
