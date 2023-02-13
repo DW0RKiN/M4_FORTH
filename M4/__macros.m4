@@ -1705,7 +1705,7 @@ dnl # _TMP_STACK_INFO = stack info
 dnl # _TMP_R1 .. _TMP_R4  Rx = D,E,H,L
 dnl # _TMP_N1 .. _TMP_N4  Nx = 1..256
 dnl # reg with 0(=256) must by last
-dnl # reg with 255 must by last
+dnl # reg with 255 must by last (before 256)
 dnl #
 dnl # Out:
 dnl # __DEQ_CODE
@@ -1862,6 +1862,28 @@ __{}__{}define({__DEQ_CODE_4},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
 __{}__{}    rra                 ; 1:4       _TMP_INFO
 __{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = x[3]/2})},
+__{}dnl
+__{}dnl left(c) c - -
+__{}dnl
+__{}eval(__N4==((514*__N3)/256 & 0xFF)),{1},{dnl
+__{}__{}define({_TMP_B4},4){}dnl
+__{}__{}define({_TMP_T4},15){}dnl
+__{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_4},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    rlca                ; 1:4       _TMP_INFO
+__{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = 514*x[3]/256})},
+__{}dnl
+__{}dnl right(c) c - -
+__{}dnl
+__{}eval(__N4==((257*__N3 & 0xFF)/2)),{1},{dnl
+__{}__{}define({_TMP_B4},4){}dnl
+__{}__{}define({_TMP_T4},15){}dnl
+__{}__{}define({_TMP_J3},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_4},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B4)); 2:7/12    _TMP_INFO
+__{}__{}    rrca                ; 1:4       _TMP_INFO
+__{}__{}    xor   __R4             ; 1:4       _TMP_INFO   x[4] = 257*x[3]/2})},
 __{}dnl
 __{}dnl   default version
 __{}{dnl
@@ -2060,6 +2082,27 @@ __{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
 __{}__{}    rra                 ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = x[2]/2})},
 __{}dnl
+__{}dnl - left(b) b -
+__{}dnl
+__{}eval(__N3==((514*__N2)/256 & 0xFF)),{1},{dnl
+__{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
+__{}__{}define({_TMP_T3},15){}dnl
+__{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_3},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    rlca                ; 1:4       _TMP_INFO
+__{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = 514*x[2]/256})},
+__{}dnl
+__{}dnl - right(b) b -
+__{}dnl
+__{}eval(__N3==((257*__N2)/2 & 0xFF)),{1},{dnl
+__{}__{}define({_TMP_B3},eval(_TMP_B4+4)){}dnl
+__{}__{}define({_TMP_T3},15){}dnl
+__{}__{}define({_TMP_J2},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_3},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B3)); 2:7/12    _TMP_INFO
+__{}__{}    rrca                ; 1:4       _TMP_INFO
+__{}__{}    _TMP_OR3   __R3             ; 1:4       _TMP_INFO   x[3] = 257*x[2]/2})},__{}dnl
 __{}dnl  default version
 __{}{dnl
 __{}__{}define({_TMP_B3},eval(_TMP_B4+5)){}dnl
@@ -2236,6 +2279,28 @@ __{}__{}define({__DEQ_CODE_2},{
 __{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
 __{}__{}    rra                 ; 1:4       _TMP_INFO
 __{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})},
+__{}dnl
+__{}dnl - - left(a) a
+__{}dnl
+__{}eval(__N2==((514*__N1)/256 & 0xFF)),{1},{dnl
+__{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
+__{}__{}define({_TMP_T2},15){}dnl
+__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_2},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    rlca                ; 1:4       _TMP_INFO
+__{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = 514*x[1]/256})},
+__{}dnl
+__{}dnl - - right(a) a
+__{}dnl
+__{}eval(__N2==((257*__N1)/2) & 0xFF),{1},{dnl
+__{}__{}define({_TMP_B2},eval(_TMP_B3+4)){}dnl
+__{}__{}define({_TMP_T2},15){}dnl
+__{}__{}define({_TMP_J1},eval(12+_TMP_J0)){}dnl
+__{}__{}define({__DEQ_CODE_2},{
+__{}__{}    jr   nz{,} $+format({%-9s},eval($4+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}    rrca                ; 1:4       _TMP_INFO
+__{}__{}    _TMP_OR2   __R2             ; 1:4       _TMP_INFO   x[2] = 257*x[1]/2})},
 __{}dnl
 __{}dnl - - - -     default version
 __{}{dnl
@@ -2489,6 +2554,23 @@ __{}define({_TMP_R2},substr($1,0,1)){}dnl
 __{}define({_TMP_R1},substr($1,1,1)){}dnl
 __{}define({_TMP_N2},eval(__HEX_H($2))){}dnl
 __{}define({_TMP_N1},eval(__HEX_L($2))){}dnl
+__{}dnl # Code look like:
+__{}dnl #   __EQ_CODE_1          ; _TMP_B1:_TMP
+__{}dnl #   __EQ_CODE_2          ; _TMP_B2:_TMP
+__{}dnl #
+__{}dnl # __EQ_CODE_2 look like: 
+__{}dnl #                  ;[_TMP_B2:..]
+__{}dnl #   jp nz, $5            ; 3:10
+__{}dnl #   ...                  ;..:..
+__{}dnl #
+__{}dnl # __EQ_CODE_2 look like: 
+__{}dnl #                  ;[_TMP_B2:..]
+__{}dnl #   jr nz, $5+_TMP_B2    ; 2:7/12
+__{}dnl #   ...                  ;..:..
+__{}dnl #
+__{}dnl # __EQ_CODE_2 look like: 
+__{}dnl #                  ;[_TMP_B2:..]
+__{}dnl #   ...                  ;..:..
 __{}dnl
 __{}dnl --------------- 2 ---------------
 __{}dnl
@@ -2623,6 +2705,40 @@ __{}__{}__{}define({__EQ_CODE_2},{
 __{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
 __{}__{}__{}    rra                 ; 1:4       _TMP_INFO
 __{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = x[1]/2})})},
+__{}__HEX_L(_TMP_N2),__HEX_H((_TMP_N1*257)*2),{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
+__{}__{}__{}define({_TMP_B2},4){}dnl
+__{}__{}__{}define({_TMP_T2},15){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
+__{}__{}__{}define({__EQ_CODE_2},{
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    rlca                ; 1:4       _TMP_INFO
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = rotation_left(x[1]) = 2*257*x[1]/256})},
+__{}__{}{dnl
+__{}__{}__{}define({_TMP_B2},5){}dnl
+__{}__{}__{}define({_TMP_T2},18){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
+__{}__{}__{}define({__EQ_CODE_2},{
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
+__{}__{}__{}    rlca                ; 1:4       _TMP_INFO
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = rotation_left(x[1]) = 2*257*x[1]/256})})},
+__{}__HEX_L(_TMP_N2),__HEX_L((_TMP_N1*257)/2),{dnl
+__{}__{}ifelse(__IS_NAME($5),0,{dnl
+__{}__{}__{}define({_TMP_B2},4){}dnl
+__{}__{}__{}define({_TMP_T2},15){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+12)){}dnl
+__{}__{}__{}define({__EQ_CODE_2},{
+__{}__{}__{}    jr   nz{{,}} $+format({%-9s},eval($5+_TMP_B2)); 2:7/12    _TMP_INFO
+__{}__{}__{}    rrca                ; 1:4       _TMP_INFO
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = rotation_right(x[1]) = 257*x[1]/2})},
+__{}__{}{dnl
+__{}__{}__{}define({_TMP_B2},5){}dnl
+__{}__{}__{}define({_TMP_T2},18){}dnl
+__{}__{}__{}define({_TMP_J1},eval($6+10)){}dnl
+__{}__{}__{}define({__EQ_CODE_2},{
+__{}__{}__{}    jp   nz{{,}} format({%-11s},$5); 3:10      _TMP_INFO
+__{}__{}__{}    rrca                ; 1:4       _TMP_INFO
+__{}__{}__{}    xor   _TMP_R2             ; 1:4       _TMP_INFO   x[2] = rotation_right(x[1]) = 257*x[1]/2})})},
 __{}{dnl
 __{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},5){}dnl
