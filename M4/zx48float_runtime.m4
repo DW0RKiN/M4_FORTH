@@ -10,7 +10,7 @@ __{}                     ;[26:688..736] _zdepth   # small version can be changed
 __{}_ZDEPTH:                ;           _zdepth   ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
 __{}    ex   DE, HL         ; 1:4       _zdepth
 __{}    ex  (SP),HL         ; 1:19      _zdepth   ret
-__{}    push HL             ; 1:11      _zdepth   back ret 
+__{}    push HL             ; 1:11      _zdepth   back ret
 __{}    ld   HL, (0x5C65)   ; 3:16      _zdepth   {STKEND} - Address of temporary work space = address of top of calculator stack
 __{}    ld   BC, (0x5C63)   ; 4:20      _zdepth   {STKBOT} - Address of bottom of calculator stack
 __{}    xor   A             ; 1:4       _zdepth
@@ -29,26 +29,26 @@ __{}                       ;[46:292]    _zdepth   # default version can be chang
 __{}_ZDEPTH:                ;           _zdepth   ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
 __{}    ex   DE, HL         ; 1:4       _zdepth
 __{}    ex  (SP),HL         ; 1:19      _zdepth   ret
-__{}    push HL             ; 1:11      _zdepth    
+__{}    push HL             ; 1:11      _zdepth
 __{}    ld   HL, (0x5C65)   ; 3:16      _zdepth   {STKEND} - Address of temporary work space = address of top of calculator stack
 __{}    ld   BC, (0x5C63)   ; 4:20      _zdepth   {STKBOT} - Address of bottom of calculator stack
 __{}    xor   A             ; 1:4       _zdepth
 __{}    sbc  HL, BC         ; 2:15      _zdepth   HL = 5*n
 __{}    ld    B, H          ; 1:4       _zdepth
 __{}    ld    C, L          ; 1:4       _zdepth   1x = base
-__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    add  HL, HL         ; 1:11      _zdepth
 __{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 2x
 __{}    add  HL, BC         ; 1:11      _zdepth
 __{}    adc   A, 0x00       ; 2:7       _zdepth   +1 AHL = 3x
-__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    add  HL, HL         ; 1:11      _zdepth
 __{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 6x
-__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    add  HL, HL         ; 1:11      _zdepth
 __{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 12x
-__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    add  HL, HL         ; 1:11      _zdepth
 __{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 24x
 __{}    add  HL, BC         ; 1:11      _zdepth
 __{}    adc   A, 0x00       ; 2:7       _zdepth   +1 AHL = 25x
-__{}    add  HL, HL         ; 1:11      _zdepth   
+__{}    add  HL, HL         ; 1:11      _zdepth
 __{}    adc   A, A          ; 1:4       _zdepth   *2 AHL = 50x
 __{}    add  HL, BC         ; 1:11      _zdepth
 __{}    ld   BC, 0x0033     ; 3:10      _zdepth   rounding down constant

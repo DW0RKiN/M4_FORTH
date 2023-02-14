@@ -50,7 +50,7 @@ dnl # ---------------------
 dnl
 dnl
 dnl # zdepth
-dnl # ( -- 0 ) if ( Z: -- ) 
+dnl # ( -- 0 ) if ( Z: -- )
 dnl # ( -- 1 ) if ( Z: z -- z )
 dnl # ( -- 2 ) if ( Z: z2 z1 -- z2 z1 )
 dnl # ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
