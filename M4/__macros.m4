@@ -83,7 +83,7 @@ __{}{$1},{},{0},
 __{}{$1},(),{0},
 __{}eval( regexp({$1},{[0-9]}) == -1 ),{1},{0},dnl # ( -- )
 __{}eval( regexp({$1},{()}) != -1 ),{1},{0},dnl #
-__{}eval( regexp({$1},{[?'",yzYZ_g-wG-W.]}) != -1 ),{1},{0},dnl # Any letter (except a,b,c,d,e,f,x) or underscore (_) or dot (.)  
+__{}eval( regexp({$1},{[?'",yzYZ_g-wG-W.]}) != -1 ),{1},{0},dnl # Any letter (except a,b,c,d,e,f,x) or underscore (_) or dot (.)
 __{}eval( regexp({$1},{\(^\|[^0]\)[xX]}) != -1 ),{1},{0},dnl # x without leading zero
 __{}eval( regexp({$1},{[a-fA-F0-9]0[xX]}) != -1 ),{1},{0},dnl # 0x inside hex characters or numbers, like 3210x or abc0x
 __{}eval( regexp({$1},{\(^\|[^xX0-9a-fA-F]+\)[0-9a-fA-F]*[a-fA-F]}) != -1 ),{1},{0},dnl # hex characters without leading 0x
@@ -2547,7 +2547,7 @@ dnl #     if zero flag then A = 0
 dnl #
 dnl # Pollutes:
 dnl #
-dnl #  A, flag, can change C if C is not in $1 
+dnl #  A, flag, can change C if C is not in $1
 dnl
 define({__EQ_MAKE_CODE},{dnl
 __{}define({_TMP_R2},substr($1,0,1)){}dnl
@@ -2558,17 +2558,17 @@ __{}dnl # Code look like:
 __{}dnl #   __EQ_CODE_1          ; _TMP_B1:_TMP
 __{}dnl #   __EQ_CODE_2          ; _TMP_B2:_TMP
 __{}dnl #
-__{}dnl # __EQ_CODE_2 look like: 
+__{}dnl # __EQ_CODE_2 look like:
 __{}dnl #                  ;[_TMP_B2:..]
 __{}dnl #   jp nz, $5            ; 3:10
 __{}dnl #   ...                  ;..:..
 __{}dnl #
-__{}dnl # __EQ_CODE_2 look like: 
+__{}dnl # __EQ_CODE_2 look like:
 __{}dnl #                  ;[_TMP_B2:..]
 __{}dnl #   jr nz, $5+_TMP_B2    ; 2:7/12
 __{}dnl #   ...                  ;..:..
 __{}dnl #
-__{}dnl # __EQ_CODE_2 look like: 
+__{}dnl # __EQ_CODE_2 look like:
 __{}dnl #                  ;[_TMP_B2:..]
 __{}dnl #   ...                  ;..:..
 __{}dnl
@@ -2833,8 +2833,8 @@ __{}__{}; ------------
 __{}__{}format({%-20s},$1=$2)format({%-10s},t2:_TMP_T2)...clock down code with fail jump
 __{}__{}format({%-20s},{ true:}__EQ_CLOCKS_TRUE)format({%-10s},b1:_TMP_B1)...bytes all  code
 __{}__{}format({%-20s},{ fail:}__EQ_CLOCKS_FAIL)format({%-10s},b2:_TMP_B2)...bytes down code with jump
-__{}__{}format({%-20s},price:__EQ_PRICE)format({%-10s},j2:_TMP_J2)...clock without jump 
-__{}__{}format({%-20s},clock:__EQ_CLOCKS)format({%-10s},j1:_TMP_J1)...clock with    jump 
+__{}__{}format({%-20s},price:__EQ_PRICE)format({%-10s},j2:_TMP_J2)...clock without jump
+__{}__{}format({%-20s},clock:__EQ_CLOCKS)format({%-10s},j1:_TMP_J1)...clock with    jump
 __{}__{}format({%-20s},bytes:__EQ_BYTES)format({%-10s},t1:_TMP_T1)...clock up   code
 __{}}){}dnl
 __{}dnl
@@ -4103,7 +4103,7 @@ __{}__{}    cp    D             ; 1:4       __INFO   D... = (BC) = (__HEX_HL(1+$
 __{}__IS_MEM_REF($1):__IS_MEM_REF($2):__IS_NAME($6),1:1:1,{dnl
 __{}__{}__SET_BYTES_CLOCKS_PRICES($4+21,$5+100){}dnl
 __{}__{}format({%35s},;[__SUM_BYTES:__SUM_CLOCKS/eval($7+eval($5+0)+27){,}eval($7+eval($5+0)+83)]) __INFO   {$3}
-__{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      __INFO  
+__{}__{}    ld    A{,}format({%-12s},(1+$1)); 3:13      __INFO
 __{}__{}    xor   D             ; 1:4       __INFO   D... = hi($1)
 __{}__{}    jp   nz{,} format({%-11s},$6); 3:10      __INFO
 __{}__{}    ld   BC{,}format({%-12s},$2); 4:20      __INFO   ..BC = $2
