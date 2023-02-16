@@ -1247,7 +1247,75 @@ dnl # __SUM_BYTES  += __BYTES_16BIT
 dnl # __SUM_CLOCKS += __CLOCKS_16BIT
 dnl # __SUM_PRICES += __PRICE_16BIT
 __{}undefine({__COMMA}){}dnl
-ifelse(__IS_MEM_REF($2),{1},{dnl
+ifelse(__IS_MEM_REF($1),1,{dnl
+__{}ifelse($1,(HL),{dnl
+__{}__{}ifelse(__IS_MEM_REF($2):$3=$2,1:HL=($4),{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},0){}dnl
+__{}__{}__{}define({__BYTES_16BIT},0){}dnl
+__{}__{}__{}define({__CODE_16BIT},{})},
+__{}__{}$2,$4,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($3,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}$2,$6,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($5,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}$2,$8,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($7,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__IS_MEM_REF($2),1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},20){}dnl
+__{}__{}__{}define({__BYTES_16BIT},4){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld    A{,}format({%-12s},$2); 3:13      }_TMP_INFO{
+__{}__{}__{}    ld  $1{,}A          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($4),__HEX_L($4):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($3,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($4),__HEX_H($4):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($3,0,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($6),__HEX_L($6):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($5,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($6),__HEX_H($6):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($5,0,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($8),__HEX_L($8):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($7,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($8),__HEX_H($8):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($7,0,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},10){}dnl
+__{}__{}__{}define({__BYTES_16BIT},2){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,} format({%-10s},$2); 2:10      }_TMP_INFO)})},
+__{}$1,(BC),{bc dodelat!},
+__{}$1,(DE),{de dodelat!},
+__{}{dnl # unknown target name
+__{}define({__CLOCKS_16BIT},0){}dnl
+__{}define({__BYTES_16BIT},0){}dnl
+__{}define({__CODE_16BIT},{})})},
+__IS_MEM_REF($2),{1},{dnl
 __{}define({__CLOCKS_16BIT},0){}dnl
 __{}define({__BYTES_16BIT},0){}dnl
 __{}define({__CODE_16BIT},{}){}dnl
@@ -1345,9 +1413,9 @@ __{}__{}define({__CODE_16BIT},{
 __{}__{}    ld   $1{,} __HEX_HL($2)     ; 3:10      }_TMP_INFO)}){}dnl
 __{}}){}dnl
 __{}define({__PRICE_16BIT},eval(__CLOCKS_16BIT+4*__BYTES_16BIT)){}dnl
-__{}ifelse(__IS_NUM(__SUM_BYTES), 0,{define({__SUM_BYTES},  __BYTES_16BIT)},{define({__SUM_BYTES}, eval(__SUM_BYTES + __BYTES_16BIT))}){}dnl
-__{}ifelse(__IS_NUM(__SUM_CLOCKS),0,{define({__SUM_CLOCKS},__CLOCKS_16BIT)},{define({__SUM_CLOCKS},eval(__SUM_CLOCKS+__CLOCKS_16BIT))}){}dnl
-__{}ifelse(__IS_NUM(__SUM_PRICES),0,{define({__SUM_PRICES}, __PRICE_16BIT)},{define({__SUM_PRICES},eval(__SUM_PRICES+ __PRICE_16BIT))}){}dnl
+__{}ifelse(__IS_NUM(__SUM_BYTES), 0,{define({__SUM_BYTES},  __BYTES_16BIT)},{__add({__SUM_BYTES}, __BYTES_16BIT)}){}dnl
+__{}ifelse(__IS_NUM(__SUM_CLOCKS),0,{define({__SUM_CLOCKS},__CLOCKS_16BIT)},{__add({__SUM_CLOCKS},__CLOCKS_16BIT)}){}dnl
+__{}ifelse(__IS_NUM(__SUM_PRICES),0,{define({__SUM_PRICES}, __PRICE_16BIT)},{__add({__SUM_PRICES},__PRICE_16BIT)}){}dnl
 }){}dnl
 dnl
 dnl
