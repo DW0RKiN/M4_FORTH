@@ -3214,6 +3214,7 @@ __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} A); 3:13      __INFO},
 
 __HEX_HL($2),{0x0006},{
+dnl ;# Opravit! Kdyz addr je ptr
 __{}__{}ifelse(__IS_MEM_REF($3),{1},{dnl
 __{}__{}                        ;[17:81]    __INFO   fill(addr,u,char)   variant F.1: 6 byte
 __{}__{}    ld    A, format({%-11s},$3); 3:13      __INFO
@@ -3227,6 +3228,7 @@ __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 
 __SAVE_EVAL(+((($1) & 0xFF00) == (($1 + $2) & 0xFF00)) && (($2) % 3 == 0)),{1},{
+dnl ;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a opravit char = ptr, misto C se pouzije A
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/3) & 0x1FF))dnl
 __{}define({_TMP_INFO},__INFO){}__LD_REG16({BC},__HEX_HL(256*_TEMP_B + $3),{HL},__HEX_HL($1)){}dnl
 __{}                        ;[eval(13+__BYTES_16BIT):format({%-7s},eval(26+46*_TEMP_B+__CLOCKS_16BIT)])__INFO   fill(addr,u,char)   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
@@ -3243,7 +3245,7 @@ __{}    djnz $-6            ; 2:13/8    __INFO
 __{}    pop  HL             ; 1:10      __INFO},
 
 __SAVE_EVAL(+($2) <= 2*256+1),{1},{ 
-;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a kdyz char je ptr tak jinak nacitat C
+dnl ;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a opravit char = ptr, misto C se pouzije A
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/2) & 0x1FF))dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__RESET_ADD_LD_REG16{}dnl
@@ -3255,12 +3257,24 @@ __{}__CODE_16BIT   HL = addr{}dnl
 __{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B)+$3,{HL},$1){}dnl
 __{}__CODE_16BIT   B = _TEMP_B{}x, C = $3
 __{}    ld  (HL),C          ; 1:7       __INFO
-__{}ifelse(__SAVE_EVAL(+($1+1) & 0x01),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 1 & ($1+1)
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+1) & 1),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       __INFO},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       __INFO})
 __{}    ld  (HL),C          ; 1:7       __INFO
-__{}ifelse(__SAVE_EVAL(+($1+2) & 0x01),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 1 & ($1+2)
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+2) & 1),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       __INFO},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       __INFO})
@@ -3271,6 +3285,7 @@ __{}}){}dnl
 __{}    pop  HL             ; 1:10      __INFO},
 
 __SAVE_EVAL(+($2) <= 4*256+3),{1},{
+dnl ;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a opravit char = ptr, misto C se pouzije A
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/4) & 0x1FF))dnl
 __{}ifelse(eval(($2) % 4),{0},{dnl
 __{}__{}define({_TEMP_SIZE},{18}){}dnl
@@ -3363,32 +3378,84 @@ __{}__{}    inc   L             ; 1:4       __INFO})
 __{}    djnz $-8            ; 2:13/8    __INFO{}_TEMP_PLUS
 __{}    pop  HL             ; 1:10      __INFO},
 
-__SAVE_EVAL(+(($2) % 4) == 0),{1},{
-__{}define({_TEMP_B},eval((($2)/4) & 0xFF))dnl
-__{}define({_TEMP_C},eval(((($2)/4) & 0xFF00)/256))dnl
-__{}ifelse(eval(_TEMP_B>0),{1},{define({_TEMP_C},eval(_TEMP_C+1))}){}dnl
-__{}                       ;[24:format({%-8s},eval(48+46*($2)/4+13*(_TEMP_B+(_TEMP_C-1)*256)+9*_TEMP_C)])__INFO   fill(addr,u,char)   variant {J}: u = 4*n bytes
+__IS_MEM_REF($1):__SAVE_EVAL(+(($2) % 4) == 0),{1:1},{
+__{}define({_TEMP_X},__HEX_HL(($2)/4))dnl
+__{}define({_TEMP_B},__HEX_L(_TEMP_X % 256))dnl
+__{}define({_TEMP_C},__HEX_L(_TEMP_X / 256))dnl
+__{}define({__SUM_BYTES},eval(24+__IS_MEM_REF($3)))dnl
+__{}define({__SUM_CLOCKS},eval(54+6*__IS_MEM_REF($3)+_TEMP_X*65+_TEMP_C*(14-5)))dnl
+__{}ifelse(_TEMP_B,0x00,,{__add({_TEMP_C},1)}){}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-7s},__SUM_CLOCKS]) __INFO   fill(addr,u,char)   variant {J.1}: u = 4*n bytes
 __{}    push HL             ; 1:11      __INFO
-__{}    ld   HL, format({%-11s},$1); 3:10      __INFO   HL = addr
-__{}    ld   BC, format({%-11s},256*_TEMP_B+_TEMP_C); 3:10      __INFO   $2{}x = (C-1)*4*256 + 4*B
+__{}    ld   HL,format({%-12s},$1); 3:16      __INFO   HL = addr
+__{}    ld   BC, __HEX_HL(256*_TEMP_B+_TEMP_C)     ; 3:10      __INFO   $2{}x = 4*B + 256*4*(C-1) = 4*eval(_TEMP_B) + 1024*eval(_TEMP_C-1)
 __{}    ld    A, format({%-11s},$3); ifelse(__IS_MEM_REF($3),{1},{3:13},{2:7 })      __INFO   A = char
 __{}    ld  (HL),A          ; 1:7       __INFO
-__{}ifelse(__SAVE_EVAL(+($1+1) & 0x03),{0},{dnl
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    inc  HL             ; 1:6       __INFO
+__{}    djnz $-8            ; 2:13/8    __INFO
+__{}    dec  C              ; 1:4       __INFO
+__{}    jp   nz, $-11       ; 3:10      __INFO
+__{}    pop  HL             ; 1:10      __INFO},
+
+__SAVE_EVAL(+(($2) % 4) == 0),{1},{
+__{}define({_TEMP_X},__HEX_HL(($2)/4))dnl
+__{}define({_TEMP_B},__HEX_L(_TEMP_X % 256))dnl
+__{}define({_TEMP_C},__HEX_L(_TEMP_X / 256))dnl
+__{}ifelse(_TEMP_B,0x00,,{__add({_TEMP_C},1)}){}dnl
+__{}define({__SUM_BYTES},eval(24+__IS_MEM_REF($3)))dnl
+__{}define({__SUM_CLOCKS},eval(48+6*__IS_MEM_REF($3)+_TEMP_X*59+_TEMP_C*9))dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-7s},__SUM_CLOCKS]) __INFO   fill(addr,u,char)   variant {J.2}: u = 4*n bytes
+__{}    push HL             ; 1:11      __INFO
+__{}    ld   HL, format({%-11s},$1); 3:10      __INFO   HL = addr
+__{}    ld   BC, __HEX_HL(256*_TEMP_B+_TEMP_C)     ; 3:10      __INFO   $2{}x = 4*B + 256*4*(C-1) = 4*eval(_TEMP_B) + 1024*eval(_TEMP_C-1)
+__{}    ld    A, format({%-11s},$3); ifelse(__IS_MEM_REF($3),{1},{3:13},{2:7 })      __INFO   A = char
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 0x03 & ($1+1)
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+1) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       __INFO},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       __INFO})
 __{}    ld  (HL),A          ; 1:7       __INFO
-__{}ifelse(__SAVE_EVAL(+($1+2) & 0x03),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 0x03 & ($1+2)
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+2) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       __INFO},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       __INFO})
 __{}    ld  (HL),A          ; 1:7       __INFO
-__{}ifelse(__SAVE_EVAL(+($1+3) & 0x03),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 0x03 & ($1+3)
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+3) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       __INFO},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       __INFO})
 __{}    ld  (HL),A          ; 1:7       __INFO
-__{}ifelse(__SAVE_EVAL(+($1+0) & 0x03),{0},{dnl
+__{}ifelse(__IS_NUM($1),{0},{dnl
+__{}__{}  if 0x03 & ($1+0)
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}  else
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}  endif},
+__{}__SAVE_EVAL(+($1+0) & 0x03),{0},{dnl
 __{}__{}    inc  HL             ; 1:6       __INFO},
 __{}{dnl
 __{}__{}    inc   L             ; 1:4       __INFO})
@@ -3396,6 +3463,7 @@ __{}    djnz $-8            ; 2:13/8    __INFO
 __{}    dec  C              ; 1:4       __INFO
 __{}    jp   nz, $-11       ; 3:10      __INFO
 __{}    pop  HL             ; 1:10      __INFO},
+
 __{}__IS_MEM_REF($1),1,{
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({__SUM_BYTES},9){}dnl
@@ -3415,6 +3483,7 @@ __{}__CODE_16BIT
 __{}    ldir                ; 2:u*21/16 __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
+
 __{}{
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({__SUM_BYTES},6){}dnl
