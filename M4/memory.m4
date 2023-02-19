@@ -3428,7 +3428,7 @@ __{}define({__SUM_BYTES},7+(($2) & 0x01)+__BYTES){}dnl
 __{}define({__SUM_CLOCKS},7*(($2) & 0x01)+($2>>1)*32+__CLOCKS){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},$1){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant H.1: 2..256 byte and lo(addr_end) = 0x00{}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant H.1: 2..256 byte and lo(addr+u) = 0x00{}dnl
 __{}__CODE_16BIT   addr{}dnl
 __{}_TMP_A
 __{}    ld  (BC),A          ; 1:7       __INFO
@@ -3445,8 +3445,8 @@ __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
 __{}define({__SUM_BYTES},7+(($2) & 0x01)+__BYTES){}dnl
 __{}define({__SUM_CLOCKS},7*(($2) & 0x01)+($2>>1)*32+__CLOCKS){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
-__{}__LD_REG16({BC},256*__HEX_H($1)+__HEX_L($1+$2)){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant H.2: 2..256 byte and lo(addr_end) = 0x00{}dnl
+__{}__LD_REG16({BC},256*__HEX_H($1)+__HEX_L($1+$2-(($2) & 1))){}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant H.2: 2..256 byte and lo(addr) = 0x00{}dnl
 __{}__CODE_16BIT   addr{}dnl
 __{}_TMP_A
 __{}ifelse(eval(($2) & 0x01),{1},{dnl
