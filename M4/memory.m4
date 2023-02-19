@@ -3443,7 +3443,7 @@ __{}__IS_NUM($3),1,{dnl
 __{}__{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B+$3),{HL},__HEX_HL($1))},
 __{}{dnl
 __{}__{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B)+$3,{HL},__HEX_HL($1))}){}dnl
-__{}                        ;[eval(13+__BYTES_16BIT):format({%-7s},eval(26+46*_TEMP_B+__CLOCKS_16BIT)])__INFO   fill(addr,u,char)   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
+__{}                        ;[eval(13+__BYTES_16BIT):format({%-7s},eval(26+46*_TEMP_B+__CLOCKS_16BIT)])__INFO   fill(addr,u,char)   variant G.4: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, format({%-11s},$1); 3:10      __INFO   HL = addr{}dnl
 __{}__CODE_16BIT   B = _TEMP_B{}x, C = $3
