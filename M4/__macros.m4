@@ -719,7 +719,7 @@ __{}__{}__{}{define({__CLOCKS},6)},
 __{}__{}__{}{define({__CLOCKS},4)}){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
-__{}__{}  if (($2+$3) & __HEX_L($4-1) = __HEX_L($4-1))
+__{}__{}  if ((($2+$3) & __HEX_L($4-1)) = __HEX_L($4-1))
 __{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}  else
 __{}__{}    inc   substr($1,1)             ; 1:4       __INFO
