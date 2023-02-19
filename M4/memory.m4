@@ -3382,7 +3382,26 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 
-__HEX_H($1):__HEX_L(($2) % 3),__HEX_H($1+$2):0x00,{
+__HEX_H($1):__HEX_L(($2) % 3):__IS_MEM_REF($3),__HEX_H($1+$2-1):0x00:1,{
+__{}define({__SUM_CLOCKS_8BIT},14+eval(($2)/3)*46-5+4){}dnl
+__{}define({__SUM_BYTES_8BIT},13){}dnl
+__{}define({_TMP_B},__LD_R_NUM(__INFO   ($2)/3,B,__HEX_L(($2)/3),D,__HEX_H($1),E,__HEX_L($1))){}dnl
+__{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
+__{}                        ;[__SUM_BYTES_8BIT:format({%-7s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
+__{}    exx                 ; 1:4       __INFO
+__{}    ld   DE, format({%-11s},$1); 3:10      __INFO   DE = addr{}dnl
+__{}_TMP_B{}dnl
+__{}_TMP_A
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    inc   E             ; 1:4       __INFO
+__{}    djnz $-6            ; 2:13/8    __INFO
+__{}    exx                 ; 1:4       __INFO},
+
+__HEX_H($1):__HEX_L(($2) % 3),__HEX_H($1+$2-1):0x00,{
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/3) & 0x1FF))dnl
 __{}ifelse(__IS_MEM_REF($3),1,{},
