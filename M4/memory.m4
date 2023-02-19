@@ -3384,8 +3384,8 @@ __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 
 x__HEX_H($1):__HEX_L($1+$2):__HEX_L(($2) % 3),__HEX_H($1+$2-1):0x00:0x00,{ 
 __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
-__{}define({__SUM_BYTES},7+(($2) & 0x01)+__BYTES){}dnl
-__{}define({__SUM_CLOCKS},7*(($2) & 0x01)+($2>>1)*32+__CLOCKS){}dnl
+__{}define({__SUM_BYTES},9+__BYTES){}dnl
+__{}define({__SUM_CLOCKS},__CLOCKS+43*(($2)/3)){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},$1){}dnl
 __{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant G.1: 2..256 byte and u%3=0 and lo(addr+u) = 0x00{}dnl
@@ -3395,15 +3395,14 @@ __{}    ld  (BC),A          ; 1:7       __INFO
 __{}    inc   C             ; 1:4       __INFO
 __{}    ld  (BC),A          ; 1:7       __INFO
 __{}    inc   C             ; 1:4       __INFO
-__{}    jp   nz, $-4        ; 3:10      __INFO
-__{}ifelse(eval(($2) & 0x01),{1},{dnl
-__{}__{}    ld  (BC),A          ; 1:7       __INFO}){}dnl
-__{}},
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    inc   C             ; 1:4       __INFO
+__{}    jp   nz, $-4        ; 3:10      __INFO},
 
-__HEX_H($1):__HEX_L($1):__HEX_L(($2) % 3),__HEX_H($1+$2-1):0x00:0x00,{ 
+__HEX_H($1):__HEX_L($1):__HEX_L(+($2) % 3),__HEX_H($1+$2-1):0x00:0x00,{
 __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
 __{}define({__SUM_BYTES},9+__BYTES){}dnl
-__{}define({__SUM_CLOCKS},($2/3)*43+__CLOCKS){}dnl
+__{}define({__SUM_CLOCKS},__CLOCKS+43*(($2)/3)){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},256*__HEX_H($1)+__HEX_L($1+$2-(($2) & 1))){}dnl
 __{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant G.2: 2..256 byte and u%3=0  and lo(addr) = 0x00{}dnl
@@ -3415,8 +3414,7 @@ __{}    dec   C             ; 1:4       __INFO
 __{}    ld  (BC),A          ; 1:7       __INFO
 __{}    dec   C             ; 1:4       __INFO
 __{}    ld  (BC),A          ; 1:7       __INFO
-__{}    jp   nz, $-6        ; 3:10      __INFO){}dnl
-__{}},
+__{}    jp   nz, $-6        ; 3:10      __INFO},
 
 __HEX_H($1):__HEX_L(($2) % 3):__IS_MEM_REF($3),__HEX_H($1+$2-1):0x00:1,{
 __{}define({__SUM_CLOCKS_8BIT},14+eval(($2)/3)*46-5+4){}dnl
