@@ -71,6 +71,8 @@ dnl # 1E1       --> 0 fail
 dnl # 10.0E0    --> 0 fail
 dnl # 10E0      --> 0 fail
 dnl # [0        --> 0 but with error message
+dnl # (5+1) & (3-1)  --> 0
+dnl # +(5+1) & (3-1) --> 1
 dnl # 10+0x0A   --> 1
 dnl # 2*(0x0A)  --> 1
 dnl # 10+(0x0A) --> 1
@@ -685,6 +687,56 @@ dnl
 dnl
 define({__SWAP2DEF},{dnl
 __{}define({__SWAP2DEF_TMP},$1)define({$1},$2)define({$2},__SWAP2DEF_TMP)}){}dnl
+dnl
+dnl
+dnl
+dnl # Input:
+dnl #  $1 = HL,DE,BC
+dnl #  $2 = number before +1
+dnl #  $3 = additional number
+dnl #  $4 = 2,4,8,16,32,64,128,256,...
+dnl # Output:
+dnl #   if ( ($2+$3) & ($4-1) == ($4-1)
+dnl #     inc HL
+dnl #   else
+dnl #     inc L
+define({__INC_REG16},{dnl
+__{}ifelse(dnl
+__{}eval($#<4),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>4),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF({$2}),1,{dnl
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},6){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__{}    inc  $1             ; 1:6       __INFO},
+__{}__IS_NUM({$2}),0,{dnl  # clock return like $2 is zero
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}ifelse(__HEX_L($3 & ($4-1)),__HEX_L($4-1),
+__{}__{}__{}{define({__CLOCKS},6)},
+__{}__{}__{}{define({__CLOCKS},4)}){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__{}  if (($2+$3) & __HEX_L($4-1) = __HEX_L($4-1))
+__{}__{}    inc  $1             ; 1:6       __INFO
+__{}__{}  else
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO
+__{}__{}  endif},
+__{}__HEX_L(+($2+$3) & ($4-1)),__HEX_L($4-1),{dnl
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},6){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__{}    inc  $1             ; 1:6       __INFO},
+__{}__{}{dnl
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
