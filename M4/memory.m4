@@ -3533,6 +3533,32 @@ __{}__{}    inc   L             ; 1:4       __INFO})
 __{}    djnz $-8            ; 2:13/8    __INFO{}_TEMP_PLUS
 __{}    pop  HL             ; 1:10      __INFO},
 
+__HEX_L($1):__HEX_HL($2),0x00:0x0500,{dnl
+dnl # ; t= 7+7-5+256*(7+7+4+7+4+7+4+7+4+7+4+12)=9+256*74=18953
+dnl # cca 14.8 t/b
+dnl # cca 14.4 t/b if JP t=14+256*72=18446
+__{}define({__SUM_CLOCKS_8BIT},0){}dnl
+__{}define({__SUM_BYTES_8BIT},12){}dnl
+__{}define({_TMP_A},__LD_R_NUM(__INFO   char,                           A,$3)){}dnl
+__{}define({_TMP_C},__LD_R_NUM(__INFO   lo(addr),              C,{0x00},A,__HEX_L($3))){}dnl
+__{}define({_TMP_B},__LD_R_NUM(__INFO   hi(addr),B,__HEX_H($1),C,{0x00},A,__HEX_L($3))){}dnl
+__{}define({__SUM_CLOCKS_8BIT},eval(__SUM_CLOCKS_8BIT-__CLOCKS-5+256*(67+__CLOCKS))){}dnl
+__{}                       ;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant lo(addr) = 0 && u = 5*256 byte{}dnl
+__{}_TMP_A{}dnl
+__{}_TMP_C{}dnl
+__{}_TMP_B
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    inc   B             ; 1:4       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    inc   B             ; 1:4       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    inc   B             ; 1:4       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    inc   B             ; 1:4       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    inc   C             ; 1:4       __INFO
+__{}    jr   nz, format({%-11s},$-eval(10+__BYTES)); 2:7/12    __INFO},
+
 __IS_MEM_REF($1):__SAVE_EVAL(+(($2) % 4) == 0),{1:1},{
 __{}define({_TEMP_X},__HEX_HL(($2)/4))dnl
 __{}define({_TEMP_B},__HEX_L(_TEMP_X % 256))dnl

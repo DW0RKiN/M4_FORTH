@@ -317,7 +317,10 @@ __{}{format($1,__FORM_REC($2))}){}dnl
 dnl
 dnl
 dnl
-define({__add},{define({$1},eval(}$1{+}$2{))}){}dnl
+define({__add},{ifdef({$1},
+__{}{define({$1},eval($1+$2))},
+__{}{define({$1},$2)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -991,6 +994,7 @@ dnl #  $3 Searched value that is needed
 dnl #  $4 Source registry name
 dnl #  $5 Source registry value
 __{}define({__CLOCKS},10000000){}dnl
+__{}define({__BYTES},0){}dnl
 __{}__LD4($2,$3,$4,$5){}dnl
 __{}__LD4($2,$3,$6,$7){}dnl
 __{}__LD4($2,$3,$8,$9){}dnl
@@ -998,6 +1002,8 @@ __{}__LD4($2,$3,$10,$11){}dnl
 __{}__LD4($2,$3,$12,$13){}dnl
 __{}define({_TMP_INFO},$1){}dnl
 __{}define({__CODE},__CODE){}dnl
+__{}__add({__SUM_CLOCKS_8BIT},__CLOCKS){}dnl
+__{}__add({__SUM_BYTES_8BIT},__BYTES){}dnl
 __{}__CODE{}dnl
 }){}dnl
 dnl
