@@ -3382,7 +3382,7 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 
-x__HEX_H($1):__HEX_L($1+$2):__HEX_L(($2) % 3),__HEX_H($1+$2-1):0x00:0x00,{ 
+__HEX_H($1):__HEX_L($1+$2):__HEX_L(($2) % 3),__HEX_H($1+$2-1):0x00:0x00,{ 
 __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
 __{}define({__SUM_BYTES},9+__BYTES){}dnl
 __{}define({__SUM_CLOCKS},__CLOCKS+43*(($2)/3)){}dnl
@@ -3421,7 +3421,7 @@ __{}define({__SUM_CLOCKS_8BIT},14+eval(($2)/3)*46-5+4){}dnl
 __{}define({__SUM_BYTES_8BIT},13){}dnl
 __{}define({_TMP_B},__LD_R_NUM(__INFO   ($2)/3,B,__HEX_L(($2)/3),D,__HEX_H($1),E,__HEX_L($1))){}dnl
 __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
-__{}                        ;[__SUM_BYTES_8BIT:format({%-7s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
+__{}                        ;[__SUM_BYTES_8BIT:format({%-7s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant G.3: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
 __{}    exx                 ; 1:4       __INFO
 __{}    ld   DE, format({%-11s},$1); 3:10      __INFO   DE = addr{}dnl
 __{}_TMP_B{}dnl
