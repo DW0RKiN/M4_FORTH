@@ -3422,6 +3422,70 @@ __{}    inc   L             ; 1:4       __INFO
 __{}    djnz $-6            ; 2:13/8    __INFO
 __{}    pop  HL             ; 1:10      __INFO},
 
+__HEX_H($1):__HEX_L($1+$2),__HEX_H($1+$2-1):0x00,{ 
+__{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
+__{}define({__SUM_BYTES},7+(($2) & 0x01)+__BYTES){}dnl
+__{}define({__SUM_CLOCKS},7*(($2) & 0x01)+($2>>1)*32+__CLOCKS){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({BC},$1){}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant H.1: 2..256 byte and lo(addr_end) = 0x00{}dnl
+__{}__CODE_16BIT   addr{}dnl
+__{}_TMP_A
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    inc   C             ; 1:4       __INFO
+__{}    ld  (BC),A          ; 1:7       __INFO
+__{}    inc   C             ; 1:4       __INFO
+__{}    jp   nz, $-4        ; 3:10      __INFO
+__{}ifelse(eval(($2) & 0x01),{1},{dnl
+__{}__{}    ld  (BC),A          ; 1:7       __INFO}){}dnl
+__{}},
+
+__HEX_H($1),__HEX_H($1+$2-1),{ 
+dnl ;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a opravit char = ptr, misto C se pouzije A
+__{}define({_TEMP_B},eval(((($2) & 0xFFFF)/2) & 0x1FF))dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({__SUM_BYTES},9+(($2) & 0x01)){}dnl
+__{}define({__SUM_CLOCKS},21+($2>>1)*35-5){}dnl
+__{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B)+$3,{HL},$1){}dnl
+__{}__LD_REG16({HL},$1){}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant H.1: 2..513 byte
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__CODE_16BIT   HL = addr{}dnl
+__{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B)+$3,{HL},$1){}dnl
+__{}__CODE_16BIT   B = _TEMP_B{}x, C = $3
+__{}    ld  (HL),C          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld  (HL),C          ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    djnz $-4            ; 2:13/8    __INFO
+__{}ifelse(eval(($2) & 0x01),{1},{dnl
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}}){}dnl
+__{}    pop  HL             ; 1:10      __INFO},
+
+
+__SAVE_EVAL(+($2) <= 2*256+1),{1},{ 
+dnl ;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a opravit char = ptr, misto C se pouzije A
+__{}define({_TEMP_B},eval(((($2) & 0xFFFF)/2) & 0x1FF))dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__RESET_ADD_LD_REG16{}dnl
+__{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B)+$3,{HL},$1){}dnl
+__{}__LD_REG16({HL},$1){}dnl
+__{}format({%28s},;[eval(__SUM_BYTES+8+(($2) & 0x01)):)format({%-7s},eval(__SUM_CLOCKS+16+37*_TEMP_B+7*(($2) & 0x01))]) __INFO   fill(addr,u,char)   variant H: 2..513 byte
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__CODE_16BIT   HL = addr{}dnl
+__{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B)+$3,{HL},$1){}dnl
+__{}__CODE_16BIT   B = _TEMP_B{}x, C = $3
+__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__INC_REG16(HL,$1,0,2)
+__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__INC_REG16(HL,$1,1,2)
+__{}    djnz $-4            ; 2:13/8    __INFO
+__{}ifelse(eval(($2) & 0x01),{1},{dnl
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}}){}dnl
+__{}    pop  HL             ; 1:10      __INFO},
+
 __SAVE_EVAL(+($2) <= 2*256+1),{1},{ 
 dnl ;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a opravit char = ptr, misto C se pouzije A
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/2) & 0x1FF))dnl
