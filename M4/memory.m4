@@ -3382,10 +3382,14 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 
-__SAVE_EVAL(+((($1) & 0xFF00) == (($1 + $2) & 0xFF00)) && (($2) % 3 == 0)),{1},{
-dnl ;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a opravit char = ptr, misto C se pouzije A
+__HEX_H($1):__HEX_L(($2) % 3),__HEX_H($1+$2):0x00,{
+__{}define({_TMP_INFO},__INFO){}dnl
 __{}define({_TEMP_B},eval(((($2) & 0xFFFF)/3) & 0x1FF))dnl
-__{}define({_TMP_INFO},__INFO){}__LD_REG16({BC},__HEX_HL(256*_TEMP_B + $3),{HL},__HEX_HL($1)){}dnl
+__{}ifelse(__IS_MEM_REF($3),1,{},
+__{}__IS_NUM($3),1,{dnl
+__{}__{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B+$3),{HL},__HEX_HL($1))},
+__{}{dnl
+__{}__{}__LD_REG16({BC},__HEX_HL(256*_TEMP_B)+$3,{HL},__HEX_HL($1))}){}dnl
 __{}                        ;[eval(13+__BYTES_16BIT):format({%-7s},eval(26+46*_TEMP_B+__CLOCKS_16BIT)])__INFO   fill(addr,u,char)   variant G: u == 3*n bytes (3..+3..255) and hi(addr) == hi(addr_end)
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, format({%-11s},$1); 3:10      __INFO   HL = addr{}dnl
@@ -3558,7 +3562,7 @@ __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
 __{}define({_TMP_B},__LD_R_NUM(__INFO   B' = ($2)>>2,B,__HEX_L($2>>2),A,$3,D,__HEX_H($1),E,__HEX_L($1))){}dnl
 __{}__add({__SUM_BYTES},2+__SUM_BYTES_8BIT){}dnl
 __{}__add({__SUM_CLOCKS},8+__SUM_CLOCKS_8BIT){}dnl
-__{}                        ;[__SUM_BYTES:format({%-7s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant {I}: 4..1027 byte
+__{}                        ;[__SUM_BYTES:format({%-7s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant {I.1}: 4..1027 byte
 __{}    exx                 ; 1:4       __INFO{}dnl
 __{}__CODE_16BIT   DE' = addr{}dnl
 __{}_TMP_A{}dnl
@@ -3611,7 +3615,7 @@ __{}__LD_REG16({BC},256*__HEX_L($2>>2)+$3,{HL},$1){}dnl
 __{}__LD_REG16({HL},$1){}dnl
 __{}__add({__SUM_BYTES},2){}dnl
 __{}__add({__SUM_CLOCKS},21){}dnl
-__{}                        ;[__SUM_BYTES:format({%-7s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant {I}: 4..1027 byte
+__{}                        ;[__SUM_BYTES:format({%-7s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant {I.2}: 4..1027 byte
 __{}    push HL             ; 1:11      __INFO{}dnl
 __{}__CODE_16BIT   addr{}dnl
 __{}__LD_REG16({BC},256*__HEX_L($2>>2)+$3,{HL},$1){}dnl
@@ -3619,100 +3623,6 @@ __{}__CODE_16BIT   B = ($2)>>2, C = char
 __{}_TEMP_LOOP
 __{}    djnz $-8            ; 2:13/8    __INFO{}dnl
 __{}_TEMP_PLUS
-__{}    pop  HL             ; 1:10      __INFO},
-
-__SAVE_EVAL(+($2) <= 4*256+3),{1},{
-dnl ;# Opravit! Kdyz addr je ptr tak se musi zvedat "inc HL" a opravit char = ptr, misto C se pouzije A
-__{}define({_TEMP_B},eval(((($2) & 0xFFFF)/4) & 0x1FF))dnl
-__{}ifelse(eval(($2) % 4),{0},{dnl
-__{}__{}define({_TEMP_SIZE},{18}){}dnl
-__{}__{}define({_TEMP_CLOCK},{0}){}dnl
-__{}__{}define({_TEMP_PLUS},{})},
-__{}eval(($2) % 4),{1},{dnl
-__{}__{}define({_TEMP_SIZE},{19}){}dnl
-__{}__{}define({_TEMP_CLOCK},{7}){}dnl
-__{}__{}define({_TEMP_PLUS},{
-__{}__{}    ld  (HL),C          ; 1:7       __INFO})},
-__{}eval(($2) % 4),{2},{dnl
-__{}__{}define({_TEMP_SIZE},{21}){}dnl
-__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+1) & 0xFF),{0},{dnl
-__{}__{}__{}define({_TEMP_CLOCK},{20}){}dnl
-__{}__{}__{}define({_TEMP_PLUS},{
-__{}__{}__{}    ld  (HL),C          ; 1:7       __INFO
-__{}__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}__{}    ld  (HL),C          ; 1:7       __INFO})},
-__{}__{}{dnl
-__{}__{}__{}define({_TEMP_CLOCK},{18}){}dnl
-__{}__{}__{}define({_TEMP_PLUS},{
-__{}__{}__{}    ld  (HL),C          ; 1:7       __INFO
-__{}__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}__{}    ld  (HL),C          ; 1:7       __INFO})})},
-__{}{dnl
-__{}__{}define({_TEMP_SIZE},{23}){}dnl
-__{}__{}define({_TEMP_CLOCK},{29}){}dnl
-__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+1) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))}){}dnl
-__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+2) & 0xFF),{0},{define({_TEMP_CLOCK},eval(_TEMP_CLOCK+2))}){}dnl
-__{}__{}define({_TEMP_PLUS},{
-__{}__{}    ld  (HL),C          ; 1:7       __INFO
-__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+1) & 0xFF),{0},{dnl
-__{}__{}__{}    inc  HL             ; 1:6       __INFO},
-__{}__{}{dnl
-__{}__{}__{}    inc   L             ; 1:4       __INFO})
-__{}__{}    ld  (HL),C          ; 1:7       __INFO
-__{}__{}ifelse(__SAVE_EVAL(+($1+4*_TEMP_B+2) & 0xFF),{0},{dnl
-__{}__{}__{}    inc  HL             ; 1:6       __INFO},
-__{}__{}{dnl
-__{}__{}__{}    inc   L             ; 1:4       __INFO})
-__{}__{}    ld  (HL),C          ; 1:7       __INFO})}){}dnl
-__{}                        ;[_TEMP_SIZE:format({%-7s},eval(36+59*_TEMP_B+_TEMP_CLOCK)])__INFO   fill(addr,u,char)   variant {I}: 4..1027 byte
-__{}    push HL             ; 1:11      __INFO
-__{}    ld   HL, format({%-11s},$1); 3:10      __INFO   HL = addr
-__{}    ld   BC, format({%-11s},eval((256*_TEMP_B) & 0xFFFF)+$3); 3:10      __INFO   B = _TEMP_B{}x, C = $3
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}ifelse(__IS_NUM($1),{0},{dnl
-__{}__{}  if 0x03 & ($1+1)
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}  else
-__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}  endif},
-__{}__SAVE_EVAL(+($1+1) & 0x03),{0},{dnl
-__{}__{}    inc  HL             ; 1:6       __INFO},
-__{}{dnl
-__{}__{}    inc   L             ; 1:4       __INFO})
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}ifelse(__IS_NUM($1),{0},{dnl
-__{}__{}  if 0x03 & ($1+2)
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}  else
-__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}  endif},
-__{}__SAVE_EVAL(+($1+2) & 0x03),{0},{dnl
-__{}__{}    inc  HL             ; 1:6       __INFO},
-__{}{dnl
-__{}__{}    inc   L             ; 1:4       __INFO})
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}ifelse(__IS_NUM($1),{0},{dnl
-__{}__{}  if 0x03 & ($1+3)
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}  else
-__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}  endif},
-__{}__SAVE_EVAL(+($1+3) & 0x03),{0},{dnl
-__{}__{}    inc  HL             ; 1:6       __INFO},
-__{}{dnl
-__{}__{}    inc   L             ; 1:4       __INFO})
-__{}    ld  (HL),C          ; 1:7       __INFO
-__{}ifelse(__IS_NUM($1),{0},{dnl
-__{}__{}  if 0x03 & ($1+0)
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}  else
-__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}  endif},
-__{}__SAVE_EVAL(+($1+0) & 0x03),{0},{dnl
-__{}__{}    inc  HL             ; 1:6       __INFO},
-__{}{dnl
-__{}__{}    inc   L             ; 1:4       __INFO})
-__{}    djnz $-8            ; 2:13/8    __INFO{}_TEMP_PLUS
 __{}    pop  HL             ; 1:10      __INFO},
 
 __HEX_L($1):__HEX_HL($2),0x00:0x0500,{dnl
