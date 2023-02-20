@@ -3453,7 +3453,7 @@ __{}    jp   nz, $-4        ; 3:10      __INFO{}dnl
 __{}},
 
 __HEX_HL($2):__IS_MEM_REF($1):__IS_MEM_REF($3),{0x0007:1:1},{
-__{}                       ;[18:149]    __INFO   fill(addr,u,char)   variant 7.1: 7 byte
+__{}                       ;[18:149]    __INFO   fill(addr,u,char)   variant 7.1: 7 byte, addr is ptr, char is ptr
 __{}    ld    A,format({%-12s},$3); 3:13      __INFO
 __{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO
 __{}    scf                 ; 1:4       __INFO
@@ -3467,7 +3467,7 @@ __{}    ld  (BC){,}A          ; 1:7       __INFO
 __{}    ccf                 ; 1:4       __INFO
 __{}    jr   nc, $-7        ; 2:7/12    __INFO},
 __HEX_HL($2):__IS_MEM_REF($1):__HEX_L($3),{0x0007:1:0x00},{
-__{}                       ;[15:136]    __INFO   fill(addr,u,char)   variant 7.2: 7 byte
+__{}                       ;[15:136]    __INFO   fill(addr,u,char)   variant 7.2: 7 byte, addr is ptr, char=0
 __{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO
 __{}    xor   A             ; 1:4       __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO
@@ -3480,7 +3480,7 @@ __{}    ld  (BC){,}A          ; 1:7       __INFO
 __{}    ccf                 ; 1:4       __INFO
 __{}    jr    c, $-7        ; 2:7/12    __INFO},
 __HEX_HL($2):__IS_MEM_REF($1),{0x0007:1},{
-__{}                       ;[17:143]    __INFO   fill(addr,u,char)   variant 7.3: 7 byte
+__{}                       ;[17:143]    __INFO   fill(addr,u,char)   variant 7.3: 7 byte, addr is ptr
 __{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO
 __{}    ld    A,format({%-12s},$3); 2:7       __INFO
 __{}    scf                 ; 1:4       __INFO
@@ -3494,41 +3494,17 @@ __{}    ld  (BC){,}A          ; 1:7       __INFO
 __{}    ccf                 ; 1:4       __INFO
 __{}    jr   nc, $-7        ; 2:7/12    __INFO},
 __HEX_HL($2):__IS_MEM_REF($3),{0x0007:1},{
-__{}define({__SUM_CLOCKS},55){}dnl
-__{}define({__SUM_BYTES},9){}dnl
+__{}define({__SUM_CLOCKS},7+7+7+4+12){}dnl
+__{}define({__SUM_BYTES},6+8){}dnl
 __{}define({_TEMP_LOOP},{dnl
-__{}ifelse(__HEX_L($2+1),0x00,{
-__{}__{}    inc  BC             ; 1:6       __INFO},
-__{}__HEX_L($2+4),0x00,{
-__{}__{}    inc  BC             ; 1:6       __INFO},
-__{}__IS_NUM($2),1,}__add({__SUM_CLOCKS},-2){{
-__{}__{}    inc   C             ; 1:4       __INFO},
-__{}{
-__{}__{}    inc  BC             ; 1:6       __INFO})
-__{}    ld  (BC){,}A          ; 1:7       __INFO{}dnl
-__{}ifelse(__HEX_L($2+2),0x00,{
-__{}__{}    inc  BC             ; 1:6       __INFO},
-__{}__HEX_L($2+5),0x00,{
-__{}__{}    inc  BC             ; 1:6       __INFO},
-__{}__IS_NUM($2),1,}__add({__SUM_CLOCKS},-2){{
-__{}__{}    inc   C             ; 1:4       __INFO},
-__{}{
-__{}__{}    inc  BC             ; 1:6       __INFO})
-__{}    ld  (BC){,}A          ; 1:7       __INFO{}dnl
-__{}ifelse(__HEX_L($2+3),0x00,{
-__{}__{}    inc  BC             ; 1:6       __INFO},
-__{}__HEX_L($2+6),0x00,{
-__{}__{}    inc  BC             ; 1:6       __INFO},
-__{}__IS_NUM($2),1,}__add({__SUM_CLOCKS},-2){{
-__{}__{}    inc   C             ; 1:4       __INFO},
-__{}{
-__{}__{}    inc  BC             ; 1:6       __INFO})
+__{}}__INC_REG16(BC,$1,0,3,2){
+__{}    ld  (BC){,}A          ; 1:7       __INFO}__INC_REG16(BC,$1,1,3,2){
+__{}    ld  (BC){,}A          ; 1:7       __INFO}__INC_REG16(BC,$1,2,3,2){
 __{}    ld  (BC){,}A          ; 1:7       __INFO
 __{}    ccf                 ; 1:4       __INFO
 __{}    jr   nc, $-7        ; 2:7/12    __INFO}){}dnl
 __{}__add({__SUM_CLOCKS},13+10+4+7+__SUM_CLOCKS-5){}dnl
-__{}__add({__SUM_BYTES},8){}dnl
-__{}                       ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   fill(addr,u,char)   variant 7.4: 7 byte
+__{}                       ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   fill(addr,u,char)   variant 7.4: 7 byte, char is ptr
 __{}    ld    A,format({%-12s},$3); 3:13      __INFO
 __{}    ld   BC{,}format({%-12s},$1); 3:10      __INFO
 __{}    scf                 ; 1:4       __INFO
