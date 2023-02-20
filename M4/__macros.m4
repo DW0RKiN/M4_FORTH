@@ -749,7 +749,7 @@ __{}__IS_NUM($2),1,{dnl
 __{}__{}$0($1,$2,eval($3+$4),$4,$5,eval($6-1))},
 __{}{dnl
 __{}__{}ifelse(__HEX_L($3),0xFF,define({__CLOCKS},6)){}dnl
-__{}__{}&&255&($2+eval($3+1))dnl
+__{}__{}ifelse(eval((256 % $4)==0 && ($3>255)),1,,{&&255&($2+eval($3+1))})dnl
 __{}__{}$0($1,$2,eval($3+$4),$4,$5,eval($6-1)){}dnl
 __{}}){}dnl
 })dnl
@@ -774,19 +774,47 @@ __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
 __{}__{}    inc  $1             ; 1:6       __INFO},
-__{}__IS_NUM($2):__HEX_L(1 & ($2+$3)):__HEX_L(1 & ($5)),1:0x00:0x00,{dnl # pouze suda cisla a sudy prirustek
+__{}__IS_NUM($2):__HEX_L(1 & ($2+$3)):__HEX_L(1 & ($4)),1:0x00:0x00,{dnl # pouze suda cisla = sudy pocatek a sudy prirustek
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
 __{}__{}    inc   substr($1,1)             ; 1:4       __INFO   even numbers only + 1},
+__{}__IS_NUM($2):__HEX_L(($2+$3) % 4):__HEX_HL($4),1:0x00:0x0004,{dnl # prirustek = 2**n a zbytek neni (2**n)-1
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   (num mod 2**n) <> (2**n)-1)},
+__{}__IS_NUM($2):__HEX_L(($2+$3) % 4):__HEX_HL($4),1:0x01:0x0004,{dnl # prirustek = 2**n a zbytek neni (2**n)-1
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   (num mod 2**n) <> (2**n)-1)},
+__{}__IS_NUM($2):__HEX_L(($2+$3) % 4):__HEX_HL($4),1:0x02:0x0004,{dnl # prirustek = 2**n a zbytek neni (2**n)-1
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   (num mod 2**n) <> (2**n)-1)},
 __{}__IS_NUM($2),1,{$0_REC($1,$2,$3,$4,$5,$5)},
-__{}eval(($4<$5) && ($5 & 1)),1,{dnl # 
+__{}eval((256 % $4)==0 && ($4*$5>256)),1,{dnl # prirustek je mocnina 2 a rozsah vic jak 256 bajtu
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
-__{}__{}    inc  $1             ; 1:6       __INFO   $5 is odd increment && increment<times},
+__{}__{}  if __HEX_L($4-1) & ($2+eval($3+1))
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO
+__{}__{}  else
+__{}__{}    inc  $1             ; 1:6       __INFO
+__{}__{}  endif},
+__{}eval(($4<$5) && ($4 & 1)),1,{dnl # 
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},6){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc  $1             ; 1:6       __INFO   $4 is odd increment && increment<times},
 __{}{
 __{}__{}  if substr((),0,1)1dnl # begin pasmo macro
 __{}__{}$0_REC($1,$2,$3,$4,$5,$5){}dnl
