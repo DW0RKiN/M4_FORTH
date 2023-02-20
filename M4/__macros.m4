@@ -784,7 +784,7 @@ __{}__{}    inc   substr($1,1)             ; 1:4       __INFO   even numbers onl
 
 __{}eval((256 % $4)==0 && ($4*$5>256)),1,{dnl # prirustek je mocnina 2 a rozsah vic jak 256 bajtu
 __{}__{}define({__BYTES},1){}dnl
-__{}__{}ifelse(__HEX_L(($4-1) & ($2+$3+1)),0x00,{
+__{}__{}ifelse(__HEX_L(+($4-1) & ($2+$3+1)),0x00,{
 __{}__{}    inc  $1             ; 1:6       __INFO   $4*$5x>256 && __HEX_L($4-1)&($2+eval($3+1))==0{}define({__CLOCKS},6)},
 __{}__{}{
 __{}__{}    inc   substr($1,1)             ; 1:4       __INFO   $4*$5x>256 && __HEX_L($4-1)&($2+eval($3+1))<>0{}define({__CLOCKS},4)}){}dnl
