@@ -690,52 +690,107 @@ __{}define({__SWAP2DEF_TMP},$1)define({$1},$2)define({$2},__SWAP2DEF_TMP)}){}dnl
 dnl
 dnl
 dnl
+dnl __{}__{}  if ((($2+$3) & __HEX_L($4-1)) = __HEX_L($4-1))
+dnl __{}__{}    inc  $1             ; 1:6       __INFO
+dnl __{}__{}  else
+dnl __{}__{}    inc   substr($1,1)             ; 1:4       __INFO
+dnl __{}__{}  endif},
+dnl
 dnl # Input:
-dnl #  $1 = HL,DE,BC
-dnl #  $2 = number before +1
-dnl #  $3 = additional number
-dnl #  $4 = 2,4,8,16,32,64,128,256,...
+dnl #
+dnl #  $1 = name register pair
+dnl #  $2 = start number
+dnl #  $3 = additional
+dnl #  $4 = increment
+dnl #  $5 = times
+dnl #  $6 = times to end
+dnl
+dnl # number = ($2+$3) ...+$4... <$2+$3+$4*$5> 
+dnl #
 dnl # Output:
 dnl #   if ( ($2+$3) & ($4-1) == ($4-1)
 dnl #     inc HL
 dnl #   else
 dnl #     inc L
-define({__INC_REG16},{dnl
+define({__INC_REG16_REC},{dnl
+ifelse(1,1,{errprint({
+$@ }eval($5-$6+1)x: ifelse(__IS_NUM($2),1,{eval($2+$3)},$3){
+})}){}dnl
 __{}ifelse(dnl
-__{}eval($#<4),1,{
-__{}__{}  .error {$0}($@): Missing parameter!},
-__{}eval($#>4),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF({$2}),1,{dnl
+__{}__IS_MEM_REF($2),1,{dnl               # pravdepodobnost je zavisla zda prirustek je nasobkem 2, ale protoze v kodu musi byt defenzivne "inc hl" tak je clock=6
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
-__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
-__{}__{}    inc  $1             ; 1:6       __INFO},
-__{}__IS_NUM({$2}),0,{dnl  # clock return like $2 is zero
-__{}__{}define({__BYTES},1){}dnl
-__{}__{}ifelse(__HEX_L($3 & ($4-1)),__HEX_L($4-1),
-__{}__{}__{}{define({__CLOCKS},6)},
-__{}__{}__{}{define({__CLOCKS},4)}){}dnl
-__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
-__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
-__{}__{}  if ((($2+$3) & __HEX_L($4-1)) = __HEX_L($4-1))
-__{}__{}    inc  $1             ; 1:6       __INFO
-__{}__{}  else
-__{}__{}    inc   substr($1,1)             ; 1:4       __INFO
-__{}__{}  endif},
-__{}__HEX_L(+($2+$3) & ($4-1)),__HEX_L($4-1),{dnl
-__{}__{}define({__BYTES},1){}dnl
-__{}__{}define({__CLOCKS},6){}dnl
-__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
-__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
-__{}__{}    inc  $1             ; 1:6       __INFO},
-__{}__{}{dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc  $1             ; 1:6       __INFO   from ptr},
+__{}$6:__IS_NUM($2),{0:1},{dnl
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO},
+__{}$6,0,{dnl
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}__def({__CLOCKS},4){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
-__{}__{}    inc   substr($1,1)             ; 1:4       __INFO}){}dnl
+__{}__{}substr((),1,1)
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO
+__{}__{}  else
+__{}__{}    inc  $1             ; 1:6       __INFO
+__{}__{}  endif},
+__{}__HEX_L($2+$3),0xFF,{dnl
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},6){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc  $1             ; 1:6       __INFO   lo($2+$3)=0xFF},
+__{}__IS_NUM($2),1,{dnl
+__{}__{}$0($1,$2,eval($3+$4),$4,$5,eval($6-1))},
+__{}{dnl
+__{}__{}ifelse(__HEX_L($3),0xFF,define({__CLOCKS},6)){}dnl
+__{}__{}&&255&($2+eval($3+1))dnl
+__{}__{}$0($1,$2,eval($3+$4),$4,$5,eval($6-1)){}dnl
+__{}}){}dnl
+})dnl
+dnl
+dnl
+dnl
+dnl # Input:
+dnl #
+dnl #  $1 = name register pair
+dnl #  $2 = start number
+dnl #  $3 = additional
+dnl #  $4 = increment
+dnl #  $5 = times
+dnl #  $6 = times to end
+define({__INC_REG16},{dnl
+__{}define({__BYTES},1){}dnl
+__{}undefine({__CLOCKS}){}dnl
+__{}ifelse(dnl
+__{}__IS_MEM_REF($2),1,{dnl # pravdepodobnost je zavisla zda prirustek je nasobkem 2, ale protoze v kodu musi byt defenzivne "inc hl" tak je clock=6
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},6){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc  $1             ; 1:6       __INFO},
+__{}__IS_NUM($2):__HEX_L(1 & ($2+$3)):__HEX_L(1 & ($5)),1:0x00:0x00,{dnl # pouze suda cisla a sudy prirustek
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},4){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   even numbers only + 1},
+__{}__IS_NUM($2),1,{$0_REC($1,$2,$3,$4,$5,$5)},
+__{}eval(($4<$5) && ($5 & 1)),1,{dnl # 
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},6){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc  $1             ; 1:6       __INFO   $5 is odd increment && increment<times},
+__{}{
+__{}__{}  if substr((),0,1)1dnl # begin pasmo macro
+__{}__{}$0_REC($1,$2,$3,$4,$5,$5){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
