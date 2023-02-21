@@ -2,25 +2,25 @@ dnl ## Device
 dnl
 dnl
 define({ZX_CONSTANT},{ifdef({__USE_$0},,{define({__USE_$0})
-ZX_EOL             EQU 0x0D  ; end of line
+ZX_EOL               EQU 0x0D     ; zx_constant   end of line
 
-ZX_INK             EQU 0x10  ; colour
-ZX_PAPER           EQU 0x11  ; colour
-ZX_FLASH           EQU 0x12  ; 0 or 1
-ZX_BRIGHT          EQU 0x13  ; 0 or 1 
-ZX_INVERSE         EQU 0x14  ; 0 or 1
-ZX_OVER            EQU 0x15  ; 0 or 1
-ZX_AT              EQU 0x16  ; Y,X
-ZX_TAB             EQU 0x17  ; # spaces
+ZX_INK               EQU 0x10     ; zx_constant   colour
+ZX_PAPER             EQU 0x11     ; zx_constant   colour
+ZX_FLASH             EQU 0x12     ; zx_constant   0 or 1
+ZX_BRIGHT            EQU 0x13     ; zx_constant   0 or 1 
+ZX_INVERSE           EQU 0x14     ; zx_constant   0 or 1
+ZX_OVER              EQU 0x15     ; zx_constant   0 or 1
+ZX_AT                EQU 0x16     ; zx_constant   Y,X
+ZX_TAB               EQU 0x17     ; zx_constant   # spaces
 
-ZX_BLACK           EQU %000  ;
-ZX_BLUE            EQU %001  ;
-ZX_RED             EQU %010  ;
-ZX_MAGENTA         EQU %011  ;
-ZX_GREEN           EQU %100  ;
-ZX_CYAN            EQU %101  ;
-ZX_YELLOW          EQU %110  ;
-ZX_WHITE           EQU %111  ;}){}dnl
+ZX_BLACK             EQU %000     ; zx_constant
+ZX_BLUE              EQU %001     ; zx_constant
+ZX_RED               EQU %010     ; zx_constant
+ZX_MAGENTA           EQU %011     ; zx_constant
+ZX_GREEN             EQU %100     ; zx_constant
+ZX_CYAN              EQU %101     ; zx_constant
+ZX_YELLOW            EQU %110     ; zx_constant
+ZX_WHITE             EQU %111     ; zx_constant}){}dnl
 }){}dnl
 dnl
 dnl
