@@ -713,7 +713,7 @@ dnl #     inc HL
 dnl #   else
 dnl #     inc L
 define({__INC_REG16_REC},{dnl
-ifelse(1,1,{errprint({
+ifelse(1,0,{errprint({
 $@ }eval($5-$6+1)x: ifelse(__IS_NUM($2),1,{__HEX_L($2+$3)},__HEX_L$3){
 })}){}dnl
 __{}ifelse(dnl
