@@ -1,26 +1,28 @@
 dnl ## Device
 dnl
 dnl
-define({ZX_CONSTANT},{ifdef({__USE_$0},,{define({__USE_$0})
-ZX_EOL               EQU 0x0D     ; zx_constant   end of line
-
-ZX_INK               EQU 0x10     ; zx_constant   colour
-ZX_PAPER             EQU 0x11     ; zx_constant   colour
-ZX_FLASH             EQU 0x12     ; zx_constant   0 or 1
-ZX_BRIGHT            EQU 0x13     ; zx_constant   0 or 1 
-ZX_INVERSE           EQU 0x14     ; zx_constant   0 or 1
-ZX_OVER              EQU 0x15     ; zx_constant   0 or 1
-ZX_AT                EQU 0x16     ; zx_constant   Y,X
-ZX_TAB               EQU 0x17     ; zx_constant   # spaces
-
-ZX_BLACK             EQU %000     ; zx_constant
-ZX_BLUE              EQU %001     ; zx_constant
-ZX_RED               EQU %010     ; zx_constant
-ZX_MAGENTA           EQU %011     ; zx_constant
-ZX_GREEN             EQU %100     ; zx_constant
-ZX_CYAN              EQU %101     ; zx_constant
-ZX_YELLOW            EQU %110     ; zx_constant
-ZX_WHITE             EQU %111     ; zx_constant}){}dnl
+define({ZX_CONSTANT},{dnl
+__{}ifdef({__USE_$0},,{define({__USE_$0})
+__{}__{}ZX_EOL               EQU 0x0D     ; zx_constant   end of line
+__{}__{}
+__{}__{}ZX_INK               EQU 0x10     ; zx_constant   colour
+__{}__{}ZX_PAPER             EQU 0x11     ; zx_constant   colour
+__{}__{}ZX_FLASH             EQU 0x12     ; zx_constant   0 or 1
+__{}__{}ZX_BRIGHT            EQU 0x13     ; zx_constant   0 or 1 
+__{}__{}ZX_INVERSE           EQU 0x14     ; zx_constant   0 or 1
+__{}__{}ZX_OVER              EQU 0x15     ; zx_constant   0 or 1
+__{}__{}ZX_AT                EQU 0x16     ; zx_constant   Y,X
+__{}__{}ZX_TAB               EQU 0x17     ; zx_constant   # spaces
+__{}__{}
+__{}__{}ZX_BLACK             EQU %000     ; zx_constant
+__{}__{}ZX_BLUE              EQU %001     ; zx_constant
+__{}__{}ZX_RED               EQU %010     ; zx_constant
+__{}__{}ZX_MAGENTA           EQU %011     ; zx_constant
+__{}__{}ZX_GREEN             EQU %100     ; zx_constant
+__{}__{}ZX_CYAN              EQU %101     ; zx_constant
+__{}__{}ZX_YELLOW            EQU %110     ; zx_constant
+__{}__{}ZX_WHITE             EQU %111     ; zx_constant
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -61,7 +63,7 @@ dnl
 define({PRINT_STRING_STACK},{ifdef({__STRING_NUM_STACK},{
 __{}ifelse(substr(__STRING_STACK,0,7),{    db },{string{}__STRING_NUM_STACK:
 __{}__{}__STRING_STACK
-__{}__{}  size{}__STRING_NUM_STACK   EQU  $ - string{}__STRING_NUM_STACK},
+__{}__{}format({%-21s},size{}__STRING_NUM_STACK )EQU $ - string{}__STRING_NUM_STACK},
 __{}{dnl
 __{}__{}__STRING_STACK}){}dnl
 __{}popdef({__STRING_NUM_STACK}){}popdef({__STRING_STACK}){}PRINT_STRING_STACK})})dnl
