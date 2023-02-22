@@ -3530,23 +3530,26 @@ __{}    scf                 ; 1:4       __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO{}dnl
 __{}_TEMP_LOOP},
 
-__HEX_H($1):__IS_NUM($1):__HEX_L(($2) % 3):__IS_MEM_REF($3),__HEX_H($1+$2-1):1:0x00:1,{
-__{}define({__SUM_CLOCKS_8BIT},14+eval(($2)/3)*46-5+4){}dnl
-__{}define({__SUM_BYTES_8BIT},13){}dnl
+__HEX_L($2<768):__HEX_L(($2) % 3):__IS_MEM_REF($3),0x01:0x00:1,{
+__{}define({__SUM_CLOCKS},21+13){}dnl
+__{}define({__SUM_BYTES},5){}dnl
+__{}define({_TEMP_LOOP},{
+__{}__{}    ld  (DE),A          ; 1:7       __INFO}__INC_REG16(DE,$1,0,3,eval(($2)/3)){
+__{}__{}    ld  (DE),A          ; 1:7       __INFO}__INC_REG16(DE,$1,1,3,eval(($2)/3)){
+__{}__{}    ld  (DE),A          ; 1:7       __INFO}__INC_REG16(DE,$1,2,3,eval(($2)/3)-1){
+__{}__{}    djnz $-6            ; 2:13/8    __INFO}){}dnl
+__{}define({__SUM_CLOCKS_8BIT},4+10+eval(($2)/3)*(__SUM_CLOCKS)-5+4){}dnl
+__{}define({__SUM_BYTES_8BIT},1+3+__SUM_BYTES+1){}dnl
+__{}define({_TMP_INFO},__INFO   addr){}dnl
+__{}__LD_REG16(DE,$1){}dnl
 __{}define({_TMP_B},__LD_R_NUM(__INFO   ($2)/3,B,__HEX_L(($2)/3),D,__HEX_H($1),E,__HEX_L($1))){}dnl
 __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
-__{}                        ;[__SUM_BYTES_8BIT:format({%-7s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant same_segment.1: u == 3*n bytes and char is ptr
-__{}    exx                 ; 1:4       __INFO
-__{}    ld   DE, format({%-11s},$1); 3:10      __INFO   DE = addr{}dnl
+__{}                        ;[__SUM_BYTES_8BIT:format({%-7s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant: fill(num,3*eval(($2)/3) (max 767),ptr)
+__{}    exx                 ; 1:4       __INFO{}dnl
+__{}__CODE_16BIT{}dnl
 __{}_TMP_B{}dnl
-__{}_TMP_A
-__{}    ld  (DE),A          ; 1:7       __INFO
-__{}    inc   E             ; 1:4       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
-__{}    inc   E             ; 1:4       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
-__{}    inc   E             ; 1:4       __INFO
-__{}    djnz $-6            ; 2:13/8    __INFO
+__{}_TMP_A{}dnl
+__{}_TEMP_LOOP
 __{}    exx                 ; 1:4       __INFO},
 
 __HEX_H($1):__IS_NUM($1):__HEX_L(($2) % 3),__HEX_H($1+$2-1):1:0x00,{
