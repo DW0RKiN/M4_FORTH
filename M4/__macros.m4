@@ -744,7 +744,7 @@ __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
-__{}__{}    inc  $1             ; 1:6       __INFO   lo($2+$3)=0xFF},
+__{}__{}    inc  $1             ; 1:6       __INFO   lo($2+eval($3-$4*($5-$6))+$4*eval($5-$6))=0xFF},
 __{}__IS_NUM($2),1,{dnl
 __{}__{}$0($1,$2,eval($3+$4),$4,$5,eval($6-1))},
 __{}{dnl

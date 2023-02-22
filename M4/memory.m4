@@ -3841,6 +3841,61 @@ __{}    ld  (BC),A          ; 1:7       __INFO
 __{}    inc   C             ; 1:4       __INFO
 __{}    jr   nz, format({%-11s},$-eval(8+__BYTES)); 2:7/12    __INFO},
 
+__HEX_L(0==(($2) % 6)):__HEX_L(2==(($2) % 4)):__HEX_L(6*256>$2):__IS_MEM_REF($3),0x01:0x01:0x01:1,{
+__{}define({_TMP_X},__HEX_L(+($2)/6)){}dnl
+__{}define({__SUM_CLOCKS},42+13){}dnl
+__{}define({__SUM_BYTES},6+2){}dnl
+__{}define({_TEMP_LOOP},{dnl
+__{}    ld  (DE){,}A          ; 1:7       __INFO}__INC_REG16({DE},$1,0,6,_TMP_X){
+__{}    ld  (DE){,}A          ; 1:7       __INFO}__INC_REG16({DE},$1,1,6,_TMP_X){
+__{}    ld  (DE){,}A          ; 1:7       __INFO}__INC_REG16({DE},$1,2,6,_TMP_X){
+__{}    ld  (DE){,}A          ; 1:7       __INFO}__INC_REG16({DE},$1,3,6,_TMP_X){
+__{}    ld  (DE){,}A          ; 1:7       __INFO}__INC_REG16({DE},$1,4,6,_TMP_X){
+__{}    ld  (DE){,}A          ; 1:7       __INFO}__INC_REG16({DE},$1,5,6,_TMP_X)){}dnl
+__{}define({__SUM_CLOCKS},eval(4+_TMP_X*(__SUM_CLOCKS)-5+4)){}dnl
+__{}__add({__SUM_BYTES},2){}dnl
+__{}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({DE},$1){}dnl
+__{}define({__SUM_CLOCKS_8BIT},__SUM_CLOCKS){}dnl
+__{}define({__SUM_BYTES_8BIT},__SUM_BYTES){}dnl
+__{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
+__{}define({_TMP_B},__LD_R_NUM(__INFO   B' = ($2)/6,B,_TMP_X,A,$3,D,__HEX_H($1),E,__HEX_L($1))){}dnl
+__{}format({%36s},;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] ))__INFO   fill(addr,u,char)   variant {I.1}: u= 6*eval(($2)/6) byte (max 1536), char is ptr
+__{}    exx                 ; 1:4       __INFO{}dnl
+__{}__CODE_16BIT   addr{}dnl
+__{}_TMP_A{}dnl
+__{}_TMP_B
+__{}_TEMP_LOOP
+__{}    djnz $-12           ; 2:13/8    __INFO
+__{}    exx                 ; 1:4       __INFO},
+
+__HEX_L(0==(($2) % 6)):__HEX_L(2==(($2) % 4)):__HEX_L(6*256>$2):__IS_MEM_REF($3),0x01:0x01:0x01:0,{
+__{}define({_TMP_X},__HEX_L(+($2)/6)){}dnl
+__{}define({__SUM_CLOCKS},42+13){}dnl
+__{}define({__SUM_BYTES},6+2){}dnl
+__{}define({_TEMP_LOOP},{dnl
+__{}    ld  (HL){,}C          ; 1:7       __INFO}__INC_REG16({HL},$1,0,6,_TMP_X){
+__{}    ld  (HL){,}C          ; 1:7       __INFO}__INC_REG16({HL},$1,1,6,_TMP_X){
+__{}    ld  (HL){,}C          ; 1:7       __INFO}__INC_REG16({HL},$1,2,6,_TMP_X){
+__{}    ld  (HL){,}C          ; 1:7       __INFO}__INC_REG16({HL},$1,3,6,_TMP_X){
+__{}    ld  (HL){,}C          ; 1:7       __INFO}__INC_REG16({HL},$1,4,6,_TMP_X){
+__{}    ld  (HL){,}C          ; 1:7       __INFO}__INC_REG16({HL},$1,5,6,_TMP_X)){}dnl
+__{}define({__SUM_CLOCKS},eval(11+_TMP_X*(__SUM_CLOCKS)-5+10)){}dnl
+__{}__add({__SUM_BYTES},2){}dnl
+__{}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({BC},__HEX_HL(256*_TMP_X)+$3,{HL},$1){}dnl
+__{}__LD_REG16({HL},$1){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant {I.2}: u= 6*eval(($2)/6) byte (max 1536)
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__CODE_16BIT   addr{}dnl
+__{}__LD_REG16({BC},__HEX_HL(256*_TMP_X)+$3,{HL},$1){}dnl
+__{}__CODE_16BIT   B = ($2)/6, C = char
+__{}_TEMP_LOOP
+__{}    djnz $-12           ; 2:13/8    __INFO
+__{}    pop  HL             ; 1:10      __INFO},
+
 __IS_MEM_REF($3):__SAVE_EVAL(+($2) <= 4*256+3),{1:1},{
 __{}define({__SUM_CLOCKS},28+13){}dnl
 __{}define({__SUM_BYTES},4+2){}dnl
@@ -3880,7 +3935,7 @@ __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3)){}dnl
 __{}define({_TMP_B},__LD_R_NUM(__INFO   B' = ($2)>>2,B,__HEX_L($2>>2),A,$3,D,__HEX_H($1),E,__HEX_L($1))){}dnl
 __{}__add({__SUM_BYTES},2+__SUM_BYTES_8BIT){}dnl
 __{}__add({__SUM_CLOCKS},8+__SUM_CLOCKS_8BIT){}dnl
-__{}                        ;[__SUM_BYTES:format({%-7s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant {I.1}: 4..1027 byte
+__{}                        ;[__SUM_BYTES:format({%-7s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant {I.3}: 4..1027 byte, char is ptr
 __{}    exx                 ; 1:4       __INFO{}dnl
 __{}__CODE_16BIT   DE' = addr{}dnl
 __{}_TMP_A{}dnl
@@ -3926,7 +3981,7 @@ __{}__LD_REG16({BC},256*__HEX_L($2>>2)+$3,{HL},$1){}dnl
 __{}__LD_REG16({HL},$1){}dnl
 __{}__add({__SUM_BYTES},2){}dnl
 __{}__add({__SUM_CLOCKS},21){}dnl
-__{}                        ;[__SUM_BYTES:format({%-7s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant {I.2}: 4..1027 byte
+__{}                        ;[__SUM_BYTES:format({%-7s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant {I.4}: 4..1027 byte
 __{}    push HL             ; 1:11      __INFO{}dnl
 __{}__CODE_16BIT   addr{}dnl
 __{}__LD_REG16({BC},256*__HEX_L($2>>2)+$3,{HL},$1){}dnl
