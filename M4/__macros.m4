@@ -1397,6 +1397,9 @@ dnl
 dnl
 dnl
 define({__LD_REG16},{dnl
+ifelse(1,0,{errprint({
+__ld_reg16($@)
+})}){}dnl
 dnl # __ld_reg16_16bit $1,$2,$3,$4,$5,$6,$7,$8
 dnl # Use: __LD_REG16({HL},0x2200,{DE},1,{BC},0x3322,{HL},-1)
 dnl # Input:
@@ -1422,11 +1425,20 @@ dnl # __SUM_PRICES += __PRICE_16BIT
 __{}undefine({__COMMA}){}dnl
 ifelse(__IS_MEM_REF($1),1,{dnl
 __{}ifelse($1,(HL),{dnl
-__{}__{}ifelse(__IS_MEM_REF($2):$3=$2,1:HL=($4),{dnl
+__{}__{}ifelse(dnl
+__{}__{}__IS_MEM_REF($2):HL=$2,1:$3=($4),{dnl # ld (HL),(0x8000) && HL=$0x8000 --> nothing
 __{}__{}__{}define({__CLOCKS_16BIT},0){}dnl
 __{}__{}__{}define({__BYTES_16BIT},0){}dnl
 __{}__{}__{}define({__CODE_16BIT},{})},
-__{}__{}$2,$4,{dnl
+__{}__{}__IS_MEM_REF($2):HL=$2,1:$5=($6),{dnl # ld (HL),(0x8000) && HL=$0x8000 --> nothing
+__{}__{}__{}define({__CLOCKS_16BIT},0){}dnl
+__{}__{}__{}define({__BYTES_16BIT},0){}dnl
+__{}__{}__{}define({__CODE_16BIT},{})},
+__{}__{}__IS_MEM_REF($2):HL=$2,1:$7=($8),{dnl # ld (HL),(0x8000) && HL=$0x8000 --> nothing
+__{}__{}__{}define({__CLOCKS_16BIT},0){}dnl
+__{}__{}__{}define({__BYTES_16BIT},0){}dnl
+__{}__{}__{}define({__CODE_16BIT},{})},
+__{}__{}$2,$4,{dnl # ld (HL),(0x8000) && DE=($0x8000) --> ld (HL),E
 __{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
 __{}__{}__{}define({__BYTES_16BIT},1){}dnl
 __{}__{}__{}define({__CODE_16BIT},{

@@ -4040,11 +4040,11 @@ __{}    pop  HL             ; 1:10      __INFO},
 __{}__IS_MEM_REF($1),1,{
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({__SUM_BYTES},9){}dnl
-__{}define({__SUM_CLOCKS},eval(51+21*$2)){}dnl
+__{}define({__SUM_CLOCKS},eval(56+21*($2-1)-5)){}dnl
 __{}__LD_REG16({(HL)},$3,{BC},$2-1,{HL},$1){}dnl
 __{}__LD_REG16({BC},$2-1,{HL},$1){}dnl
 __{}__LD_REG16({HL},$1){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-7s},__SUM_CLOCKS]) __INFO   fill(addr,u,char)   variant: fill(ptr,?,?)
+__{}format({%28s},;[__SUM_BYTES:)format({%-7s},__SUM_CLOCKS]) __INFO   fill(addr,u,char)   default variant: fill(ptr,?,?)
 __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO{}dnl
 __{}__CODE_16BIT   HL = addr from
@@ -4060,17 +4060,20 @@ __{}    pop  DE             ; 1:10      __INFO},
 __{}{
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({__SUM_BYTES},6){}dnl
-__{}define({__SUM_CLOCKS},eval(37+21*$2)){}dnl
+__{}define({__SUM_CLOCKS},eval(42+21*($2-1)-5)){}dnl
 __{}__LD_REG16({(HL)},$3,{BC},$2-1,{DE},$1+1,{HL},$1){}dnl
-__{}__LD_REG16({BC},$2-1,{DE},$1+1,{HL},$1){}dnl
-__{}__LD_REG16(          {DE},$1+1,{HL},$1){}dnl
-__{}__LD_REG16(                    {HL},$1){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-7s},__SUM_CLOCKS]) __INFO   fill(addr,u,char)   variant {K}.default
+__{}__LD_REG16(          {BC},$2-1,{DE},$1+1,{HL},$1){}dnl
+__{}__LD_REG16(                    {DE},$1+1,{HL},$1){}dnl
+__{}__LD_REG16(                              {HL},$1){}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-7s},__SUM_CLOCKS]) __INFO   fill(addr,u,char)   default variant: fill(no ptr,?,?) 
 __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO{}dnl
-__{}__CODE_16BIT   HL = addr from{}__LD_REG16({DE},$1+1,{HL},$1){}dnl
-__{}__CODE_16BIT   DE = to{}__LD_REG16({BC},$2-1,{DE},$1+1,{HL},$1){}dnl
-__{}__CODE_16BIT   = $2-1{}__LD_REG16({(HL)},$3,{BC},$2-1,{DE},$1+1,{HL},$1){}dnl
+__{}__CODE_16BIT   HL = addr from{}dnl
+__{}__LD_REG16(                    {DE},$1+1,{HL},$1){}dnl
+__{}__CODE_16BIT   DE = to{}dnl
+__{}__LD_REG16(          {BC},$2-1,{DE},$1+1,{HL},$1){}dnl
+__{}__CODE_16BIT   = $2-1{}dnl
+__{}__LD_REG16({(HL)},$3,{BC},$2-1,{DE},$1+1,{HL},$1){}dnl
 __{}__CODE_16BIT
 __{}    ldir                ; 2:u*21/16 __INFO
 __{}    pop  HL             ; 1:10      __INFO
