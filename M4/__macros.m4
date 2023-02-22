@@ -773,7 +773,7 @@ __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
-__{}__{}    inc  $1             ; 1:6       __INFO},
+__{}__{}    inc  $1             ; 1:6       __INFO   from ptr},
 
 __{}__IS_NUM($2):__HEX_L(1 & ($2+$3)):__HEX_L(1 & ($4)),1:0x00:0x00,{dnl # pouze suda cisla = sudy pocatek a sudy prirustek
 __{}__{}define({__BYTES},1){}dnl
