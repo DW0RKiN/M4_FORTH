@@ -3300,7 +3300,7 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO},
 
 __HEX_HL($2):__IS_MEM_REF($1):__IS_MEM_REF($3),{0x0005:1:1},{
-__{}                       ;[16:92]     __INFO   fill(addr,u,char)   variant E.1: 5 byte
+__{}                       ;[16:92]     __INFO   fill(addr,u,char)   variant: fill(ptr,5,ptr)
 __{}    ld    A,format({%-12s},$3); 3:13      __INFO
 __{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO
@@ -3313,7 +3313,7 @@ __{}    ld  (BC){,}A          ; 1:7       __INFO
 __{}    inc  BC             ; 1:6       __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO},
 __HEX_HL($2):__IS_MEM_REF($1),{0x0005:1},{
-__{}                       ;[15:86]     __INFO   fill(addr,u,char)   variant E.2: 5 byte
+__{}                       ;[15:86]     __INFO   fill(addr,u,char)   variant: fill(ptr,5,no ptr)
 __{}    ld    A,format({%-12s},$3); 2:7       __INFO
 __{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO
@@ -3326,7 +3326,7 @@ __{}    ld  (BC){,}A          ; 1:7       __INFO
 __{}    inc  BC             ; 1:6       __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO},
 __HEX_HL($2):__IS_MEM_REF($3),{0x0005:1},{
-__{}                        ;[16:74]    __INFO   fill(addr,u,char)   variant E.3: 5 byte
+__{}                        ;[16:74]    __INFO   fill(addr,u,char)   variant: fill(no ptr,5,ptr)
 __{}    ld    A, format({%-11s},$3); 3:13      __INFO
 __{}    ld    C, A          ; 1:4       __INFO
 __{}    ld    B, A          ; 1:4       __INFO
@@ -3334,7 +3334,7 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} A); 3:13      __INFO},
 __HEX_HL($2),{0x0005},{
-__{}                       ;[15:67]     __INFO   fill(addr,u,char)   variant E.4: 5 byte
+__{}                       ;[15:67]     __INFO   fill(addr,u,char)   variant: fill(no ptr,5,no ptr)
 __{}    ld   BC, format({%-11s},257*($3)); 3:10      __INFO
 __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
@@ -3342,7 +3342,7 @@ __{}    ld    A, C          ; 1:4       __INFO
 __{}    ld   format({%-15s},(4+$1){,} A); 3:13      __INFO},
 
 __HEX_HL($2):__IS_MEM_REF($1):__IS_MEM_REF($3),{0x0006:1:1},{
-__{}                       ;[18:105]    __INFO   fill(addr,u,char)   variant F.1: 6 byte
+__{}                       ;[18:105]    __INFO   fill(addr,u,char)   variant: fill(ptr,6,ptr)
 __{}    ld    A,format({%-12s},$3); 3:13      __INFO
 __{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO
@@ -3357,7 +3357,7 @@ __{}    ld  (BC){,}A          ; 1:7       __INFO
 __{}    inc  BC             ; 1:6       __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO},
 __HEX_HL($2):__IS_MEM_REF($1),{0x0006:1},{
-__{}                       ;[17:99]     __INFO   fill(addr,u,char)   variant F.2: 6 byte
+__{}                       ;[17:99]     __INFO   fill(addr,u,char)   variant: fill(ptr,6,no ptr)
 __{}    ld    A,format({%-12s},$3); 2:7       __INFO
 __{}    ld   BC{,}format({%-12s},$1); 4:20      __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO
@@ -3372,7 +3372,7 @@ __{}    ld  (BC){,}A          ; 1:7       __INFO
 __{}    inc  BC             ; 1:6       __INFO
 __{}    ld  (BC){,}A          ; 1:7       __INFO},
 __HEX_HL($2):__IS_MEM_REF($3),{0x0006:1},{
-__{}                        ;[17:81]    __INFO   fill(addr,u,char)   variant F.3: 6 byte
+__{}                        ;[17:81]    __INFO   fill(addr,u,char)   variant: fill(no ptr,6,ptr)
 __{}    ld    A, format({%-11s},$3); 3:13      __INFO
 __{}    ld    C, A          ; 1:4       __INFO
 __{}    ld    B, A          ; 1:4       __INFO
@@ -3380,7 +3380,7 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 __HEX_HL($2),{0x0006},{
-__{}                       ;[15:70]     __INFO   fill(addr,u,char)   variant F.4: 6 byte
+__{}                       ;[15:70]     __INFO   fill(addr,u,char)   variant: fill(no ptr,6,no ptr)
 __{}    ld   BC, format({%-11s},257*($3)); 3:10      __INFO
 __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
@@ -3392,7 +3392,7 @@ __{}define({__SUM_BYTES},9+__BYTES){}dnl
 __{}define({__SUM_CLOCKS},__CLOCKS+43*(($2)/3)){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},$1){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant 2zero.1: 2..256 byte and u%3=0 and addr+u=0x??00{}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant >0: fill(num,3*eval(($2)/3)(max 256),?){}dnl
 __{}__CODE_16BIT   addr{}dnl
 __{}_TMP_A
 __{}    ld  (BC),A          ; 1:7       __INFO
@@ -3409,7 +3409,7 @@ __{}define({__SUM_BYTES},7+(($2) & 0x01)+__BYTES){}dnl
 __{}define({__SUM_CLOCKS},7*(($2) & 0x01)+(($2)>>1)*32+__CLOCKS){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},$1){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant 2zero.1: 2..256 byte and hi(addr)==hi(addr+u-1) and addr+u=0x??00{}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant >zero.2: 2..256 byte and hi(addr)==hi(addr+u-1) and addr+u=0x??00{}dnl
 __{}__CODE_16BIT   addr{}dnl
 __{}_TMP_A
 __{}    ld  (BC),A          ; 1:7       __INFO
@@ -3427,7 +3427,7 @@ __{}define({__SUM_BYTES},9+__BYTES){}dnl
 __{}define({__SUM_CLOCKS},__CLOCKS+43*(($2)/3)){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},256*__HEX_H($1)+__HEX_L($1+$2-(($2) & 1))){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant from_zero.1: 2..256 byte and u%3=0  and addr=0x??00{}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant zero>.1: 2..256 byte and u%3=0  and addr=0x??00{}dnl
 __{}__CODE_16BIT   addr{}dnl
 __{}_TMP_A
 __{}    dec   C             ; 1:4       __INFO
@@ -3444,7 +3444,7 @@ __{}define({__SUM_BYTES},7+(($2) & 0x01)+__BYTES){}dnl
 __{}define({__SUM_CLOCKS},7*(($2) & 0x01)+(($2)>>1)*32+__CLOCKS){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({BC},256*__HEX_H($1)+__HEX_L($1+$2-(($2) & 1))){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant from_zero.2: 2..256 byte and hi(addr)==hi(addr+u-1) and addr=0x??00{}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-8s},__SUM_CLOCKS] )__INFO   fill(addr,u,char)   variant zero>.2: 2..256 byte and hi(addr)==hi(addr+u-1) and addr=0x??00{}dnl
 __{}__CODE_16BIT   addr{}dnl
 __{}_TMP_A{}dnl
 __{}ifelse(eval(($2) & 0x01),{1},{
