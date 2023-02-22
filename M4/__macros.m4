@@ -780,32 +780,31 @@ __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
-__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   even numbers only + 1},
+__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   only even numbers},
 
-__{}eval((256 % $4)==0 && ($4*$5>256)),1,{dnl # prirustek je mocnina 2 a rozsah vic jak 256 bajtu
+__{}eval((256 % $4)==0 && ($4*$5>256)),1,{dnl # prirustek je mocnina 2 a rozsah vic jak 256 bajtu, takze bud vzdy mineme a nebo vzdy trefime
+__{}__{}ifelse(__IS_NUM($2),1,{dnl
+__{}__{}__{}ifelse(__HEX_L(+($4-1) & ($2+$3+1)),0x00,{dnl
+__{}__{}__{}__{}define({__CLOCKS},6)
+__{}__{}__{}__{}    inc  $1             ; 1:6       __INFO   0x??FF=$2+$3+$4*eval(__HEX_L((0xFF-$2-$3)/$4))},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({__CLOCKS},4)
+__{}__{}__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   never 0x??FF (PRINT_BINARY(0xFF&($2+$3))+n*PRINT_BINARY($4))})},
+__{}__{}{dnl
+__{}__{}__{}ifelse(__HEX_L(+($4-1) & (0+$3+1)),0x00,{dnl
+__{}__{}__{}__{}define({__CLOCKS},6)},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({__CLOCKS},4)}){}dnl
+__{}__{}__{}  if __HEX_L($4-1) & ($2+eval($3+1))
+__{}__{}__{}    inc   substr($1,1)             ; 1:4       __INFO
+__{}__{}__{}  else
+__{}__{}__{}    inc  $1             ; 1:6       __INFO
+__{}__{}__{}  endif}){}dnl
 __{}__{}define({__BYTES},1){}dnl
-__{}__{}ifelse(__HEX_L(+($4-1) & ($2+$3+1)),0x00,{
-__{}__{}    inc  $1             ; 1:6       __INFO   $4*$5x>256 && __HEX_L($4-1)&($2+eval($3+1))==0{}define({__CLOCKS},6)},
-__{}__{}{
-__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   $4*$5x>256 && __HEX_L($4-1)&($2+eval($3+1))<>0{}define({__CLOCKS},4)}){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)},
 
 __{}__IS_NUM($2),1,{$0_REC($1,$2,$3,$4,$5,$5)},
-
-__{}eval((256 % $4)==0 && ($4*$5>256)),1,{dnl # prirustek je mocnina 2 a rozsah vic jak 256 bajtu
-__{}__{}define({__BYTES},1){}dnl
-__{}__{}ifelse(__HEX_L(($4-1) & ($3+1)),0x00,{dnl
-__{}__{}__{}define({__CLOCKS},6)},
-__{}__{}{dnl
-__{}__{}__{}define({__CLOCKS},4)}){}dnl
-__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
-__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
-__{}__{}  if __HEX_L($4-1) & ($2+eval($3+1))
-__{}__{}    inc   substr($1,1)             ; 1:4       __INFO
-__{}__{}  else
-__{}__{}    inc  $1             ; 1:6       __INFO
-__{}__{}  endif},
 
 __{}eval(($4<$5) && ($4 & 1)),1,{dnl # 
 __{}__{}define({__BYTES},1){}dnl
@@ -4518,11 +4517,25 @@ __{}ifelse(eval(TEMP_BIN),{0},,{PRINT_NIBBLE}){}dnl
 dnl
 dnl
 dnl
+dnl #    INPUT  OUTPUT
+dnl #
+dnl #        5  b_0101
+dnl #        7  b_0111
+dnl #       20  b_0001_0100
+dnl #    0x321  b_0011_0010_0001
+dnl #       -1  b_1111_1111_1111_1111
+dnl #     8-16  b_1111_1111_1111_1111
+dnl #      abc  b_????_????_????_????
+dnl # (0x8000)  b_????_????_????_????
+dnl #
 define({PRINT_BINARY},{dnl
-__{}define({TEMP_BIN},eval(($1) & 0xffff)){}dnl
-__{}define({TEMP_BIN_OUT},{}){}dnl
-__{}PRINT_NIBBLE{}dnl
-__{}b{}TEMP_BIN_OUT{}dnl
+__{}ifelse(__IS_NUM($1),0,{b_????_????_????_????},
+__{}{dnl
+__{}__{}define({TEMP_BIN},__HEX_HL($1)){}dnl
+__{}__{}define({TEMP_BIN_OUT},{}){}dnl
+__{}__{}PRINT_NIBBLE{}dnl
+__{}__{}b{}TEMP_BIN_OUT{}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
