@@ -744,7 +744,7 @@ __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
-__{}__{}    inc  $1             ; 1:6       __INFO   lo($2+eval($3-$4*($5-$6))+$4*eval($5-$6))=0xFF},
+__{}__{}    inc  $1             ; 1:6       __INFO   __HEX_HL($2+$3)=$2+eval($3-$4*($5-$6))+$4*eval($5-$6)},
 __{}__IS_NUM($2),1,{dnl
 __{}__{}$0($1,$2,eval($3+$4),$4,$5,eval($6-1))},
 __{}{dnl
@@ -1129,11 +1129,11 @@ dnl #  $5 Source registry value
 __{}define({__CLOCKS},10000000){}dnl
 __{}define({__BYTES},0){}dnl
 __{}undefine({__CODE}){}dnl
-__{}__LD4($2,$3,$4,$5){}dnl
-__{}__LD4($2,$3,$6,$7){}dnl
-__{}__LD4($2,$3,$8,$9){}dnl
-__{}__LD4($2,$3,$10,$11){}dnl
-__{}__LD4($2,$3,$12,$13){}dnl
+__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3), $4,ifelse(__IS_NUM( $5),1,__HEX_L( $5), $5)){}dnl
+__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3), $6,ifelse(__IS_NUM( $7),1,__HEX_L( $7), $7)){}dnl
+__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3), $8,ifelse(__IS_NUM( $9),1,__HEX_L( $9), $9)){}dnl
+__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),$10,ifelse(__IS_NUM($11),1,__HEX_L($11),$11)){}dnl
+__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),$12,ifelse(__IS_NUM($13),1,__HEX_L($13),$13)){}dnl
 __{}define({_TMP_INFO},$1){}dnl
 __{}define({__CODE},__CODE){}dnl
 __{}__add({__SUM_CLOCKS_8BIT},__CLOCKS){}dnl
