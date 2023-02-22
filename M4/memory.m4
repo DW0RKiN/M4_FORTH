@@ -3624,6 +3624,9 @@ __{}}){}dnl
 __{}    pop  HL             ; 1:10      __INFO},
 
 __HEX_HL($1):__HEX_HL($2),__HEX_L($3)00:0x0500,{dnl
+dnl # only if HI(addr) == LO(char), because >0 == 18705t
+dnl # ; t= 7+7-5+256*(4+7+4+7+4+7+4+7+4+7+4+12)=9+256*71=18185
+dnl #
 dnl # ; t= 7+7-5+256*(7+7+4+7+4+7+4+7+4+7+4+12)=9+256*74=18953
 dnl # cca 14.8 t/b
 dnl # cca 14.4 t/b if JP t=14+256*72=18446
@@ -3633,7 +3636,7 @@ __{}define({_TMP_A},__LD_R_NUM(__INFO   char,                           A,$3)){}
 __{}define({_TMP_C},__LD_R_NUM(__INFO   lo(addr),              C,{0x00},A,__HEX_L($3))){}dnl
 __{}define({_TMP_B},__LD_R_NUM(__INFO   hi(addr),B,__HEX_H($1),C,{0x00},A,__HEX_L($3))){}dnl
 __{}define({__SUM_CLOCKS_8BIT},eval(__SUM_CLOCKS_8BIT-__CLOCKS-5+256*(67+__CLOCKS))){}dnl
-__{}                       ;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant addr=0x??00 and u=5*256 byte{}dnl
+__{}                       ;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant: fill(0x??00,5*256,?){}dnl
 __{}_TMP_A{}dnl
 __{}_TMP_C{}dnl
 __{}_TMP_B
@@ -3694,7 +3697,7 @@ __{}__LD_REG16({BC},__HEX_HL($1)){}dnl
 __{}define({__SUM_CLOCKS_8BIT},__SUM_CLOCKS){}dnl
 __{}define({__SUM_BYTES_8BIT},__SUM_BYTES){}dnl
 __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3,B,__HEX_H($1),C,__HEX_L($1))){}dnl
-__{}format({%36s},;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] ))__INFO   fill(addr,u,char)   variant addr+u=0x??00 and u=5*eval($2/5) byte (max 1280){}dnl
+__{}format({%36s},;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] ))__INFO   fill(addr,u,char)   variant >0: fill(num,5*eval($2/5) (max 1280),?){}dnl
 __{}__CODE_16BIT{}dnl
 __{}_TMP_A{}dnl
 __{}_TEMP_LOOP},
@@ -3745,7 +3748,7 @@ __{}__LD_REG16({BC},__HEX_HL($1-1)){}dnl
 __{}define({__SUM_CLOCKS_8BIT},__SUM_CLOCKS){}dnl
 __{}define({__SUM_BYTES_8BIT},__SUM_BYTES){}dnl
 __{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3,B,__HEX_H($1),C,__HEX_L($1))){}dnl
-__{}format({%36s},;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] ))__INFO   fill(addr,u,char)   variant addr+u=0x??00 and u+2=5*eval((2+$2)/5) byte (max 1280){}dnl
+__{}format({%36s},;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] ))__INFO   fill(addr,u,char)   variant >0: fill(num,5*eval((2+$2)/5)-2 (max 1280),?){}dnl
 __{}__CODE_16BIT{}dnl
 __{}_TMP_A
 __{}    db 0x18             ; 1:12      __INFO   db 0x18,0x02 = jr $+4{}dnl
