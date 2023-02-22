@@ -4019,10 +4019,10 @@ __{}define({_TEMP_X},__HEX_HL(($2)/4))dnl
 __{}define({_TEMP_B},__HEX_L(_TEMP_X % 256))dnl
 __{}define({_TEMP_C},__HEX_L(_TEMP_X / 256))dnl
 __{}define({_TEMP_LOOP},{
-__{}    ld  (HL),A          ; 1:7       __INFO}__INC_REG16(HL,$1,0,4,_TEMP_B){
-__{}    ld  (HL),A          ; 1:7       __INFO}__INC_REG16(HL,$1,1,4,_TEMP_B){
-__{}    ld  (HL),A          ; 1:7       __INFO}__INC_REG16(HL,$1,2,4,_TEMP_B){
-__{}    ld  (HL),A          ; 1:7       __INFO}__INC_REG16(HL,$1,3,4,_TEMP_B)){}dnl
+__{}    ld  (HL),A          ; 1:7       __INFO}__INC_REG16(HL,$1,0,4,_TEMP_X){
+__{}    ld  (HL),A          ; 1:7       __INFO}__INC_REG16(HL,$1,1,4,_TEMP_X){
+__{}    ld  (HL),A          ; 1:7       __INFO}__INC_REG16(HL,$1,2,4,_TEMP_X){
+__{}    ld  (HL),A          ; 1:7       __INFO}__INC_REG16(HL,$1,3,4,_TEMP_X)){}dnl
 __{}ifelse(_TEMP_B,0x00,,{__add({_TEMP_C},1)}){}dnl
 __{}define({__SUM_BYTES},eval(24+__IS_MEM_REF($3)))dnl
 __{}define({__SUM_CLOCKS},eval(48+6*__IS_MEM_REF($3)+_TEMP_X*59+_TEMP_C*9))dnl
