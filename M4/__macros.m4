@@ -1570,38 +1570,80 @@ __{}__{}  .error Dodelat! mem ref},
 
 __{}__IS_NUM(__TMP_ADDR),1,{dnl
 __{}__{}ifelse(dnl
-__{}__{}__TMP_VALUE,A,{dnl # ld (DE/BC),A
+__{}__{}__TMP_VALUE,A,{dnl # 
+__{}__{}__{}dnl # ld (0x8000),A
 __{}__{}__{}define({__CLOCKS},13){}dnl
 __{}__{}__{}define({__BYTES},3){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld  (__TMP_ADDR){,}A          ; 3:13      }_TMP_INFO)},
-__{}__{}ifelse(__TMP_VALUE,B,1,__TMP_VALUE,C,1,__TMP_VALUE,D,1,__TMP_VALUE,E,1,__TMP_VALUE,H,1,__TMP_VALUE,L,1,0),1,{dnl # ld (DE/BC),R
-__{}__{}__{}define({__CLOCKS},11){}dnl
-__{}__{}__{}define({__BYTES},2){}dnl
-__{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    A{,} __TMP_VALUE          ; 1:4       }_TMP_INFO{
-__{}__{}__{}__{}    ld  (__TMP_ADDR){,}A          ; 1:7       }_TMP_INFO)},
-__{}__{}__IS_MEM_REF(__TMP_VALUE),1,{dnl # ld (DE/BC),(0x8000) --> LD A,(0x8000) LD (DE/BC),A
-__{}__{}__{}define({__CLOCKS},20){}dnl
+__{}__{}__{}    ld  (__HEX_HL(__TMP_ADDR)){,}A      ; 3:13      }_TMP_INFO)},
+__{}__{}ifelse(__TMP_VALUE,B,1,__TMP_VALUE,C,1,__TMP_VALUE,D,1,__TMP_VALUE,E,1,__TMP_VALUE,H,1,__TMP_VALUE,L,1,0),1,{dnl
+__{}__{}__{}dnl # ld (0x8000),B --> LD A,B 
+__{}__{}__{}dnl #                   LD (0x8000),A
+__{}__{}__{}define({__CLOCKS},17){}dnl
 __{}__{}__{}define({__BYTES},4){}dnl
 __{}__{}__{}define({__CODE},{
+__{}__{}__{}    ld    A{,} __TMP_VALUE          ; 1:4       }_TMP_INFO{
+__{}__{}__{}    ld  (__HEX_HL(__TMP_ADDR)){,}A      ; 3:13      }_TMP_INFO)},
+__{}__{}__IS_MEM_REF(__TMP_VALUE),1,{dnl
+__{}__{}__{}dnl # ld (0x8000),(0x1234) --> LD A,(0x8000) 
+__{}__{}__{}dnl #                          LD (0x8000),A
+__{}__{}__{}define({__CLOCKS},26){}dnl
+__{}__{}__{}define({__BYTES},6){}dnl
+__{}__{}__{}define({__CODE},{
 __{}__{}__{}    ld    A{,}format({%-12s},__TMP_VALUE); 3:13      }_TMP_INFO{
-__{}__{}__{}    ld  (__TMP_ADDR){,}A          ; 1:7       }_TMP_INFO)},
-__{}__{}__IS_NUM(__TMP_VALUE),1,{dnl # ld (DE/BC),0x80 --> LD A,0x80 LD (DE/BC),A
-__{}__{}__{}define({__CLOCKS},14){}dnl
-__{}__{}__{}define({__BYTES},3){}dnl
+__{}__{}__{}    ld  (__HEX_HL(__TMP_ADDR)){,}A      ; 3:13      }_TMP_INFO)},
+__{}__{}__IS_NUM(__TMP_VALUE),1,{dnl
+__{}__{}__{}dnl # ld (0x8000),0x80 --> LD A,0x80 
+__{}__{}__{}dnl #                      LD (DE/BC),A
+__{}__{}__{}define({__CLOCKS},20){}dnl
+__{}__{}__{}define({__BYTES},5){}dnl
 __{}__{}__{}define({__CODE},{
 __{}__{}__{}    ld    A{,} __HEX_L(__TMP_VALUE)       ; 2:7       }_TMP_INFO{
-__{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 1:7       }_TMP_INFO)},
-__{}__{}{dnl # ld (DE/BC),abc
-__{}__{}__{}define({__CLOCKS},14){}dnl
-__{}__{}__{}define({__BYTES},3){}dnl
+__{}__{}__{}    ld  (__HEX_HL(__TMP_ADDR)){,}A      ; 3:13      }_TMP_INFO)},
+__{}__{}{dnl    # ld (0x8000),abc
+__{}__{}__{}define({__CLOCKS},20){}dnl
+__{}__{}__{}define({__BYTES},5){}dnl
 __{}__{}__{}define({__CODE},{
 __{}__{}__{}    ld    A{,}format({%-12s},__TMP_VALUE); 2:7       }_TMP_INFO{
-__{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 1:7       }_TMP_INFO)})},
+__{}__{}__{}    ld  (__HEX_HL(__TMP_ADDR)){,}A      ; 3:13      }_TMP_INFO)})},
 __{}{dnl
-__{}__{}  .error default{}dnl
-__{}}){}dnl
+__{}__{}ifelse(dnl
+__{}__{}__TMP_VALUE,A,{dnl # 
+__{}__{}__{}dnl # ld (0x8000),A
+__{}__{}__{}define({__CLOCKS},13){}dnl
+__{}__{}__{}define({__BYTES},3){}dnl
+__{}__{}__{}define({__CODE},{
+__{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 3:13      }_TMP_INFO)},
+__{}__{}ifelse(__TMP_VALUE,B,1,__TMP_VALUE,C,1,__TMP_VALUE,D,1,__TMP_VALUE,E,1,__TMP_VALUE,H,1,__TMP_VALUE,L,1,0),1,{dnl
+__{}__{}__{}dnl # ld (0x8000),B --> LD A,B 
+__{}__{}__{}dnl #                   LD (0x8000),A
+__{}__{}__{}define({__CLOCKS},17){}dnl
+__{}__{}__{}define({__BYTES},4){}dnl
+__{}__{}__{}define({__CODE},{
+__{}__{}__{}    ld    A{,} __TMP_VALUE          ; 1:4       }_TMP_INFO{
+__{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 3:13      }_TMP_INFO)},
+__{}__{}__IS_MEM_REF(__TMP_VALUE),1,{dnl
+__{}__{}__{}dnl # ld (0x8000),(0x1234) --> LD A,(0x8000) 
+__{}__{}__{}dnl #                          LD (0x8000),A
+__{}__{}__{}define({__CLOCKS},26){}dnl
+__{}__{}__{}define({__BYTES},6){}dnl
+__{}__{}__{}define({__CODE},{
+__{}__{}__{}    ld    A{,}format({%-12s},__TMP_VALUE); 3:13      }_TMP_INFO{
+__{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 3:13      }_TMP_INFO)},
+__{}__{}__IS_NUM(__TMP_VALUE),1,{dnl
+__{}__{}__{}dnl # ld (0x8000),0x80 --> LD A,0x80 
+__{}__{}__{}dnl #                      LD (DE/BC),A
+__{}__{}__{}define({__CLOCKS},20){}dnl
+__{}__{}__{}define({__BYTES},5){}dnl
+__{}__{}__{}define({__CODE},{
+__{}__{}__{}    ld    A{,} __HEX_L(__TMP_VALUE)       ; 2:7       }_TMP_INFO{
+__{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 3:13      }_TMP_INFO)},
+__{}__{}{dnl    # ld (0x8000),abc
+__{}__{}__{}define({__CLOCKS},20){}dnl
+__{}__{}__{}define({__BYTES},5){}dnl
+__{}__{}__{}define({__CODE},{
+__{}__{}__{}    ld    A{,}format({%-12s},__TMP_VALUE); 2:7       }_TMP_INFO{
+__{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 3:13      }_TMP_INFO)})}){}dnl
 dnl
 __{}define({__PRICE},eval(__CLOCKS+4*__BYTES)){}dnl
 __{}__add({__SUM_BYTES}, __BYTES){}dnl
