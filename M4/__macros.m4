@@ -1700,14 +1700,12 @@ __{}define({__PRICE},eval(__CLOCKS+4*__BYTES)){}dnl
 __{}__add({__SUM_BYTES}, __BYTES){}dnl
 __{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__add({__SUM_PRICES},__PRICE){}dnl
-ifelse(1,1,errprint({
-($@)
+ifelse(1,1,{errprint({
+; __ld_mem8($@)
 }__CODE{
-}__BYTES{
-}__CLOCKS{
-}__SUM_BYTES{
-}__SUM_CLOCKS{
-})){}dnl
+}; b:format({%-12s},[__SUM_BYTES])+__BYTES{
+}; c:format({%-12s},[__SUM_CLOCKS])+__CLOCKS{
+})}){}dnl
 }){}dnl
 dnl
 dnl
