@@ -1469,37 +1469,38 @@ dnl
 __{}ifelse(dnl
 __{}__IS_NUM($2):__HEX_L($2),1:__HEX_L($4),{dnl
 __{}__{}dnl # ld   (**),0x33 && DE=0x5533 --> ld (**),E
-__{}__{}define({__TMP_VALUE},substr($3,1,1))},
-__{}__IS_NUM($2):__HEX_L($2),1:__HEX_H($4),{dnl
+__{}__{}define({__TMP_VALUE},substr($3,eval(len($3)-1),1))},
+__{}__IS_NUM($2):len($3):__HEX_L($2),1:2:__HEX_H($4),{dnl
 __{}__{}dnl # ld   (**),0x55 && DE=0x5533 --> ld (**),D
 __{}__{}define({__TMP_VALUE},substr($3,0,1))},
 __{}__IS_NUM($2):__HEX_L($2),1:__HEX_L($6),{dnl
 __{}__{}dnl # ld   (**),0x33 && DE=0x5533 --> ld (**),E
-__{}__{}define({__TMP_VALUE},substr($5,1,1))},
-__{}__IS_NUM($2):__HEX_L($2),1:__HEX_H($6),{dnl
+__{}__{}define({__TMP_VALUE},substr($5,eval(len($5)-1),1))},
+__{}__IS_NUM($2):len($5):__HEX_L($2),1:2:__HEX_H($6),{dnl
 __{}__{}dnl # ld   (**),0x55 && DE=0x5533 --> ld (**),D
 __{}__{}define({__TMP_VALUE},substr($5,0,1))},
 __{}__IS_NUM($2):__HEX_L($2),1:__HEX_L($8),{dnl
 __{}__{}dnl # ld   (**),0x33 && DE=0x5533 --> ld (**),E
-__{}__{}define({__TMP_VALUE},substr($7,1,1))},
-__{}__IS_NUM($2):__HEX_L($2),1:__HEX_H($8),{dnl
+__{}__{}define({__TMP_VALUE},substr($7,eval(len($7)-1),1))},
+__{}__IS_NUM($2):len($7):__HEX_L($2),1:2:__HEX_H($8),{dnl
 __{}__{}dnl # ld   (**),0x55 && DE=0x5533 --> ld (**),D
 __{}__{}define({__TMP_VALUE},substr($7,0,1))},
-
 __{}ifelse($2,A,0,$2,B,0,$2,C,0,$2,D,0,$2,E,0,$2,H,0,$2,L,0,1),1,{dnl # no 8bit reg
 __{}__{}ifelse(dnl
 __{}__{}$2,$4,{dnl 
+__{}__{}__{}dnl # ld (**), abc  &&  A=abc   --> LD (**),A
+__{}__{}__{}dnl # ld (**),(abc) &&  A=(abc) --> LD (**),A
 __{}__{}__{}dnl # ld (**), abc  && DE=abc   --> LD (**),E
 __{}__{}__{}dnl # ld (**),(abc) && DE=(abc) --> LD (**),E
-__{}__{}__{}define({__TMP_VALUE},substr($3,1,1))},
+__{}__{}__{}define({__TMP_VALUE},substr($3,eval(len($3)-1),1))},
 __{}__{}$2,$6,{dnl
 __{}__{}__{}dnl # ld (**), abc  && DE=abc   --> LD (**),E
 __{}__{}__{}dnl # ld (**),(abc) && DE=(abc) --> LD (**),E
-__{}__{}__{}define({__TMP_VALUE},substr($5,1,1))},
+__{}__{}__{}define({__TMP_VALUE},substr($5,eval(len($5)-1),1))},
 __{}__{}$2,$8,{dnl
 __{}__{}__{}dnl # ld (**), abc  && DE=abc   --> LD (**),E
 __{}__{}__{}dnl # ld (**),(abc) && DE=(abc) --> LD (**),E
-__{}__{}__{}define({__TMP_VALUE},substr($7,1,1))}){}dnl
+__{}__{}__{}define({__TMP_VALUE},substr($7,eval(len($7)-1),1))}){}dnl
 __{}}){}dnl
 dnl
 __{}ifelse(dnl
@@ -1705,7 +1706,7 @@ __{}__add({__SUM_BYTES}, __BYTES){}dnl
 __{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__add({__SUM_PRICES},__PRICE){}dnl
 ifelse(1,1,{errprint({
-}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] )){__ld_mem8($@)   sum:[}__SUM_BYTES{:}__SUM_CLOCKS{]}__CODE{
+}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] )){__ld_mem8($@,}__TMP_ADDR<-__TMP_VALUE{)   sum:[}__SUM_BYTES{:}__SUM_CLOCKS{]}__CODE{
 })}){}dnl
 }){}dnl
 dnl
