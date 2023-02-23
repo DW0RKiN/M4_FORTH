@@ -1405,8 +1405,8 @@ define({__LD_MEM8},{dnl
 ifelse(1,0,{errprint({
 __ld_mem8($@)
 })}){}dnl
-dnl # __ld_mem8_16bit $1,$2,$3,$4,$5,$6,$7,$8
-dnl # Use: __LD_REG16({HL},0x22,{DE},1,{BC},0x3322,{HL},-1)
+dnl # __ld_mem8 $1,$2,$3,$4,$5,$6,$7,$8
+dnl # Use: __LD_MEM8({HL},0x22,{DE},1,{BC},0x3322,{HL},-1)
 dnl # Input:
 dnl # _TMP_INFO
 dnl #  $1 address number or register pair with address
@@ -1420,7 +1420,7 @@ dnl #  $7 Source registry name
 dnl #  $8 Source registry 16-bit value
 dnl
 dnl # Output:
-dnl # __CODE
+dnl # __CODE        = "ld  (HL),C"
 dnl # __BYTES
 dnl # __CLOCKS
 dnl # __PRICE       = __CLOCKS+4*__BYTES
@@ -1503,6 +1503,10 @@ __{}__{}__{}define({__TMP_VALUE},substr($7,1,1))}){}dnl
 __{}}){}dnl
 dnl
 __{}ifelse(dnl
+__{}(__TMP_ADDR),__TMP_VALUE,{dnl
+__{}__{}dnl # __TMP_ADDR=    HL,__TMP_VALUE=(HL)     --> ld     (HL),(HL)     --> nothing
+__{}__{}dnl # __TMP_ADDR=0x8000,__TMP_VALUE=(0x8000) --> ld (0x8000),(0x8000) --> nothing
+__{}__{}},
 __{}__TMP_ADDR=__TMP_VALUE,$3=($4),{dnl # __TMP_ADDR=HL,__TMP_VALUE=(0x8000),$3=HL,$4=0x8000 --> ld (0x8000),(0x8000) --> nothing
 __{}__{}},
 __{}__TMP_ADDR=__TMP_VALUE,$5=($6),{dnl # __TMP_ADDR=HL,__TMP_VALUE=(0x8000),$3=HL,$4=0x8000 --> ld (0x8000),(0x8000) --> nothing
@@ -1531,9 +1535,9 @@ __{}__{}{dnl # ld (HL),abc
 __{}__{}__{}define({__CLOCKS},10){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld  (HL){,}format({%-12s},__TMP_VALUE); 2:10      }_TMP_INFO)}{}dnl
+__{}__{}__{}    ld  (HL){,}format({%-11s},__TMP_VALUE); 2:10      }_TMP_INFO)}{}dnl
 __{}__{})},
-__{}ifelse(__TMP_ADDR,{DE},1,__TMP_ADDR,{BC},1,0),1,{dnl # ld (DE),.. or ld (BC),..
+__{}ifelse(__TMP_ADDR,{DE},1,__TMP_ADDR,{BC},1,0),1,{dnl # ld (DE/BC),.. 
 __{}__{}ifelse(dnl
 __{}__{}__TMP_VALUE,A,{dnl # ld (DE/BC),A
 __{}__{}__{}define({__CLOCKS},7){}dnl
@@ -1553,16 +1557,16 @@ __{}__{}__{}define({__CODE},{
 __{}__{}__{}    ld    A{,}format({%-12s},__TMP_VALUE); 3:13      }_TMP_INFO{
 __{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 1:7       }_TMP_INFO)},
 __{}__{}__IS_NUM(__TMP_VALUE),1,{dnl # ld (DE/BC),0x80 --> LD A,0x80 LD (DE/BC),A
-__{}__{}__{}define({__CLOCKS},10){}dnl
-__{}__{}__{}define({__BYTES},2){}dnl
+__{}__{}__{}define({__CLOCKS},14){}dnl
+__{}__{}__{}define({__BYTES},3){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    A{,}__HEX_L(__TMP_VALUE)       ; 2:7       }_TMP_INFO{
+__{}__{}__{}    ld    A{,} __HEX_L(__TMP_VALUE)       ; 2:7       }_TMP_INFO{
 __{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 1:7       }_TMP_INFO)},
 __{}__{}{dnl # ld (DE/BC),abc
-__{}__{}__{}define({__CLOCKS},10){}dnl
-__{}__{}__{}define({__BYTES},2){}dnl
+__{}__{}__{}define({__CLOCKS},14){}dnl
+__{}__{}__{}define({__BYTES},3){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    A{,}format({%-12s},__TMP_VALUE); 2:7       }_TMP_INFO{
+__{}__{}__{}    ld    A{,} format({%-11s},__TMP_VALUE); 2:7       }_TMP_INFO{
 __{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 1:7       }_TMP_INFO)})},
 
 __{}__IS_MEM_REF(__TMP_ADDR),1,{dnl
@@ -1701,10 +1705,7 @@ __{}__add({__SUM_BYTES}, __BYTES){}dnl
 __{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__add({__SUM_PRICES},__PRICE){}dnl
 ifelse(1,1,{errprint({
-; __ld_mem8($@)
-}__CODE{
-}; b:format({%-12s},[__SUM_BYTES])+__BYTES{
-}; c:format({%-12s},[__SUM_CLOCKS])+__CLOCKS{
+}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] )){__ld_mem8($@)   sum:[}__SUM_BYTES{:}__SUM_CLOCKS{]}__CODE{
 })}){}dnl
 }){}dnl
 dnl
