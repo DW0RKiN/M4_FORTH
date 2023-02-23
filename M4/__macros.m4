@@ -719,7 +719,7 @@ dnl #   else
 dnl #     inc L
 define({__INC_REG16_REC},{dnl
 ifelse(1,0,{errprint({
-__inc_Reg16_rec($@): }eval($5-$6+1)x: ifelse(__IS_NUM($2),1,{__HEX_L($2+$3)},__HEX_L$3){
+__inc_reg16_rec($@): }eval($5-$6+1)x: ifelse(__IS_NUM($2),1,{__HEX_L($2+$3)},__HEX_L$3){
 })}){}dnl
 __{}ifelse(dnl
 __{}__IS_MEM_REF($2),1,{dnl               # pravdepodobnost je zavisla zda prirustek je nasobkem 2, ale protoze v kodu musi byt defenzivne "inc hl" tak je clock=6
@@ -749,7 +749,7 @@ __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
-__{}__{}    inc  $1             ; 1:6       __INFO   ($@) __HEX_HL($2+$3)=$2+eval($3-$4*($5-$6))+$4*eval($5-$6)},
+__{}__{}    inc  $1             ; 1:6       __INFO   __HEX_HL($2+$3)=$2+eval($3-$4*($5-$6))+$4*eval($5-$6)},
 __{}__IS_NUM($2),1,{dnl
 __{}__{}$0($1,$2,eval($3+$4),$4,$5,eval($6-1))},
 __{}{dnl
