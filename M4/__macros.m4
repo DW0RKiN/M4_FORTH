@@ -1456,14 +1456,14 @@ __{}__{}__{}define({__TMP_ADDR},$7)}){}dnl
 __{}}){}dnl
 dnl
 __{}ifelse(dnl
-__{}__TMP_ADDR=__SAVE_VALUE_HL($4)=$5,$3=__SAVE_VALUE_HL($6)=HL,{dnl
-__{}__{}dnl # DE == HL --> ld (DE),** --> ld (HL),**
+__{}ifelse(__TMP_ADDR,$3,1,__TMP_ADDR,$5,1,0):ifelse(HL,$3,1,HL,$5,1,0):__SAVE_VALUE_HL($4),1:1:__SAVE_VALUE_HL($6),{dnl
+__{}__{}dnl # (__TMP_ADDR==DE) && (DE == HL) --> ld (DE),** --> ld (HL),**
 __{}__{}define({__TMP_ADDR},HL)},
-__{}__TMP_ADDR=__SAVE_VALUE_HL($4)=$7,$3=__SAVE_VALUE_HL($8)=HL,{dnl
-__{}__{}dnl # DE == HL --> ld (DE),** --> ld (HL),**
+__{}ifelse(__TMP_ADDR,$3,1,__TMP_ADDR,$7,1,0):ifelse(HL,$3,1,HL,$7,1,0):__SAVE_VALUE_HL($4),1:1:__SAVE_VALUE_HL($8),{dnl
+__{}__{}dnl # (__TMP_ADDR==DE) && (DE == HL) --> ld (DE),** --> ld (HL),**
 __{}__{}define({__TMP_ADDR},HL)},
-__{}__TMP_ADDR=__SAVE_VALUE_HL($6)=$7,$5=__SAVE_VALUE_HL($8)=HL,{dnl
-__{}__{}dnl # DE == HL --> ld (DE),** --> ld (HL),**
+__{}ifelse(__TMP_ADDR,$5,1,__TMP_ADDR,$7,1,0):ifelse(HL,$5,1,HL,$7,1,0):__SAVE_VALUE_HL($6),1:1:__SAVE_VALUE_HL($8),{dnl
+__{}__{}dnl # (__TMP_ADDR==DE) && (DE == HL) --> ld (DE),** --> ld (HL),**
 __{}__{}define({__TMP_ADDR},HL)}){}dnl
 dnl
 __{}ifelse(dnl
