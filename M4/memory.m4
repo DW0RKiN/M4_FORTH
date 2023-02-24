@@ -3636,7 +3636,7 @@ __{}define({_TMP_A},__LD_R_NUM(__INFO   char,                           A,$3)){}
 __{}define({_TMP_C},__LD_R_NUM(__INFO   lo(addr),              C,{0x00},A,__HEX_L($3))){}dnl
 __{}define({_TMP_B},__LD_R_NUM(__INFO   hi(addr),B,__HEX_H($1),C,{0x00},A,__HEX_L($3))){}dnl
 __{}define({__SUM_CLOCKS_8BIT},eval(__SUM_CLOCKS_8BIT-__CLOCKS-5+256*(67+__CLOCKS))){}dnl
-__{}                       ;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant: fill(0x??00,5*256,?){}dnl
+__{}                       ;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] )__INFO   fill(addr,u,char)   variant 0>0: fill(0x??00,5*256,hi(addr)){}dnl
 __{}_TMP_A{}dnl
 __{}_TMP_C{}dnl
 __{}_TMP_B
@@ -3740,6 +3740,36 @@ __{}__CODE_16BIT{}dnl
 __{}_TMP_A
 __{}    db 0x18             ; 1:12      __INFO   db 0x18,0x02 = jr $+4{}dnl
 __{}_TEMP_LOOP},
+
+__HEX_L(($2) % 5):ifelse(__HEX_L(($2) % 4),0x00,0,1):__HEX_L(3*256>$2):__IS_MEM_REF($3),0x00:1:0x01:0,{
+dnl # neni efektivni kdyz pretina vic jak 2 segmenty
+dnl # max 20 bytes
+dnl # ; 0 segment cca t/b= (5*11+1*13)/5=68/5=13.6
+dnl # ; 1 segment cca t/b= (4*11+2*13)/5=70/5=14
+dnl # ; 2 segment cca t/b= (3*11+3*13)/5=72/5=14.4
+dnl # ; 3 segment cca t/b= (2*11+4*13)/5=74/5=14.8   >14.75=(3*11+2*13)/4
+dnl # ; 4 segment cca t/b= (1*11+5*13)/5=76/5=15.2   >14.75=(3*11+2*13)/4
+dnl # ; 5 segment cca t/b= (0*11+6*13)/5=78/5=15.6   >14.75=(3*11+2*13)/4
+__{}define({__TMP_X},eval(($2)/5)){}dnl
+__{}define({__SUM_CLOCKS},5*7+13){}dnl
+__{}define({__SUM_BYTES},1+5+2+1){}dnl
+__{}define({_TEMP_LOOP},{
+__{}    ld  (HL),C          ; 1:7       __INFO}__INC_REG16({HL},$1,0,5,__TMP_X){
+__{}    ld  (HL),C          ; 1:7       __INFO}__INC_REG16({HL},$1,1,5,__TMP_X){
+__{}    ld  (HL),C          ; 1:7       __INFO}__INC_REG16({HL},$1,2,5,__TMP_X){
+__{}    ld  (HL),C          ; 1:7       __INFO}__INC_REG16({HL},$1,3,5,__TMP_X){
+__{}    ld  (HL),C          ; 1:7       __INFO}__INC_REG16({HL},$1,4,5,__TMP_X){
+__{}    djnz $-10           ; 2:8/13    __INFO}){}dnl
+__{}define({__SUM_CLOCKS},eval(11+__TMP_X*(__SUM_CLOCKS)-5+10)){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}__LD_REG16({BC},__HEX_HL(256*__TMP_X)+$3,{HL},$1){}dnl
+__{}__LD_REG16({HL},$1){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant: fill(num,5*__TMP_X (max 767),no ptr)
+__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__CODE_16BIT   addr{}__LD_REG16({BC},__HEX_HL(256*__TMP_X)+$3,{HL},$1){}dnl
+__{}__CODE_16BIT   B = __TMP_X{}x, C = char{}dnl
+__{}_TEMP_LOOP
+__{}    pop  HL             ; 1:10      __INFO},
 
 _TYP_SINGLE:__HEX_L($1):__HEX_HL($2),{small:0x00:0x0400},{
 dnl # ; t= 7+7-5+256*(7+7+4+7+4+7+4+7+4+12)=9+256*63=16137
