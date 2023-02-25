@@ -1225,17 +1225,17 @@ __{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
 __{}__{}__{}define({__CLOCKS},13){}dnl
 __{}__{}__{}define({__BYTES},3){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      $5})},
+__{}__{}__{}    ld    A{{{,}}}format({%-12s},$2); 3:13      $5})},
 __{}__{}__IS_NUM($2):eval(__CLOCKS>7),{1:1},{dnl
 __{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       $5})},
+__{}__{}__{}    ld    $1{{{,}}} __HEX_L($2)       ; 2:7       $5})},
 __{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7),{0:1},{dnl
 __{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    $1{{,}} format({%-11s},$2); 2:7       $5})})},
+__{}__{}__{}    ld    $1{{{,}}} format({%-11s},$2); 2:7       $5})})},
 __{}$4,{},{dnl # no source value
 __{}__{}ifelse($1:__HEX_L($2):eval(__CLOCKS>4),{A:0x00:1},{dnl
 __{}__{}__{}define({__CLOCKS},4){}dnl
@@ -1246,17 +1246,17 @@ __{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
 __{}__{}__{}define({__CLOCKS},13){}dnl
 __{}__{}__{}define({__BYTES},3){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      $5})},
+__{}__{}__{}    ld    A{{{,}}}format({%-12s},$2); 3:13      $5})},
 __{}__{}__IS_NUM($2):eval(__CLOCKS>7),{1:1},{dnl
 __{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       $5})},
+__{}__{}__{}    ld    $1{{{,}}} __HEX_L($2)       ; 2:7       $5})},
 __{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7),{0:1},{dnl
 __{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}define({__CODE},{
-__{}__{}__{}    ld    $1{{,}} format({%-11s},$2); 2:7       $5})})},
+__{}__{}__{}    ld    $1{{{,}}} format({%-11s},$2); 2:7       $5})})},
 __{}$1,$3,{dnl # Identical register
 __{}__{}ifelse($4,{},{dnl # empty value because 0xFF==__HEX_L({}-1) or 0x01==__HEX_L({}+1)
 __{}__{}__{}ifelse($1:__HEX_L($2):eval(__CLOCKS>4),{A:0x00:1},{dnl
@@ -1268,17 +1268,17 @@ __{}__{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},13){}dnl
 __{}__{}__{}__{}define({__BYTES},3){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      $5})},
+__{}__{}__{}__{}    ld    A{{{,}}}format({%-12s},$2); 3:13      $5})},
 __{}__{}__{}__IS_NUM($2):eval(__CLOCKS>7 && len($1)>0),{1:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       $5})},
+__{}__{}__{}__{}    ld    $1{{{,}}} __HEX_L($2)       ; 2:7       $5})},
 __{}__{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7 && len($1)>0 && len($2)>0),{0:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} format({%-11s},$2); 2:7       $5})})},
+__{}__{}__{}__{}    ld    $1{{{,}}} format({%-11s},$2); 2:7       $5})})},
 __{}__{}$2,$4,{dnl # match found
 __{}__{}__{}define({__CLOCKS},0){}dnl
 __{}__{}__{}define({__BYTES},0){}dnl
@@ -1306,7 +1306,7 @@ __{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    add   A{{,}} A          ; 1:4       $5})})},
+__{}__{}__{}__{}    add   A{{{,}}} A          ; 1:4       $5})})},
 __{}__{}$1:__IS_NUM($2):__HEX_L($2),A:1:__HEX_H(0+(($4+0)*514)),{dnl
 __{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},4){}dnl
@@ -1324,24 +1324,24 @@ __{}__{}__{}ifelse($1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},13){}dnl
 __{}__{}__{}__{}define({__BYTES},3){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      $5})},
+__{}__{}__{}__{}    ld    A{{{,}}}format({%-12s},$2); 3:13      $5})},
 __{}__{}__{}__IS_NUM($2):eval(__CLOCKS>7),{1:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       $5})},
+__{}__{}__{}__{}    ld    $1{{{,}}} __HEX_L($2)       ; 2:7       $5})},
 __{}__{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7),{0:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} format({%-12s},$2); 2:7       $5})})})},
+__{}__{}__{}__{}    ld    $1{{{,}}} format({%-12s},$2); 2:7       $5})})})},
 __{}{dnl # different register
 __{}__{}ifelse($2,$4,{dnl # match found
 __{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} $3          ; 1:4       $5   $1 = $3 = $4})})},
+__{}__{}__{}__{}    ld    $1{{{,}}} $3          ; 1:4       $5   $1 = $3 = $4})})},
 __{}__{}{dnl # no match found
 __{}__{}__{}ifelse($1:__HEX_L($2):__eval(__CLOCKS>4),{A:0x00:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},4){}dnl
@@ -1352,17 +1352,17 @@ __{}__{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},13){}dnl
 __{}__{}__{}__{}define({__BYTES},3){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    A{{,}}format({%-12s},$2); 3:13      $5})},
+__{}__{}__{}__{}    ld    A{{{,}}}format({%-12s},$2); 3:13      $5})},
 __{}__{}__{}$1:__IS_NUM($2):eval(__CLOCKS>7),{A:1:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} __HEX_L($2)       ; 2:7       $5})},
+__{}__{}__{}__{}    ld    $1{{{,}}} __HEX_L($2)       ; 2:7       $5})},
 __{}__{}__{}__IS_MEM_REF($2):eval(__CLOCKS>7),{0:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},7){}dnl
 __{}__{}__{}__{}define({__BYTES},2){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    ld    $1{{,}} format({%-11s},$2); 2:7       $5})})}){}dnl
+__{}__{}__{}__{}    ld    $1{{{,}}} format({%-11s},$2); 2:7       $5})})}){}dnl
 __{}}){}dnl
 __{}dnl # debug
 __{}ifelse(1,0,{errprint({
@@ -1440,6 +1440,7 @@ __{}define({__TMP_C2},__SUM_CLOCKS){}dnl
 __{}define({__TMP_B2}, __SUM_BYTES){}dnl
 __{}define({__TMP_P2}, __SUM_PRICE){}dnl
 ifelse(1,0,{errprint({
+__ld_r8_r8($@)
 }__TMP_CODE_1{
                         ;}[__TMP_B1:__TMP_C1]=__TMP_P1{=__TMP_CODE_1
 }__TMP_CODE_2{
@@ -1580,6 +1581,10 @@ __{}__{}__{}__{}define({$0_CODE_3},{})}){}dnl
 __{}__{}}){}dnl
 __{}}){}dnl
 __{}$0_CODE_1{}$0_CODE_2{}$0_CODE_3{}dnl
+__{}dnl # debug
+__{}ifelse(1,0,{errprint({
+__ld_r16_num($@)
+})}){}dnl
 })dnl
 dnl
 dnl
