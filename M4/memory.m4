@@ -3745,6 +3745,7 @@ __{}    db 0x18             ; 1:12      __INFO   db 0x18,0x02 = jr $+4{}dnl
 __{}_TEMP_LOOP},
 
 __HEX_L(($2) % 5):ifelse(__HEX_L(($2) % 4),0x00,0,1):__HEX_L(3*256>$2):__IS_MEM_REF($3),0x00:1:0x01:1,{
+dnl # PUSH3_FILL(0x5011,5*151,(char))
 dnl # neni efektivni kdyz pretina vic jak 2 segmenty
 dnl # max 20 bytes
 dnl # ; 0 segment cca t/b= (5*11+1*13)/5=68/5=13.6
@@ -3764,19 +3765,16 @@ __{}    ld  (DE){,}A          ; 1:7       __INFO}__INC_REG16({DE},$1,3,5,__TMP_X
 __{}    ld  (DE){,}A          ; 1:7       __INFO}__INC_REG16({DE},$1,4,5,__TMP_X){
 __{}    djnz $-10           ; 2:8/13    __INFO}){}dnl
 __{}define({__SUM_CLOCKS},eval(4+__TMP_X*(__SUM_CLOCKS)-5+4)){}dnl
-__{}define({_TMP_INFO},__INFO){}dnl
-__{}__LD_REG16({DE},$1){}dnl
-__{}define({__SUM_CLOCKS_8BIT},__SUM_CLOCKS){}dnl
-__{}define({__SUM_BYTES_8BIT},__SUM_BYTES){}dnl
-__{}define({__CODE_A},__LD_R_NUM(__INFO   char,A,$3,D,__HEX_H($1),E,__HEX_L($1))){}dnl
-__{}define({__CODE_B},__LD_R_NUM(__INFO   __TMP_X{}x,B,__TMP_X,A,$3,D,__HEX_H($1),E,__HEX_L($1))){}dnl
-__{}format({%36s},;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] ))__INFO   fill(addr,u,char)   variant: fill(num,5*__TMP_X (max 767),ptr)
-__{}    exx                 ; 1:4       __INFO{}dnl
-__{}__CODE_16BIT   addr{}dnl
-__{}__CODE_A{}dnl
-__{}__CODE_B{}dnl
-__{}_TEMP_LOOP
-__{}    exx                 ; 1:4       __INFO},
+__{}define({__TMP_CODE},{
+__{}__{}    exx                 ; 1:4       __INFO}dnl
+__{}__{}__LD_R16({DE},$1){}dnl
+__{}__{}__LD_R_NUM(__INFO   char,                A,$3,DE,$1){}dnl
+__{}__{}__LD_R_NUM(__INFO   __TMP_X{}x,B,__TMP_X,A,$3,DE,$1){}dnl
+__{}__{}__TMP_LOOP{
+__{}__{}    exx                 ; 1:4       __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant: fill(num,5*__TMP_X (max 767),ptr){}dnl
+__{}__TMP_CODE{}dnl
+__{}},
 
 __HEX_L(($2) % 5):ifelse(__HEX_L(($2) % 4),0x00,0,1):__HEX_L(3*256>$2):__IS_MEM_REF($3),0x00:1:0x01:0,{
 dnl # PUSH3_FILL(0x5011,5*151,0x48)
