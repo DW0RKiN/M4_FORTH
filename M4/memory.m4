@@ -3655,7 +3655,8 @@ __{}                       ;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] )__INFO   f
 __{}__TMP_CODE{}dnl
 __{}},
 
-__HEX_L($1+$2):__HEX_L(($2) % 5):__HEX_L(5*256>=$2),0x00:0x00:0x01,{dnl
+__HEX_L($1+$2):__HEX_L(($2) % 5):__HEX_L(5*256>=$2),0x00:0x00:0x01,{
+dnl # PUSH3_FILL(0x5000-5*231,5*231,0x48)
 dnl # ; <  256 t= 10+7+$2*(7+4+7+4+7+4+7+4+7+4+10)/5=17+$2*13
 dnl # ; <  512 t= 10+7+$2*(7+4+7+4+7+4+7+6+7+4+10)/5=17+$2*67/5=17*$2*13.4
 dnl # ; <  768 t= 10+7+$2*(7+4+7+4+7+6+7+6+7+4+10)/5=17+$2*69/5=17*$2*13.8
@@ -3672,25 +3673,24 @@ dnl # eFE  dFF  d00  c01  b02
 dnl #      +++
 dnl # eFF  e00  d01  c02  b03
 dnl # +++
+__{}define({__TMP_X},eval(($2)/5)){}dnl
 __{}define({__SUM_CLOCKS},5*7+10){}dnl
 __{}define({__SUM_BYTES},8){}dnl
-__{}define({_TEMP_LOOP},{
-__{}__{}    ld  (BC),A          ; 1:7       __INFO}__INC_REG16(BC,$1,0,5,eval(($2)/5)){
-__{}__{}    ld  (BC),A          ; 1:7       __INFO}__INC_REG16(BC,$1,1,5,eval(($2)/5)){
-__{}__{}    ld  (BC),A          ; 1:7       __INFO}__INC_REG16(BC,$1,2,5,eval(($2)/5)){
-__{}__{}    ld  (BC),A          ; 1:7       __INFO}__INC_REG16(BC,$1,3,5,eval(($2)/5)){
-__{}__{}    ld  (BC),A          ; 1:7       __INFO}__INC_REG16(BC,$1,4,5,eval(($2)/5-1)){
-__{}__{}    jp   nz, format({%-11s},$-10); 3:10      __INFO}){}dnl
-__{}define({__SUM_CLOCKS},eval(($2/5)*(__SUM_CLOCKS))){}dnl
-__{}define({_TMP_INFO},__INFO{   }addr = (__HEX_HL($1)..__HEX_HL($1+$2-1))){}dnl
-__{}__LD_REG16({BC},__HEX_HL($1)){}dnl
-__{}define({__SUM_CLOCKS_8BIT},__SUM_CLOCKS){}dnl
-__{}define({__SUM_BYTES_8BIT},__SUM_BYTES){}dnl
-__{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3,B,__HEX_H($1),C,__HEX_L($1))){}dnl
-__{}format({%36s},;[__SUM_BYTES_8BIT:format({%-8s},__SUM_CLOCKS_8BIT] ))__INFO   fill(addr,u,char)   variant >0: fill(num,5*eval($2/5) (max 1280),?){}dnl
-__{}__CODE_16BIT{}dnl
-__{}_TMP_A{}dnl
-__{}_TEMP_LOOP},
+__{}define({__TMP_LOOP},{
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO}__INC_REG16(BC,$1,0,5,__TMP_X){
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO}__INC_REG16(BC,$1,1,5,__TMP_X){
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO}__INC_REG16(BC,$1,2,5,__TMP_X){
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO}__INC_REG16(BC,$1,3,5,__TMP_X){
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO}__INC_REG16(BC,$1,4,5,__TMP_X-1){
+__{}__{}    jp   nz{,} format({%-11s},$-10); 3:10      __INFO}){}dnl
+__{}define({__SUM_CLOCKS},eval(__TMP_X*(__SUM_CLOCKS))){}dnl
+__{}define({__TMP_CODE},dnl
+__{}__{}__LD_R16({BC},$1){   addr = (__HEX_HL($1)..__HEX_HL($1+$2-1))}{}dnl
+__{}__{}__LD_R_NUM(__INFO   char,A,$3,BC,$1){}dnl
+__{}__{}__TMP_LOOP){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant >0: fill(num,5*eval($2/5) (max 1280),?){}dnl
+__{}__TMP_CODE{}dnl
+__{}},
 
 __HEX_L($1+$2):__HEX_L(($2+2) % 5):__HEX_L(5*256>=$2+2),0x00:0x00:0x01,{dnl
 dnl # ; <  256 t= 10+7+$2*(7+4+7+4+7+4+7+4+7+4+10)/5=17+$2*13
