@@ -2,6 +2,9 @@ define({__},{})dnl
 dnl
 dnl
 dnl
+dnl # is used to calculate the difficulty of the code
+dnl # prize = clocks + (__BYTE_PRICE * bytes)
+define({__BYTE_PRICE},4){}dnl
 dnl
 dnl
 define({__def},{ifdef({$1},,{define({$1},{$2})})}){}dnl
@@ -1124,9 +1127,48 @@ __{}__{}__AND_REG8_8BIT(substr($1,0,1),__HEX_H($2),$3,$4){}dnl
 dnl
 dnl
 dnl
-define({__LD_R_NUM},{dnl
+define({__LD_R_NUM_REC},{dnl
 dnl #errprint({
 dnl #}info:$1 t_reg:$2 t_val:$3 s_reg:$4 s_val:$5){}dnl
+dnl # Input:
+dnl #  $1 Name of the target 8-bit registry (A,B,C,D,E,H,L)
+dnl #  $2 Target value in hex 0x33 (if this is not possible, then only the matching string is searched, so: abc != 0+abc)
+dnl #  $3 Source registry name (A,B,C,D,E,H,L,BC,DE,HL)
+dnl #  $4 Source registry value
+dnl #  $5 Next source registry name
+dnl #  $6 Next Source registry value
+__{}ifelse(dnl
+__{}$#,0,{},
+__{}$#,1,{},
+__{}$#,2,{__LD4($1,$2)},
+__{}$#,3,{__LD4($1,$2)},
+__{}{dnl
+__{}__{}ifelse(dnl
+__{}__{}len($3),0,{},
+__{}__{}len($3),1,{dnl
+__{}__{}__{}__LD4($1,$2,$3,ifelse(__IS_NUM($4),1,__HEX_L($4),$4)){}dnl
+__{}__{}},
+__{}__{}len($3),2,{dnl
+__{}__{}__{}__LD4($1,$2,substr($3,1,1),ifelse(__IS_NUM($4),1,__HEX_L($4),$4)){}dnl
+__{}__{}__{}__LD4($1,$2,substr($3,0,1),__HEX_H($4)){}dnl
+__{}__{}},
+__{}__{}{
+__{}__{}__{}  .error __ld_r_num_rec($@): Bad register name = "$3"!}){}dnl
+__{}__{}ifelse(eval($#>5),1,{$0($1,$2,shift(shift(shift(shift($@)))))}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__LD_R_NUM},{dnl
+ifelse(1,0,{errprint({
+__ld_r_num($@)
+   info:$1 
+   t_reg:$2 
+   t_val:$3 
+   s_reg:$4 
+   s_val:$5
+})}){}dnl
 dnl # Input:
 dnl #  $1 info
 dnl #  $2 Name of the target registry
@@ -1136,13 +1178,8 @@ dnl #  $5 Source registry value
 __{}define({__CLOCKS},10000000){}dnl
 __{}define({__BYTES},0){}dnl
 __{}undefine({__CODE}){}dnl
-__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3), $4,ifelse(__IS_NUM( $5),1,__HEX_L( $5), $5)){}dnl
-__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3), $6,ifelse(__IS_NUM( $7),1,__HEX_L( $7), $7)){}dnl
-__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3), $8,ifelse(__IS_NUM( $9),1,__HEX_L( $9), $9)){}dnl
-__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),$10,ifelse(__IS_NUM($11),1,__HEX_L($11),$11)){}dnl
-__{}__LD4($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),$12,ifelse(__IS_NUM($13),1,__HEX_L($13),$13)){}dnl
 __{}define({_TMP_INFO},$1){}dnl
-__{}define({__CODE},__CODE){}dnl
+__{}$0_REC($2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),shift(shift(shift($@)))){}dnl
 __{}__add({__SUM_CLOCKS_8BIT},__CLOCKS){}dnl
 __{}__add({__SUM_BYTES_8BIT},__BYTES){}dnl
 __{}__CODE{}dnl
@@ -1162,6 +1199,13 @@ dnl # Output:
 dnl #  __CLOCKS
 dnl #  __BYTES
 dnl #  __CODE
+dnl #
+dnl # if the target register is A and already has some value, 
+dnl # then the best option may not be found,
+dnl # because an additional parameter is needed, namely the original value of A.
+dnl # Like:
+dnl #   add A,B  ; A=now,A=need,B=now --> (A,now,need,B,now)
+dnl #   sub B    ; A=now,A=need,B=now --> (A,now,need,B,now)
 __{}ifelse(dnl
 __{}$1,{},{dnl # no target register
 __{}},
@@ -1353,9 +1397,178 @@ __{}__CODE{}dnl
 dnl
 dnl
 dnl
+define({__LD_R8_R8},{dnl
+dnl # Only accepts numeric values or an empty string. It does not specify pointers or variable names.
+dnl #  __ld_reg8_reg8: $1 $2 $3 $4 $5 $6 $7 $8
+dnl #  __ld_reg8_reg8(target_16bit_name,target_16bit_value,source_16bit_name,source_16bit_value,source_16bit_name,source_16bit_value,source_16bit_name,source_16bit_value
+dnl #
+dnl # __LD_REG8_REG8(HL,0x2350,BC,0x5523,HL,0x5045)
+dnl #     ld    L, H          ; 1:4       __INFO   L = H = 0x50
+dnl #     ld    H, C          ; 1:4       __INFO   H = C = 0x23
+__{}pushdef({__SUM_BYTES_8BIT},0){}dnl
+__{}pushdef({__SUM_CLOCKS_8BIT},0){}dnl
+__{}define( {__TMP_CODE_1},dnl
+__{}__{}__LD_R_NUM(__INFO,substr($1,0,1),__HEX_H($2),                                                                         $3,$4,                                                $5,$6,                                                $7,$8){}dnl
+__{}__{}__LD_R_NUM(__INFO,substr($1,1,1),__HEX_L($2),substr($1,0,1),__HEX_H($2){}ifelse($1,$3,{,substr($3,1,1),__HEX_L($4)},{,$3,$4}){}ifelse($1,$5,{,substr($5,1,1),__HEX_L($6)},{,$5,$6}){}ifelse($1,$7,{,substr($7,1,1),__HEX_L($8)},{,$7,$8}))){}dnl
+__{}define({__TMP_C1},__SUM_CLOCKS_8BIT){}dnl
+__{}define({__TMP_B1}, __SUM_BYTES_8BIT){}dnl
+__{}define({__TMP_P1},eval(__TMP_C1+__BYTE_PRICE*__TMP_B1)){}dnl
+__{}define({__SUM_BYTES_8BIT},0){}dnl
+__{}define({__SUM_CLOCKS_8BIT},0){}dnl
+__{}define({__TMP_CODE_2},dnl
+__{}__{}__LD_R_NUM(__INFO,substr($1,1,1),__HEX_L($2),                                                                         $3,$4,                                                $5,$6,                                                $7,$8){}dnl
+__{}__{}__LD_R_NUM(__INFO,substr($1,0,1),__HEX_H($2),substr($1,1,1),__HEX_L($2){}ifelse($1,$3,{,substr($3,0,1),__HEX_H($4)},{,$3,$4}){}ifelse($1,$5,{,substr($5,0,1),__HEX_H($6)},{,$5,$6}){}ifelse($1,$7,{,substr($7,0,1),__HEX_H($8)},{,$7,$8}))){}dnl
+__{}define({__TMP_C2},__SUM_CLOCKS_8BIT){}dnl
+__{}define({__TMP_B2}, __SUM_BYTES_8BIT){}dnl
+__{}define({__TMP_P2},eval(__TMP_C2+__BYTE_PRICE*__TMP_B2)){}dnl
+ifelse(1,0,{errprint({
+}__TMP_CODE_1{
+                        ;}[__TMP_B1:__TMP_C1]=__TMP_P1{=__TMP_CODE_1
+}__TMP_CODE_2{
+                        ;}[__TMP_B2:__TMP_C2]=__TMP_P2{=__TMP_CODE_2
+})}){}dnl
+__{}ifelse(eval(__TMP_P2<__TMP_P1),1,{dnl
+__{}__{}define({__TMP_C1},__TMP_C2){}dnl
+__{}__{}define({__TMP_B1},__TMP_B2){}dnl
+__{}__{}define({__TMP_P1},__TMP_P2){}dnl
+__{}__{}__TMP_CODE_2},
+__{}{dnl
+__{}__{}__TMP_CODE_1}){}dnl
+__{}popdef({__SUM_BYTES_8BIT}){}dnl
+__{}popdef({__SUM_CLOCKS_8BIT}){}dnl
+})dnl
+dnl
+dnl
+dnl
 define({__LD_REG8_REG8},{dnl
 dnl # Only accepts numeric values or an empty string. It does not specify pointers or variable names.
-dnl # __ld_reg16_8bit_8bit:$1 $2 $3 $4 $5 $6 $7 $8
+dnl #  __ld_reg8_reg8: $1 $2 $3 $4 $5 $6 $7 $8
+dnl #  __ld_reg8_reg8(target_16bit_name,target_16bit_value,source_16bit_name,source_16bit_value,source_16bit_name,source_16bit_value,source_16bit_name,source_16bit_value
+dnl #
+dnl # __LD_REG8_REG8(HL,0x2350,BC,0x5523,HL,0x5045)
+dnl #     ld    L, H          ; 1:4       __INFO   L = H = 0x50
+dnl #     ld    H, C          ; 1:4       __INFO   H = C = 0x23
+__{}define({$0_CODE_2},{}){}dnl
+__{}define({$0_CODE_3},{}){}dnl
+__{}define({$0_CODE_1},dnl
+__{}__{}__LD_R8_R8($1,$2{}ifelse(__IS_NUM($4),{1},{,$3,$4}){}ifelse(__IS_NUM($6),{1},{,$5,$6}){}ifelse(__IS_NUM($8),{1},{,$7,$8}){}ifelse(__IS_NUM($10),{1},{,$9,$10}))){}dnl
+__{}define({__CLOCKS},__TMP_C1){}dnl
+__{}define({__BYTES}, __TMP_B1){}dnl
+__{}define({__PRICE}, __TMP_P1){}dnl
+__{}dnl #
+__{}ifelse(eval(__PRICE>10+__BYTE_PRICE*3),1,{dnl
+__{}__{}define({__CLOCKS},10){}dnl
+__{}__{}define({__BYTES},3){}dnl
+__{}__{}define({__PRICE},eval(10+__BYTE_PRICE*3)){}dnl
+__{}__{}define( {$0_CODE_1},{
+__{}__{}    ld   $1{,} __HEX_HL($2)     ; 3:10      __INFO})}){}dnl
+__{}dnl # checking if we know the previous value
+__{}ifelse(dnl
+__{}$1,$3,{define({$0_ORIGIN},$4)},
+__{}$1,$5,{define({$0_ORIGIN},$6)},
+__{}$1,$7,{define({$0_ORIGIN},$8)},
+__{}{define({$0_ORIGIN},{})}){}dnl
+__{}dnl
+__{}ifelse($0_ORIGIN,{},,{dnl
+__{}__{}ifelse($1,HL,{dnl
+__{}__{}__{}dnl # ($1 == HL) && (( $3 == HL) || ( $5 == HL ) || ( $7 == HL )) 
+__{}__{}__{}ifelse(eval(__TMP_P1>11+__BYTE_PRICE*1),1,{dnl
+__{}__{}__{}__{}ifelse(dnl
+__{}__{}__{}__{}__HEX_HL($2),__HEX_HL($0_ORIGIN+$0_ORIGIN),{dnl
+__{}__{}__{}__{}__{}define({__CLOCKS},11){}dnl
+__{}__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}__{}define({__PRICE},eval(11+__BYTE_PRICE*1)){}dnl
+__{}__{}__{}__{}__{}define({$0_CODE_1},{
+__{}__{}__{}__{}__{}    add  $1, $1         ; 1:11      __INFO   $2 = 2*$0_ORIGIN})},
+__{}__{}__{}__{}__HEX_HL($2),__HEX_HL($4+$0_ORIGIN),{dnl
+__{}__{}__{}__{}__{}define({__CLOCKS},11){}dnl
+__{}__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}__{}define({__PRICE},eval(11+__BYTE_PRICE*1)){}dnl
+__{}__{}__{}__{}__{}define({$0_CODE_1},{
+__{}__{}__{}__{}__{}    add  $1, $3         ; 1:11      __INFO   $2 = $0_ORIGIN+$4})},
+__{}__{}__{}__{}__HEX_HL($2),__HEX_HL($6+$0_ORIGIN),{dnl
+__{}__{}__{}__{}__{}define({__CLOCKS},11){}dnl
+__{}__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}__{}define({__PRICE},eval(11+__BYTE_PRICE*1)){}dnl
+__{}__{}__{}__{}__{}define({$0_CODE_1},{
+__{}__{}__{}__{}__{}    add  $1, $5         ; 1:11      __INFO   $2 = $0_ORIGIN+$6})},
+__{}__{}__{}__{}__HEX_HL($2),__HEX_HL($8+$0_ORIGIN),{dnl
+__{}__{}__{}__{}__{}define({__CLOCKS},11){}dnl
+__{}__{}__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}__{}__{}define({__PRICE},eval(11+__BYTE_PRICE*1)){}dnl
+__{}__{}__{}__{}__{}define({$0_CODE_1},{
+__{}__{}__{}__{}__{}    add  $1, $7         ; 1:11      __INFO   $2 = $0_ORIGIN+$8}){}dnl
+__{}__{}__{}__{}}){}dnl
+__{}__{}__{}}){}dnl
+__{}__{}}){}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_L($2),0xFF,{dnl # 0xBB00-- = 0xBAFF
+__{}__{}__{}define({$0_CODE_2},dnl
+__{}__{}__{}__{}__LD_R8_R8($1,$2+1{}ifelse(__IS_NUM($4),{1},{,$3,$4}){}ifelse(__IS_NUM($6),{1},{,$5,$6}){}ifelse(__IS_NUM($8),{1},{,$7,$8}){}ifelse(__IS_NUM($10),{1},{,$9,$10}))
+__{}__{}__{}__{}    dec  $1             ; 1:6       __TMP_INFO   $2 = __HEX_HL($2+1)-1){}dnl # after 16bit--
+__{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}__{}__{}define({__CLOCKS},eval(6+__TMP_C1)){}dnl
+__{}__{}__{}__{}define({__BYTES},eval(1+ __TMP_B1)){}dnl
+__{}__{}__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_CODE_2},{})})},
+__{}__{}__HEX_L($2),0x00,{dnl # 0xBBFF++ = 0xBC00
+__{}__{}__{}define( {$@_CODE_2},dnl
+__{}__{}__{}__{}__LD_R8_R8($1,$2-1{}ifelse(__IS_NUM($4),{1},{,$3,$4}){}ifelse(__IS_NUM($6),{1},{,$5,$6}){}ifelse(__IS_NUM($8),{1},{,$7,$8}){}ifelse(__IS_NUM($10),{1},{,$9,$10}))
+__{}__{}__{}__{}    inc  $1             ; 1:6       __TMP_INFO   $2 = __HEX_HL($2-1)+1){}dnl # after 16bit++
+__{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}__{}__{}define({__CLOCKS},eval(6+__TMP_C1)){}dnl
+__{}__{}__{}__{}define({__BYTES},eval(1+ __TMP_B1)){}dnl
+__{}__{}__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_CODE_2},{})}){}dnl
+__{}__{}}){}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_L($0_ORIGIN),0x00,{dnl # 0xBB00-- = 0xBAFF
+__{}__{}__{}define({$0_CODE_3},
+__{}__{}__{}__{}    dec  $1             ; 1:6       __TMP_INFO   $0_ORIGIN-- = __HEX_HL($0_ORIGIN-1){}dnl # before 16bit--
+__{}__{}__{}__{}__LD_R8_R8($1,$2{}ifelse(__IS_NUM($4),{1},{,$3,}ifelse($1,$3,$4-1,$4)){}ifelse(__IS_NUM($6),{1},{,$5,}ifelse($1,$5,$6-1,$6)){}ifelse(__IS_NUM($8),{1},{,$7,}ifelse($1,$7,$8-1,$8)){}ifelse(__IS_NUM($10),{1},{,$9,}ifelse($1,$9,$10-1,$10)))){}dnl
+__{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}__{}__{}define({$0_CODE_2},{}){}dnl
+__{}__{}__{}__{}define({__CLOCKS},eval(6+__TMP_C1)){}dnl
+__{}__{}__{}__{}define({__BYTES},eval(1+ __TMP_B1)){}dnl
+__{}__{}__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_CODE_3},{})})},
+__{}__{}__HEX_L($0_ORIGIN),0xFF,{dnl # 0xBBFF++ = 0xBC00
+__{}__{}__{}define({$0_CODE_3},
+__{}__{}__{}__{}    inc  $1             ; 1:6       __TMP_INFO   $0_ORIGIN++ = __HEX_HL($0_ORIGIN+1){}dnl # before 16bit++
+__{}__{}__{}__{}__LD_R8_R8($1,$2{}ifelse(__IS_NUM($4),{1},{,$3,}ifelse($1,$3,$4+1,$4)){}ifelse(__IS_NUM($6),{1},{,$5,}ifelse($1,$5,$6+1,$6)){}ifelse(__IS_NUM($8),{1},{,$7,}ifelse($1,$7,$8+1,$8)){}ifelse(__IS_NUM($10),{1},{,$9,}ifelse($1,$9,$10+1,$10)))){}dnl
+__{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}__{}__{}define({$0_CODE_2},{}){}dnl
+__{}__{}__{}__{}define({__CLOCKS},eval(6+__TMP_C1)){}dnl
+__{}__{}__{}__{}define({__BYTES},eval(1+ __TMP_B1)){}dnl
+__{}__{}__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_CODE_3},{})}){}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+__{}$0_CODE_1{}$0_CODE_2{}$0_CODE_3{}dnl
+})dnl
+dnl
+dnl
+dnl
+define({obsolete__LD_REG8_REG8},{dnl
+dnl # Only accepts numeric values or an empty string. It does not specify pointers or variable names.
+dnl #  __ld_reg8_reg8: $1 $2 $3 $4 $5 $6 $7 $8
+dnl #  __ld_reg8_reg8(target_16bit_name,target_16bit_value,source_16bit_name,source_16bit_value,source_16bit_name,source_16bit_value,source_16bit_name,source_16bit_value
+dnl #
+dnl #  __ld_reg8_reg8(DE,0x8833,HL,0x2288)
+dnl #  ld DE,0x8833 --> ld E,0x33
+dnl #               --> ld D,L
 __{}define({__GARBAGE},   __LD_REG8(substr($1,1,1),__HEX_L($2),substr($3,0,1),__HEX_H($4),substr($3,1,1),__HEX_L($4),substr($5,0,1),__HEX_H($6),substr($5,1,1),__HEX_L($6),substr($7,0,1),__HEX_H($8),substr($7,1,1),__HEX_L($8))){}dnl
 __{}define({__CLOCKS_GARBAGE},__CLOCKS){}dnl
 __{}define({__CODE_FIRST},__LD_REG8(substr($1,0,1),__HEX_H($2),substr($3,0,1),__HEX_H($4),substr($3,1,1),__HEX_L($4),substr($5,0,1),__HEX_H($6),substr($5,1,1),__HEX_L($6),substr($7,0,1),__HEX_H($8),substr($7,1,1),__HEX_L($8))){}dnl
@@ -1869,7 +2082,7 @@ __{}__{}define({__BYTES_16BIT},3){}dnl
 __{}__{}define({__CODE_16BIT},{
 __{}__{}    ld   $1{,} format({%-11s},$2); 3:10      }_TMP_INFO)})},{dnl
 dnl
-__{}__LD_REG8_REG8($1,$2,ifelse(__IS_NUM($4),{1},$3{,}$4{,}){}ifelse(__IS_NUM($6),{1},$5{,}$6{,}){}ifelse(__IS_NUM($8),{1},$7{,}$8)){}dnl
+__{}obsolete__LD_REG8_REG8($1,$2,ifelse(__IS_NUM($4),{1},$3{,}$4{,}){}ifelse(__IS_NUM($6),{1},$5{,}$6{,}){}ifelse(__IS_NUM($8),{1},$7{,}$8)){}dnl
 __{}define({__CLOCKS_16BIT},eval(__CLOCKS_FIRST+__CLOCKS_SECOND)){}dnl
 __{}define({__BYTES_16BIT},eval(__BYTES_FIRST+__BYTES_SECOND)){}dnl
 __{}define({__CODE_16BIT},__CODE_FIRST{}__CODE_SECOND){}dnl
@@ -1881,28 +2094,28 @@ __{}{define({__LD_REG16_ORIG},{})}){}dnl
 __{}ifelse(__IS_NUM(__LD_REG16_ORIG),{0},{define({__LD_REG16_ORIG},{})}){}dnl
 __{}dnl
 __{}ifelse(__LD_REG16_ORIG,{},,{dnl
-__{}__{}__LD_REG8_REG8($1,$2,ifelse(__IS_NUM($4),{1},$3{,}ifelse($1,$3,$4+1,$4){,}){}ifelse(__IS_NUM($6),{1},$5{,}ifelse($1,$5,$6+1,$6){,}){}ifelse(__IS_NUM($8),{1},$7{,}ifelse($1,$7,$8+1,$8){,})){}dnl
+__{}__{}obsolete__LD_REG8_REG8($1,$2,ifelse(__IS_NUM($4),{1},$3{,}ifelse($1,$3,$4+1,$4){,}){}ifelse(__IS_NUM($6),{1},$5{,}ifelse($1,$5,$6+1,$6){,}){}ifelse(__IS_NUM($8),{1},$7{,}ifelse($1,$7,$8+1,$8){,})){}dnl
 __{}__{}ifelse(eval(__CLOCKS_16BIT>(6+__CLOCKS_FIRST+__CLOCKS_SECOND)),{1},{dnl
 __{}__{}__{}define({__CLOCKS_16BIT},eval(6+__CLOCKS_FIRST+__CLOCKS_SECOND)){}dnl
 __{}__{}__{}define({__BYTES_16BIT},eval(1+__BYTES_FIRST+__BYTES_SECOND)){}dnl
 __{}__{}__{}define({__CODE_16BIT},{
 __{}__{}__{}    inc  $1             ; 1:6       }_TMP_INFO{}__CODE_FIRST{}__CODE_SECOND){}dnl # before ++16bit
 __{}__{}}){}dnl
-__{}__{}__LD_REG8_REG8($1,$2,ifelse(__IS_NUM($4),{1},$3{,}ifelse($1,$3,$4-1,$4){,}){}ifelse(__IS_NUM($6),{1},$5{,}ifelse($1,$5,$6-1,$6){,}){}ifelse(__IS_NUM($8),{1},$7{,}ifelse($1,$7,$8-1,$8){,})){}dnl
+__{}__{}obsolete__LD_REG8_REG8($1,$2,ifelse(__IS_NUM($4),{1},$3{,}ifelse($1,$3,$4-1,$4){,}){}ifelse(__IS_NUM($6),{1},$5{,}ifelse($1,$5,$6-1,$6){,}){}ifelse(__IS_NUM($8),{1},$7{,}ifelse($1,$7,$8-1,$8){,})){}dnl
 __{}__{}ifelse(eval(__CLOCKS_16BIT>(6+__CLOCKS_FIRST+__CLOCKS_SECOND)),{1},{dnl
 __{}__{}__{}define({__CLOCKS_16BIT},eval(6+__CLOCKS_FIRST+__CLOCKS_SECOND)){}dnl
 __{}__{}__{}define({__BYTES_16BIT},eval(1+__BYTES_FIRST+__BYTES_SECOND)){}dnl
 __{}__{}__{}define({__CODE_16BIT},{
 __{}__{}__{}    dec  $1             ; 1:6       }_TMP_INFO{}__CODE_FIRST{}__CODE_SECOND){}dnl # before --16bit
 __{}__{}}){}dnl
-__{}__{}__LD_REG8_REG8($1,$2-1,ifelse(__IS_NUM($4),{1},$3{,}$4{,}){}ifelse(__IS_NUM($6),{1},$5{,}$6{,}){}ifelse(__IS_NUM($8),{1},$7{,}$8)){}dnl
+__{}__{}obsolete__LD_REG8_REG8($1,$2-1,ifelse(__IS_NUM($4),{1},$3{,}$4{,}){}ifelse(__IS_NUM($6),{1},$5{,}$6{,}){}ifelse(__IS_NUM($8),{1},$7{,}$8)){}dnl
 __{}__{}ifelse(eval(__CLOCKS_16BIT>(6+__CLOCKS_FIRST+__CLOCKS_SECOND)),{1},{dnl
 __{}__{}__{}define({__CLOCKS_16BIT},eval(6+__CLOCKS_FIRST+__CLOCKS_SECOND)){}dnl
 __{}__{}__{}define({__BYTES_16BIT},eval(1+__BYTES_FIRST+__BYTES_SECOND)){}dnl
 __{}__{}__{}define({__CODE_16BIT},__CODE_FIRST{}__CODE_SECOND{
 __{}__{}__{}    inc  $1             ; 1:6       }_TMP_INFO{   $2 = __HEX_HL($2-1)+1}){}dnl # after 16bit++
 __{}__{}}){}dnl
-__{}__{}__LD_REG8_REG8($1,$2+1,ifelse(__IS_NUM($4),{1},$3{,}$4{,}){}ifelse(__IS_NUM($6),{1},$5{,}$6{,}){}ifelse(__IS_NUM($8),{1},$7{,}$8)){}dnl
+__{}__{}obsolete__LD_REG8_REG8($1,$2+1,ifelse(__IS_NUM($4),{1},$3{,}$4{,}){}ifelse(__IS_NUM($6),{1},$5{,}$6{,}){}ifelse(__IS_NUM($8),{1},$7{,}$8)){}dnl
 __{}__{}ifelse(eval(__CLOCKS_16BIT>(6+__CLOCKS_FIRST+__CLOCKS_SECOND)),{1},{dnl
 __{}__{}__{}define({__CLOCKS_16BIT},eval(6+__CLOCKS_FIRST+__CLOCKS_SECOND)){}dnl
 __{}__{}__{}define({__BYTES_16BIT},eval(1+__BYTES_FIRST+__BYTES_SECOND)){}dnl
@@ -1933,6 +2146,157 @@ __{}__{}define({__BYTES_16BIT},3){}dnl
 __{}__{}define({__CODE_16BIT},{
 __{}__{}    ld   $1{,} __HEX_HL($2)     ; 3:10      }_TMP_INFO)}){}dnl
 __{}}){}dnl
+__{}define({__PRICE_16BIT},eval(__CLOCKS_16BIT+4*__BYTES_16BIT)){}dnl
+__{}ifelse(__IS_NUM(__SUM_BYTES), 0,{define({__SUM_BYTES},  __BYTES_16BIT)},{__add({__SUM_BYTES}, __BYTES_16BIT)}){}dnl
+__{}ifelse(__IS_NUM(__SUM_CLOCKS),0,{define({__SUM_CLOCKS},__CLOCKS_16BIT)},{__add({__SUM_CLOCKS},__CLOCKS_16BIT)}){}dnl
+__{}ifelse(__IS_NUM(__SUM_PRICES),0,{define({__SUM_PRICES}, __PRICE_16BIT)},{__add({__SUM_PRICES},__PRICE_16BIT)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__LD_R16},{dnl
+ifelse(1,0,{errprint({
+__ld_reg16($@)
+})}){}dnl
+dnl # __ld_reg16_16bit $1,$2,$3,$4,$5,$6,$7,$8
+dnl # Use: __LD_REG16({HL},0x2200,{DE},1,{BC},0x3322,{HL},-1)
+dnl # Input:
+dnl # _TMP_INFO
+dnl #  $1 Name of target register pair
+dnl #  $2 Searched 16-bit value that is needed
+dnl
+dnl #  $3 Source registry name
+dnl #  $4 Source registry 16-bit value
+dnl #  $5 Source registry name
+dnl #  $6 Source registry 16-bit value
+dnl #  $7 Source registry name
+dnl #  $8 Source registry 16-bit value
+dnl
+dnl # Output:
+dnl #   print code to stdout
+dnl #   set __BYTES
+dnl #   set __CLOCKS
+dnl #   set __PRICE  __CLOCKS + __BYTE_PRICE * __BYTES
+dnl #   __SUM_BYTES  += __BYTES
+dnl #   __SUM_CLOCKS += __CLOCKS
+dnl #   __SUM_PRICES += __PRICE
+__{}undefine({__COMMA}){}dnl
+ifelse(dnl
+$1,{},{errprint({
+  .error $0($@): no target register pair!
+})},
+$2,{},{errprint({
+  .error $0($@): no target 16-bit value!
+})},
+__IS_MEM_REF($1),1,{dnl
+__{}ifelse($1,(HL),{dnl
+__{}__{}ifelse(dnl
+__{}__{}__IS_MEM_REF($2):HL=$2,1:$3=($4),{dnl # ld (HL),(0x8000) && HL=$0x8000 --> nothing
+__{}__{}__{}define({__CLOCKS_16BIT},0){}dnl
+__{}__{}__{}define({__BYTES_16BIT},0)},
+__{}__{}__IS_MEM_REF($2):HL=$2,1:$5=($6),{dnl # ld (HL),(0x8000) && HL=$0x8000 --> nothing
+__{}__{}__{}define({__CLOCKS_16BIT},0){}dnl
+__{}__{}__{}define({__BYTES_16BIT},0)},
+__{}__{}__IS_MEM_REF($2):HL=$2,1:$7=($8),{dnl # ld (HL),(0x8000) && HL=$0x8000 --> nothing
+__{}__{}__{}define({__CLOCKS_16BIT},0){}dnl
+__{}__{}__{}define({__BYTES_16BIT},0)},
+__{}__{}$2,$4,{dnl # ld (HL),(0x8000) && DE=($0x8000) --> ld (HL),E
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($3,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}$2,$6,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($5,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}$2,$8,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($7,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__IS_MEM_REF($2),1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},20){}dnl
+__{}__{}__{}define({__BYTES_16BIT},4){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld    A{,}format({%-12s},$2); 3:13      }_TMP_INFO{
+__{}__{}__{}    ld  $1{,}A          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($4),__HEX_L($4):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($3,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($4),__HEX_H($4):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($3,0,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($6),__HEX_L($6):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($5,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($6),__HEX_H($6):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($5,0,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($8),__HEX_L($8):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($7,1,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}__HEX_L($2):__IS_NUM($8),__HEX_H($8):1,{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},7){}dnl
+__{}__{}__{}define({__BYTES_16BIT},1){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,}substr($7,0,1)          ; 1:7       }_TMP_INFO)},
+__{}__{}{dnl
+__{}__{}__{}define({__CLOCKS_16BIT},10){}dnl
+__{}__{}__{}define({__BYTES_16BIT},2){}dnl
+__{}__{}__{}define({__CODE_16BIT},{
+__{}__{}__{}    ld  $1{,} format({%-10s},$2); 2:10      }_TMP_INFO)})},
+__{}$1,(BC),{bc dodelat!},
+__{}$1,(DE),{de dodelat!},
+__{}{dnl # unknown target name
+__{}define({__CLOCKS_16BIT},0){}dnl
+__{}define({__BYTES_16BIT},0){}dnl
+__{}define({__CODE_16BIT},{})})},
+__IS_MEM_REF($2),{1},{dnl
+__{}define({__CLOCKS_16BIT},0){}dnl
+__{}define({__BYTES_16BIT},0){}dnl
+__{}define({__CODE_16BIT},{}){}dnl
+__{}ifelse(dnl # memory reference
+__{}$1:$2,$3:$4,{define({__CODE_16BIT},{})},
+__{}$1:$2,$5:$6,{define({__CODE_16BIT},{})},
+__{}$1:$2,$7:$8,{define({__CODE_16BIT},{})},
+__{}$2,$4,{define({__CODE_16BIT},__LD_MEM16($1,$2,$3,$4))},
+__{}$2,$6,{define({__CODE_16BIT},__LD_MEM16($1,$2,$5,$6))},
+__{}$2,$8,{define({__CODE_16BIT},__LD_MEM16($1,$2,$7,$8))},
+__{}{define({__CODE_16BIT},__LD_MEM16($1,$2,,))})},
+$2,{},{dnl
+__{}__{}define({__CLOCKS_16BIT},0){}dnl
+__{}__{}define({__BYTES_16BIT},0){}dnl
+__{}__{}define({__CODE_16BIT},{})},
+__IS_NUM($2),{0},{dnl # unknown number
+__{}define({__CLOCKS_16BIT},0){}dnl
+__{}define({__BYTES_16BIT},0){}dnl
+__{}define({__CODE_16BIT},{}){}dnl
+__{}ifelse(dnl
+__{}$1:$2,$3:$4,{define({__CODE_16BIT},{})},
+__{}$1:$2,$5:$6,{define({__CODE_16BIT},{})},
+__{}$1:$2,$7:$8,{define({__CODE_16BIT},{})},
+__{}$2,$4,{define({__CODE_16BIT},__LD_MEM16($1,$2,$3,$4))},
+__{}$2,$6,{define({__CODE_16BIT},__LD_MEM16($1,$2,$5,$6))},
+__{}$2,$8,{define({__CODE_16BIT},__LD_MEM16($1,$2,$7,$8))},
+__{}{dnl
+__{}__{}define({__CLOCKS_16BIT},10){}dnl
+__{}__{}define({__BYTES_16BIT},3){}dnl
+__{}__{}define({__CODE_16BIT},{
+__{}__{}    ld   $1{,} format({%-11s},$2); 3:10      }_TMP_INFO)})},
+{dnl
+__{}__LD_R8_R8($@){}dnl
+}){}dnl
 __{}define({__PRICE_16BIT},eval(__CLOCKS_16BIT+4*__BYTES_16BIT)){}dnl
 __{}ifelse(__IS_NUM(__SUM_BYTES), 0,{define({__SUM_BYTES},  __BYTES_16BIT)},{__add({__SUM_BYTES}, __BYTES_16BIT)}){}dnl
 __{}ifelse(__IS_NUM(__SUM_CLOCKS),0,{define({__SUM_CLOCKS},__CLOCKS_16BIT)},{__add({__SUM_CLOCKS},__CLOCKS_16BIT)}){}dnl
