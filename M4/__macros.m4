@@ -1848,7 +1848,7 @@ __{}dnl
 __{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__add({__SUM_BYTES}, __BYTES){}dnl
 __{}__add({__SUM_PRICE}, __PRICE){}dnl
-__{}ifelse(1,1,{
+__{}ifelse(1,0,{
                         ;[__BYTES:__CLOCKS]}){}dnl
 __{}$0_CODE{}dnl
 }){}dnl
