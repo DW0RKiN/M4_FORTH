@@ -1155,9 +1155,38 @@ __{}__{}__{}__LD4($2,$3,substr($4,1,1),ifelse(__IS_NUM($5),1,__HEX_L($5),$5),$1)
 __{}__{}__{}__LD4($2,$3,substr($4,0,1),__HEX_H($5),$1){}dnl
 __{}__{}},
 __{}__{}{
-__{}__{}__{}  .error __ld_r_num_rec($@): Bad register name = "$3"!}){}dnl
+__{}__{}__{}  .error __ld_r_num_rec($@): Bad register name = "$4"!}){}dnl
 __{}__{}ifelse(eval($#>6),1,{$0($1,$2,$3,shift(shift(shift(shift(shift($@))))))}){}dnl
 __{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__LD_R_NUM_PLUS_ESCAPE},{dnl
+ifelse(1,0,{errprint({
+__ld_r_num($@)
+   info:$1 
+   t_reg:$2 
+   t_val:$3 
+   s_reg:$4 
+   s_val:$5
+})}){}dnl
+dnl # Input:
+dnl #  $1 info
+dnl #  $2 Name of the target registry
+dnl #  $3 Searched value that is needed
+dnl #  $4 Source registry name
+dnl #  $5 Source registry value
+__{}define({__CLOCKS},10000000){}dnl
+__{}define({__BYTES},0){}dnl
+__{}undefine({__CODE}){}dnl
+__{}define({_TMP_INFO},$1){}dnl
+__{}__LD_R_NUM_REC($1,$2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),shift(shift(shift($@)))){}dnl
+__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__add({__SUM_BYTES},  __BYTES){}dnl
+__{}__add({__SUM_PRICE},  __PRICE){}dnl
+__{}__CODE{}dnl
 }){}dnl
 dnl
 dnl
@@ -1186,6 +1215,7 @@ __{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__add({__SUM_BYTES},  __BYTES){}dnl
 __{}__add({__SUM_PRICE},  __PRICE){}dnl
+__{}define({__CODE},__CODE){}dnl # remove one level {{{,}}}
 __{}__CODE{}dnl
 }){}dnl
 dnl
@@ -1425,8 +1455,8 @@ __{}pushdef({__SUM_CLOCKS},0){}dnl
 __{}pushdef({__SUM_BYTES}, 0){}dnl
 __{}pushdef({__SUM_PRICE}, 0){}dnl
 __{}define( {__TMP_CODE_1},dnl
-__{}__{}__LD_R_NUM(__INFO,substr($1,0,1),__HEX_H($2),                                                                         $3,$4,                                                $5,$6,                                                $7,$8){}dnl
-__{}__{}__LD_R_NUM(__INFO,substr($1,1,1),__HEX_L($2),substr($1,0,1),__HEX_H($2){}ifelse($1,$3,{,substr($3,1,1),__HEX_L($4)},{,$3,$4}){}ifelse($1,$5,{,substr($5,1,1),__HEX_L($6)},{,$5,$6}){}ifelse($1,$7,{,substr($7,1,1),__HEX_L($8)},{,$7,$8}))){}dnl
+__{}__{}__LD_R_NUM_PLUS_ESCAPE(__INFO,substr($1,0,1),__HEX_H($2),                                                                         $3,$4,                                                $5,$6,                                                $7,$8){}dnl
+__{}__{}__LD_R_NUM_PLUS_ESCAPE(__INFO,substr($1,1,1),__HEX_L($2),substr($1,0,1),__HEX_H($2){}ifelse($1,$3,{,substr($3,1,1),__HEX_L($4)},{,$3,$4}){}ifelse($1,$5,{,substr($5,1,1),__HEX_L($6)},{,$5,$6}){}ifelse($1,$7,{,substr($7,1,1),__HEX_L($8)},{,$7,$8}))){}dnl
 __{}define({__TMP_C1},__SUM_CLOCKS){}dnl
 __{}define({__TMP_B1}, __SUM_BYTES){}dnl
 __{}define({__TMP_P1}, __SUM_PRICE){}dnl
@@ -1434,8 +1464,8 @@ __{}define({__SUM_CLOCKS},0){}dnl
 __{}define({__SUM_BYTES}, 0){}dnl
 __{}define({__SUM_PRICE}, 0){}dnl
 __{}define({__TMP_CODE_2},dnl
-__{}__{}__LD_R_NUM(__INFO,substr($1,1,1),__HEX_L($2),                                                                         $3,$4,                                                $5,$6,                                                $7,$8){}dnl
-__{}__{}__LD_R_NUM(__INFO,substr($1,0,1),__HEX_H($2),substr($1,1,1),__HEX_L($2){}ifelse($1,$3,{,substr($3,0,1),__HEX_H($4)},{,$3,$4}){}ifelse($1,$5,{,substr($5,0,1),__HEX_H($6)},{,$5,$6}){}ifelse($1,$7,{,substr($7,0,1),__HEX_H($8)},{,$7,$8}))){}dnl
+__{}__{}__LD_R_NUM_PLUS_ESCAPE(__INFO,substr($1,1,1),__HEX_L($2),                                                                         $3,$4,                                                $5,$6,                                                $7,$8){}dnl
+__{}__{}__LD_R_NUM_PLUS_ESCAPE(__INFO,substr($1,0,1),__HEX_H($2),substr($1,1,1),__HEX_L($2){}ifelse($1,$3,{,substr($3,0,1),__HEX_H($4)},{,$3,$4}){}ifelse($1,$5,{,substr($5,0,1),__HEX_H($6)},{,$5,$6}){}ifelse($1,$7,{,substr($7,0,1),__HEX_H($8)},{,$7,$8}))){}dnl
 __{}define({__TMP_C2},__SUM_CLOCKS){}dnl
 __{}define({__TMP_B2}, __SUM_BYTES){}dnl
 __{}define({__TMP_P2}, __SUM_PRICE){}dnl
@@ -1455,7 +1485,7 @@ __{}{dnl
 __{}__{}__TMP_CODE_1}){}dnl
 __{}popdef({__SUM_BYTES}){}dnl
 __{}popdef({__SUM_CLOCKS}){}dnl
-__{}popdef({¨}){}dnl
+__{}popdef({__SUM_PRICE}){}dnl
 __{}popdef({__BYTES}){}dnl
 __{}popdef({__CLOCKS}){}dnl
 __{}popdef({__PRICE}){}dnl
@@ -1503,25 +1533,25 @@ __{}__{}__{}__{}__{}define({__CLOCKS},11){}dnl
 __{}__{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}__{}define({__PRICE},eval(11+__BYTE_PRICE*1)){}dnl
 __{}__{}__{}__{}__{}define({$0_CODE_1},{
-__{}__{}__{}__{}__{}    add  $1, $1         ; 1:11      __INFO   $2 = 2*$0_ORIGIN})},
+__{}__{}__{}__{}__{}    add  $1{,} $1         ; 1:11      __INFO   $2 = 2*$0_ORIGIN})},
 __{}__{}__{}__{}__HEX_HL($2),__HEX_HL($4+$0_ORIGIN),{dnl
 __{}__{}__{}__{}__{}define({__CLOCKS},11){}dnl
 __{}__{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}__{}define({__PRICE},eval(11+__BYTE_PRICE*1)){}dnl
 __{}__{}__{}__{}__{}define({$0_CODE_1},{
-__{}__{}__{}__{}__{}    add  $1, $3         ; 1:11      __INFO   $2 = $0_ORIGIN+$4})},
+__{}__{}__{}__{}__{}    add  $1{,} $3         ; 1:11      __INFO   $2 = $0_ORIGIN+$4})},
 __{}__{}__{}__{}__HEX_HL($2),__HEX_HL($6+$0_ORIGIN),{dnl
 __{}__{}__{}__{}__{}define({__CLOCKS},11){}dnl
 __{}__{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}__{}define({__PRICE},eval(11+__BYTE_PRICE*1)){}dnl
 __{}__{}__{}__{}__{}define({$0_CODE_1},{
-__{}__{}__{}__{}__{}    add  $1, $5         ; 1:11      __INFO   $2 = $0_ORIGIN+$6})},
+__{}__{}__{}__{}__{}    add  $1{,} $5         ; 1:11      __INFO   $2 = $0_ORIGIN+$6})},
 __{}__{}__{}__{}__HEX_HL($2),__HEX_HL($8+$0_ORIGIN),{dnl
 __{}__{}__{}__{}__{}define({__CLOCKS},11){}dnl
 __{}__{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}__{}define({__PRICE},eval(11+__BYTE_PRICE*1)){}dnl
 __{}__{}__{}__{}__{}define({$0_CODE_1},{
-__{}__{}__{}__{}__{}    add  $1, $7         ; 1:11      __INFO   $2 = $0_ORIGIN+$8}){}dnl
+__{}__{}__{}__{}__{}    add  $1{,} $7         ; 1:11      __INFO   $2 = $0_ORIGIN+$8}){}dnl
 __{}__{}__{}__{}}){}dnl
 __{}__{}__{}}){}dnl
 __{}__{}}){}dnl
