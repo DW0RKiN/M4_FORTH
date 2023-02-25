@@ -4277,23 +4277,21 @@ __{}    pop  DE             ; 1:10      __INFO},
 __{}{
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({__SUM_BYTES},6){}dnl
-__{}define({__SUM_CLOCKS},eval(42+21*($2-1)-5)){}dnl
-__{}define({__TEMP_CODE},__LD_MEM8({HL},$3,{BC},$2-1,{DE},$1+1,{HL},$1)){}dnl
-__{}__LD_REG16(                            {BC},$2-1,{DE},$1+1,{HL},$1){}dnl
-__{}__LD_REG16(                                      {DE},$1+1,{HL},$1){}dnl
-__{}__LD_REG16(                                                {HL},$1){}dnl
-__{}format({%28s},;[__SUM_BYTES:)format({%-7s},__SUM_CLOCKS]) __INFO   fill(addr,u,char)   default variant: fill(no ptr,?,?) 
-__{}    push DE             ; 1:11      __INFO
-__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__CODE_16BIT   HL = addr from{}dnl
-__{}__LD_REG16(                    {DE},$1+1,{HL},$1){}dnl
-__{}__CODE_16BIT   DE = to{}dnl
-__{}__LD_REG16(          {BC},$2-1,{DE},$1+1,{HL},$1){}dnl
-__{}__CODE_16BIT   = $2-1{}dnl
-__{}__TEMP_CODE
-__{}    ldir                ; 2:u*21/16 __INFO
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO})}){}dnl
+__{}define({__SUM_CLOCKS},eval(22+21*($2-1)-5+20)){}dnl
+__{}define({__TMP_CODE},{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(                             {HL},$1){   HL = addr from}dnl
+__{}__{}__LD_R16(                   {DE},$1+1,{HL},$1){   DE = to}dnl
+__{}__{}__LD_R16(         {BC},$2-1,{DE},$1+1,{HL},$1){   = $2-1}dnl
+__{}__{}__LD_MEM8({HL},$3,{BC},$2-1,{DE},$1+1,{HL},$1){
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}format({%28s},;[__SUM_BYTES:)format({%-7s},__SUM_CLOCKS]) __INFO   fill(addr,u,char)   default variant: fill(no ptr,?,?){}dnl
+__{}__TMP_CODE{}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # -------------------------------------------------------------------------------------
