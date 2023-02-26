@@ -2901,7 +2901,7 @@ __{}define({__SUM_BYTES},22){}dnl
 __{}define({__SUM_CLOCKS},107){}dnl
 __{}define({__TEMP_CODE},__LD_MEM8({HL},$3,{HL},$1,{BC},$2)){}dnl
 __{}__LD_REG16({HL},$1,{BC},$2){}dnl
-__{}format({%36s},;[__SUM_BYTES:__SUM_CLOCKS+21*u/40] )__INFO   fill(addr,u,char)   variant: fill(ptr,ptr,?)    
+__{}format({%36s},;[__SUM_BYTES:__SUM_CLOCKS+21*u/40] )__INFO   fill(addr,u,char)   variant: fill(ptr,ptr,?)
 __{}    ld   BC,format({%-12s},$2); 4:20      __INFO
 __{}    ld   A, C           ; 1:4       __INFO
 __{}    or   B              ; 1:4       __INFO
@@ -3389,7 +3389,7 @@ __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 
 __HEX_L($2<=3*256):__HEX_L($1+$2):__HEX_L(($2) % 3),0x01:0x00:0x00,{
 dnl # cFD  bFE  aFF  a00
-dnl #           +++  
+dnl #           +++
 dnl # cFE  bFF  b00
 dnl #      +++
 dnl # cFF  c00  b01
@@ -3616,7 +3616,7 @@ __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr
 __{}__TMP_CODE{}dnl
 __{}},
 
-__SAVE_EVAL(+($2) <= 2*256+1):__IS_MEM_REF($3),1:0,{ 
+__SAVE_EVAL(+($2) <= 2*256+1):__IS_MEM_REF($3),1:0,{
 __{}dnl # 511
 __{}define({__SUM_CLOCKS},7+7+13){}dnl
 __{}define({__SUM_BYTES},1+2+2+1){}dnl
