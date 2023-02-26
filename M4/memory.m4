@@ -3455,22 +3455,31 @@ __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr
 __{}__TMP_CODE{}dnl
 __{}},
 
-__HEX_H($1):__HEX_L($1),__HEX_H($1+$2-1):0x00,{ 
-__{}define({_TMP_A},__LD_R_NUM(__INFO   char,A,$3,B,__HEX_H($1),C,__HEX_L($1+$2-(($2) & 1)))){}dnl
-__{}define({__SUM_BYTES}, 7+(($2) & 0x01)+__BYTES){}dnl
-__{}define({__SUM_CLOCKS},7*(($2) & 0x01)+(($2)>>1)*(4+7+4+7+10)+__CLOCKS){}dnl
-__{}define({_TMP_INFO},__INFO){}dnl
-__{}__LD_REG16({BC},256*__HEX_H($1)+__HEX_L($1+$2-(($2) & 1))){}dnl
+__HEX_H($1):__HEX_L($1),__HEX_H($1+$2-1):0x00,{
+__{}dnl # 0x4800,23 or 22
+__{}define({__TMP_X},     eval(($2)>>1)){}dnl
+__{}define({__TMP_BC},    eval(256*__HEX_H($1)+__HEX_L($1+$2-(($2) & 1)))){}dnl
+__{}define({__SUM_BYTES}, 2*2+3){}dnl
+__{}define({__SUM_CLOCKS},eval(__TMP_X*(2*11+10))){}dnl
+__{}ifelse(eval(($2) & 1),1,{
+__{}__{}__add({__SUM_BYTES},1){}dnl
+__{}__{}__add({__SUM_CLOCKS},7){}dnl
+__{}__{}define({__TMP_BONUS},{
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO})},
+__{}{dnl
+__{}__{}define({__TMP_BONUS},{}){}dnl
+__{}}){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_R16({BC},__TMP_BC){   addr+u}dnl
+__{}__{}__LD_R_NUM(__INFO   char,A,$3,BC,__TMP_BC){}dnl
+__{}__{}__TMP_BONUS{
+__{}__{}    dec   C             ; 1:4       __INFO
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO
+__{}__{}    dec   C             ; 1:4       __INFO
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO
+__{}__{}    jp   nz{,} $-6        ; 3:10      __INFO}){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant 0>: fill(num,max 256,?){}dnl
-__{}__CODE_16BIT   addr{}dnl
-__{}_TMP_A{}dnl
-__{}ifelse(eval(($2) & 0x01),{1},{
-__{}__{}    ld  (BC),A          ; 1:7       __INFO})
-__{}    dec   C             ; 1:4       __INFO
-__{}    ld  (BC),A          ; 1:7       __INFO
-__{}    dec   C             ; 1:4       __INFO
-__{}    ld  (BC),A          ; 1:7       __INFO
-__{}    jp   nz, $-4        ; 3:10      __INFO{}dnl
+__{}__TMP_CODE{}dnl
 __{}},
 
 __HEX_HL($2):__IS_MEM_REF($1):__IS_MEM_REF($3),{0x0007:1:1},{
