@@ -1177,10 +1177,10 @@ dnl
 define({__LD_R_NUM_PLUS_ESCAPE},{dnl
 ifelse(1,0,{errprint({
 __ld_r_num($@)
-   info:$1 
-   t_reg:$2 
-   t_val:$3 
-   s_reg:$4 
+   info:$1
+   t_reg:$2
+   t_val:$3
+   s_reg:$4
    s_val:$5
 })}){}dnl
 dnl # Input:
@@ -1206,10 +1206,10 @@ dnl
 define({__LD_R_NUM},{dnl
 ifelse(1,0,{errprint({
 __ld_r_num($@)
-   info:$1 
-   t_reg:$2 
-   t_val:$3 
-   s_reg:$4 
+   info:$1
+   t_reg:$2
+   t_val:$3
+   s_reg:$4
    s_val:$5
 })}){}dnl
 dnl # Input:
@@ -1246,7 +1246,7 @@ dnl #  __CLOCKS
 dnl #  __BYTES
 dnl #  __CODE
 dnl #
-dnl # if the target register is A and already has some value, 
+dnl # if the target register is A and already has some value,
 dnl # then the best option may not be found,
 dnl # because an additional parameter is needed, namely the original value of A.
 dnl # Like:
@@ -1537,7 +1537,7 @@ __{}{define({$0_ORIGIN},{})}){}dnl
 __{}dnl
 __{}ifelse($0_ORIGIN,{},,{dnl
 __{}__{}ifelse($1,HL,{dnl
-__{}__{}__{}dnl # ($1 == HL) && (( $3 == HL) || ( $5 == HL ) || ( $7 == HL )) 
+__{}__{}__{}dnl # ($1 == HL) && (( $3 == HL) || ( $5 == HL ) || ( $7 == HL ))
 __{}__{}__{}ifelse(eval(__TMP_P1>11+__BYTE_PRICE*1),1,{dnl
 __{}__{}__{}__{}ifelse(dnl
 __{}__{}__{}__{}__HEX_HL($2),__HEX_HL($0_ORIGIN+$0_ORIGIN),{dnl
@@ -1690,7 +1690,7 @@ dnl #   __SUM_CLOCKS += __CLOCKS
 dnl #   __SUM_BYTES  += __BYTES
 dnl #   __SUM_PRICE  += __PRICE
 dnl #
-dnl # dodelat!!! (HL,2*abc,HL,abc) -> add HL,HL 
+dnl # dodelat!!! (HL,2*abc,HL,abc) -> add HL,HL
 __{}dnl # checking if we know the previous value
 __{}ifelse(dnl
 __{}$1:eval(len( $4)>0),$3:1,{define({$0_ORIGIN},$4)},
