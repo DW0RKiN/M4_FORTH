@@ -2897,34 +2897,39 @@ __{}  .error {$0}($@): $# parameters found in macro!},
 
 __IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{
 __{}define({_TMP_INFO},__INFO){}dnl
-__{}define({__SUM_BYTES},22){}dnl
-__{}define({__SUM_CLOCKS},107){}dnl
-__{}define({__TEMP_CODE},__LD_MEM8({HL},$3,{HL},$1,{BC},$2)){}dnl
-__{}__LD_REG16({HL},$1,{BC},$2){}dnl
-__{}format({%36s},;[__SUM_BYTES:__SUM_CLOCKS+21*u/40] )__INFO   fill(addr,u,char)   variant: fill(ptr,ptr,?)
-__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
-__{}    ld   A, C           ; 1:4       __INFO
-__{}    or   B              ; 1:4       __INFO
-__{}    jr   z, format({%-12s},$+eval(__SUM_BYTES-6)); 2:7/12    __INFO
-__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__CODE_16BIT   HL = addr from{}dnl
-__{}__TEMP_CODE
-__{}    dec  BC             ; 1:6       __INFO   = $2-1
-__{}    ld   A, C           ; 1:4       __INFO
-__{}    or   B              ; 1:4       __INFO
-__{}    jr   z, format({%-12s},$+9); 2:7/12    __INFO
-__{}    push DE             ; 1:11      __INFO
-__{}    ld    E, L          ; 1:4       __INFO
-__{}    ld    D, H          ; 1:4       __INFO
-__{}    inc  DE             ; 1:6       __INFO   DE = to = from+1
-__{}    ldir                ; 2:u*21/16 __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    pop  HL             ; 1:10      __INFO},
+__{}define({__SUM_BYTES},14+4){}dnl
+__{}define({__SUM_CLOCKS},11+6+4+4+7+11+4+4+6+10+10+4+4+7-5){}dnl
+__{}define({__TMP_CODE_END},{
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16_PLUS_ESCAPE({HL},$1,{BC},$2){   HL = addr from}dnl
+__{}__{}__LD_MEM8_PLUS_ESCAPE({HL},$3,{HL},$1,{BC},$2){}dnl
+__{}__{}{
+__{}__{}    dec  BC             ; 1:6       __INFO   = $2-1
+__{}__{}    ld   A{,} C           ; 1:4       __INFO
+__{}__{}    or   B              ; 1:4       __INFO
+__{}__{}    jr   z{,} format({%-12s},$+9); 2:7/12    __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    E{,} L          ; 1:4       __INFO
+__{}__{}    ld    D{,} H          ; 1:4       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   DE = to = from+1
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO}){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_R16({BC},$2){   BC = u}dnl
+__{}__{}{
+__{}__{}    ld   A, C           ; 1:4       __INFO
+__{}__{}    or   B              ; 1:4       __INFO
+__{}__{}    jr   z, format({%-12s},$+eval(__SUM_BYTES-2-__BYTES)); 2:7/12    __INFO}dnl
+__{}__{}__TMP_CODE_END){}dnl
+__{}format({%36s},;[__SUM_BYTES:__SUM_CLOCKS+21*u/40] )__INFO   fill(addr,u,char)   variant: fill(no ptr,ptr,?){}dnl
+__{}__TMP_CODE{}dnl
+__{}},
 
 __IS_MEM_REF($2),1,{
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({__SUM_BYTES},5+6+4){}dnl
-__{}define({__SUM_CLOCKS},11+10+10+11+6+4+4+7+4+4+7){}dnl
+__{}define({__SUM_CLOCKS},11+10+10+11+6+4+4+7+4+4+7-5){}dnl
 __{}define({__TMP_CODE_END},{
 __{}__{}    push DE             ; 1:11      __INFO}dnl
 __{}__{}__LD_R16_PLUS_ESCAPE({DE},$1+1,{HL},$1,{BC},$2-1){   DE = to}dnl
@@ -4277,7 +4282,7 @@ __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr
 __{}__TMP_CODE{}dnl
 __{}},
 
-__HEX_L($1):__HEX_L(__HEX_L($1+$2)>1):__IS_MEM_REF($3),{0x00:0x01:0},{
+__HEX_L($1):__HEX_L(__HEX_L($1+$2)+0>1):__IS_MEM_REF($3),{0x00:0x01:0},{
 __{}dnl # fail PUSH3_FILL(0x4800,5*256+1,abc)
 __{}dnl # 2*600-1 or 2*600-2
 __{}define({__TMP_X},     eval(($2)>>1)){}dnl
