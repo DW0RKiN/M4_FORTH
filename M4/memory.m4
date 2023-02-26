@@ -4270,6 +4270,68 @@ __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr
 __{}__TMP_CODE{}dnl
 __{}},
 
+__HEX_L($1):__HEX_L(__HEX_L($1+$2)>1):__IS_MEM_REF($3),{0x00:0x01:0},{
+__{}dnl # fail PUSH3_FILL(0x4800,5*256+1,abc)
+__{}dnl # 2*600-1 or 2*600-2
+__{}define({__TMP_X},     eval(($2)>>1)){}dnl
+__{}define({__TMP_HL},    eval($1+$2-(($2) & 1))){}dnl
+__{}ifelse(__HEX_L(__TMP_HL),0x00,__add({__TMP_HL},-256)){}dnl
+dnl __{}ifelse(__HEX_L($1+$2),0x00,{__add({__TMP_HL},-256)}){}dnl
+__{}define({__TMP_B},eval(1+(($2-1)>>8))){}dnl
+__{}define({__SUM_BYTES}, 1+2*2+2+1+2+1){}dnl
+__{}define({__SUM_CLOCKS},eval(11+__TMP_X*(2*11+12)+__TMP_B*(4+13-5)-5+10)){}dnl
+__{}ifelse(eval(($2) & 1),1,{dnl
+__{}__{}__add({__SUM_BYTES},1){}dnl
+__{}__{}__add({__SUM_CLOCKS},7){}dnl
+__{}__{}define({__TMP_BONUS},{
+__{}__{}    ld  (HL){,}C          ; 1:7       __INFO})},
+__{}{dnl
+__{}__{}define({__TMP_BONUS},{}){}dnl
+__{}}){}dnl
+__{}define({__TMP_CODE},{
+__{}__{}    push HL             ; 1:11      __INFO   __HEX_HL($1)..__HEX_HL($1+$2-1)}dnl
+__{}__LD_R16({HL},__TMP_HL){   HL = addr+u}dnl
+__{}__LD_R16({BC},__HEX_HL(256*__TMP_B)+$3,{HL},__TMP_HL){   B = __TMP_B{}x, C = char}dnl
+__{}__{}__TMP_BONUS{
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld  (HL),C          ; 1:7       __INFO
+__{}__{}    jr   nz, $-4        ; 2:7/12    __INFO
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    djnz $-7            ; 2:13/8    __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant 0>: fill(no ptr,no limit,?){}dnl
+__{}__TMP_CODE{}dnl
+__{}},
+
+zz__HEX_H($1):__HEX_L($1),__HEX_H($1+$2-1):0x00,{
+__{}dnl # 0x4800,23 or 22
+__{}define({__TMP_X},     eval(($2)>>1)){}dnl
+__{}define({__TMP_BC},    eval(256*__HEX_H($1)+__HEX_L($1+$2-(($2) & 1)))){}dnl
+__{}define({__SUM_BYTES}, 2*2+3){}dnl
+__{}define({__SUM_CLOCKS},eval(__TMP_X*(2*11+10))){}dnl
+__{}ifelse(eval(($2) & 1),1,{
+__{}__{}__add({__SUM_BYTES},1){}dnl
+__{}__{}__add({__SUM_CLOCKS},7){}dnl
+__{}__{}define({__TMP_BONUS},{
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO})},
+__{}{dnl
+__{}__{}define({__TMP_BONUS},{}){}dnl
+__{}}){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_R16({BC},__TMP_BC){   addr+u}dnl
+__{}__{}__LD_R_NUM(__INFO   char,A,$3,BC,__TMP_BC){}dnl
+__{}__{}__TMP_BONUS{
+__{}__{}    dec   C             ; 1:4       __INFO
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO
+__{}__{}    dec   C             ; 1:4       __INFO
+__{}__{}    ld  (BC){,}A          ; 1:7       __INFO
+__{}__{}    jp   nz{,} $-6        ; 3:10      __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant 0>: fill(num,max 256,?){}dnl
+__{}__TMP_CODE{}dnl
+__{}},
+
 __{}__IS_MEM_REF($1),1,{
 __{}define({__SUM_BYTES},6+3){}dnl
 __{}define({__SUM_CLOCKS},eval(22+14+21*($2-1)-5+20)){}dnl
