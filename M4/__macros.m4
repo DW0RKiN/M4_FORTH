@@ -1414,7 +1414,7 @@ __ld4($@)}__CODE{
 dnl
 dnl
 dnl
-define({__LD_REG8},{dnl
+define({__LD_REG8_PLUS_ESCAPE},{dnl
 dnl $2->$1 from ($4,$6,$8,$10,$12,$14,$16,$18)
 dnl
 dnl # Input:
@@ -1443,6 +1443,31 @@ __{}__LD4($1,$2,$13,$14,_TMP_INFO){}dnl
 __{}__LD4($1,$2,$15,$16,_TMP_INFO){}dnl
 __{}__LD4($1,$2,$17,$18,_TMP_INFO){}dnl
 __{}__CODE{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__LD_REG8},{dnl
+dnl $2->$1 from ($4,$6,$8,$10,$12,$14,$16,$18)
+dnl
+dnl # Input:
+dnl #  _TMP_INFO
+dnl #   $1  $2 Target registr name and value that is needed
+dnl #   $3  $4 Source registry name and value
+dnl #   $5  $6 Source registry name and value
+dnl #   $7  $8 Source registry name and value
+dnl #   $9 $10 Source registry name and value
+dnl #  $11 $12 Source registry name and value
+dnl #  $13 $14 Source registry name and value
+dnl #  $15 $16 Source registry name and value
+dnl #  $17 $18 Source registry name and value
+dnl # Output:
+dnl #  __CLOCKS
+dnl #  __BYTES
+dnl #  write best code "LD reg8, ...  ; bytes:clocks    _TMP_INFO"
+dnl
+__{}define({$0_CODE},__LD_REG8_PLUS_ESCAPE($@)){}dnl
+__{}$0_CODE{}dnl
 }){}dnl
 dnl
 dnl
@@ -1564,12 +1589,23 @@ __{}__{}__{}__{}__{}    add  $1{{,}} $7         ; 1:11      __INFO   $2 = $0_ORI
 __{}__{}__{}__{}}){}dnl
 __{}__{}__{}}){}dnl
 __{}__{}}){}dnl
+ifelse(1,0,{errprint({
+code_1:}$0_CODE_1{
+code_2:}$0_CODE_2{
+code_3:}$0_CODE_3{
+})}){}dnl
 __{}__{}ifelse(dnl
 __{}__{}__HEX_L($2),0xFF,{dnl # 0xBB00-- = 0xBAFF
 __{}__{}__{}define({$0_CODE_2},dnl
 __{}__{}__{}__{}__LD_R8_R8($1,$2+1{}ifelse(__IS_NUM($4),{1},{,$3,$4}){}ifelse(__IS_NUM($6),{1},{,$5,$6}){}ifelse(__IS_NUM($8),{1},{,$7,$8}){}ifelse(__IS_NUM($10),{1},{,$9,$10}))
-__{}__{}__{}__{}    dec  $1             ; 1:6       __TMP_INFO   $2 = __HEX_HL($2+1)-1){}dnl # after 16bit--
-__{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
+__{}__{}__{}__{}    dec  $1             ; 1:6       __INFO   $2 = __HEX_HL($2+1)-1){}dnl # after 16bit--
+ifelse(1,0,{errprint({
+     -> ..FF
+code_1:}$0_CODE_1{
+code_2:}$0_CODE_2{
+code_3:}$0_CODE_3{
+})}){}dnl
+¨__{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
 __{}__{}__{}{dnl
 __{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
 __{}__{}__{}__{}define({__CLOCKS},eval(6+__TMP_C1)){}dnl
@@ -1578,9 +1614,15 @@ __{}__{}__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
 __{}__{}__{}{dnl
 __{}__{}__{}__{}define({$0_CODE_2},{})})},
 __{}__{}__HEX_L($2),0x00,{dnl # 0xBBFF++ = 0xBC00
-__{}__{}__{}define( {$@_CODE_2},dnl
+__{}__{}__{}define( {$0_CODE_2},dnl
 __{}__{}__{}__{}__LD_R8_R8($1,$2-1{}ifelse(__IS_NUM($4),{1},{,$3,$4}){}ifelse(__IS_NUM($6),{1},{,$5,$6}){}ifelse(__IS_NUM($8),{1},{,$7,$8}){}ifelse(__IS_NUM($10),{1},{,$9,$10}))
-__{}__{}__{}__{}    inc  $1             ; 1:6       __TMP_INFO   $2 = __HEX_HL($2-1)+1){}dnl # after 16bit++
+__{}__{}__{}__{}    inc  $1             ; 1:6       __INFO   $2 = __HEX_HL($2-1)+1){}dnl # after 16bit++
+ifelse(1,0,{errprint({
+     -> ..00
+code_1:}$0_CODE_1{
+code_2:}$0_CODE_2{
+code_3:}$0_CODE_3{
+})}){}dnl
 __{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
 __{}__{}__{}{dnl
 __{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
@@ -1590,11 +1632,22 @@ __{}__{}__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
 __{}__{}__{}{dnl
 __{}__{}__{}__{}define({$0_CODE_2},{})}){}dnl
 __{}__{}}){}dnl
+ifelse(1,0,{errprint({
+code_1:}$0_CODE_1{
+code_2:}$0_CODE_2{
+code_3:}$0_CODE_3{
+})}){}dnl
 __{}__{}ifelse(dnl
 __{}__{}__HEX_L($0_ORIGIN),0x00,{dnl # 0xBB00-- = 0xBAFF
 __{}__{}__{}define({$0_CODE_3},
-__{}__{}__{}__{}    dec  $1             ; 1:6       __TMP_INFO   $0_ORIGIN-- = __HEX_HL($0_ORIGIN-1){}dnl # before 16bit--
+__{}__{}__{}__{}    dec  $1             ; 1:6       __INFO   $0_ORIGIN-- = __HEX_HL($0_ORIGIN-1){}dnl # before 16bit--
 __{}__{}__{}__{}__LD_R8_R8($1,$2{}ifelse(__IS_NUM($4),{1},{,$3,}ifelse($1,$3,$4-1,$4)){}ifelse(__IS_NUM($6),{1},{,$5,}ifelse($1,$5,$6-1,$6)){}ifelse(__IS_NUM($8),{1},{,$7,}ifelse($1,$7,$8-1,$8)){}ifelse(__IS_NUM($10),{1},{,$9,}ifelse($1,$9,$10-1,$10)))){}dnl
+ifelse(1,0,{errprint({
+..00 ->
+code_1:}$0_CODE_1{
+code_2:}$0_CODE_2{
+code_3:}$0_CODE_3{
+})}){}dnl
 __{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
 __{}__{}__{}{dnl
 __{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
@@ -1606,8 +1659,14 @@ __{}__{}__{}{dnl
 __{}__{}__{}__{}define({$0_CODE_3},{})})},
 __{}__{}__HEX_L($0_ORIGIN),0xFF,{dnl # 0xBBFF++ = 0xBC00
 __{}__{}__{}define({$0_CODE_3},
-__{}__{}__{}__{}    inc  $1             ; 1:6       __TMP_INFO   $0_ORIGIN++ = __HEX_HL($0_ORIGIN+1){}dnl # before 16bit++
+__{}__{}__{}__{}    inc  $1             ; 1:6       __INFO   $0_ORIGIN++ = __HEX_HL($0_ORIGIN+1){}dnl # before 16bit++
 __{}__{}__{}__{}__LD_R8_R8($1,$2{}ifelse(__IS_NUM($4),{1},{,$3,}ifelse($1,$3,$4+1,$4)){}ifelse(__IS_NUM($6),{1},{,$5,}ifelse($1,$5,$6+1,$6)){}ifelse(__IS_NUM($8),{1},{,$7,}ifelse($1,$7,$8+1,$8)){}ifelse(__IS_NUM($10),{1},{,$9,}ifelse($1,$9,$10+1,$10)))){}dnl
+ifelse(1,0,{errprint({
+..FF ->
+code_1:}$0_CODE_1{
+code_2:}$0_CODE_2{
+code_3:}$0_CODE_3{
+})}){}dnl
 __{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
 __{}__{}__{}{dnl
 __{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
