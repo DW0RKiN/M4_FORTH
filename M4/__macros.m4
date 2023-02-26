@@ -1136,12 +1136,24 @@ dnl #  $4 Source registry name (A,B,C,D,E,H,L,BC,DE,HL)
 dnl #  $5 Source registry value
 dnl #  $6 Next source registry name
 dnl #  $7 Next Source registry value
+ifelse(1,0,{errprint({
+__ld_r_num_rec($@): $#
+}__{}ifelse(dnl
+__{}$#,0,{a},
+__{}$#,1,{b},
+__{}$#,2,{c},
+__{}$2,{},{d},
+__{}$3,{},{e},
+__{}$#,3,{f},
+__{}$#,4,{g},
+__{}{h}){
+})}){}dnl
 __{}ifelse(dnl
-__{}$#,0,{},
-__{}$#,1,{},
-__{}$#,2,{},
-__{}$2,{},{},
-__{}$3,{},{},
+__{}$#,0,,
+__{}$#,1,,
+__{}$#,2,,
+__{}$2,{},,
+__{}$3,{},,
 __{}$#,3,{__LD4($2,$3,,,$1)},
 __{}$#,4,{__LD4($2,$3,,,$1)},
 __{}{dnl
@@ -1179,7 +1191,7 @@ dnl #  $4 Source registry name
 dnl #  $5 Source registry value
 __{}define({__CLOCKS},10000000){}dnl
 __{}define({__BYTES},0){}dnl
-__{}undefine({__CODE}){}dnl
+__{}define({__CODE},{}){}dnl
 __{}define({_TMP_INFO},$1){}dnl
 __{}__LD_R_NUM_REC($1,$2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),shift(shift(shift($@)))){}dnl
 __{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
@@ -1208,7 +1220,7 @@ dnl #  $4 Source registry name
 dnl #  $5 Source registry value
 __{}define({__CLOCKS},10000000){}dnl
 __{}define({__BYTES},0){}dnl
-__{}undefine({__CODE}){}dnl
+__{}define({__CODE},{}){}dnl
 __{}define({_TMP_INFO},$1){}dnl
 __{}$0_REC($1,$2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),shift(shift(shift($@)))){}dnl
 __{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
@@ -1373,11 +1385,11 @@ __{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}define({__CODE},{
 __{}__{}__{}__{}    ld    $1{{{,}}} $3          ; 1:4       $5   $1 = $3 = $4})})},
 __{}__{}{dnl # no match found
-__{}__{}__{}ifelse($1:__HEX_L($2):__eval(__CLOCKS>4),{A:0x00:1},{dnl
+__{}__{}__{}ifelse($1:__HEX_L($2):eval(__CLOCKS>4),{A:0x00:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}define({__CODE},{
-__{}__{}__{}__{}    xor   A          ; 1:4       $5})},
+__{}__{}__{}__{}    xor   A             ; 1:4       $5})},
 __{}__{}__{}$1:__IS_MEM_REF($2):eval(__CLOCKS>13),{A:1:1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},13){}dnl
 __{}__{}__{}__{}define({__BYTES},3){}dnl
