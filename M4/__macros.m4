@@ -1605,7 +1605,7 @@ code_1:}$0_CODE_1{
 code_2:}$0_CODE_2{
 code_3:}$0_CODE_3{
 })}){}dnl
-¨__{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
+__{}__{}__{}ifelse(eval(__PRICE>6+__TMP_C1+__BYTE_PRICE*(1+__TMP_B1)),1,
 __{}__{}__{}{dnl
 __{}__{}__{}__{}define({$0_CODE_1},{}){}dnl
 __{}__{}__{}__{}define({__CLOCKS},eval(6+__TMP_C1)){}dnl

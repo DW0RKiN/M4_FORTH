@@ -447,36 +447,53 @@ eval($#!=2),{1},{
 __{}  .error {$0}($@): The wrong number of parameters in macro!},
 {
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({_TMP_INFO},__INFO){}dnl # HL first check
-__{}define({__TMP_HL_CLOCKS},22){}dnl
-__{}define({__TMP_HL_BYTES},2){}dnl
-__{}__LD_REG16({DE},$1,{HL},$2){}dnl
-__{}__add({__TMP_HL_CLOCKS},__CLOCKS_16BIT){}dnl
-__{}__add({__TMP_HL_BYTES}, __BYTES_16BIT){}dnl
-__{}__LD_REG16({HL},$2){}dnl
-__{}__add({__TMP_HL_CLOCKS},__CLOCKS_16BIT){}dnl
-__{}__add({__TMP_HL_BYTES}, __BYTES_16BIT){}dnl
-__{}dnl
-__{}define({__TMP_DE_CLOCKS},22){}dnl
-__{}define({__TMP_DE_BYTES},2){}dnl
-__{}__LD_REG16({HL},$2,{DE},$1){}dnl # DE first check
-__{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
-__{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
-__{}__LD_REG16({DE},$1){}dnl
-__{}__add({__TMP_DE_CLOCKS},__CLOCKS_16BIT){}dnl
-__{}__add({__TMP_DE_BYTES}, __BYTES_16BIT){}dnl
-__{}dnl
-__{}ifelse(eval(__TMP_DE_CLOCKS<=__TMP_HL_CLOCKS),{1},{dnl # DE first
-__{}                        ;[__TMP_DE_BYTES:__TMP_DE_CLOCKS]     __INFO   ( -- $1 $2 )
-__{}    push DE             ; 1:11      __INFO
-__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__{}__CODE_16BIT{}__LD_REG16({HL},$2,{DE},$1){}__CODE_16BIT},
-__{}{dnl # HL first
-__{}                        ;[__TMP_HL_BYTES:__TMP_HL_CLOCKS]     __INFO   ( -- $1 $2 )
-__{}    push DE             ; 1:11      __INFO
-__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__{}__LD_REG16({HL},$2){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT}){}dnl
-})}){}dnl
+__{}dnl # HL first
+__{}pushdef({__SUM_CLOCKS},22){}dnl
+__{}pushdef({__SUM_BYTES},2){}dnl
+__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}define({$0_HL_CODE},{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(      HL,$2){}dnl
+__{}__{}__LD_R16(DE,$1,HL,$2)){}dnl
+__{}define({$0_HL_C},__SUM_CLOCKS){}dnl
+__{}define({$0_HL_B},__SUM_BYTES){}dnl
+__{}define({$0_HL_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}dnl # DE first
+__{}define({__SUM_CLOCKS},22){}dnl
+__{}define({__SUM_BYTES},2){}dnl
+__{}define({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}define({$0_DE_CODE},{
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(      DE,$1){}dnl
+__{}__{}__LD_R16(HL,$2,DE,$1)){}dnl
+__{}define({$0_DE_C},__SUM_CLOCKS){}dnl
+__{}define({$0_DE_B},__SUM_BYTES){}dnl
+__{}define({$0_DE_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}dnl # check
+__{}ifelse(eval($0_HL_P>=$0_DE_P),{1},{dnl
+__{}__{}dnl # DE first
+__{}__{}define({__SUM_CLOCKS},$0_DE_C){}dnl
+__{}__{}define({__SUM_BYTES}, $0_DE_B){}dnl
+__{}__{}define({__SUM_PRICE}, $0_DE_P){}dnl
+__{}__{}                        ;[$0_DE_B:$0_DE_C]     __INFO   ( -- $1 $2 ){}dnl
+__{}__{}$0_DE_CODE},
+__{}{dnl
+__{}__{}dnl # HL first
+__{}__{}define({__SUM_CLOCKS},$0_HL_C){}dnl
+__{}__{}define({__SUM_BYTES}, $0_HL_B){}dnl
+__{}__{}define({__SUM_PRICE}, $0_HL_P){}dnl
+__{}__{}                        ;[$0_HL_B:$0_HL_C]     __INFO   ( -- $1 $2 ){}dnl
+__{}__{}$0_HL_CODE}){}dnl
+__{}popdef({__SUM_CLOCKS}){}dnl
+__{}popdef({__SUM_BYTES}){}dnl
+__{}popdef({__SUM_PRICE}){}dnl
+__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__add({__SUM_BYTES}, __BYTES){}dnl
+__{}__add({__SUM_PRICE}, __PRICE){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( b a -- b a $1 $2 b a)
@@ -625,6 +642,225 @@ __{}__{}    push HL             ; 1:11      __INFO{}dnl
 __{}__LD_REG16({DE},$2,{HL},$1){}__CODE_16BIT{}dnl
 __{}__LD_REG16({HL},$3,{DE},$2,{HL},$1){}__CODE_16BIT}){}dnl
 })}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH3},{dnl
+ifelse(eval($#<3),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+eval($#>3),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}dnl # DE_DE_HL
+__{}pushdef({__SUM_CLOCKS},33){}dnl
+__{}pushdef({__SUM_BYTES},3){}dnl
+__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}define({$0_CODE_1},{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # DE DE HL
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(            DE,$1){}dnl
+__{}__{}{
+__{}__{}    push DE             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(      DE,$2,DE,$1){}dnl
+__{}__{}__LD_R16(HL,$3,      DE,$2)){}dnl
+__{}define({$0_BEST_C},__SUM_CLOCKS){}dnl
+__{}define({$0_BEST_B},__SUM_BYTES){}dnl
+__{}define({$0_BEST_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}dnl # DE_HL_DE
+__{}pushdef({__SUM_CLOCKS},33){}dnl
+__{}pushdef({__SUM_BYTES},3){}dnl
+__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}define({$0_CODE_2},{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # DE HL DE
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(            DE,$1){}dnl
+__{}__{}{
+__{}__{}    push DE             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(HL,$3,      DE,$1){}dnl
+__{}__{}__LD_R16(DE,$2,HL,$3,DE,$1)){}dnl
+__{}define({$0_TMP_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}ifelse(eval($0_TMP_P<$0_BEST_P),1,{dnl
+__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}define({$0_BEST_C},__SUM_CLOCKS){}dnl
+__{}__{}define({$0_BEST_B},__SUM_BYTES){}dnl
+__{}__{}define({$0_BEST_P},$0_TMP_P)},
+__{}{dnl
+__{}__{}define({$0_CODE_2},{}){}dnl
+__{}}){}dnl
+__{}dnl # HL_DE_DE
+__{}pushdef({__SUM_CLOCKS},33){}dnl
+__{}pushdef({__SUM_BYTES},3){}dnl
+__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}define({$0_CODE_3},{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # HL DE DE
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(            HL,$1){}dnl
+__{}__{}{
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(      DE,$2,HL,$1){}dnl
+__{}__{}__LD_R16(HL,$3,DE,$2,HL,$1)){}dnl
+__{}define({$0_TMP_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}ifelse(eval($0_TMP_P<$0_BEST_P),1,{dnl
+__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}define({$0_CODE_2},{}){}dnl
+__{}__{}define({$0_BEST_C},__SUM_CLOCKS){}dnl
+__{}__{}define({$0_BEST_B},__SUM_BYTES){}dnl
+__{}__{}define({$0_BEST_P},$0_TMP_P)},
+__{}{dnl
+__{}__{}define({$0_CODE_3},{}){}dnl
+__{}}){}dnl
+__{}dnl # HL_HL_DE
+__{}pushdef({__SUM_CLOCKS},33){}dnl
+__{}pushdef({__SUM_BYTES},3){}dnl
+__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}define({$0_CODE_4},{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # HL HL DE
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(            HL,$1){}dnl
+__{}__{}{
+__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__LD_R16(HL,$3,      HL,$1){}dnl
+__{}__{}__LD_R16(DE,$2,      HL,$3)){}dnl
+__{}define({$0_TMP_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}ifelse(eval($0_TMP_P<$0_BEST_P),1,{dnl
+__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}define({$0_CODE_2},{}){}dnl
+__{}__{}define({$0_CODE_3},{}){}dnl
+__{}__{}define({$0_BEST_C},__SUM_CLOCKS){}dnl
+__{}__{}define({$0_BEST_B},__SUM_BYTES){}dnl
+__{}__{}define({$0_BEST_P},$0_TMP_P)},
+__{}{dnl
+__{}__{}define({$0_CODE_4},{}){}dnl
+__{}}){}dnl
+__{}ifelse(__IS_MEM_REF($3),0,{dnl
+__{}__{}dnl # DE_H_DE_L
+__{}__{}pushdef({__SUM_CLOCKS},33){}dnl
+__{}__{}pushdef({__SUM_BYTES},3){}dnl
+__{}__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}__{}define({$0_CODE_5},{
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # DE H DE L
+__{}__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__{}__LD_R16(                                       DE,$1){}dnl
+__{}__{}__{}{
+__{}__{}__{}    push DE             ; 1:11      __INFO}dnl
+__{}__{}__{}__LD_R_NUM(__INFO{   hi before},    H,+($3)/256,DE,$1){}dnl
+__{}__{}__{}__LD_R16(DE,$2,                     H,+($3)/256,DE,$1){}dnl
+__{}__{}__{}__LD_R_NUM(__INFO{   lo after },L,$3,H,+($3)/256,DE,$2)){}dnl
+__{}__{}define({$0_TMP_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}__{}ifelse(eval($0_TMP_P<$0_BEST_P),1,{dnl
+__{}__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}__{}define({$0_CODE_2},{}){}dnl
+__{}__{}__{}define({$0_CODE_3},{}){}dnl
+__{}__{}__{}define({$0_CODE_4},{}){}dnl
+__{}__{}__{}define({$0_BEST_C},__SUM_CLOCKS){}dnl
+__{}__{}__{}define({$0_BEST_B},__SUM_BYTES){}dnl
+__{}__{}__{}define({$0_BEST_P},$0_TMP_P)},
+__{}__{}{dnl
+__{}__{}__{}define({$0_CODE_5},{}){}dnl
+__{}__{}}){}dnl
+__{}__{}dnl # DE_L_DE_H
+__{}__{}pushdef({__SUM_CLOCKS},33){}dnl
+__{}__{}pushdef({__SUM_BYTES},3){}dnl
+__{}__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}__{}define({$0_CODE_6},{
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # DE L DE H
+__{}__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__{}__LD_R16(                                       DE,$1){}dnl
+__{}__{}__{}{
+__{}__{}__{}    push DE             ; 1:11      __INFO}dnl
+__{}__{}__{}__LD_R_NUM(__INFO{   lo before},           L,$3,DE,$1){}dnl
+__{}__{}__{}__LD_R16(DE,$2,                            L,$3,DE,$1){}dnl
+__{}__{}__{}__LD_R_NUM(__INFO{   hi after },H,+($3)/256,L,$3,DE,$2)){}dnl
+__{}__{}define({$0_TMP_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}__{}ifelse(eval($0_TMP_P<$0_BEST_P),1,{dnl
+__{}__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}__{}define({$0_CODE_2},{}){}dnl
+__{}__{}__{}define({$0_CODE_3},{}){}dnl
+__{}__{}__{}define({$0_CODE_4},{}){}dnl
+__{}__{}__{}define({$0_CODE_5},{}){}dnl
+__{}__{}__{}define({$0_BEST_C},__SUM_CLOCKS){}dnl
+__{}__{}__{}define({$0_BEST_B},__SUM_BYTES){}dnl
+__{}__{}__{}define({$0_BEST_P},$0_TMP_P)},
+__{}__{}{dnl
+__{}__{}__{}define({$0_CODE_6},{}){}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+__{}ifelse(__IS_MEM_REF($3),0,{dnl
+__{}__{}dnl # HL_D_HL_E
+__{}__{}pushdef({__SUM_CLOCKS},33){}dnl
+__{}__{}pushdef({__SUM_BYTES},3){}dnl
+__{}__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}__{}define({$0_CODE_7},{
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # HL D HL E
+__{}__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__{}__LD_R16(                                        HL,$1){}dnl
+__{}__{}__{}{
+__{}__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__{}__LD_R_NUM(__INFO{   hi before},     D,+($2)/256,HL,$1){}dnl
+__{}__{}__{}__LD_R16(HL,$3,                      D,+($2)/256,HL,$1){}dnl
+__{}__{}__{}__LD_R_NUM(__INFO{   lo after },E,$2,D,+($2)/256,HL,$3)){}dnl
+__{}__{}define({$0_TMP_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}__{}ifelse(eval($0_TMP_P<$0_BEST_P),1,{dnl
+__{}__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}__{}define({$0_CODE_2},{}){}dnl
+__{}__{}__{}define({$0_CODE_3},{}){}dnl
+__{}__{}__{}define({$0_CODE_4},{}){}dnl
+__{}__{}__{}define({$0_CODE_5},{}){}dnl
+__{}__{}__{}define({$0_CODE_6},{}){}dnl
+__{}__{}__{}define({$0_BEST_C},__SUM_CLOCKS){}dnl
+__{}__{}__{}define({$0_BEST_B},__SUM_BYTES){}dnl
+__{}__{}__{}define({$0_BEST_P},$0_TMP_P)},
+__{}__{}{dnl
+__{}__{}__{}define({$0_CODE_7},{}){}dnl
+__{}__{}}){}dnl
+__{}__{}dnl # HL_E_HL_D
+__{}__{}pushdef({__SUM_CLOCKS},33){}dnl
+__{}__{}pushdef({__SUM_BYTES},3){}dnl
+__{}__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}__{}define({$0_CODE_8},{
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # HL E HL D
+__{}__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__{}__LD_R16(                                        HL,$1){}dnl
+__{}__{}__{}{
+__{}__{}__{}    push HL             ; 1:11      __INFO}dnl
+__{}__{}__{}__LD_R_NUM(__INFO{   lo before},            E,$2,HL,$1){}dnl
+__{}__{}__{}__LD_R16(HL,$3,                             E,$2,HL,$1){}dnl
+__{}__{}__{}__LD_R_NUM(__INFO{   hi after },D,+($2)/256,E,$2,HL,$3)){}dnl
+__{}__{}define({$0_TMP_P},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
+__{}__{}ifelse(eval($0_TMP_P<$0_BEST_P),1,{dnl
+__{}__{}__{}define({$0_CODE_1},{}){}dnl
+__{}__{}__{}define({$0_CODE_2},{}){}dnl
+__{}__{}__{}define({$0_CODE_3},{}){}dnl
+__{}__{}__{}define({$0_CODE_4},{}){}dnl
+__{}__{}__{}define({$0_CODE_5},{}){}dnl
+__{}__{}__{}define({$0_CODE_6},{}){}dnl
+__{}__{}__{}define({$0_CODE_7},{}){}dnl
+__{}__{}__{}define({$0_BEST_C},__SUM_CLOCKS){}dnl
+__{}__{}__{}define({$0_BEST_B},__SUM_BYTES){}dnl
+__{}__{}__{}define({$0_BEST_P},$0_TMP_P)},
+__{}__{}{dnl
+__{}__{}__{}define({$0_CODE_8},{}){}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+__{}dnl
+__{}define({__CLOCKS},$0_BEST_C){}dnl
+__{}define({__BYTES}, $0_BEST_B){}dnl
+__{}define({__PRICE}, $0_BEST_P){}dnl
+__{}__{}$0_CODE_1{}dnl
+__{}__{}$0_CODE_2{}dnl
+__{}__{}$0_CODE_3{}dnl
+__{}__{}$0_CODE_4{}dnl
+__{}__{}$0_CODE_5{}dnl
+__{}__{}$0_CODE_6{}dnl
+__{}__{}$0_CODE_7{}dnl
+__{}__{}$0_CODE_8{}dnl
+__{}popdef({__SUM_CLOCKS}){}dnl
+__{}popdef({__SUM_BYTES}){}dnl
+__{}popdef({__SUM_PRICE}){}dnl
+__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__add({__SUM_BYTES}, __BYTES){}dnl
+__{}__add({__SUM_PRICE}, __PRICE){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
