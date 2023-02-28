@@ -817,12 +817,27 @@ __{}__{}__add({__SUM_CLOCKS},__CLOCKS)},
 
 __{}__IS_NUM($2),1,{$0_REC($1,$2,$3,$4,$5,$5)},
 
-__{}eval(($4<$5) && ($4 & 1)),1,{dnl #
+__{}eval(($5+0>255) && ((($4+0) & 1)==0)),1,{dnl #
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
-__{}__{}    inc  $1             ; 1:6       __INFO   $4 is odd increment && increment<times},
+__{}__{}__{}ifelse(__HEX_L(+($4-1) & (0+$3+1)),0x00,{dnl
+__{}__{}__{}__{}define({__CLOCKS},6)},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({__CLOCKS},4)}){}dnl
+__{}__{}__{}  if (1 & ($2+eval($3+1)))
+__{}__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   only even numbers
+__{}__{}__{}  else
+__{}__{}__{}    inc  $1             ; 1:6       __INFO   $4 is even step && ($5 times>255) && odd number
+__{}__{}__{}  endif},
+
+__{}eval(($5+0>255) && ($4 & 1)),1,{dnl #
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},6){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS)
+__{}__{}    inc  $1             ; 1:6       __INFO   $4 is odd step && ($5 times>255)},
 __{}{
 __{}__{}  if substr((),0,1)1{}dnl # begin pasmo macro
 __{}__{}$0_REC($1,$2,$3,$4,$5,$5){}dnl

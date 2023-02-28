@@ -3638,15 +3638,20 @@ __{}    ld  (HL){,}C          ; 1:7       __INFO}__INC_REG16({HL},$1,0,2,eval(($
 __{}    ld  (HL){,}C          ; 1:7       __INFO}__INC_REG16({HL},$1,1,2,eval(($2)>>1)){
 __{}    djnz $-4            ; 2:13/8    __INFO}){}dnl
 __{}define({__SUM_CLOCKS},eval(11+($2>>1)*(__SUM_CLOCKS)-5+10)){}dnl
+__{}ifelse(eval(($2) & 0x01),{1},{dnl
+__{}__{}__add({__SUM_BYTES},1){}dnl
+__{}__{}__add({__SUM_CLOCKS},7){}dnl
+__{}__{}define({__TMP_BONUS},{
+__{}__{}__{}    ld  (HL){,}C          ; 1:7       __INFO})},
+__{}{dnl
+__{}__{}define({__TMP_BONUS},{})}){}dnl
 __{}define({__TMP_CODE},{
 __{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__LD_R16({HL},$1)   addr{}dnl
 __{}__{}__LD_R16({BC},__HEX_HL(256*(($2)>>1))+$3,{HL},$1){   B = eval(($2)>>1){x,} C = $3}dnl
 __{}__{}__TMP_LOOP{}dnl
-__{}__{}ifelse(eval(($2) & 0x01),{1},dnl
-__{}__{}__{}__add({__SUM_BYTES},1){}dnl
-__{}__{}__{}__add({__SUM_CLOCKS},7){
-__{}__{}__{}    ld  (DE){,}A          ; 1:7       __INFO}){
+__{}__{}__TMP_BONUS{}dnl
+__{}__{}{
 __{}__{}    pop  HL             ; 1:10      __INFO}){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant: fill(?,max 513,no ptr){}dnl
 __{}__TMP_CODE{}dnl
