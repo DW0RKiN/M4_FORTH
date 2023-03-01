@@ -1876,6 +1876,52 @@ U32DIV16_C              ;           u32div16
 dnl
 dnl
 dnl
+ifdef({USE_Fill},{
+;==============================================================================
+; ( --  ) (DE_in..DE_out-1) = A
+;  In: DE = address, A=char, u = B*16 - (start_address-Fill)/2
+; Out: B = 0
+;      DE += (B-1)*16+0..16
+Fill:                  ;[37:B*205+5]Fill
+    ld  (DE),A          ; 1:7       Fill  +0
+    inc   E             ; 1:4       Fill
+    ld  (DE),A          ; 1:7       Fill  +2
+    inc  DE             ; 1:6       Fill
+    ld  (DE),A          ; 1:7       Fill  +4
+    inc   E             ; 1:4       Fill
+    ld  (DE),A          ; 1:7       Fill  +6
+    inc  DE             ; 1:6       Fill
+    ld  (DE),A          ; 1:7       Fill  +8
+    inc   E             ; 1:4       Fill
+    ld  (DE),A          ; 1:7       Fill +10
+    inc  DE             ; 1:6       Fill
+    ld  (DE),A          ; 1:7       Fill +12
+    inc   E             ; 1:4       Fill
+    ld  (DE),A          ; 1:7       Fill +14
+    inc  DE             ; 1:6       Fill
+    ld  (DE),A          ; 1:7       Fill +16
+    inc   E             ; 1:4       Fill
+    ld  (DE),A          ; 1:7       Fill +18
+    inc  DE             ; 1:6       Fill
+    ld  (DE),A          ; 1:7       Fill +20
+    inc   E             ; 1:4       Fill
+    ld  (DE),A          ; 1:7       Fill +22
+    inc  DE             ; 1:6       Fill
+    ld  (DE),A          ; 1:7       Fill +24
+    inc   E             ; 1:4       Fill
+    ld  (DE),A          ; 1:7       Fill +26
+    inc  DE             ; 1:6       Fill
+    ld  (DE),A          ; 1:7       Fill +28
+    inc   E             ; 1:4       Fill
+    ld  (DE),A          ; 1:7       Fill +30
+    inc  DE             ; 1:6       Fill
+    djnz Fill           ; 2:8/13    Fill
+    ret                 ; 3:10      Fill
+}){}dnl
+dnl
+dnl
+dnl
+dnl
 ifdef({USE_Random},{ifdef({USE_Rnd},,define({USE_Rnd},{}))
 ;==============================================================================
 ; ( max -- rand )
@@ -1971,7 +2017,7 @@ dnl
 ifdef({USE_ACCEPT},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
 ;==============================================================================
 ; Read string from keyboard
-; In: DE = addr_string, HL = max_length
+;  In: DE = addr_string, HL = max_length
 ; Out: pop stack, TOP = HL = loaded
 READSTRING:
 __{}ifdef({USE_ACCEPT_Z},{dnl
