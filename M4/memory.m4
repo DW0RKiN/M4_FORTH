@@ -3399,9 +3399,9 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 
-_TYP_SINGLE:__IS_NUM($1):__HEX_L(($2)<4096),function:1:0x01,{
+_TYP_SINGLE:__IS_NUM($1),function:1,{
 __{}__def({USE_Fill}){}dnl
-__{}define({__TMP_STEP},16){}dnl
+__{}define({__TMP_STEP},8){}dnl
 __{}define({__SUM_BYTES},1+3+1){}dnl
 __{}define({__SUM_CLOCKS},4+17+4){}dnl
 __{}define({__TMP_U},eval($2)){}dnl
@@ -3417,13 +3417,15 @@ __{}__{}define({__TMP_BONUS},{})}){}dnl
 __{}define({__TMP_MOD},eval(__TMP_U%__TMP_STEP)){}dnl
 __{}define({__TMP_SUB},eval(__TMP_STEP-__TMP_MOD)){}dnl
 __{}define({__TMP_B},eval((__TMP_U+__TMP_STEP-1)/__TMP_STEP)){}dnl
-__{}define({__TMP_FCE_CLOCKS},eval((8*24+13)*(__TMP_B-1)+24*((__TMP_MOD)/2)+13*(__TMP_MOD&1)+8+10)){}dnl
+__{}define({__TMP_C},eval(__HEX_H(__TMP_B)+1)){}dnl
+__{}define({__TMP_B},__HEX_L(__TMP_B)){}dnl
+__{}define({__TMP_FCE_CLOCKS},eval((__TMP_STEP*12+13)*(__TMP_B-1)+24*((__TMP_MOD)/2)+13*(__TMP_MOD&1)+8+10)){}dnl
 __{}__add({__SUM_CLOCKS},__TMP_FCE_CLOCKS){}dnl
 __{}define({__TMP_CODE},{
 __{}__{}    exx                 ; 1:4       __INFO}dnl
 __{}__{}__LD_R16({DE},$1){   addr __HEX_HL($1)..__HEX_HL($1+$2-1)}dnl
 __{}__{}__LD_R_NUM(__INFO{   char},A,$3,DE,$1){}dnl
-__{}__{}__LD_R_NUM(__INFO{   u=B*16-__TMP_SUB=__TMP_B*16-__TMP_SUB},B,__TMP_B,A,$3,DE,$1){}dnl
+__{}__{}__LD_R16(BC,256*__TMP_B+__TMP_C,A,$3,DE,$1){   u=B*16-__TMP_SUB=__TMP_B*16-__TMP_SUB}dnl
 __{}__{}{
 __{}__{}    call format({%-15s},Fill+eval(2*__TMP_SUB)); 3:format({%-7s},eval(17+__TMP_FCE_CLOCKS)) __INFO}dnl
 __{}__{}__TMP_BONUS{}dnl

@@ -1876,13 +1876,68 @@ U32DIV16_C              ;           u32div16
 dnl
 dnl
 dnl
+ifdef({USE_Fill2},{__def({USE_Fill})
+;==============================================================================
+; ( --  ) (DE_in..DE_out-1) = A
+;  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
+; Out: BC = 0
+;      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
+
+; navrh volani:
+__LD_R16(BC,256*__TMP_B+__TMP_C,A,$3){   u=B*16-__TMP_SUB=__TMP_B*16-__TMP_SUB}dnl
+__LD_R_NUM(__INFO{   char},A,$2,B,__TMP_B,C,__TMP_C){}dnl
+    call Fill2          ; 3:17      __INFO
+    pop  DE             ; 1:10      __INFO   ( addr -- )
+
+Fill2:                  ;[:]        Fill2
+    ex   DE, HL         ; 1:4       Fill2
+    ex   AF, AF'        ; 1:4       Fill2
+    ld    A, C          ; 1:4       Fill2
+    or    B             ; 1:4       Fill2
+    ret   z             ; 1:5/11    Fill2
+
+    ld    A, L          ; 1:4       Fill2
+    xor   C             ; 1:4       Fill2
+    rrca                ; 1:4       Fill2
+    jr   nc,$+8         ; 2:7/12    Fill2           
+    dec  BC             ; 1:6       Fill2    
+    call $+5            ; 3:17      Fill2
+    ld  (DE),A          ; 1:7       Fill2   last odd address
+    ret                 ; 1:10      Fill2
+             
+    ld    A,0xF8        ; 2:7       Fill2
+    and   C             ; 1:4       Fill2
+    sub   C             ; 1:4       Fill2
+    add   A, A          ; 1:4       Fill2
+    add   A, 2*8        ; 2:7       Fill2
+    ld  (Fill2_self+1),A; 3:13      Fill2
+
+    ld    A, C          ; 1:4       Fill2
+    srl   B             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2
+    srl   B             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2
+    srl   B             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2
+    
+    ld    C, B          ; 1:4       Fill2
+    ld    B, A          ; 1:4       Fill2
+; zde bude chyba +-1, dodelat!!!
+    inc   C             ; 1:4       Fill2
+    inc   B             ; 1:4       Fill2
+    
+    ex   AF, AF'        ; 1:4       Fill2
+Fill2_self:             ;           Fill2
+    jr  $+2             ; 2:12      Fill2
+
+}){}dnl
 ifdef({USE_Fill},{
 ;==============================================================================
 ; ( --  ) (DE_in..DE_out-1) = A
-;  In: DE = address, A=char, u = B*16 - (start_address-Fill)/2
-; Out: B = 0
-;      DE += (B-1)*16+0..16
-Fill:                  ;[37:B*205+5]Fill
+;  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
+; Out: BC = 0
+;      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
+Fill:                  ;[24:B*109+5]Fill
     ld  (DE),A          ; 1:7       Fill  +0
     inc   E             ; 1:4       Fill
     ld  (DE),A          ; 1:7       Fill  +2
@@ -1899,23 +1954,9 @@ Fill:                  ;[37:B*205+5]Fill
     inc   E             ; 1:4       Fill
     ld  (DE),A          ; 1:7       Fill +14
     inc  DE             ; 1:6       Fill
-    ld  (DE),A          ; 1:7       Fill +16
-    inc   E             ; 1:4       Fill
-    ld  (DE),A          ; 1:7       Fill +18
-    inc  DE             ; 1:6       Fill
-    ld  (DE),A          ; 1:7       Fill +20
-    inc   E             ; 1:4       Fill
-    ld  (DE),A          ; 1:7       Fill +22
-    inc  DE             ; 1:6       Fill
-    ld  (DE),A          ; 1:7       Fill +24
-    inc   E             ; 1:4       Fill
-    ld  (DE),A          ; 1:7       Fill +26
-    inc  DE             ; 1:6       Fill
-    ld  (DE),A          ; 1:7       Fill +28
-    inc   E             ; 1:4       Fill
-    ld  (DE),A          ; 1:7       Fill +30
-    inc  DE             ; 1:6       Fill
-    djnz Fill           ; 2:8/13    Fill
+    djnz Fill           ; 2:8/13    Fill   DE = even address
+    dec   C             ; 1:4       Fill
+    jr   nz, Fill       ; 2:7/12    Fill
     ret                 ; 3:10      Fill
 }){}dnl
 dnl
