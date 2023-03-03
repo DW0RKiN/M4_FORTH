@@ -1899,12 +1899,12 @@ Fill2:                  ;[:]        Fill2
     ld    A, L          ; 1:4       Fill2
     xor   C             ; 1:4       Fill2
     rrca                ; 1:4       Fill2
-    jr   nc,$+8         ; 2:7/12    Fill2           
-    dec  BC             ; 1:6       Fill2    
+    jr   nc,$+8         ; 2:7/12    Fill2   
+    dec  BC             ; 1:6       Fill2
     call $+5            ; 3:17      Fill2
     ld  (DE),A          ; 1:7       Fill2   last odd address
     ret                 ; 1:10      Fill2
-             
+    
     ld    A,0xF8        ; 2:7       Fill2
     and   C             ; 1:4       Fill2
     sub   C             ; 1:4       Fill2
@@ -1919,13 +1919,13 @@ Fill2:                  ;[:]        Fill2
     rra                 ; 1:4       Fill2
     srl   B             ; 2:8       Fill2
     rra                 ; 1:4       Fill2
-    
+
     ld    C, B          ; 1:4       Fill2
     ld    B, A          ; 1:4       Fill2
 ; zde bude chyba +-1, dodelat!!!
     inc   C             ; 1:4       Fill2
     inc   B             ; 1:4       Fill2
-    
+
     ex   AF, AF'        ; 1:4       Fill2
 Fill2_self:             ;           Fill2
     jr  $+2             ; 2:12      Fill2
