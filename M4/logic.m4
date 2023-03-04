@@ -1469,13 +1469,12 @@ dnl # x 1 lshift
 dnl # ( x -- x)
 dnl # shifts x left 1 place
 define({_1LSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_1LSHIFT},{1lshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_1LSHIFT},{1 lshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_1LSHIFT},{dnl
-__{}define({__INFO},{1lshift}){}dnl
-
-    add  HL, HL         ; 1:11      1 lshift   ( u -- u<<1 )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, HL         ; 1:11      __INFO   ( u -- u<<1 )}){}dnl
 dnl
 dnl
 dnl # 2 <<
@@ -1483,14 +1482,13 @@ dnl # x 2 lshift
 dnl # ( x -- x)
 dnl # shifts x left 2 places
 define({_2LSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_2LSHIFT},{2lshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2LSHIFT},{2 lshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2LSHIFT},{dnl
-__{}define({__INFO},{2lshift}){}dnl
-
-    add  HL, HL         ; 1:11      2 lshift   ( u -- u<<2 )
-    add  HL, HL         ; 1:11      2 lshift}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, HL         ; 1:11      __INFO   ( u -- u<<2 )
+    add  HL, HL         ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # 3 <<
@@ -1498,15 +1496,14 @@ dnl # x 3 lshift
 dnl # ( x -- x)
 dnl # shifts x left 3 places
 define({_3LSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_3LSHIFT},{3lshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_3LSHIFT},{3 lshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_3LSHIFT},{dnl
-__{}define({__INFO},{3lshift}){}dnl
-
-    add  HL, HL         ; 1:11      3 lshift   ( u -- u<<3 )
-    add  HL, HL         ; 1:11      3 lshift
-    add  HL, HL         ; 1:11      3 lshift}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, HL         ; 1:11      __INFO   ( u -- u<<3 )
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, HL         ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # 4 <<
@@ -1578,7 +1575,8 @@ dnl
 define({__ASM_TOKEN_7LSHIFT},{dnl
 __{}define({__INFO},{7lshift}){}dnl
 
-    xor   A             ; 1:4       7 lshift   ( u -- u<<7 )
+                        ;[8:32]     7 lshift   ( u -- u<<7 )
+    xor   A             ; 1:4       7 lshift
     srl   H             ; 2:8       7 lshift
     rr    L             ; 2:8       7 lshift
     ld    H, L          ; 1:4       7 lshift
