@@ -1876,6 +1876,74 @@ U32DIV16_C              ;           u32div16
 dnl
 dnl
 dnl
+ifdef({USE_Fill3},{__def({USE_Fill})
+;==============================================================================
+; ( --  ) (DE_in..DE_out-1) = A
+;  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
+; Out: BC = 0
+;      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
+
+; navrh volani:
+__LD_R16(BC,256*__TMP_B+__TMP_C,A,$3){   u=B*16-__TMP_SUB=__TMP_B*16-__TMP_SUB}dnl
+__LD_R_NUM(__INFO{   char},A,$2,B,__TMP_B,C,__TMP_C){}dnl
+    call Fill2          ; 3:17      __INFO
+    pop  DE             ; 1:10      __INFO   ( addr -- )
+
+Fill3:                  ;[:]        Fill3
+    ex   DE, HL         ; 1:4       Fill3
+
+    ex   AF, AF'        ; 1:4       Fill3
+    ld    A, C          ; 1:4       Fill3
+    or    B             ; 1:4       Fill3
+    ret   z             ; 1:5/11    Fill3
+
+    bit   0, L          ; 2:8       Fill3
+    jr    z,
+    ld  (DE),A          ; 1:7       Fill3   first odd address
+    inc  DE             ; 1:6       Fill3
+    dec  BC             ; 1:6       Fill3   
+    
+    ret                 ; 1:10      Fill3
+    
+    
+    ld    A, L          ; 1:4       Fill3
+    xor   C             ; 1:4       Fill3
+    rrca                ; 1:4       Fill3
+    jr   nc,$+8         ; 2:7/12    Fill3   
+    dec  BC             ; 1:6       Fill3
+    call $+5            ; 3:17      Fill3
+    ld  (DE),A          ; 1:7       Fill3   last odd address
+    ret                 ; 1:10      Fill3
+    
+    ld    A,0xF8        ; 2:7       Fill3
+    and   C             ; 1:4       Fill3
+    sub   C             ; 1:4       Fill3
+    add   A, A          ; 1:4       Fill3
+    add   A, 2*8        ; 2:7       Fill3
+    ld  (Fill2_self+1),A; 3:13      Fill3
+
+    ld    A, C          ; 1:4       Fill3
+    srl   B             ; 2:8       Fill3
+    rra                 ; 1:4       Fill3
+    srl   B             ; 2:8       Fill3
+    rra                 ; 1:4       Fill3
+    srl   B             ; 2:8       Fill3
+    rra                 ; 1:4       Fill3
+
+    ld    C, B          ; 1:4       Fill3
+    ld    B, A          ; 1:4       Fill3
+; zde bude chyba +-1, dodelat!!!
+    inc   C             ; 1:4       Fill3
+    inc   B             ; 1:4       Fill3
+
+    ex   AF, AF'        ; 1:4       Fill3
+Fill2_self:             ;           Fill3
+    jr  $+2             ; 2:12      Fill3
+
+}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_Fill2},{__def({USE_Fill})
 ;==============================================================================
 ; ( --  ) (DE_in..DE_out-1) = A
@@ -1912,6 +1980,8 @@ Fill2:                  ;[:]        Fill2
     add   A, 2*8        ; 2:7       Fill2
     ld  (Fill2_self+1),A; 3:13      Fill2
 
+    
+    
     ld    A, C          ; 1:4       Fill2
     srl   B             ; 2:8       Fill2
     rra                 ; 1:4       Fill2

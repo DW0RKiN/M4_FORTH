@@ -1511,16 +1511,15 @@ dnl # x 4 lshift
 dnl # ( x -- x)
 dnl # shifts x left 4 places
 define({_4LSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_4LSHIFT},{4lshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_4LSHIFT},{4 lshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4LSHIFT},{dnl
-__{}define({__INFO},{4lshift}){}dnl
-
-    add  HL, HL         ; 1:11      4 lshift   ( u -- u<<4 )
-    add  HL, HL         ; 1:11      4 lshift
-    add  HL, HL         ; 1:11      4 lshift
-    add  HL, HL         ; 1:11      4 lshift}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, HL         ; 1:11      __INFO   ( u -- u<<4 )
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, HL         ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # 5 <<
@@ -1528,17 +1527,16 @@ dnl # x 5 lshift
 dnl # ( x -- x)
 dnl # shifts x left 5 places
 define({_5LSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_5LSHIFT},{5lshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_5LSHIFT},{5 lshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_5LSHIFT},{dnl
-__{}define({__INFO},{5lshift}){}dnl
-
-    add  HL, HL         ; 1:11      5 lshift   ( u -- u<<5 )
-    add  HL, HL         ; 1:11      5 lshift
-    add  HL, HL         ; 1:11      5 lshift
-    add  HL, HL         ; 1:11      5 lshift
-    add  HL, HL         ; 1:11      5 lshift}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, HL         ; 1:11      __INFO   ( u -- u<<5 )
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, HL         ; 1:11      __INFO
+    add  HL, HL         ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # 6 <<
