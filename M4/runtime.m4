@@ -1891,7 +1891,18 @@ __LD_R_NUM(__INFO{   char},A,$2,B,__TMP_B,C,__TMP_C){}dnl
 
 Fill3:                  ;[:]        Fill3
     ex   DE, HL         ; 1:4       Fill3
-
+    inc   B             ; 1:4       Fill3
+    dec   B             ; 1:4       Fill3
+    jr   nz, $+         ; 2:7/12    Fill3
+    
+    
+    bit   0, E          ; 2:8       Fill3
+    ld  (DE),A          ; 1:7       Fill3
+    dec   C             ; 1:4       Fill3   
+    ret   z             ; 1:5/11    Fill3
+    inc  DE             ; 1:6       Fill3
+    
+    
     ex   AF, AF'        ; 1:4       Fill3
     ld    A, C          ; 1:4       Fill3
     or    B             ; 1:4       Fill3
@@ -2003,31 +2014,101 @@ Fill2_self:             ;           Fill2
 }){}dnl
 ifdef({USE_Fill},{
 ;==============================================================================
-; ( --  ) (DE_in..DE_out-1) = A
-;  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
-; Out: BC = 0
-;      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
-Fill:                  ;[24:B*109+5]Fill
-    ld  (DE),A          ; 1:7       Fill  +0
-    inc   E             ; 1:4       Fill
-    ld  (DE),A          ; 1:7       Fill  +2
-    inc  DE             ; 1:6       Fill
-    ld  (DE),A          ; 1:7       Fill  +4
-    inc   E             ; 1:4       Fill
-    ld  (DE),A          ; 1:7       Fill  +6
-    inc  DE             ; 1:6       Fill
-    ld  (DE),A          ; 1:7       Fill  +8
-    inc   E             ; 1:4       Fill
-    ld  (DE),A          ; 1:7       Fill +10
-    inc  DE             ; 1:6       Fill
-    ld  (DE),A          ; 1:7       Fill +12
-    inc   E             ; 1:4       Fill
-    ld  (DE),A          ; 1:7       Fill +14
-    inc  DE             ; 1:6       Fill
-    djnz Fill           ; 2:8/13    Fill   DE = even address
-    dec   C             ; 1:4       Fill
-    jr   nz, Fill       ; 2:7/12    Fill
-    ret                 ; 3:10      Fill
+; ( --  ) (DE_in..DE_out-1) = A{}dnl
+ifelse(
+__{}ifdef({USE_Fill_Over},1,0):ifdef({USE_Fill_Unknown_Addr},1,0),1:1,{
+__{};  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
+__{}; Out: BC = 0
+__{};      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
+__{}Fill:    ;[22:B*117+(C-1)*29963+16] Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +0
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +2
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +4
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +6
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +8
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +10
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +12
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +14
+__{}    inc  DE             ; 1:6       Fill
+__{}    djnz Fill           ; 2:8/13    Fill
+__{}    dec   C             ; 1:4       Fill
+__{}    jr   nz, Fill       ; 2:7/12    Fill},
+__{}ifdef({USE_Fill_Over},1,0),1,{
+__{};  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
+__{}; Out: BC = 0
+__{};      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
+__{}Fill:    ;[22:B*109+(C-1)*27915+16] Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +0
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +2
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +4
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +6
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +8
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +10
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +12
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +14
+__{}    inc  DE             ; 1:6       Fill
+__{}    djnz Fill           ; 2:8/13    Fill   DE = even address
+__{}    dec   C             ; 1:4       Fill
+__{}    jr   nz, Fill       ; 2:7/12    Fill},
+__{}ifdef({USE_Fill_Unknown_Addr},1),1,{
+__{};  In: DE = address, A=char, u = B*8 - (start_address-Fill)/2
+__{}; Out:  B = 0
+__{};      DE+= B*8 + (Fill-start_address)/2
+__{}Fill:                  ;[19:B*117+5]Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +0
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +2
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +4
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +6
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +8
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +10
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +12
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +14
+__{}    inc  DE             ; 1:6       Fill
+__{}    djnz Fill           ; 2:8/13    Fill},
+__{}{
+__{};  In: DE = address, A=char, u = B*8 - (start_address-Fill)/2
+__{}; Out:  B = 0
+__{};      DE+= B*8 + (Fill-start_address)/2
+__{}Fill:                  ;[19:B*109+5]Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +0
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +2
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +4
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +6
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill  +8
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +10
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +12
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  (DE),A          ; 1:7       Fill +14
+__{}    inc  DE             ; 1:6       Fill
+__{}    djnz Fill           ; 2:8/13    Fill   DE = even address})
+    ret                 ; 1:10      Fill
 }){}dnl
 dnl
 dnl

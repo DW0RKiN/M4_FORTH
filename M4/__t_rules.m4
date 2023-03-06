@@ -684,9 +684,6 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_DO},__T_INFO(0){ }$2,$3)},{__INC_TOKEN_COUN
 __{}__{}__{}__{}__SET_LOOP_END($3,__T_ARRAY_1(0)){}dnl
 __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__T_INFO(0){ }$2,$3)},{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
 
-
-            __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_FILL,           {__SET_TOKEN({__TOKEN_PUSH_FILL},__T_INFO(0){ }$2,__T_ARRAY(0))},
-
             __T_NAME(0):__T_ITEMS(0)=__T_HEX_REVERSE_1(0):$1, __TOKEN_PUSHS:1=0x7FFF:__TOKEN_MAX,     {__SET_TOKEN({__TOKEN_DROP_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):__T_ITEMS(0)=__T_HEX_REVERSE_1(0):$1, __TOKEN_PUSHS:1=0x8000:__TOKEN_MAX,     {__DELETE_LAST_TOKEN},
             __T_NAME(0):__T_ITEMS(0)=__T_HEX_REVERSE_1(0):$1, __TOKEN_PUSHS:1=0x8000:__TOKEN_MIN,     {__SET_TOKEN({__TOKEN_DROP_PUSH},__T_INFO(0){ }$2,__T_ARRAY(0))},
@@ -1002,7 +999,7 @@ __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__T_IS_PTR_REVERSE_2_1(0),  __TOKEN_PUSHS:1:
 __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__T_IS_PTR_REVERSE_2_1(0),  __TOKEN_PUSHS:1:__TOKEN_ULE:0,      {__SET_TOKEN(__TOKEN_PUSHS, __T_INFO(0){ }$2,__DROP_2_PAR(__T_ARRAY(0)){}ifelse(__T_ITEMS(0),2,,{,}){}__EVAL_S16(u<=,__T_LAST_2_PAR(0)))},
 __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__T_IS_PTR_REVERSE_2_1(0),  __TOKEN_PUSHS:1:__TOKEN_UGE:0,      {__SET_TOKEN(__TOKEN_PUSHS, __T_INFO(0){ }$2,__DROP_2_PAR(__T_ARRAY(0)){}ifelse(__T_ITEMS(0),2,,{,}){}__EVAL_S16(u>=,__T_LAST_2_PAR(0)))},
 
-__T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_FILL,    {__SET_TOKEN({__TOKEN_PUSH_FILL},__T_INFO(0){ }$2,__T_ARRAY(0))},
+__T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_FILL,    {__SET_TOKEN({__TOKEN_PUSH_FILL}, __T_INFO(0){ }$2,__T_ARRAY(0))},
 __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:2:__TOKEN_FILL,    {__SET_TOKEN({__TOKEN_PUSH2_FILL},__T_INFO(0){ }$2,__T_ARRAY(0))},
 __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:3:__TOKEN_FILL,    {__SET_TOKEN({__TOKEN_PUSH3_FILL},__T_INFO(0){ }$2,__T_ARRAY(0))},
 __T_NAME(0):eval(__T_ITEMS(0)>3):$1, __TOKEN_PUSHS:1:__TOKEN_FILL,    {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH3_FILL},__REMOVE_COMMA(__T_LAST_3_PAR(1)){ }$2,__T_LAST_3_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS, __T_INFO(1){ 3drop},__DROP_3_PAR(__T_ARRAY(1)))},
@@ -1652,7 +1649,34 @@ dnl
 define({__CHECK_ALL_TOKENS},{dnl
 __{}define({__SUM_TOKEN},__COUNT_TOKEN){}dnl
 __{}define({__COUNT_TOKEN},2){}dnl
-__{}__CHECK_ALL_TOKENS_REC{}dnl
+__{}$0_REC{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__CHECK_ALL_TOKENS2_REC},{dnl
+__{}ifelse(dnl
+__{}__T_NAME(0),__TOKEN_PUSH2_FILL,{dnl
+__{}__{}ifelse(__HEX_L(__T_HEX_REVERSE_2(0)0>0x8000),0x01,{__def({USE_Fill_Over})}){}dnl
+__{}__{}__def({USE_Fill_Unknown_Addr})},
+__{}__T_NAME(0),__TOKEN_PUSH3_FILL,{dnl
+__{}__{}ifelse(__HEX_L(__T_HEX_REVERSE_2(0)0>0x8000),0x01,{__def({USE_Fill_Over})}){}dnl
+__{}__{}ifelse(__IS_MEM_REF(__T_REVERSE_3(0)),1,{__def({USE_Fill_Unknown_Addr})}){}dnl
+__{}}){}dnl
+__{}ifelse(eval(__COUNT_TOKEN<__SUM_TOKEN),1,{dnl
+__{}__{}define({__COUNT_TOKEN},eval(__COUNT_TOKEN+1)){}dnl
+__{}__{}$0{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__CHECK_ALL_TOKENS2},{dnl
+__{}ifelse(eval(__COUNT_TOKEN>0),1,{dnl
+__{}__{}define({__SUM_TOKEN},__COUNT_TOKEN){}dnl
+__{}__{}define({__COUNT_TOKEN},1){}dnl
+__{}__{}$0_REC{}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1681,6 +1705,7 @@ dnl
 dnl
 define({__COMPILE},{ifdef({__COUNT_TOKEN},{dnl
 __{}__CHECK_ALL_TOKENS{}dnl
+__{}__CHECK_ALL_TOKENS2{}dnl
 __{}define({__TOKEN_I},0)dnl
 __{}$0_REC{}dnl
 })}){}dnl
