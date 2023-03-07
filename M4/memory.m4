@@ -2587,10 +2587,11 @@ dnl # addr u char fill
 dnl # ( addr u char -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({FILL},{dnl
-__{}__ADD_TOKEN({__TOKEN_FILL},{fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_FILL_2DIRTY},{fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{__dtto}){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_FILL},{dnl
+define({__ASM_TOKEN_2DUP_FILL_2DIRTY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(dnl
 __{}_TYP_SINGLE,{small},{
@@ -2606,15 +2607,12 @@ __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    djnz $-2            ; 2:13/8    __INFO
 __{}    dec   D             ; 1:4       __INFO
-__{}    jr   nz, $-5        ; 2:7/12    __INFO
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO},
+__{}    jr   nz, $-5        ; 2:7/12    __INFO},
 __{}_TYP_SINGLE,function,{__def({USE_Fill3})
 __{}define({__SUM_BYTES},eval(3+1+1)){}dnl
 __{}define({__SUM_CLOCKS},eval(17+10+10)){}dnl
 __{}define({__TMP_CODE},{
-__{}__{}    call Fill3          ; 3:17      __INFO   ( address u char -- address+u x ){}dnl
-__{}__{}__ASM_TOKEN_2DROP}){}dnl
+__{}__{}    call Fill3          ; 3:17      __INFO   ( address u char -- address+u x )}){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( addr u char -- ) variant function{}dnl
 __{}__TMP_CODE},
 __{}{
@@ -2634,9 +2632,7 @@ __{}    ld    B, D          ; 1:4       __INFO
 __{}    ld    E, L          ; 1:4       __INFO
 __{}    ld    D, H          ; 1:4       __INFO
 __{}    inc  DE             ; 1:6       __INFO  DE = to
-__{}    ldir                ; 2:u*21/16 __INFO
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}    ldir                ; 2:u*21/16 __INFO}){}dnl
 }){}dnl
 dnl
 dnl
@@ -2645,10 +2641,11 @@ dnl # addr u char fill
 dnl # ( addr u -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH_FILL},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_FILL},{$1 fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PUSH_FILL_2DIRTY},{$1 fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{__dtto}){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PUSH_FILL},{dnl
+define({__ASM_TOKEN_2DUP_PUSH_FILL_2DIRTY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
@@ -2666,15 +2663,13 @@ __{}    ld  (DE),A          ; 1:7       __INFO
 __{}    inc  DE             ; 1:6       __INFO
 __{}    djnz $-2            ; 2:13/8    __INFO
 __{}    dec   H             ; 1:4       __INFO
-__{}    jr   nz, $-5        ; 2:7/12    __INFO{}dnl
-__{}__ASM_TOKEN_2DROP},
+__{}    jr   nz, $-5        ; 2:7/12    __INFO},
 __{}_TYP_SINGLE,function,{__def({USE_Fill2})
 __{}define({__SUM_BYTES},3+1+1){}dnl
 __{}define({__SUM_CLOCKS},17+10+10){}dnl
 __{}define({__TMP_CODE},__LD_R_NUM(__INFO{  A = char},A,$1){}dnl
 __{}__{}{
-__{}__{}    call Fill2          ; 3:17      __INFO{}dnl
-__{}__{}__ASM_TOKEN_2DROP}){}dnl
+__{}__{}    call Fill2          ; 3:17      __INFO}){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO  ( addr u -- ) fill(char)   variant function: fill(?){}dnl
 __{}__TMP_CODE},
 __{}{
@@ -2692,8 +2687,7 @@ __{}    ld    A, B          ; 1:4       __INFO
 __{}    or    C             ; 1:4       __INFO
 __{}    jr    z, $+5        ; 2:7/12    __INFO  u  = 1?
 __{}    inc  DE             ; 1:6       __INFO  DE = to
-__{}    ldir                ; 2:u*21/16 __INFO{}dnl
-__{}__ASM_TOKEN_2DROP}){}dnl
+__{}    ldir                ; 2:u*21/16 __INFO}){}dnl
 }){}dnl
 dnl
 dnl
@@ -2702,11 +2696,11 @@ dnl # addr u char fill
 dnl # ( addr -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH2_FILL},{dnl
-__{}ifelse(__HEX_L(__HEX_HL($1)0>0x8000),0x01,{__def({USE_Fill_Over})}){}dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_FILL},{$1 $2 fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH2_FILL_DIRTY},{$1 $2 fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DROP},{__dtto}){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PUSH2_FILL},{dnl
+define({__ASM_TOKEN_DUP_PUSH2_FILL_DIRTY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
@@ -2715,7 +2709,7 @@ __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}eval($#>2),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 
-__{}__HEX_HL($1),{0x0000},{{}__ASM_TOKEN_DROP},
+__{}__HEX_HL($1),{0x0000},{},
 
 __{}__HEX_HL($1),{0x0001},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                        ;[6:34]     __INFO  ( addr -- ) u=$1, char=$2
@@ -2723,7 +2717,7 @@ __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO},
 __{}{
 __{}__{}                        ;[4:24]     __INFO  ( addr -- ) u=$1, char=$2
-__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO}){}__ASM_TOKEN_DROP},
+__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO})},
 
 __{}__HEX_HL($1),{0x0002},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                        ;[8:47]     __INFO  ( addr -- ) u=$1, char=$2
@@ -2735,7 +2729,7 @@ __{}{
 __{}__{}                        ;[7:40]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO}){}__ASM_TOKEN_DROP},
+__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO})},
 
 __{}__HEX_HL($1),{0x0003},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[10:60]     __INFO  ( addr -- ) u=$1, char=$2
@@ -2749,7 +2743,7 @@ __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
+__{}    ld  (HL),A          ; 1:7       __INFO},
 
 __{}__HEX_HL($1),{0x0004},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[12:73]     __INFO  ( addr -- ) u=$1, char=$2
@@ -2765,7 +2759,7 @@ __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
+__{}    ld  (HL),A          ; 1:7       __INFO},
 
 __{}__HEX_HL($1),{0x0005},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[14:86]     __INFO  ( addr -- ) u=$1, char=$2
@@ -2783,7 +2777,7 @@ __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
+__{}    ld  (HL),A          ; 1:7       __INFO},
 
 __IS_MEM_REF($1),1,{
 __{}  .warning Fail if $1 < 2!{}dnl
@@ -2801,7 +2795,7 @@ __{}    push DE             ; 1:11      __INFO
 __{}    ld    D, H          ; 1:4       __INFO
 __{}    ld    E, L          ; 1:4       __INFO
 __{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_2DROP},
+__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_DROP},
 
 __{}__IS_NUM($1),0,{
 __{}  .warning Fail if $1 < 2!{}dnl
@@ -2817,13 +2811,13 @@ __{}    push DE             ; 1:11      __INFO
 __{}    ld    D, H          ; 1:4       __INFO
 __{}    ld    E, L          ; 1:4       __INFO
 __{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_2DROP},
+__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_DROP},
 
 _TYP_SINGLE:__IS_NUM($1),function:1,{
 __{}__def({USE_Fill}){}dnl
 __{}define({__TMP_STEP},8){}dnl
 __{}define({__SUM_BYTES},1+3+1){}dnl
-__{}define({__SUM_CLOCKS},4+17+10){}dnl
+__{}define({__SUM_CLOCKS},4+17+4){}dnl
 __{}define({__TMP_U},eval($1)){}dnl
 __{}define({__TMP_MOD},eval(__TMP_U%__TMP_STEP)){}dnl
 __{}define({__TMP_SUB},eval((__TMP_STEP-__TMP_MOD)%__TMP_STEP)){}dnl
@@ -2842,7 +2836,7 @@ __{}__{}{__LD_R_NUM(__INFO{   u=B*16-__TMP_SUB=eval(__TMP_B)*16-__TMP_SUB},B,__T
 __{}__{}{
 __{}__{}    call format({%-15s},Fill+eval(2*__TMP_SUB)); 3:format({%-7s},eval(17+__TMP_FCE_CLOCKS)) __INFO}dnl
 __{}__{}{
-__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( addr -- ) fill(u,char)   variant function: fill(num,?){}dnl
 __{}__TMP_CODE{}dnl
 __{}},
@@ -2858,7 +2852,7 @@ __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    djnz $-6            ; 2:13/8    __INFO{}__ASM_TOKEN_DROP},
+__{}__{}    djnz $-6            ; 2:13/8    __INFO},
 __{}__{}eval((($1)<=2*256) && ((($1) & 1)==0)),{1},{
 __{}__{}                       format({%-13s},;[13:eval(29+39*($1)/2)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
@@ -2867,7 +2861,7 @@ __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    djnz $-4            ; 2:13/8    __INFO{}__ASM_TOKEN_DROP},
+__{}__{}    djnz $-4            ; 2:13/8    __INFO},
 __{}__{}eval((($1)<=2*256) && ((($1) & 1)==1)),{1},{
 __{}__{}                       format({%-13s},;[14:eval(36+39*($1)/2)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
@@ -2877,7 +2871,7 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    djnz $-4            ; 2:13/8    __INFO
-__{}__{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
+__{}__{}    ld  (HL),A          ; 1:7       __INFO},
 __{}__{}{
 __{}__{}                       format({%-13s},;[15:eval(70+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
@@ -2887,7 +2881,7 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_2DROP})},
+__{}__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_DROP})},
 __{}{ifelse(dnl
 __{}__{}eval((($1)<=3*256) && ((($1) % 3)==0)),{1},{
 __{}__{}                       format({%-13s},;[13:eval(19+(52*$1)/3)])__INFO  ( addr -- ) u=$1, char=$2
@@ -2898,7 +2892,7 @@ __{}__{}    ld  (HL),C          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),C          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    djnz $-6            ; 2:13/8    __INFO{}__ASM_TOKEN_DROP},
+__{}__{}    djnz $-6            ; 2:13/8    __INFO},
 __{}__{}eval((($1)<=2*256) && ((($1) & 1)==0)),{1},{
 __{}__{}                       format({%-13s},;[11:eval(19+39*(($1)/2))])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      __INFO
@@ -2906,7 +2900,7 @@ __{}__{}    ld  (HL),C          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),C          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    djnz $-4            ; 2:13/8    __INFO{}__ASM_TOKEN_DROP},
+__{}__{}    djnz $-4            ; 2:13/8    __INFO},
 __{}__{}eval((($1)<=2*256) && ((($1) & 1)==1)),{1},{
 __{}__{}                       format({%-13s},;[12:eval(26+39*(($1)/2))])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld   BC, format({%-11s},eval(($1)/2){*256+$2}); 3:10      __INFO
@@ -2915,7 +2909,7 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),C          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    djnz $-4            ; 2:13/8    __INFO
-__{}__{}    ld  (HL),C          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
+__{}__{}    ld  (HL),C          ; 1:7       __INFO},
 __{}__{}{
 __{}__{}                       format({%-13s},;[13:eval(60+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
@@ -2924,7 +2918,7 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_2DROP}){}dnl
+__{}__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_DROP}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
