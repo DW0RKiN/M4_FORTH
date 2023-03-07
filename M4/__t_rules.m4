@@ -1658,7 +1658,14 @@ define({__CHECK_ALL_TOKENS2_REC},{dnl
 __{}ifelse(dnl
 __{}__T_NAME(0),__TOKEN_PUSH2_FILL,{dnl
 __{}__{}ifelse(__HEX_L(__T_HEX_REVERSE_2(0)0>0x8000),0x01,{__def({USE_Fill_Over})}){}dnl
-__{}__{}__def({USE_Fill_Unknown_Addr})},
+__{}__{}ifelse(
+        __T_HEX_REVERSE_2(0),0x0000,,
+        __T_HEX_REVERSE_2(0),0x0001,,
+        __T_HEX_REVERSE_2(0),0x0002,,
+        __T_HEX_REVERSE_2(0),0x0003,,
+        __T_HEX_REVERSE_2(0),0x0004,,
+        __T_HEX_REVERSE_2(0),0x0005,,
+        {__def({USE_Fill_Unknown_Addr})})},
 __{}__T_NAME(0),__TOKEN_PUSH3_FILL,{dnl
 __{}__{}ifelse(__HEX_L(__T_HEX_REVERSE_2(0)0>0x8000),0x01,{__def({USE_Fill_Over})}){}dnl
 __{}__{}ifelse(__IS_MEM_REF(__T_REVERSE_3(0)),1,{__def({USE_Fill_Unknown_Addr})}){}dnl

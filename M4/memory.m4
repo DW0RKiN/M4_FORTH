@@ -2688,7 +2688,7 @@ dnl # ( addr -- )
 dnl # If u is greater than zero, fill the contents of u consecutive characters at addr.
 define({PUSH2_FILL},{dnl
 __{}ifelse(__HEX_L(__HEX_HL($1)0>0x8000),0x01,{__def({USE_Fill_Over})}){}dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH2_FILL},{push2_fill},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_FILL},{$1 $2 fill},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_FILL},{dnl
@@ -2699,7 +2699,9 @@ __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}eval($#>2),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
+
 __{}__HEX_HL($1),{0x0000},{{}__ASM_TOKEN_DROP},
+
 __{}__HEX_HL($1),{0x0001},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                        ;[6:34]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
@@ -2707,6 +2709,7 @@ __{}__{}    ld  (HL),A          ; 1:7       __INFO},
 __{}{
 __{}__{}                        ;[4:24]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO}){}__ASM_TOKEN_DROP},
+
 __{}__HEX_HL($1),{0x0002},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                        ;[8:47]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
@@ -2718,11 +2721,12 @@ __{}__{}                        ;[7:40]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO}){}__ASM_TOKEN_DROP},
+
 __{}__HEX_HL($1),{0x0003},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[10:60]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
 __{}__IS_NUM($2),1,{define({__TMP},__LD_R_NUM(__INFO,A,$2))
-__{}__{}                        ;[eval(7+__BYTES):eval(47+__CLOCKS)]     __INFO  ( addr -- ) u=$1, char=$2{}__CODE},
+__{}__{}                        ;[eval(7+__BYTES):eval(47+__CLOCKS)]     __INFO  ( addr -- ) u=$1, char=$2{}__TMP},
 __{}{
 __{}__{}                        ;[9:54]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
@@ -2731,11 +2735,12 @@ __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
+
 __{}__HEX_HL($1),{0x0004},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[12:73]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
 __{}__IS_NUM($2),1,{define({__TMP},__LD_R_NUM(__INFO,A,$2))
-__{}__{}                        ;[eval(9+__BYTES):eval(60+__CLOCKS)]    __INFO  ( addr -- ) u=$1, char=$2{}__CODE},
+__{}__{}                        ;[eval(9+__BYTES):eval(60+__CLOCKS)]    __INFO  ( addr -- ) u=$1, char=$2{}__TMP},
 __{}{
 __{}__{}                       ;[11:67]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
@@ -2746,11 +2751,12 @@ __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
+
 __{}__HEX_HL($1),{0x0005},{ifelse(__IS_MEM_REF($2),1,{
 __{}__{}                       ;[14:86]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO},
 __{}__IS_NUM($2),1,{define({__TMP},__LD_R_NUM(__INFO,A,$2))
-__{}__{}                        ;[eval(11+__BYTES):eval(73+__CLOCKS)]    __INFO  ( addr -- ) u=$1, char=$2{}__CODE},
+__{}__{}                        ;[eval(11+__BYTES):eval(73+__CLOCKS)]    __INFO  ( addr -- ) u=$1, char=$2{}__TMP},
 __{}{
 __{}__{}                       ;[13:80]     __INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO})
@@ -2763,6 +2769,7 @@ __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO{}__ASM_TOKEN_DROP},
+
 __IS_MEM_REF($1),1,{
 __{}  .warning Fail if $1 < 2!{}dnl
 __{}ifelse(__IS_MEM_REF($2),1,{
@@ -2780,6 +2787,7 @@ __{}    ld    D, H          ; 1:4       __INFO
 __{}    ld    E, L          ; 1:4       __INFO
 __{}    inc  DE             ; 1:6       __INFO   DE = to
 __{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_2DROP},
+
 __{}__IS_NUM($1),0,{
 __{}  .warning Fail if $1 < 2!{}dnl
 __{}ifelse(__IS_MEM_REF($2),1,{
@@ -2795,6 +2803,35 @@ __{}    ld    D, H          ; 1:4       __INFO
 __{}    ld    E, L          ; 1:4       __INFO
 __{}    inc  DE             ; 1:6       __INFO   DE = to
 __{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_2DROP},
+
+_TYP_SINGLE:__IS_NUM($1),function:1,{
+__{}__def({USE_Fill}){}dnl
+__{}define({__TMP_STEP},8){}dnl
+__{}define({__SUM_BYTES},1+3+1){}dnl
+__{}define({__SUM_CLOCKS},4+17+10){}dnl
+__{}define({__TMP_U},eval($1)){}dnl
+__{}define({__TMP_MOD},eval(__TMP_U%__TMP_STEP)){}dnl
+__{}define({__TMP_SUB},eval((__TMP_STEP-__TMP_MOD)%__TMP_STEP)){}dnl
+__{}define({__TMP_B},eval((__TMP_U+__TMP_STEP-1)/__TMP_STEP)){}dnl
+__{}define({__TMP_C},eval(__HEX_H(__TMP_B)+1)){}dnl
+__{}define({__TMP_B},__HEX_L(__TMP_B)){}dnl
+__{}define({__TMP_FCE_CLOCKS},eval(__TMP_B*(__TMP_STEP*13+13)-__TMP_SUB*13-5+10)){}dnl
+__{}ifdef({USE_Fill_Over},{__add({__TMP_FCE_CLOCKS},eval((__TMP_C-1)*(256*(__TMP_STEP*13+13)-5+4+12)+4+7))}){}dnl
+__{}__add({__SUM_CLOCKS},__TMP_FCE_CLOCKS){}dnl
+__{}define({__TMP_CODE},{
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   addr}dnl
+__{}__{}__LD_R_NUM(__INFO{   char},A,$2){}dnl
+__{}__{}ifelse(ifdef({USE_Fill_Over},1,0),1,
+__{}__{}{__LD_R16(BC,256*__TMP_B+__TMP_C,A,$2)   u=B*16-__TMP_SUB=eval(__TMP_B)*16-__TMP_SUB},
+__{}__{}{__LD_R_NUM(__INFO{   u=B*16-__TMP_SUB=eval(__TMP_B)*16-__TMP_SUB},B,__TMP_B,A,$2)}){}dnl
+__{}__{}{
+__{}__{}    call format({%-15s},Fill+eval(2*__TMP_SUB)); 3:format({%-7s},eval(17+__TMP_FCE_CLOCKS)) __INFO}dnl
+__{}__{}{
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( addr -- ) fill(u,char)   variant function: fill(num,?){}dnl
+__{}__TMP_CODE{}dnl
+__{}},
+
 __{}__IS_MEM_REF($2),1,{ifelse(dnl
 __{}__{}eval((($1)<=3*256) && ((($1) % 3)==0)),{1},{
 __{}__{}                       format({%-13s},;[29:eval(29+52*($1)/3)])__INFO  ( addr -- ) u=$1, char=$2
@@ -3436,7 +3473,75 @@ __{}__{}    call format({%-15s},Fill+eval(2*__TMP_SUB)); 3:format({%-7s},eval(17
 __{}__{}__TMP_BONUS{}dnl
 __{}__{}{
 __{}__{}    exx                 ; 1:4       __INFO}){}dnl
-__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant function: fill(num,max 4096,?){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr,u,char)   variant function: fill(ptr/num, ifdef({USE_Fill_Over},no limit,max 4096),?){}dnl
+__{}__TMP_CODE{}dnl
+__{}},
+
+__IS_NAME($1):_TYP_SINGLE,1:function,{
+__{}__def({USE_Fill}){}dnl
+__{}define({__TMP_STEP},8){}dnl
+__{}define({__SUM_BYTES},1+3+1){}dnl
+__{}define({__SUM_CLOCKS},4+17+4){}dnl
+__{}define({__TMP_C1},eval(11+ifdef({USE_Fill_Unknown_Addr},2,0))){}dnl
+__{}define({__TMP_U},eval($2)){}dnl
+__{}define({__TMP_MOD_0},eval(__TMP_U%__TMP_STEP)){}dnl
+__{}define({__TMP_SUB_0},eval((__TMP_STEP-__TMP_MOD_0)%__TMP_STEP)){}dnl
+__{}define({__TMP_MOD_1},eval((__TMP_U-1)%__TMP_STEP)){}dnl
+__{}define({__TMP_SUB_1},eval((__TMP_STEP-__TMP_MOD_1)%__TMP_STEP)){}dnl
+__{}define({__TMP_B_0},eval((__TMP_U+__TMP_STEP-1)/__TMP_STEP)){}dnl
+__{}define({__TMP_B_1},eval((__TMP_U+__TMP_STEP-2)/__TMP_STEP)){}dnl
+__{}define({__TMP_C_0},eval(__HEX_H(__TMP_B_0)+1)){}dnl
+__{}define({__TMP_C_1},eval(__HEX_H(__TMP_B_1)+1)){}dnl
+__{}define({__TMP_B_0},__HEX_L(__TMP_B_0)){}dnl
+__{}define({__TMP_B_1},__HEX_L(__TMP_B_1)){}dnl
+__{}define({__TMP_FCE_CLOCKS_0},eval(((__TMP_STEP/2)*(__TMP_C1+13)+13)*__TMP_B_0-(__TMP_C1+13)*(__TMP_SUB_0/2)-__TMP_C1*(__TMP_SUB_0&1)-5+10)){}dnl
+__{}define({__TMP_FCE_CLOCKS_1},eval(((__TMP_STEP/2)*(__TMP_C1+13)+13)*__TMP_B_1-(__TMP_C1+13)*(__TMP_SUB_1/2)-__TMP_C1*(__TMP_SUB_1&1)-5+10)){}dnl
+__{}ifdef({USE_Fill_Over},{dnl
+__{}__{}__add({__TMP_FCE_CLOCKS_0},eval((__TMP_C_0-1)*(256*(__TMP_STEP*(__TMP_C1+13)/2+13)-5+4+12)+4+7)){}dnl
+__{}__{}__add({__TMP_FCE_CLOCKS_1},eval((__TMP_C_1-1)*(256*(__TMP_STEP*(__TMP_C1+13)/2+13)-5+4+12)+4+7)){}dnl
+__{}}){}dnl
+__{}define({__TMP_CODE},{
+__{}__{}    exx                 ; 1:4       __INFO}dnl
+__{}__{}__LD_R16({DE},$1){   addr __SAVE_VALUE_HL($1)..__SAVE_VALUE_HL($1+$2-1)}dnl
+__{}__{}__LD_R_NUM(__INFO{   char},A,$3,DE,$1){}dnl
+__{}__{}define({__TMP_CLOCKS},__SUM_CLOCKS){}dnl
+__{}__{}define({__TMP_BYTES},__SUM_BYTES){}dnl
+__{}ifdef({USE_Fill_Unknown_Addr},{dnl
+__{}__{}__{}ifelse(ifdef({USE_Fill_Over},1,0),1,
+__{}__{}__{}{__LD_R16(BC,256*__TMP_B_0+__TMP_C_0,A,$3,DE,$1)   u=B*16-__TMP_SUB_0=eval(__TMP_B_0)*16-__TMP_SUB_0},
+__{}__{}__{}{__LD_R_NUM(__INFO{   u=B*16-__TMP_SUB_0=eval(__TMP_B_0)*16-__TMP_SUB_0},B,__TMP_B_0,A,$3,DE,$1)})
+__{}__{}__{}define({__TMP_BYTES_1}, __BYTES){}dnl
+__{}__{}__{}define({__TMP_BYTES_0}, __BYTES){}dnl
+__{}__{}__{}define({__TMP_CLOCKS_0},__CLOCKS){}dnl
+__{}__{}__{}define({__TMP_CLOCKS_1},__CLOCKS){}dnl
+__{}__{}__{}define({__TMP_FCE_CLOCKS_1},__TMP_FCE_CLOCKS_0){}dnl
+__{}__{}    call format({%-15s},Fill+eval(2*__TMP_SUB_0)); 3:format({%-7s},eval(17+__TMP_FCE_CLOCKS_0)) __INFO},
+__{}__{}{
+__{}__{}  if (1&($1+$2))&&(0xFF00&(($1)xor($1+$2-1))){}dnl
+__{}__{}__{}ifelse(ifdef({USE_Fill_Over},1,0),1,
+__{}__{}__{}{__LD_R16(BC,256*__TMP_B_1+__TMP_C_1,A,$3,DE,$1)   u=B*16-__TMP_SUB_1=eval(__TMP_B_1)*16-__TMP_SUB_1},
+__{}__{}__{}{__LD_R_NUM(__INFO{   u=B*16-__TMP_SUB_1=eval(__TMP_B_1)*16-__TMP_SUB_1},B,__TMP_B_1,A,$3,DE,$1)})
+__{}__{}__{}define({__TMP_CLOCKS_1},7+__CLOCKS){}dnl
+__{}__{}__{}define({__TMP_BYTES_1}, 1+__BYTES){}dnl
+__{}__{}__{}    call format({%-15s},Fill+eval(2*__TMP_SUB_1)); 3:format({%-7s},eval(17+__TMP_FCE_CLOCKS_1)) __INFO
+__{}__{}__{}    ld  (DE){,}A          ; 1:7       __INFO
+__{}__{}  else{}dnl
+__{}__{}__{}ifelse(ifdef({USE_Fill_Over},1,0),1,
+__{}__{}__{}{__LD_R16(BC,256*__TMP_B_0+__TMP_C_0,A,$3,DE,$1)   u=B*16-__TMP_SUB_0=eval(__TMP_B_0)*16-__TMP_SUB_0},
+__{}__{}__{}{__LD_R_NUM(__INFO{   u=B*16-__TMP_SUB_0=eval(__TMP_B_0)*16-__TMP_SUB_0},B,__TMP_B_0,A,$3,DE,$1)})
+__{}__{}__{}define({__TMP_CLOCKS_0},__CLOCKS){}dnl
+__{}__{}__{}define({__TMP_BYTES_0}, __BYTES){}dnl
+__{}__{}    call format({%-15s},Fill+eval(2*__TMP_SUB_0)); 3:format({%-7s},eval(17+__TMP_FCE_CLOCKS_0)) __INFO
+__{}__{}  endif}){}dnl
+__{}__{}{
+__{}__{}    exx                 ; 1:4       __INFO}){}dnl
+__{}define({__TMP_BYTES_0},eval(__TMP_BYTES+__TMP_BYTES_0)){}dnl
+__{}define({__TMP_BYTES_1},eval(__TMP_BYTES+__TMP_BYTES_1)){}dnl
+__{}define({__TMP_CLOCKS_0},eval(__TMP_CLOCKS+__TMP_CLOCKS_0+__TMP_FCE_CLOCKS_0)){}dnl
+__{}define({__TMP_CLOCKS_1},eval(__TMP_CLOCKS+__TMP_CLOCKS_1+__TMP_FCE_CLOCKS_1)){}dnl
+__{}ifelse(__TMP_BYTES_0,  __TMP_BYTES_1,,{define({__TMP_BYTES_1},__TMP_BYTES_1/__TMP_BYTES_0)}){}dnl
+__{}ifelse(__TMP_CLOCKS_0,__TMP_CLOCKS_1,,{define({__TMP_CLOCKS_1},__TMP_CLOCKS_1/__TMP_CLOCKS_0)}){}dnl
+__{}format({%36s},;[__TMP_BYTES_1:format({%-8s},__TMP_CLOCKS_1] ))__INFO   fill(addr,u,char)   variant function: fill(variable, ifdef({USE_Fill_Over},no limit,max 4096),?){}dnl
 __{}__TMP_CODE{}dnl
 __{}},
 

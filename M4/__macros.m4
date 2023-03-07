@@ -766,6 +766,28 @@ dnl
 dnl
 dnl # Input:
 dnl #
+dnl #  $1 = times
+dnl #  $2 = 256
+dnl #
+dnl # Output:
+dnl #
+dnl #  256 >> X, where X is the number of zero bits at the end of TIMES
+dnl #
+dnl #   (3,256) = (%0000 0011,256) --> 256 --> 256* 3 mod 256 = 0
+dnl #   (6,256) = (%0000 0110,256) --> 128 --> 128* 6 mod 256 = 0
+dnl #  (50,256) = (%0011 0010,256) --> 128 --> 128*50 mod 256 = 0
+dnl #  (12,256) = (%0000 1100,256) -->  64 -->  64*12 mod 256 = 0
+define({__INC_REG16_MAX_REPEAT},{dnl
+__{}ifelse(dnl
+__{}__{}__IS_NUM($1),0,256,
+__{}__{}eval(($1 + 0) & 1),0,{$0(eval($1>>1),eval($2>>1))},
+__{}__{}$2){}dnl
+})dnl
+dnl
+dnl
+dnl
+dnl # Input:
+dnl #
 dnl #  $1 = name register pair
 dnl #  $2 = start number
 dnl #  $3 = additional
@@ -793,7 +815,7 @@ __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
 __{}__{}    inc   substr($1,1)             ; 1:4       __INFO   only even numbers},
 
-__{}eval((256 % $4)==0 && ($4*$5>256)),1,{dnl # prirustek je mocnina 2 a rozsah vic jak 256 bajtu, takze bud vzdy mineme a nebo vzdy trefime
+__{}eval((256 % $4)==0 && ($4*$5>=256)),1,{dnl # prirustek je mocnina 2 a rozsah vic jak 256 bajtu, takze bud vzdy mineme a nebo vzdy trefime
 __{}__{}ifelse(__IS_NUM($2),1,{dnl
 __{}__{}__{}ifelse(__HEX_L(+($4-1) & ($2+$3+1)),0x00,{dnl
 __{}__{}__{}__{}define({__CLOCKS},6)
@@ -817,7 +839,7 @@ __{}__{}__add({__SUM_CLOCKS},__CLOCKS)},
 
 __{}__IS_NUM($2),1,{$0_REC($1,$2,$3,$4,$5,$5)},
 
-__{}eval(($5+0>255) && ((($4+0) & 1)==0)),1,{dnl #
+__{}eval(($5+0>=__INC_REG16_MAX_REPEAT($4,256)) && ((($4+0) & 1)==0)),1,{dnl # even step
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
@@ -829,15 +851,16 @@ __{}__{}__{}__{}define({__CLOCKS},4)}){}dnl
 __{}__{}__{}  if (1 & ($2+eval($3+1)))
 __{}__{}__{}    inc   substr($1,1)             ; 1:4       __INFO   only even numbers
 __{}__{}__{}  else
-__{}__{}__{}    inc  $1             ; 1:6       __INFO   $4 is even step && ($5 times>255) && odd number
+__{}__{}__{}    inc  $1             ; 1:6       __INFO   $4 is even step && ($5 times>=__INC_REG16_MAX_REPEAT($4,256)) && odd address
 __{}__{}__{}  endif},
 
-__{}eval(($5+0>255) && ($4 & 1)),1,{dnl #
+__{}eval(($5+0>255) && ($4 & 1)),1,{dnl # odd step
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS)
 __{}__{}    inc  $1             ; 1:6       __INFO   $4 is odd step && ($5 times>255)},
+
 __{}{
 __{}__{}  if substr((),0,1)1{}dnl # begin pasmo macro
 __{}__{}$0_REC($1,$2,$3,$4,$5,$5){}dnl
