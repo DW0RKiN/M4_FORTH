@@ -1878,6 +1878,7 @@ dnl
 dnl
 ifdef({USE_Fill3},{__def({USE_Fill2})
 ;==============================================================================
+; ( address u char ret -- ret address+u x ) (address..address+u-1) = char
 ;  In: (SP+2) = address, DE = u, L = char 
 ; Out:  A = char
 ;      BC = 0

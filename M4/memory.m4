@@ -2613,9 +2613,9 @@ __{}_TYP_SINGLE,function,{__def({USE_Fill3})
 __{}define({__SUM_BYTES},eval(3+1+1)){}dnl
 __{}define({__SUM_CLOCKS},eval(17+10+10)){}dnl
 __{}define({__TMP_CODE},{
-__{}__{}    call Fill3          ; 3:17      __INFO{}dnl
+__{}__{}    call Fill3          ; 3:17      __INFO   ( address u char -- address+u x ){}dnl
 __{}__{}__ASM_TOKEN_2DROP}){}dnl
-__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO  ( addr u char -- ) variant function{}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( addr u char -- ) variant function{}dnl
 __{}__TMP_CODE},
 __{}{
 __{}                      ;[21:94+u*21] __INFO  ( addr u char -- )  # default version can be changed with "define({_TYP_SINGLE},{small})"
