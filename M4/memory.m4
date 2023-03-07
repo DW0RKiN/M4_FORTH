@@ -2609,6 +2609,14 @@ __{}    dec   D             ; 1:4       __INFO
 __{}    jr   nz, $-5        ; 2:7/12    __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
+__{}_TYP_SINGLE,function,{__def({USE_Fill3})
+__{}define({__SUM_BYTES},eval(3+1+1)){}dnl
+__{}define({__SUM_CLOCKS},eval(17+10+10)){}dnl
+__{}define({__TMP_CODE},{
+__{}__{}    call Fill3          ; 3:17      __INFO{}dnl
+__{}__{}__ASM_TOKEN_2DROP}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO  ( addr u char -- ) variant function{}dnl
+__{}__TMP_CODE},
 __{}{
 __{}                      ;[21:94+u*21] __INFO  ( addr u char -- )  # default version can be changed with "define({_TYP_SINGLE},{small})"
 __{}    ld    A, D          ; 1:4       __INFO
@@ -2658,17 +2666,15 @@ __{}    ld  (DE),A          ; 1:7       __INFO
 __{}    inc  DE             ; 1:6       __INFO
 __{}    djnz $-2            ; 2:13/8    __INFO
 __{}    dec   H             ; 1:4       __INFO
-__{}    jr   nz, $-5        ; 2:7/12    __INFO
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO},
+__{}    jr   nz, $-5        ; 2:7/12    __INFO{}dnl
+__{}__ASM_TOKEN_2DROP},
 __{}_TYP_SINGLE,function,{__def({USE_Fill2})
 __{}define({__SUM_BYTES},3+1+1){}dnl
 __{}define({__SUM_CLOCKS},17+10+10){}dnl
 __{}define({__TMP_CODE},__LD_R_NUM(__INFO{  A = char},A,$1){}dnl
 __{}__{}{
-__{}__{}    call Fill2          ; 3:17      __INFO
-__{}__{}    pop  HL             ; 1:10      __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}__{}    call Fill2          ; 3:17      __INFO{}dnl
+__{}__{}__ASM_TOKEN_2DROP}){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO  ( addr u -- ) fill(char)   variant function: fill(?){}dnl
 __{}__TMP_CODE},
 __{}{
@@ -2686,9 +2692,8 @@ __{}    ld    A, B          ; 1:4       __INFO
 __{}    or    C             ; 1:4       __INFO
 __{}    jr    z, $+5        ; 2:7/12    __INFO  u  = 1?
 __{}    inc  DE             ; 1:6       __INFO  DE = to
-__{}    ldir                ; 2:u*21/16 __INFO
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}    ldir                ; 2:u*21/16 __INFO{}dnl
+__{}__ASM_TOKEN_2DROP}){}dnl
 }){}dnl
 dnl
 dnl

@@ -1656,6 +1656,10 @@ dnl
 dnl
 define({__CHECK_ALL_TOKENS2_REC},{dnl
 __{}ifelse(dnl
+__{}__T_NAME(0),__TOKEN_FILL,{dnl
+__{}__{}__def({USE_Fill_Over}){}dnl
+__{}__{}__def({USE_Fill_Unknown_Addr}){}dnl
+__{}},
 __{}__T_NAME(0),__TOKEN_PUSH_FILL,{dnl
 __{}__{}__def({USE_Fill_Over}){}dnl
 __{}__{}__def({USE_Fill_Unknown_Addr}){}dnl

@@ -1873,8 +1873,8 @@ __{}__ADD_TOKEN({__TOKEN_2DROP},{2drop},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DROP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO   ( b a -- )}){}dnl
+    pop  HL             ; 1:10      __INFO   ( b a -- )
+    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl # drop drop drop
