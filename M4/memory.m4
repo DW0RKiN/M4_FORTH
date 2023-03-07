@@ -2647,7 +2647,7 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}_TYP_SINGLE,small,{
-__{}    ;[17:cca 66+u*26+int(u/256)*24] __INFO  ( addr u -- )  char = $1  # small version can be changed with "define({_TYP_SINGLE},{default})"
+__{}    ;[17:cca 66+u*26+int(u/256)*24] __INFO  ( addr u -- )  char = $1  # small version, change: "define({_TYP_SINGLE},{default})"
 __{}    ld    A, format({%-11s},$1); 2:7       __INFO  A = char
 __{}    ld    B, L          ; 1:4       __INFO
 __{}    inc   H             ; 1:4       __INFO
@@ -2661,8 +2661,18 @@ __{}    dec   H             ; 1:4       __INFO
 __{}    jr   nz, $-5        ; 2:7/12    __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
+__{}_TYP_SINGLE,function,{__def({USE_Fill2})
+__{}define({__SUM_BYTES},3+1+1){}dnl
+__{}define({__SUM_CLOCKS},17+10+10){}dnl
+__{}define({__TMP_CODE},__LD_R_NUM(__INFO{  A = char},A,$1){}dnl
+__{}__{}{
+__{}__{}    call Fill2          ; 3:17      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO  ( addr u -- ) fill(char)   variant function: fill(?){}dnl
+__{}__TMP_CODE},
 __{}{
-__{}                      ;[20:83+u*21] __INFO  ( addr u -- )  char = $1  # default version can be changed with "define({_TYP_SINGLE},{small})"
+__{}                      ;[20:83+u*21] __INFO  ( addr u -- )  char = $1  # default version, change: "define({_TYP_SINGLE},{small})"
 __{}    ld    A, H          ; 1:4       __INFO
 __{}    or    L             ; 1:4       __INFO
 __{}    jr    z, $+16       ; 2:7/12    __INFO  u  = 0?
@@ -2813,7 +2823,7 @@ __{}define({__TMP_U},eval($1)){}dnl
 __{}define({__TMP_MOD},eval(__TMP_U%__TMP_STEP)){}dnl
 __{}define({__TMP_SUB},eval((__TMP_STEP-__TMP_MOD)%__TMP_STEP)){}dnl
 __{}define({__TMP_B},eval((__TMP_U+__TMP_STEP-1)/__TMP_STEP)){}dnl
-__{}define({__TMP_C},eval(__HEX_H(__TMP_B)+1)){}dnl
+__{}define({__TMP_C},eval(__HEX_H(__TMP_B-1)+1)){}dnl
 __{}define({__TMP_B},__HEX_L(__TMP_B)){}dnl
 __{}define({__TMP_FCE_CLOCKS},eval(__TMP_B*(__TMP_STEP*13+13)-__TMP_SUB*13-5+10)){}dnl
 __{}ifdef({USE_Fill_Over},{__add({__TMP_FCE_CLOCKS},eval((__TMP_C-1)*(256*(__TMP_STEP*13+13)-5+4+12)+4+7))}){}dnl
@@ -3456,7 +3466,7 @@ __{}})}){}dnl
 __{}define({__TMP_MOD},eval(__TMP_U%__TMP_STEP)){}dnl
 __{}define({__TMP_SUB},eval((__TMP_STEP-__TMP_MOD)%__TMP_STEP)){}dnl
 __{}define({__TMP_B},eval((__TMP_U+__TMP_STEP-1)/__TMP_STEP)){}dnl
-__{}define({__TMP_C},eval(__HEX_H(__TMP_B)+1)){}dnl
+__{}define({__TMP_C},eval(__HEX_H(__TMP_B-1)+1)){}dnl
 __{}define({__TMP_B},__HEX_L(__TMP_B)){}dnl
 __{}define({__TMP_FCE_CLOCKS},eval(((__TMP_STEP/2)*(__TMP_C1+13)+13)*__TMP_B-(__TMP_C1+13)*(__TMP_SUB/2)-__TMP_C1*(__TMP_SUB&1)-5+10)){}dnl
 __{}ifdef({USE_Fill_Over},{__add({__TMP_FCE_CLOCKS},eval((__TMP_C-1)*(256*(__TMP_STEP*(__TMP_C1+13)/2+13)-5+4+12)+4+7))}){}dnl
@@ -3490,8 +3500,8 @@ __{}define({__TMP_MOD_1},eval((__TMP_U-1)%__TMP_STEP)){}dnl
 __{}define({__TMP_SUB_1},eval((__TMP_STEP-__TMP_MOD_1)%__TMP_STEP)){}dnl
 __{}define({__TMP_B_0},eval((__TMP_U+__TMP_STEP-1)/__TMP_STEP)){}dnl
 __{}define({__TMP_B_1},eval((__TMP_U+__TMP_STEP-2)/__TMP_STEP)){}dnl
-__{}define({__TMP_C_0},eval(__HEX_H(__TMP_B_0)+1)){}dnl
-__{}define({__TMP_C_1},eval(__HEX_H(__TMP_B_1)+1)){}dnl
+__{}define({__TMP_C_0},eval(__HEX_H(__TMP_B_0-1)+1)){}dnl
+__{}define({__TMP_C_1},eval(__HEX_H(__TMP_B_1-1)+1)){}dnl
 __{}define({__TMP_B_0},__HEX_L(__TMP_B_0)){}dnl
 __{}define({__TMP_B_1},__HEX_L(__TMP_B_1)){}dnl
 __{}define({__TMP_FCE_CLOCKS_0},eval(((__TMP_STEP/2)*(__TMP_C1+13)+13)*__TMP_B_0-(__TMP_C1+13)*(__TMP_SUB_0/2)-__TMP_C1*(__TMP_SUB_0&1)-5+10)){}dnl

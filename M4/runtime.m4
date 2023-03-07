@@ -1955,66 +1955,42 @@ Fill2_self:             ;           Fill3
 dnl
 dnl
 dnl
-ifdef({USE_Fill2},{__def({USE_Fill})
+ifdef({USE_Fill2},{__def({USE_Fill}){}dnl
+__{}ifdef({USE_Fill_Over},,{
+__{}  .error Not activate {USE_Fill_Over}!}){}dnl
+__{}ifdef({USE_Fill_Unknown_Addr},,{
+__{}  .error Not activate {USE_Fill_Unknown_Addr}!})
 ;==============================================================================
-; ( --  ) (DE_in..DE_out-1) = A
-;  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
+; ( -- ) (DE..DE+HL-1) = A
+;  In: DE = address, HL = u, A=char
 ; Out: BC = 0
-;      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
-
-; navrh volani:
-__LD_R16(BC,256*__TMP_B+__TMP_C,A,$3){   u=B*16-__TMP_SUB=__TMP_B*16-__TMP_SUB}dnl
-__LD_R_NUM(__INFO{   char},A,$2,B,__TMP_B,C,__TMP_C){}dnl
-    call Fill2          ; 3:17      __INFO
-    pop  DE             ; 1:10      __INFO   ( addr -- )
-
-Fill2:                  ;[:]        Fill2
-    ex   DE, HL         ; 1:4       Fill2
+;      DE+= HL, HL>>=3
+Fill2:                 ;[26:108]    Fill2
     ex   AF, AF'        ; 1:4       Fill2
-    ld    A, C          ; 1:4       Fill2
-    or    B             ; 1:4       Fill2
-    ret   z             ; 1:5/11    Fill2
-
-    ld    A, L          ; 1:4       Fill2
-    xor   C             ; 1:4       Fill2
-    rrca                ; 1:4       Fill2
-    jr   nc,$+8         ; 2:7/12    Fill2   
-    dec  BC             ; 1:6       Fill2
-    call $+5            ; 3:17      Fill2
-    ld  (DE),A          ; 1:7       Fill2   last odd address
-    ret                 ; 1:10      Fill2
-    
-    ld    A,0xF8        ; 2:7       Fill2
-    and   C             ; 1:4       Fill2
-    sub   C             ; 1:4       Fill2
-    add   A, A          ; 1:4       Fill2
-    add   A, 2*8        ; 2:7       Fill2
+    xor   A             ; 1:4       Fill2
+    sub   L             ; 1:4       Fill2  -0,-1,-2,-3,-4,-5,-6,-7
+    and  0x07           ; 2:7       Fill2   0, 7, 6, 5, 4, 3, 2, 1
+    add   A, A          ; 1:4       Fill2   0,14,12,10, 8, 6, 4, 2
     ld  (Fill2_self+1),A; 3:13      Fill2
-
-    
-    
-    ld    A, C          ; 1:4       Fill2
-    srl   B             ; 2:8       Fill2
-    rra                 ; 1:4       Fill2
-    srl   B             ; 2:8       Fill2
-    rra                 ; 1:4       Fill2
-    srl   B             ; 2:8       Fill2
-    rra                 ; 1:4       Fill2
-
-    ld    C, B          ; 1:4       Fill2
+    dec  HL             ; 1:6       Fill2
+    ld    A, L          ; 1:4       Fill2
+    srl   H             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2   HA >> 1
+    srl   H             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2   HA >> 2
+    srl   H             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2   HA >> 3
+    ld    C, H          ; 1:4       Fill2
     ld    B, A          ; 1:4       Fill2
-; zde bude chyba +-1, dodelat!!!
     inc   C             ; 1:4       Fill2
-    inc   B             ; 1:4       Fill2
-
+    inc   B             ; 1:4       Fill2   255->256=0 ok
     ex   AF, AF'        ; 1:4       Fill2
 Fill2_self:             ;           Fill2
-    jr  $+2             ; 2:12      Fill2
-
+    jr  $+0             ; 2:12      Fill2
 }){}dnl
 ifdef({USE_Fill},{
 ;==============================================================================
-; ( --  ) (DE_in..DE_out-1) = A{}dnl
+; ( -- ) (DE_in..DE_out-1) = A{}dnl
 ifelse(
 __{}ifdef({USE_Fill_Over},1,0):ifdef({USE_Fill_Unknown_Addr},1,0),1:1,{
 __{};  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
