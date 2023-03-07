@@ -2781,37 +2781,38 @@ __{}    ld  (HL),A          ; 1:7       __INFO},
 
 __IS_MEM_REF($1),1,{
 __{}  .warning Fail if $1 < 2!{}dnl
-__{}ifelse(__IS_MEM_REF($2),1,{
-__{}__{}format({%35s},;[17:86+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
-__{}__{}                       ;[12:73]     __INFO  ( addr -- ) u=$1, char=$2
-__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
-__{}__{}    ld  (HL),A          ; 1:7       __INFO},
-__{}{
-__{}__{}format({%35s},;[15:76+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
-__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO})
-__{}    ld   BC, format({%-11s},$1-1); 4:20      __INFO
-__{}    dec  BC             ; 1:6       __INFO   $1-1
-__{}    push DE             ; 1:11      __INFO
-__{}    ld    D, H          ; 1:4       __INFO
-__{}    ld    E, L          ; 1:4       __INFO
-__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_DROP},
+__{}define({__SUM_BYTES},5*1+2+1+1){}dnl
+__{}define({__SUM_CLOCKS},6+11+4+4+6+4+10-5){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_MEM8(HL,$2){}dnl
+__{}__{}__LD_R16(BC,$1){
+__{}__{}    dec  BC             ; 1:6       __INFO   $1-1
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   DE = to
+__{}__{}    ldir                ; 2:u*21/16 __INFO})
+__{}format({%36s},;[__SUM_BYTES+2?:format({%-8s},__SUM_CLOCKS+u*21+14?] ))__INFO   fill(u,char)   variant: fill(ptr,?){}dnl
+__{}__TMP_CODE{}dnl
+__{}__ASM_TOKEN_DROP},
 
-__{}__IS_NUM($1),0,{
+__IS_NAME($1),1,{
 __{}  .warning Fail if $1 < 2!{}dnl
-__{}ifelse(__IS_MEM_REF($2),1,{
-__{}__{}format({%35s},;[15:70+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
-__{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
-__{}__{}    ld  (HL),A          ; 1:7       __INFO},
-__{}{
-__{}__{}format({%35s},;[13:60+21*($1)]) __INFO  ( addr -- ) u=$1, char=$2
-__{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO})
-__{}    ld   BC, format({%-11s},$1-1); 3:10      __INFO   $1-1
-__{}    push DE             ; 1:11      __INFO
-__{}    ld    D, H          ; 1:4       __INFO
-__{}    ld    E, L          ; 1:4       __INFO
-__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_DROP},
+__{}define({__SUM_BYTES},4*1+2+1+1){}dnl
+__{}define({__SUM_CLOCKS},11+4+4+6+4+10-5){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_MEM8(HL,$2){}dnl
+__{}__{}__LD_R16(BC,$1){
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   DE = to
+__{}__{}    ldir                ; 2:u*21/16 __INFO})
+__{}format({%36s},;[__SUM_BYTES+2?:format({%-8s},__SUM_CLOCKS+u*21+14?] ))__INFO   fill(u,char)   variant: fill(ptr,?){}dnl
+__{}__TMP_CODE{}dnl
+__{}__ASM_TOKEN_DROP},
 
 _TYP_SINGLE:__IS_NUM($1),function:1,{
 __{}__def({USE_Fill}){}dnl
