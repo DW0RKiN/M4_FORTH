@@ -2817,8 +2817,8 @@ __{}__TMP_CODE},
 _TYP_SINGLE:__IS_NUM($1),function:1,{
 __{}__def({USE_Fill}){}dnl
 __{}define({__TMP_STEP},8){}dnl
-__{}define({__SUM_BYTES},1+3+1){}dnl
-__{}define({__SUM_CLOCKS},4+17+4){}dnl
+__{}define({__SUM_BYTES},1+3+1+2){}dnl
+__{}define({__SUM_CLOCKS},4+17+4+14){}dnl
 __{}define({__TMP_U},eval($1)){}dnl
 __{}define({__TMP_MOD},eval(__TMP_U%__TMP_STEP)){}dnl
 __{}define({__TMP_SUB},eval((__TMP_STEP-__TMP_MOD)%__TMP_STEP)){}dnl
