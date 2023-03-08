@@ -399,7 +399,7 @@ __T_NAME(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_DUP_EMIT:__TOKEN_DROP,{__SET_TOK
 
 dnl # D...
 d...,,,
-            __T_NAME(0)-$1,{__TOKEN_DROP-__TOKEN_DROP},         {__SET_TOKEN({__TOKEN_2DROP},__T_INFO(0){ }$2)},
+            __T_NAME(0)-$1,{__TOKEN_DROP-__TOKEN_DROP},         {__SET_TOKEN({__TOKEN_2DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_DROP-__TOKEN_2DROP},        {__SET_TOKEN({__TOKEN_3DROP},__T_INFO(0){ }$2)},
 
             __T_NAME(0)-$1,{__TOKEN_DROP-__TOKEN_RAS},          {__SET_TOKEN({__TOKEN_DROP_RAS},__T_INFO(0){ }$2)},

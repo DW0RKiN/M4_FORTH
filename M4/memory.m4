@@ -2781,8 +2781,8 @@ __{}    ld  (HL),A          ; 1:7       __INFO},
 
 __IS_MEM_REF($1),1,{
 __{}  .warning Fail if $1 < 2!{}dnl
-__{}define({__SUM_BYTES},5*1+2+1+1){}dnl
-__{}define({__SUM_CLOCKS},6+11+4+4+6+4+10-5){}dnl
+__{}define({__SUM_BYTES},5*1+2+1){}dnl
+__{}define({__SUM_CLOCKS},6+11+4+4+6+10-5){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({__TMP_CODE},
 __{}__{}__LD_MEM8(HL,$2){}dnl
@@ -2792,15 +2792,15 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}__{}    ldir                ; 2:u*21/16 __INFO})
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO})
 __{}format({%36s},;[__SUM_BYTES+2?:format({%-8s},__SUM_CLOCKS+u*21+14?] ))__INFO   fill(u,char)   variant: fill(ptr,?){}dnl
-__{}__TMP_CODE{}dnl
-__{}__ASM_TOKEN_DROP},
+__{}__TMP_CODE},
 
 __IS_NAME($1),1,{
 __{}  .warning Fail if $1 < 2!{}dnl
-__{}define({__SUM_BYTES},4*1+2+1+1){}dnl
-__{}define({__SUM_CLOCKS},11+4+4+6+4+10-5){}dnl
+__{}define({__SUM_BYTES},4*1+2+1){}dnl
+__{}define({__SUM_CLOCKS},11+4+4+6+10-5){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}define({__TMP_CODE},
 __{}__{}__LD_MEM8(HL,$2){}dnl
@@ -2809,10 +2809,10 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}__{}    ldir                ; 2:u*21/16 __INFO})
-__{}format({%36s},;[__SUM_BYTES+2?:format({%-8s},__SUM_CLOCKS+u*21+14?] ))__INFO   fill(u,char)   variant: fill(ptr,?){}dnl
-__{}__TMP_CODE{}dnl
-__{}__ASM_TOKEN_DROP},
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO})
+__{}format({%36s},;[__SUM_BYTES+2?:format({%-8s},__SUM_CLOCKS+u*21+14?] ))__INFO   fill(u,char)   variant: fill(variable,?){}dnl
+__{}__TMP_CODE},
 
 _TYP_SINGLE:__IS_NUM($1),function:1,{
 __{}__def({USE_Fill}){}dnl
@@ -2874,7 +2874,7 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    djnz $-4            ; 2:13/8    __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO},
 __{}__{}{
-__{}__{}                       format({%-13s},;[15:eval(70+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}                       format({%-13s},;[16:eval(74+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld    A, format({%-11s},$2); 3:13      __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    ld   BC, __HEX_HL($1-1)     ; 3:10      __INFO   $1-1
@@ -2882,7 +2882,8 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_DROP})},
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO})},
 __{}{ifelse(dnl
 __{}__{}eval((($1)<=3*256) && ((($1) % 3)==0)),{1},{
 __{}__{}                       format({%-13s},;[13:eval(19+(52*$1)/3)])__INFO  ( addr -- ) u=$1, char=$2
@@ -2912,14 +2913,15 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    djnz $-4            ; 2:13/8    __INFO
 __{}__{}    ld  (HL),C          ; 1:7       __INFO},
 __{}__{}{
-__{}__{}                       format({%-13s},;[13:eval(60+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
+__{}__{}                       format({%-13s},;[14:eval(64+($1)*21)])__INFO  ( addr -- ) u=$1, char=$2
 __{}__{}    ld  (HL),format({%-11s},$2); 2:10      __INFO
 __{}__{}    ld   BC, __HEX_HL($1-1)     ; 3:10      __INFO   $1-1
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}__{}    ldir                ; 2:u*21/16 __INFO{}__ASM_TOKEN_DROP}){}dnl
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
