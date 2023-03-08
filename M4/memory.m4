@@ -2594,20 +2594,24 @@ dnl
 define({__ASM_TOKEN_2DUP_FILL_2DIRTY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(dnl
-__{}_TYP_SINGLE,{small},{
-__{}    ;[17:cca 73+u*26+int(u/256)*24] __INFO  ( addr u char -- )  # small version can be changed with "define({_TYP_SINGLE},{default})"
-__{}    ld    A, L          ; 1:4       __INFO  A  = char
-__{}    pop  HL             ; 1:10      __INFO  HL = addr
-__{}    ld    B, E          ; 1:4       __INFO
-__{}    inc   D             ; 1:4       __INFO
-__{}    inc   E             ; 1:4       __INFO
-__{}    dec   E             ; 1:4       __INFO  u = DE = 0x..00?
-__{}    jr    z, $+6        ; 2:7/12    __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
-__{}    inc  HL             ; 1:6       __INFO
-__{}    djnz $-2            ; 2:13/8    __INFO
-__{}    dec   D             ; 1:4       __INFO
-__{}    jr   nz, $-5        ; 2:7/12    __INFO},
+__{}_TYP_SINGLE,small,{
+__{}define({__SUM_BYTES},eval(1+1+1+1+1+2+1+1+2+1+2+1+1)){}dnl
+__{}define({__SUM_CLOCKS},eval(4+10+4+6+4+7-5+10+10)){}dnl
+__{}define({__TMP_CODE},{
+__{}__{}    ld    A, L          ; 1:4       __INFO  A  = char
+__{}__{}    pop  HL             ; 1:10      __INFO  HL = addr
+__{}__{}    ld    B, E          ; 1:4       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    inc   D             ; 1:4       __INFO
+__{}__{}    jr    z, $+9        ; 2:7/12    __INFO  u = 0xFF01..0x0000 --> exit
+__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    djnz $-2            ; 2:8/13    __INFO
+__{}__{}    dec   D             ; 1:4       __INFO
+__{}__{}    jr   nz, $-5        ; 2:7/12    __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*26+(u>>8)*11] ))__INFO  ( addr u char -- )  {# small version, change: "define({_TYP_SINGLE},{default})"}dnl
+__{}__TMP_CODE{}dnl
+__{}},
 __{}_TYP_SINGLE,function,{__def({USE_Fill3})
 __{}define({__SUM_BYTES},eval(3+1+1)){}dnl
 __{}define({__SUM_CLOCKS},eval(17+10+10)){}dnl
@@ -2615,20 +2619,43 @@ __{}define({__TMP_CODE},{
 __{}__{}    call Fill3          ; 3:17      __INFO   ( address u char -- address+u x )}){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( addr u char -- ) variant function{}dnl
 __{}__TMP_CODE},
+__{}_TYP_SINGLE,fast,{
+__{}define({__SUM_BYTES},eval(1+1+1+2+2+1+1+1+2+2+1+1+1+1+2+1+2+1+1)){}dnl
+__{}define({__SUM_CLOCKS},eval(4+10+6+8+8+4+6+4+7+7+4+7-5+10+10)){}dnl
+__{}define({__TMP_CODE},{
+__{}__{}    ld    A, L          ; 1:4       __INFO  A  = char
+__{}__{}    pop  HL             ; 1:10      __INFO  HL = addr
+__{}__{}    inc  DE             ; 1:6       __INFO  -1->0 0->1 1->2
+__{}__{}    srl   D             ; 2:8       __INFO
+__{}__{}    rr    E             ; 2:8       __INFO   0->0 1->0 2->1
+__{}__{}    ld    B, E          ; 1:4       __INFO
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    inc   D             ; 1:4       __INFO
+__{}__{}    jr    z, $+13       ; 2:7/12    __INFO  u = 0xFFFF..0x0000 --> exit
+__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO  odd u 
+__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    djnz $-4            ; 2:8/13    __INFO
+__{}__{}    dec   D             ; 1:4       __INFO
+__{}__{}    jr   nz, $-7        ; 2:7/12    __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*19.5+(u>>9)*11] ))__INFO  ( addr u char -- )  {# small version, change: "define({_TYP_SINGLE},{default})"}dnl
+__{}__TMP_CODE{}dnl
+__{}},
 __{}{
-__{}                      ;[21:94+u*21] __INFO  ( addr u char -- )  # default version can be changed with "define({_TYP_SINGLE},{small})"
-__{}    ld    A, D          ; 1:4       __INFO
-__{}    or    E             ; 1:4       __INFO
+__{}                      ;[20:90+u*21] __INFO  ( addr u char -- )  # default version can be changed with "define({_TYP_SINGLE},{small})"
 __{}    ld    A, L          ; 1:4       __INFO
 __{}    pop  HL             ; 1:10      __INFO  HL = from
-__{}    jr    z, $+15       ; 2:7/12    __INFO  u = 0?
-__{}    ld  (HL),A          ; 1:7       __INFO
-__{}    dec  DE             ; 1:6       __INFO
-__{}    ld    A, D          ; 1:4       __INFO
-__{}    or    E             ; 1:4       __INFO
-__{}    jr    z, $+9        ; 2:7/12    __INFO  u = 1?
-__{}    ld    C, E          ; 1:4       __INFO
+__{}    dec  DE             ; 1:6       __INFO  0xFF01..0x0000 -> zero flag
 __{}    ld    B, D          ; 1:4       __INFO
+__{}    inc   D             ; 1:4       __INFO
+__{}    jr    z, $+13       ; 2:7/12    __INFO  u = 0xFF01..0x0000?
+__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    or    E             ; 1:4       __INFO
+__{}    jr    z, $+8        ; 2:7/12    __INFO  u = 1?
+__{}    ld    C, E          ; 1:4       __INFO
 __{}    ld    E, L          ; 1:4       __INFO
 __{}    ld    D, H          ; 1:4       __INFO
 __{}    inc  DE             ; 1:6       __INFO  DE = to
@@ -2652,18 +2679,23 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}_TYP_SINGLE,small,{
-__{}    ;[17:cca 66+u*26+int(u/256)*24] __INFO  ( addr u -- )  char = $1  # small version, change: "define({_TYP_SINGLE},{default})"
-__{}    ld    A, format({%-11s},$1); 2:7       __INFO  A = char
-__{}    ld    B, L          ; 1:4       __INFO
-__{}    inc   H             ; 1:4       __INFO
-__{}    inc   L             ; 1:4       __INFO
-__{}    dec   L             ; 1:4       __INFO  u = HL = 0x..00?
-__{}    jr    z, $+6        ; 2:7/12    __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
-__{}    inc  DE             ; 1:6       __INFO
-__{}    djnz $-2            ; 2:13/8    __INFO
-__{}    dec   H             ; 1:4       __INFO
-__{}    jr   nz, $-5        ; 2:7/12    __INFO},
+__{}define({__SUM_BYTES},1+1+1+2+1+1+2+1+2+1+1){}dnl
+__{}define({__SUM_CLOCKS},4+6+4+7-5+10+10){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_R_NUM(__INFO{  A = char},A,$1){}dnl
+__{}__{}{
+__{}__{}    ld    B, L          ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    jr    z, $+9        ; 2:7/12    __INFO  u = 0xFF01..0x0000 --> exit
+__{}__{}    ld  (DE),A          ; 1:7       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    djnz $-2            ; 2:8/13    __INFO
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    jr   nz, $-5        ; 2:7/12    __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*26+(u>>8)*11] ))__INFO  ( addr u -- )  char = $1  {# small version, change: "define({_TYP_SINGLE},{default})"}dnl
+__{}__TMP_CODE{}dnl
+__{}},
 __{}_TYP_SINGLE,function,{__def({USE_Fill2})
 __{}define({__SUM_BYTES},3+1+1){}dnl
 __{}define({__SUM_CLOCKS},17+10+10){}dnl
