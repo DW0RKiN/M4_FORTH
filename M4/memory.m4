@@ -2706,28 +2706,27 @@ __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO  ( addr u -
 __{}__TMP_CODE},
 __{}{
 __{}define({_TMP_INFO},__INFO){}dnl
-__{}define({__SUM_BYTES},4*1+3*1+2+1+2){}dnl
-__{}define({__SUM_CLOCKS},4+4+4+4+6+4+4+7+6-5){}dnl
+__{}define({__SUM_BYTES},5*1+2+1+2){}dnl
+__{}define({__SUM_CLOCKS},5*4+7+6-5){}dnl
 __{}define({__TMP_CODE_END},{dnl
 __{}__{}    ld    C, L          ; 1:4       __INFO
-__{}__{}    ld    B, H          ; 1:4       __INFO
 __{}__{}    ld    L, E          ; 1:4       __INFO
 __{}__{}    ld    H, D          ; 1:4       __INFO  HL = from}dnl
 __{}__{}__LD_MEM8(HL,$1){}dnl
 __{}__{}{
-__{}__{}    dec  BC             ; 1:6       __INFO
 __{}__{}    ld    A, B          ; 1:4       __INFO
 __{}__{}    or    C             ; 1:4       __INFO
 __{}__{}    jr    z, format({%-11s},$+5); 2:7/12    __INFO  u  = 1?
 __{}__{}    inc  DE             ; 1:6       __INFO  DE = to
 __{}__{}    ldir                ; 2:u*21/16 __INFO}){}dnl
 __{}define({__TMP_CODE},{dnl
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    jr    z, format({%-11s},$+}eval(__SUM_BYTES+2){); 2:7/12    __INFO  u  = 0?
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    jr    z, format({%-11s},$+}eval(__SUM_BYTES+2){); 2:7/12    __INFO  u  = 0xFF01..0x0000?
 __{}__{}__TMP_CODE_END}){}dnl
-__{}__add({__SUM_BYTES},1+1+2+1+1){}dnl
-__{}__add({__SUM_CLOCKS},4+4+7+10+10){}dnl
+__{}__add({__SUM_BYTES},1+1+1+2+1+1){}dnl
+__{}__add({__SUM_CLOCKS},6+4+4+7+10+10){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*21] ))__INFO  ( addr u -- )  char = $1  # default version, change: "define({_TYP_SINGLE},{small})"
 __{}__TMP_CODE{}dnl
 __{}}){}dnl
