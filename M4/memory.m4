@@ -2751,6 +2751,171 @@ __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}eval($#>2),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 
+__IS_MEM_REF($1),1,{
+__{}define({__SUM_BYTES},1+2+2+5*1+2+2+4*1+2+1+2){}dnl
+__{}define({__SUM_CLOCKS},6+8+8+4+6+4+4+4+7+7-5){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({__TMP_CODE_A},__LD_R_NUM({__INFO   char},A,$2)){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_R16(BC,$1){}dnl
+__{}__{}{
+__{}__{}    inc  BC             ; 1:6       __INFO  -1->0 0->1 1->2
+__{}__{}    srl   B             ; 2:8       __INFO
+__{}__{}    rr    C             ; 2:8       __INFO   0->0 1->0 2->1
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO   BC = ((u+1)>>1)-1
+__{}__{}    inc   B             ; 1:4       __INFO
+__{}__{}    jr    z, format({%-11s},$+eval(__SUM_BYTES-__BYTES-8)); 2:7/12    __INFO   u = 0xFFFF..0x0000 --> exit
+__{}__{}    ld    C, B          ; 1:4       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO}dnl
+__{}__{}__TMP_CODE_A{}dnl    
+__{}__{}{
+__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO   odd u 
+__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    djnz $-4            ; 2:8/13    __INFO
+__{}__{}    dec   D             ; 1:4       __INFO
+__{}__{}    jr   nz, $-7        ; 2:7/12    __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*19.5+(u>>9)*11] ))__INFO   fill(u,char)   variant: fill(ptr,?){}dnl
+__{}__TMP_CODE},
+
+__IS_MEM_REF($1),1,{
+__{}define({__SUM_BYTES},1+1+1+2+1+1+1+1+2+1){}dnl
+__{}define({__SUM_CLOCKS},4+4+4+7+11+4+4+6-5+10){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({__TMP_CODE_END},
+__{}__{}__LD_MEM8_PLUS_ESCAPE(HL,$2){}dnl
+__{}__{}{
+__{}__{}    dec   B             ; 1:4       __INFO
+__{}__{}    ld    A{,} B          ; 1:4       __INFO
+__{}__{}    or    C             ; 1:4       __INFO
+__{}__{}    jr    z{,} $+9        ; 2:7/12    __INFO   u = 0x0001 -> exit
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    D{,} H          ; 1:4       __INFO
+__{}__{}    ld    E{,} L          ; 1:4       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   DE = to
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_R16(BC,$1){}dnl
+__{}__{}{
+__{}__{}    dec  BC             ; 1:6       __INFO   $1-1
+__{}__{}    inc   B             ; 1:4       __INFO
+__{}__{}    jr    z, format({%-11s},$+}eval(2+__SUM_BYTES-__BYTES){); 2:7/12    __INFO   u = 0xFF01..0x0000 -> exit}dnl
+__{}__{}__TMP_CODE_END){}dnl
+__{}__add({__SUM_BYTES},1+1+2){}dnl
+__{}__add({__SUM_CLOCKS},6+4+7){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*21] ))__INFO   fill(u,char)   variant: fill(ptr,?){}dnl
+__{}__TMP_CODE},
+
+__IS_NAME($1),1,{
+__{}  if (($1)=1){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}__{}                        ;[4:20]     __INFO   fill(u,char)   variant u = ??? = 1 byte
+__{}__{}__{}    ld    A,format({%-12s},$2); 3:13      __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}__{}{
+__{}__{}__{}                        ;[2:10]     __INFO   fill(u,char)   variant u = ??? = 1 byte
+__{}__{}__{}    ld  (HL), format({%-10s},$2); 2:10      __INFO})
+__{}  endif
+__{}  if (($1)=2){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}__{}                        ;[6:33]     __INFO   fill(u,char)   variant u = ??? = 2 byte
+__{}__{}__{}    ld    A,format({%-12s},$2); 3:13      __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}__{}{
+__{}__{}__{}                        ;[5:26]     __INFO   fill(u,char)   variant u = ??? = 2 byte
+__{}__{}__{}    ld  (HL), format({%-10s},$2); 2:10      __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL), format({%-10s},$2); 2:10      __INFO})
+__{}  endif
+__{}  if (($1)=3){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}__{}                        ;[8:46]     __INFO   fill(u,char)   variant u = ??? = 3 byte
+__{}__{}__{}    ld    A,format({%-12s},$2); 3:13      __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}__{}{
+__{}__{}__{}                        ;[7:40]     __INFO   fill(u,char)   variant u = ??? = 3 byte
+__{}__{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO})
+__{}  endif
+__{}  if (($1)=4){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}__{}                       ;[10:59]     __INFO   fill(u,char)   variant u = ??? = 4 byte
+__{}__{}__{}    ld    A,format({%-12s},$2); 3:13      __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}__{}{
+__{}__{}__{}                        ;[9:53]     __INFO   fill(addr,u,char)   variant u = ??? = 4 byte
+__{}__{}__{}    ld    A,format({%-12s},$2); 2:7       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO})
+__{}  endif
+__{}  if (($1)=5){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2),1,{
+__{}__{}__{}                       ;[12:72]     __INFO   fill(u,char)   variant u = ??? = 5 byte
+__{}__{}__{}    ld    A,format({%-12s},$2); 3:13      __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}__{}{
+__{}__{}__{}                       ;[11:66]     __INFO   fill(u,char)   variant u = ??? = 5 byte
+__{}__{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO
+__{}__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}__{}    ld  (HL),A          ; 1:7       __INFO})
+__{}  endif
+__{}__{}  if (($1)>5){}dnl
+__{}define({__SUM_BYTES},4*1+2+1){}dnl
+__{}define({__SUM_CLOCKS},11+4+4+6+10-5){}dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({__TMP_CODE},
+__{}__{}__LD_MEM8(HL,$2){}dnl
+__{}__{}__LD_R16(BC,$1){
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    D, H          ; 1:4       __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   DE = to
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO})
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*21] ))__INFO   fill(u,char)   variant: fill(variable,?){}dnl
+__{}__TMP_CODE
+__{}  endif},
+
 __{}__HEX_HL($1),{0x0000},{},
 
 __{}__HEX_HL($1),{0x0001},{ifelse(__IS_MEM_REF($2),1,{
@@ -2820,41 +2985,6 @@ __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  (HL),A          ; 1:7       __INFO},
-
-__IS_MEM_REF($1),1,{
-__{}  .warning Fail if $1 < 2!{}dnl
-__{}define({__SUM_BYTES},5*1+2+1){}dnl
-__{}define({__SUM_CLOCKS},6+11+4+4+6+10-5){}dnl
-__{}define({_TMP_INFO},__INFO){}dnl
-__{}define({__TMP_CODE},
-__{}__{}__LD_MEM8(HL,$2){}dnl
-__{}__{}__LD_R16(BC,$1){
-__{}__{}    dec  BC             ; 1:6       __INFO   $1-1
-__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}    ld    D, H          ; 1:4       __INFO
-__{}__{}    ld    E, L          ; 1:4       __INFO
-__{}__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}__{}    ldir                ; 2:u*21/16 __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO})
-__{}format({%36s},;[__SUM_BYTES+2?:format({%-8s},__SUM_CLOCKS+u*21+14?] ))__INFO   fill(u,char)   variant: fill(ptr,?){}dnl
-__{}__TMP_CODE},
-
-__IS_NAME($1),1,{
-__{}  .warning Fail if $1 < 2!{}dnl
-__{}define({__SUM_BYTES},4*1+2+1){}dnl
-__{}define({__SUM_CLOCKS},11+4+4+6+10-5){}dnl
-__{}define({_TMP_INFO},__INFO){}dnl
-__{}define({__TMP_CODE},
-__{}__{}__LD_MEM8(HL,$2){}dnl
-__{}__{}__LD_R16(BC,$1){
-__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}    ld    D, H          ; 1:4       __INFO
-__{}__{}    ld    E, L          ; 1:4       __INFO
-__{}__{}    inc  DE             ; 1:6       __INFO   DE = to
-__{}__{}    ldir                ; 2:u*21/16 __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO})
-__{}format({%36s},;[__SUM_BYTES+2?:format({%-8s},__SUM_CLOCKS+u*21+14?] ))__INFO   fill(u,char)   variant: fill(variable,?){}dnl
-__{}__TMP_CODE},
 
 _TYP_SINGLE:__IS_NUM($1),function:1,{
 __{}__def({USE_Fill}){}dnl
@@ -3052,7 +3182,7 @@ __{}format({%36s},;[__SUM_BYTES:__SUM_CLOCKS+21*u/40] )__INFO   fill(addr,u,char
 __{}__TMP_CODE{}dnl
 __{}},
 
-__IS_NUM($2),0,{
+__IS_NAME($2),1,{
 __{}  if (($2)=1){}dnl
 __{}__{}ifelse(__IS_MEM_REF($1):__IS_MEM_REF($3),{1:1},{
 __{}__{}__{}                        ;[8:40]     __INFO   fill(addr,u,char)   variant u = ??? = 1 byte
