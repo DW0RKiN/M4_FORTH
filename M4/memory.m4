@@ -2632,7 +2632,7 @@ __{}__{}    ld    B, E          ; 1:4       __INFO
 __{}__{}    dec  DE             ; 1:6       __INFO
 __{}__{}    inc   D             ; 1:4       __INFO
 __{}__{}    jr    z, $+13       ; 2:7/12    __INFO  u = 0xFFFF..0x0000 --> exit
-__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO  odd u 
+__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO  odd u
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
@@ -2768,9 +2768,9 @@ __{}__{}    inc   B             ; 1:4       __INFO
 __{}__{}    jr    z, format({%-11s},$+eval(__SUM_BYTES-__BYTES-8)); 2:7/12    __INFO   u = 0xFFFF..0x0000 --> exit
 __{}__{}    ld    C, B          ; 1:4       __INFO
 __{}__{}    ld    B, A          ; 1:4       __INFO}dnl
-__{}__{}__TMP_CODE_A{}dnl    
+__{}__{}__TMP_CODE_A{}dnl
 __{}__{}{
-__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO   odd u 
+__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO   odd u
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld  (HL),A          ; 1:7       __INFO
