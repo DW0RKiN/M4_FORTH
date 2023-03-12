@@ -2810,7 +2810,7 @@ __{}__add({__SUM_CLOCKS},6+4+7){}dnl
 __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*21] ))__INFO   fill(u,char)   variant: fill(ptr,?){}dnl
 __{}__TMP_CODE},
 
-__IS_NAME($1),1,{
+__IS_NUM($1),0,{
 __{}  if (($1)=1){}dnl
 __{}__{}ifelse(__IS_MEM_REF($2),1,{
 __{}__{}__{}                        ;[4:20]     __INFO   fill(u,char)   variant u = ??? = 1 byte
@@ -3182,7 +3182,7 @@ __{}format({%36s},;[__SUM_BYTES:__SUM_CLOCKS+21*u/40] )__INFO   fill(addr,u,char
 __{}__TMP_CODE{}dnl
 __{}},
 
-__IS_NAME($2),1,{
+__IS_MEM_REF($2):__IS_NUM($2),0:0,{
 __{}  if (($2)=1){}dnl
 __{}__{}ifelse(__IS_MEM_REF($1):__IS_MEM_REF($3),{1:1},{
 __{}__{}__{}                        ;[8:40]     __INFO   fill(addr,u,char)   variant u = ??? = 1 byte
@@ -3622,7 +3622,7 @@ __{}    ld   format({%-15s},($1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(2+$1){,} BC); 4:20      __INFO
 __{}    ld   format({%-15s},(4+$1){,} BC); 4:20      __INFO},
 
-__IS_NAME($1):_TYP_SINGLE,0:function,{
+eval(__IS_MEM_REF($1)+__IS_NUM($1)):_TYP_SINGLE,1:function,{
 __{}__def({USE_Fill}){}dnl
 __{}define({__TMP_STEP},8){}dnl
 __{}define({__SUM_BYTES},1+3+1){}dnl
@@ -3650,7 +3650,7 @@ __{}__{}    exx                 ; 1:4       __INFO}dnl
 __{}__{}__LD_R16({DE},$1){   addr __SAVE_VALUE_HL($1)..__SAVE_VALUE_HL($1+$2-1)}dnl
 __{}__{}__LD_R_NUM(__INFO{   char},A,$3,DE,$1){}dnl
 __{}__{}ifelse(ifdef({USE_Fill_Over},1,0),1,
-__{}__{}{__LD_R16(BC,256*__TMP_B+__TMP_C,A,$3,DE,$1)   u=B*16-__TMP_SUB=eval(__TMP_B)*16-__TMP_SUB},
+__{}__{}{__LD_R16(BC,256*__TMP_B+__TMP_C,A,$3,DE,$1){   u=B*16-__TMP_SUB=eval(__TMP_B)*16-__TMP_SUB}},
 __{}__{}{__LD_R_NUM(__INFO{   u=B*16-__TMP_SUB=eval(__TMP_B)*16-__TMP_SUB},B,__TMP_B,A,$3,DE,$1)}){}dnl
 __{}__{}{
 __{}__{}    call format({%-15s},Fill+eval(2*__TMP_SUB)); 3:format({%-7s},eval(17+__TMP_FCE_CLOCKS)) __INFO}dnl
@@ -3661,7 +3661,7 @@ __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   fill(addr
 __{}__TMP_CODE{}dnl
 __{}},
 
-__IS_NAME($1):_TYP_SINGLE,1:function,{
+__IS_MEM_REF($1):__IS_NUM($1):_TYP_SINGLE,0:0:function,{
 __{}__def({USE_Fill}){}dnl
 __{}define({__TMP_STEP},8){}dnl
 __{}define({__SUM_BYTES},1+3+1){}dnl
