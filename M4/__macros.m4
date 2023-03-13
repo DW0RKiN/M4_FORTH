@@ -1420,7 +1420,7 @@ __{}__{}__{}__{}define({__BYTES},1){}dnl
 __{}__{}__{}__{}define({__CODE},{
 __{}__{}__{}__{}    ld    $2{{{,}}} $5          ; 1:4       $1   $2 = $5 = $6})})},
 
-__{}__{}$2:__IS_NUM($3):__HEX_L($3),A:1:__HEX_L($4+($6+0)),{dnl #  A += R 
+__{}__{}$2:__IS_NUM($3):__HEX_L($3),A:1:__HEX_L($4+($6+0)),{dnl #  A += R
 __{}__{}__{}ifelse(eval(__CLOCKS>4),{1},{dnl
 __{}__{}__{}__{}define({__CLOCKS},4){}dnl
 __{}__{}__{}__{}define({__BYTES},1){}dnl
@@ -1907,9 +1907,9 @@ __{}__{}define({$0_CODE},{
 __{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}    inc  $1             ; 1:6       __INFO})},
 
-__{}__IS_MEM_REF($2):ifelse(dnl                  
-__{}dnl # nezvladne HL=(0x8000)+1,BC=(0x8000)+2 
-__{}dnl # nezvladne HL=(0x8000)+0,BC=(0x8000)+1 
+__{}__IS_MEM_REF($2):ifelse(dnl
+__{}dnl # nezvladne HL=(0x8000)+1,BC=(0x8000)+2
+__{}dnl # nezvladne HL=(0x8000)+0,BC=(0x8000)+1
 __{}len($3):ifelse($2+1,$4, 1,1+$2, $4,1,$2, $4-1,1,$2, -1+$4,1,0), 2:1,  {define({$0_SAME},$3)1},
 __{}len($5):ifelse($2+1,$6, 1,1+$2, $6,1,$2, $6-1,1,$2, -1+$6,1,0), 2:1,  {define({$0_SAME},$5)1},
 __{}len($7):ifelse($2+1,$8, 1,1+$2, $8,1,$2, $8-1,1,$2, -1+$8,1,0), 2:1,  {define({$0_SAME},$7)1},
@@ -1973,10 +1973,10 @@ __{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}    inc  $1             ; 1:6       __INFO})},
 
-__{}__IS_MEM_REF($2):ifelse(dnl                  
-__{}dnl # nezvladne HL=(0x8000)+1,BC=(0x8000)+3 
-__{}dnl # nezvladne HL=(0x8000)+0,BC=(0x8000)+2 
-__{}dnl # nezvladne ani nahradit 2x inc za add pokud neco obsahuje -2 
+__{}__IS_MEM_REF($2):ifelse(dnl
+__{}dnl # nezvladne HL=(0x8000)+1,BC=(0x8000)+3
+__{}dnl # nezvladne HL=(0x8000)+0,BC=(0x8000)+2
+__{}dnl # nezvladne ani nahradit 2x inc za add pokud neco obsahuje -2
 __{}ifelse($1,HL,0,1):len($3):ifelse($2+2, $4,  1,1+$2+1,  $4,  1,2+$2,    $4,1,0),1:2:1,{define({$0_SAME},$3)1},
 __{}ifelse($1,HL,0,1):len($5):ifelse($2+2, $6,  1,1+$2+1,  $6,  1,2+$2,    $6,1,0),1:2:1,{define({$0_SAME},$5)1},
 __{}ifelse($1,HL,0,1):len($7):ifelse($2+2, $8,  1,1+$2+1,  $8,  1,2+$2,    $8,1,0),1:2:1,{define({$0_SAME},$7)1},
