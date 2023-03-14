@@ -804,10 +804,9 @@ __{}__ADD_TOKEN({__TOKEN_CR},{cr},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CR},{dnl
-__{}define({__INFO},{cr}){}dnl
-
-    ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      cr      with {48K ROM} in, this will print char in A})dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, 0x0D       ; 2:7       __INFO      Pollutes: AF, AF', DE', BC'
+    rst   0x10          ; 1:11      __INFO      with {48K ROM} in, this will print char in A})dnl
 dnl
 dnl
 dnl # ( -- )
