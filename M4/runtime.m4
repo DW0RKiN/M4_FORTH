@@ -2283,6 +2283,415 @@ PRINT_STRING_I:         ;           print_string_i
 dnl
 dnl
 dnl
+ifdef({USE_FONT_5x8},{
+;==============================================================================
+; Print text with 5x8 font
+; entry point is draw_char
+
+MAX_X           equ 51       ; x = 0..50
+MAX_Y           equ 24       ; y = 0..23
+
+set_ink:
+    exx                     ; 1:4
+    ld   BC,(self_attr)     ; 4:20    load origin attr
+
+    xor   C                 ; 1:4
+    and 0x07                ; 2:7  
+    xor   C                 ; 1:4
+
+    jr   clean_spec_exx     ; 2:12
+    
+set_paper:
+    exx                     ; 1:4
+    ld   BC,(self_attr)     ; 4:20    load origin attr
+
+    add   A, A              ; 1:4     2x
+    add   A, A              ; 1:4     4x
+    add   A, A              ; 1:4     8x
+    xor   C                 ; 1:4
+    and 0x38                ; 2:7
+    xor   C                 ; 1:4
+
+    jr   clean_spec_exx     ; 2:12
+    
+set_flash:
+
+    rra                     ; 1:4     carry = flash
+    ld    A,(self_attr)     ; 3:13    load origin attr
+    adc   A, A              ; 1:4
+    rrca                    ; 1:4
+
+    jr   clean_spec_save_A  ; 2:12
+    
+set_bright:
+
+    exx                     ; 1:4
+    ld   BC,(self_attr)     ; 4:20    load origin attr
+    
+    rrca                    ; 1:4
+    rrca                    ; 1:4
+    xor   C                 ; 1:4
+    and 0x40                ; 2:7
+    xor   C                 ; 1:4    
+    
+    jr   clean_spec_exx     ; 2:12
+    
+set_inverse:
+    
+    exx                     ; 1:4
+    ld   BC,(self_attr)     ; 4:20
+
+    ld    A, C              ; 1:4     inverse
+    and  0x38               ; 2:7     A = 00pp p000
+    add   A, A              ; 1:4
+    add   A, A              ; 1:4     A = ppp0 0000
+    xor   C                 ; 1:4
+    and  0xF8               ; 2:7
+    xor   C                 ; 1:4     A = ppp0 0iii
+    rlca                    ; 1:4
+    rlca                    ; 1:4
+    rlca                    ; 1:4     A = 00ii ippp
+    xor   C                 ; 1:4
+    and  0x3F               ; 2:7
+    xor   C                 ; 1:4     A = fbii ippp
+
+clean_spec_exx:
+    exx                     ; 1:4
+clean_spec_save_A:
+    ld  (self_attr),A       ; 3:13    save new attr
+clean_spec:
+    xor   A                 ; 1:4
+clean_set_A:
+    ld  (jump_from-1),A     ; 3:13
+
+    ret                     ; 1:10
+    
+
+set_over:    
+    
+    jr   clean_spec         ; 2:12
+
+set_at:
+
+    ld  (self_cursor+1), A  ; 3:13    save new Y
+    ld    A, $+4-jump_from  ; 2:7
+    jr   clean_set_A        ; 2:12
+
+
+; set_at_y:    
+    
+    ld  (self_cursor), A    ; 3:13    save new X
+    jr   clean_spec         ; 2:12
+
+
+    jr   set_ink            ; 2:12
+    jr   set_paper          ; 2:12
+    jr   set_flash          ; 2:12
+    jr   set_bright         ; 2:12
+    jr   set_inverse        ; 2:12
+    jr   set_over           ; 2:12
+    jr   set_at             ; 2:12
+;    jr   set_tab            ; 2:12
+
+set_tab:
+
+    exx                     ; 1:4
+    ld   BC,(self_cursor)   ; 4:20    load origin cursor
+
+    sub  MAX_X              ; 2:7
+    jr   nc,$-2             ; 2:7/12
+    add   A, MAX_X          ; 2:7     (new x) mod MAX_X
+    cp    C                 ; 1:4
+    ld    C, A              ; 1:4
+    jr   nc, $+3            ; 2:7/12  new x >= (old x+1)
+    inc   B                 ; 1:4
+    
+    ld  (self_cursor),BC    ; 4:20    save new cursor
+    exx                     ; 1:4
+
+    jr   clean_spec         ; 2:12
+
+
+;------------------------------------------------------------------------------
+;  Input: A = char
+; Output: DE = next char
+; Poluttes: AF, AF', DE', BC'
+draw_char:
+    jr   jump_from          ; 2:7/12    self-modifying
+jump_from:
+
+    cp  0x20                ; 2:7
+    jr   nc, print_char     ; 2:7/12
+    
+    sub  ZX_EOL             ; 2:7
+    ret   c                 ; 1:10
+    jr   nz, draw_spec      ; 2:7/12
+
+; eol   
+    push HL                 ; 1:11
+    ld   HL,(self_cursor)   ; 3:16
+    jp   next_line          ; 3:10
+
+draw_spec:
+
+    sub  ZX_INK-ZX_EOL      ; 2:7
+    ret   c                 ; 1:5/11    0x00..0x0F
+    add   A, ZX_INK-ZX_TAB  ; 2:7
+    ret   c                 ; 1:5/11    0x18..0x1F
+    
+    add   A,A               ; 1:4       2x
+    sub   jump_from-set_tab ; 2:7
+    ld  (jump_from-1),A     ; 3:13
+    ret                     ; 1:10
+    
+print_char:
+    push HL                 ; 1:11    uschovat HL na zásobník
+    push DE                 ; 1:11    uschovat DE na zásobník
+    push BC                 ; 1:11    uschovat BC na zásobník    
+    
+    exx                     ; 1:4
+    push HL                 ; 1:11    uschovat HL na zásobník
+
+    ld    BC, FONT_ADR      ; 3:10    adresa, od níž začínají masky znaků
+
+    add   A, A              ; 1:4
+    ld    L, A              ; 1:4     2x
+    ld    H, 0x00           ; 1:4     C je nenulové
+    add  HL, HL             ; 1:11    4x
+    add  HL, BC             ; 1:11    přičíst bázovou adresu masek znaků    
+    exx                     ; 1:4
+
+;# YX -> ATTR
+
+self_cursor     equ     $+1
+    ld   DE, 0x0000         ; 3:10
+    ld    A, E              ; 1:4     X
+    add   A, A              ; 1:4     2*X
+    add   A, A              ; 1:4     4*X
+    add   A, E              ; 1:4     5*X
+    ld    B, A              ; 1:4     save 5*X
+    
+    xor   D                 ; 1:4
+    and 0xF8                ; 2:7
+    xor   D                 ; 1:4
+    rrca                    ; 1:4
+    rrca                    ; 1:4
+    rrca                    ; 1:4
+    ld    L, A              ; 1:4
+
+    ld    A, D              ; 1:4   
+    or  0xC7                ; 2:7     110y y111, reset carry
+    rra                     ; 1:4     0110 yy11, set carry
+    rrca                    ; 1:4     1011 0yy1, set carry
+    ccf                     ; 1:4     reset carry
+    rra                     ; 1:4     0101 10yy
+    ld    H, A              ; 1:4
+
+self_attr       equ $+1
+    ld  (HL),0x38           ; 2:10    uložení atributu znaku
+
+    ld    A, D              ; 1:4
+    and 0x18                ; 2:7
+    or  0x40                ; 2:7
+    ld    H, A              ; 1:4
+    
+    ld    A, B              ; 1:4     load 5*X
+    and 0x07                ; 2:7
+    cpl                     ; 1:4
+    add   A, 0x09           ; 2:7         
+    ld    B, A              ; 2:7     pocitadlo pro pocatecni posun vlevo masky znaku
+    exx                     ; 1:4
+    ld    C, A              ; 1:4
+    exx                     ; 1:4
+    ex   DE, HL             ; 1:4
+    ld   HL, 0x00F0         ; 3:10
+    add  HL, HL             ; 1:11    pocatecni posun masky
+    djnz  $-1               ; 2:8/13        
+    ex   DE, HL             ; 1:4
+
+    ld    C, 4              ; 2:7        
+loop_c:
+    exx                     ; 1:4
+    ld    A,(HL)            ; 1:7
+    inc  HL                 ; 1:6
+    ld    B, C              ; 1:4
+    rlca                    ; 1:4
+    djnz  $-1               ; 2:8/13
+    ld    B, A              ; 1:4
+    exx                     ; 1:4
+    ld    B, 2              ; 2:7        
+loop_b:
+    xor (HL)                ; 1:7
+    and   D                 ; 1:4
+    xor (HL)                ; 1:7
+    ld  (HL),A              ; 1:4     ulozeni jednoho bajtu z masky
+
+    exx                     ; 1:4
+    ld    A, B              ; 1:4     načtení druhe poloviny "bajtu" z masky
+    exx                     ; 1:4
+
+    inc   L                 ; 1:4
+    xor (HL)                ; 1:7
+    and   E                 ; 1:4
+    xor (HL)                ; 1:7
+    ld  (HL),A              ; 1:4     ulozeni jednoho bajtu z masky
+    dec   L                 ; 1:4
+    inc   H                 ; 1:4
+
+    exx                     ; 1:4
+    ld    A, B              ; 1:4     načtení jednoho bajtu z masky
+    rlca                    ; 1:4
+    rlca                    ; 1:4
+    rlca                    ; 1:4
+    rlca                    ; 1:4
+    ld    B, A              ; 1:4
+    exx                     ; 1:4
+
+;     halt
+    
+    djnz loop_b             ; 2:8/13
+    
+    dec   C                 ; 2:7        
+    jr   nz, loop_c         ; 2/7/12
+    
+    exx                     ; 1:4
+    pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
+    exx                     ; 1:4
+
+    pop  BC                 ; 1:10    obnovit obsah BC ze zásobníku
+    pop  DE                 ; 1:10    obnovit obsah DE ze zásobníku    
+;   fall to next cursor    
+
+
+    ld   HL,(self_cursor)   ; 3:16
+; Input: HL = YX
+; Output: HL = cursor = next cursor
+next_cursor:
+    inc   L                 ; 1:4     0..50 +1 = 00..51
+    ld    A, -MAX_X         ; 2:7
+    add   A, L              ; 1:4
+    jr   nz, next_exit      ; 2:7/12
+; Input: HL = YX
+; Output: H = Y+1, X=0
+next_line:
+    ld    L, 0x00           ; 2:7     X=0
+    inc   H                 ; 1:4
+    ld    A, -MAX_Y         ; 2:7
+    add   A, H              ; 1:4
+    jr   nz, $+3            ; 2:7/12
+    ld    H, A              ; 1:4     Y=0
+next_exit:
+    ld  (self_cursor),HL    ; 3:16
+    pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
+    ret                     ; 1:10
+
+FONT_ADR    equ     FONT_5x8-32*4
+FONT_5x8:
+    db %00000000,%00000000,%00000000,%00000000 ; 0x20 space
+    db %00000010,%00100010,%00100000,%00100000 ; 0x21 !
+    db %00000101,%01010000,%00000000,%00000000 ; 0x22 "
+    db %00000000,%01011111,%01011111,%01010000 ; 0x23 #
+    db %00000010,%01110110,%00110111,%00100000 ; 0x24 $
+    db %00001100,%11010010,%01001011,%00110000 ; 0x25 %
+    db %00000000,%11101010,%01011010,%11010000 ; 0x26 &
+    db %00000011,%00010010,%00000000,%00000000 ; 0x27 '    
+    db %00000010,%01000100,%01000100,%00100000 ; 0x28 (
+    db %00000100,%00100010,%00100010,%01000000 ; 0x29 )
+    
+    db %00000000,%00001010,%01001010,%00000000 ; 0x2A *
+    db %00000000,%00000100,%11100100,%00000000 ; 0x2B +
+    db %00000000,%00000000,%00000010,%00100100 ; 0x2C ,
+    db %00000000,%00000000,%11100000,%00000000 ; 0x2D -
+    db %00000000,%00000000,%00000000,%01000000 ; 0x2E .
+    db %00000000,%00010010,%01001000,%00000000 ; 0x2F /
+    
+    db %00000110,%10011011,%11011001,%01100000 ; 0x30 0
+    db %00000010,%01100010,%00100010,%01110000 ; 0x31 1
+    db %00000110,%10010001,%01101000,%11110000 ; 0x32 2
+    db %00000110,%10010010,%00011001,%01100000 ; 0x33 3
+    db %00000010,%01101010,%11110010,%00100000 ; 0x34 4
+    db %00001111,%10001110,%00011001,%01100000 ; 0x35 5
+    db %00000110,%10001110,%10011001,%01100000 ; 0x36 6
+    db %00001111,%00010010,%01000100,%01000000 ; 0x37 7
+    db %00000110,%10010110,%10011001,%01100000 ; 0x38 8
+    db %00000110,%10011001,%01110001,%01100000 ; 0x39 9
+    db %00000000,%00000010,%00000010,%00000000 ; 0x3A :
+    db %00000000,%00000010,%00000010,%01000000 ; 0x3B ;
+    db %00000000,%00010010,%01000010,%00010000 ; 0x3C <
+    db %00000000,%00000111,%00000111,%00000000 ; 0x3D =
+    db %00000000,%01000010,%00010010,%01000000 ; 0x3E >
+    db %00001110,%00010010,%01000000,%01000000 ; 0x3F ?
+    
+    db %00000000,%01101111,%10111000,%01100000 ; 0x40 @
+    db %00000110,%10011001,%11111001,%10010000 ; 0x41 A
+    db %00001110,%10011110,%10011001,%11100000 ; 0x42 B
+    db %00000110,%10011000,%10001001,%01100000 ; 0x43 C
+    db %00001110,%10011001,%10011001,%11100000 ; 0x44 D
+    db %00001111,%10001110,%10001000,%11110000 ; 0x45 E
+    db %00001111,%10001110,%10001000,%10000000 ; 0x46 F
+    db %00000110,%10011000,%10111001,%01110000 ; 0x47 G
+    db %00001001,%10011111,%10011001,%10010000 ; 0x48 H
+    db %00000111,%00100010,%00100010,%01110000 ; 0x49 {I}
+    db %00000111,%00010001,%00011001,%01100000 ; 0x4A {J}
+    db %00001001,%10101100,%10101001,%10010000 ; 0x4B {K}
+    db %00001000,%10001000,%10001000,%11110000 ; 0x4C L
+    db %00001001,%11111001,%10011001,%10010000 ; 0x4D M
+    db %00001001,%11011011,%10011001,%10010000 ; 0x4E N
+    db %00000110,%10011001,%10011001,%01100000 ; 0x4F O
+    
+    db %00001110,%10011001,%11101000,%10000000 ; 0x50 P
+    db %00000110,%10011001,%10011010,%01010000 ; 0x51 Q
+    db %00001110,%10011001,%11101001,%10010000 ; 0x52 R
+    db %00000111,%10000110,%00010001,%11100000 ; 0x53 S
+    db %00001111,%00100010,%00100010,%00100000 ; 0x54 T
+    db %00001001,%10011001,%10011001,%01100000 ; 0x55 U
+    db %00001001,%10011001,%10010101,%00100000 ; 0x56 V
+    db %00001001,%10011001,%10011111,%10010000 ; 0x57 W
+    db %00001001,%10010110,%10011001,%10010000 ; 0x58 X
+    db %00001001,%10010101,%00100010,%00100000 ; 0x59 Y
+    db %00001111,%00010010,%01001000,%11110000 ; 0x5A Z
+    db %00000111,%01000100,%01000100,%01110000 ; 0x5B [
+    db %00000000,%10000100,%00100001,%00000000 ; 0x5C \
+    db %00001110,%00100010,%00100010,%11100000 ; 0x5D ]
+    db %00000010,%01010000,%00000000,%00000000 ; 0x5E ^
+    db %00000000,%00000000,%00000000,%11110000 ; 0x5F _
+    
+    db %00000011,%01001110,%01000100,%11110000 ; 0x60 ` GBP
+    db %00000000,%01100001,%01111001,%01110000 ; 0x61 a
+    db %00001000,%11101001,%10011001,%11100000 ; 0x62 b
+    db %00000000,%01101001,%10001001,%01100000 ; 0x63 c
+    db %00000001,%01111001,%10011001,%01110000 ; 0x64 d
+    db %00000000,%01101001,%11111000,%01110000 ; 0x65 e
+    db %00110100,%11100100,%01000100,%01000000 ; 0x66 f
+    db %00000000,%01111001,%10010111,%00010110 ; 0x67 g
+    db %00001000,%11101001,%10011001,%10010000 ; 0x68 h
+    db %00100000,%01100010,%00100010,%01110000 ; 0x69 i
+    db %00010000,%00110001,%00010001,%10010110 ; 0x6A j
+    db %00001000,%10011010,%11001010,%10010000 ; 0x6B k
+    db %00001100,%01000100,%01000100,%11100000 ; 0x6C l
+    db %00000000,%11001011,%10111011,%10010000 ; 0x6D m
+    db %00000000,%10101101,%10011001,%10010000 ; 0x6E n
+    db %00000000,%01101001,%10011001,%01100000 ; 0x6F o
+   
+    db %00000000,%11101001,%10011001,%11101000 ; 0x70 p
+    db %00000000,%01111001,%10011001,%01110001 ; 0x71 q
+    db %00000000,%10101101,%10001000,%10000000 ; 0x72 r
+    db %00000000,%01111000,%01100001,%11100000 ; 0x73 s
+    db %00000100,%11100100,%01000100,%00110000 ; 0x74 t
+    db %00000000,%10011001,%10011001,%01100000 ; 0x75 u
+    db %00000000,%10011001,%10010101,%00100000 ; 0x76 v
+    db %00000000,%10011001,%10011111,%10010000 ; 0x77 w
+    db %00000000,%10011001,%01101001,%10010000 ; 0x78 x
+    db %00000000,%10011001,%10010111,%00010110 ; 0x79 y
+    db %00000000,%11110010,%01001000,%11110000 ; 0x7A z
+    db %00010010,%00100100,%00100010,%00010000 ; 0x7B {
+    db %01000100,%01000100,%01000100,%01000000 ; 0x7C |
+    db %10000100,%01000010,%01000100,%10000000 ; 0x7D }
+    db %00000101,%10100000,%00000000,%00000000 ; 0x7E ~
+    db %00000110,%10011011,%10111001,%01100000 ; 0x7F (c)}){}dnl
+dnl
+dnl
+dnl
 ifdef({__STRING_NUM_STACK},{
 
 STRING_SECTION:{}PRINT_STRING_STACK
