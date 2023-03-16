@@ -806,7 +806,11 @@ dnl
 define({__ASM_TOKEN_CR},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    A, 0x0D       ; 2:7       __INFO      Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      __INFO      with {48K ROM} in, this will print char in A})dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      __INFO},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+})dnl
 dnl
 dnl
 dnl # ( -- )
@@ -822,7 +826,10 @@ eval($#>1),1,{
 __{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write push({{','}}) emit},
 {define({__INFO},__COMPILE_INFO)
     ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}})dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      __INFO},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}})})dnl
 }){}dnl
 dnl
 dnl
@@ -848,7 +855,11 @@ dnl
 define({__ASM_TOKEN_DUP_EMIT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    A, L          ; 1:4       __INFO    Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      __INFO    with {48K ROM} in, this will print char in A})dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      __INFO},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+})dnl
 dnl
 dnl
 dnl # ( addr -- addr )
@@ -861,7 +872,11 @@ define({__ASM_TOKEN_DUP_FETCH_EMIT},{dnl
 __{}define({__INFO},{dup fetch_emit}){}dnl
 
     ld    A,(HL)        ; 1:7       dup @ emit    Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      dup @ emit    with {48K ROM} in, this will print char in A})dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      __INFO},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+})dnl
 dnl
 dnl
 dnl # ( -- )
@@ -873,7 +888,11 @@ dnl
 define({__ASM_TOKEN_SPACE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    A, 0x20       ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      __INFO   with {48K ROM} in, this will print space})dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      __INFO},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+})dnl
 dnl
 dnl
 dnl # dup space
@@ -903,7 +922,10 @@ eval($#>1),1,{
 __{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{','}})},
 {define({__INFO},__COMPILE_INFO)
     ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      __INFO},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}})}){}dnl
 }){}dnl
 dnl
 dnl

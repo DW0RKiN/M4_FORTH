@@ -158,7 +158,10 @@ ifdef({USE_PRT_SP_HEX_U32},{__def({USE_PRT_HEX_U32})
 ; Pollutes: A
 PRT_SP_HEX_U32:         ;           prt_sp_hex_u32
     ld    A, ' '        ; 2:7       prt_sp_hex_u32   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_sp_hex_u32   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_sp_hex_u32},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_sp_hex_u32   putchar(reg A) with {ZX 48K ROM}})
     ; fall to prt_hex_u32}){}dnl
 ifdef({USE_PRT_HEX_U32},{__def({USE_PRT_HEX_U16})
 ;------------------------------------------------------------------------------
@@ -182,7 +185,10 @@ ifdef({USE_PRT_SP_HEX_U16},{__def({USE_PRT_HEX_U16})
 ; Pollutes: A
 PRT_SP_HEX_U16:         ;           prt_sp_hex_u16
     ld    A, ' '        ; 2:7       prt_sp_hex_u16   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_sp_hex_u16   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_sp_hex_u16},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_sp_hex_u16   putchar(reg A) with {ZX 48K ROM}})
     ; fall to prt_hex_u16}){}dnl
 ifdef({USE_PRT_HEX_U16},{__def({USE_PRT_HEX_A})
 ;------------------------------------------------------------------------------
@@ -218,7 +224,10 @@ PRT_HEX_NIBBLE:         ;           prt_hex_nibble
     daa                 ; 1:4       prt_hex_nibble   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
     add   A, $A0        ; 2:7       prt_hex_nibble   $F0..$F9, $100..$105
     adc   A, $40        ; 2:7       prt_hex_nibble   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
-    rst   0x10          ; 1:11      prt_hex_nibble   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_hex_nibble},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_hex_nibble   putchar(reg A) with {ZX 48K ROM}})
     ret                 ; 1:10}){}dnl
 dnl
 dnl
@@ -326,7 +335,11 @@ ifdef({USE_PRT_SP_S32},{__def({USE_PRT_S32})
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
 PRT_SP_S32:             ;           prt_sp_s32
     ld    A, ' '        ; 2:7       prt_sp_s32   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_sp_s32   putchar(reg A) with {ZX 48K ROM}
+    
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_sp_s32},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_sp_s32   putchar(reg A) with {ZX 48K ROM}})
     ; fall to prt_s32}){}dnl
 ifdef({USE_PRT_S32},{__def({USE_DNEGATE}){}__def({USE_PRT_U32})
 ;------------------------------------------------------------------------------
@@ -339,7 +352,10 @@ PRT_S32:                ;           prt_s32
     add   A, A          ; 1:4       prt_s32
     jr   nc, PRT_U32    ; 2:7/12    prt_s32
     ld    A, '-'        ; 2:7       prt_s32   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_s32   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_s32},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_s32   putchar(reg A) with {ZX 48K ROM}})
     call NEGATE_32      ; 3:17      prt_s32
 __{}ifdef({USE_PRT_SP_U32},{dnl
 __{}    jr   PRT_U32        ; 2:12      prt_s32},
@@ -354,7 +370,10 @@ ifdef({USE_PRT_SP_U32},{__def({USE_PRT_U32})
 ; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
 PRT_SP_U32:             ;           prt_sp_u32
     ld    A, ' '        ; 2:7       prt_sp_u32   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_sp_u32   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_sp_u32},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_sp_u32   putchar(reg A) with {ZX 48K ROM}})
     ; fall to prt_u32}){}dnl
 ifdef({USE_PRT_U32},{
 ;------------------------------------------------------------------------------
@@ -420,7 +439,10 @@ BIN32_DEC:              ;           bin32_dec
     ret   z             ; 1:5/11    bin32_dec   does not print leading zeros
 BIN32_DEC_CHAR:         ;           bin32_dec
     or   '0'            ; 2:7       bin32_dec   1..9 --> '1'..'9', unchanged '0'..'9'
-    rst  0x10           ; 1:11      bin32_dec   putchar with {ZX 48K ROM} in, this will print char in A
+    __{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      bin32_dec},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      bin32_dec   putchar(reg A) with {ZX 48K ROM}})
     ld    A, '0'        ; 2:7       bin32_dec   reset A to '0'
     ret                 ; 1:10      bin32_dec}){}dnl
 dnl
@@ -432,7 +454,10 @@ ifdef({USE_PRT_SP_S16},{__def({USE_PRT_S16})
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
 PRT_SP_S16:             ;           prt_sp_s16
     ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_sp_s16},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with {ZX 48K ROM}})
     ; fall to prt_s16}){}dnl
 ifdef({USE_PRT_S16},{__def({USE_PRT_U16})
 ;------------------------------------------------------------------------------
@@ -444,7 +469,10 @@ PRT_S16:                ;           prt_s16
     add   A, A          ; 1:4       prt_s16
     jr   nc, PRT_U16    ; 2:7/12    prt_s16
     ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_s16},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with {ZX 48K ROM}})
     xor   A             ; 1:4       prt_s16   neg
     sub   L             ; 1:4       prt_s16   neg
     ld    L, A          ; 1:4       prt_s16   neg
@@ -464,7 +492,10 @@ ifdef({USE_PRT_SP_U16},{__def({USE_PRT_U16})
 ; Pollutes: AF, BC, HL <- DE, DE <- (SP)
 PRT_SP_U16:             ;           prt_sp_u16
     ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_sp_u16   putchar with {ZX 48K ROM} in, this will print char in A
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_sp_u16},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_sp_u16   putchar(reg A) with {ZX 48K ROM}})  
     ; fall to prt_u16}){}dnl
 ifdef({USE_PRT_U16},{
 ;------------------------------------------------------------------------------
@@ -499,7 +530,10 @@ BIN16_DEC:              ;           bin16_dec
     ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
 BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
-    rst   0x10          ; 1:11      bin16_dec   putchar with {ZX 48K ROM} in, this will print char in A
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      bin16_dec},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      bin16_dec   putchar(reg A) with {ZX 48K ROM}})  
     ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec}){}dnl
 dnl
@@ -522,8 +556,11 @@ PRT_P:                  ;           prt_p
     ld    A,(HL)        ; 1:7       prt_p
     add   A, A          ; 1:4       prt_p
     jr   nc, $+14       ; 2:7/12    prt_p
-    ld    A, '-'        ; 2:7       prt_sp_pu   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_sp_pu   putchar with {ZX 48K ROM} in, this will print char in A
+    ld    A, '-'        ; 2:7       prt_p   putchar Pollutes: AF, AF', DE', BC'
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_p},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_p   putchar(reg A) with {ZX 48K ROM}})
     ld    L, E          ; 1:4       prt_p
     xor   A             ; 1:4       prt_p   clear carry
     ld    C, A          ; 1:4       prt_p
@@ -546,7 +583,10 @@ ifdef({USE_PRT_SP_PU},{__def({USE_PRT_PU})
 PRT_SP_PU:              ;           prt_sp_pu
     push AF             ; 1:11      prt_sp_pu
     ld    A, ' '        ; 2:7       prt_sp_pu   putchar Pollutes: AF, AF', DE', BC'
-    rst   0x10          ; 1:11      prt_sp_pu   putchar with {ZX 48K ROM} in, this will print char in A
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_sp_pu},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_sp_pu   putchar(reg A) with {ZX 48K ROM}})
     pop  AF             ; 1:10      prt_sp_pu
     ; fall to prt_pu}){}dnl
 dnl
@@ -618,9 +658,14 @@ ifdef({USE_PRT_HEX_NIBBLE},{dnl
     daa                 ; 1:4       prt_pu   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
     add   A, $A0        ; 2:7       prt_pu   $F0..$F9, $100..$105
     adc   A, $40        ; 2:7       prt_pu   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
-    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
-    pop  AF             ; 1:10      prt_pu
-    jr    c, $-10       ; 2:7/12    prt_pu})
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_pu
+__{}    pop  AF             ; 1:10      prt_pu
+__{}    jr    c, $-12       ; 2:7/12    prt_pu},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
+__{}    pop  AF             ; 1:10      prt_pu
+__{}    jr    c, $-10       ; 2:7/12    prt_pu})})
     ret                 ; 1:10      prt_pu
 }){}dnl
 dnl
@@ -682,8 +727,12 @@ __{}    call PUDM           ; 3:17      prt_pu})
     ex   DE, HL         ; 1:4       prt_pu
     ret  nc             ; 1:5/11    prt_pu
     add   A, $30        ; 2:7       prt_pu   '0'..'9'
-    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
-    jr   $-6            ; 2:7/12    prt_pu}){}dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      prt_pu
+__{}    jr    c, $-8        ; 2:7/12    prt_pu},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      prt_pu   putchar(reg A) with {ZX 48K ROM}
+__{}    jr    c, $-6        ; 2:7/12    prt_pu})}){}dnl
 dnl
 dnl
 dnl
@@ -2147,18 +2196,28 @@ READSTRING2:
     dec  BC             ; 1:6       readstring   loaded--
     inc  HL             ; 1:6       readstring   space++
     ld    A, 0x08       ; 2:7       readstring
-    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      readstring},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}})   
     ld    A, 0x20       ; 2:7       readstring
-    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      readstring},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}})   
     ld    A, 0x08       ; 2:7       readstring
-    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      readstring},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}})   
     jr   READSTRING2    ; 2:12      readstring
 READSTRING3:
-
     cp  0x0D            ; 2:7       readstring   enter?
     jr    z, READSTRING4; 2:7/12    readstring
-
-    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      readstring},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}})   
     inc  DE             ; 1:6       readstring   addr++
     inc  BC             ; 1:6       readstring   loaded++
     dec  HL             ; 1:6       readstring   space--
@@ -2237,21 +2296,35 @@ ifdef({USE_TYPE_Z},{define({USE_PRINT_Z},{})
 PRINT_TYPE_Z:           ;           print_type_z
     ld    B, H          ; 1:4       print_type_z
     ld    C, L          ; 1:4       print_type_z   BC = addr stringZ
-    db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
-    ; fall to PRINT_STRING_Z}){}dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    jr   $+5            ; 2:7/12    print_type_z},
+__{}{dnl
+__{}    db   0x3E           ; 1:7       print_type_z   ld    A, 0xD7
+__{}    ; fall to PRINT_STRING_Z}){}dnl
+}){}dnl
 dnl
 ifdef({USE_PRINT_Z},{
 ;------------------------------------------------------------------------------
 ; Print C-style stringZ
 ; In: BC = addr
 ; Out: BC = addr zero + 1
-    rst  0x10           ; 1:11      print_string_z putchar with {ZX 48K ROM} in, this will print char in A
-PRINT_STRING_Z:         ;           print_string_z
-    ld    A,(BC)        ; 1:7       print_string_z
-    inc  BC             ; 1:6       print_string_z
-    or    A             ; 1:4       print_string_z
-    jp   nz, $-4        ; 3:10      print_string_z
-    ret                 ; 1:10      print_string_z}){}dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      print_string_z
+__{}PRINT_STRING_Z:         ;           print_string_z
+__{}    ld    A,(BC)        ; 1:7       print_string_z
+__{}    inc  BC             ; 1:6       print_string_z
+__{}    or    A             ; 1:4       print_string_z
+__{}    jp   nz, $-6        ; 3:10      print_string_z
+__{}    ret                 ; 1:10      print_string_z},
+__{}{dnl
+__{}    rst  0x10           ; 1:11      print_string_z putchar with {ZX 48K ROM} in, this will print char in A
+__{}PRINT_STRING_Z:         ;           print_string_z
+__{}    ld    A,(BC)        ; 1:7       print_string_z
+__{}    inc  BC             ; 1:6       print_string_z
+__{}    or    A             ; 1:4       print_string_z
+__{}    jp   nz, $-4        ; 3:10      print_string_z
+__{}    ret                 ; 1:10      print_string_z}){}dnl
+}){}dnl   
 dnl
 dnl
 dnl
@@ -2263,23 +2336,39 @@ ifdef({USE_TYPE_I},{__def({USE_PRINT_I})
 PRINT_TYPE_I:           ;           print_type_i
     ld    B, H          ; 1:4       print_type_i
     ld    C, L          ; 1:4       print_type_i   BC = addr string_imsb
-    db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
-    ; fall to PRINT_STRING_I}){}dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    jr   $+5            ; 2:7/12    print_type_i},
+__{}{dnl
+__{}    db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
+__{}    ; fall to PRINT_STRING_Z}){}dnl
+}){}dnl
 dnl
 ifdef({USE_PRINT_I},{
 ;------------------------------------------------------------------------------
 ; Print string ending with inverted most significant bit
 ; In: BC = addr string_imsb
 ; Out: BC = addr last_char + 1
-    rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
-PRINT_STRING_I:         ;           print_string_i
-    ld    A,(BC)        ; 1:7       print_string_i
-    inc  BC             ; 1:6       print_string_i
-    or    A             ; 1:4       print_string_i
-    jp    p, $-4        ; 3:10      print_string_i
-    and  0x7f           ; 2:7       print_string_i
-    rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
-    ret                 ; 1:10      print_string_i}){}dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      print_string_i
+__{}PRINT_STRING_I:         ;           print_string_i
+__{}    ld    A,(BC)        ; 1:7       print_string_i
+__{}    inc  BC             ; 1:6       print_string_i
+__{}    or    A             ; 1:4       print_string_i
+__{}    jp    p, $-6        ; 3:10      print_string_i
+__{}    and  0x7f           ; 2:7       print_string_i
+__{}    call  draw_char     ; 3:17      print_string_i
+__{}    ret                 ; 1:10      print_string_i},
+__{}{dnl
+__{}    rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
+__{}PRINT_STRING_I:         ;           print_string_i
+__{}    ld    A,(BC)        ; 1:7       print_string_i
+__{}    inc  BC             ; 1:6       print_string_i
+__{}    or    A             ; 1:4       print_string_i
+__{}    jp    p, $-4        ; 3:10      print_string_i
+__{}    and  0x7f           ; 2:7       print_string_i
+__{}    rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
+__{}    ret                 ; 1:10      print_string_i}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2422,21 +2511,34 @@ jump_from:
 
     cp  0x20                ; 2:7
     jr   nc, print_char     ; 2:7/12
-    
-    sub  ZX_EOL             ; 2:7
+
+    sub  0x08               ; 2:7       left
+    ret   c                 ; 1:10
+    jr   nz, check_eol      ; 2:7/12
+
+    push HL                 ; 1:11
+    ld   HL,(self_cursor)   ; 3:16
+    ld    A, L              ; 1:4
+    dec  HL                 ; 1:6
+    or    A                 ; 1:4
+    jp   nz, next_exit      ; 3:10
+    ld    L, MAX_X-1        ; 2:7
+    jp   next_exit          ; 3:10
+
+check_eol:
+    sub  0x05               ; 2:7       eol
     ret   c                 ; 1:10
     jr   nz, draw_spec      ; 2:7/12
 
-; eol   
     push HL                 ; 1:11
     ld   HL,(self_cursor)   ; 3:16
     jp   next_line          ; 3:10
 
 draw_spec:
 
-    sub  ZX_INK-ZX_EOL      ; 2:7
+    sub  0x03               ; 2:7       ZX_INK-ZX_EOL
     ret   c                 ; 1:5/11    0x00..0x0F
-    add   A, ZX_INK-ZX_TAB  ; 2:7
+    add   A, 0xF9           ; 2:7       ZX_INK-ZX_TAB
     ret   c                 ; 1:5/11    0x18..0x1F
     
     add   A,A               ; 1:4       2x

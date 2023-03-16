@@ -13,6 +13,26 @@ __{}define({__INFO},__COMPILE_INFO)
     ld  (Stop+1), SP    ; 4:20      __INFO   storing the original SP value when the "bye" word is used
     ld    L, 0x1A       ; 2:7       __INFO   Upper screen
     call 0x1605         ; 3:17      __INFO   Open channel{}dnl
+__{}ifdef({USE_FONT_5x8},{
+__{}  if 0
+__{}    ld   HL, 0x0000     ; 3:10      __INFO
+__{}    ld (self_cursor),HL ; 3:16      __INFO
+__{}  else
+__{}    ld   HL, 0x1821     ; 3:10      __INFO
+__{}    ld   DE,(0x5C88)    ; 4:20      __INFO
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}    ld    A, L          ; 1:4       __INFO   x
+__{}    add   A, A          ; 1:4       __INFO   2*x
+__{}    inc   A             ; 1:4       __INFO   2*2+1
+__{}    add   A, A          ; 1:4       __INFO   4*x+2
+__{}    add   A, A          ; 1:4       __INFO   8*x+4
+__{}     ld   L, 0xFF       ; 2:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    sub 0x05            ; 2:7       __INFO
+__{}    jr   nc, $-3        ; 2:7/12    __INFO
+__{}    ld (self_cursor),HL ; 3:16      __INFO
+__{}  endif}){}dnl
 __{}ifelse($1,{},{
 __{}__{}  .warning "Missing value for return address stack. The init() macro has no parameter!"
 __{}__{}    ld   HL, 60000      ; 3:10      __INFO   Return address stack},
@@ -35,7 +55,32 @@ dnl
 define({__ASM_TOKEN_STOP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
 Stop:                   ;           __INFO
-    ld   SP, 0x0000     ; 3:10      __INFO   restoring the original SP value when the "bye" word is used
+    ld   SP, 0x0000     ; 3:10      __INFO   restoring the original SP value when the "bye" word is used{}dnl
+__{}ifdef({USE_FONT_5x8},{
+__{}  if 0
+__{}    ld    A, 0x16       ; 2:7       __INFO   at y x
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
+__{}    ld A,(self_cursor+1); 3:13      __INFO
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
+__{}    xor   A             ; 1:4       __INFO
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
+__{}  else
+__{}    ld   HL,(self_cursor); 3:16
+__{}    ld    A, 0x16       ; 2:7       __INFO   at y x
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
+__{}    ld    A, L          ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO   2x
+__{}    add   A, A          ; 1:4       __INFO   4x
+__{}    add   A, L          ; 1:4       __INFO   5x
+__{}    add   A, 0x07       ; 1:4       __INFO
+__{}    rrca                ; 1:4       __INFO
+__{}    rrca                ; 1:4       __INFO
+__{}    rrca                ; 1:4       __INFO
+__{}    and   0x1F          ; 2:7       __INFO
+__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
+__{}  endif})
     ld   HL, 0x2758     ; 3:10      __INFO
     exx                 ; 1:4       __INFO
     ret                 ; 1:10      __INFO
