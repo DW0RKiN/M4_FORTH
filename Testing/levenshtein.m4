@@ -1,7 +1,11 @@
 ;vvvv
 include(`../M4/FIRST.M4')dnl
 ;^^^^
-ORG 0x8000
+    ORG 0x8000
+ZX_AT           equ 0x16     ; zx_constant   Y,X
+
+
+    define({USE_FONT_5x8})
 
     INIT(60000)
     CONSTANT(max_len,25)
@@ -11,7 +15,7 @@ ORG 0x8000
     CREATE(word_2) PUSH_ALLOT(max_len)
     CREATE(table)
     
-    PRINT({"The Levenshtein distance between ", 0x22})
+    PRINT_I({"The Levenshtein distance between ", 0x22})
     PUSH2(word_1, max_len)
     ACCEPT_Z
     
@@ -36,14 +40,14 @@ ORG 0x8000
     SWAP
     _1ADD
     
-    PRINT({0x22, " and ", 0x22})
+    PRINT_I({0x22, " and ", 0x22})
     PUSH2(word_2, max_len)
     ACCEPT_Z
     
     _1ADD
     DUP_PUSH_CSTORE(len_2)
     
-    PRINT({0x22, " is "})
+    PRINT_I({0x22, " is "})
         
     ;# ( table 1 word_2_len )
     
@@ -117,8 +121,8 @@ ORG 0x8000
     ;#SCALL(view_table)
     ;#CR
 
-    UDOTZXROM
-    PRINT({".", 0x0D})
+    UDOT
+    PRINT_I({".", 0x0D})
     
     STOP
     
