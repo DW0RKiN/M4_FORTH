@@ -2896,7 +2896,7 @@ __{}__ADD_TOKEN({__TOKEN_4DUP_DUEQ_IF},{4dup_dueq_if},$@){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DUEQ_IF},{dnl
 __{}define({__INFO},{4dup_dueq_if}){}dnl
-_4DUP_DEQ_IF}){}dnl
+__{}__ASM_TOKEN_4DUP_DEQ_IF}){}dnl
 dnl
 dnl
 dnl 4dup Du<> if
@@ -2906,7 +2906,7 @@ __{}__ADD_TOKEN({__TOKEN_4DUP_DUNE_IF},{4dup_dune_if},$@){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DUNE_IF},{dnl
 __{}define({__INFO},{4dup_dune_if}){}dnl
-_4DUP_DNE_IF}){}dnl
+__{}__ASM_TOKEN_4DUP_DNE_IF}){}dnl
 dnl
 dnl
 dnl

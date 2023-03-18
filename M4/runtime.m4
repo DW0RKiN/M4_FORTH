@@ -2676,12 +2676,15 @@ next_cursor:
 ; Input: HL = YX
 ; Output: H = Y+1, X=0
 next_line:
-    ld    L, 0x00           ; 2:7     X=0
-    inc   H                 ; 1:4
-    ld    A, -MAX_Y         ; 2:7
-    add   A, H              ; 1:4
-    jr   nz, $+3            ; 2:7/12
-    ld    H, A              ; 1:4     Y=0
+    ld   HL, 0x5C88         ; 3:10
+    ld  (HL), 0x01          ; 2:10          
+    ld    A, ' '            ; 2:7     space and check bios scroll
+    rst  0x10               ; 1:11
+    ld    A, 0x18           ; 2:7
+    inc   L                 ; 1:4
+    sub (HL)                ; 1:7
+    ld    H, A              ; 1:7
+    ld    L, 0x00           ; 2:7
 next_exit:
     ld  (self_cursor),HL    ; 3:16
     pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
