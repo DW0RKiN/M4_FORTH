@@ -2463,11 +2463,15 @@ set_over:
 set_at:
 
     ld  (self_cursor+1), A  ; 3:13    save new Y
+    
+    neg                     ; 2:8
+    add   A, 0x18           ; 2:7
+    ld  (0x5C89), A         ; 3:13
+
     ld    A, $+4-jump_from  ; 2:7
     jr   clean_set_A        ; 2:12
 
-
-; set_at_y:    
+; set_at_x:    
     
     ld  (self_cursor), A    ; 3:13    save new X
     jr   clean_spec         ; 2:12
@@ -2484,19 +2488,16 @@ set_at:
 
 set_tab:
 
-    exx                     ; 1:4
-    ld   BC,(self_cursor)   ; 4:20    load origin cursor
-
+    push HL                 ; 1:11    save HL
+    ld   HL,(self_cursor)   ; 3:16    load origin cursor
     sub  MAX_X              ; 2:7
     jr   nc,$-2             ; 2:7/12
     add   A, MAX_X          ; 2:7     (new x) mod MAX_X
-    cp    C                 ; 1:4
-    ld    C, A              ; 1:4
-    jr   nc, $+3            ; 2:7/12  new x >= (old x+1)
-    inc   B                 ; 1:4
-    
-    ld  (self_cursor),BC    ; 4:20    save new cursor
-    exx                     ; 1:4
+    cp    L                 ; 1:4
+    call  c, next_line      ; 3:10/17   new x < (old x+1)    
+    ld    L, A              ; 1:4
+    ld  (self_cursor),HL    ; 3:16    save new cursor
+    pop  HL                 ; 1:10    load HL
 
     jr   clean_spec         ; 2:12
 
@@ -2531,18 +2532,18 @@ check_eol:
     jr   nz, draw_spec      ; 2:7/12
 
     push HL                 ; 1:11
-    ld   HL,(self_cursor)   ; 3:16
-    jp   next_line          ; 3:10
+    call next_line          ; 3:17
+    jp   next_exit          ; 3:10
 
 draw_spec:
 
     sub  0x03               ; 2:7       ZX_INK-ZX_EOL
     ret   c                 ; 1:5/11    0x00..0x0F
-    add   A, 0xF9           ; 2:7       ZX_INK-ZX_TAB
+    add   A, 0xF8           ; 2:7       ZX_INK-ZX_TAB
     ret   c                 ; 1:5/11    0x18..0x1F
     
     add   A,A               ; 1:4       2x
-    sub   jump_from-set_tab ; 2:7
+    sub   jump_from-set_tab-2 ; 2:7
     ld  (jump_from-1),A     ; 3:13
     ret                     ; 1:10
     
@@ -2669,15 +2670,25 @@ loop_b:
 ; Input: HL = YX
 ; Output: HL = cursor = next cursor
 next_cursor:
-    inc   L                 ; 1:4     0..50 +1 = 00..51
-    ld    A, -MAX_X         ; 2:7
-    add   A, L              ; 1:4
-    jr   nz, next_exit      ; 2:7/12
-; Input: HL = YX
-; Output: H = Y+1, X=0
+    inc   L                 ; 1:4     0..50
+    ld    A, L              ; 1:4
+    sub  MAX_X              ; 2:7     -51
+    call nc, next_line      ; 3:10/17
+next_exit:
+    ld  (self_cursor),HL    ; 3:16
+    pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
+    ret                     ; 1:10
+
+; Input:
+; Output: H = Y+1/Y+scroll, L=0
 next_line:
+    push AF                 ; 1:11
     ld   HL, 0x5C88         ; 3:10
-    ld  (HL), 0x01          ; 2:10          
+    ld  (HL), 0x01          ; 2:10
+    ld    A, 0x15           ; 2:7     over
+    rst  0x10               ; 1:11
+    ld    A, 0x01           ; 2:7     over 1
+    rst  0x10               ; 1:11
     ld    A, ' '            ; 2:7     space and check bios scroll
     rst  0x10               ; 1:11
     ld    A, 0x18           ; 2:7
@@ -2685,10 +2696,9 @@ next_line:
     sub (HL)                ; 1:7
     ld    H, A              ; 1:7
     ld    L, 0x00           ; 2:7
-next_exit:
-    ld  (self_cursor),HL    ; 3:16
-    pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
+    pop  AF                 ; 1:10
     ret                     ; 1:10
+
 
 FONT_ADR    equ     FONT_5x8-32*4
 FONT_5x8:
