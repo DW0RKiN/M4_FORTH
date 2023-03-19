@@ -2380,127 +2380,109 @@ ifdef({USE_FONT_5x8},{
 MAX_X           equ 51       ; x = 0..50
 MAX_Y           equ 24       ; y = 0..23
 
-set_ink:
-    exx                     ; 1:4
-    ld   BC,(self_attr)     ; 4:20    load origin attr
-
-    xor   C                 ; 1:4
-    and 0x07                ; 2:7  
-    xor   C                 ; 1:4
-
-    jr   clean_spec_exx     ; 2:12
+set_ink:                ;           putchar
+    exx                 ; 1:4       putchar
+    ld   BC,(self_attr) ; 4:20      putchar   load origin attr
+    xor   C             ; 1:4       putchar
+    and 0x07            ; 2:7       putchar
+    xor   C             ; 1:4       putchar
+    jr   set_clean_exx  ; 2:12      putchar
     
-set_paper:
-    exx                     ; 1:4
-    ld   BC,(self_attr)     ; 4:20    load origin attr
-
-    add   A, A              ; 1:4     2x
-    add   A, A              ; 1:4     4x
-    add   A, A              ; 1:4     8x
-    xor   C                 ; 1:4
-    and 0x38                ; 2:7
-    xor   C                 ; 1:4
-
-    jr   clean_spec_exx     ; 2:12
+set_paper:              ;           putchar          
+    exx                 ; 1:4       putchar
+    ld   BC,(self_attr) ; 4:20      putchar   load origin attr
+    add   A, A          ; 1:4       putchar   2x
+    add   A, A          ; 1:4       putchar   4x
+    add   A, A          ; 1:4       putchar   8x
+    xor   C             ; 1:4       putchar
+    and 0x38            ; 2:7       putchar
+    xor   C             ; 1:4       putchar
+    jr   set_clean_exx  ; 2:12      putchar
     
-set_flash:
-
-    rra                     ; 1:4     carry = flash
-    ld    A,(self_attr)     ; 3:13    load origin attr
-    adc   A, A              ; 1:4
-    rrca                    ; 1:4
-
-    jr   clean_spec_save_A  ; 2:12
+set_flash:              ;           putchar
+    rra                 ; 1:4       putchar   carry = flash
+    ld    A,(self_attr) ; 3:13      putchar   load origin attr
+    adc   A, A          ; 1:4       putchar
+    rrca                ; 1:4       putchar
+    jr  set_clean_save_A; 2:12      putchar
     
-set_bright:
-
-    exx                     ; 1:4
-    ld   BC,(self_attr)     ; 4:20    load origin attr
+set_bright:             ;           putchar
+    exx                 ; 1:4       putchar
+    ld   BC,(self_attr) ; 4:20      putchar   load origin attr   
+    rrca                ; 1:4       putchar
+    rrca                ; 1:4       putchar
+    xor   C             ; 1:4       putchar
+    and 0x40            ; 2:7       putchar
+    xor   C             ; 1:4       putchar
+    jr   set_clean_exx  ; 2:12      putchar
     
-    rrca                    ; 1:4
-    rrca                    ; 1:4
-    xor   C                 ; 1:4
-    and 0x40                ; 2:7
-    xor   C                 ; 1:4    
+set_inverse:            ;           putchar
+    exx                 ; 1:4       putchar
+    ld   BC,(self_attr) ; 4:20      putchar
+    ld    A, C          ; 1:4       putchar   inverse
+    and  0x38           ; 2:7       putchar   A = 00pp p000
+    add   A, A          ; 1:4       putchar
+    add   A, A          ; 1:4       putchar   A = ppp0 0000
+    xor   C             ; 1:4       putchar
+    and  0xF8           ; 2:7       putchar
+    xor   C             ; 1:4       putchar   A = ppp0 0iii
+    rlca                ; 1:4       putchar
+    rlca                ; 1:4       putchar
+    rlca                ; 1:4       putchar   A = 00ii ippp
+    xor   C             ; 1:4       putchar
+    and  0x3F           ; 2:7       putchar
+    xor   C             ; 1:4       putchar   A = fbii ippp
+
+set_clean_exx:          ;           putchar
+    exx                 ; 1:4       putchar
     
-    jr   clean_spec_exx     ; 2:12
+set_clean_save_A:       ;           putchar
+    ld  (self_attr),A   ; 3:13      putchar   save new attr
     
-set_inverse:
+clean_spec:             ;           putchar
+    xor   A             ; 1:4       putchar
     
-    exx                     ; 1:4
-    ld   BC,(self_attr)     ; 4:20
-
-    ld    A, C              ; 1:4     inverse
-    and  0x38               ; 2:7     A = 00pp p000
-    add   A, A              ; 1:4
-    add   A, A              ; 1:4     A = ppp0 0000
-    xor   C                 ; 1:4
-    and  0xF8               ; 2:7
-    xor   C                 ; 1:4     A = ppp0 0iii
-    rlca                    ; 1:4
-    rlca                    ; 1:4
-    rlca                    ; 1:4     A = 00ii ippp
-    xor   C                 ; 1:4
-    and  0x3F               ; 2:7
-    xor   C                 ; 1:4     A = fbii ippp
-
-clean_spec_exx:
-    exx                     ; 1:4
-clean_spec_save_A:
-    ld  (self_attr),A       ; 3:13    save new attr
-clean_spec:
-    xor   A                 ; 1:4
-clean_set_A:
-    ld  (jump_from-1),A     ; 3:13
-
-    ret                     ; 1:10
+clean_set_A:            ;           putchar
+    ld  (jump_from-1),A ; 3:13      putchar
+    ret                 ; 1:10      putchar
     
+set_over:               ;           putchar
+    jr   clean_spec     ; 2:12      putchar
 
-set_over:    
-    
-    jr   clean_spec         ; 2:12
+set_at:                 ;           putchar
+    ld (self_cursor+1),A; 3:13      putchar   save new Y
+    neg                 ; 2:8       putchar
+    add   A, 0x18       ; 2:7       putchar
+    ld  (0x5C89),A      ; 3:13      putchar
+    ld   A,$+4-jump_from; 2:7       putchar
+    jr   clean_set_A    ; 2:12      putchar
 
-set_at:
-
-    ld  (self_cursor+1), A  ; 3:13    save new Y
-    
-    neg                     ; 2:8
-    add   A, 0x18           ; 2:7
-    ld  (0x5C89), A         ; 3:13
-
-    ld    A, $+4-jump_from  ; 2:7
-    jr   clean_set_A        ; 2:12
-
-; set_at_x:    
-    
-    ld  (self_cursor), A    ; 3:13    save new X
-    jr   clean_spec         ; 2:12
+; set_at_x:             ;           putchar
+    ld  (self_cursor),A ; 3:13      putchar   save new X
+    jr   clean_spec     ; 2:12      putchar
 
 
-    jr   set_ink            ; 2:12
-    jr   set_paper          ; 2:12
-    jr   set_flash          ; 2:12
-    jr   set_bright         ; 2:12
-    jr   set_inverse        ; 2:12
-    jr   set_over           ; 2:12
-    jr   set_at             ; 2:12
-;    jr   set_tab            ; 2:12
+    jr   set_ink        ; 2:12      putchar
+    jr   set_paper      ; 2:12      putchar
+    jr   set_flash      ; 2:12      putchar
+    jr   set_bright     ; 2:12      putchar
+    jr   set_inverse    ; 2:12      putchar
+    jr   set_over       ; 2:12      putchar
+    jr   set_at         ; 2:12      putchar
+;   jr   set_tab        ; 2:12      putchar
 
-set_tab:
-
-    push HL                 ; 1:11    save HL
-    ld   HL,(self_cursor)   ; 3:16    load origin cursor
-    sub  MAX_X              ; 2:7
-    jr   nc,$-2             ; 2:7/12
-    add   A, MAX_X          ; 2:7     (new x) mod MAX_X
-    cp    L                 ; 1:4
-    call  c, next_line      ; 3:10/17   new x < (old x+1)    
-    ld    L, A              ; 1:4
-    ld  (self_cursor),HL    ; 3:16    save new cursor
-    pop  HL                 ; 1:10    load HL
-
-    jr   clean_spec         ; 2:12
-
+set_tab:                ;           putchar
+    push HL             ; 1:11      putchar   save HL
+    ld  HL,(self_cursor); 3:16      putchar   load origin cursor
+    sub  MAX_X          ; 2:7       putchar
+    jr   nc,$-2         ; 2:7/12    putchar
+    add   A, MAX_X      ; 2:7       putchar   (new x) mod MAX_X
+    cp    L             ; 1:4       putchar
+    call  c, next_line  ; 3:10/17   putchar   new x < (old x+1)    
+    ld    L, A          ; 1:4       putchar
+    ld  (self_cursor),HL; 3:16      putchar   save new cursor
+    pop  HL             ; 1:10      putchar   load HL
+    jr   clean_spec     ; 2:12      putchar
 
 ;------------------------------------------------------------------------------
 ;  Input: A = char
