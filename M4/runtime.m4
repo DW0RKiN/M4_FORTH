@@ -2491,6 +2491,8 @@ set_tab:                ;           putchar
 draw_char:
     jr   jump_from          ; 2:7/12    self-modifying
 jump_from:
+    cp  0xA5                ; 2:7       token RND
+    jr   nc, print_token    ; 2:7/12
 
     cp  0x20                ; 2:7
     jr   nc, print_char     ; 2:7/12
@@ -2529,6 +2531,48 @@ draw_spec:
     ld  (jump_from-1),A     ; 3:13
     ret                     ; 1:10
     
+print_token:
+    push DE                 ; 1:11
+
+    ld   DE, 0x0095	        ; 3:10      The base address of the token table
+    sub  0xA5               ; 2:7
+    push AF	                ; 1:11      Save the code on the stack. (Range +00 to +5A, RND to COPY).
+    
+; Input
+;   A   Message table entry number
+;   DE  Message table start address
+; Output
+;   DE  Address of the first character of message number A
+;   F   Carry flag: suppress (set) or allow (reset) a leading space
+    call 0x0C41             ; 3:17      {THE 'TABLE SEARCH' SUBROUTINE} 
+    ld    A,' '	            ; 2:7       A 'space' will be printed before the message/token if required (bit 0 of FLAGS reset).
+    bit   0,(IY+0x01)       ;
+    call  z, print_char     ; 3:17
+
+; The characters of the message/token are printed in turn.
+
+token_loop:
+    ld    A,(DE)            ; 1:7       Collect a code.
+    and  0x7F               ; 2:7       Cancel any 'inverted bit'.
+    call print_char         ; 3:17      Print the character.
+    ld    A,(DE)            ; 1:7       Collect the code again.
+    inc  DE                 ; 1:6       Advance the pointer.
+    add   A, A              ; 1:4       The 'inverted bit' goes to the carry flag and signals the end of the message/token; otherwise jump back.
+    jr   nc, token_loop     ; 2:7/12
+    
+; Now consider whether a 'trailing space' is required.
+
+    pop  DE                 ; 1:10      For messages, D holds +00; for tokens, D holds +00 to +5A.
+    cp   0x48               ; 2:7       Jump forward if the last character was a '$'
+    jr    z, $+6            ; 2:7/12
+    cp   0x82               ; 2:7       Return if the last character was any other before 'A'.
+    jr    c, $+7            ; 2:7/12
+    ld    A, D              ; 1:4       Examine the value in D and return if it indicates a message, RND, INKEY$ or PI.
+    cp   0x03               ; 2:7
+    ld    A, ' '            ; 2:7       All other cases will require a 'trailing space'.    
+    pop  DE                 ; 1:10
+    ret   c                 ; 1:5/11
+
 print_char:
     push HL                 ; 1:11    uschovat HL na zásobník
     push DE                 ; 1:11    uschovat DE na zásobník
