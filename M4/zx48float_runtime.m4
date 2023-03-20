@@ -313,7 +313,7 @@ _ZDOT:                  ;           _z.
     pop  HL             ; 1:10      _z.
     ld  (0x5C65),HL     ; 3:16      _z.   {save STKEND}
     ld    A, ' '        ; 2:7       _z.   {putchar Pollutes: AF, AF', DE', BC'}
-    rst  0x10           ; 1:11      _z.   {putchar with ZX 48K ROM in, this will print char in A}
+__PUTCHAR_A(_z.)
     pop  HL             ; 1:10      _z.
     pop  DE             ; 1:10      _z.
     ret                 ; 1:10      _z.
@@ -338,7 +338,7 @@ _ZHEX_LO:               ;           _zhex.
     daa                 ; 1:4       _zhex.   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
     add   A, 0xA0       ; 2:7       _zhex.   $F0..$F9, $100..$105
     adc   A, 0x40       ; 2:7       _zhex.   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
-    rst  0x10           ; 1:11      _zhex.   {putchar with ZX 48K ROM in, this will print char in A}
+__PUTCHAR_A(_zhex.)
     ret                 ; 1:10      _zhex.
 
 _ZHEXDOT:               ;           _zhex.
@@ -347,15 +347,16 @@ _ZHEXDOT:               ;           _zhex.
     ld   BC, 0xfffb     ; 3:10      _zhex.
     add  HL, BC         ; 1:11      _zhex.
     ld    B, 0x05       ; 2:7       _zhex.
-    jr   $+5            ; 2:12      _zhex.
+    jr   _ZXHEXDOT_FIRST; 2:12      _zhex.
     ld    A, ','        ; 2:7       _zhex.
-    rst  0x10           ; 1:11      _zhex.   {putchar with ZX 48K ROM in, this will print char in A}
+__PUTCHAR_A(_zhex.)
+_ZXHEXDOT_FIRST:        ;           _zhex.
     ld    A,(HL)        ; 1:7       _zhex.
     inc  HL             ; 1:6       _zhex.
     call _ZHEX_A        ; 3:17      _zhex.
-    djnz $-8            ; 2:8/13    _zhex.
+    djnz $-eval(7+__BYTES)            ; 2:8/13    _zhex.
     ld    A, ' '        ; 2:7       _zhex.
-    rst  0x10           ; 1:11      _zhex.   {putchar with ZX 48K ROM in, this will print char in A}
+__PUTCHAR_A(_zhex.)
     pop  HL             ; 1:10      _zhex.
     ret                 ; 1:10      _zhex.
 }){}dnl
@@ -735,8 +736,8 @@ _ZADDR:                 ;           _zaddr
     ex   DE, HL         ; 1:4       _zaddr
     ld   HL,(0x5C65)    ; 3:16      _zaddr   {HL= stkend}
 __ASM_TOKEN_UDOTZXROM
-    ld    A, 0x0D       ; 2:7       _zaddr-cr   {Pollutes: AF, AF', DE', BC'}
-    rst  0x10           ; 1:11      _zaddr-cr   {with 48K ROM in, this will print char in A}
+    ld    A, 0x0D       ; 2:7       _zaddr cr   {Pollutes: AF, AF', DE', BC'}
+__PUTCHAR_A(_zaddr cr)
     ret                 ; 1:10      _zaddr
 }){}dnl
 dnl

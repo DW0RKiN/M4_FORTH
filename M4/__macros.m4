@@ -4,9 +4,21 @@ dnl
 dnl
 define({__PUTCHAR_A},{dnl
 __{}ifdef({USE_FONT_5x8},{dnl
-__{}    call  draw_char     ; 3:17      $1},
+__{}__{}define({__BYTES},3){}dnl
+__{}__{}define({__CLOCKS},17){}dnl
+__{}__{}define({__PRICE},define(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__{}__add({__SUM_PRICE},__PRICE){}dnl
+__{}__{}    call  draw_char     ; 3:17      $1},
 __{}{dnl
-__{}    rst   0x10          ; 1:11      $1   putchar(reg A) with {ZX 48K ROM}}){}dnl
+__{}__{}define({__BYTES},1){}dnl
+__{}__{}define({__CLOCKS},11){}dnl
+__{}__{}define({__PRICE},define(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}__add({__SUM_BYTES},__BYTES){}dnl
+__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__{}__add({__SUM_PRICE},__PRICE){}dnl
+__{}__{}    rst   0x10          ; 1:11      $1   putchar(reg A) with {ZX 48K ROM}}){}dnl
 }){}dnl
 dnl
 dnl

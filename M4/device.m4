@@ -875,11 +875,8 @@ __{}__ADD_TOKEN({__TOKEN_SPACE},{space},$@){}dnl
 dnl
 define({__ASM_TOKEN_SPACE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A, 0x20       ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
-__{}ifdef({USE_FONT_5x8},{dnl
-__{}    call  draw_char     ; 3:17      __INFO},
-__{}{dnl
-__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+__{}    ld    A, ' '        ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(__INFO){}dnl
 })dnl
 dnl
 dnl
@@ -899,21 +896,37 @@ dnl
 dnl
 dnl # ( -- )
 dnl # .( char )
+dnl # putchar('#') --> use putchar(0x23)
 define({PUTCHAR},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{$@}){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#):$1:$2,2:":",{dnl # putchar(",")
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{","}}})},
+__{}eval($#):$1:$2,2::,{dnl # putchar(',')
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{','}}})},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{","}}) or putchar(0x2C)},
+__{}regexp({$1},{^"\""$}),0,{dnl # putchar(""")
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{'"'}}})},
+__{}regexp({$1},{^"\$"$}),0,{dnl # putchar("$")
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{$@}})},
+__{}regexp({$1},{^"["$]"$}),0,{dnl # putchar("#")
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},0x23)},
+__{}{dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{$@}}){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUTCHAR},{dnl
-ifelse({$1},{},{
-__{}  .error {$0}($@): Missing parameter!},
-eval($#>1),1,{
-__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{','}})},
-{define({__INFO},__COMPILE_INFO)
-    ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
-__{}ifdef({USE_FONT_5x8},{dnl
-__{}    call  draw_char     ; 3:17      __INFO},
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{','}})},
 __{}{dnl
-__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}})}){}dnl
+__{}__{}define({__INFO},__COMPILE_INFO)
+__{}__{}    ld    A, format({%-11s},{$1})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
+__{}__{}__PUTCHAR_A(__INFO){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
