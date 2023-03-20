@@ -2,6 +2,15 @@ define({__},{})dnl
 dnl
 dnl
 dnl
+define({__PUTCHAR_A},{dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    call  draw_char     ; 3:17      $1},
+__{}{dnl
+__{}    rst   0x10          ; 1:11      $1   putchar(reg A) with {ZX 48K ROM}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # is used to calculate the difficulty of the code
 dnl # prize = clocks + (__BYTE_PRICE * bytes)
 define({__BYTE_PRICE},4){}dnl

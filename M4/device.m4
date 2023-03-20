@@ -805,11 +805,8 @@ __{}__ADD_TOKEN({__TOKEN_CR},{cr},$@){}dnl
 dnl
 define({__ASM_TOKEN_CR},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A, 0x0D       ; 2:7       __INFO      Pollutes: AF, AF', DE', BC'
-__{}ifdef({USE_FONT_5x8},{dnl
-__{}    call  draw_char     ; 3:17      __INFO},
-__{}{dnl
-__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+__{}    ld    A, 0x0D       ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(__INFO){}dnl
 })dnl
 dnl
 dnl
@@ -820,16 +817,14 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_EMIT},{{$1} emit},{$@}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_EMIT},{dnl
-ifelse({$1},{},{
-__{}  .error {$0}($@): Missing parameter!},
-eval($#>1),1,{
-__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write push({{','}}) emit},
-{define({__INFO},__COMPILE_INFO)
-    ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
-__{}ifdef({USE_FONT_5x8},{dnl
-__{}    call  draw_char     ; 3:17      __INFO},
-__{}{dnl
-__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}})})dnl
+__{}ifelse({$1},{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write push({{','}}) emit},
+__{}{define({__INFO},__COMPILE_INFO)
+__{}__{}    ld    A, format({%-11s},{{$1}})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
+__{}__{}__PUTCHAR_A(__INFO){}dnl
+__{}})dnl
 }){}dnl
 dnl
 dnl
@@ -837,7 +832,7 @@ dnl # ( 'a' -- )
 dnl # print char 'a'
 define({EMIT},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_EMIT},{emit},$@){}dnl
-__{}__ADD_TOKEN({__TOKEN_DROP},{emit},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DROP},{__dtto},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_EMIT},{dnl
@@ -854,28 +849,21 @@ __{}__ADD_TOKEN({__TOKEN_DUP_EMIT},{dup emit},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_EMIT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A, L          ; 1:4       __INFO    Pollutes: AF, AF', DE', BC'
-__{}ifdef({USE_FONT_5x8},{dnl
-__{}    call  draw_char     ; 3:17      __INFO},
-__{}{dnl
-__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+__{}    ld    A, L          ; 1:4       __INFO   Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(__INFO){}dnl
 })dnl
 dnl
 dnl
 dnl # ( addr -- addr )
 dnl # print char from address
 define({DUP_FETCH_EMIT},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_FETCH_EMIT},{dup fetch_emit},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_FETCH_EMIT},{dup @ emit},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_FETCH_EMIT},{dnl
-__{}define({__INFO},{dup fetch_emit}){}dnl
-
-    ld    A,(HL)        ; 1:7       dup @ emit    Pollutes: AF, AF', DE', BC'
-__{}ifdef({USE_FONT_5x8},{dnl
-__{}    call  draw_char     ; 3:17      __INFO},
-__{}{dnl
-__{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    A,(HL)        ; 1:7       __INFO   Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(__INFO){}dnl
 })dnl
 dnl
 dnl
