@@ -2429,10 +2429,11 @@ print_comma:            ;           putchar   0x06
     ld   HL,(cursor)    ; 3:16      putchar
     ld    A, L          ; 1:4       putchar
     or   0x0F           ; 2:7       putchar   0xnF  --> 0F,1F,2F,3F
-    and  0x1F           ; 2:7       putchar         --> 0F,1F,0F,1F
-    inc   A             ; 1:4       putchar   0xN0  --> 10,20,10,20
-    
-
+    cp   0x2F           ; 2:7       putchar
+    jr    c, $+4        ; 2:7       putchar
+    or   0xFF           ; 2:7       putchar         --> 0F,1F,FF,FF
+    inc   A             ; 1:4       putchar   0xN0  --> 10,20,00,00
+    jr   set_tab+3      ; 2:12      putchar
 
 print_edit:             ;           putchar   0x07
 cursor_right:           ;           putchar   0x09
