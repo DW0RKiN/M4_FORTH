@@ -16,7 +16,7 @@ __{}define({__INFO},__COMPILE_INFO)
 __{}ifdef({USE_FONT_5x8},{
 __{}  if 0
 __{}    ld   HL, 0x0000     ; 3:10      __INFO
-__{}    ld (self_cursor),HL ; 3:16      __INFO
+__{}    ld  (cursor),HL     ; 3:16      __INFO
 __{}  else
 __{}    ld   HL, 0x1821     ; 3:10      __INFO
 __{}    ld   DE,(0x5C88)    ; 4:20      __INFO
@@ -31,7 +31,7 @@ __{}     ld   L, 0xFF       ; 2:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    sub 0x05            ; 2:7       __INFO
 __{}    jr   nc, $-3        ; 2:7/12    __INFO
-__{}    ld (self_cursor),HL ; 3:16      __INFO
+__{}    ld  (cursor),HL     ; 3:16      __INFO
 __{}  endif}){}dnl
 __{}ifelse($1,{},{
 __{}__{}  .warning "Missing value for return address stack. The init() macro has no parameter!"
@@ -60,12 +60,12 @@ __{}ifdef({USE_FONT_5x8},{
 __{}  if 0
 __{}    ld    A, 0x16       ; 2:7       __INFO   at y x
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
-__{}    ld A,(self_cursor+1); 3:13      __INFO
+__{}    ld    A,(cursor+1)  ; 3:13      __INFO
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
 __{}    xor   A             ; 1:4       __INFO
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
 __{}  else
-__{}    ld   HL,(self_cursor); 3:16
+__{}    ld   HL,(cursor)    ; 3:16
 __{}    ld    A, 0x16       ; 2:7       __INFO   at y x
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
 __{}    ld    A, H          ; 1:4       __INFO

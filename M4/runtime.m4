@@ -2379,164 +2379,181 @@ ifdef({USE_FONT_5x8},{
 
 MAX_X           equ 51       ; x = 0..50
 MAX_Y           equ 24       ; y = 0..23
-
-set_ink:                ;           putchar
-    exx                 ; 1:4       putchar
-    ld   BC,(self_attr) ; 4:20      putchar   load origin attr
-    xor   C             ; 1:4       putchar
-    and 0x07            ; 2:7       putchar
-    xor   C             ; 1:4       putchar
-    jr   set_clean_exx  ; 2:12      putchar
     
-set_paper:              ;           putchar          
-    exx                 ; 1:4       putchar
-    ld   BC,(self_attr) ; 4:20      putchar   load origin attr
+set_ink:                ;           putchar   0x10
+    ld   HL, self_attr  ; 3:10      putchar
+    xor (HL)            ; 1:7       putchar
+    and 0x07            ; 2:7       putchar
+    xor (HL)            ; 1:7       putchar
+    jr  set_attr        ; 2:12      putchar
+    
+set_paper:              ;           putchar   0x11          
+    ld   HL, self_attr  ; 3:10      putchar
     add   A, A          ; 1:4       putchar   2x
     add   A, A          ; 1:4       putchar   4x
     add   A, A          ; 1:4       putchar   8x
-    xor   C             ; 1:4       putchar
+    xor (HL)            ; 1:7       putchar
     and 0x38            ; 2:7       putchar
-    xor   C             ; 1:4       putchar
-    jr   set_clean_exx  ; 2:12      putchar
+    xor (HL)            ; 1:7       putchar
+    jr  set_attr        ; 2:12      putchar
     
-set_flash:              ;           putchar
+set_flash:              ;           putchar   0x12
     rra                 ; 1:4       putchar   carry = flash
-    ld    A,(self_attr) ; 3:13      putchar   load origin attr
+    ld   HL, self_attr  ; 3:10      putchar
+    ld    A,(HL)        ; 1:7       putchar
     adc   A, A          ; 1:4       putchar
     rrca                ; 1:4       putchar
-    jr  set_clean_save_A; 2:12      putchar
+    jr  set_attr        ; 2:12      putchar
     
-set_bright:             ;           putchar
-    exx                 ; 1:4       putchar
-    ld   BC,(self_attr) ; 4:20      putchar   load origin attr   
+set_bright:             ;           putchar   0x13
+    ld   HL, self_attr  ; 3:10      putchar
     rrca                ; 1:4       putchar
     rrca                ; 1:4       putchar
-    xor   C             ; 1:4       putchar
+    xor (HL)            ; 1:7       putchar
     and 0x40            ; 2:7       putchar
-    xor   C             ; 1:4       putchar
-    jr   set_clean_exx  ; 2:12      putchar
+    xor (HL)            ; 1:7       putchar
+    jr   set_attr       ; 2:12      putchar
     
-set_inverse:            ;           putchar
-    exx                 ; 1:4       putchar
-    ld   BC,(self_attr) ; 4:20      putchar
-    ld    A, C          ; 1:4       putchar   inverse
+set_inverse:            ;           putchar   0x14
+    ld   HL, self_attr  ; 3:10      putchar
+    ld    A,(HL)        ; 1:7       putchar
     and  0x38           ; 2:7       putchar   A = 00pp p000
     add   A, A          ; 1:4       putchar
     add   A, A          ; 1:4       putchar   A = ppp0 0000
-    xor   C             ; 1:4       putchar
+    xor (HL)            ; 1:7       putchar
     and  0xF8           ; 2:7       putchar
-    xor   C             ; 1:4       putchar   A = ppp0 0iii
+    xor (HL)            ; 1:7       putchar   A = ppp0 0iii
     rlca                ; 1:4       putchar
     rlca                ; 1:4       putchar
     rlca                ; 1:4       putchar   A = 00ii ippp
-    xor   C             ; 1:4       putchar
+    xor (HL)            ; 1:7       putchar
     and  0x3F           ; 2:7       putchar
-    xor   C             ; 1:4       putchar   A = fbii ippp
+    xor (HL)            ; 1:7       putchar   A = fbii ippp
 
-set_clean_exx:          ;           putchar
-    exx                 ; 1:4       putchar
-    
-set_clean_save_A:       ;           putchar
-    ld  (self_attr),A   ; 3:13      putchar   save new attr
-    
-clean_spec:             ;           putchar
+set_attr:               ;           putchar
+    ld  (HL),A          ; 1:7       putchar   save new attr   
+clean_set_0:            ;           putchar
     xor   A             ; 1:4       putchar
-    
 clean_set_A:            ;           putchar
-    ld  (jump_from-1),A ; 3:13      putchar
+    ld  (self_jmp),A    ; 3:13      putchar
+    pop  HL             ; 1:10      putchar
     ret                 ; 1:10      putchar
     
-set_over:               ;           putchar
-    jr   clean_spec     ; 2:12      putchar
+set_over:               ;           putchar   0x15
+    jr   clean_set_0    ; 2:12      putchar
 
-set_at:                 ;           putchar
-    ld (self_cursor+1),A; 3:13      putchar   save new Y
+set_at:                 ;           putchar   0x16
+    ld  (cursor+1),A    ; 3:13      putchar   save new Y
     neg                 ; 2:8       putchar
     add   A, 0x18       ; 2:7       putchar
     ld  (0x5C89),A      ; 3:13      putchar
     ld   A,$+4-jump_from; 2:7       putchar
     jr   clean_set_A    ; 2:12      putchar
 
-; set_at_x:             ;           putchar
-    ld  (self_cursor),A ; 3:13      putchar   save new X
-    jr   clean_spec     ; 2:12      putchar
+set_at_x:               ;           putchar
+    ld  (cursor),A      ; 3:13      putchar   save new X
+    jr   clean_set_0    ; 2:12      putchar
 
-
-    jr   set_ink        ; 2:12      putchar
-    jr   set_paper      ; 2:12      putchar
-    jr   set_flash      ; 2:12      putchar
-    jr   set_bright     ; 2:12      putchar
-    jr   set_inverse    ; 2:12      putchar
-    jr   set_over       ; 2:12      putchar
-    jr   set_at         ; 2:12      putchar
-;   jr   set_tab        ; 2:12      putchar
+  if 0
+    jr   print_comma    ; 2:12      putchar   0x06
+    jr   print_edit     ; 2:12      putchar   0x07
+    jr   cursor_left    ; 2:12      putchar   0x08
+    jr   cursor_right   ; 2:12      putchar   0x09
+    jr   cursor_down    ; 2:12      putchar   0x0A
+    jr   cursor_up      ; 2:12      putchar   0x0B
+    jr   delete         ; 2:12      putchar   0x0C
+    jr   enter          ; 2:12      putchar   0x0D
+    jr   not_used       ; 2:12      putchar   0x0E
+    jr   not_used       ; 2:12      putchar   0x0F    
+  endif
+  
+tab_spec:               ;           putchar 
+    jr   set_ink        ; 2:12      putchar   0x10
+    jr   set_paper      ; 2:12      putchar   0x11
+    jr   set_flash      ; 2:12      putchar   0x12
+    jr   set_bright     ; 2:12      putchar   0x13
+    jr   set_inverse    ; 2:12      putchar   0x14
+    jr   set_over       ; 2:12      putchar   0x15
+    jr   set_at         ; 2:12      putchar   0x16
+;   jr   set_tab        ; 2:12      putchar   0x17
 
 set_tab:                ;           putchar
-    push HL             ; 1:11      putchar   save HL
-    ld  HL,(self_cursor); 3:16      putchar   load origin cursor
+    ld   HL,(cursor)    ; 3:16      putchar   load origin cursor
     sub  MAX_X          ; 2:7       putchar
     jr   nc,$-2         ; 2:7/12    putchar
     add   A, MAX_X      ; 2:7       putchar   (new x) mod MAX_X
     cp    L             ; 1:4       putchar
     call  c, next_line  ; 3:10/17   putchar   new x < (old x+1)    
     ld    L, A          ; 1:4       putchar
-    ld  (self_cursor),HL; 3:16      putchar   save new cursor
+    ld  (cursor),HL     ; 3:16      putchar   save new cursor
+    jr   clean_set_0    ; 2:12      putchar
+
+cursor_left:            ;           putchar   0x08
+    ld   HL,(cursor)    ; 3:16
+    inc   L             ; 1:4
+    dec   L             ; 1:4
+    dec  HL             ; 1:6
+    jr   nz, $+4        ; 2:7/12
+    ld    L, MAX_X-1    ; 2:7
+    or    A             ; 1:4
+
+enter:                  ;           putchar   0x0D
+    call  z, next_line  ; 3:10/17   putchar
+enter_exit:             ;           putchar
+    ld  (cursor),HL     ; 3:16      putchar   save new cursor
     pop  HL             ; 1:10      putchar   load HL
-    jr   clean_spec     ; 2:12      putchar
+    ret                 ; 3:10
+
+print_comma:            ;           putchar   0x06
+print_edit:             ;           putchar   0x07
+cursor_right:           ;           putchar   0x09
+cursor_down:            ;           putchar   0x0A
+cursor_up:              ;           putchar   0x0B
+delete:                 ;           putchar   0x0C
+not_used:               ;           putchar   0x0E, 0x0F
+
+print_question          ;           putchar   0x00..0x05 + 0x0E..0x0F + 0x18..0x1F
+    ld    A, '?'        ; 2:7       putchar
+    jr   print_char_HL  ; 2:7/12    putchar
 
 ;------------------------------------------------------------------------------
 ;  Input: A = char
-; Output: DE = next char
 ; Poluttes: AF, AF', DE', BC'
 draw_char:
+    push HL                 ; 1:11
+self_jmp    equ $+1
     jr   jump_from          ; 2:7/12    self-modifying
 jump_from:
-    cp  0xA5                ; 2:7       token RND
+    cp   0xA5               ; 2:7       token RND
     jr   nc, print_token    ; 2:7/12
 
-    cp  0x20                ; 2:7
-    jr   nc, print_char     ; 2:7/12
+    cp   0x20               ; 2:7
+    jr   nc, print_char_HL  ; 2:7/12
 
-    sub  0x08               ; 2:7       left
-    ret   c                 ; 1:10
-    jr   nz, check_eol      ; 2:7/12
+    cp   0x08               ; 2:7       cursor_left
+    jr    z, cursor_left    ; 2:7/12
+    cp   0x0D               ; 2:7       enter
+    jr    z, enter          ; 2:7/12
 
-    push HL                 ; 1:11
-    ld   HL,(self_cursor)   ; 3:16
-    ld    A, L              ; 1:4
-    dec  HL                 ; 1:6
-    or    A                 ; 1:4
-    jp   nz, next_exit      ; 3:10
-    ld    L, MAX_X-1        ; 2:7
-    jp   next_exit          ; 3:10
+    sub  0x10               ; 2:7       set_ink
+    jr    c, print_question ; 2:7/12
 
-check_eol:
-    sub  0x05               ; 2:7       eol
-    ret   c                 ; 1:10
-    jr   nz, draw_spec      ; 2:7/12
+    cp   0x08               ; 2:7       >print_tab
+    jr   nc, print_question ; 2:7/12
 
-    push HL                 ; 1:11
-    call next_line          ; 3:17
-    jp   next_exit          ; 3:10
-
-draw_spec:
-
-    sub  0x03               ; 2:7       ZX_INK-ZX_EOL
-    ret   c                 ; 1:5/11    0x00..0x0F
-    add   A, 0xF8           ; 2:7       ZX_INK-ZX_TAB
-    ret   c                 ; 1:5/11    0x18..0x1F
-    
+draw_spec:    
     add   A,A               ; 1:4       2x
-    sub   jump_from-set_tab-2 ; 2:7
-    ld  (jump_from-1),A     ; 3:13
+    sub  jump_from-tab_spec ; 2:7
+    ld  (self_jmp),A        ; 3:13
+draw_spec_exit:             ;
+    pop  HL                 ; 1:10
     ret                     ; 1:10
     
 print_token:
-    push DE                 ; 1:11
-
+    ex   DE, HL             ; 1:4
     ld   DE, 0x0095	        ; 3:10      The base address of the token table
     sub  0xA5               ; 2:7
-    push AF	                ; 1:11      Save the code on the stack. (Range +00 to +5A, RND to COPY).
+    push AF                 ; 1:11      Save the code on the stack. (Range +00 to +5A, RND to COPY).
     
 ; Input
 ;   A   Message table entry number
@@ -2545,36 +2562,38 @@ print_token:
 ;   DE  Address of the first character of message number A
 ;   F   Carry flag: suppress (set) or allow (reset) a leading space
     call 0x0C41             ; 3:17      {THE 'TABLE SEARCH' SUBROUTINE} 
-    ld    A,' '	            ; 2:7       A 'space' will be printed before the message/token if required (bit 0 of FLAGS reset).
+    ex   DE, HL             ; 1:4
+
+    ld    A,' '             ; 2:7       {A 'space' will be printed before the message/token if required (bit 0 of FLAGS reset).}
     bit   0,(IY+0x01)       ;
     call  z, print_char     ; 3:17
 
 ; The characters of the message/token are printed in turn.
 
 token_loop:
-    ld    A,(DE)            ; 1:7       Collect a code.
+    ld    A,(HL)            ; 1:7       Collect a code.
     and  0x7F               ; 2:7       Cancel any 'inverted bit'.
     call print_char         ; 3:17      Print the character.
-    ld    A,(DE)            ; 1:7       Collect the code again.
-    inc  DE                 ; 1:6       Advance the pointer.
+    ld    A,(HL)            ; 1:7       Collect the code again.
+    inc  HL                 ; 1:6       Advance the pointer.
     add   A, A              ; 1:4       The 'inverted bit' goes to the carry flag and signals the end of the message/token; otherwise jump back.
     jr   nc, token_loop     ; 2:7/12
     
 ; Now consider whether a 'trailing space' is required.
 
-    pop  DE                 ; 1:10      For messages, D holds +00; for tokens, D holds +00 to +5A.
+    pop  HL                 ; 1:10      For messages, D holds +00; for tokens, D holds +00 to +5A.
     cp   0x48               ; 2:7       Jump forward if the last character was a '$'
     jr    z, $+6            ; 2:7/12
     cp   0x82               ; 2:7       Return if the last character was any other before 'A'.
-    jr    c, $+7            ; 2:7/12
+    jr    c, draw_spec_exit ; 2:7/12
     ld    A, D              ; 1:4       Examine the value in D and return if it indicates a message, RND, INKEY$ or PI.
     cp   0x03               ; 2:7
     ld    A, ' '            ; 2:7       All other cases will require a 'trailing space'.    
-    pop  DE                 ; 1:10
     ret   c                 ; 1:5/11
-
+    pop  HL                 ; 1:10
 print_char:
     push HL                 ; 1:11    uschovat HL na zásobník
+print_char_HL:
     push DE                 ; 1:11    uschovat DE na zásobník
     push BC                 ; 1:11    uschovat BC na zásobník    
     
@@ -2592,7 +2611,7 @@ print_char:
 
 ;# YX -> ATTR
 
-self_cursor     equ     $+1
+cursor     equ     $+1
     ld   DE, 0x0000         ; 3:10
     ld    A, E              ; 1:4     X
     add   A, A              ; 1:4     2*X
@@ -2692,7 +2711,7 @@ loop_b:
 ;   fall to next cursor    
 
 
-    ld   HL,(self_cursor)   ; 3:16
+    ld   HL,(cursor)   ; 3:16
 ; Input: HL = YX
 ; Output: HL = cursor = next cursor
 next_cursor:
@@ -2701,7 +2720,8 @@ next_cursor:
     sub  MAX_X              ; 2:7     -51
     call nc, next_line      ; 3:10/17
 next_exit:
-    ld  (self_cursor),HL    ; 3:16
+    ld  (cursor),HL         ; 3:16
+exit_hl:                    ;
     pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
     ret                     ; 1:10
 
