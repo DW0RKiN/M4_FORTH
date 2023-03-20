@@ -2,11 +2,17 @@ define({__},{})dnl
 dnl
 dnl
 dnl
+dnl # is used to calculate the difficulty of the code
+dnl # prize = clocks + (__BYTE_PRICE * bytes)
+define({__BYTE_PRICE},4){}dnl
+dnl
+dnl
+dnl
 define({__PUTCHAR_A},{dnl
-__{}ifdef({USE_FONT_5x8},{dnl
+__{}ifdef({USE_FONT_5x8_CALL},{dnl
 __{}__{}define({__BYTES},3){}dnl
 __{}__{}define({__CLOCKS},17){}dnl
-__{}__{}define({__PRICE},define(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__{}__add({__SUM_PRICE},__PRICE){}dnl
@@ -14,18 +20,18 @@ __{}__{}    call  draw_char     ; 3:17      $1},
 __{}{dnl
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},11){}dnl
-__{}__{}define({__PRICE},define(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__{}__add({__SUM_PRICE},__PRICE){}dnl
+ifelse(1,0,{errprint({
+}b:__BYTES; [b]:__SUM_BYTES{
+}c:__CLOCKS; [c]:__SUM_CLOCKS{
+}p:__PRICE; [p]:__SUM_PRICE{
+})}){}dnl
 __{}__{}    rst   0x10          ; 1:11      $1   putchar(reg A) with {ZX 48K ROM}}){}dnl
 }){}dnl
 dnl
-dnl
-dnl
-dnl # is used to calculate the difficulty of the code
-dnl # prize = clocks + (__BYTE_PRICE * bytes)
-define({__BYTE_PRICE},4){}dnl
 dnl
 dnl
 define({__def},{ifdef({$1},,{define({$1},{$2})})}){}dnl

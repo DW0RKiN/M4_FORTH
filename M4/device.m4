@@ -908,10 +908,6 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{","}}) or putchar(0x2C)},
 __{}regexp({$1},{^"\""$}),0,{dnl # putchar(""")
 __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{'"'}}})},
-__{}regexp({$1},{^"\$"$}),0,{dnl # putchar("$")
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{$@}})},
-__{}regexp({$1},{^"["$]"$}),0,{dnl # putchar("#")
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},0x23)},
 __{}{dnl
 __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{$@}}){}dnl
 __{}}){}dnl

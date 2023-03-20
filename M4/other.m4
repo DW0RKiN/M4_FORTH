@@ -14,6 +14,11 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    L, 0x1A       ; 2:7       __INFO   Upper screen
     call 0x1605         ; 3:17      __INFO   Open channel{}dnl
 __{}ifdef({USE_FONT_5x8},{
+__{}    ld  HL, PRINT_OUT   ; 3:10      __INFO
+__{}    ld (CURCHL),HL      ; 3:16      __INFO
+__{}    ld  HL,draw_char    ; 3:10      __INFO
+__{}    ld (PRINT_OUT),HL   ; 3:10      __INFO}){}dnl
+__{}ifelse(ifdef({USE_FONT_5x8},1){}ifdef({USE_FONT_5x8_CALL},1),1,{
 __{}  if 0
 __{}    ld   HL, 0x0000     ; 3:10      __INFO
 __{}    ld  (cursor),HL     ; 3:16      __INFO
@@ -56,7 +61,7 @@ define({__ASM_TOKEN_STOP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
 Stop:                   ;           __INFO
     ld   SP, 0x0000     ; 3:10      __INFO   restoring the original SP value when the "bye" word is used{}dnl
-__{}ifdef({USE_FONT_5x8},{
+__{}ifdef({USE_FONT_5x8_CALL},{
 __{}  if 0
 __{}    ld    A, 0x16       ; 2:7       __INFO   at y x
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}

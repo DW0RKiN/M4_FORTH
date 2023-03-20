@@ -2291,13 +2291,15 @@ __{}    ret                 ; 1:10      print_string_i{}dnl
 dnl
 dnl
 dnl
-ifdef({USE_FONT_5x8},{
+ifelse(ifdef({USE_FONT_5x8},1){}ifdef({USE_FONT_5x8_CALL},1),1,{
 ;==============================================================================
 ; Print text with 5x8 font
 ; entry point is draw_char
 
 MAX_X           equ 51       ; x = 0..50
 MAX_Y           equ 24       ; y = 0..23
+CURCHL          equ 0x5C51
+PRINT_OUT       equ 0x5CBB
     
 set_ink:                ;           putchar   0x10
     ld   HL, self_attr  ; 3:10      putchar
@@ -2424,6 +2426,14 @@ enter_exit:             ;           putchar
     ret                 ; 3:10
 
 print_comma:            ;           putchar   0x06
+    ld   HL,(cursor)    ; 3:16      putchar
+    ld    A, L          ; 1:4       putchar
+    or   0x0F           ; 2:7       putchar   0xnF  --> 0F,1F,2F,3F
+    and  0x1F           ; 2:7       putchar         --> 0F,1F,0F,1F
+    inc   A             ; 1:4       putchar   0xN0  --> 10,20,10,20
+    
+
+
 print_edit:             ;           putchar   0x07
 cursor_right:           ;           putchar   0x09
 cursor_down:            ;           putchar   0x0A
@@ -2449,6 +2459,8 @@ jump_from:
     cp   0x20               ; 2:7
     jr   nc, print_char_HL  ; 2:7/12
 
+    cp   0x06               ; 2:7       comma
+    jr    z, print_comma    ; 2:7/12
     cp   0x08               ; 2:7       cursor_left
     jr    z, cursor_left    ; 2:7/12
     cp   0x0D               ; 2:7       enter
@@ -2500,12 +2512,12 @@ token_loop:
     
 ; Now consider whether a 'trailing space' is required.
 
-    pop  HL                 ; 1:10      For messages, D holds +00; for tokens, D holds +00 to +5A.
+    pop  HL                 ; 1:10      For messages, H holds +00; for tokens, H holds +00 to +5A.
     cp   0x48               ; 2:7       Jump forward if the last character was a '$'
     jr    z, $+6            ; 2:7/12
     cp   0x82               ; 2:7       Return if the last character was any other before 'A'.
     jr    c, draw_spec_exit ; 2:7/12
-    ld    A, D              ; 1:4       Examine the value in D and return if it indicates a message, RND, INKEY$ or PI.
+    ld    A, H              ; 1:4       Examine the value in H and return if it indicates a message, RND, INKEY$ or PI.
     cp   0x03               ; 2:7
     ld    A, ' '            ; 2:7       All other cases will require a 'trailing space'.    
     ret   c                 ; 1:5/11
@@ -2513,10 +2525,12 @@ token_loop:
 print_char:
     push HL                 ; 1:11    uschovat HL na zásobník
 print_char_HL:
+ifdef({USE_FONT_5x8},{
+    exx                     ; 1:4})
     push DE                 ; 1:11    uschovat DE na zásobník
     push BC                 ; 1:11    uschovat BC na zásobník    
-    
-    exx                     ; 1:4
+ifdef({USE_FONT_5x8_CALL},{
+    exx                     ; 1:4})
     push HL                 ; 1:11    uschovat HL na zásobník
 
     ld    BC, FONT_ADR      ; 3:10    adresa, od níž začínají masky znaků
@@ -2620,13 +2634,16 @@ loop_b:
     
     dec   C                 ; 2:7        
     jr   nz, loop_c         ; 2/7/12
-    
-    exx                     ; 1:4
-    pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
-    exx                     ; 1:4
 
+ifdef({USE_FONT_5x8_CALL},{
+    exx                     ; 1:4})
+    pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
+ifdef({USE_FONT_5x8_CALL},{
+    exx                     ; 1:4})
     pop  BC                 ; 1:10    obnovit obsah BC ze zásobníku
     pop  DE                 ; 1:10    obnovit obsah DE ze zásobníku    
+ifdef({USE_FONT_5x8},{
+    exx                     ; 1:4})
 ;   fall to next cursor    
 
 
@@ -2645,25 +2662,37 @@ exit_hl:                    ;
     ret                     ; 1:10
 
 ; Input:
-; Output: H = Y+1/Y+scroll, L=0
+; Output: H = Y+1/Y+0+scroll, L=0
 next_line:
-    push AF                 ; 1:11
-    ld   HL, 0x5C88         ; 3:10
-    ld  (HL), 0x01          ; 2:10
-    ld    A, 0x15           ; 2:7     over
-    rst  0x10               ; 1:11
-    ld    A, 0x01           ; 2:7     over 1
-    rst  0x10               ; 1:11
-    ld    A, ' '            ; 2:7     space and check bios scroll
-    rst  0x10               ; 1:11
-    ld    A, 0x18           ; 2:7
-    inc   L                 ; 1:4
-    sub (HL)                ; 1:7
-    ld    H, A              ; 1:7
-    ld    L, 0x00           ; 2:7
-    pop  AF                 ; 1:10
-    ret                     ; 1:10
-
+    push AF             ; 1:11      putchar
+    ld   HL, 0x5C88     ; 3:10      putchar
+    ld  (HL), 0x01      ; 2:10      putchar
+    ld    A, 0x15       ; 2:7       putchar   over
+ifdef({USE_FONT_5x8_CALL},{dnl
+__{}    rst  0x10           ; 1:11      putchar
+__{}    ld    A, 0x01       ; 2:7       putchar   over 1
+__{}    rst  0x10           ; 1:11      putchar
+__{}    ld    A, ' '        ; 2:7       putchar   space and check bios scroll
+__{}    rst  0x10           ; 1:11      putchar},
+{dnl
+__{}    push HL             ; 1:11      putchar
+__{}    call 0x09F4         ; 3:17      putchar   rst 0x10 --> call 0x09F4
+__{}    exx                 ; 1:4       putchar
+__{}    ld    A, 0x01       ; 2:7       putchar   over 1
+__{}    rst  0x10           ; 1:11      putchar        
+__{}    ld    A, ' '        ; 2:7       putchar   space and check bios scroll
+__{}    rst  0x10           ; 1:11      putchar
+__{}    exx                 ; 1:4       putchar
+__{}    ld  HL,draw_char    ; 3:10      putchar
+__{}    ld (PRINT_OUT),HL   ; 3:10      putchar
+__{}    pop  HL             ; 1:10      putchar})
+    ld    A, 0x18       ; 2:7       putchar
+    inc   L             ; 1:4       putchar
+    sub (HL)            ; 1:7       putchar
+    ld    H, A          ; 1:7       putchar
+    ld    L, 0x00       ; 2:7       putchar
+    pop  AF             ; 1:10      putchar
+    ret                 ; 1:10      putchar
 
 FONT_ADR    equ     FONT_5x8-32*4
 FONT_5x8:
@@ -2677,7 +2706,6 @@ FONT_5x8:
     db %00000011,%00010010,%00000000,%00000000 ; 0x27 '    
     db %00000010,%01000100,%01000100,%00100000 ; 0x28 (
     db %00000100,%00100010,%00100010,%01000000 ; 0x29 )
-    
     db %00000000,%00001010,%01001010,%00000000 ; 0x2A *
     db %00000000,%00000100,%11100100,%00000000 ; 0x2B +
     db %00000000,%00000000,%00000010,%00100100 ; 0x2C ,
