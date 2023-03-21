@@ -2404,7 +2404,8 @@ set_tab:                ;           putchar
     jr   nc,$-2         ; 2:7/12    putchar
     add   A, MAX_X      ; 2:7       putchar   (new x) mod MAX_X
     cp    L             ; 1:4       putchar
-    call  c, next_line  ; 3:10/17   putchar   new x < (old x+1)    
+    call  c, next_line  ; 3:10/17   putchar   new x < (old x+1) 
+set_tab_A               ;           putchar
     ld    L, A          ; 1:4       putchar
     ld  (cursor),HL     ; 3:16      putchar   save new cursor
     jr   clean_set_0    ; 2:12      putchar
@@ -2416,8 +2417,18 @@ cursor_left:            ;           putchar   0x08
     dec  HL             ; 1:6       putchar
     jr   nz, $+4        ; 2:7/12    putchar
     ld    L, MAX_X-1    ; 2:7       putchar
-    or    A             ; 1:4       putchar
+    jr   enter_exit     ; 2:12      putchar
 
+print_comma:            ;           putchar   0x06
+    ld   HL,(cursor)    ; 3:16      putchar   H = next Y, L = next X
+    ld    A, 17         ; 2:7       putchar
+    cp    L             ; 1:4       putchar
+    jr   nc, set_tab_A  ; 2:12      putchar
+    add   A, A          ; 1:4       putchar
+    cp    L             ; 1:4       putchar
+    jr   nc, set_tab_A  ; 2:12      putchar
+    xor   A             ; 1:4       putchar
+    
 enter:                  ;           putchar   0x0D
     call  z, next_line  ; 3:10/17   putchar
 enter_exit:             ;           putchar
@@ -2425,16 +2436,7 @@ enter_exit:             ;           putchar
     pop  HL             ; 1:10      putchar   load HL
     ret                 ; 3:10
 
-print_comma:            ;           putchar   0x06
-    ld   HL,(cursor)    ; 3:16      putchar
-    ld    A, L          ; 1:4       putchar
-    or   0x0F           ; 2:7       putchar   0xnF  --> 0F,1F,2F,3F
-    cp   0x2F           ; 2:7       putchar
-    jr    c, $+4        ; 2:7       putchar
-    or   0xFF           ; 2:7       putchar         --> 0F,1F,FF,FF
-    inc   A             ; 1:4       putchar   0xN0  --> 10,20,00,00
-    jr   set_tab+3      ; 2:12      putchar
-
+    
 print_edit:             ;           putchar   0x07
 cursor_right:           ;           putchar   0x09
 cursor_down:            ;           putchar   0x0A
