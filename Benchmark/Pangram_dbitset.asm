@@ -1,65 +1,73 @@
 ORG 0x8000
 
+
+
+   
+   
+   
+
+    ;# -1
+
+ 
+  
+   
+  
+               
+       
+       
+      
+      
+  
+     
+
 ;   ===  b e g i n  ===
     ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
     ld    L, 0x1A       ; 2:7       init   Upper screen
     call 0x1605         ; 3:17      init   Open channel
     ld   HL, 60000      ; 3:10      init   Init Return address stack
     exx                 ; 1:4       init
-
     push DE             ; 1:11      string_z   ( -- addr )
     ex   DE, HL         ; 1:4       string_z   "The five boxing wizards jump quickly."
     ld   HL, string101  ; 3:10      string_z   Address of null-terminated string101
-
-    ld   BC, 9999       ; 3:10      9999 for 101
-for101:                 ;           9999 for 101
-    ld  (idx101),BC     ; 4:20      9999 for 101 save index
-   
-    push DE             ; 1:11      dup
+    ld   BC, 9999       ; 3:10      9999 for_101   ( -- )
+for101:                 ;           9999 for_101
+    ld  (idx101),BC     ; 4:20      9999 for_101   save index
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a )
-   
+    ld    E, L          ; 1:4       dup
     call _pangram_      ; 3:17      call ( -- )
-   
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- )
-
-idx101 EQU $+1          ;           next 101
-    ld   BC, 0x0000     ; 3:10      next 101 idx always points to a 16-bit index
-    ld    A, B          ; 1:4       next 101
-    or    C             ; 1:4       next 101
-    dec  BC             ; 1:6       next 101 index--, zero flag unaffected
-    jp   nz, for101     ; 3:10      next 101
-next101:                ;           next 101
-
-    call _pangram_      ; 3:17      call ( -- ) 
-    call PRT_SP_S16     ; 3:17      space .   ( s -- ) 
+    pop  DE             ; 1:10      drop   ( a -- )
+idx101 EQU $+1          ;           next_101
+    ld   BC, 0x0000     ; 3:10      next_101   idx always points to a 16-bit index
+    ld    A, B          ; 1:4       next_101
+    or    C             ; 1:4       next_101
+    dec  BC             ; 1:6       next_101   index--, zero flag unaffected
+    jp   nz, for101     ; 3:10      next_101
+leave101:               ;           next_101
+    call _pangram_      ; 3:17      call ( -- )
+    call PRT_SP_S16     ; 3:17      space .   ( s -- )
     ld    A, 0x0D       ; 2:7       cr      Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A  ;# -1
-
+    rst   0x10          ; 1:11      cr      with 48K ROM in, this will print char in A
 Stop:                   ;           stop
     ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
     ld   HL, 0x2758     ; 3:10      stop
     exx                 ; 1:4       stop
     ret                 ; 1:10      stop
 ;   =====  e n d  =====
-
 ;   ---  the beginning of a non-recursive function  ---
 _pangram_:              ;           ( addr -- ? )
     pop  BC             ; 1:10      : ret
-    ld  (_pangram__end+1),BC; 4:20      : ( ret -- ) 
-  
+    ld  (_pangram__end+1),BC; 4:20      : ( ret -- )
     dec  HL             ; 1:6       1-
-  
-    push DE             ; 1:11      pushdot(0)   ( -- hi lo )
-    push HL             ; 1:11      pushdot(0)
-    ld   DE, 0x0000     ; 3:10      pushdot(0)
-    ld    L, D          ; 1:4       pushdot(0)   L = D = 0x00
-    ld    H, L          ; 1:4       pushdot(0)   H = L = 0x00 
-  
+                        ;[7:40]     0.   ( -- 0x0000 0x0000 )
+    push DE             ; 1:11      0.
+    push HL             ; 1:11      0.
+    ld   DE, 0x0000     ; 3:10      0.
+    ld    L, D          ; 1:4       0.   L = D = 0x00
+    ld    H, L          ; 1:4       0.   H = L = 0x00
 begin101:               ;           begin 101
-    
-                        ;[7:42]     rot 1+ -rot 2over nip c@ 0 c<> while 101 2over nip c@   ( addr d -- addr++ d )
+                       ;[13:74]     rot 1+ -rot 2over nip c@ 0 c<> while 101 2over nip c@   ( addr d -- addr++ d )
     pop  BC             ; 1:10      rot 1+ -rot 2over nip c@ 0 c<> while 101 2over nip c@
     inc  BC             ; 1:6       rot 1+ -rot 2over nip c@ 0 c<> while 101 2over nip c@   BC = addr++
     push BC             ; 1:11      rot 1+ -rot 2over nip c@ 0 c<> while 101 2over nip c@
@@ -70,48 +78,41 @@ begin101:               ;           begin 101
     ex   DE, HL         ; 1:4       rot 1+ -rot 2over nip c@ 0 c<> while 101 2over nip c@
     ld    L, A          ; 1:4       rot 1+ -rot 2over nip c@ 0 c<> while 101 2over nip c@
     ld    H, 0x00       ; 2:7       rot 1+ -rot 2over nip c@ 0 c<> while 101 2over nip c@
-    
-    set   5, L          ; 2:8       32 or 
+    set   5, L          ; 2:8       32 or
     ; warning M4 does not know the numerical value of >>>'a'<<<
     ld   BC, -('a')     ; 3:10      'a' -
     add  HL, BC         ; 1:11      'a' -
-    
                         ;[9:32]     dup 0 26 within if   ( x -- x )  true=(0<=x<26)
     ld    A, L          ; 1:4       dup 0 26 within if
     sub  low 26         ; 2:7       dup 0 26 within if
     ld    A, H          ; 1:4       dup 0 26 within if
     sbc   A, high 26    ; 2:7       dup 0 26 within if   carry: HL - (26 - (0))
     jp   nc, else101    ; 3:10      dup 0 26 within if
-      
     call BITSET32       ; 3:17      dbitset   ( d1 u -- d )  d = d1 | 2**u   default version
-    
     jp   endif101       ; 3:10      else
-else101: 
+else101:
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- ) 
+    pop  DE             ; 1:10      drop   ( a -- )
 endif101:
-  
     jp   begin101       ; 3:10      repeat 101
 break101:               ;           repeat 101
-  
 
-               ;[13:56/56,56,56,56] 0x3FFFFFF. D=   ( d1 -- flag )  flag: d1 == 0x3FFFFFF
-    ld    A, D          ; 1:4       0x3FFFFFF. D=
-    xor   0xFC          ; 2:7       0x3FFFFFF. D=   x[1] = 0x03 = 0xFF ^ 0xFC
-    and   E             ; 1:4       0x3FFFFFF. D=   x[2] = 0xFF
-    and   H             ; 1:4       0x3FFFFFF. D=   x[3] = 0xFF
-    and   L             ; 1:4       0x3FFFFFF. D=   x[4] = 0xFF
-    inc   A             ; 1:4       0x3FFFFFF. D=
-    sub  0x01           ; 2:7       0x3FFFFFF. D=
-    sbc   A, A          ; 1:4       0x3FFFFFF. D=
-    ld    L, A          ; 1:4       0x3FFFFFF. D=
-    ld    H, A          ; 1:4       0x3FFFFFF. D=   HL = flag
-    pop  DE             ; 1:10      0x3FFFFFF. D= 
-    pop  DE             ; 1:10      nip ( b a -- a ) 
+               ;[13:56/56,56,56,56] 0x3FFFFFF. d=   ( d1 -- flag )  flag: d1 == 0x03FF
+    ld    A, D          ; 1:4       0x3FFFFFF. d=
+    xor   0xFC          ; 2:7       0x3FFFFFF. d=   x[1] = 0x03 = 0xFF ^ 0xFC
+    and   E             ; 1:4       0x3FFFFFF. d=   x[2] = 0xFF
+    and   H             ; 1:4       0x3FFFFFF. d=   x[3] = 0xFF
+    and   L             ; 1:4       0x3FFFFFF. d=   x[4] = 0xFF
+    inc   A             ; 1:4       0x3FFFFFF. d=
+    sub  0x01           ; 2:7       0x3FFFFFF. d=
+    sbc   A, A          ; 1:4       0x3FFFFFF. d=
+    ld    L, A          ; 1:4       0x3FFFFFF. d=
+    ld    H, A          ; 1:4       0x3FFFFFF. d=   HL = flag
+    pop  DE             ; 1:10      0x3FFFFFF. d=
+    pop  DE             ; 1:10      nip   ( b a -- a )
 _pangram__end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
-
 ;==============================================================================
 ; Input: HL
 ; Output: Print space and signed decimal number in HL

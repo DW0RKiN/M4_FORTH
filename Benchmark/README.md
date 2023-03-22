@@ -92,6 +92,67 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.c
 
 ### Fib 1
 
+Warning: The code for FORTH and C is adopted and contains an error where it correctly calculates only for positive values. 
+Nevertheless, in both variants, a signed integer is calculated and no one is favored to use an unsigned integer. 
+Furthermore, it actually calculates fib(n+1) instead of fib(n). So it returns 1 for negative numbers and zero.
+
+    if (n<2)
+        return 1;
+    else
+        return fib(n-1)+fib(n-2);
+
+    DUP PUSH(2) LT IF 
+        DROP PUSH(1) SEXIT 
+    THEN
+    DUP  _1SUB SCALL(fib1s) 
+    SWAP _2SUB SCALL(fib1s) ADD
+
+It should correctly return from the definition for:
+
+    Fib(0) = 0
+    Fib(1) = 1
+    Fib(n) = Fib(n-1) + Fib(n-2)
+
+    if (n<2)
+        return n;
+    else
+        return fib(n-1)+fib(n-2);
+        
+    DUP PUSH(2) LT IF
+        SEXIT 
+    THEN
+    DUP  _1SUB SCALL(fib1s) 
+    SWAP _2SUB SCALL(fib1s) ADD
+    
+Or a faster but incorrect variant for Fib(0) is:
+
+    Fib(0) = 0 ... fail
+    Fib(1) = 1
+    Fib(2) = 1
+    Fib(n) = Fib(n-1) + Fib(n-2)
+
+    if (n<3)
+        return 1;
+    return fib(n-1)+fib(n-2);
+        
+    DUP PUSH(3) LT IF
+        SEXIT 
+    THEN
+    DUP  _1SUB SCALL(fib1s) 
+    SWAP _2SUB SCALL(fib1s) ADD
+
+or
+
+    DUP PUSH(2) GT IF
+        DUP  _1SUB SCALL(fib1s) 
+        SWAP _2SUB SCALL(fib1s) ADD
+        SEXIT 
+    THEN
+    DROP PUSH(1)
+    
+And negative values should be counted as positive and the result should be turned to a negative value.
+The algorithm could be greatly speeded up using CASE, but it would have to be used for both C and FORTH to make the results comparable.
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.asm
 
@@ -148,11 +209,16 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2a.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.c
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_fib2a.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_fib2a.asm
+
+
 |       Name        |               System                 |        Forth / C        |  Benchmark  | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :---------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Fib2        | 0m6.39s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use data stack | Fib2s       | 0m5.23s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH use assembler  | Fib2a       | 0m2.55s
+| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu        | Boriel Basic zxbc 1.16.4| Fib2 a = a+c| 0m14.38s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a = a+c| 0m49.19s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Fib2 a+= c  | 0m43.97s
 | Carsten Strotmann | Scheider Tower AT 220 i286 10Mhz     | VolksForth MS-DOS (ITC) | Fibonacci2  | 8
