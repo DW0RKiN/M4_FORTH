@@ -1550,6 +1550,15 @@ https://clrhome.org/table/
 
 https://www.gnu.org/savannah-checkouts/gnu/m4/manual/html_node/index.html#SEC_Contents
 
+
+### Other ZX Spectrum compiler
+
+Boriel Basic - Easy to install, easy to use, easy syntax in basic, the resulting code makes sense and is very fast
+https://github.com/boriel/zxbasic
+
+C
+https://github.com/z88dk/z88dk
+
 ### Other links
 
 http://wiki.laptop.org/go/Forth_Lessons
