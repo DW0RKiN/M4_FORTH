@@ -209,8 +209,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2a.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib2.c
 
-https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_fib2a.m4
-https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_fib2a.asm
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_fib2.bas
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_fib2.asm
 
 
 |       Name        |               System                 |        Forth / C        |  Benchmark  | Time (sec/round) | Scale |
