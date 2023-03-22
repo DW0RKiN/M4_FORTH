@@ -16,12 +16,12 @@ __{}define({__INFO},__COMPILE_INFO)
 __{}ifdef({USE_FONT_5x8},{
 __{}    ld  HL, PRINT_OUT   ; 3:10      __INFO
 __{}    ld (CURCHL),HL      ; 3:16      __INFO
-__{}    ld  HL,draw_char    ; 3:10      __INFO
+__{}    ld  HL, putchar     ; 3:10      __INFO
 __{}    ld (PRINT_OUT),HL   ; 3:10      __INFO}){}dnl
 __{}ifelse(ifdef({USE_FONT_5x8},1){}ifdef({USE_FONT_5x8_CALL},1),1,{
 __{}  if 0
 __{}    ld   HL, 0x0000     ; 3:10      __INFO
-__{}    ld  (cursor),HL     ; 3:16      __INFO
+__{}    ld  (putchar_yx),HL ; 3:16      __INFO
 __{}  else
 __{}    ld   HL, 0x1821     ; 3:10      __INFO
 __{}    ld   DE,(0x5C88)    ; 4:20      __INFO
@@ -32,11 +32,11 @@ __{}    add   A, A          ; 1:4       __INFO   2*x
 __{}    inc   A             ; 1:4       __INFO   2*2+1
 __{}    add   A, A          ; 1:4       __INFO   4*x+2
 __{}    add   A, A          ; 1:4       __INFO   8*x+4
-__{}     ld   L, 0xFF       ; 2:7       __INFO
+__{}    ld    L, 0xFF       ; 2:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    sub 0x05            ; 2:7       __INFO
 __{}    jr   nc, $-3        ; 2:7/12    __INFO
-__{}    ld  (cursor),HL     ; 3:16      __INFO
+__{}    ld  (putchar_yx),HL ; 3:16      __INFO
 __{}  endif}){}dnl
 __{}ifelse($1,{},{
 __{}__{}  .warning "Missing value for return address stack. The init() macro has no parameter!"
@@ -65,12 +65,12 @@ __{}ifdef({USE_FONT_5x8_CALL},{
 __{}  if 0
 __{}    ld    A, 0x16       ; 2:7       __INFO   at y x
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
-__{}    ld    A,(cursor+1)  ; 3:13      __INFO
+__{}    ld    A,(putchar_y) ; 3:13      __INFO
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
 __{}    xor   A             ; 1:4       __INFO
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
 __{}  else
-__{}    ld   HL,(cursor)    ; 3:16
+__{}    ld   HL,(putchar_yx); 3:16
 __{}    ld    A, 0x16       ; 2:7       __INFO   at y x
 __{}    rst   0x10          ; 1:11      __INFO   putchar(reg A) with {ZX 48K ROM}
 __{}    ld    A, H          ; 1:4       __INFO

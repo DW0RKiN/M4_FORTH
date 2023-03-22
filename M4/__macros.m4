@@ -16,7 +16,7 @@ __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
 __{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__{}__add({__SUM_PRICE},__PRICE){}dnl
-__{}__{}    call  draw_char     ; 3:17      $1},
+__{}__{}    call  putchar       ; 3:17      $1},
 __{}{dnl
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},11){}dnl

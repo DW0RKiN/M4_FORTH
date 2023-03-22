@@ -2294,7 +2294,7 @@ dnl
 ifelse(ifdef({USE_FONT_5x8},1){}ifdef({USE_FONT_5x8_CALL},1),1,{
 ;==============================================================================
 ; Print text with 5x8 font
-; entry point is draw_char
+; entry point is "putchar"
 
 MAX_X           equ 51       ; x = 0..50
 MAX_Y           equ 24       ; y = 0..23
@@ -2364,7 +2364,7 @@ set_over:               ;           putchar   0x15
     jr   clean_set_0    ; 2:12      putchar
 
 set_at:                 ;           putchar   0x16
-    ld  (cursor+1),A    ; 3:13      putchar   save new Y
+    ld  (putchar_y),A   ; 3:13      putchar   save new Y
     neg                 ; 2:8       putchar
     add   A, 0x18       ; 2:7       putchar
     ld  (0x5C89),A      ; 3:13      putchar
@@ -2372,7 +2372,7 @@ set_at:                 ;           putchar   0x16
     jr   clean_set_A    ; 2:12      putchar
 
 set_at_x:               ;           putchar
-    ld  (cursor),A      ; 3:13      putchar   save new X
+    ld  (putchar_yx),A  ; 3:13      putchar   save new X
     jr   clean_set_0    ; 2:12      putchar
 
   if 0
@@ -2399,7 +2399,7 @@ tab_spec:               ;           putchar
 ;   jr   set_tab        ; 2:12      putchar   0x17
 
 set_tab:                ;           putchar
-    ld   HL,(cursor)    ; 3:16      putchar   load origin cursor
+    ld   HL,(putchar_yx); 3:16      putchar   load origin cursor
     sub  MAX_X          ; 2:7       putchar
     jr   nc,$-2         ; 2:7/12    putchar
     add   A, MAX_X      ; 2:7       putchar   (new x) mod MAX_X
@@ -2407,11 +2407,11 @@ set_tab:                ;           putchar
     call  c, next_line  ; 3:10/17   putchar   new x < (old x+1) 
 set_tab_A               ;           putchar
     ld    L, A          ; 1:4       putchar
-    ld  (cursor),HL     ; 3:16      putchar   save new cursor
+    ld  (putchar_yx),HL ; 3:16      putchar   save new cursor
     jr   clean_set_0    ; 2:12      putchar
 
 cursor_left:            ;           putchar   0x08
-    ld   HL,(cursor)    ; 3:16      putchar
+    ld   HL,(putchar_yx); 3:16      putchar
     inc   L             ; 1:4       putchar
     dec   L             ; 1:4       putchar
     dec  HL             ; 1:6       putchar
@@ -2420,7 +2420,7 @@ cursor_left:            ;           putchar   0x08
     jr   enter_exit     ; 2:12      putchar
 
 print_comma:            ;           putchar   0x06
-    ld   HL,(cursor)    ; 3:16      putchar   H = next Y, L = next X
+    ld   HL,(putchar_yx); 3:16      putchar   H = next Y, L = next X
     ld    A, 17         ; 2:7       putchar
     cp    L             ; 1:4       putchar
     jr   nc, set_tab_A  ; 2:12      putchar
@@ -2432,7 +2432,7 @@ print_comma:            ;           putchar   0x06
 enter:                  ;           putchar   0x0D
     call  z, next_line  ; 3:10/17   putchar
 enter_exit:             ;           putchar
-    ld  (cursor),HL     ; 3:16      putchar   save new cursor
+    ld  (putchar_yx),HL ; 3:16      putchar   save new cursor
     pop  HL             ; 1:10      putchar   load HL
     ret                 ; 3:10
 
@@ -2451,7 +2451,7 @@ print_question          ;           putchar   0x00..0x05 + 0x0E..0x0F + 0x18..0x
 ;------------------------------------------------------------------------------
 ;  Input: A = char
 ; Poluttes: AF, AF', DE', BC'
-draw_char:
+putchar:
     push HL                 ; 1:11
 self_jmp    equ $+1
     jr   jump_from          ; 2:7/12    self-modifying
@@ -2466,6 +2466,8 @@ jump_from:
     jr    z, print_comma    ; 2:7/12
     cp   0x08               ; 2:7       cursor_left
     jr    z, cursor_left    ; 2:7/12
+    cp   0x09               ; 2:7       cursor_right
+    jp    z, next_cursor    ; 3:10
     cp   0x0D               ; 2:7       enter
     jr    z, enter          ; 2:7/12
 
@@ -2547,7 +2549,9 @@ ifdef({USE_FONT_5x8_CALL},{
 
 ;# YX -> ATTR
 
-cursor     equ     $+1
+putchar_yx     equ     $+1
+putchar_y      equ     $+2
+
     ld   DE, 0x0000         ; 3:10
     ld    A, E              ; 1:4     X
     add   A, A              ; 1:4     2*X
@@ -2593,76 +2597,76 @@ self_attr       equ $+1
     djnz  $-1               ; 2:8/13        
     ex   DE, HL             ; 1:4
 
-    ld    C, 4              ; 2:7        
-loop_c:
-    exx                     ; 1:4
-    ld    A,(HL)            ; 1:7
-    inc  HL                 ; 1:6
-    ld    B, C              ; 1:4
-    rlca                    ; 1:4
-    djnz  $-1               ; 2:8/13
-    ld    B, A              ; 1:4
-    exx                     ; 1:4
-    ld    B, 2              ; 2:7        
-loop_b:
-    xor (HL)                ; 1:7
-    and   D                 ; 1:4
-    xor (HL)                ; 1:7
-    ld  (HL),A              ; 1:4     ulozeni jednoho bajtu z masky
+    ld    C, 4          ; 2:7       putchar   draw        
+putchar_c:              ;           putchar   draw
+    exx                 ; 1:4       putchar   draw
+    ld    A,(HL)        ; 1:7       putchar   draw
+    inc  HL             ; 1:6       putchar   draw
+    ld    B, C          ; 1:4       putchar   draw
+    rlca                ; 1:4       putchar   draw
+    djnz  $-1           ; 2:8/13    putchar   draw
+    ld    B, A          ; 1:4       putchar   draw
+    exx                 ; 1:4       putchar   draw
+    ld    B, 2          ; 2:7       putchar   draw 
+putchar_b:              ;           putchar   draw
+    xor (HL)            ; 1:7       putchar   draw
+    and   D             ; 1:4       putchar   draw
+    xor (HL)            ; 1:7       putchar   draw
+    ld  (HL),A          ; 1:4       putchar   draw   ulozeni jednoho bajtu z masky
 
-    exx                     ; 1:4
-    ld    A, B              ; 1:4     načtení druhe poloviny "bajtu" z masky
-    exx                     ; 1:4
+    exx                 ; 1:4       putchar   draw
+    ld    A, B          ; 1:4       putchar   draw   načtení druhe poloviny "bajtu" z masky
+    exx                 ; 1:4       putchar   draw
 
-    inc   L                 ; 1:4
-    xor (HL)                ; 1:7
-    and   E                 ; 1:4
-    xor (HL)                ; 1:7
-    ld  (HL),A              ; 1:4     ulozeni jednoho bajtu z masky
-    dec   L                 ; 1:4
-    inc   H                 ; 1:4
+    inc   L             ; 1:4       putchar   draw
+    xor (HL)            ; 1:7       putchar   draw
+    and   E             ; 1:4       putchar   draw
+    xor (HL)            ; 1:7       putchar   draw
+    ld  (HL),A          ; 1:4       putchar   draw   ulozeni jednoho bajtu z masky
+    dec   L             ; 1:4       putchar   draw
+    inc   H             ; 1:4       putchar   draw
 
-    exx                     ; 1:4
-    ld    A, B              ; 1:4     načtení jednoho bajtu z masky
-    rlca                    ; 1:4
-    rlca                    ; 1:4
-    rlca                    ; 1:4
-    rlca                    ; 1:4
-    ld    B, A              ; 1:4
-    exx                     ; 1:4
+    exx                 ; 1:4       putchar   draw
+    ld    A, B          ; 1:4       putchar   draw   načtení jednoho bajtu z masky
+    rlca                ; 1:4       putchar   draw
+    rlca                ; 1:4       putchar   draw
+    rlca                ; 1:4       putchar   draw
+    rlca                ; 1:4       putchar   draw
+    ld    B, A          ; 1:4       putchar   draw
+    exx                 ; 1:4       putchar   draw
 
 ;     halt
     
-    djnz loop_b             ; 2:8/13
+    djnz putchar_b      ; 2:8/13    putchar   draw
     
-    dec   C                 ; 2:7        
-    jr   nz, loop_c         ; 2/7/12
+    dec   C             ; 2:7       putchar   draw 
+    jr   nz, putchar_c  ; 2/7/12    putchar   draw
 
 ifdef({USE_FONT_5x8_CALL},{
-    exx                     ; 1:4})
-    pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
-ifdef({USE_FONT_5x8_CALL},{
-    exx                     ; 1:4})
-    pop  BC                 ; 1:10    obnovit obsah BC ze zásobníku
-    pop  DE                 ; 1:10    obnovit obsah DE ze zásobníku    
-ifdef({USE_FONT_5x8},{
-    exx                     ; 1:4})
+    exx                 ; 1:4       putchar})
+    pop  HL             ; 1:10      putchar   obnovit obsah HL ze zásobníku
+ifdef({USE_FONT_5x8_CALL},{dnl
+    exx                 ; 1:4       putchar})
+    pop  BC             ; 1:10      putchar   obnovit obsah BC ze zásobníku
+    pop  DE             ; 1:10      putchar   obnovit obsah DE ze zásobníku    
+ifdef({USE_FONT_5x8},{dnl
+    exx                 ; 1:4       putchar})
 ;   fall to next cursor    
 
-
-    ld   HL,(cursor)   ; 3:16
+; Output: [putchar_yx] = cursor right
+next_cursor:            ;
+    ld   HL,(putchar_yx); 3:16
 ; Input: HL = YX
-; Output: HL = cursor = next cursor
-next_cursor:
-    inc   L                 ; 1:4     0..50
-    ld    A, L              ; 1:4
-    sub  MAX_X              ; 2:7     -51
-    call nc, next_line      ; 3:10/17
+next_cursor_HL:         ;
+    inc   L             ; 1:4     0..50
+    ld    A, L          ; 1:4
+    sub  MAX_X          ; 2:7     -51
+    call nc, next_line  ; 3:10/17
 next_exit:
-    ld  (cursor),HL         ; 3:16
-exit_hl:                    ;
-    pop  HL                 ; 1:10    obnovit obsah HL ze zásobníku
-    ret                     ; 1:10
+    ld  (putchar_yx),HL ; 3:16
+exit_hl:                ;
+    pop  HL             ; 1:10    obnovit obsah HL ze zásobníku
+    ret                 ; 1:10
 
 ; Input:
 ; Output: H = Y+1/Y+0+scroll, L=0
@@ -2670,24 +2674,14 @@ next_line:
     push AF             ; 1:11      putchar
     ld   HL, 0x5C88     ; 3:10      putchar
     ld  (HL), 0x01      ; 2:10      putchar
-    ld    A, 0x15       ; 2:7       putchar   over
+    ld    A, 0x09       ; 2:7       putchar   cursor_right
 ifdef({USE_FONT_5x8_CALL},{dnl
-__{}    rst  0x10           ; 1:11      putchar
-__{}    ld    A, 0x01       ; 2:7       putchar   over 1
-__{}    rst  0x10           ; 1:11      putchar
-__{}    ld    A, ' '        ; 2:7       putchar   space and check bios scroll
 __{}    rst  0x10           ; 1:11      putchar},
 {dnl
 __{}    push HL             ; 1:11      putchar
 __{}    call 0x09F4         ; 3:17      putchar   rst 0x10 --> call 0x09F4
-__{}    exx                 ; 1:4       putchar
-__{}    ld    A, 0x01       ; 2:7       putchar   over 1
-__{}    rst  0x10           ; 1:11      putchar        
-__{}    ld    A, ' '        ; 2:7       putchar   space and check bios scroll
-__{}    rst  0x10           ; 1:11      putchar
-__{}    exx                 ; 1:4       putchar
-__{}    ld  HL,draw_char    ; 3:10      putchar
-__{}    ld (PRINT_OUT),HL   ; 3:10      putchar
+__{}    ld   HL, putchar    ; 3:10      putchar
+__{}    ld  (PRINT_OUT),HL  ; 3:10      putchar
 __{}    pop  HL             ; 1:10      putchar})
     ld    A, 0x18       ; 2:7       putchar
     inc   L             ; 1:4       putchar
