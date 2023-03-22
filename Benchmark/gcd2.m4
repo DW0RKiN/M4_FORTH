@@ -20,7 +20,9 @@ COLON(gcd2,( a b -- gcd ))
 SEMICOLON          
 
 COLON(gcd2_bench,( -- ))
-    XDO(100,0)
-        XDO(100,0) XJ XI CALL(gcd2) DROP XLOOP
-    XLOOP
+    PUSH(100) PUSH(0) DO
+        PUSH(100) PUSH(0) DO 
+            J I CALL(gcd2) DROP 
+        LOOP
+    LOOP
 SEMICOLON

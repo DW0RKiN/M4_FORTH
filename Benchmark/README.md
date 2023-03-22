@@ -73,6 +73,24 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.c
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2.bas
 
+I had to manually delete lines starting with: 
+
+    #line
+
+Rename labels:
+
+    __BOR16: -->  .core.__BOR16:
+    __EQ16:  -->  .core.__EQ16:
+
+Erase the lines:
+
+    push namespace core
+    pop namespace
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2.asm
+
+
+
 
 |       Name        |             System               |        Forth / C        | Benchmark | Time (sec/round) | Scale |
 | :---------------: | :------------------------------: | :---------------------: | :-------: | :--------------- | :---: |
