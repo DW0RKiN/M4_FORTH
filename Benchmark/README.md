@@ -71,9 +71,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.c
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2.bas
+
+
 |       Name        |             System               |        Forth / C        | Benchmark | Time (sec/round) | Scale |
 | :---------------: | :------------------------------: | :---------------------: | :-------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD2   | 4.53s
+| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu    | Boriel Basic zxbc 1.16.4|    GCD2   | 10.44s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | zcc z88dk v16209        |    GCD2   | 35.31s
 | Ben               | IBM PS/2 L40SX                   | DX-Forth                |    GCD2   | 42s              | 10x
 | Wolfgang Stief    | SUN SparcStation 10 TI TMS390255 | OpenFirmware            |    GCD2   | 0,65s            |
