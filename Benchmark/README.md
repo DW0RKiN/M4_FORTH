@@ -68,6 +68,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd1.c
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.asm
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2u.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2u.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.c
 
@@ -92,25 +94,26 @@ Erase the lines:
     pop namespace
 
 
-|       Name        |             System               |        Forth / C        | Benchmark | Time (sec/round) | Scale |
-| :---------------: | :------------------------------: | :---------------------: | :-------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD2   | 4.53s
-| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu    | Boriel Basic zxbc 1.16.4|    GCD2   | 12.52s
-| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu    | Boriel Basic zxbc 1.16.4| GCD2 ui   | 10.36s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | zcc z88dk v16209        |    GCD2   | 35.31s
-| Ben               | IBM PS/2 L40SX                   | DX-Forth                |    GCD2   | 42s              | 10x
-| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255 | OpenFirmware            |    GCD2   | 0,65s            |
-| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac   | OpenBoot 3.25           |    GCD2   | 0,11s            |
-| Stefan Niestegge  | Atari Falcon 68060               | f68kans                 |    GCD2   | 0,067s           |
-| Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz) | FreeBSD 9 FICL Bootloader | GCD2 | 0.57s            |
-| Johan Kotlinski   | C64                              | DurexForth 1.6.1 (STC)  |    GCD 2  | 70s              | 1x
-| Carsten Strotmann | A-ONE (Apple 1 Clone) mit 65C02  | TaliForth 2 (STC)       |    GCD 2  | 1m25s            | 1x
-| Thomas Woinke     | Steckschwein 8MHz 65c02          | TaliForth 2 (STC)       |    GCD 2  | 11.75s           | 1x
-| Enrico/Dirk       | Robotron A 7150 i8086/8087 Multibus ~5Mhz | VolksForth MS-DOS (ITC) | GCD 2 | 30          |
-| Andreas Boehm     | Commodore C64 6510               | Audiogenic Forth-64     |    GCD 2  | 84.84            |
-| Matthias Trute    | Atmega16 8MHz                    | amForth 4.4             |    GCD 2  | 10.5             |
-| Norbert Kehrer    | Mupid II (BTX Decoder)           | FIG-Forth 1.1           |    GCD 2  | 188s             |
-| Norbert Kehrer    | Mupid II (BTX Decoder)           | Camel Forth 1.01        |    GCD 2  | 135s             |
+|       Name        |                  System                   |          Forth / C        | Benchmark | Time (sec/round) | Scale |
+| :---------------: | :---------------------------------------: | :-----------------------: | :-------: | :--------------- | :---: |
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu             | M4_FORTH                  |   GCD2    | 4.53s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu             | M4_FORTH                  |   GCD2 ui | 4.08s
+| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu             | Boriel Basic zxbc 1.16.4  |   GCD2    | 12.52s
+| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu             | Boriel Basic zxbc 1.16.4  |   GCD2 ui | 10.36s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu             | zcc z88dk v16209          |   GCD2    | 35.31s
+| Ben               | IBM PS/2 L40SX                            | DX-Forth                  |   GCD2    | 42s              | 10x
+| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255          | OpenFirmware              |   GCD2    | 0,65s            |
+| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac            | OpenBoot 3.25             |   GCD2    | 0,11s            |
+| Stefan Niestegge  | Atari Falcon 68060                        | f68kans                   |   GCD2    | 0,067s           |
+| Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz)       | FreeBSD 9 FICL Bootloader |   GCD2    | 0.57s            |
+| Johan Kotlinski   | C64                                       | DurexForth 1.6.1 (STC)    |   GCD2    | 70s              | 1x
+| Carsten Strotmann | A-ONE (Apple 1 Clone) mit 65C02           | TaliForth 2 (STC)         |   GCD2    | 1m25s            | 1x
+| Thomas Woinke     | Steckschwein 8MHz 65c02                   | TaliForth 2 (STC)         |   GCD2    | 11.75s           | 1x
+| Enrico/Dirk       | Robotron A 7150 i8086/8087 Multibus ~5Mhz | VolksForth MS-DOS (ITC)   |   GCD2    | 30               |
+| Andreas Boehm     | Commodore C64 6510                        | Audiogenic Forth-64       |   GCD2    | 84.84            |
+| Matthias Trute    | Atmega16 8MHz                             | amForth 4.4               |   GCD2    | 10.5             |
+| Norbert Kehrer    | Mupid II (BTX Decoder)                    | FIG-Forth 1.1             |   GCD2    | 188s             |
+| Norbert Kehrer    | Mupid II (BTX Decoder)                    | Camel Forth 1.01          |   GCD2    | 135s             |
 
 
 ### Fib 1

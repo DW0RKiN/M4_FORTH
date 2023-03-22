@@ -79,14 +79,11 @@ begin101:               ;           begin 101
     ld    A, D          ; 1:4       2dup <> while 101
     sub   H             ; 1:4       2dup <> while 101
     jp    z, break101   ; 3:10      2dup <> while 101
-    ld    A, E          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       2dup < if    DE<HL --> DE-HL<0 --> carry if true
-    rra                 ; 1:4       2dup < if
-    xor   D             ; 1:4       2dup < if
-    xor   H             ; 1:4       2dup < if
-    jp    p, else104    ; 3:10      2dup < if
+    ld    A, E          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       2dup u< if    DE<HL --> DE-HL<0 --> carry if true
+    jp   nc, else104    ; 3:10      2dup u< if
     or    A             ; 1:4       over -
     sbc  HL, DE         ; 2:15      over -
     jp   endif104       ; 3:10      else

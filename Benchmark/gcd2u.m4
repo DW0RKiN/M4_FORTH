@@ -10,7 +10,7 @@ COLON(gcd2,( a b -- gcd ))
     SWAP DUP _0EQ IF   DROP         EXIT THEN                                          
     BEGIN 
     _2DUP NE WHILE  
-        _2DUP LT IF 
+        _2DUP ULT IF 
             OVER SUB                                                          
         ELSE 
             SWAP OVER SUB  ; swap                                              
