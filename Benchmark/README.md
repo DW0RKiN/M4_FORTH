@@ -72,6 +72,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.c
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2.bas
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2.asm
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2u.bas
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2u.asm
 
 I had to manually delete lines starting with: 
 
@@ -81,21 +84,19 @@ Rename labels:
 
     __BOR16: -->  .core.__BOR16:
     __EQ16:  -->  .core.__EQ16:
+    etc.
 
 Erase the lines:
 
     push namespace core
     pop namespace
 
-https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2.asm
-
-
-
 
 |       Name        |             System               |        Forth / C        | Benchmark | Time (sec/round) | Scale |
 | :---------------: | :------------------------------: | :---------------------: | :-------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD2   | 4.53s
-| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu    | Boriel Basic zxbc 1.16.4|    GCD2   | 10.44s
+| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu    | Boriel Basic zxbc 1.16.4|    GCD2   | 12.52s
+| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu    | Boriel Basic zxbc 1.16.4| GCD2 ui   | 10.36s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | zcc z88dk v16209        |    GCD2   | 35.31s
 | Ben               | IBM PS/2 L40SX                   | DX-Forth                |    GCD2   | 42s              | 10x
 | Wolfgang Stief    | SUN SparcStation 10 TI TMS390255 | OpenFirmware            |    GCD2   | 0,65s            |

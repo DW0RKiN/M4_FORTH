@@ -84,9 +84,9 @@ _b:
 	jp z, .LABEL.__LABEL7
 	ld hl, (_b)
 	ld de, (_a)
-	call .core.__LTI16
 	or a
-	jp z, .LABEL.__LABEL8
+	sbc hl, de
+	jp nc, .LABEL.__LABEL8
 	ld hl, (_a)
 	ld de, (_b)
 	or a
@@ -119,18 +119,18 @@ _b:
 .LABEL.__LABEL15:
 	ld hl, 99
 	ld de, (_n)
-	call .core.__LTI16
 	or a
-	jp z, .LABEL.__LABEL18
+	sbc hl, de
+	jp nc, .LABEL.__LABEL18
 	ld hl, (_m)
 	inc hl
 	ld (_m), hl
 .LABEL.__LABEL10:
 	ld hl, 99
 	ld de, (_m)
-	call .core.__LTI16
 	or a
-	jp z, .LABEL.__LABEL13
+	sbc hl, de
+	jp nc, .LABEL.__LABEL13
 	ret
 	;; --- end of user code ---
 ; vim:ts=4:et:
@@ -140,6 +140,7 @@ _b:
 	; Performs 16bit or 16bit and returns the boolean
 ; Input: HL, DE
 ; Output: HL <- HL OR DE
+
 
 .core.__BOR16:
 	    ld a, h
@@ -152,6 +153,7 @@ _b:
 
 	    ret
 
+
 .core.__EQ16:	; Test if 16bit values HL == DE
     ; Returns result in A: 0 = False, FF = True
 	    xor a	; Reset carry flag
@@ -159,46 +161,5 @@ _b:
 	    ret nz
 	    inc a
 	    ret
-
-  if 0
-__LEI8: ; Signed <= comparison for 8bit int
-	    ; A <= H (registers)
-	    PROC
-	    LOCAL checkParity
-	    sub h
-	    jr nz, __LTI
-	    inc a
-	    ret
-
-__LTI8:  ; Test 8 bit values A < H
-	    sub h
-
-__LTI:   ; Generic signed comparison
-	    jp po, checkParity
-	    xor 0x80
-checkParity:
-	    ld a, 0     ; False
-	    ret p
-	    inc a       ; True
-	    ret
-	    ENDP
-  endif
-
-.core.__LTI16: ; Test 8 bit values HL < DE
-    ; Returns result in A: 0 = False, !0 = True
-	    PROC
-	    LOCAL checkParity
-	    or a
-	    sbc hl, de
-	    jp po, checkParity
-	    ld a, h
-	    xor 0x80
-checkParity:
-	    ld a, 0     ; False
-	    ret p
-	    inc a       ; True
-	    ret
-	    ENDP
-
 
 	END

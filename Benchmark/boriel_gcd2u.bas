@@ -1,7 +1,7 @@
-DIM m as integer
-DIM n as integer
-DIM a as integer
-DIM b as integer
+DIM m as Uinteger
+DIM n as Uinteger
+DIM a as Uinteger
+DIM b as Uinteger
 
 GOSUB gcd2_bench
 END
