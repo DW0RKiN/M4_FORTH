@@ -73,19 +73,17 @@ dnl
 dnl
 dnl
 define({CONSTANT},{dnl
-__{}__ADD_TOKEN({__TOKEN_CONSTANT},{constant},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_CONSTANT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}  .error {$0}($@): The second parameter is missing!},
-__{}$#,{2},,{
-__{}__{}  .error {$0}($@): $# parameters found in macro!})
-__{}format({%-20s},$1) EQU $2{}dnl
-__{}define({$1},{$2})}){}dnl
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}format({%-20s},$1) EQU $2{}dnl
+__{}__{}define({$1},{$2}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

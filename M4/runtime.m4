@@ -2672,12 +2672,15 @@ exit_hl:                ;
 ; Output: H = Y+1/Y+0+scroll, L=0
 next_line:
     push AF             ; 1:11      putchar
-    ld   HL, 0x5C88     ; 3:10      putchar
-    ld  (HL), 0x01      ; 2:10      putchar
-    ld    A, 0x09       ; 2:7       putchar   cursor_right
 ifdef({USE_FONT_5x8_CALL},{dnl
+__{}    ld   HL, 0x5C88     ; 3:10      putchar
+__{}    ld  (HL), 0x01      ; 2:10      putchar
+__{}    ld    A, 0x09       ; 2:7       putchar   cursor_right
 __{}    rst  0x10           ; 1:11      putchar},
 {dnl
+__{}    ld   HL, 0x5C88     ; 3:10      putchar
+__{}    ld  (HL), 0x01      ; 2:10      putchar
+__{}    ld    A, 0x09       ; 2:7       putchar   cursor_right
 __{}    push HL             ; 1:11      putchar
 __{}    call 0x09F4         ; 3:17      putchar   rst 0x10 --> call 0x09F4
 __{}    ld   HL, putchar    ; 3:10      putchar

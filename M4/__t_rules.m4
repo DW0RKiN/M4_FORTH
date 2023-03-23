@@ -386,8 +386,13 @@ dup,,,
 __T_NAME(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_DUP_TYPE_I:__TOKEN_DROP,{__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_TYPE_I},__T_INFO(1){ }__T_INFO(0),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
 
             __T_NAME(0):$1,{__TOKEN_DUP:__TOKEN_DOT},               {__SET_TOKEN({__TOKEN_DUP_DOT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            
+            
+            __T_NAME(0):$1,{__TOKEN_DUP:__TOKEN_ADD},               {__SET_TOKEN({__TOKEN_DUP_ADD},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
-            __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_IF},                {__SET_TOKEN({__TOKEN_DUP_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            __T_NAME(0):$1,{__TOKEN_DUP:__TOKEN_IF},                {__SET_TOKEN({__TOKEN_DUP_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,{__TOKEN_DUP:__TOKEN_WHILE},             {__SET_TOKEN({__TOKEN_DUP_WHILE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
             __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_I},                 {__SET_TOKEN({__TOKEN_DUP_I},__T_INFO(0){ }$2,shift(shift($@)))},
             __T_NAME(0)-$1,{__TOKEN_DUP-__TOKEN_J},                 {__SET_TOKEN({__TOKEN_DUP_J},__T_INFO(0){ }$2,shift(shift($@)))},
@@ -439,7 +444,7 @@ d...,,,
             __T_NAME(0)-$1,{__TOKEN_DGT-__TOKEN_IF},            {__SET_TOKEN({__TOKEN_DGT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_DLE-__TOKEN_IF},            {__SET_TOKEN({__TOKEN_DLE_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_DGE-__TOKEN_IF},            {__SET_TOKEN({__TOKEN_DGE_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
-
+            
             __T_NAME(0)-$1,{__TOKEN_DEQ-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DEQ_WHILE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_DNE-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DNE_WHILE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_DLT-__TOKEN_WHILE},         {__SET_TOKEN({__TOKEN_DLT_WHILE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
@@ -576,8 +581,11 @@ n...,,,
 
 dnl # O...
 o...,,,
-            __T_NAME(0)-$1,{__TOKEN_OVER-__TOKEN_OVER},{__SET_TOKEN({__TOKEN_2DUP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
-            __T_NAME(0)-$1,{__TOKEN_OVER-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_OVER_SWAP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            __T_NAME(0):$1,{__TOKEN_OVER:__TOKEN_IF},       {__SET_TOKEN({__TOKEN_OVER_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            
+            __T_NAME(0)-$1,{__TOKEN_OVER-__TOKEN_OVER},     {__SET_TOKEN({__TOKEN_2DUP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0)-$1,{__TOKEN_OVER-__TOKEN_SWAP},     {__SET_TOKEN({__TOKEN_OVER_SWAP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
             __T_NAME(0)-$1,{__TOKEN_OVER_SWAP-__TOKEN_AND}, {__SET_TOKEN({__TOKEN_OVER_SWAP_AND}, __CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_OVER_SWAP-__TOKEN_OR},  {__SET_TOKEN({__TOKEN_OVER_SWAP_OR},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
