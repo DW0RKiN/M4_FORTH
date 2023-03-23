@@ -705,6 +705,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>                     |<sub>       ZX_CLS        |<sub>                        |<sub>          ( -- )          |<sub> ZX48:clear screen     |
 |<sub>                     |<sub>      ZX_BORDER      |<sub>                        |<sub>    ( color -- )          |<sub> ZX48:set border color |
 
+I'm testing a 5x8 font that changes the output from 8x8 if define({USE_FONT_5x8}) is entered at the beginning of the program.
+
+![Example of 5x8 font](levenstein.png)
+
 #### Pointer to 1..256 bytes number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
