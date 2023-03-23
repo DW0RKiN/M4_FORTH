@@ -707,7 +707,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 
 I'm testing a 5x8 font that changes the output from 8x8 if define({USE_FONT_5x8}) is entered at the beginning of the program.
 
-![Example of 5x8 font](levenstein.png)
+![Example of 5x8 font](levenshtein.png)
 
 #### Pointer to 1..256 bytes number
 
