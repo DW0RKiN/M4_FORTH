@@ -344,9 +344,19 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.asm
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.c
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_sieve.bas
+
+I commented out initializing the field to zero for speed, since the documentation says it should reset itself.
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_sieve.asm
+
+asm cannot be compiled using pasmo or sjasmplus
+
+
 |       Name        |                System                |        Forth / C        |  Benchmark   | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Sieve Bench  | 1.18s
+| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu        | Boriel Basic zxbc 1.16.4| Sieve Bench  | 3.48s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Sieve Bench  | 5.94s
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Sieve/Prime  | 10s              | 1x
 | Alexander Muller  | Raspberry Pi ARM 700Mhz              | Gforth 0.7.0            | Sieve        | 0m08s            | 100x
