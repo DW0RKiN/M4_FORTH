@@ -344,6 +344,59 @@ The algorithm finds all odd prime numbers up to limit
     i = 0..8190
     Prime number = 2*i+3
 
+I changed 
+
+    I dup + 3 + dup I +
+    
+    I       ( i )
+    dup     ( i i )
+    +       ( 2i )
+    3       ( 2i 3 )
+    +       ( 2i+3 )
+    dup     ( 2i+3 2i+3 )
+    I       ( 2i+3 2i+3 i )
+    +       ( 2i+3 3i+3 )
+    
+    push DE             ; 1:11      i_101(m)   ( -- i )
+    ex   DE, HL         ; 1:4       i_101(m)
+    ld   HL, (idx101)   ; 3:16      i_101(m)   idx always points to a 16-bit index
+    add  HL, HL         ; 1:11      dup +
+    inc  HL             ; 1:6       3 +   ( x -- x+0x0003 )
+    inc  HL             ; 1:6       3 +
+    inc  HL             ; 1:6       3 +
+    push DE             ; 1:11      dup i_101(m)   ( x -- x x i )
+    push HL             ; 1:11      dup i_101(m)
+    ex   DE, HL         ; 1:4       dup i_101(m)
+    ld   HL, (idx101)   ; 3:16      dup i_101(m)   idx always points to a 16-bit index
+    add  HL, DE         ; 1:11      +
+    pop  DE             ; 1:10      +
+    
+to
+
+    I DUP _1ADD DUP ADD _1ADD SWAP OVER ADD
+    
+    I       ( i ) 
+    DUP     ( i i )
+    _1ADD   ( i i+1 )
+    DUP     ( i i+1 i+1 )
+    ADD     ( i 2i+2 )
+    _1ADD   ( i 2i+3 )
+    SWAP    ( 2i+3 i )
+    OVER    ( 2i+3 i 2i+3 )
+    ADD     ( 2i+3 3i+3 )
+    
+    push DE             ; 1:11      i_101(m)   ( -- i )
+    ex   DE, HL         ; 1:4       i_101(m)
+    ld   HL, (idx101)   ; 3:16      i_101(m)   idx always points to a 16-bit index
+    push DE             ; 1:11      dup   ( a -- a a )
+    ld    D, H          ; 1:4       dup
+    ld    E, L          ; 1:4       dup
+    inc  HL             ; 1:6       1+
+    add  HL, HL         ; 1:11      dup +
+    inc  HL             ; 1:6       1+
+    ex   DE, HL         ; 1:4       swap over +   ( b a -- a b )
+    add  HL, DE         ; 1:11      over +
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.asm
 
@@ -360,7 +413,7 @@ asm cannot be compiled using pasmo or sjasmplus
 
 |       Name        |                System                |        Forth / C        |  Benchmark   | Time (sec/round) | Scale |
 | :---------------: | :----------------------------------: | :---------------------: | :----------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Sieve Bench  | 1.18s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH                | Sieve Bench  | 1.16s
 | Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu        | Boriel Basic zxbc 1.16.4| Sieve Bench  | 3.48s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209        | Sieve Bench  | 5.94s
 | Johan Kotlinski   | C64                                  | DurexForth 1.6.1 (STC)  | Sieve/Prime  | 10s              | 1x
