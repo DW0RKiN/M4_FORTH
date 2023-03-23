@@ -339,6 +339,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting.c
 
 ### Forth Sieve Benchmark
 
+Algorithm for counting prime numbers from 3 up inclusively.
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.asm
 
