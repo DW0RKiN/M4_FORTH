@@ -3,19 +3,22 @@ include(`../M4/FIRST.M4')dnl
     INIT(60000)
     CALL(gcd1_bench)
     STOP   
+
     COLON(gcd1,( a b -- gcd ))                                                                
-        OVER_IF                                                                         
+        OVER IF                                                                         
             BEGIN                                                                         
-            DUP_WHILE                                                                   
-                _2DUP_UGT_IF SWAP THEN OVER_SUB                                               
+            DUP WHILE                                                                   
+                _2DUP UGT IF SWAP THEN OVER_SUB                                               
             REPEAT DROP 
         ELSE                                                               
-            DUP_IF NIP ELSE _2DROP_PUSH(1) THEN                                                   
+            DUP IF NIP ELSE _2DROP PUSH(1) THEN                                                   
         THEN 
-    SEMICOLON 
+    SEMICOLON
+
     COLON(gcd1_bench,( -- ))
-        XDO(100,0)
-;#        PUSH2(100,0) SDO XJ OVER CALL(gcd1) DROP SLOOP
-            XDO(100,0) XJ XI CALL(gcd1) DROP XLOOP
-        XLOOP
+        PUSH(100,0) DO
+            PUSH(100,0) DO 
+                J I CALL(gcd1) DROP 
+            LOOP
+        LOOP
     SEMICOLON

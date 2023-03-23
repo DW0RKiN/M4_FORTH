@@ -4,9 +4,9 @@
        
         
 
-                                                       
-                                                                  
-                                                              
+                                                          
+                                                                
+                                                            
      
         
            
@@ -48,8 +48,8 @@ gcd2:                   ;           ( a b -- gcd )
     or    D             ; 1:4       2dup d0= if
     or    E             ; 1:4       2dup d0= if
     jp   nz, else101    ; 3:10      2dup d0= if
-    pop  DE             ; 1:10      2drop 1
-    ld   HL, 1          ; 3:10      2drop 1
+    pop  DE             ; 1:10      nip   ( b a -- a )
+    inc  HL             ; 1:6       1+
     jp   gcd2_end       ; 3:10      exit
 else101  EQU $          ;           then  = endif
 endif101:               ;           then

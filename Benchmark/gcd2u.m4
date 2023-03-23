@@ -5,9 +5,9 @@ include(`../M4/FIRST.M4')dnl
     STOP   
         
 COLON(gcd2,( a b -- gcd ))
-       _2DUP D0EQ IF _2DROP PUSH(1) EXIT THEN                                          
-         DUP _0EQ IF   DROP         EXIT THEN                                          
-    SWAP DUP _0EQ IF   DROP         EXIT THEN                                          
+       _2DUP D0EQ IF   NIP  _1ADD EXIT THEN                                          
+         DUP _0EQ IF   DROP       EXIT THEN                                          
+    SWAP DUP _0EQ IF   DROP       EXIT THEN                                          
     BEGIN 
     _2DUP NE WHILE  
         _2DUP ULT IF 

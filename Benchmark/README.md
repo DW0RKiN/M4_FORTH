@@ -30,39 +30,43 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.c
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd1.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd1.asm
 
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd1.bas
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd1.asm
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd1.c
 
-|        Name       |             System               |       Forth / C         | Benchmark | Time (sec/round) | Scale |
-| :---------------: | :------------------------------: | :---------------------: | :-------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | M4_FORTH                |    GCD1   | 3.77s
-| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu    | zcc z88dk v16209        |    GCD1   | 31.72s
-| Ben               | IBM PS/2 L40SX                   | DX-Forth                |    GCD1   | 0m29s            | 10x
-| Thunder.Bird      | Amstrad PPC 512                  | DX-Forth                |    GCD1   | 0m48s            | 5x
-| Alexander Muller  | IBM PS/2 L40SX                   | DX-Forth                |    gcd1   | 0m15s            | 5x
-| Alexander Muller  | Raspberry Pi ARM 700Mhz          | Gforth 0.7.0            |    gcd1   | 0m04s            | 100x
-| Thorsten Schoeler | Sinclair Spectrum+               | Aber Forth (FIG-Forth)  |    GCD1   | 2m14s
-| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255 | OpenFirmware            |    GCD1   | 0,51s
-| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac   | OpenBoot 3.25           |    GCD1   | 0,08s
-| Stefan Niestegge  | Atari Falcon 68060               | f68kans                 |    GCD1   | 0,063s
-| Herbert Lange     | Compaq Deskpro P166              | pForth V27              |    GCD1   | 0,002s
-| Herbert Lange     | Apple iMac G3 400Mhz             | pForth V27              |    GCD1   | 0,063s
-| Herbert Lange     | DEC 3000 400s                    | pForth V27              |    GCD1   | 0,483
-| Herbert Lange     | SUN Ultra 1 Creator 3D           | pForth V27              |    GCD1   | 0,022s
-| Johan Kotlinski   | C64                              | DurexForth 1.6.1 (STC)  |    GCD 1  | 60s               | 1x
-| Carsten Fulde     | Amiga 500 mit ACA1233n-Turbokarte (68030 @ 40 MHz) | JForth 3.1 Delta Research (Phil Burk) | GCD 1 | 0.4s | 1x
-| Carsten Fulde     | Enterprise 128                   | IS-Forth von B. Tanner  |    GCD 1  | 78s     | 1x
-| Carsten Fulde     | Sinclair QL M68008 7,5 Mhz       | Forth79 (G.W.Jackson)   |    GCD 1  | 21
-| Carsten Strotmann | Nixdorf 8810 M15 (8Mhz i286)     | L.O.V.E. Forth          |    GCD 1  | 6
-| Enrico/Dirk       | Robotron A 7150 i8086/8087 Multibus ~5Mhz | VolksForth MS-DOS (ITC) | GCD 1 | 25
-| Ralf Neumann      | Yodabashi Formula 1 Z80 4Mhz     | VolksForth CP/M (ITC)   |    GCD 1  | 42
-| Carsten Strotmann | Scheider Tower AT 220 i286 10Mhz | VolksForth MS-DOS (ITC) |    GCD 1  | 5
-| Martin Metz       | Amstrad NC100 Z80 4.606Mhz       | VolksForth CP/M (ITC)   |    GCD 1  | 38.1
-| Andreas Boehm     | Commodore C64 6510               | Audiogenic Forth-64     |    GCD 1  | 215.52
-| Thorsten Kuphaldt | Amiga 3000 68030 25Mhz           | jforth                  |    GCD 1  | 0.64
-| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz      | OpenFirmware            |    GCD 1  | 0.024
-| Matthias Trute    | Atmega16 8MHz                    | amForth 4.4             |    GCD 1  | 7.12
-| Norbert Kehrer    | Mupid II (BTX Decoder)           | FIG-Forth 1.1           |    GCD 1  | 205s
-| Norbert Kehrer    | Mupid II (BTX Decoder)           | Camel Forth 1.01        |    GCD 1  | 116s
+|        Name       |                  System                   |       Forth / C         | Benchmark | Time (sec/round) | Scale |
+| :---------------: | :---------------------------------------: | :---------------------: | :-------: | :--------------- | :---: |
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu             | M4_FORTH                |    GCD1   | 3.77s
+| Dw0rkin           | ZX Spectrum Fuse 1.6.0 Ubuntu             | Boriel Basic zxbc 1.16.4|    GCD1   | 11.27s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu             | zcc z88dk v16209        |    GCD1   | 31.72s
+| Ben               | IBM PS/2 L40SX                            | DX-Forth                |    GCD1   | 0m29s            | 10x
+| Thunder.Bird      | Amstrad PPC 512                           | DX-Forth                |    GCD1   | 0m48s            | 5x
+| Alexander Muller  | IBM PS/2 L40SX                            | DX-Forth                |    GCD1   | 0m15s            | 5x
+| Alexander Muller  | Raspberry Pi ARM 700Mhz                   | Gforth 0.7.0            |    GCD1   | 0m04s            | 100x
+| Thorsten Schoeler | Sinclair Spectrum+                        | Aber Forth (FIG-Forth)  |    GCD1   | 2m14s
+| Wolfgang Stief    | SUN SparcStation 10 TI TMS390255          | OpenFirmware            |    GCD1   | 0,51s
+| Wolfgang Stief    | SUN Ultra 1 200 Mhz UltraSprac            | OpenBoot 3.25           |    GCD1   | 0,08s
+| Stefan Niestegge  | Atari Falcon 68060                        | f68kans                 |    GCD1   | 0,063s
+| Herbert Lange     | Compaq Deskpro P166                       | pForth V27              |    GCD1   | 0,002s
+| Herbert Lange     | Apple iMac G3 400Mhz                      | pForth V27              |    GCD1   | 0,063s
+| Herbert Lange     | DEC 3000 400s                             | pForth V27              |    GCD1   | 0,483
+| Herbert Lange     | SUN Ultra 1 Creator 3D                    | pForth V27              |    GCD1   | 0,022s
+| Johan Kotlinski   | C64                                       | DurexForth 1.6.1 (STC)  |    GCD1   | 60s               | 1x
+| Carsten Fulde     | Amiga 500 mit ACA1233n-Turbokarte (68030 @ 40 MHz) | JForth 3.1 Delta Research (Phil Burk) | GCD1 | 0.4s | 1x
+| Carsten Fulde     | Enterprise 128                            | IS-Forth von B. Tanner  |    GCD1   | 78s     | 1x
+| Carsten Fulde     | Sinclair QL M68008 7,5 Mhz                | Forth79 (G.W.Jackson)   |    GCD1   | 21
+| Carsten Strotmann | Nixdorf 8810 M15 (8Mhz i286)              | L.O.V.E. Forth          |    GCD1   | 6
+| Enrico/Dirk       | Robotron A 7150 i8086/8087 Multibus ~5Mhz | VolksForth MS-DOS (ITC) |    GCD1   | 25
+| Ralf Neumann      | Yodabashi Formula 1 Z80 4Mhz              | VolksForth CP/M (ITC)   |    GCD1   | 42
+| Carsten Strotmann | Scheider Tower AT 220 i286 10Mhz          | VolksForth MS-DOS (ITC) |    GCD1   | 5
+| Martin Metz       | Amstrad NC100 Z80 4.606Mhz                | VolksForth CP/M (ITC)   |    GCD1   | 38.1
+| Andreas Boehm     | Commodore C64 6510                        | Audiogenic Forth-64     |    GCD1   | 215.52
+| Thorsten Kuphaldt | Amiga 3000 68030 25Mhz                    | jforth                  |    GCD1   | 0.64
+| Ingo Soetebier    | iBook PPC 750lx (G3) 600Mhz               | OpenFirmware            |    GCD1   | 0.024
+| Matthias Trute    | Atmega16 8MHz                             | amForth 4.4             |    GCD1   | 7.12
+| Norbert Kehrer    | Mupid II (BTX Decoder)                    | FIG-Forth 1.1           |    GCD1   | 205s
+| Norbert Kehrer    | Mupid II (BTX Decoder)                    | Camel Forth 1.01        |    GCD1   | 116s
 
 ### Gcd 2
 
