@@ -339,7 +339,10 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting.c
 
 ### Forth Sieve Benchmark
 
-Algorithm for counting prime numbers from 3 up inclusively.
+The algorithm finds all odd prime numbers up to limit
+
+    i = 0..8190
+    Prime number = 2*i+3
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.asm
