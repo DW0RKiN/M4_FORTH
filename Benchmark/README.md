@@ -360,10 +360,9 @@ I changed
     push DE             ; 1:11      i_101(m)   ( -- i )
     ex   DE, HL         ; 1:4       i_101(m)
     ld   HL, (idx101)   ; 3:16      i_101(m)   idx always points to a 16-bit index
-    add  HL, HL         ; 1:11      dup +
-    inc  HL             ; 1:6       3 +   ( x -- x+0x0003 )
-    inc  HL             ; 1:6       3 +
-    inc  HL             ; 1:6       3 +
+    inc  HL             ; 1:6       dup + 3 +
+    add  HL, HL         ; 1:11      dup + 3 +
+    inc  HL             ; 1:6       dup + 3 +
     push DE             ; 1:11      dup i_101(m)   ( x -- x x i )
     push HL             ; 1:11      dup i_101(m)
     ex   DE, HL         ; 1:4       dup i_101(m)
