@@ -363,12 +363,12 @@ I changed
     inc  HL             ; 1:6       dup + 3 +
     add  HL, HL         ; 1:11      dup + 3 +
     inc  HL             ; 1:6       dup + 3 +
-    push DE             ; 1:11      dup i_101(m)   ( x -- x x i )
-    push HL             ; 1:11      dup i_101(m)
-    ex   DE, HL         ; 1:4       dup i_101(m)
-    ld   HL, (idx101)   ; 3:16      dup i_101(m)   idx always points to a 16-bit index
-    add  HL, DE         ; 1:11      +
-    pop  DE             ; 1:10      +
+                        ;           dup i_101 +(m)   ( x -- x x+i )
+    push DE             ; 1:11      dup i_101 +(m)
+    ex   DE, HL         ; 1:4       dup i_101 +(m)
+    ld   HL,(idx101)    ; 3:16      dup i_101 +(m)
+    add  HL, DE         ; 1:11      dup i_101 +(m)
+                       ;[14:96]
     
 to
 
@@ -395,6 +395,7 @@ to
     inc  HL             ; 1:6       1+
     ex   DE, HL         ; 1:4       swap over +   ( b a -- a b )
     add  HL, DE         ; 1:11      over +
+                       ;[13:88]
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/sieve.asm
