@@ -258,31 +258,31 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
-dnl # "dup + 2 +"
+dnl # "dup + +1"
 dnl # ( x1 -- x2 )
-dnl # x2 = x1 + x1 + 2
-define({DUP_ADD_2ADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_ADD_2ADD},{dup + +2},$@){}dnl
+dnl # x2 = x1 + x1 +1
+define({DUP_ADD_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_ADD_1ADD},{dup + +1},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_DUP_ADD_2ADD},{dnl
+define({__ASM_TOKEN_DUP_ADD_1ADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    inc  HL             ; 1:6       __COMPILE_INFO
-    add  HL, HL         ; 1:11      __COMPILE_INFO}){}dnl
+    add  HL, HL         ; 1:11      __COMPILE_INFO
+    inc  HL             ; 1:6       __COMPILE_INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # "dup + 2 -"
+dnl # "dup + -1"
 dnl # ( x1 -- x2 )
-dnl # x2 = x1 + x1 - 2
-define({DUP_ADD_2SUB},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_ADD_2SUB},{dup + -2},$@){}dnl
+dnl # x2 = x1 + x1 - 1
+define({DUP_ADD_1SUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_ADD_1SUB},{dup + -1},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_DUP_ADD_2SUB},{dnl
+define({__ASM_TOKEN_DUP_ADD_1SUB},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    dec  HL             ; 1:6       __COMPILE_INFO
-    add  HL, HL         ; 1:11      __COMPILE_INFO}){}dnl
+    add  HL, HL         ; 1:11      __COMPILE_INFO
+    dec  HL             ; 1:6       __COMPILE_INFO}){}dnl
 dnl
 dnl
 dnl # over +
