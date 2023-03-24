@@ -253,9 +253,36 @@ __{}__ADD_TOKEN({__TOKEN_DUP_ADD},{dup +},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_ADD},{dnl
-__{}define({__INFO},{dup +}){}dnl
-
-    add  HL, HL         ; 1:11      dup +}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, HL         ; 1:11      __COMPILE_INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # "dup + 2 +"
+dnl # ( x1 -- x2 )
+dnl # x2 = x1 + x1 + 2
+define({DUP_ADD_2ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_ADD_2ADD},{dup + +2},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_ADD_2ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc  HL             ; 1:6       __COMPILE_INFO
+    add  HL, HL         ; 1:11      __COMPILE_INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # "dup + 2 -"
+dnl # ( x1 -- x2 )
+dnl # x2 = x1 + x1 - 2
+define({DUP_ADD_2SUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_ADD_2SUB},{dup + -2},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_ADD_2SUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    dec  HL             ; 1:6       __COMPILE_INFO
+    add  HL, HL         ; 1:11      __COMPILE_INFO}){}dnl
 dnl
 dnl
 dnl # over +
