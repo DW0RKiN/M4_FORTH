@@ -292,9 +292,39 @@ __{}__ADD_TOKEN({__TOKEN_OVER_ADD},{over +},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_OVER_ADD},{dnl
-__{}define({__INFO},{over +}){}dnl
-
-    add  HL, DE         ; 1:11      over +}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    add  HL, DE         ; 1:11      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # "dup dup +"
+dnl # ( x1 -- x1 x2 )
+dnl # x2 = x1 + x1
+define({DUP_DUP_ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_DUP_ADD},{dup dup +},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_DUP_ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( a -- a a+a )
+    ld   D, H           ; 1:4       __INFO
+    ld   E, L           ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # "2dup +"
+dnl # ( x1 x2 -- x1 x2 x3 )
+dnl # x3 = x1 + x2
+define({_2DUP_ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_ADD},{2dup +},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( b a -- b a a+b )
+    ex   DE, HL         ; 1:4       __INFO
+    add  HL, DE         ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x )

@@ -4798,6 +4798,128 @@ __IS_MEM_REF($1),1,{
 }){}dnl
 dnl
 dnl
+dnl # dup addr @
+dnl # ( x -- x x a )
+define({DUP_PUSH_FETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_FETCH},{dup $1 @},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_FETCH},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),1,{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO},
+{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # dup addr @ +1
+dnl # ( x -- x x a+1 )
+define({DUP_PUSH_FETCH_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_FETCH_1ADD},{dup $1 @ +1},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_FETCH_1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),1,{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO},
+{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO
+    inc  HL             ; 1:6       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # dup addr @ +2
+dnl # ( x -- x x a+2 )
+define({DUP_PUSH_FETCH_2ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_FETCH_2ADD},{dup $1 @ +2},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_FETCH_2ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),1,{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    inc  HL             ; 1:6       __INFO},
+{
+    push DE             ; 1:11      __INFO
+    push HL             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO
+    inc  HL             ; 1:6       __INFO
+    inc  HL             ; 1:6       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # dup addr @ +
+dnl # ( x -- x x+a )
+define({DUP_PUSH_FETCH_ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_FETCH_ADD},{dup $1 @ +},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_FETCH_ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($1,{},{
+__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),1,{# dodelat jestli to nejde lepe...
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},$1); 3:16      __INFO
+    ld    A,(HL)        ; 1:7       __INFO
+    inc  HL             ; 1:6       __INFO
+    ld    H,(HL)        ; 1:7       __INFO
+    ld    L, A          ; 1:4       __INFO
+    add  HL, HL         ; 1:11      __INFO},
+{
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld   HL,format({%-12s},($1)); 3:16      __INFO
+    add  HL, DE         ; 1:11      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
 dnl
 dnl # b addr @
 dnl # ( -- b a )

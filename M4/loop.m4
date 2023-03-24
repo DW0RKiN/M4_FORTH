@@ -508,6 +508,61 @@ __{}{__ASM_TOKEN_PUSH_PICK($3){}__ASM_TOKEN_OVER_SWAP}){}dnl
 dnl
 dnl
 dnl
+dnl # dup i +
+dnl # ( x -- x x+i )
+define({DUP_I_ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_I_ADD},{dup i_}LOOP_STACK{ +},LOOP_STACK){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_I_ADD},{dnl
+__{}ifelse(__GET_LOOP_TYPE($1),{M},{__ASM_DUP_INDEX2M_ADD($1,{i})},
+__{}__GET_LOOP_TYPE($1),{R},{__ASM_DUP_INDEX2R_ADD($1,{i},0)},
+__{}__GET_LOOP_TYPE($1),{S},{__ASM_DUP_INDEX2S_ADD($1,{i},0)},
+__{}{
+__{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id $2 loop
+dnl #   $2 i,j,k
+define({__ASM_DUP_INDEX2M_ADD},{dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{(m)})
+                        ;           __COMPILE_INFO   ( x -- x x+$2 ){}dnl
+__{}__ASM_TOKEN_DUP_PUSH_FETCH_ADD(idx{}$1)}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id $2 loop
+dnl #   $2 i,j,k
+dnl #   $3 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
+define({__ASM_DUP_INDEX2R_ADD},{dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{(r)})
+                        ;           __COMPILE_INFO   ( x -- x x+$2 ){}dnl
+__{}__ASM_TOKEN_PUSH_RPICK($3){}dnl
+__{}__ASM_TOKEN_OVER_ADD{}dnl
+}){}dnl
+dnl
+dnl
+dnl # Input:
+dnl #   $1 id x loop
+dnl #   $2 i,j,k
+dnl #   $3 0 = i
+dnl #      1,2 = j
+dnl #      2,3,4 = k
+define({__ASM_DUP_INDEX2S_ADD},{dnl
+__{}define({__COMPILE_INFO},__COMPILE_INFO{(s)}){}dnl
+__{}ifelse(dnl
+__{}eval($3),0,{
+                        ;           __COMPILE_INFO   ( $2 -- $2 $2+$2 ){}__ASM_TOKEN_DUP_DUP_ADD},
+__{}eval($3),1,{
+                        ;           __COMPILE_INFO   ( $2 i -- $2 i i+$2 ){}__ASM_TOKEN_2DUP_ADD},
+__{}{__ASM_TOKEN_PUSH_PICK($3){}__ASM_TOKEN_OVER_SWAP{}__ASM_TOKEN_ADD}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( -- i x )
 dnl # vlozeni indexu vnitrni smycky a hodnoty
 define({I_PUSH},{dnl
