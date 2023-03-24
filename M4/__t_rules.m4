@@ -1577,6 +1577,7 @@ __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_EQ:__TOKEN_WHILE, 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_EQ:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_EQ_IF)},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_I:__TOKEN_ADD,              {__SET_CHECK_TOKEN2(__TOKEN_DUP_I_ADD)},
+__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_J:__TOKEN_ADD,              {__SET_CHECK_TOKEN2(__TOKEN_DUP_J_ADD)},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_NE,            {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_NE)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_NE:__TOKEN_UNTIL,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_UNTIL)},

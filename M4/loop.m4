@@ -959,6 +959,32 @@ __{}  .error {$0}($@): Unexpected type parameter!}){}dnl
 dnl
 dnl
 dnl
+dnl # dup j +
+dnl # ( x -- x x+j )
+define({DUP_J_ADD},{dnl
+__{}ifelse($#,{0},{dnl
+__{}__{}define({__ID_1},LOOP_STACK){}dnl
+__{}__{}popdef({LOOP_STACK}){}dnl
+__{}__{}__{}define({__ID_0},LOOP_STACK){}dnl
+__{}__{}pushdef({LOOP_STACK},__ID_1){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_DUP_J_ADD},{drop j_}__ID_0{ +},__ID_0,__ID_1)},
+__{}{
+__{}  .error {$0}($@): Unexpected parameter!})}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_J_ADD},{dnl
+__{}ifelse(eval($#<2),{1},{
+__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__GET_LOOP_TYPE($1),{M},{__ASM_DUP_INDEX2M_ADD($1,{j})},
+__{}__GET_LOOP_TYPE($1),{R},{__ASM_DUP_INDEX2R_ADD($1,{j},__COUNT_DEEP_R_INDEX($2))},
+__{}__GET_LOOP_TYPE($1),{S},{__ASM_DUP_INDEX2S_ADD($1,{j},__COUNT_DEEP_S_INDEX($2))},
+__{}{
+__{}  .error {$0}($@): Unexpected type parameter!}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( -- j x )
 dnl # vlozeni indexu vnejsi smycky a hodnoty
 define({J_PUSH},{dnl
