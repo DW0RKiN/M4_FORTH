@@ -1672,6 +1672,54 @@ __{}__{}__CODE_16BIT}){}dnl
 dnl
 dnl
 dnl
+dnl # drop addr C@ x
+dnl # ( -- (addr) x )
+dnl # push2_cfetch(x,addr), push x and load 8-bit char from addr
+dnl # n addr C@
+dnl # ( -- n x )
+define({DROP_PUSH2_CFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_PUSH2_CFETCH},{drop $1 $2 c@},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_PUSH2_CFETCH},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($#,0,{
+__{}  .error {$0}(): Missing first and address parameter!},
+__{}$#,1,{
+__{}  .error {$0}($@): Missing address parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}$1:$2:__IS_MEM_REF($2),$2:$2:1,{
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({HL},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    ld    D, 0x00       ; 2:7       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+__{}__IS_MEM_REF($2),1,{
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({DE},$1){}dnl
+__{}__{}__CODE_16BIT{}dnl
+__{}__{}__LD_REG16({HL},$2,{DE},$1){}dnl
+__{}__{}__CODE_16BIT
+__{}__{}    ld    L,(HL)        ; 1:7       __INFO{}dnl
+__{}__{}__LD_R_NUM(__INFO,{H},0x00,{D},__HEX_H($1),{E},__HEX_L($1))},
+__{}{
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL,format({%-12s},{($2)}); 3:16      __INFO
+__{}__{}    ld    H, 0x00       ; 2:7       __INFO{}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}__LD_REG16({DE},$1,{H},0x00){}dnl
+__{}__{}__CODE_16BIT}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # addr C@ +
 dnl # ( x -- x+(addr) )
 dnl # push_cfetch(addr), add 8-bit char from addr
@@ -4903,7 +4951,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),1,{# dodelat jestli to nejde lepe...
+__IS_MEM_REF($1),1,{
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld   HL,format({%-12s},$1); 3:16      __INFO
@@ -4911,7 +4959,7 @@ __IS_MEM_REF($1),1,{# dodelat jestli to nejde lepe...
     inc  HL             ; 1:6       __INFO
     ld    H,(HL)        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO
-    add  HL, HL         ; 1:11      __INFO},
+    add  HL, DE         ; 1:11      __INFO},
 {
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
