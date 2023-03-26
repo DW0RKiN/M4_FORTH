@@ -1354,6 +1354,167 @@ __{}define({__INFO},{uge}){}dnl
     pop  DE             ; 1:10      u>=}){}dnl
 dnl
 dnl
+dnl # ------------ dup num ucondition -----------------
+dnl
+dnl # ( x -- x bool )
+dnl # equal ( x == $1 )
+define({DUP_PUSH_UEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UEQ},{dup $1 u=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_UEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}                        ;[2:15]     __INFO   ( x -- x x )
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}ifelse(dnl
+__{}__IS_MEM_REF($1),1,{define({_TMP_BEST_CODE},__LD_R16(HL,$1)){}dnl
+__{}__{}_TMP_BEST_CODE   ( x x -- x bool )
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    cp    E             ; 1:4       __INFO
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO},
+__{}__IS_NUM($1),0,{define({_TMP_BEST_CODE},__LD_R16(HL,-($1))){}dnl
+__{}__{}_TMP_BEST_CODE   ( x x -- x bool )
+__{}__{}    add  HL, DE         ; 1:11      __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO},
+__{}{
+__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO   ( x x -- x bool ),HL,$1,4,22){}dnl
+__{}__{}_TMP_BEST_CODE})
+__{}    sub  0x01           ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl # ( x -- x bool )
+dnl # not equal ( x <> $1 )
+define({DUP_PUSH_UNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UNE},{dup $1 u<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_UNE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}                        ;[2:15]     __INFO   ( x -- x x )
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}ifelse(dnl
+__{}__IS_MEM_REF($1),1,{define({_TMP_BEST_CODE},__LD_R16(HL,$1)){}dnl
+__{}__{}_TMP_BEST_CODE   ( x x -- x bool )
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    cp    E             ; 1:4       __INFO
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO},
+__{}__IS_NUM($1),0,{define({_TMP_BEST_CODE},__LD_R16(HL,-($1))){}dnl
+__{}__{}_TMP_BEST_CODE   ( x x -- x bool )
+__{}__{}    add  HL, DE         ; 1:11      __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO},
+__{}{
+__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO   ( x x -- x bool ),HL,$1,4,22){}dnl
+__{}__{}_TMP_BEST_CODE})
+__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- x bool )
+dnl # unsigned ( x < $1 ) --> ( x - $1 < 0 ) --> carry is true
+define({DUP_PUSH_ULT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ULT},{dup $1 u<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_ULT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}define({__SUM_BYTES},8){}dnl
+__{}define({__SUM_CLOCKS},46){}dnl
+__{}define({__TMP_CODE},{dnl
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}dnl
+__{}__{}__LD_R16(HL,$1){
+__{}__{}    ld    A, E          ; 1:4       __INFO   DE<HL --> DE-HL<0 --> carry if true
+__{}__{}    sub   L             ; 1:4       __INFO   DE<HL --> DE-HL<0 --> carry if true
+__{}__{}    ld    A, D          ; 1:4       __INFO   DE<HL --> DE-HL<0 --> carry if true
+__{}__{}    sbc   A, H          ; 1:4       __INFO   DE<HL --> DE-HL<0 --> carry if true
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( x -- x bool )
+__{}__TMP_CODE{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- x bool )
+dnl # unsigned ( x <= $1 ) --> ( x < $1 + 1 ) --> ( x - $1 - 1 < 0) --> carry is true
+dnl # unsigned ( x <= $1 ) --> ( 0 <= $1 - x ) --> no carry is true
+define({DUP_PUSH_ULE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ULE},{dup $1 u<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_ULE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}define({__SUM_BYTES},8){}dnl
+__{}define({__SUM_CLOCKS},59){}dnl
+__{}define({__TMP_CODE},{dnl
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}dnl
+__{}__{}__LD_R16(HL,$1){
+__{}__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}__{}    ccf                 ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( x -- x bool )
+__{}__TMP_CODE{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- x bool )
+dnl # unsigned ( x > $1 ) --> ( 0 > $1 - x ) --> carry is true
+define({DUP_PUSH_UGT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UGT},{dup $1 u>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_UGT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}define({__SUM_BYTES},8){}dnl
+__{}define({__SUM_CLOCKS},59){}dnl
+__{}define({__TMP_CODE},{dnl
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}dnl
+__{}__{}__LD_R16(HL,$1){
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( x -- x bool )
+__{}__TMP_CODE{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- x bool )
+dnl # unsigned ( x >= $1 ) --> ( x + 1 > $1 ) --> ( 0 > $1 - x - 1 ) --> carry is true
+define({DUP_PUSH_UGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UGE},{dup $1 u>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_UGE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}define({__SUM_BYTES},8){}dnl
+__{}define({__SUM_CLOCKS},59){}dnl
+__{}define({__TMP_CODE},{dnl
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}dnl
+__{}__{}__LD_R16(HL,$1){
+__{}__{}    scf                 ; 1:4       __INFO
+__{}__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS] ))__INFO   ( x -- x bool )
+__{}__TMP_CODE{}dnl
+}){}dnl
+dnl
+dnl
 dnl # ------------ 2dup condition -----------------
 dnl
 dnl
@@ -3106,6 +3267,77 @@ __{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
 __{}__{}    sub   L             ; 1:4       _TMP_INFO
 __{}__{}    sub  0x01           ; 2:7       _TMP_INFO
 __{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char==$1}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({DUP_PUSH_CNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CNE},{dup $1 c<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_CNE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+dnl
+__{}define({_TMP_INFO},__INFO){}dnl
+__{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( x -- x f )   __HEX_HL($1) <> HL}){}dnl
+__{}ifelse($1,{},{dnl
+__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}                       ;[10:54]     _TMP_INFO   ( char -- char f )   L == (addr)
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A,format({%-12s},$1); 3:13      _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0xFF       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char<>$1},
+__{}__IS_NUM($1),{0},{
+__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   L = $1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0xFF       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char<>$1},
+__{}__SAVE_EVAL($1),{0},{
+__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   L == 0
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0xFF       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char<>$1},
+__{}__SAVE_EVAL($1),{255},{
+__{}__{}                        ;[7:41]     _TMP_INFO   ( char -- char f )   L == 255
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    sub  0xFF           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char<>$1},
+__{}__SAVE_EVAL($1),{1},{
+__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   L == 1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    dec   A             ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0xFF       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char<>$1},
+__{}__SAVE_EVAL($1),{254},{
+__{}__{}                        ;[8:45]     _TMP_INFO   ( char -- char f )   L == 254
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, L          ; 1:4       _TMP_INFO
+__{}__{}    inc   A             ; 1:4       _TMP_INFO
+__{}__{}    sub  0xFF           ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char<>$1},
+__{}{
+__{}__{}                        ;[9:48]     _TMP_INFO   ( char -- char f )   L == $1
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    push HL             ; 1:11      _TMP_INFO
+__{}__{}    ld    A, __FORM({%-11s},$1); 2:7       _TMP_INFO
+__{}__{}    sub   L             ; 1:4       _TMP_INFO
+__{}__{}    add   A, 0xFF       ; 2:7       _TMP_INFO
+__{}__{}    sbc  HL, HL         ; 2:15      _TMP_INFO   set flag char<>$1}){}dnl
 }){}dnl
 dnl
 dnl
