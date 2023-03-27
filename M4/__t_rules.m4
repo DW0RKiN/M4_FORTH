@@ -820,6 +820,9 @@ __{}__{}__{}__{}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_I,__T_INFO(1){ drop}
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_LO_WITHIN,       {__SET_TOKEN({__TOKEN_PUSH_LO_WITHIN},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_EQ,              {__SET_TOKEN({__TOKEN_PUSH_EQ},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_UEQ,             {__SET_TOKEN({__TOKEN_PUSH_UEQ},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_UNE,             {__SET_TOKEN({__TOKEN_PUSH_UNE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            
             __T_NAME(0):$1,                                   __TOKEN_PUSH_EQ:__TOKEN_IF,              {__SET_TOKEN({__TOKEN_PUSH_EQ_IF},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
             __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:1:__TOKEN_NE,              {__SET_TOKEN({__TOKEN_PUSH_NE},__T_INFO(0){ }$2,__T_ARRAY(0))},
@@ -1535,9 +1538,9 @@ dnl
 define({__ASM_TOKEN_NOPE},{}){}dnl
 dnl
 dnl
-dnl # param first only
-define({__SET_CHECK_TOKEN}, {__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
 dnl # param second only
+define({__SET_CHECK_TOKEN}, {__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
+dnl # param first only
 define({__SET_CHECK_TOKEN2},{__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
 dnl # param both
 define({__SET_CHECK_TOKEN3},{__SET_TOKEN($1,__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0)),__T_ARRAY(1),__T_ARRAY(0)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})}){}dnl
@@ -1575,6 +1578,8 @@ __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_FETCH_1ADD
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_FETCH_2ADD,    {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_FETCH_2ADD)},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_EQ,            {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_EQ)},
+__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_UEQ,           {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_UEQ)},
+
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_EQ:__TOKEN_UNTIL,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_EQ_UNTIL)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_EQ:__TOKEN_WHILE,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_EQ_WHILE)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_EQ:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_EQ_IF)},
@@ -1584,6 +1589,7 @@ __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_J:__TOKEN_ADD,         
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_K:__TOKEN_ADD,              {__SET_CHECK_TOKEN2(__TOKEN_DUP_K_ADD)},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_NE,            {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_NE)},
+__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_UNE,           {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_UNE)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_NE:__TOKEN_UNTIL,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_UNTIL)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_NE:__TOKEN_WHILE,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_WHILE)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_NE:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_IF)},

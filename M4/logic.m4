@@ -902,6 +902,18 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # ( x -- x|n )
+dnl # x = x | n
+define({PUSH_UEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_UEQ},{$1 u=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_UEQ},{dnl
+__{}__ASM_TOKEN_PUSH_EQ($@){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 define({DUP_PUSH_EQ},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ},{dup_push_eq},$@){}dnl
 }){}dnl
@@ -1094,6 +1106,18 @@ __{}__{}    sbc  HL, BC         ; 2:15      __INFO
 __{}__{}    jr   nz, $+5        ; 2:7/12    __INFO
 __{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   HL = true}){}dnl
 __{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- f )
+dnl # f = x <> $1
+define({PUSH_UNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_UNE},{$1 u<>},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_UNE},{dnl
+__{}__ASM_TOKEN_PUSH_NE($@){}dnl
 }){}dnl
 dnl
 dnl

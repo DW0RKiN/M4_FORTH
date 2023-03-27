@@ -1424,7 +1424,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(dnl
 __{}BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
-__{}eval($1<1),1,{
+__{}eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
