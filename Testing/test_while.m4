@@ -3,7 +3,8 @@ include(`../M4/FIRST.M4')dnl
 ; ^^^^^
 ORG 0x8000
     INIT(60000)
-
+    define({USE_FONT_5x8})
+    
     PRINT_I({"( x2 x1 -- ) and ( u2 u1 -- ):",0x0D})
     PUSH2( 5,-5) CALL(x_x_test)
     PUSH2( 5, 5) CALL(x_x_test)
