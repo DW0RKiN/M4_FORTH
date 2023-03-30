@@ -30,10 +30,11 @@ __{}__ADD_TOKEN({__TOKEN_BREAK},{break},$@){}dnl
 dnl
 define({__ASM_TOKEN_BREAK},{dnl
 __{}define({__INFO},{break}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    jp   break{}BEGIN_STACK       ; 3:10      break BEGIN_STACK})}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    jp   break{}BEGIN_STACK       ; 3:10      break BEGIN_STACK}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( -- )
@@ -1400,9 +1401,9 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(dnl
 __{}BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
-__{}$1,{},{
+__{}eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
-__{}eval($#>1),{1},{
+__{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
@@ -1426,7 +1427,7 @@ __{}BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
-__{}eval($#>1),{1},{
+__{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
@@ -1652,21 +1653,21 @@ dnl
 dnl
 dnl
 define({DUP_PUSH_UEQ_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UEQ_WHILE},{dup_push_ueq_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_WHILE},{dup $1 u= while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_UEQ_WHILE},{dnl
 __{}define({__INFO},{dup_push_ueq_while}){}dnl
-DUP_PUSH_EQ_WHILE($1)}){}dnl
+__{}__ASM_TOKEN_DUP_PUSH_EQ_WHILE($1)}){}dnl
 dnl
 dnl
 define({DUP_PUSH_UNE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UNE_WHILE},{dup_push_une_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_WHILE},{dup $1 u<> while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_UNE_WHILE},{dnl
 __{}define({__INFO},{dup_push_une_while}){}dnl
-DUP_PUSH_NE_WHILE($1)}){}dnl
+__{}__ASM_TOKEN_DUP_PUSH_NE_WHILE($1)}){}dnl
 dnl
 dnl
 define({DUP_PUSH_ULT_WHILE},{dnl
@@ -1875,22 +1876,22 @@ dnl # ------ unsigned_32_bit_cond while ( ud2 ud1 -- ) ---------
 dnl
 dnl # Du= while
 define({DUEQ_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUEQ_WHILE},{dueq_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DEQ_WHILE},{du= while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUEQ_WHILE},{dnl
 __{}define({__INFO},{dueq_while}){}dnl
-DEQ_WHILE}){}dnl
+__{}__ASM_TOKEN_DEQ_WHILE}){}dnl
 dnl
 dnl
 dnl # Du<> while
 define({DUNE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUNE_WHILE},{dune_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DNE_WHILE},{du<> while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUNE_WHILE},{dnl
 __{}define({__INFO},{dune_while}){}dnl
-DNE_WHILE}){}dnl
+__{}__ASM_TOKEN_DNE_WHILE}){}dnl
 dnl
 dnl
 dnl # Du< while
@@ -2026,29 +2027,30 @@ __{}__ADD_TOKEN({__TOKEN_4DUP_DEQ_WHILE},{4dup_deq_while},$@){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DEQ_WHILE},{dnl
 __{}define({__INFO},{4dup_deq_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
-                       ;[10:69]     4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
-    pop  BC             ; 1:10      4dup D= while BEGIN_STACK
-    pop  AF             ; 1:10      4dup D= while BEGIN_STACK
-    push AF             ; 1:11      4dup D= while BEGIN_STACK
-    push BC             ; 1:11      4dup D= while BEGIN_STACK
-    call FCE_DEQ        ; 3:17      4dup D= while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      4dup D= while BEGIN_STACK},
-{
-                   ;[16:132/73,132] 4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    or   A              ; 1:4       4dup D= while BEGIN_STACK   h2 l2 . h1 l1
-    pop  BC             ; 1:10      4dup D= while BEGIN_STACK   h2    . h1 l1  BC = l2 = lo16(d2)
-    sbc  HL, BC         ; 2:15      4dup D= while BEGIN_STACK   h2    . h1 --  cp l1-l2
-    add  HL, BC         ; 1:11      4dup D= while BEGIN_STACK   h2    . h1 l1  cp l1-l2
-    jr   nz, $+7        ; 2:7/12    4dup D= while BEGIN_STACK   h2    . h1 h2
-    ex  (SP),HL         ; 1:19      4dup D= while BEGIN_STACK   l1    . h1 h2  HL = h2 = hi16(d2)
-    sbc  HL, DE         ; 2:15      4dup D= while BEGIN_STACK   l1    . h1 --  cp h2-h1
-    add  HL, DE         ; 1:11      4dup D= while BEGIN_STACK   l1    . h1 h2  cp h2-h1
-    ex  (SP),HL         ; 1:19      4dup D= while BEGIN_STACK   h2    . h1 l1  HL = l1
-    push BC             ; 1:11      4dup D= while BEGIN_STACK   h2 l2 . h1 l1
-    jp   nz, break{}BEGIN_STACK   ; 3:10      4dup D= while BEGIN_STACK   h2 l2 . h1 l1})}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}_TYP_DOUBLE,{function},{__def({USE_FCE_DEQ},{yes})
+__{}                       ;[10:69]     4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+__{}    pop  BC             ; 1:10      4dup D= while BEGIN_STACK
+__{}    pop  AF             ; 1:10      4dup D= while BEGIN_STACK
+__{}    push AF             ; 1:11      4dup D= while BEGIN_STACK
+__{}    push BC             ; 1:11      4dup D= while BEGIN_STACK
+__{}    call FCE_DEQ        ; 3:17      4dup D= while BEGIN_STACK
+__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      4dup D= while BEGIN_STACK},
+__{}{
+__{}                   ;[16:132/73,132] 4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+__{}    or   A              ; 1:4       4dup D= while BEGIN_STACK   h2 l2 . h1 l1
+__{}    pop  BC             ; 1:10      4dup D= while BEGIN_STACK   h2    . h1 l1  BC = l2 = lo16(d2)
+__{}    sbc  HL, BC         ; 2:15      4dup D= while BEGIN_STACK   h2    . h1 --  cp l1-l2
+__{}    add  HL, BC         ; 1:11      4dup D= while BEGIN_STACK   h2    . h1 l1  cp l1-l2
+__{}    jr   nz, $+7        ; 2:7/12    4dup D= while BEGIN_STACK   h2    . h1 h2
+__{}    ex  (SP),HL         ; 1:19      4dup D= while BEGIN_STACK   l1    . h1 h2  HL = h2 = hi16(d2)
+__{}    sbc  HL, DE         ; 2:15      4dup D= while BEGIN_STACK   l1    . h1 --  cp h2-h1
+__{}    add  HL, DE         ; 1:11      4dup D= while BEGIN_STACK   l1    . h1 h2  cp h2-h1
+__{}    ex  (SP),HL         ; 1:19      4dup D= while BEGIN_STACK   h2    . h1 l1  HL = l1
+__{}    push BC             ; 1:11      4dup D= while BEGIN_STACK   h2 l2 . h1 l1
+__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      4dup D= while BEGIN_STACK   h2 l2 . h1 l1}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2226,23 +2228,23 @@ dnl
 dnl
 dnl # 4dup Du= while
 define({_4DUP_DUEQ_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_4DUP_DUEQ_WHILE},{4dup_dueq_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DEQ_WHILE},{4dup du= while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DUEQ_WHILE},{dnl
-__{}define({__INFO},{4dup_dueq_while}){}dnl
-_4DUP_DEQ_WHILE}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_4DUP_DEQ_WHILE}){}dnl
 dnl
 dnl
 dnl
 dnl # 4dup Du<> while
 define({_4DUP_DUNE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_4DUP_DUNE_WHILE},{4dup_dune_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DNE_WHILE},{4dup du<> while},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DUNE_WHILE},{dnl
-__{}define({__INFO},{4dup_dune_while}){}dnl
-_4DUP_DNE_WHILE}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__ASM_TOKEN_4DUP_DNE_WHILE}){}dnl
 dnl
 dnl
 dnl
