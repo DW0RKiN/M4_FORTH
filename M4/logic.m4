@@ -1399,37 +1399,22 @@ __{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
 __{}__{}    dec   A             ; 1:4       __INFO
 __{}__{}    ld    L, A          ; 1:4       __INFO
 __{}__{}    ld    H, A          ; 1:4       __INFO   set flag x==$1},
-__{}__IS_NUM($1):_TYP_SINGLE,0:small,{define({_TMP_BEST_CODE},__LD_R16(HL,-($1))){}dnl
-__{}__{}                        ;[12:66]    __INFO   ( x -- x x )
-__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
-__{}__{}_TMP_BEST_CODE
-__{}__{}    add  HL, DE         ; 1:11      __INFO
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    sub 0x01            ; 2:7       __INFO
-__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x==$1},
-__{}__IS_NUM($1),0,{define({_TMP_BEST_CODE},__LD_R16(HL,$1)){}dnl
-__{}__{}                        ;[13:63/56] __INFO   ( x -- x f )
-__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
-__{}__{}_TMP_BEST_CODE
-__{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
-__{}__{}    dec   A             ; 1:4       __INFO
-__{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO   set flag x==$1},
 __{}{dnl
-__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO   ( x x -- x bool ),HL,$1,6,37,0,37){}dnl
-__{}__{}ifelse(eval(_TMP_BEST_P<=1824),1,{
+__{}__{}dnl # __MAKE_BEST_CODE_R16_CP(__INFO,__INFO   ( x x -- x bool ),HL,$1,6,37,0,37){}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},__INFO{   ( x -- x f )}){}dnl
+__{}__{}__EQ_MAKE_BEST_CODE($1,6,37,0,37){}dnl
+__{}__{}define({__TMP_CODE},{dnl
 __{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}    sub 0x01            ; 2:7       __INFO
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x==$1},
-__{}__{}{define({_TMP_BEST_CODE},__LD_R16(HL,-($1))){}dnl
-__{}__{}__{}                        ;format({%-11s},[eval(9+__BYTES):eval(56+__CLOCKS)] )__INFO   ( x -- x x )
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x==$1}){}dnl
+__{}__{}ifelse(_TYP_SINGLE:eval(_TMP_BEST_B*100+_TMP_BEST_C<=1266),small:1,{
+__{}__{}__{}__TMP_CODE},
+__{}__{}_TYP_SINGLE,small,{
+__{}__{}__{}define({_TMP_BEST_CODE},__LD_R16(HL,-($1))){}dnl
+__{}__{}__{}                        ;[12:66]    __INFO   ( x -- x x )
 __{}__{}__{}    push DE             ; 1:11      __INFO
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}__{}_TMP_BEST_CODE
@@ -1437,7 +1422,21 @@ __{}__{}__{}    add  HL, DE         ; 1:11      __INFO
 __{}__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}__{}    or    L             ; 1:4       __INFO
 __{}__{}__{}    sub 0x01            ; 2:7       __INFO
-__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x==$1}){}dnl
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x==$1},
+__{}__{}eval(_TMP_BEST_P<=1784),1,{
+__{}__{}__{}__TMP_CODE},
+__{}__{}{
+__{}__{}__{}define({_TMP_BEST_CODE},__LD_R16(HL,$1)){}dnl
+__{}__{}__{}                        ;[13:63/56] __INFO   ( x -- x f )
+__{}__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}__{}    ld    H, A          ; 1:4       __INFO   set flag x==$1}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -1458,35 +1457,22 @@ __{}__{}    xor   A             ; 1:4       __INFO
 __{}__{}    sbc  HL, DE         ; 2:15      __INFO
 __{}__{}    jr    z, $+5        ; 2:7/12    __INFO
 __{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   set flag x<>$1},
-__{}__IS_NUM($1):_TYP_SINGLE,0:small,{define({_TMP_BEST_CODE},__LD_R16(HL,-($1))){}dnl
-__{}__{}                        ;[12:66]    __INFO   ( x -- x f )
-__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
-__{}__{}_TMP_BEST_CODE
-__{}__{}    add  HL, DE         ; 1:11      __INFO
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    add   A, 0xFF       ; 2:7       __INFO
-__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x<>$1},
-__{}__IS_NUM($1),0,{define({_TMP_BEST_CODE},__LD_R16(HL,$1)){}dnl
-__{}__{}                        ;[13:61/56] __INFO   ( x -- x f )
-__{}__{}    push DE             ; 1:11      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
-__{}__{}_TMP_BEST_CODE
-__{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    sbc  HL, DE         ; 2:15      __INFO
-__{}__{}    jr    z, $+5        ; 2:7/12    __INFO
-__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   set flag x<>$1},
 __{}{dnl
-__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO   ( x x -- x bool ),HL,$1,6,37,0,37){}dnl
-__{}__{}ifelse(eval(_TMP_BEST_P<=1824),1,{
+__{}__{}dnl # __MAKE_BEST_CODE_R16_CP(__INFO,__INFO   ( x x -- x bool ),HL,$1,6,37,0,37){}dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},__INFO{   ( x -- x f )}){}dnl
+__{}__{}__EQ_MAKE_BEST_CODE($1,6,37,0,37){}dnl
+__{}__{}define({__TMP_CODE},{dnl
 __{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}    add   A, 0xFF       ; 2:7       __INFO
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x<>$1},
-__{}__{}{define({_TMP_BEST_CODE},__LD_R16(HL,-($1))){}dnl
-__{}__{}__{}                        ;format({%-11s},[eval(9+__BYTES):eval(56+__CLOCKS)] )__INFO   ( x -- x x )
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x<>$1}){}dnl
+__{}__{}ifelse(_TYP_SINGLE:eval(_TMP_BEST_B*100+_TMP_BEST_C<=1266),small:1,{
+__{}__{}__{}__TMP_CODE},
+__{}__{}_TYP_SINGLE,small,{
+__{}__{}__{}define({_TMP_BEST_CODE},__LD_R16(HL,-($1))){}dnl
+__{}__{}__{}                        ;[12:66]    __INFO   ( x -- x x )
 __{}__{}__{}    push DE             ; 1:11      __INFO
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}__{}_TMP_BEST_CODE
@@ -1494,7 +1480,19 @@ __{}__{}__{}    add  HL, DE         ; 1:11      __INFO
 __{}__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}__{}    or    L             ; 1:4       __INFO
 __{}__{}__{}    add   A, 0xFF       ; 2:7       __INFO
-__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x<>$1}){}dnl
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag x<>$1},
+__{}__{}eval(_TMP_BEST_P<=1768),1,{
+__{}__{}__{}__TMP_CODE},
+__{}__{}{
+__{}__{}__{}define({_TMP_BEST_CODE},__LD_R16(HL,$1)){}dnl
+__{}__{}__{}                        ;[13:61/56] __INFO   ( x -- x f )
+__{}__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}__{}__{}    jr    z, $+5        ; 2:7/12    __INFO
+__{}__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO   set flag x<>$1}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
