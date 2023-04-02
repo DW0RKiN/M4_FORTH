@@ -3960,7 +3960,7 @@ __{}__{}define({_TMP_T2},4){}dnl
 __{}__{}define({_TMP_J1},eval($4+4)){}dnl      No jump! Multibyte solution
 __{}__{}define({__EQ_CODE_2},{
 __{}__{}    or    _TMP_R2             ; 1:4       _TMP_INFO   x[2] = 0})},
-__{}_TMP_N2{-}_TMP_N1,{2-1},{dnl
+__{}ifelse(_TMP_N2,2,1,_TMP_N2){:}_TMP_N1,{1:1},{dnl
 __{}__{}ifelse(__IS_NAME($5),0,{dnl
 __{}__{}__{}define({_TMP_B2},3){}dnl
 __{}__{}__{}define({_TMP_T2},11){}dnl
@@ -4172,6 +4172,12 @@ __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{{,}} _TMP_R2          ; 1:4       _TMP_INFO
 __{}__{}    dec   A             ; 1:4       _TMP_INFO
 __{}__{}    cp    _TMP_R1             ; 1:4       _TMP_INFO   x[1] = x[2] - 1})},
+__{}_TMP_N2{:}_TMP_N1,{1:1},{dnl
+__{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
+__{}__{}define({_TMP_T1},8){}dnl
+__{}__{}define({__EQ_CODE_1},{
+__{}__{}    ld    A{{,}} _TMP_R2          ; 1:4       _TMP_INFO
+__{}__{}    cp    _TMP_R1             ; 1:4       _TMP_INFO   x[1] = x[2]})},
 __{}_TMP_N1,{1},{dnl    255-1 --> 255-x rule priority!
 __{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
 __{}__{}define({_TMP_T1},8){}dnl

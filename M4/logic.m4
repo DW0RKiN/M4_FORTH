@@ -905,7 +905,7 @@ dnl
 dnl # ( x -- x|n )
 dnl # x = x | n
 define({PUSH_UEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_UEQ},{$1 u=},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EQ},{$1 u=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_UEQ},{dnl
@@ -1126,7 +1126,7 @@ dnl
 dnl # ( x -- f )
 dnl # f = x <> $1
 define({PUSH_UNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_UNE},{$1 u<>},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_NE},{$1 u<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_UNE},{dnl
@@ -1317,22 +1317,22 @@ dnl
 dnl # ( x1 x2 -- x )
 dnl # equal ( x1 == x2 )
 define({UEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_UEQ},{ueq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_EQ},{u=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UEQ},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__ASM_TOKEN_EQ}){}dnl
+__{}__ASM_TOKEN_EQ{}dnl
+}){}dnl
 dnl
 dnl # ( x1 x2 -- x )
 dnl # not equal ( x1 <> x2 )
 define({UNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_UNE},{une},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NE},{u<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UNE},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__ASM_TOKEN_NE}){}dnl
+__{}__ASM_TOKEN_NE{}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1409,7 +1409,7 @@ dnl
 dnl # ( x -- x bool )
 dnl # equal ( x == $1 )
 define({DUP_PUSH_UEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UEQ},{dup $1 u=},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ},{dup $1 u=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_UEQ},{dnl
@@ -1421,7 +1421,7 @@ dnl
 dnl # ( x -- x bool )
 dnl # not equal ( x <> $1 )
 define({DUP_PUSH_UNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UNE},{dup $1 u<>},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE},{dup $1 u<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_UNE},{dnl
@@ -5928,12 +5928,12 @@ dnl # Du=
 dnl # ( ud2 ud1 -- flag )
 dnl # equal ( ud1 == ud2 )
 define({DUEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUEQ},{dueq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DEQ},{du=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUEQ},{dnl
-__{}define({__INFO},{dueq}){}dnl
-DEQ}){}dnl
+__{}__ASM_TOKEN_DEQ{}dnl
+}){}dnl
 dnl
 dnl
 dnl # D<>
@@ -5994,12 +5994,12 @@ dnl # Du<>
 dnl # ( ud2 ud1 -- flag )
 dnl # not equal ( ud1 != ud2 )
 define({DUNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUNE},{dune},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DNE},{du<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUNE},{dnl
-__{}define({__INFO},{dune}){}dnl
-DNE}){}dnl
+__{}__ASM_TOKEN_DNE{}dnl
+}){}dnl
 dnl
 dnl
 dnl # D<
@@ -6680,12 +6680,12 @@ dnl # 4dup Du=
 dnl # ( ud2 ud1 -- ud2 ud1 flag )
 dnl # equal ( ud1 == ud2 )
 define({_4DUP_DUEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_4DUP_DUEQ},{4dup_dueq},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DEQ},{4dup du=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DUEQ},{dnl
-__{}define({__INFO},{4dup_dueq}){}dnl
-_4DUP_DEQ}){}dnl
+__{}__ASM_TOKEN_4DUP_DEQ{}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -6743,12 +6743,12 @@ dnl # 4dup Du<>
 dnl # ( ud2 ud1 -- ud2 ud1 flag )
 dnl # not equal ( ud1 <> ud2 )
 define({_4DUP_DUNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_4DUP_DUNE},{4dup_dune},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DNE},{4dup du<>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DUNE},{dnl
-__{}define({__INFO},{4dup_dune}){}dnl
-_4DUP_DNE}){}dnl
+__{}__ASM_TOKEN_4DUP_DNE{}dnl
+}){}dnl
 dnl
 dnl
 dnl
