@@ -812,37 +812,21 @@ dnl
 dnl ------ 2dup ucond if ---------
 dnl
 define({_2DUP_UEQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_UEQ_IF},{2dup_ueq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_EQ_IF},{2dup u= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_UEQ_IF},{dnl
-__{}define({__INFO},{2dup_ueq_if}){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       2dup u= if
-    sub   L             ; 1:4       2dup u= if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup u= if
-    ld    A, D          ; 1:4       2dup u= if
-    sub   H             ; 1:4       2dup u= if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup u= if}){}dnl
+__{}__ASM_TOKEN_2DUP_EQ_IF{}dnl
+}){}dnl   
 dnl
 dnl
 define({_2DUP_UNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_UNE_IF},{2dup_une_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_NE_IF},{2dup u<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_UNE_IF},{dnl
-__{}define({__INFO},{2dup_une_if}){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       2dup u<> if
-    sub   L             ; 1:4       2dup u<> if
-    jr   nz, $+7        ; 2:7/12    2dup u<> if
-    ld    A, D          ; 1:4       2dup u<> if
-    sbc   A, H          ; 1:4       2dup u<> if
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      2dup u<> if}){}dnl
+__{}__ASM_TOKEN_2DUP_NE_IF{}dnl
+}){}dnl
 dnl
 dnl
 define({_2DUP_ULT_IF},{dnl
@@ -913,38 +897,38 @@ dnl ------ 2dup scond if ---------
 dnl
 dnl 2dup = if
 define({_2DUP_EQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_EQ_IF},{2dup_eq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_EQ_IF},{2dup = if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_EQ_IF},{dnl
-__{}define({__INFO},{2dup_eq_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       2dup = if
-    sub   L             ; 1:4       2dup = if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup = if
-    ld    A, D          ; 1:4       2dup = if
-    sub   H             ; 1:4       2dup = if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      2dup = if}){}dnl
+    ld    A, E          ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
+    ld    A, D          ; 1:4       __INFO
+    sub   H             ; 1:4       __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl 2dup <> if
 define({_2DUP_NE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_NE_IF},{2dup_ne_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_NE_IF},{2dup <> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_NE_IF},{dnl
-__{}define({__INFO},{2dup_ne_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       2dup <> if
-    sub   L             ; 1:4       2dup <> if
-    jr   nz, $+7        ; 2:7/12    2dup <> if
-    ld    A, D          ; 1:4       2dup <> if
-    sub   H             ; 1:4       2dup <> if
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      2dup <> if}){}dnl
+    ld    A, E          ; 1:4       __INFO
+    sub   L             ; 1:4       __INFO
+    jr   nz, $+7        ; 2:7/12    __INFO
+    ld    A, D          ; 1:4       __INFO
+    sub   H             ; 1:4       __INFO
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl 2dup < if
@@ -1030,35 +1014,21 @@ dnl
 dnl ------ ucond if ---------
 dnl
 define({UEQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_UEQ_IF},{ueq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_EQ_IF},{u= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UEQ_IF},{dnl
-__{}define({__INFO},{ueq_if}){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    or    A             ; 1:4       u= if
-    sbc  HL, DE         ; 2:15      u= if
-    pop  HL             ; 1:10      u= if
-    pop  DE             ; 1:10      u= if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      u= if}){}dnl
+__{}__ASM_TOKEN_EQ_IF{}dnl
+}){}dnl
 dnl
 dnl
 define({UNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_UNE_IF},{une_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NE_IF},{u<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UNE_IF},{dnl
-__{}define({__INFO},{une_if}){}dnl
-__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
-__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    or    A             ; 1:4       u<> if
-    sbc  HL, DE         ; 2:15      u<> if
-    pop  HL             ; 1:10      u<> if
-    pop  DE             ; 1:10      u<> if
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      u<> if}){}dnl
+__{}__ASM_TOKEN_NE_IF{}dnl
+}){}dnl
 dnl
 dnl
 define({ULT_IF},{dnl
@@ -1137,36 +1107,36 @@ dnl ------ scond if ---------
 dnl
 dnl = if
 define({EQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_EQ_IF},{eq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_EQ_IF},{= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_EQ_IF},{dnl
-__{}define({__INFO},{eq_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    or    A             ; 1:4       = if
-    sbc  HL, DE         ; 2:15      = if
-    pop  HL             ; 1:10      = if
-    pop  DE             ; 1:10      = if
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      = if}){}dnl
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl <> if
 define({NE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_NE_IF},{ne_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NE_IF},{<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_NE_IF},{dnl
-__{}define({__INFO},{ne_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    or    A             ; 1:4       <> if
-    sbc  HL, DE         ; 2:15      <> if
-    pop  HL             ; 1:10      <> if
-    pop  DE             ; 1:10      <> if
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      <> if}){}dnl
+    or    A             ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl < if
@@ -2269,24 +2239,24 @@ dnl
 dnl Du= if
 dnl ( ud ud -- )
 define({DUEQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUEQ_IF},{du= if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DEQ_IF},{du= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUEQ_IF},{dnl
-__{}define({__INFO},{dueq_if}){}dnl
-__{}__ASM_TOKEN_DEQ_IF}){}dnl
+__{}__ASM_TOKEN_DEQ_IF{}dnl
+}){}dnl
 dnl
 dnl
 dnl
 dnl Du<> if
 dnl ( ud ud -- )
 define({DUNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUNE_IF},{du<> if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DNE_IF},{du<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUNE_IF},{dnl
-__{}define({__INFO},{dune_if}){}dnl
-__{}__ASM_TOKEN_DNE_IF}){}dnl
+__{}__ASM_TOKEN_DNE_IF{}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2643,22 +2613,22 @@ dnl
 dnl
 dnl 4dup Du= if
 define({_4DUP_DUEQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_4DUP_DUEQ_IF},{4dup_dueq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DEQ_IF},{4dup du= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DUEQ_IF},{dnl
-__{}define({__INFO},{4dup_dueq_if}){}dnl
-__{}__ASM_TOKEN_4DUP_DEQ_IF}){}dnl
+__{}__ASM_TOKEN_4DUP_DEQ_IF{}dnl
+}){}dnl
 dnl
 dnl
 dnl 4dup Du<> if
 define({_4DUP_DUNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_4DUP_DUNE_IF},{4dup_dune_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_4DUP_DNE_IF},{4dup du<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_4DUP_DUNE_IF},{dnl
-__{}define({__INFO},{4dup_dune_if}){}dnl
-__{}__ASM_TOKEN_4DUP_DNE_IF}){}dnl
+__{}__ASM_TOKEN_4DUP_DNE_IF{}dnl
+}){}dnl
 dnl
 dnl
 dnl
