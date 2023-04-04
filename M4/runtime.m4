@@ -314,7 +314,7 @@ ZXPRT_S16:              ;           zxprt_s16   ( x -- )
     pop  BC             ; 1:10      zxprt_s16   load ret
     pop  DE             ; 1:10      zxprt_s16
     push BC             ; 1:11      zxprt_s16   save ret
-    ret                 ; 1:10      zxprt_u16}){}dnl
+    ret                 ; 1:10      zxprt_s16}){}dnl
 dnl
 dnl
 dnl
