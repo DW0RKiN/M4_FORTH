@@ -696,7 +696,7 @@ dnl
 dnl
 dnl dup unum u<> if
 define({DUP_PUSH_UNE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_IF},{dup_push_une_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_IF},{dup $1 u<> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_UNE_IF},{dnl
@@ -706,11 +706,11 @@ dnl
 dnl
 dnl dup 123 u< if
 define({DUP_PUSH_ULT_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ULT_IF},{dup_push_ult_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ULT_IF},{dup $1 u< if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_ULT_IF},{dnl
-__{}define({__INFO},{dup_push_ult_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
@@ -720,18 +720,18 @@ __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sub   C             ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, H          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sbc   A, B          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u< if},
+__{}    ld   BC, format({%-11s},$1); 4:20      __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sub   C             ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sbc   A, B          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}{dnl
-__{}    ld    A, L          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sub   low __FORM({%-10s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, H          ; 1:4       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sbc   A, high __FORM({%-6s},$1); 2:7       dup $1 u< if    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      dup $1 u< if})}){}dnl
+__{}    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO    HL<$1 --> HL-$1<0 --> carry if true
+__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
 dnl
 dnl
 dnl dup 123 u>= if
