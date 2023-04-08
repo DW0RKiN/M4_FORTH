@@ -1018,6 +1018,7 @@ dnl
 dnl
 dnl # ------ ucond if ---------
 dnl
+dnl # u= if
 define({UEQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_EQ_IF},{u= if},$@){}dnl
 }){}dnl
@@ -1027,6 +1028,7 @@ __{}__ASM_TOKEN_EQ_IF{}dnl
 }){}dnl
 dnl
 dnl
+dnl # u<> if
 define({UNE_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_NE_IF},{u<> if},$@){}dnl
 }){}dnl
@@ -1036,44 +1038,47 @@ __{}__ASM_TOKEN_NE_IF{}dnl
 }){}dnl
 dnl
 dnl
+dnl # u< if
 define({ULT_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_ULT_IF},{ult_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ULT_IF},{u< if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ULT_IF},{dnl
-__{}define({__INFO},{ult_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       u< if    DE<HL --> DE-HL<0 --> carry if true
-    pop  HL             ; 1:10      u< if
-    pop  DE             ; 1:10      u< if
-    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      u< if}){}dnl
+    ld    A, E          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if true
+    sub   L             ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if true
+    ld    A, D          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if true
+    sbc   A, H          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if true
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
+dnl # u>= if
 define({UGE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_UGE_IF},{uge_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_UGE_IF},{u>= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UGE_IF},{dnl
-__{}define({__INFO},{uge_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
-    sub   L             ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
-    ld    A, D          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
-    sbc   A, H          ; 1:4       u>= if    DE>=HL --> DE-HL>=0 --> not carry if true
-    pop  HL             ; 1:10      u>= if
-    pop  DE             ; 1:10      u>= if
-    jp    c, format({%-11s},else{}IF_COUNT); 3:10      u>= if}){}dnl
+    ld    A, E          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if true
+    sub   L             ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if true
+    ld    A, D          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if true
+    sbc   A, H          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if true
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
+dnl # u<= if
 define({ULE_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_ULE_IF},{ule_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ULE_IF},{u<= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ULE_IF},{dnl
@@ -1081,31 +1086,32 @@ __{}define({__INFO},{ule_if}){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
-    sub   E             ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
-    ld    A, H          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
-    sbc   A, D          ; 1:4       u<= if    DE<=HL --> 0<=HL-DE --> not carry if true
-    pop  HL             ; 1:10      u<= if
-    pop  DE             ; 1:10      u<= if
-    jp    c, format({%-11s},else{}IF_COUNT); 3:10      u<= if}){}dnl
+    ld    A, L          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> not carry if true
+    sub   E             ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> not carry if true
+    ld    A, H          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> not carry if true
+    sbc   A, D          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> not carry if true
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
+dnl # u> if
 define({UGT_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_UGT_IF},{ugt_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_UGT_IF},{u> if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UGT_IF},{dnl
-__{}define({__INFO},{ugt_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
-    sub   E             ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
-    ld    A, H          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
-    sbc   A, D          ; 1:4       u> if    DE>HL --> 0>HL-DE --> carry if true
-    pop  HL             ; 1:10      u> if
-    pop  DE             ; 1:10      u> if
-    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      u> if}){}dnl
+    ld    A, L          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> carry if true
+    sub   E             ; 1:4       __INFO    DE>HL --> 0>HL-DE --> carry if true
+    ld    A, H          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> carry if true
+    sbc   A, D          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> carry if true
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
 dnl # ------ scond if ---------
