@@ -1082,7 +1082,7 @@ __{}__ADD_TOKEN({__TOKEN_ULE_IF},{u<= if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ULE_IF},{dnl
-__{}define({__INFO},{ule_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
@@ -1242,11 +1242,11 @@ dnl # ------ push scond if ---------
 dnl
 dnl # num = if
 define({PUSH_EQ_IF},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_EQ_IF},{push_eq_if},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EQ_IF},{$1 = if},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_EQ_IF},{dnl
-__{}define({__INFO},{push_eq_if}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
@@ -1256,138 +1256,148 @@ __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}__{}                        ;[12:63]    $1 = if
-__{}    ld   BC, format({%-11s},$1); 4:20      $1 = if
-__{}    or    A             ; 1:4       $1 = if
-__{}    sbc  HL, BC         ; 2:15      $1 = if
-__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}    pop  DE             ; 1:10      $1 = if
-__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[12:63]    __INFO
+__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval(($1) & 0xFFFF),{0},{dnl
-__{}__{}                        ;[7:32]     $1 = if   variant: zero
-__{}__{}    ld    A, L          ; 1:4       $1 = if
-__{}__{}    or    H             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[7:32]     __INFO   variant: zero
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval((($1) & 0xFFFF) - 0x00FF),{0},{dnl
-__{}__{}                        ;[8:36]     $1 = if   variant: 0x00FF = 255
-__{}__{}    ld    A, L          ; 1:4       $1 = if
-__{}__{}    inc   A             ; 1:4       $1 = if
-__{}__{}    or    H             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[8:36]     __INFO   variant: 0x00FF = 255
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval((($1) & 0xFFFF) - 0xFF00),{0},{dnl
-__{}__{}                        ;[8:36]     $1 = if   variant: 0xFF00 = 65280
-__{}__{}    ld    A, H          ; 1:4       $1 = if
-__{}__{}    inc   A             ; 1:4       $1 = if
-__{}__{}    or    L             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[8:36]     __INFO   variant: 0xFF00 = 65280
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval((($1) & 0xFFFF) - 0xFFFF),{0},{dnl
-__{}__{}                        ;[8:36]     $1 = if   variant: -1
-__{}__{}    ld    A, H          ; 1:4       $1 = if
-__{}__{}    and   L             ; 1:4       $1 = if
-__{}__{}    inc   A             ; 1:4       $1 = if   A = 0xFF --> 0x00 ?
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[8:36]     __INFO   variant: -1
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    and   L             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO   A = 0xFF --> 0x00 ?
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
-__{}__{}                        ;[10:43] $1 = if   variant: lo($1) = 255
-__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
-__{}__{}    xor   H             ; 1:4       $1 = if
-__{}__{}    inc   L             ; 1:4       $1 = if
-__{}__{}    or    L             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[10:43] __INFO   variant: lo($1) = 255
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
-__{}__{}                        ;[10:43] $1 = if   variant: hi($1) = 255
-__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
-__{}__{}    xor   L             ; 1:4       $1 = if
-__{}__{}    inc   H             ; 1:4       $1 = if
-__{}__{}    or    H             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[10:43] __INFO   variant: hi($1) = 255
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval(($1) ^ 256),{0},{dnl
-__{}__{}                        ;[8:36]     $1 = if   variant: 0x0100 = 256
-__{}__{}    ld    A, H          ; 1:4       $1 = if
-__{}__{}    dec   A             ; 1:4       $1 = if
-__{}__{}    or    L             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[8:36]     __INFO   variant: 0x0100 = 256
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval(($1) & 0xFF),{0},{dnl
-__{}__{}                        ;[9:39]     $1 = if   variant: lo($1) = zero
-__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       $1 = if
-__{}__{}    xor   H             ; 1:4       $1 = if
-__{}__{}    or    L             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[9:39]     __INFO   variant: lo($1) = zero
+__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval(($1) ^ 0x0001),{0},{dnl
-__{}__{}                        ;[8:36]     $1 = if   variant: 0x0001
-__{}__{}    ld    A, L          ; 1:4       $1 = if
-__{}__{}    dec   A             ; 1:4       $1 = if
-__{}__{}    or    H             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[8:36]     __INFO   variant: 0x0001
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval(($1) & 0xFF00),{0},{dnl
-__{}__{}                        ;[9:39]     $1 = if   variant: hi($1) = zero
-__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       $1 = if
-__{}__{}    xor   L             ; 1:4       $1 = if
-__{}__{}    or    H             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[9:39]     __INFO   variant: hi($1) = zero
+__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       __INFO
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval(($1) ^ 0x0101),{0},{dnl
-__{}__{}                        ;[9:40]     $1 = if   variant: 0x0101 = 257
-__{}__{}    dec   H             ; 1:4       $1 = if
-__{}__{}    dec   L             ; 1:4       $1 = if
-__{}__{}    ld    A, H          ; 1:4       $1 = if
-__{}__{}    or    L             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                        ;[9:40]     __INFO   variant: 0x0101 = 257
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval(((($1) & 0xFF00)>>8)-(($1) & 0xFF)),{0},{dnl
-__{}__{}                       ;[12:32/49]  $1 = if   variant: hi($1) = lo($1) = eval(($1) & 0xFF)
-__{}__{}    ld    A, H          ; 1:4       $1 = if
-__{}__{}    cp    L             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if
-__{}__{}    xor  low __FORM({%-11s},$1); 2:7       $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                       ;[12:32/49]  __INFO   variant: hi($1) = lo($1) = eval(($1) & 0xFF)
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval(((($1) & 0xFF00)>>8)-1),{0},{dnl
-__{}__{}                       ;[10:43]     $1 = if   variant: hi($1) = 1
-__{}__{}    dec   H             ; 1:4       $1 = if
-__{}__{}    ld    A, L          ; 1:4       $1 = if
-__{}__{}    xor  low __FORM({%-11s},$1); 2:7       $1 = if
-__{}__{}    or    H             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                       ;[10:43]     __INFO   variant: hi($1) = 1
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    xor  low __FORM({%-11s},$1); 2:7       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}eval((($1) & 0xFF)-1),{0},{dnl
-__{}__{}                       ;[10:43]     $1 = if   variant: lo($1) = 1
-__{}__{}    dec   L             ; 1:4       $1 = if
-__{}__{}    ld    A, H          ; 1:4       $1 = if
-__{}__{}    xor  high __FORM({%-10s},$1); 2:7       $1 = if
-__{}__{}    or    H             ; 1:4       $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if},
+__{}__{}                       ;[10:43]     __INFO   variant: lo($1) = 1
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    xor  high __FORM({%-10s},$1); 2:7       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}ifelse(_TYP_SINGLE,{small},0,1):__IS_NUM($1):__HEX_H($1),1:1:__HEX_L(2*($1)),{dnl
+__{}__{}                       ;[12:50/47]  __INFO   variant: hi($1) = 2*lo($1)
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   x[1] = __HEX_L($1)
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   x[2] = x[1] + x[1]
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}{dnl
-__{}__{}                        ;[11:53]    $1 = if   variant: default
-__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      $1 = if
-__{}__{}    or    A             ; 1:4       $1 = if
-__{}__{}    sbc  HL, BC         ; 2:15      $1 = if
-__{}__{}    ex   DE, HL         ; 1:4       $1 = if
-__{}__{}    pop  DE             ; 1:10      $1 = if
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      $1 = if})}){}dnl
+__{}__{}                        ;[11:53]    __INFO   variant: default
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      __INFO
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
 dnl
 dnl
 dnl # num <> if
