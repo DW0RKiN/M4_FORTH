@@ -1257,20 +1257,30 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}__{}                        ;[12:63]    __INFO
-__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
-__{}    or    A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}eval(($1) & 0xFFFF),{0},{dnl
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
+__{}__HEX_HL($1),0x0000,{dnl
 __{}__{}                        ;[7:32]     __INFO   variant: zero
 __{}__{}    ld    A, L          ; 1:4       __INFO
 __{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}eval((($1) & 0xFFFF) - 0x00FF),{0},{dnl
+
+__{}__HEX_HL($1),0x0001,{dnl
+__{}__{}                        ;[8:36]     __INFO   variant: 0x0001
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_HL($1),0x00FF,{dnl
 __{}__{}                        ;[8:36]     __INFO   variant: 0x00FF = 255
 __{}__{}    ld    A, L          ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
@@ -1278,7 +1288,16 @@ __{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}eval((($1) & 0xFFFF) - 0xFF00),{0},{dnl
+
+__{}__HEX_HL($1),0x0100,{dnl
+__{}__{}                        ;[8:36]     __INFO   variant: 0x0100 = 256
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_HL($1),0xFF00,{dnl
 __{}__{}                        ;[8:36]     __INFO   variant: 0xFF00 = 65280
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
@@ -1286,6 +1305,7 @@ __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
 __{}eval((($1) & 0xFFFF) - 0xFFFF),{0},{dnl
 __{}__{}                        ;[8:36]     __INFO   variant: -1
 __{}__{}    ld    A, H          ; 1:4       __INFO
@@ -1294,45 +1314,12 @@ __{}__{}    inc   A             ; 1:4       __INFO   A = 0xFF --> 0x00 ?
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}eval((($1) & 0x00FF) - 0x00FF),{0},{dnl
-__{}__{}                        ;[10:43] __INFO   variant: lo($1) = 255
-__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}eval((($1) & 0xFF00) - 0xFF00),{0},{dnl
-__{}__{}                        ;[10:43] __INFO   variant: hi($1) = 255
-__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO
-__{}__{}    xor   L             ; 1:4       __INFO
-__{}__{}    inc   H             ; 1:4       __INFO
-__{}__{}    or    H             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}eval(($1) ^ 256),{0},{dnl
-__{}__{}                        ;[8:36]     __INFO   variant: 0x0100 = 256
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    dec   A             ; 1:4       __INFO
-__{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}eval(($1) & 0xFF),{0},{dnl
+
+__{}__HEX_L($1),0x00,{dnl
 __{}__{}                        ;[9:39]     __INFO   variant: lo($1) = zero
-__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__HEX_HL($1),0x0001,{dnl
-__{}__{}                        ;[8:36]     __INFO   variant: 0x0001
-__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}    dec   A             ; 1:4       __INFO
-__{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
@@ -1344,7 +1331,8 @@ __{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}eval(($1) ^ 0x0101),{0},{dnl
+
+__{}__HEX_HL($1),0x0101,{dnl
 __{}__{}                        ;[9:40]     __INFO   variant: 0x0101 = 257
 __{}__{}    dec   H             ; 1:4       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -1353,15 +1341,25 @@ __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__IS_NUM($1):__HEX_H($1),1:__HEX_L($1),{dnl
-__{}__{}                       ;[12:32/49]  __INFO   variant: hi($1) = lo($1) = __HEX_L($1)
+__{}__HEX_HL($1),0x01FF,{dnl
+__{}__{}                        ;[9:40]     __INFO   variant: 0x01FF = 511
+__{}__{}    dec   H             ; 1:4       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    cp    L             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}__{}    xor  __HEX_L($1)           ; 2:7       __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_HL($1),0xFF01,{dnl
+__{}__{}                        ;[9:40]     __INFO   variant: 0xFF01 = 65281
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
 __{}__HEX_H($1),0x01,{dnl
 __{}__{}                       ;[10:43]     __INFO   variant: hi($1) = 1
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
@@ -1371,6 +1369,16 @@ __{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_H($1),0xFF,{dnl
+__{}__{}                        ;[10:43]    __INFO   variant: hi($1) = 255
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    xor   L             ; 1:4       __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
 __{}__HEX_L($1),0x01,{dnl
 __{}__{}                       ;[10:43]     __INFO   variant: lo($1) = 1
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
@@ -1380,8 +1388,80 @@ __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_L($1),0xFF,{dnl
+__{}__{}                        ;[10:43]    __INFO   variant: lo($1) = 255
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 
-__{}xxx:_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L(2*($1)),{dnl
+__{}__IS_NUM($1):__HEX_H($1),1:__HEX_L($1),{dnl
+__{}__{}                       ;[12:32/49]  __INFO   variant: hi($1) = lo($1) = __HEX_L($1)
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
+__{}__{}    xor  __HEX_L($1)           ; 2:7       __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
+__{}_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L($1+1),{dnl
+__{}__{}                       ;[12:50/47]  __INFO   variant: hi($1) = lo($1)+1
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   x[1] = __HEX_L($1)
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    cp    H             ; 1:4       __INFO   x[2] = __HEX_H($1) = x[1] + 1
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L($1-1),{dnl
+__{}__{}                       ;[12:50/47]  __INFO   variant: hi($1) = lo($1)-1
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   x[1] = __HEX_L($1)
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    cp    H             ; 1:4       __INFO   x[2] = __HEX_H($1) = x[1] - 1
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
+__{}_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L($1+$1),{dnl
+__{}__{}                       ;[12:50/47]  __INFO   variant: hi($1) = 2*lo($1)
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   x[1] = __HEX_L($1)
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   x[2] = x[1] + x[1]
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L(__HEX_L($1)/2),{dnl
+__{}__{}                       ;[12:50/47]  __INFO   variant: hi($1) = lo($1)/2
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   x[1] = __HEX_L($1)
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   x[2] = x[1]/2
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
+__{}better_for_rel_jmp_for_ne:_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L($1+1),{dnl
+__{}__{}                       ;[13:53/36]  __INFO   variant: hi($1)-1 = lo($1)
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   x[1] = x[2] - 1
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
+__{}__{}    xor  __HEX_L($1)           ; 2:7       __INFO   x[1] = __HEX_L($1)
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
+__{}better_for_rel_jmp_for_ne:_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L(2*($1)),{dnl
 __{}__{}                       ;[13:53/36]  __INFO   variant: hi($1) = 2*lo($1)
 __{}__{}    ld    A, L          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
@@ -1392,26 +1472,6 @@ __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
 __{}__{}    xor  __HEX_H($1)           ; 2:7       __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 
-__{}_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L(2*($1)),{dnl
-__{}__{}                       ;[12:50/47]  __INFO   variant: hi($1) = 2*lo($1)
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
-__{}__{}    cp    L             ; 1:4       __INFO   x[1] = __HEX_L($1)
-__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
-__{}__{}    add   A, A          ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO   x[2] = x[1] + x[1]
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}_TYP_SINGLE:__IS_NUM($1):__HEX_H(2*($1)),fast:1:__HEX_L($1),{dnl
-__{}__{}                       ;[12:50/47]  __INFO   variant: 2*hi($1) = lo($1)
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
-__{}__{}    cp    H             ; 1:4       __INFO   x[2] = __HEX_H($1)
-__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
-__{}__{}    add   A, A          ; 1:4       __INFO
-__{}__{}    xor   L             ; 1:4       __INFO   x[1] = x[2] + x[2]
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}{dnl
 __{}__{}                        ;[11:53]    __INFO   variant: default
 __{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      __INFO
