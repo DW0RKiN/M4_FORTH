@@ -1450,6 +1450,27 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 
+__{}_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L(+(514*__HEX_L($1))/256),{dnl
+__{}__{}                       ;[12:50/47]  __INFO   variant: hi($1) = rlca(lo($1))
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   x[1] = __HEX_L($1)
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    rlca                ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   x[2] = 514*x[1]/256
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L(+(257*__HEX_L($1))/2),{dnl
+__{}__{}                       ;[12:50/47]  __INFO   variant: hi($1) = rrca(lo($1))
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    cp    L             ; 1:4       __INFO   x[1] = __HEX_L($1)
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    rrca                ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   x[2] = 257*x[1]/2
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+
 __{}better_for_rel_jmp_for_ne:_TYP_SINGLE:__IS_NUM($1):__HEX_H($1),fast:1:__HEX_L($1+1),{dnl
 __{}__{}                       ;[13:53/36]  __INFO   variant: hi($1)-1 = lo($1)
 __{}__{}    ld    A, H          ; 1:4       __INFO
