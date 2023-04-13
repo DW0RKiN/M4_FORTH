@@ -1386,6 +1386,54 @@ dnl
 dnl
 dnl
 dnl
+dnl # -------------------- 16 bit ----------------------
+dnl # ------- const scond while ( b a -- b a ) ---------
+dnl
+dnl
+dnl # const = while
+define({PUSH_EQ_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EQ_WHILE},{$1 = while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_EQ_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x1 -- x1 )   $1 == HL}){}dnl
+__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,break{}BEGIN_STACK,0)
+__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # const <> while
+define({PUSH_NE_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_NE_WHILE},{$1 <> while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_NE_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x1 -- x1 )   $1 <> HL}){}dnl
+__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,3,0)
+__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl
 dnl # ----------------------- 16 bit -----------------------
 dnl # ------- dup const scond while ( b a -- b a ) ---------

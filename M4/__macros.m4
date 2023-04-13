@@ -4457,6 +4457,21 @@ __{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO},
 
+__{}ifelse(_TYP_SINGLE,fast,1,_TYP_SINGLE,L_first,1,0):__IS_NUM($4):__HEX_L($1),1:1:0x01,{dnl
+__{}__{}define({__BYTES},eval($2+8)){}dnl
+__{}__{}define({__CLOCKS_NJP},eval($3+36)){}dnl
+__{}__{}define({__CLOCKS_JP},eval($5+34)){}dnl
+__{}__{}define({__CLOCKS},eval($3+33)){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO variant: lo($1) = 1})
+__{}__{}    dec   L             ; 1:4       __INFO   x[1] = 1
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jr   nz, format({%-11s},$+eval($4+4)); 2:7/12    __INFO
+__{}__{}    xor  __HEX_H($1)           ; 2:7       __INFO   x[2] = __HEX_H($1)},
+
 __{}__HEX_L($1),0x01,{dnl
 __{}__{}define({__BYTES},eval($2+7)){}dnl
 __{}__{}define({__CLOCKS},eval($3+33)){}dnl
@@ -4469,6 +4484,21 @@ __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}ifelse(_TYP_SINGLE,fast,1,_TYP_SINGLE,L_first,1,0):__IS_NUM($4):__HEX_L($1),1:1:0xFF,{dnl
+__{}__{}define({__BYTES},eval($2+8)){}dnl
+__{}__{}define({__CLOCKS_NJP},eval($3+36)){}dnl
+__{}__{}define({__CLOCKS_JP},eval($5+34)){}dnl
+__{}__{}define({__CLOCKS},eval($3+33)){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO variant: lo($1) = 255})
+__{}__{}    inc   L             ; 1:4       __INFO   x[1] = -1
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jr   nz, format({%-11s},$+eval($4+4)); 2:7/12    __INFO
+__{}__{}    xor  __HEX_H($1)           ; 2:7       __INFO   x[2] = __HEX_H($1)},
 
 __{}__HEX_L($1),0xFF,{dnl
 __{}__{}define({__BYTES},eval($2+7)){}dnl
@@ -4639,8 +4669,7 @@ __{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
 __{}__{}    rrca                ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   x[2] = 257*x[1]/2
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__{}    pop  DE             ; 1:10      __INFO},
 
 __{}__IS_NUM($4):_TYP_SINGLE:__IS_NUM($1),1:L_first:1,{dnl
 __{}__{}define({__BYTES},eval($2+10)){}dnl
@@ -4724,7 +4753,7 @@ __{}__{}    xor   H             ; 1:4       __INFO   x[2] = x[1]/2
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO},
 
-__{}__IS_NUM($4):_TYP_SINGLE:__IS_NUM($1),1:fast:1,{dnl
+__{}ifelse(_TYP_SINGLE,fast,1,_TYP_SINGLE,L_first,1,0):__IS_NUM($4):__IS_NUM($1),1:1:1,{dnl
 __{}__{}define({__BYTES},eval($2+10)){}dnl
 __{}__{}define({__CLOCKS_NJP},eval($3+43)){}dnl
 __{}__{}define({__CLOCKS_JP},eval($5+41)){}dnl
