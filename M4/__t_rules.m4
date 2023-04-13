@@ -809,6 +809,12 @@ __{}__{}__{}__{}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_I,__T_INFO(1){ drop}
             __T_NAME(0):$1,                                   __TOKEN_PUSH_EQ:__TOKEN_IF,              {__SET_TOKEN({__TOKEN_PUSH_EQ_IF},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):$1,                                   __TOKEN_PUSH_NE:__TOKEN_IF,              {__SET_TOKEN({__TOKEN_PUSH_NE_IF},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
+            __T_NAME(0):$1,                                   __TOKEN_PUSH_EQ:__TOKEN_WHILE,           {__SET_TOKEN({__TOKEN_PUSH_EQ_WHILE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                                   __TOKEN_PUSH_NE:__TOKEN_WHILE,           {__SET_TOKEN({__TOKEN_PUSH_NE_WHILE},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+            __T_NAME(0):$1,                                   __TOKEN_PUSH_EQ:__TOKEN_UNTIL,           {__SET_TOKEN({__TOKEN_PUSH_EQ_UNTIL},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):$1,                                   __TOKEN_PUSH_NE:__TOKEN_UNTIL,           {__SET_TOKEN({__TOKEN_PUSH_NE_UNTIL},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            
 dnl # PUSH2
 push2,,,
 
@@ -1566,8 +1572,10 @@ __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_NE,       
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_EQ:__TOKEN_UNTIL,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_EQ_UNTIL)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_NE:__TOKEN_UNTIL,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_UNTIL)},
 
-__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_EQ:__TOKEN_WHILE,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_EQ_WHILE)},
-__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_NE:__TOKEN_WHILE,      {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_WHILE)},
+__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_EQ_WHILE,      {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_EQ_WHILE)},
+__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_NE_WHILE,      {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_NE_WHILE)},
+__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_EQ_UNTIL,      {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_EQ_UNTIL)},
+__T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_NE_UNTIL,      {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_NE_UNTIL)},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_EQ:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_EQ_IF)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP_PUSH_NE:__TOKEN_IF,         {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_NE_IF)},

@@ -135,6 +135,59 @@ __{}    jp   nc, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
 __{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
+dnl
+dnl
+dnl # ( n -- )
+dnl # const = until
+define({PUSH_EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EQ_UNTIL},{$1 = until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,3)
+__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # ( n -- )
+dnl # const <> until
+define({PUSH_NE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_NE_UNTIL},{$1 <> until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_NE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}$1,{},{
+__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10)
+__{}__{}    jp    z, begin{}BEGIN_STACK   ; 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( flag -- flag )
 define({DUP_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_UNTIL},{dup until},$@){}dnl
