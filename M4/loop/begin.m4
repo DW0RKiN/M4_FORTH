@@ -188,6 +188,98 @@ __{}__{}popdef({BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
+dnl # const < until
+define({PUSH_LT_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_LT_UNTIL},{$1 < until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_LT_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__LT_DROP_MAKE_BEST_CODE($1,begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # const <= until
+define({PUSH_LE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_LE_UNTIL},{$1 <= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_LE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__LE_DROP_MAKE_BEST_CODE($1,begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # const >= until
+define({PUSH_GE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_GE_UNTIL},{$1 >= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_GE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__GE_DROP_MAKE_BEST_CODE($1,begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # const > until
+define({PUSH_GT_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_GT_UNTIL},{$1 > until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_GT_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__GT_DROP_MAKE_BEST_CODE($1,begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( flag -- flag )
 define({DUP_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_UNTIL},{dup until},$@){}dnl
@@ -1440,7 +1532,7 @@ dnl
 dnl
 dnl
 dnl # -------------------- 16 bit ----------------------
-dnl # ------- const scond while ( b a -- b a ) ---------
+dnl # ------- const scond while ( b a -- b ) -----------
 dnl
 dnl
 dnl # const = while
@@ -1458,7 +1550,7 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x1 -- x1 )   $1 == HL}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )   $1 == HL}){}dnl
 __{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,break{}BEGIN_STACK,0)
 __{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO}){}dnl
 }){}dnl
@@ -1480,9 +1572,93 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x1 -- x1 )   $1 <> HL}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )   $1 <> HL}){}dnl
 __{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,3,0)
 __{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # const < while
+define({PUSH_LT_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_LT_WHILE},{$1 < while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_LT_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__LT_DROP_MAKE_BEST_CODE($1,break{}BEGIN_STACK)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # const <= while
+define({PUSH_LE_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_LE_WHILE},{$1 <= while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_LE_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__LE_DROP_MAKE_BEST_CODE($1,break{}BEGIN_STACK)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # const >= while
+define({PUSH_GE_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_GE_WHILE},{$1 >= while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_GE_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__GE_DROP_MAKE_BEST_CODE($1,break{}BEGIN_STACK)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # const > while
+define({PUSH_GT_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_GT_WHILE},{$1 > while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_GT_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__GT_DROP_MAKE_BEST_CODE($1,break{}BEGIN_STACK)}){}dnl
 }){}dnl
 dnl
 dnl
