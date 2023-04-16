@@ -1505,10 +1505,10 @@ __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__IS_NUM($1),0,{
 __{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x < $1
-__{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-__HEX_L($1)<0
-__{}__{}    sub   __HEX_L($1)          ; 2:7       __INFO   HL<$1 --> L-__HEX_L($1)<0
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-__HEX_H($1)<0
-__{}__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> no carry if false
+__{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-$1<0
+__{}__{}    sub  format({%-15s},low $1); 2:7       __INFO   HL<$1 --> L-$1<0
+__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-$1<0
+__{}__{}    sbc   A, format({%-11s},high $1); 2:7       __INFO   HL<$1 --> H-$1<0 --> no carry if false
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
@@ -1588,10 +1588,10 @@ __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__IS_NUM($1),0,{
 __{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x >= $1
-__{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> L-__HEX_L($1)>=0
-__{}__{}    sub  low format({%-11s},$1); 2:7       __INFO   HL>=$1 --> L-__HEX_L($1)>=0
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> H-__HEX_H($1)>=0
-__{}__{}    sbc   A, high format({%-6s},$1); 2:7       __INFO   HL>=$1 --> H-__HEX_H($1)>=0 --> carry if false
+__{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> L-$1>=0
+__{}__{}    sub  format({%-15s},low $1); 2:7       __INFO   HL>=$1 --> L-$1>=0
+__{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> H-$1>=0
+__{}__{}    sbc   A, format({%-11s},high $1); 2:7       __INFO   HL>=$1 --> H-$1>=0 --> carry if false
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
