@@ -1320,72 +1320,11 @@ __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
-__{}eval($#>1),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
-__{}__{}                       ;[16:72]     __INFO   ( x -- )  flag: x <= $1
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   BC = $1
-__{}__{}    ld    A, C          ; 1:4       __INFO   HL<=BC --> 0<=BC-HL --> carry if false
-__{}__{}    sub   L             ; 1:4       __INFO   HL<=BC --> 0<=BC-HL --> carry if false
-__{}__{}    ld    A, B          ; 1:4       __INFO   HL<=BC --> 0<=BC-HL --> carry if false
-__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=BC --> 0<=BC-HL --> carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    xor   B             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__HEX_HL($1),0x0000,{
-__{}__{}                        ;[8:38]     __INFO   ( x -- )  flag: x <= $1
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL< 0         --> no sign if false
-__{}__{}    dec  HL             ; 1:6       __INFO   HL<=0         --> no sign if false
-__{}__{}    or    H             ; 1:4       __INFO   HL<=0 && HL<0 --> no sign if false
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__HEX_HL($1),0xFFFF,{
-__{}__{}                        ;[7:32]     __INFO   ( x -- )  flag: x <= $1
-__{}__{}    rl    H             ; 2:8       __INFO    HL<=-1 --> no sign if false
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}x,xx,{
-__{}__{}                       ;[15:62]     __INFO   ( x -- )  flag: x <= $1
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
-__{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    or    H             ; 1:4       __INFO
-__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO
-__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL<$1 --> HL-$1<0 --> carry if false
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__IS_NUM($1),0,{
-__{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x <= $1
-__{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       __INFO   HL<=$1 --> 0<=$1-HL
-__{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=$1-HL
-__{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO   HL<=$1 --> 0<=$1-HL
-__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=$1 --> 0<=$1-HL --> carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}  .warning: The condition "$1" cannot be evaluated
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}__{}  else
-__{}__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}__{}  endif},
-__{}{
-__{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x <= $1
-__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L
-__{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L
-__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H
-__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H --> carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    ifelse(eval(0x8000&($1)),0,m,p), format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__LE_DROP_MAKE_BEST_CODE($1,else{}IF_COUNT)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1403,72 +1342,11 @@ __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
-__{}eval($#>1),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
-__{}__{}                       ;[16:72]     __INFO   ( x -- )  flag: x < $1
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   BC = $1
-__{}__{}    ld    A, L          ; 1:4       __INFO   HL<BC --> HL-BC<0 --> no carry if false
-__{}__{}    sub   C             ; 1:4       __INFO   HL<BC --> HL-BC<0 --> no carry if false
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL<BC --> HL-BC<0 --> no carry if false
-__{}__{}    sbc   A, B          ; 1:4       __INFO   HL<BC --> HL-BC<0 --> no carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    xor   B             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__HEX_HL($1),0x0001,{
-__{}__{}                        ;[8:38]     __INFO   ( x -- )  flag: x < $1
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL< 0         --> no sign if false
-__{}__{}    dec  HL             ; 1:6       __INFO   HL<=0         --> no sign if false
-__{}__{}    or    H             ; 1:4       __INFO   HL<=0 && HL<0 --> no sign if false
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__HEX_HL($1),0x0000,{
-__{}__{}                        ;[7:32]     __INFO   ( x -- )  flag: x < $1
-__{}__{}    rl    H             ; 2:8       __INFO    HL<0 --> no sign if false
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}x,xx,{
-__{}__{}                       ;[15:62]     __INFO   ( x -- )  flag: x < $1
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
-__{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    or    H             ; 1:4       __INFO
-__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO
-__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__IS_NUM($1),0,{
-__{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x < $1
-__{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-$1<0
-__{}__{}    sub  low __FORM({%-11s},$1); 2:7       __INFO   HL<$1 --> L-$1<0
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-$1<0
-__{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO   HL<$1 --> H-$1<0 --> no carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}  .warning: The condition "$1" cannot be evaluated
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}__{}  else
-__{}__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}__{}  endif},
-__{}{
-__{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x < $1
-__{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-__HEX_L($1)<0
-__{}__{}    sub   __HEX_L($1)          ; 2:7       __INFO   HL<$1 --> L-__HEX_L($1)<0
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-__HEX_H($1)<0
-__{}__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> no carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    ifelse(eval(0x8000&($1)),0,p,m), format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__LT_DROP_MAKE_BEST_CODE($1,else{}IF_COUNT)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1486,72 +1364,11 @@ __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
-__{}eval($#>1),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
-__{}__{}                       ;[16:72]     __INFO   ( x -- )  flag: x >= $1
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   BC = $1
-__{}__{}    ld    A, L          ; 1:4       __INFO   HL>=BC --> HL-BC>=0 --> carry if false
-__{}__{}    sub   C             ; 1:4       __INFO   HL>=BC --> HL-BC>=0 --> carry if false
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL>=BC --> HL-BC>=0 --> carry if false
-__{}__{}    sbc   A, B          ; 1:4       __INFO   HL>=BC --> HL-BC>=0 --> carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    xor   B             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__HEX_HL($1),0x0001,{
-__{}__{}                        ;[8:38]     __INFO   ( x -- )  flag: x >= $1
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL>= 0         --> sign if false
-__{}__{}    dec  HL             ; 1:6       __INFO   HL>  0         --> sign if false
-__{}__{}    or    H             ; 1:4       __INFO   HL>= 0 && HL>0 --> sign if false
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__HEX_HL($1),0x0000,{
-__{}__{}                        ;[7:32]     __INFO   ( x -- )  flag: x >= $1
-__{}__{}    rl    H             ; 2:8       __INFO    HL>=0 --> sign if false
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}x,xx,{
-__{}__{}                       ;[15:62]     __INFO   ( x -- )  flag: x >= $1
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO
-__{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    or    H             ; 1:4       __INFO
-__{}__{}    jr   nc, $+4        ; 2:7/12    __INFO
-__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL<$1 --> HL-$1<0 --> carry if true
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__IS_NUM($1),0,{
-__{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x >= $1
-__{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> L-$1>=0
-__{}__{}    sub  low __FORM({%-11s},$1); 2:7       __INFO   HL>=$1 --> L-$1>=0
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> H-$1>=0
-__{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO   HL>=$1 --> H-$1>=0 --> carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}  .warning: The condition "$1" cannot be evaluated
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
-__{}__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}__{}  else
-__{}__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}__{}  endif},
-__{}{
-__{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x >= $1
-__{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> L-__HEX_L($1)>=0
-__{}__{}    sub   __HEX_L($1)          ; 2:7       __INFO   HL>=$1 --> L-__HEX_L($1)>=0
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> H-__HEX_H($1)>=0
-__{}__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   HL>=$1 --> H-__HEX_H($1)>=0 --> carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    ifelse(eval(0x8000&($1)),0,m,p), format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__GE_DROP_MAKE_BEST_CODE($1,else{}IF_COUNT)}){}dnl
 }){}dnl
 dnl
 dnl
