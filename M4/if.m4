@@ -1393,19 +1393,6 @@ __{}__{}    xor   B             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__IS_NUM($1),0,{
-__{}__{}                       ;[15:62]     __INFO   ( x -- )  flag: x <= $1
-__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO   BC = $1
-__{}__{}    ld    A, C          ; 1:4       __INFO   HL<=BC --> 0<=BC-HL --> carry if false
-__{}__{}    sub   L             ; 1:4       __INFO   HL<=BC --> 0<=BC-HL --> carry if false
-__{}__{}    ld    A, B          ; 1:4       __INFO   HL<=BC --> 0<=BC-HL --> carry if false
-__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=BC --> 0<=BC-HL --> carry if false
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    xor   H             ; 1:4       __INFO
-__{}__{}    xor   B             ; 1:4       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__HEX_HL($1),0x0000,{
 __{}__{}                        ;[8:38]     __INFO   ( x -- )  flag: x <= $1
 __{}__{}    ld    A, H          ; 1:4       __INFO   HL< 0         --> no sign if false
@@ -1430,11 +1417,27 @@ __{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL<$1 --> HL-$1<0 --> carry
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__IS_NUM($1),0,{
+__{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x <= $1
+__{}__{}    ld    A, __FORM({%-11s},low $1); 2:7       __INFO   HL<=$1 --> 0<=$1-HL
+__{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=$1-HL
+__{}__{}    ld    A, __FORM({%-11s},high $1); 2:7       __INFO   HL<=$1 --> 0<=$1-HL
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=$1 --> 0<=$1-HL --> carry if false
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}  .warning: The condition "$1" cannot be evaluated
+__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO
+__{}__{}  else
+__{}__{}__{}    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO
+__{}__{}  endif},
 __{}{
-__{}__{}                       ;[11:48]     __INFO   ( x -- )  flag: x <= $1
-__{}__{}    ld    A, __HEX_L($1)       ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L
+__{}__{}                       ;[13:54]     __INFO   ( x -- )  flag: x <= $1
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L
 __{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L
-__{}__{}    ld    A, __HEX_H($1)       ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H
+__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H --> carry if false
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO
