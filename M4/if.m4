@@ -1123,14 +1123,12 @@ __{}__ADD_TOKEN({__TOKEN_EQ_IF},{= if},$@){}dnl
 dnl
 define({__ASM_TOKEN_EQ_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 == x1){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    or    A             ; 1:4       __INFO
-    sbc  HL, DE         ; 2:15      __INFO
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}__MAKE_CODE_EQ_DROP_JP_FALSE(else{}IF_COUNT){}dnl
+}){}dnl
 dnl
 dnl
 dnl # <> if
@@ -1140,14 +1138,12 @@ __{}__ADD_TOKEN({__TOKEN_NE_IF},{<> if},$@){}dnl
 dnl
 define({__ASM_TOKEN_NE_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <> x1){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    or    A             ; 1:4       __INFO
-    sbc  HL, DE         ; 2:15      __INFO
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}__MAKE_CODE_NE_DROP_JP_FALSE(else{}IF_COUNT){}dnl
+}){}dnl
 dnl
 dnl
 dnl # < if
@@ -1157,19 +1153,12 @@ __{}__ADD_TOKEN({__TOKEN_LT_IF},{< if},$@){}dnl
 dnl
 define({__ASM_TOKEN_LT_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 < x1){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if true
-    sub   L             ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if true
-    ld    A, D          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if true
-    sbc   A, H          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> carry if true
-    rra                 ; 1:4       __INFO
-    xor   H             ; 1:4       __INFO
-    xor   D             ; 1:4       __INFO
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}__MAKE_CODE_LT_DROP_JP_FALSE(else{}IF_COUNT){}dnl
+}){}dnl
 dnl
 dnl
 dnl # >= if
@@ -1179,19 +1168,12 @@ __{}__ADD_TOKEN({__TOKEN_GE_IF},{>= if},$@){}dnl
 dnl
 define({__ASM_TOKEN_GE_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 >= x1){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, E          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if true
-    sub   L             ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if true
-    ld    A, D          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if true
-    sbc   A, H          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> not carry if true
-    rra                 ; 1:4       __INFO
-    xor   H             ; 1:4       __INFO
-    xor   D             ; 1:4       __INFO
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}__MAKE_CODE_GE_DROP_JP_FALSE(else{}IF_COUNT){}dnl
+}){}dnl
 dnl
 dnl
 dnl # <= if
@@ -1201,19 +1183,12 @@ __{}__ADD_TOKEN({__TOKEN_LE_IF},{<= if},$@){}dnl
 dnl
 define({__ASM_TOKEN_LE_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <= x1){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> not carry if true
-    sub   E             ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> not carry if true
-    ld    A, H          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> not carry if true
-    sbc   A, D          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> not carry if true
-    rra                 ; 1:4       __INFO
-    xor   H             ; 1:4       __INFO
-    xor   D             ; 1:4       __INFO
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    m, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}__MAKE_CODE_LE_DROP_JP_FALSE(else{}IF_COUNT){}dnl
+}){}dnl
 dnl
 dnl
 dnl # > if
@@ -1223,19 +1198,12 @@ __{}__ADD_TOKEN({__TOKEN_GT_IF},{> if},$@){}dnl
 dnl
 define({__ASM_TOKEN_GT_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 > x1){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A, L          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> carry if true
-    sub   E             ; 1:4       __INFO    DE>HL --> 0>HL-DE --> carry if true
-    ld    A, H          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> carry if true
-    sbc   A, D          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> carry if true
-    rra                 ; 1:4       __INFO
-    xor   H             ; 1:4       __INFO
-    xor   D             ; 1:4       __INFO
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}__MAKE_CODE_GT_DROP_JP_FALSE(else{}IF_COUNT){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ------ push scond if ---------
@@ -1257,7 +1225,7 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10)
+__{}__{}__MAKE_CODE_PUSH_EQ_DROP($1,3,10)
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
@@ -1279,7 +1247,7 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,3)
+__{}__{}__MAKE_CODE_PUSH_EQ_DROP($1,3,10,3)
 __{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
@@ -1302,7 +1270,7 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__GT_DROP_MAKE_BEST_CODE($1,else{}IF_COUNT)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_GT_DROP_JP_FALSE($1,else{}IF_COUNT)}){}dnl
 }){}dnl}){}dnl
 dnl
 dnl
@@ -1324,7 +1292,7 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__LE_DROP_MAKE_BEST_CODE($1,else{}IF_COUNT)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_LE_DROP_JP_FALSE($1,else{}IF_COUNT)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1346,7 +1314,7 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__LT_DROP_MAKE_BEST_CODE($1,else{}IF_COUNT)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_LT_DROP_JP_FALSE($1,else{}IF_COUNT)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1368,7 +1336,7 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__GE_DROP_MAKE_BEST_CODE($1,else{}IF_COUNT)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_GE_DROP_JP_FALSE($1,else{}IF_COUNT)}){}dnl
 }){}dnl
 dnl
 dnl

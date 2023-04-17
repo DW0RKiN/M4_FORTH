@@ -136,6 +136,120 @@ __{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK
 dnl
 dnl
 dnl
+dnl # ------ scond until ( b a -- ) ---------
+dnl
+dnl
+dnl # = until
+define({EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_EQ_UNTIL},{= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 == x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_EQ_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # <> until
+define({NE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_NE_UNTIL},{<> until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <> x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_NE_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # < until
+define({LT_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_LT_UNTIL},{< until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LT_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 < x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_LT_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # >= until
+define({GE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_GE_UNTIL},{>= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_GE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 >= x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_GE_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # <= until
+define({LE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_LE_UNTIL},{<= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_LE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <= x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_LE_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # > until
+define({GT_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_GT_UNTIL},{> until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_GT_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 > x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_GT_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ------ num scond until ( a -- ) ---------
+dnl
 dnl
 dnl # ( n -- )
 dnl # const = until
@@ -155,7 +269,7 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,3)
+__{}__{}__MAKE_CODE_PUSH_EQ_DROP($1,3,10,3)
 __{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -180,7 +294,7 @@ __{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10)
+__{}__{}__MAKE_CODE_PUSH_EQ_DROP($1,3,10)
 __{}__{}    jp    z, begin{}BEGIN_STACK   ; 3:10      __INFO
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -204,7 +318,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__LT_DROP_MAKE_BEST_CODE($1,begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_PUSH_LT_DROP_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
 }){}dnl
@@ -227,7 +341,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__LE_DROP_MAKE_BEST_CODE($1,begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_PUSH_LE_DROP_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
 }){}dnl
@@ -250,7 +364,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__GE_DROP_MAKE_BEST_CODE($1,begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_PUSH_GE_DROP_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
 }){}dnl
@@ -273,11 +387,14 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__GT_DROP_MAKE_BEST_CODE($1,begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_PUSH_GT_DROP_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
 }){}dnl
 dnl
+dnl
+dnl
+dnl # ----------------------------------------
 dnl
 dnl
 dnl # ( flag -- flag )
@@ -1329,128 +1446,102 @@ __{}.error {$0}($@) for non-existent {BEGIN}},
     jp   nc, break{}BEGIN_STACK   ; 3:10      u> while BEGIN_STACK})}){}dnl
 dnl
 dnl
-dnl # ------ scond while ( b a -- b a ) ---------
+dnl # ------ scond while ( b a -- ) ---------
 dnl
 dnl # = while
 define({EQ_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_EQ_WHILE},{eq_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_EQ_WHILE},{= while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_EQ_WHILE},{dnl
-__{}define({__INFO},{eq_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    or    A             ; 1:4       = while BEGIN_STACK
-    sbc  HL, DE         ; 2:15      = while BEGIN_STACK
-    pop  HL             ; 1:10      = while BEGIN_STACK
-    pop  DE             ; 1:10      = while BEGIN_STACK
-    jp   nz, break{}BEGIN_STACK   ; 3:10      = while BEGIN_STACK})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 == x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_EQ_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # <> while
 define({NE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_NE_WHILE},{ne_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_NE_WHILE},{<> while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_NE_WHILE},{dnl
-__{}define({__INFO},{ne_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    or    A             ; 1:4       <> while BEGIN_STACK
-    sbc  HL, DE         ; 2:15      <> while BEGIN_STACK
-    pop  HL             ; 1:10      <> while BEGIN_STACK
-    pop  DE             ; 1:10      <> while BEGIN_STACK
-    jp    z, break{}BEGIN_STACK   ; 3:10      <> while BEGIN_STACK})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <> x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_NE_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # < while
 define({LT_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_LT_WHILE},{lt_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_LT_WHILE},{< while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_LT_WHILE},{dnl
-__{}define({__INFO},{lt_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    ld    A, E          ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> no carry if false
-    sub   L             ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> no carry if false
-    ld    A, D          ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> no carry if false
-    sbc   A, H          ; 1:4       < while BEGIN_STACK    DE<HL --> DE-HL<0 --> no carry if false
-    rra                 ; 1:4       < while BEGIN_STACK
-    xor   D             ; 1:4       < while BEGIN_STACK
-    xor   H             ; 1:4       < while BEGIN_STACK
-    pop  HL             ; 1:10      < while BEGIN_STACK
-    pop  DE             ; 1:10      < while BEGIN_STACK
-    jp    p, break{}BEGIN_STACK   ; 3:10      < while BEGIN_STACK})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 < x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_LT_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # >= while
 define({GE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_GE_WHILE},{ge_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_GE_WHILE},{>= while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_GE_WHILE},{dnl
-__{}define({__INFO},{ge_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    ld    A, E          ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> carry if false
-    sub   L             ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> carry if false
-    ld    A, D          ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> carry if false
-    sbc   A, H          ; 1:4       >= while BEGIN_STACK    DE>=HL --> DE-HL>=0 --> carry if false
-    rra                 ; 1:4       >= while BEGIN_STACK
-    xor   D             ; 1:4       >= while BEGIN_STACK
-    xor   H             ; 1:4       >= while BEGIN_STACK
-    pop  HL             ; 1:10      >= while BEGIN_STACK
-    pop  DE             ; 1:10      >= while BEGIN_STACK
-    jp    m, break{}BEGIN_STACK   ; 3:10      >= while BEGIN_STACK})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 >= x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_GE_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # <= while
 define({LE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_LE_WHILE},{le_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_LE_WHILE},{<= while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_LE_WHILE},{dnl
-__{}define({__INFO},{le_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    ld    A, L          ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> carry if false
-    sub   E             ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> carry if false
-    ld    A, H          ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> carry if false
-    sbc   A, D          ; 1:4       <= while BEGIN_STACK    DE<=HL --> HL-DE>=0 --> carry if false
-    rra                 ; 1:4       <= while BEGIN_STACK
-    xor   D             ; 1:4       <= while BEGIN_STACK
-    xor   H             ; 1:4       <= while BEGIN_STACK
-    pop  HL             ; 1:10      <= while BEGIN_STACK
-    pop  DE             ; 1:10      <= while BEGIN_STACK
-    jp    m, break{}BEGIN_STACK   ; 3:10      <= while BEGIN_STACK})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <= x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_LE_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # > while
 define({GT_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_GT_WHILE},{gt_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_GT_WHILE},{> while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_GT_WHILE},{dnl
-__{}define({__INFO},{gt_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    ld    A, L          ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> no carry if false
-    sub   E             ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> no carry if false
-    ld    A, H          ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> no carry if false
-    sbc   A, D          ; 1:4       > while BEGIN_STACK    DE>HL --> HL-DE<0 --> no carry if false
-    rra                 ; 1:4       > while BEGIN_STACK
-    xor   D             ; 1:4       > while BEGIN_STACK
-    xor   H             ; 1:4       > while BEGIN_STACK
-    pop  HL             ; 1:10      > while BEGIN_STACK
-    pop  DE             ; 1:10      > while BEGIN_STACK
-    jp    p, break{}BEGIN_STACK   ; 3:10      > while BEGIN_STACK})}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 > x1){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{dnl
+__{}__{}__MAKE_CODE_GT_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1551,7 +1642,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )   $1 == HL}){}dnl
-__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,break{}BEGIN_STACK,0)
+__{}__{}__MAKE_CODE_PUSH_EQ_DROP($1,3,10,break{}BEGIN_STACK,0)
 __{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO}){}dnl
 }){}dnl
 dnl
@@ -1573,7 +1664,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )   $1 <> HL}){}dnl
-__{}__{}__EQ_DROP_MAKE_BEST_CODE($1,3,10,3,0)
+__{}__{}__MAKE_CODE_PUSH_EQ_DROP($1,3,10,3,0)
 __{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO}){}dnl
 }){}dnl
 dnl
@@ -1595,7 +1686,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__LT_DROP_MAKE_BEST_CODE($1,break{}BEGIN_STACK)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_LT_DROP_JP_FALSE($1,break{}BEGIN_STACK)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1616,7 +1707,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__LE_DROP_MAKE_BEST_CODE($1,break{}BEGIN_STACK)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_LE_DROP_JP_FALSE($1,break{}BEGIN_STACK)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1637,7 +1728,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__GE_DROP_MAKE_BEST_CODE($1,break{}BEGIN_STACK)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_GE_DROP_JP_FALSE($1,break{}BEGIN_STACK)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1658,7 +1749,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__GT_DROP_MAKE_BEST_CODE($1,break{}BEGIN_STACK)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_GT_DROP_JP_FALSE($1,break{}BEGIN_STACK)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1763,9 +1854,9 @@ __{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < while BEGIN_STACK   
 __{}    rra                 ; 1:4       dup $1 < while BEGIN_STACK
 __{}    xor   H             ; 1:4       dup $1 < while BEGIN_STACK    invert sign if x is negative
 __{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 < while 101    negative constant --> sign if false},
+__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK    negative constant --> sign if false},
 __{}{dnl
-__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 < while 101    positive constant --> no sign if false})})}){}dnl
+__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK    positive constant --> no sign if false})})}){}dnl
 dnl
 dnl
 dnl # dup const >= while
@@ -1815,9 +1906,9 @@ __{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= while BEGIN_STACK  
 __{}    rra                 ; 1:4       dup $1 >= while BEGIN_STACK
 __{}    xor   H             ; 1:4       dup $1 >= while BEGIN_STACK    invert sign if x is negative
 __{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 >= while 101    negative constant --> no sign if false},
+__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK    negative constant --> no sign if false},
 __{}{dnl
-__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 >= while 101    positive constant --> sign if false})})}){}dnl
+__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK    positive constant --> sign if false})})}){}dnl
 dnl
 dnl
 dnl # dup const <= while
@@ -1867,9 +1958,9 @@ __{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --
 __{}    rra                 ; 1:4       dup $1 <= while BEGIN_STACK
 __{}    xor   H             ; 1:4       dup $1 <= while BEGIN_STACK    invert sign if x is negative
 __{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 <= while 101    negative constant --> no sign if false},
+__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK    negative constant --> no sign if false},
 __{}{dnl
-__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 <= while 101    positive constant --> sign if false})})}){}dnl
+__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK    positive constant --> sign if false})})}){}dnl
 dnl
 dnl
 dnl # dup const > while
@@ -1919,9 +2010,9 @@ __{}    sbc   A, H          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 
 __{}    rra                 ; 1:4       dup $1 > while BEGIN_STACK
 __{}    xor   H             ; 1:4       dup $1 > while BEGIN_STACK    invert sign if x is negative
 __{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 > while 101    negative constant --> sign if false},
+__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 > while BEGIN_STACK    negative constant --> sign if false},
 __{}{dnl
-__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 > while 101    positive constant --> no sign if false})})}){}dnl
+__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 > while BEGIN_STACK    positive constant --> no sign if false})})}){}dnl
 dnl
 dnl
 dnl

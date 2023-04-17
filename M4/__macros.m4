@@ -4264,6 +4264,206 @@ dnl
 dnl
 dnl ============================================
 dnl # Input parameters:
+dnl #                $1 = false label
+dnl #            __INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+define({__MAKE_CODE_EQ_2DROP_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({__BYTES},8){}dnl
+__{}__{}define({__CLOCKS},49){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO})
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false label
+dnl #            __INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+define({__MAKE_CODE_EQ_2DROP_NE_FAIL},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({__BYTES},8){}dnl
+__{}__{}define({__CLOCKS},49){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO})
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    z, format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false label
+dnl #            __INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+define({__MAKE_CODE_LT_2DROP_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({__BYTES},12){}dnl
+__{}__{}define({__CLOCKS},58){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO})
+__{}__{}    ld    A, E          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> not carry if false
+__{}__{}    sub   L             ; 1:4       __INFO    DE<HL --> DE-HL<0 --> not carry if false
+__{}__{}    ld    A, D          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> not carry if false
+__{}__{}    sbc   A, H          ; 1:4       __INFO    DE<HL --> DE-HL<0 --> not carry if false
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    p, format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false label
+dnl #            __INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+define({__MAKE_CODE_GE_2DROP_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({__BYTES},12){}dnl
+__{}__{}define({__CLOCKS},58){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO})
+__{}__{}    ld    A, E          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> carry if false
+__{}__{}    sub   L             ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> carry if false
+__{}__{}    ld    A, D          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> carry if false
+__{}__{}    sbc   A, H          ; 1:4       __INFO    DE>=HL --> DE-HL>=0 --> carry if false
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    m, format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false label
+dnl #            __INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+define({__MAKE_CODE_LE_2DROP_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({__BYTES},12){}dnl
+__{}__{}define({__CLOCKS},58){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO})
+__{}__{}    ld    A, L          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> carry if false
+__{}__{}    sub   E             ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> carry if false
+__{}__{}    ld    A, H          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> carry if false
+__{}__{}    sbc   A, D          ; 1:4       __INFO    DE<=HL --> 0<=HL-DE --> carry if false
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    m, format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false label
+dnl #            __INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+define({__MAKE_CODE_GT_2DROP_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({__BYTES},12){}dnl
+__{}__{}define({__CLOCKS},58){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO})
+__{}__{}    ld    A, L          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> not carry if false
+__{}__{}    sub   E             ; 1:4       __INFO    DE>HL --> 0>HL-DE --> not carry if false
+__{}__{}    ld    A, H          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> not carry if false
+__{}__{}    sbc   A, D          ; 1:4       __INFO    DE>HL --> 0>HL-DE --> not carry if false
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    p, format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
 dnl #   $1 = 16 bit number
 dnl #   $2 = +-bytes no jump
 dnl #   $3 = +-clocks no jump
@@ -4275,11 +4475,7 @@ dnl # Out:
 dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
 dnl #   _TMP_BEST_B       bytes
 dnl #   _TMP_BEST_C       clocks
-dnl #   _TMP_BEST_CODE    asm code
-dnl #   zero flag if const == HL
-dnl #   A = 0 if const == HL, because the "cp" instruction can be the last instruction only with a non-zero result.
-dnl
-define({__EQ_DROP_MAKE_BEST_CODE},{dnl
+define({__MAKE_CODE_PUSH_EQ_DROP},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>7),1,{
@@ -4822,16 +5018,16 @@ dnl
 dnl
 dnl ============================================
 dnl # Input parameters:
-dnl #   $1 = 16 bit number
-dnl #   $2 = false jump
+dnl #                $1 = 16 bit number
+dnl #                $2 = false jump
+dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
 dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
 dnl #   _TMP_BEST_B       bytes
 dnl #   _TMP_BEST_C       clocks
-dnl #   _TMP_BEST_CODE    asm code
-define({__GT_DROP_MAKE_BEST_CODE},{dnl
+define({__MAKE_CODE_PUSH_GT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>2),1,{
@@ -4922,7 +5118,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},47){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: hi == lo})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_L($1)-L
 __{}__{}    cp    L             ; 1:4       __INFO   HL>$1 --> 0>__HEX_L($1)-L
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL>$1 --> 0>__HEX_H($1)-H --> no carry if false
@@ -4952,16 +5148,16 @@ dnl
 dnl
 dnl ============================================
 dnl # Input parameters:
-dnl #   $1 = 16 bit number
-dnl #   $2 = false jump
+dnl #                $1 = 16 bit number
+dnl #                $2 = false jump
+dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
 dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
 dnl #   _TMP_BEST_B       bytes
 dnl #   _TMP_BEST_C       clocks
-dnl #   _TMP_BEST_CODE    asm code
-define({__LE_DROP_MAKE_BEST_CODE},{dnl
+define({__MAKE_CODE_PUSH_LE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>2),1,{
@@ -5051,7 +5247,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},47){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: hi == lo})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L
 __{}__{}    cp    L             ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H --> carry if false
@@ -5081,16 +5277,16 @@ dnl
 dnl
 dnl ============================================
 dnl # Input parameters:
-dnl #   $1 = 16 bit number
-dnl #   $2 = false jump
+dnl #                $1 = 16 bit number
+dnl #                $2 = false jump
+dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
 dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
 dnl #   _TMP_BEST_B       bytes
 dnl #   _TMP_BEST_C       clocks
-dnl #   _TMP_BEST_CODE    asm code
-define({__LT_DROP_MAKE_BEST_CODE},{dnl
+define({__MAKE_CODE_PUSH_LT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>2),1,{
@@ -5182,7 +5378,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},47){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: hi == lo-1})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL<$1 --> HL<=$1-1 --> 0<=__HEX_L($1-1)-L
 __{}__{}    cp    L             ; 1:4       __INFO   HL<$1 --> HL<=$1-1 --> 0<=__HEX_L($1-1)-L
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<$1 --> HL<=$1-1 --> 0<=__HEX_H($1-1)-H --> carry if false
@@ -5212,16 +5408,16 @@ dnl
 dnl
 dnl ============================================
 dnl # Input parameters:
-dnl #   $1 = 16 bit number
-dnl #   $2 = false jump
+dnl #                $1 = 16 bit number
+dnl #                $2 = false jump
+dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
 dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
 dnl #   _TMP_BEST_B       bytes
 dnl #   _TMP_BEST_C       clocks
-dnl #   _TMP_BEST_CODE    asm code
-define({__GE_DROP_MAKE_BEST_CODE},{dnl
+define({__MAKE_CODE_PUSH_GE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>2),1,{
@@ -5312,7 +5508,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},47){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: hi == lo-1})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL>=$1 --> HL>$1-1 --> 0>__HEX_L($1-1)-L
 __{}__{}    cp    L             ; 1:4       __INFO   HL>=$1 --> HL>$1-1 --> 0>__HEX_L($1-1)-L
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL>=$1 --> HL>$1-1 --> 0>__HEX_H($1-1)-H --> no carry if false
@@ -5337,6 +5533,9 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp    ifelse(eval(0x8000&($1)),0,m,p), format({%-11s},$2); 3:10      __INFO}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
 dnl
 dnl
 dnl

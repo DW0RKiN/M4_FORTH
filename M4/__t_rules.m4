@@ -200,6 +200,14 @@ a,,,
             __T_NAME(0):$1,{__TOKEN_ULE:__TOKEN_WHILE},{__SET_TOKEN({__TOKEN_ULE_WHILE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,{__TOKEN_UGE:__TOKEN_WHILE},{__SET_TOKEN({__TOKEN_UGE_WHILE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
+            __T_NAME(0):$1,{__TOKEN_EQ:__TOKEN_UNTIL},{__SET_TOKEN({__TOKEN_EQ_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,{__TOKEN_NE:__TOKEN_UNTIL},{__SET_TOKEN({__TOKEN_NE_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            __T_NAME(0):$1,{__TOKEN_LT:__TOKEN_UNTIL},{__SET_TOKEN({__TOKEN_LT_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,{__TOKEN_GT:__TOKEN_UNTIL},{__SET_TOKEN({__TOKEN_GT_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,{__TOKEN_LE:__TOKEN_UNTIL},{__SET_TOKEN({__TOKEN_LE_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,{__TOKEN_GE:__TOKEN_UNTIL},{__SET_TOKEN({__TOKEN_GE_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            
 __T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_EQ,                {__SET_TOKEN({__TOKEN_0EQ},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
 __T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_NE,                {__SET_TOKEN({__TOKEN_0NE},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
 __T_NAME(0):__T_ITEMS(0):__T_HEX_REVERSE_1(0):$1,                        __TOKEN_PUSHS:1:0x0000:__TOKEN_LT,                {__SET_TOKEN({__TOKEN_0LT},  __CONCATENATE_WITH({ },__T_INFO(0),$2))},
@@ -1562,6 +1570,16 @@ __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKE
 __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_GE_IF,     {__SET_CHECK_TOKEN2(__TOKEN_PUSH_GE_IF)},
 __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_LE_IF,     {__SET_CHECK_TOKEN2(__TOKEN_PUSH_LE_IF)},
 __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_LT_IF,     {__SET_CHECK_TOKEN2(__TOKEN_PUSH_LT_IF)},
+
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_GT_WHILE,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_GT_WHILE)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_GE_WHILE,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_GE_WHILE)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_LE_WHILE,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_LE_WHILE)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_LT_WHILE,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_LT_WHILE)},
+
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_GT_UNTIL,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_GT_UNTIL)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_GE_UNTIL,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_GE_UNTIL)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_LE_UNTIL,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_LE_UNTIL)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_LT_UNTIL,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_LT_UNTIL)},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_FETCH,         {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_FETCH)},
 
