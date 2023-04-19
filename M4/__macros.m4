@@ -5108,7 +5108,7 @@ __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}  .warning: The condition "$1" cannot be evaluated
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO
 __{}__{}  else
 __{}__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO
@@ -5237,7 +5237,7 @@ __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}  .warning: The condition "$1" cannot be evaluated
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO
 __{}__{}  else
 __{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO
@@ -5368,7 +5368,7 @@ __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}  .warning: The condition "$1" cannot be evaluated
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO
 __{}__{}  else
 __{}__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO
@@ -5498,7 +5498,7 @@ __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}  .warning: The condition "$1" cannot be evaluated
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO
 __{}__{}  else
 __{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO
@@ -5640,7 +5640,7 @@ __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INF
 __{}__{}  .warning: The condition "$1" cannot be evaluated
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}    jr   nc, format({%-11s},$+8); 2:7/12    __INFO   +HL < negative constant --> false if not carry 
 __{}__{}  else
 __{}__{}    jr    c, format({%-11s},$+11); 2:7/12    __INFO   -HL < positive constant --> true if carry
@@ -5664,7 +5664,7 @@ __{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> HL-$1<0 --> false
 __{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   negative constant --> false if sign
 __{}__{}  else
 __{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   positive constant --> false if not sign
@@ -5794,7 +5794,7 @@ __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INF
 __{}__{}  .warning: The condition "$1" cannot be evaluated
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}    jr   nc, format({%-11s},$+11); 2:7/12    __INFO   +HL >= negative constant --> true if not carry 
 __{}__{}  else
 __{}__{}    jr    c, format({%-11s},$+8); 2:7/12    __INFO   -HL >= positive constant --> false if carry
@@ -5818,7 +5818,7 @@ __{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> HL-$1>=0 --> fal
 __{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO   HL>=$1 --> HL-$1>=0 --> false if carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   negative constant --> false if not sign
 __{}__{}  else
 __{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   positive constant --> false if sign
@@ -5948,7 +5948,7 @@ __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INF
 __{}__{}  .warning: The condition "$1" cannot be evaluated
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}    jr   nc, format({%-11s},$+11); 2:7/12    __INFO   +HL > negative constant --> true if not carry 
 __{}__{}  else
 __{}__{}    jr    c, format({%-11s},$+8); 2:7/12    __INFO   -HL > positive constant --> false if carry
@@ -5972,7 +5972,7 @@ __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO   HL>$1 --> 0>$1-H
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL>$1 --> 0>$1-HL --> false if not carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   negative constant --> false if sign
 __{}__{}  else
 __{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   positive constant --> false if not sign
@@ -6102,7 +6102,7 @@ __{}__{}__{}format({%36s},;[__BYTES(+1):format({%-8s},__CLOCKS_NJP(+3)/20(+2))] 
 __{}__{}  .warning: The condition "$1" cannot be evaluated
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}    jp   nc, format({%-11s},$2); 3:10      __INFO   +HL <= negative constant --> false if not carry 
 __{}__{}  else
 __{}__{}    jr    c, format({%-11s},$+11); 2:7/12    __INFO   -HL <= positive constant --> true if carry
@@ -6126,7 +6126,7 @@ __{}__{}    ld    A, high __FORM({%-6s},$1); 2:7       __INFO   HL<=$1 --> 0<=$1
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=$1 --> 0<=$1-HL --> false if carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
-__{}__{}  if (($1)>=0x8000 || ($1)<0)=0
+__{}__{}  if (($1)>=0x8000 || ($1)<0)
 __{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   negative constant --> false if not sign
 __{}__{}  else
 __{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   positive constant --> false if sign
