@@ -106,6 +106,40 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
+dnl # num if
+define({PUSH_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_IF},{$1 if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+    ld   BC,format({%-12s},$1); 4:20      __INFO
+    ld    A, B          ; 1:4       __INFO
+    or    C             ; 1:4       __INFO
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__IS_NUM($1),0,{
+__{}__{}  .warning: : The condition is always True or False!
+__{}__{}  if (($1)=0)
+__{}__{}    jp   format({%-15s},else{}IF_COUNT); 3:10      __INFO
+__{}__{}  endif},
+__{}__HEX_HL($1),0x0000,{
+__{}__{}                        ;[3:10]     __INFO
+__{}__{}  .warning: : The condition is always False!
+__{}__{}    jp   format({%-15s},else{}IF_COUNT); 3:10      __INFO},
+__{}{
+__{}__{}                        ;[0:0]      __INFO
+__{}__{}  .warning: : The condition is always True!}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # ( x -- )
 dnl # $1 $2 within if
 define({PUSH2_WITHIN_IF},{dnl

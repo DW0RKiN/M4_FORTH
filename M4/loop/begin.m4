@@ -150,7 +150,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 == x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_EQ_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_EQ_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK}){}dnl
 __{}}){}dnl
@@ -168,7 +168,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <> x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_NE_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_NE_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK}){}dnl
 __{}}){}dnl
@@ -186,7 +186,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 < x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_LT_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_LT_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK}){}dnl
 __{}}){}dnl
@@ -204,7 +204,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 >= x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_GE_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_GE_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK}){}dnl
 __{}}){}dnl
@@ -222,7 +222,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <= x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_LE_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_LE_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK}){}dnl
 __{}}){}dnl
@@ -240,7 +240,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 > x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_GT_2DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}__MAKE_CODE_GT_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK}){}dnl
 __{}}){}dnl
@@ -1459,7 +1459,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 == x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_EQ_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}__{}__MAKE_CODE_EQ_DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -1475,7 +1475,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <> x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_NE_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}__{}__MAKE_CODE_NE_DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -1491,7 +1491,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 < x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_LT_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}__{}__MAKE_CODE_LT_DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -1507,7 +1507,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 >= x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_GE_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}__{}__MAKE_CODE_GE_DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -1523,7 +1523,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 <= x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_LE_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}__{}__MAKE_CODE_LE_DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -1539,7 +1539,7 @@ __{}define({_TMP_STACK_INFO},( x2 x1 -- )  flag: x2 > x1){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{dnl
-__{}__{}__MAKE_CODE_GT_2DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}__{}__MAKE_CODE_GT_DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
