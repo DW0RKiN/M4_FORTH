@@ -5536,7 +5536,7 @@ __{}__{}    jp    ifelse(eval(0x8000&($1)),0,m,p), format({%-11s},$2); 3:10     
 dnl
 dnl
 dnl
-dnl # ------------------------------------
+dnl # ------------------------ dup num scond ------------------------
 dnl
 dnl
 dnl
@@ -5559,8 +5559,8 @@ __{}eval($#>2),1,{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 
 __{}__IS_MEM_REF($1),1,{dnl
-__{}__{}define({__BYTES},16){}dnl
-__{}__{}define({__CLOCKS},72){}dnl
+__{}__{}define({__BYTES},14){}dnl
+__{}__{}define({__CLOCKS},58){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: <memory})
@@ -5691,6 +5691,23 @@ __{}__{}  else
 __{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   positive constant --> false if not sign
 __{}__{}  endif},
 
+__{}__HEX_H($1-1),__HEX_L($1-1),{dnl
+__{}__{}define({__BYTES},9){}dnl
+__{}__{}define({__CLOCKS},33){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL< __HEX_HL($1) --> HL<=__HEX_HL($1-1)
+__{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1-1) --> 0<=__HEX_L($1-1)-L --> false if carry
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1-1) --> 0<=__HEX_H($1-1)-H --> false if carry
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
+__{}__{}__IF({($1) & 0x8000},{dnl
+__{}__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   negative constant --> false if not sign},
+__{}__{}{dnl
+__{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   positive constant --> false if sign}){}dnl
+__{}},
+
 __{}{dnl
 __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
@@ -5699,7 +5716,7 @@ __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
 __{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> L-__HEX_H($1)<0 --> false if not carry
+__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> false if not carry
 __{}__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> false if not carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
@@ -5734,8 +5751,8 @@ __{}eval($#>2),1,{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 
 __{}__IS_MEM_REF($1),1,{dnl
-__{}__{}define({__BYTES},16){}dnl
-__{}__{}define({__CLOCKS},72){}dnl
+__{}__{}define({__BYTES},14){}dnl
+__{}__{}define({__CLOCKS},58){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: >=memory})
@@ -5865,6 +5882,23 @@ __{}__{}  else
 __{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   positive constant --> false if sign
 __{}__{}  endif},
 
+__{}__HEX_H($1-1),__HEX_L($1-1),{dnl
+__{}__{}define({__BYTES},9){}dnl
+__{}__{}define({__CLOCKS},33){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL>=__HEX_HL($1) --> HL>__HEX_HL($1-1)
+__{}__{}    cp    L             ; 1:4       __INFO   HL> __HEX_HL($1-1) --> 0>__HEX_L($1-1)-L --> false if not carry
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL> __HEX_HL($1-1) --> 0>__HEX_H($1-1)-H --> false if not carry
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
+__{}__{}__IF({($1) & 0x8000},{dnl
+__{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   negative constant --> false if sign},
+__{}__{}{dnl
+__{}__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   positive constant --> false if not sign}){}dnl
+__{}},
+
 __{}{dnl
 __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
@@ -5873,7 +5907,7 @@ __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> L-__HEX_L($1)>=0 --> false if carry
 __{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL>=$1 --> L-__HEX_L($1)>=0 --> false if carry
-__{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> L-__HEX_H($1)>=0 --> false if carry
+__{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> H-__HEX_H($1)>=0 --> false if carry
 __{}__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   HL>=$1 --> H-__HEX_H($1)>=0 --> false if carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
@@ -5908,8 +5942,8 @@ __{}eval($#>2),1,{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 
 __{}__IS_MEM_REF($1),1,{dnl
-__{}__{}define({__BYTES},16){}dnl
-__{}__{}define({__CLOCKS},72){}dnl
+__{}__{}define({__BYTES},14){}dnl
+__{}__{}define({__CLOCKS},58){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: >memory})
@@ -6039,6 +6073,23 @@ __{}__{}  else
 __{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   positive constant --> false if not sign
 __{}__{}  endif},
 
+__{}__HEX_H($1),__HEX_L($1),{dnl
+__{}__{}define({__BYTES},9){}dnl
+__{}__{}define({__CLOCKS},33){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
+__{}__{}    cp    L             ; 1:4       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL>$1 --> 0>__HEX_H($1)-H --> false if not carry
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
+__{}__{}__IF({($1) & 0x8000},{dnl
+__{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   negative constant --> false if sign},
+__{}__{}{dnl
+__{}__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   positive constant --> false if not sign}){}dnl
+__{}},
+
 __{}{dnl
 __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
@@ -6082,8 +6133,8 @@ __{}eval($#>2),1,{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 
 __{}__IS_MEM_REF($1),1,{dnl
-__{}__{}define({__BYTES},16){}dnl
-__{}__{}define({__CLOCKS},72){}dnl
+__{}__{}define({__BYTES},14){}dnl
+__{}__{}define({__CLOCKS},58){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: <=memory})
@@ -6212,6 +6263,23 @@ __{}__{}  else
 __{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   positive constant --> false if sign
 __{}__{}  endif},
 
+__{}__HEX_H($1),__HEX_L($1),{dnl
+__{}__{}define({__BYTES},9){}dnl
+__{}__{}define({__CLOCKS},33){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
+__{}__{}    cp    L             ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H --> false if carry
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
+__{}__{}__IF({($1) & 0x8000},{dnl
+__{}__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO   negative constant --> false if not sign},
+__{}__{}{dnl
+__{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   positive constant --> false if sign}){}dnl
+__{}},
+
 __{}{dnl
 __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
@@ -6230,6 +6298,121 @@ __{}__{}{dnl
 __{}__{}__{}    jp    m, format({%-11s},$2); 3:10      __INFO   positive constant --> false if sign}){}dnl
 __{}}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl
+dnl # ------------------------ dup num ucond ------------------------
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = 16 bit number
+dnl #                $2 = false jump
+dnl #            __INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
+dnl #   _TMP_BEST_B       bytes
+dnl #   _TMP_BEST_C       clocks
+define({__MAKE_CODE_DUP_PUSH_ULT_JP_FALSE},{dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}.error {$0}(): Missing parameter!},
+
+__{}eval($#>2),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+
+__{}__IS_MEM_REF($1),1,{dnl
+__{}__{}define({__BYTES},11){}dnl
+__{}__{}define({__CLOCKS},46){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: <memory})
+__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> false if not carry
+__{}__{}    sub   C             ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> false if not carry
+__{}__{}    ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> false if not carry
+__{}__{}    sbc   A, B          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> false if not carry
+__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO},
+
+__{}__HEX_HL($1),0x0000,{dnl
+__{}__{}define({__BYTES},3){}dnl
+__{}__{}define({__CLOCKS},10){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: u<min})
+__{}__{}  .warning: The condition is always False!
+__{}__{}    jp   format({%-15s},$2); 3:10      __INFO},
+
+__{}__HEX_HL($1),0xFFFF,{dnl
+__{}__{}define({__BYTES},6){}dnl
+__{}__{}define({__CLOCKS},22){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: u<max})
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    and   L             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    jp   nz, format({%-11s},$2); 3:10      __INFO},
+
+__{}xxx:_TYP_SINGLE:__HEX_HL(0x8000 & ($1)),{sign_first:0x0000},{
+__{}__{}define({__BYTES},13){}dnl
+__{}__{}define({__CLOCKS_NJP},47){}dnl
+__{}__{}define({__CLOCKS_JP},20)){}dnl
+__{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO
+__{}__{}    jr    c, $+11       ; 2:7/12    __INFO   -HL < positive constant --> true if carry
+__{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
+__{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
+__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> L-__HEX_H($1)<0 --> false if not carry
+__{}__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> false if not carry
+__{}__{}    jp   nc, format({%-11s},$2); 3:10      __INFO},
+
+__{}__IS_NUM($1),0,{dnl
+__{}__{}define({__BYTES},11){}dnl
+__{}__{}define({__CLOCKS},40){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}  .warning: The condition "$1" cannot be evaluated
+__{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
+__{}__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
+__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
+__{}__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
+__{}__{}    jp   nc, format({%-11s},$2); 3:10      __INFO   false if not carry},
+
+__{}__HEX_H($1-1),__HEX_L($1-1),{dnl
+__{}__{}define({__BYTES},9){}dnl
+__{}__{}define({__CLOCKS},33){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL< __HEX_HL($1) --> HL<=__HEX_HL($1-1)
+__{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1-1) --> 0<=__HEX_L($1-1)-L --> false if carry
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1-1) --> 0<=__HEX_H($1-1)-H --> false if carry
+__{}__{}    jp    c, format({%-11s},$2); 3:10      __INFO   false if carry},
+
+__{}{dnl
+__{}__{}define({__BYTES},11){}dnl
+__{}__{}define({__CLOCKS},40){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
+__{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
+__{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> false if not carry
+__{}__{}    sbc   A, __HEX_H($1)       ; 2:7       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> false if not carry
+__{}__{}    jp   nc, format({%-11s},$2); 3:10      __INFO   false if not carry{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
 dnl
 dnl
 dnl

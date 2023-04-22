@@ -394,7 +394,145 @@ __{}__{}popdef({BEGIN_STACK})}){}dnl
 dnl
 dnl
 dnl
-dnl # ----------------------------------------
+dnl # -------- dup num scond until ( s -- s ) ---------
+dnl
+dnl
+dnl # dup const = until
+define({DUP_PUSH_EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_EQ_UNTIL},{dup $1 = until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT))dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 )   $1 == HL}){}dnl
+__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,begin{}BEGIN_STACK,0)
+__{}__{}_TMP_BEST_CODE
+__{}__{}    jp   nz, format({%-11s},begin{}BEGIN_STACK); 3:10      _TMP_INFO})}){}dnl
+dnl
+dnl
+dnl
+dnl # dup const <> until
+define({DUP_PUSH_NE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_NE_UNTIL},{dup $1 <> until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_NE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT))dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT)dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_INFO},__INFO){}dnl
+__{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
+__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,0)
+__{}__{}_TMP_BEST_CODE
+__{}__{}    jp    z, format({%-11s},begin{}BEGIN_STACK); 3:10      _TMP_INFO})}){}dnl
+dnl
+dnl
+dnl
+dnl # dup const < until
+define({DUP_PUSH_LT_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LT_UNTIL},{dup $1 < until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_LT_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x -- x )  flag: x < $1){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_LT_JP_FALSE($1,begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # dup const >= until
+define({DUP_PUSH_GE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_GE_UNTIL},{dup $1 >= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_GE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x -- x )  flag: x >= $1){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_GE_JP_FALSE($1,begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # dup const <= until
+define({DUP_PUSH_LE_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LE_UNTIL},{dup $1 <= until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_LE_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x -- x )  flag: x <= $1){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_LE_JP_FALSE($1,begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # dup const > until
+define({DUP_PUSH_GT_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_GT_UNTIL},{dup $1 > until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_GT_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( x -- x )  flag: x > $1){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_GT_JP_FALSE($1,begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK})}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # ----------------------------------
 dnl
 dnl
 dnl # ( flag -- flag )
@@ -1756,7 +1894,7 @@ dnl
 dnl
 dnl
 dnl # ----------------------- 16 bit -----------------------
-dnl # ------- dup const scond while ( b a -- b a ) ---------
+dnl # ------- dup const scond while ( a -- a ) ---------
 dnl
 dnl
 dnl # dup const = while
@@ -1809,210 +1947,89 @@ dnl
 dnl
 dnl # dup const < while
 define({DUP_PUSH_LT_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LT_WHILE},{dup_push_lt_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LT_WHILE},{dup $1 < while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_LT_WHILE},{dnl
-__{}define({__INFO},{dup_push_lt_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-$1,{},{
-__{}.error {$0}(): Missing parameter!},
-__IS_MEM_REF($1),{1},{
-__{}                       ;[14:58]     dup $1 < while BEGIN_STACK
-__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 < while BEGIN_STACK
-__{}    ld    A, L          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    sub   C             ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    ld    A, H          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    sbc   A, B          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    rra                 ; 1:4       dup $1 < while BEGIN_STACK
-__{}    xor   B             ; 1:4       dup $1 < while BEGIN_STACK
-__{}    xor   H             ; 1:4       dup $1 < while BEGIN_STACK
-__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK},
-_TYP_SINGLE,{sign_first},{
-__{}__IF({($1) & 0x8000},{dnl
-__{}__{}                     ;[14:50/18,50] dup $1 < while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
-__{}__{}    ld    A, H          ; 1:4       dup $1 < while BEGIN_STACK
-__{}__{}    add   A, A          ; 1:4       dup $1 < while BEGIN_STACK
-__{}__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK    positive HL < negative constant ---> false},
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}                     ;[13:20,47/47] dup $1 < while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
-__{}__{}    ld    A, H          ; 1:4       dup $1 < while BEGIN_STACK
-__{}__{}    add   A, A          ; 1:4       dup $1 < while BEGIN_STACK
-__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 < while BEGIN_STACK    negative HL < positive constant ---> true})
-__{}    ld    A, L          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    sub   low format({%-10s},$1); 2:7       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    ld    A, H          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK    no carry if false},
-{
-__{}                       ;[11:40]     dup $1 < while BEGIN_STACK    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
-__{}    ld    A, L          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    sub   low format({%-10s},$1); 2:7       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    ld    A, H          ; 1:4       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 < while BEGIN_STACK    HL<$1 --> HL-$1<0 --> no carry if false
-__{}    rra                 ; 1:4       dup $1 < while BEGIN_STACK
-__{}    xor   H             ; 1:4       dup $1 < while BEGIN_STACK    invert sign if x is negative
-__{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK    negative constant --> sign if false},
-__{}{dnl
-__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 < while BEGIN_STACK    positive constant --> no sign if false})})}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- x )}){}dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_LT_JP_FALSE($1,break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
 dnl
 dnl
 dnl # dup const >= while
 define({DUP_PUSH_GE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_GE_WHILE},{dup_push_ge_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_GE_WHILE},{dup $1 >= while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_GE_WHILE},{dnl
-__{}define({__INFO},{dup_push_ge_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-$1,{},{
-__{}.error {$0}(): Missing parameter!},
-__IS_MEM_REF($1),{1},{
-__{}                       ;[14:58]     dup $1 >= while BEGIN_STACK
-__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 >= while BEGIN_STACK
-__{}    ld    A, L          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    sub   C             ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    ld    A, H          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    sbc   A, B          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    rra                 ; 1:4       dup $1 >= while BEGIN_STACK
-__{}    xor   B             ; 1:4       dup $1 >= while BEGIN_STACK
-__{}    xor   H             ; 1:4       dup $1 >= while BEGIN_STACK
-__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK},
-_TYP_SINGLE,{sign_first},{
-__{}__IF({($1) & 0x8000},{dnl
-__{}__{}                     ;[13:20,47/47] dup $1 >= while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
-__{}__{}    ld    A, H          ; 1:4       dup $1 >= while BEGIN_STACK
-__{}__{}    add   A, A          ; 1:4       dup $1 >= while BEGIN_STACK
-__{}__{}    jr   nc, $+11       ; 2:7/11    dup $1 >= while BEGIN_STACK    positive HL >= negative constant ---> true},
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}                     ;[14:50/18,50] dup $1 >= while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
-__{}__{}    ld    A, H          ; 1:4       dup $1 >= while BEGIN_STACK
-__{}__{}    add   A, A          ; 1:4       dup $1 >= while BEGIN_STACK
-__{}__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK    negative HL >= positive constant ---> false})
-__{}    ld    A, L          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    sub   low format({%-10s},$1); 2:7       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    ld    A, H          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK    carry if false},
-{
-__{}                       ;[11:40]     dup $1 >= while BEGIN_STACK    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
-__{}    ld    A, L          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    sub   low format({%-10s},$1); 2:7       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    ld    A, H          ; 1:4       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    sbc   A, high format({%-6s},$1); 2:7       dup $1 >= while BEGIN_STACK    HL>=$1 --> HL-$1>=0 --> carry if false
-__{}    rra                 ; 1:4       dup $1 >= while BEGIN_STACK
-__{}    xor   H             ; 1:4       dup $1 >= while BEGIN_STACK    invert sign if x is negative
-__{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK    negative constant --> no sign if false},
-__{}{dnl
-__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 >= while BEGIN_STACK    positive constant --> sign if false})})}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- x )}){}dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_GE_JP_FALSE($1,break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
 dnl
 dnl
 dnl # dup const <= while
 define({DUP_PUSH_LE_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LE_WHILE},{dup_push_le_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_LE_WHILE},{dup $1 <= while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_LE_WHILE},{dnl
-__{}define({__INFO},{dup_push_le_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-$1,{},{
-__{}.error {$0}(): Missing parameter!},
-__IS_MEM_REF($1),{1},{
-__{}                       ;[14:58]     dup $1 <= while BEGIN_STACK
-__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 <= while BEGIN_STACK
-__{}    ld    A, C          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    sub   L             ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    ld    A, B          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    rra                 ; 1:4       dup $1 <= while BEGIN_STACK
-__{}    xor   B             ; 1:4       dup $1 <= while BEGIN_STACK
-__{}    xor   H             ; 1:4       dup $1 <= while BEGIN_STACK
-__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK},
-_TYP_SINGLE,{sign_first},{
-__{}__IF({($1) & 0x8000},{dnl
-__{}__{}                     ;[14:50/18,50] dup $1 <= while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
-__{}__{}    ld    A, H          ; 1:4       dup $1 <= while BEGIN_STACK
-__{}__{}    add   A, A          ; 1:4       dup $1 <= while BEGIN_STACK
-__{}__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK    positive HL <= negative constant ---> false},
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}                     ;[13:20,47/47] dup $1 <= while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
-__{}__{}    ld    A, H          ; 1:4       dup $1 <= while BEGIN_STACK
-__{}__{}    add   A, A          ; 1:4       dup $1 <= while BEGIN_STACK
-__{}__{}    jr    c, $+11       ; 2:7/12    dup $1 <= while BEGIN_STACK    negative HL <= positive constant ---> true})
-__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    sub   L             ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK    carry if false},
-{
-__{}                       ;[11:40]     dup $1 <= while BEGIN_STACK    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
-__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    sub   L             ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    sbc   A, H          ; 1:4       dup $1 <= while BEGIN_STACK    HL<=$1 --> 0<=$1-HL --> carry if false
-__{}    rra                 ; 1:4       dup $1 <= while BEGIN_STACK
-__{}    xor   H             ; 1:4       dup $1 <= while BEGIN_STACK    invert sign if x is negative
-__{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK    negative constant --> no sign if false},
-__{}{dnl
-__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 <= while BEGIN_STACK    positive constant --> sign if false})})}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- x )}){}dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_LE_JP_FALSE($1,break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
 dnl
 dnl
 dnl # dup const > while
 define({DUP_PUSH_GT_WHILE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_GT_WHILE},{dup_push_gt_while},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_GT_WHILE},{dup $1 > while BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_GT_WHILE},{dnl
-__{}define({__INFO},{dup_push_gt_while}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-$1,{},{
-__{}.error {$0}(): Missing parameter!},
-__IS_MEM_REF($1),{1},{
-__{}                       ;[14:58]     dup $1 > while BEGIN_STACK
-__{}    ld   BC, format({%-11s},$1); 4:20      dup $1 > while BEGIN_STACK
-__{}    ld    A, C          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    sub   L             ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    ld    A, B          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    sbc   A, H          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    rra                 ; 1:4       dup $1 > while BEGIN_STACK
-__{}    xor   B             ; 1:4       dup $1 > while BEGIN_STACK
-__{}    xor   H             ; 1:4       dup $1 > while BEGIN_STACK
-__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 > while BEGIN_STACK},
-_TYP_SINGLE,{sign_first},{
-__{}__IF({($1) & 0x8000},{dnl
-__{}__{}                     ;[13:20,47/47] dup $1 > while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
-__{}__{}    ld    A, H          ; 1:4       dup $1 > while BEGIN_STACK
-__{}__{}    add   A, A          ; 1:4       dup $1 > while BEGIN_STACK
-__{}__{}    jr   nc, $+11       ; 2:7/12    dup $1 > while BEGIN_STACK    positive HL > negative constant ---> true},
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}                     ;[14:50/18,50] dup $1 > while BEGIN_STACK    ( x -- x )   # sign_first version, changes using "define({_TYP_SINGLE},{default})"
-__{}__{}    ld    A, H          ; 1:4       dup $1 > while BEGIN_STACK
-__{}__{}    add   A, A          ; 1:4       dup $1 > while BEGIN_STACK
-__{}__{}    jp    c, break{}BEGIN_STACK   ; 3:10      dup $1 > while BEGIN_STACK    negative HL > positive constant ---> false})
-__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    sub   L             ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    sbc   A, H          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      dup $1 > while BEGIN_STACK    no carry if false},
-{
-__{}                       ;[11:40]     dup $1 > while BEGIN_STACK    ( x -- x )    # default version, changes using "define({_TYP_SINGLE},{sign_first})"
-__{}    ld    A, low format({%-7s},$1); 2:7       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    sub   L             ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    ld    A, high format({%-6s},$1); 2:7       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    sbc   A, H          ; 1:4       dup $1 > while BEGIN_STACK    HL>$1 --> 0>$1-HL --> no carry if false
-__{}    rra                 ; 1:4       dup $1 > while BEGIN_STACK
-__{}    xor   H             ; 1:4       dup $1 > while BEGIN_STACK    invert sign if x is negative
-__{}__IF({($1) & 0x8000},{dnl
-__{}__{}    jp    m, break{}BEGIN_STACK   ; 3:10      dup $1 > while BEGIN_STACK    negative constant --> sign if false},
-__{}{dnl
-__{}__{}    jp    p, break{}BEGIN_STACK   ; 3:10      dup $1 > while BEGIN_STACK    positive constant --> no sign if false})})}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- x )}){}dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_GT_JP_FALSE($1,break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
