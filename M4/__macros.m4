@@ -5379,9 +5379,9 @@ __{}__{}define({__CLOCKS},47){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: hi == lo-1})
-__{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL<$1 --> HL<=$1-1 --> 0<=__HEX_L($1-1)-L
-__{}__{}    cp    L             ; 1:4       __INFO   HL<$1 --> HL<=$1-1 --> 0<=__HEX_L($1-1)-L
-__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<$1 --> HL<=$1-1 --> 0<=__HEX_H($1-1)-H --> false if carry
+__{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL< __HEX_HL($1) --> HL<=__HEX_HL($1-1)
+__{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_L($1-1)-L
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_H($1-1)-H --> false if carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
@@ -5509,9 +5509,9 @@ __{}__{}define({__CLOCKS},47){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: hi == lo-1})
-__{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL>=$1 --> HL>$1-1 --> 0>__HEX_L($1-1)-L
-__{}__{}    cp    L             ; 1:4       __INFO   HL>=$1 --> HL>$1-1 --> 0>__HEX_L($1-1)-L
-__{}__{}    sbc   A, H          ; 1:4       __INFO   HL>=$1 --> HL>$1-1 --> 0>__HEX_H($1-1)-H --> false if not carry
+__{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL>=__HEX_HL($1) --> HL>__HEX_HL($1-1)
+__{}__{}    cp    L             ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0>__HEX_L($1-1)-L
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0>__HEX_H($1-1)-H --> false if not carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
@@ -5698,8 +5698,8 @@ __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL< __HEX_HL($1) --> HL<=__HEX_HL($1-1)
-__{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1-1) --> 0<=__HEX_L($1-1)-L --> false if carry
-__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1-1) --> 0<=__HEX_H($1-1)-H --> false if carry
+__{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_L($1-1)-L --> false if carry
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_H($1-1)-H --> false if carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
 __{}__{}__IF({($1) & 0x8000},{dnl
@@ -5889,8 +5889,8 @@ __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
 __{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL>=__HEX_HL($1) --> HL>__HEX_HL($1-1)
-__{}__{}    cp    L             ; 1:4       __INFO   HL> __HEX_HL($1-1) --> 0>__HEX_L($1-1)-L --> false if not carry
-__{}__{}    sbc   A, H          ; 1:4       __INFO   HL> __HEX_HL($1-1) --> 0>__HEX_H($1-1)-H --> false if not carry
+__{}__{}    cp    L             ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0>__HEX_L($1-1)-L --> false if not carry
+__{}__{}    sbc   A, H          ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0>__HEX_H($1-1)-H --> false if not carry
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   H             ; 1:4       __INFO   invert sign if HL is negative
 __{}__{}__IF({($1) & 0x8000},{dnl
