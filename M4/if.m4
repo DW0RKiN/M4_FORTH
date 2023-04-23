@@ -601,7 +601,120 @@ __{}}){}dnl
 }){}dnl
 dnl
 dnl
-dnl # -------- unsigned ---------
+dnl # ---====== unsigned ======---
+dnl
+dnl # ------ push ucond if ---------
+dnl
+dnl # num u= if
+define({PUSH_UEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_EQ_IF},{$1 u= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_UEQ_IF},{dnl
+__{}__ASM_TOKEN_PUSH_EQ_IF($@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # num u<> if
+define({PUSH_UNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_NE_IF},{$1 u<> if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_UNE_IF},{dnl
+__{}__ASM_TOKEN_PUSH_NE_IF($@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # num u> if
+define({PUSH_UGT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_UGT_IF},{$1 u> if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_UGT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__MAKE_CODE_PUSH_UGT_DROP_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # num u<= if
+define({PUSH_ULE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ULE_IF},{$1 u<= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ULE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__MAKE_CODE_PUSH_ULE_DROP_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # num u< if
+define({PUSH_ULT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ULT_IF},{$1 u< if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ULT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__MAKE_CODE_PUSH_ULT_DROP_JP_FALSE($1,else{}IF_COUNT)}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # num u>= if
+define({PUSH_UGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_UGE_IF},{$1 u>= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_UGE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}.error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}__MAKE_CODE_PUSH_UGE_DROP_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ------ dup push ucond if ---------
+dnl
 dnl
 dnl # dup unum u= if
 define({DUP_PUSH_UEQ_IF},{dnl
@@ -1121,11 +1234,11 @@ __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}__{}.error {$0}($@): Unexpected parameters!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__MAKE_CODE_PUSH_EQ_DROP($1,3,10)
-__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}__{}__MAKE_CODE_PUSH_EQ_DROP_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1143,11 +1256,11 @@ __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}__{}.error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__MAKE_CODE_PUSH_EQ_DROP($1,3,10,3)
-__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}__{}__MAKE_CODE_PUSH_NE_DROP_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1169,8 +1282,9 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__MAKE_CODE_PUSH_GT_DROP_JP_FALSE($1,else{}IF_COUNT)}){}dnl
-}){}dnl}){}dnl
+__{}__{}__MAKE_CODE_PUSH_GT_DROP_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1191,7 +1305,8 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__MAKE_CODE_PUSH_LE_DROP_JP_FALSE($1,else{}IF_COUNT)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_LE_DROP_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1235,7 +1350,8 @@ __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
 __{}{dnl
 __{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
-__{}__{}__MAKE_CODE_PUSH_GE_DROP_JP_FALSE($1,else{}IF_COUNT)}){}dnl
+__{}__{}__MAKE_CODE_PUSH_GE_DROP_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl

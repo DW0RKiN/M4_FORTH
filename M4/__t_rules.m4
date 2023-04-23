@@ -1570,6 +1570,10 @@ __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKE
 __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_GE_IF,     {__SET_CHECK_TOKEN2(__TOKEN_PUSH_GE_IF)},
 __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_LE_IF,     {__SET_CHECK_TOKEN2(__TOKEN_PUSH_LE_IF)},
 __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_LT_IF,     {__SET_CHECK_TOKEN2(__TOKEN_PUSH_LT_IF)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_UGT_IF,    {__SET_CHECK_TOKEN2(__TOKEN_PUSH_UGT_IF)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_UGE_IF,    {__SET_CHECK_TOKEN2(__TOKEN_PUSH_UGE_IF)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_ULE_IF,    {__SET_CHECK_TOKEN2(__TOKEN_PUSH_ULE_IF)},
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_ULT_IF,    {__SET_CHECK_TOKEN2(__TOKEN_PUSH_ULT_IF)},
 
 __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_GT_WHILE,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_GT_WHILE)},
 __T_NAME(1):__T_ITEMS(1):__T_NAME(0),                     __TOKEN_PUSHS:1:__TOKEN_GE_WHILE,  {__SET_CHECK_TOKEN2(__TOKEN_PUSH_GE_WHILE)},
