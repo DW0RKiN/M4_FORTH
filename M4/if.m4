@@ -630,27 +630,18 @@ __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ULT_IF},{dup $1 u< if},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_ULT_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-dnl
+__{}define({_TMP_STACK_INFO},{( x -- x ) flag: u<$1}){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}    ld   BC, format({%-11s},$1); 4:20      __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sub   C             ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sbc   A, B          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}    ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO    HL<$1 --> HL-$1<0 --> carry if true
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_ULT_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # dup 123 u>= if
@@ -660,27 +651,18 @@ __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_UGE_IF},{dup $1 u>= if},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_UGE_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-dnl
+__{}define({_TMP_STACK_INFO},{( x -- x ) flag: u>=$1}){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse($1,{},{
-__{}__{}.error {$0}(): Missing address parameter!},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}    ld   BC, format({%-11s},$1); 4:20      __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    ld    A, L          ; 1:4       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sub   C             ; 1:4       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    ld    A, H          ; 1:4       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sbc   A, B          ; 1:4       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}    ld    A, L          ; 1:4       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    ld    A, H          ; 1:4       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    sbc   A, high __FORM({%-6s},$1); 2:7       __INFO    HL>=$1 --> HL-$1>=0 --> not carry if true
-__{}    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_UGE_JP_FALSE($1,else{}IF_COUNT){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # dup 123 u<= if
