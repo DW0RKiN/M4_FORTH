@@ -622,13 +622,13 @@ __{}{dnl
 __{}__{}ifelse(dnl
 __{}__{}__{}$1,    {m+},{__EVAL_OP_NUM_XXX_PASMO( m+,$3,$4,$2),__EVAL_OP_NUM_XXX_PASMO(  +,$3,$4,$2)},
 __{}__{}__{}$1,{um/mod},{__EVAL_OP_NUM_XXX_PASMO(um%,$3,$4,$2),__EVAL_OP_NUM_XXX_PASMO(um/,$3,$4,$2)errprint({
-  .warning: Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 28-bit/12-bit or 16-bit/16-bit without checking the range): "}$2<<16+$3 $4 um/mod{"
+  .warning Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 28-bit/12-bit or 16-bit/16-bit without checking the range): "}$2<<16+$3 $4 um/mod{"
 })},
 __{}__{}__{}$1,{sm/rem},{__EVAL_OP_NUM_XXX_PASMO(sm%,$3,$4,$2),__EVAL_OP_NUM_XXX_PASMO(sm/,$3,$4,$2)errprint({
-  .warning: Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 28-bit/12-bit or 16-bit/16-bit without checking the range): "}$2<<16+$3 $4 sm/rem{"
+  .warning Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 28-bit/12-bit or 16-bit/16-bit without checking the range): "}$2<<16+$3 $4 sm/rem{"
 })},
 __{}__{}__{}$1,{fm/mod},{__EVAL_OP_NUM_XXX_PASMO(fm%,$3,$4,$2),__EVAL_OP_NUM_XXX_PASMO(fm/,$3,$4,$2)errprint({
-  .warning: Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 16-bit/16-bit without checking the range): "}$2<<16+$3 $4 fm/mod{"
+  .warning Pasmo does not support 32 bit numbers and M4 does not know all values(They can only emulate 16-bit/16-bit without checking the range): "}$2<<16+$3 $4 fm/mod{"
 })},
 __{}__{}__{}$1,  {/mod},{__EVAL_OP_NUM_XXX_PASMO(  %,   $2,$3),__EVAL_OP_NUM_XXX_PASMO(  /,   $2,$3)},
 __{}__{}__{}$1, {u/mod},{__EVAL_OP_NUM_XXX_PASMO( u%,   $2,$3),__EVAL_OP_NUM_XXX_PASMO( u/,   $2,$3)},

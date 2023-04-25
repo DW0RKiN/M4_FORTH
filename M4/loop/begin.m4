@@ -426,7 +426,7 @@ __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}eval($#>0),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x2 x1 -- )}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( u2 u1 -- )}){}dnl
 __{}__{}__MAKE_CODE_UGT_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -446,7 +446,7 @@ __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}eval($#>0),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x2 x1 -- )}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( u2 u1 -- )}){}dnl
 __{}__{}__MAKE_CODE_ULE_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -466,7 +466,7 @@ __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}eval($#>0),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x2 x1 -- )}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( u2 u1 -- )}){}dnl
 __{}__{}__MAKE_CODE_ULT_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -486,7 +486,7 @@ __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}eval($#>0),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x2 x1 -- )}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( u2 u1 -- )}){}dnl
 __{}__{}__MAKE_CODE_UGE_DROP_JP_FALSE(begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -531,7 +531,7 @@ __{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( u -- )}){}dnl
 __{}__{}__MAKE_CODE_PUSH_UGT_DROP_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -553,7 +553,7 @@ __{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( u -- )}){}dnl
 __{}__{}__MAKE_CODE_PUSH_ULE_DROP_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -575,7 +575,7 @@ __{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( u -- )}){}dnl
 __{}__{}__MAKE_CODE_PUSH_ULT_DROP_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -597,7 +597,7 @@ __{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},{( x -- )}){}dnl
+__{}__{}define({_TMP_STACK_INFO},{( u -- )}){}dnl
 __{}__{}__MAKE_CODE_PUSH_UGE_DROP_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -622,7 +622,6 @@ __{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},( x -- x )  flag: x = $1){}dnl
 __{}__{}__MAKE_CODE_DUP_PUSH_EQ_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -645,7 +644,6 @@ __{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_STACK_INFO},( x -- x )  flag: x <> $1){}dnl
 __{}__{}__MAKE_CODE_DUP_PUSH_NE_JP_FALSE($1,begin{}BEGIN_STACK)
 __{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}__{}popdef({BEGIN_STACK})}){}dnl
@@ -2292,11 +2290,8 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_INFO},__INFO){}dnl
-__{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 )   $1 == HL}){}dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,break{}BEGIN_STACK,0)
-__{}__{}_TMP_BEST_CODE
-__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO}){}dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_EQ_JP_FALSE($1,break{}BEGIN_STACK){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -2316,11 +2311,8 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}define({_TMP_INFO},__INFO){}dnl
-__{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 )   $1 <> HL}){}dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,0)
-__{}__{}_TMP_BEST_CODE
-__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO}){}dnl
+__{}__{}__MAKE_CODE_DUP_PUSH_NE_JP_FALSE($1,break{}BEGIN_STACK){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl

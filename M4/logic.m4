@@ -1339,7 +1339,7 @@ dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 < x1 ) --> ( x2 - x1 < 0 ) --> carry is true
 define({ULT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ULT},{ult},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ULT},{u<},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ULT},{dnl
@@ -1359,7 +1359,7 @@ dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 <= x1 ) --> ( x2 < x1 + 1 ) --> ( x2 - x1 - 1 < 0) --> carry is true
 dnl # unsigned ( x2 <= x1 ) --> ( 0 <= x1 - x2 ) --> no carry is true
 define({ULE},{dnl
-__{}__ADD_TOKEN({__TOKEN_ULE},{ule},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ULE},{u<=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ULE},{dnl
@@ -1376,7 +1376,7 @@ dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 > x1 ) --> ( 0 > x1 - x2 ) --> carry is true
 define({UGT},{dnl
-__{}__ADD_TOKEN({__TOKEN_UGT},{ugt},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_UGT},{u>},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UGT},{dnl
@@ -1392,7 +1392,7 @@ dnl
 dnl # ( x2 x1 -- x )
 dnl # unsigned ( x2 >= x1 ) --> ( x2 + 1 > x1 ) --> ( 0 > x1 - x2 - 1 ) --> carry is true
 define({UGE},{dnl
-__{}__ADD_TOKEN({__TOKEN_UGE},{uge},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_UGE},{u>=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_UGE},{dnl
