@@ -4809,6 +4809,19 @@ __{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO},
 
+__{}__HEX_HL($1),0xFFFE,{dnl
+__{}__{}define({__BYTES},eval($2+6)){}dnl
+__{}__{}define({__CLOCKS},eval($3+30)){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: hi == 255})
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    and   H             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
 __{}__HEX_H($1),0xFF,{dnl
 __{}__{}define({__BYTES},eval($2+7)){}dnl
 __{}__{}define({__CLOCKS},eval($3+33)){}dnl
