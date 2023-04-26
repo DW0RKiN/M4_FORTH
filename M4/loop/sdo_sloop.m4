@@ -166,31 +166,55 @@ __{}eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}ifelse(dnl
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0000,
-__{}__{}{
+__{}__{}ifelse(__GET_LOOP_BEGIN($1),__GET_LOOP_END($1),1,__IS_NUM(__GET_LOOP_BEGIN($1)):__HEX_HL(__GET_LOOP_BEGIN($1)),1:__HEX_HL(__GET_LOOP_END($1)),1,0),1,{
+__{}__{}__{}                        ;           __INFO   variant -1 and no repeat},
+__{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0000,{dnl
+__{}__{}__{}dnl # stop if "index   =  0" --> no store end to DE
 __{}__{}__{}dnl # stop if "index-1 = -1"
-__{}__{}__{}dnl # stop if "index   =  0"
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}__{}    or    H             ; 1:4       __INFO
-__{}__{}__{}    dec  HL             ; 1:6       __INFO   index--
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0001,
-__{}__{}{
+__{}__{}__{}ifelse(__HEX_H(__GET_LOOP_BEGIN($1)):__HEX_L(__GET_LOOP_BEGIN($1)>__GET_LOOP_END($1)),__HEX_H(__GET_LOOP_END($1)):0x01,{dnl
+__{}__{}__{}__{}ifelse(__HEX_L(__GET_LOOP_BEGIN($1)<=0x80),0x01,{
+__{}__{}__{}__{}__{}    dec   L             ; 1:4       __INFO   index--
+__{}__{}__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
+__{}__{}__{}__{}{
+__{}__{}__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}__{}__{}    dec   L             ; 1:4       __INFO   index--
+__{}__{}__{}__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO})},
+__{}__{}__{}{
+__{}__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}__{}__{}    dec  HL             ; 1:6       __INFO   index--
+__{}__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO})},
+__{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0001,{dnl
+__{}__{}__{}dnl # stop if "index   = 1" --> no store end to DE
 __{}__{}__{}dnl # stop if "index-1 = 0"
-__{}__{}__{}dnl # stop if "index   = 1"
-__{}__{}__{}    dec  HL             ; 1:6       __INFO   index--
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}__{}ifelse(__HEX_H(__GET_LOOP_BEGIN($1)):__HEX_L(__GET_LOOP_BEGIN($1)>__GET_LOOP_END($1)),__HEX_H(__GET_LOOP_END($1)):0x01,{
+__{}__{}__{}__{}    dec   L             ; 1:4       __INFO   index--},
+__{}__{}__{}{
+__{}__{}__{}__{}    dec  HL             ; 1:6       __INFO   index--
+__{}__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}__{}    or    H             ; 1:4       __INFO})
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,
-__{}__{}{
+__{}__{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,{
+__{}__{}__{}dnl # stop if "index   = -1" --> no store end to DE
 __{}__{}__{}dnl # stop if "index-1 = -2"
-__{}__{}__{}dnl # stop if "index   = -1"
 __{}__{}__{}    ld    A, L          ; 1:4       __INFO
 __{}__{}__{}    and   H             ; 1:4       __INFO
 __{}__{}__{}    dec  HL             ; 1:6       __INFO   index--
 __{}__{}__{}    inc   A             ; 1:4       __INFO   0xFF?
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
+__{}__{}__HEX_H(__GET_LOOP_BEGIN($1)):__HEX_L(__GET_LOOP_BEGIN($1)>__GET_LOOP_END($1)),__HEX_H(__GET_LOOP_END($1)):0x01,{dnl
+__{}__{}__{}ifelse(__HEX_L(__GET_LOOP_END($1)):__HEX_L(0x80>=(0xFF & (__GET_LOOP_BEGIN($1)))),0x00:0x01,{
+__{}__{}__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
+__{}__{}__{}__HEX_L(__GET_LOOP_END($1)),0x01,{
+__{}__{}__{}__{}    dec   L             ; 1:4       __INFO   index--
+__{}__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
+__{}__{}__{}{
+__{}__{}__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}__{}__{}    dec   L             ; 1:4       __INFO   index--
+__{}__{}__{}__{}    xor   E             ; 1:4       __INFO
+__{}__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO})},
 __{}__{}{
 __{}__{}__{}    ld    A, L          ; 1:4       __INFO
 __{}__{}__{}    xor   E             ; 1:4       __INFO   lo(index - stop)

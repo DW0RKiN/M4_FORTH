@@ -326,7 +326,7 @@ dnl
 dnl # +loop
 dnl # ( step -- )
 define({ADDLOOP},{dnl
-ifelse($#,{0},{
+ifelse($#,{0},{dnl
 __{}__ADD_TOKEN({__TOKEN_ADDLOOP},{+loop_}LOOP_STACK,LOOP_STACK){}dnl
 __{}popdef({LOOP_STACK})},
 __{}{
