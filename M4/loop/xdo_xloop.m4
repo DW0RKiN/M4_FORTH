@@ -607,150 +607,168 @@ dnl # ( -- )
 dnl # xdo(stop,index) ... push_addxloop(+step)
 define({__ASM_TOKEN_POSITIVE_ADDXLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
-__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
-ifelse(_TEMP_X,{1},{
-__{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant +X.null: positive step and no repeat},
-eval((0 <= __GET_LOOP_BEGIN($1)) && (__GET_LOOP_BEGIN($1) < __GET_LOOP_END($1)) && (__GET_LOOP_END($1) < 256)),{1},{
-__{}                        ;[13:48]    __INFO   variant +X.A: positive step and 0 <= index < stop < 256, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld    A, 0x00       ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    nop                 ; 1:4       __INFO   Contains a zero value because idx always points to a 16-bit index.
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO   A = index+step
-__{}    ld  (idx{}$1), A     ; 3:13      __INFO   save new index
-__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
-__{}    jp   nz, do{}$1      ; 3:10      __INFO},
-eval((0xC600 <= (__GET_LOOP_BEGIN($1) & 0xFFFF)) && ((__GET_LOOP_BEGIN($1) & 0xFFFF) < (__GET_LOOP_END($1) & 0xFFFF)) && ((__GET_LOOP_END($1) & 0xFFFF) < 0xC700)),{1},{
-__{}                        ;[12:44]    __INFO   variant +X.B: positive step and 0xC600 <= index < stop < 0xC700, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld    A, 0x00       ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO   First byte contains a 0xC6 value because idx always points to a 16-bit index.
-__{}    ld  (idx{}$1), A     ; 3:13      __INFO   save new index
-__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
-__{}    jp   nz, do{}$1      ; 3:10      __INFO},
-eval(__GET_LOOP_STEP($1) & 0xFF),{0},{
-__{}                        ;[14:51]    __INFO   variant +X.C: positive step = n*256, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, B          ; 1:4       __INFO
-__{}    add   A, __HEX_H(__GET_LOOP_STEP($1))       ; 2:7       __INFO   hi(step)
-__{}    ld  (idx{}$1+1),A    ; 3:13      __INFO   save index
-__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
-__{}    jp   nz, do{}$1      ; 3:10      __INFO},
-eval((__GET_LOOP_END($1)==0) && ((__GET_LOOP_STEP($1) & 0xFF00)==0)),{1},{
-__{}                        ;[14:55/49] __INFO   variant +X.D: positive step 3..255 and stop 0, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO
-__{}    inc   B             ; 1:4       __INFO
-__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO},
-eval((_TEMP_HI_FALSE_POSITIVE==0) && ((__GET_LOOP_STEP($1) & 0xFF00)==0) && (__HEX_H(_TEMP_REAL_STOP)==0)),{1},{
-__{}                        ;[14:55/49] __INFO   variant +X.E: positive step 3..255 and hi(real_stop) = exclusivity zero, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO
-__{}    inc   B             ; 1:4       __INFO
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval((_TEMP_HI_FALSE_POSITIVE==0) && ((__GET_LOOP_STEP($1) & 0xFF00)==0)),{1},{
-__{}                        ;[17:55/60] __INFO   variant +X.F: positive step 3..255 and hi(real_stop) exclusivity, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO
-__{}    inc   B             ; 1:4       __INFO
-__{}    ld    A, B          ; 1:4       __INFO
-__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval((0==(_TEMP_REAL_STOP & 0xFF00)) && ((__GET_LOOP_STEP($1) & 0xFF00) == 0)),{1},{
-__{}                        ;[19:67/68] __INFO   variant +X.G: positive step 3..255 and real_stop 0..255, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    adc   A, B          ; 1:4       __INFO
-__{}    sub   C             ; 1:4       __INFO
-__{}    ld    B, A          ; 1:4       __INFO
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval((_TEMP_HI_FALSE_POSITIVE==0) && (__HEX_H(_TEMP_REAL_STOP)==0x00)),{1},{
-__{}                        ;[14:70/50] __INFO   variant +X.H: positive step 256+ and hi(real_stop) exclusivity zero, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    ld    A, B          ; 1:4       __INFO
-__{}    adc   A, high format({%-6s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    B, A          ; 1:4       __INFO
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval((__HEX_H(__GET_LOOP_STEP($1))==0) && (21*_TEMP_HI_FALSE_POSITIVE<=4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)),{1},{
-__{}                        ;[21:74/75] __INFO   variant +X.{I}: positive step 3..255, hi(real_stop) has fewer duplicate,run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    adc   A, B          ; 1:4       __INFO
-__{}    sub   C             ; 1:4       __INFO
-__{}    ld    B, A          ; 1:4       __INFO
-__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop) first (21*_TEMP_HI_FALSE_POSITIVE<=4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x false positive
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{}x false positive if he was first},
-_TEMP_HI_FALSE_POSITIVE,{0},{
-__{}                        ;[16:77/57] __INFO   variant +X.{J}: positive step 256+ and hi(real_stop) exclusivity, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    ld    A, B          ; 1:4       __INFO
-__{}    adc   A, high format({%-6s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    B, A          ; 1:4       __INFO
-__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval((_TEMP_LO_FALSE_POSITIVE==0) && ((__GET_LOOP_STEP($1) & 0xFF00) == 0)),{1},{
-__{}                        ;[16:78/58] __INFO   variant +X.{K} : positive step 3..255 and lo(real_stop) exclusivity, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    adc   A, B          ; 1:4       __INFO
-__{}    sub   C             ; 1:4       __INFO
-__{}    ld    B, A          ; 1:4       __INFO
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval((__HEX_H(__GET_LOOP_STEP($1))==0) && (21*_TEMP_HI_FALSE_POSITIVE>4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)),{1},{
-__{}                        ;[22:78/79] __INFO   variant +X.L: positive step 3..255, lo(real_stop) has fewer duplicate, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    adc   A, B          ; 1:4       __INFO
-__{}    sub   C             ; 1:4       __INFO
-__{}    ld    B, A          ; 1:4       __INFO
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop) first (21*_TEMP_HI_FALSE_POSITIVE>4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{}x false positive
-__{}    ld    A, B          ; 1:4       __INFO
-__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x false positive if he was first},
+ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)):__IS_NUM(__GET_LOOP_END($1)),1:1,{dnl
+__{}__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
+__{}ifelse(_TEMP_X,{1},{
+__{}__{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant +X.null: positive step and no repeat},
+__{}eval((0 <= __GET_LOOP_BEGIN($1)) && (__GET_LOOP_BEGIN($1) < __GET_LOOP_END($1)) && (__GET_LOOP_END($1) < 256)),{1},{
+__{}__{}                        ;[13:48]    __INFO   variant +X.A: positive step and 0 <= index < stop < 256, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld    A, 0x00       ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    nop                 ; 1:4       __INFO   Contains a zero value because idx always points to a 16-bit index.
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO   A = index+step
+__{}__{}    ld  (idx{}$1), A     ; 3:13      __INFO   save new index
+__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
+__{}eval((0xC600 <= (__GET_LOOP_BEGIN($1) & 0xFFFF)) && ((__GET_LOOP_BEGIN($1) & 0xFFFF) < (__GET_LOOP_END($1) & 0xFFFF)) && ((__GET_LOOP_END($1) & 0xFFFF) < 0xC700)),{1},{
+__{}__{}                        ;[12:44]    __INFO   variant +X.B: positive step and 0xC600 <= index < stop < 0xC700, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld    A, 0x00       ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO   First byte contains a 0xC6 value because idx always points to a 16-bit index.
+__{}__{}    ld  (idx{}$1), A     ; 3:13      __INFO   save new index
+__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
+__{}eval(__GET_LOOP_STEP($1) & 0xFF),{0},{
+__{}__{}                        ;[14:51]    __INFO   variant +X.C: positive step = n*256, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    add   A, __HEX_H(__GET_LOOP_STEP($1))       ; 2:7       __INFO   hi(step)
+__{}__{}    ld  (idx{}$1+1),A    ; 3:13      __INFO   save index
+__{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
+__{}eval((__GET_LOOP_END($1)==0) && ((__GET_LOOP_STEP($1) & 0xFF00)==0)),{1},{
+__{}__{}                        ;[14:55/49] __INFO   variant +X.D: positive step 3..255 and stop 0, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO
+__{}__{}    inc   B             ; 1:4       __INFO
+__{}__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO},
+__{}eval((_TEMP_HI_FALSE_POSITIVE==0) && ((__GET_LOOP_STEP($1) & 0xFF00)==0) && (__HEX_H(_TEMP_REAL_STOP)==0)),{1},{
+__{}__{}                        ;[14:55/49] __INFO   variant +X.E: positive step 3..255 and hi(real_stop) = exclusivity zero, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO
+__{}__{}    inc   B             ; 1:4       __INFO
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}eval((_TEMP_HI_FALSE_POSITIVE==0) && ((__GET_LOOP_STEP($1) & 0xFF00)==0)),{1},{
+__{}__{}                        ;[17:55/60] __INFO   variant +X.F: positive step 3..255 and hi(real_stop) exclusivity, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO
+__{}__{}    inc   B             ; 1:4       __INFO
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}eval((0==(_TEMP_REAL_STOP & 0xFF00)) && ((__GET_LOOP_STEP($1) & 0xFF00) == 0)),{1},{
+__{}__{}                        ;[19:67/68] __INFO   variant +X.G: positive step 3..255 and real_stop 0..255, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    adc   A, B          ; 1:4       __INFO
+__{}__{}    sub   C             ; 1:4       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}eval((_TEMP_HI_FALSE_POSITIVE==0) && (__HEX_H(_TEMP_REAL_STOP)==0x00)),{1},{
+__{}__{}                        ;[14:70/50] __INFO   variant +X.H: positive step 256+ and hi(real_stop) exclusivity zero, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    adc   A, high format({%-6s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}eval((__HEX_H(__GET_LOOP_STEP($1))==0) && (21*_TEMP_HI_FALSE_POSITIVE<=4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)),{1},{
+__{}__{}                        ;[21:74/75] __INFO   variant +X.{I}: positive step 3..255, hi(real_stop) has fewer duplicate,run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    adc   A, B          ; 1:4       __INFO
+__{}__{}    sub   C             ; 1:4       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop) first (21*_TEMP_HI_FALSE_POSITIVE<=4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x false positive
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{}x false positive if he was first},
+__{}_TEMP_HI_FALSE_POSITIVE,{0},{
+__{}__{}                        ;[16:77/57] __INFO   variant +X.{J}: positive step 256+ and hi(real_stop) exclusivity, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    adc   A, high format({%-6s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}eval((_TEMP_LO_FALSE_POSITIVE==0) && ((__GET_LOOP_STEP($1) & 0xFF00) == 0)),{1},{
+__{}__{}                        ;[16:78/58] __INFO   variant +X.{K} : positive step 3..255 and lo(real_stop) exclusivity, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    adc   A, B          ; 1:4       __INFO
+__{}__{}    sub   C             ; 1:4       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}eval((__HEX_H(__GET_LOOP_STEP($1))==0) && (21*_TEMP_HI_FALSE_POSITIVE>4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)),{1},{
+__{}__{}                        ;[22:78/79] __INFO   variant +X.L: positive step 3..255, lo(real_stop) has fewer duplicate, run _TEMP_X{}x
+__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO
+__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}    adc   A, B          ; 1:4       __INFO
+__{}__{}    sub   C             ; 1:4       __INFO
+__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop) first (21*_TEMP_HI_FALSE_POSITIVE>4*_TEMP_X+21*_TEMP_LO_FALSE_POSITIVE)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{}x false positive
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x false positive if he was first},
+__{}{
+__{}   .error +xloop: This variant should never happen... index: __GET_LOOP_BEGIN($1), stop:__GET_LOOP_END($1), step: __GET_LOOP_STEP($1)})},
 {
-   .error +xloop: This variant should never happen... index: __GET_LOOP_BEGIN($1), stop:__GET_LOOP_END($1), step: __GET_LOOP_STEP($1)})
+__{}                       ;[24:119]    __INFO   variant variable: positive step 3..n
+__{}    push HL             ; 1:11      __INFO
+__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1))
+__{}    ld   BC, __FORM({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  (idx101), HL    ; 3:16      __INFO   save new index
+__{}    ld    A, low __FORM({%-7s},__GET_LOOP_END($1)-1); 2:7       __INFO
+__{}    sub   L             ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    A, high __FORM({%-6s},__GET_LOOP_END($1)-1); 2:7       __INFO
+__{}    sbc   A, H          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO   HL = (stop-1)-(index+step)
+__{}    add  HL, BC         ; 1:11      __INFO   HL = (stop-1)-index
+__{}    pop  HL             ; 1:10      __INFO
+__{}    jp   nc, do{}$1      ; 3:10      __INFO})
 __{}leave{}$1:               ;           __INFO
 __{}exit{}$1:                ;           __INFO{}dnl
 }){}dnl
@@ -762,55 +780,22 @@ dnl # ( -- )
 dnl # xdo(stop,index) ... push_addxloop(-step)
 define({__ASM_TOKEN_NEGATIVE_ADDXLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
-__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
-ifelse(_TEMP_X,{1},{
-__{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant -X.null: positive step and no repeat},
-eval((__GET_LOOP_STEP($1)==-3) && (__GET_LOOP_END($1)==0)),{1},{
-__{}                        ;[11:66/46] __INFO   variant -X.A: step -3 and stop 0, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, B          ; 1:4       __INFO   hi old index
-__{}    dec  BC             ; 1:6       __INFO   index--
-__{}    dec  BC             ; 1:6       __INFO   index--
-__{}    dec  BC             ; 1:6       __INFO   index--
-__{}    sub   B             ; 1:4       __INFO   old-new = carry if index: positive -> negative
-__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO   carry if postivie index -> negative index},
-eval(__GET_LOOP_END($1)==0),{1},{
-__{}                        ;[14:70/50] __INFO   variant -X.B: negative step and stop 0, run _TEMP_X{}x
-__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}    ld    A, C          ; 1:4       __INFO
-__{}    sub  low format({%-11s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    ld    A, B          ; 1:4       __INFO
-__{}    sbc   A, high format({%-6s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
-__{}    ld    B, A          ; 1:4       __INFO
-__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO   carry if postivie index -> negative index},
-_TEMP_HI_FALSE_POSITIVE,{0},{
-__{}ifelse(eval((-1*(__GET_LOOP_STEP($1))) & 0xFF00),{0},{
-__{}__{}                        ;[17:55/60] __INFO   variant +X.C: negative step 3..255 and hi(real_stop) exclusivity, run _TEMP_X{}x
+ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)):__IS_NUM(__GET_LOOP_END($1)),1:1,{dnl
+__{}__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
+__{}ifelse(_TEMP_X,{1},{
+__{}__{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant -X.null: positive step and no repeat},
+__{}eval((__GET_LOOP_STEP($1)==-3) && (__GET_LOOP_END($1)==0)),{1},{
+__{}__{}                        ;[11:66/46] __INFO   variant -X.A: step -3 and stop 0, run _TEMP_X{}x
 __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    sub  low format({%-11s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
-__{}__{}    ld    C, A          ; 1:4       __INFO
-__{}__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO
-__{}__{}    dec   B             ; 1:4       __INFO
-__{}__{}    ld    A, B          ; 1:4       __INFO},
-__{}{
-__{}__{}                        ;[16:77/57] __INFO   variant +X.D: negative step 256+ and hi(real_stop) exclusivity, run _TEMP_X{}x
-__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    sub  low format({%-11s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
-__{}__{}    ld    C, A          ; 1:4       __INFO
-__{}__{}    ld    A, B          ; 1:4       __INFO
-__{}__{}    sbc   A, high format({%-6s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
-__{}__{}    ld    B, A          ; 1:4       __INFO})
-__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
-__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-eval(_TEMP_REAL_STOP & 0xFF00),{0},{
-__{}__{}                        ;[20:70/71] __INFO   variant -X.E: negative step and real_stop 0..255, run _TEMP_X{}x
+__{}__{}    ld    A, B          ; 1:4       __INFO   hi old index
+__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}__{}    sub   B             ; 1:4       __INFO   old-new = carry if index: positive -> negative
+__{}__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO   carry if postivie index -> negative index},
+__{}eval(__GET_LOOP_END($1)==0),{1},{
+__{}__{}                        ;[14:70/50] __INFO   variant -X.B: negative step and stop 0, run _TEMP_X{}x
 __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    ld    A, C          ; 1:4       __INFO
@@ -819,26 +804,77 @@ __{}__{}    ld    C, A          ; 1:4       __INFO
 __{}__{}    ld    A, B          ; 1:4       __INFO
 __{}__{}    sbc   A, high format({%-6s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
 __{}__{}    ld    B, A          ; 1:4       __INFO
-__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
-__{}__{}    ld    A, C          ; 1:4       __INFO   A = last_index
-__{}__{}    xor  format({%-15s},low _TEMP_REAL_STOP); 2:7       __INFO
-__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-{
-__{}__{}                        ;[23:81/82] __INFO   variant -X.default: negative step, run _TEMP_X{}x
-__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
-__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    sub  low format({%-11s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
-__{}__{}    ld    C, A          ; 1:4       __INFO
-__{}__{}    ld    A, B          ; 1:4       __INFO
-__{}__{}    sbc   A, high format({%-6s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
-__{}__{}    ld    B, A          ; 1:4       __INFO
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
-__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{}x
-__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO   carry if postivie index -> negative index},
+__{}_TEMP_HI_FALSE_POSITIVE,{0},{
+__{}__{}ifelse(eval((-1*(__GET_LOOP_STEP($1))) & 0xFF00),{0},{
+__{}__{}__{}                        ;[17:55/60] __INFO   variant +X.C: negative step 3..255 and hi(real_stop) exclusivity, run _TEMP_X{}x
+__{}__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}__{}    sub  low format({%-11s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
+__{}__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}__{}    jp   nc, do{}$1{}save  ; 3:10      __INFO
+__{}__{}__{}    dec   B             ; 1:4       __INFO
+__{}__{}__{}    ld    A, B          ; 1:4       __INFO},
+__{}__{}{
+__{}__{}__{}                        ;[16:77/57] __INFO   variant +X.D: negative step 256+ and hi(real_stop) exclusivity, run _TEMP_X{}x
+__{}__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}__{}    sub  low format({%-11s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
+__{}__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}__{}    sbc   A, high format({%-6s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
+__{}__{}__{}    ld    B, A          ; 1:4       __INFO})
 __{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
-__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x})
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}eval(_TEMP_REAL_STOP & 0xFF00),{0},{
+__{}__{}__{}                        ;[20:70/71] __INFO   variant -X.E: negative step and real_stop 0..255, run _TEMP_X{}x
+__{}__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}__{}    sub  low format({%-11s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
+__{}__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}__{}    sbc   A, high format({%-6s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
+__{}__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
+__{}__{}__{}    ld    A, C          ; 1:4       __INFO   A = last_index
+__{}__{}__{}    xor  format({%-15s},low _TEMP_REAL_STOP); 2:7       __INFO
+__{}__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}{
+__{}__{}__{}                        ;[23:81/82] __INFO   variant -X.default: negative step, run _TEMP_X{}x
+__{}__{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1), real_stop:__HEX_HL(_TEMP_REAL_STOP)
+__{}__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}__{}    sub  low format({%-11s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
+__{}__{}__{}    ld    C, A          ; 1:4       __INFO
+__{}__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}__{}    sbc   A, high format({%-6s},eval(-(__GET_LOOP_STEP($1)))); 2:7       __INFO
+__{}__{}__{}    ld    B, A          ; 1:4       __INFO
+__{}__{}__{}    ld    A, C          ; 1:4       __INFO
+__{}__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
+__{}__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{}x
+__{}__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
+__{}__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x})},
+{
+__{}                       ;[24:119]    __INFO   variant variable: negative step 3..n
+__{}    push HL             ; 1:11      __INFO
+__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}__{}    ld   HL, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1)
+__{}    ld   BC, __FORM({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  (idx101), HL    ; 3:16      __INFO   save new index
+__{}    ld    A, low __FORM({%-7s},__GET_LOOP_END($1)-1); 2:7       __INFO
+__{}    sub   L             ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    A, high __FORM({%-6s},__GET_LOOP_END($1)-1); 2:7       __INFO
+__{}    sbc   A, H          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO   HL = (stop-1)-(index+step)
+__{}    add  HL, BC         ; 1:11      __INFO   HL = (stop-1)-index
+__{}    pop  HL             ; 1:10      __INFO
+__{}    jp    c, do{}$1      ; 3:10      __INFO})
 __{}leave{}$1:               ;           __INFO
 __{}exit{}$1:                ;           __INFO{}dnl
 })dnl
