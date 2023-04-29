@@ -13,11 +13,16 @@ define({__ASM_TOKEN_XRDO},{dnl
 __{}define({__INFO},__COMPILE_INFO{(xr)})
     exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
     dec  HL             ; 1:6       __INFO
-ifelse(__SAVE_EVAL(__GET_LOOP_BEGIN($1)),0,{dnl
+ifelse(__HEX_HL(__GET_LOOP_BEGIN($1)),0x0000,{dnl
     xor   A             ; 1:4       __INFO
     ld  (HL),A          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     ld  (HL),A          ; 1:7       __INFO},
+__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{dnl
+    ld   DE, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO
+    ld  (HL),D          ; 1:7       __INFO
+    dec   L             ; 1:4       __INFO
+    ld  (HL),E          ; 1:7       __INFO},
 {dnl
     ld  (HL),high format({%-6s},__GET_LOOP_BEGIN($1)); 2:10      __INFO
     dec   L             ; 1:4       __INFO
@@ -224,11 +229,31 @@ __{}define({__INFO},__COMPILE_INFO{}(xr))
     ld    E,(HL)        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     ld    D,(HL)        ; 1:7       __INFO   DE = index
-    push HL             ; 1:11      __INFO
-    ld   HL, format({%-11s},eval(-(__GET_LOOP_END($1)))); 3:10      __INFO   HL = -stop = -( __GET_LOOP_END($1) )
-    add  HL, DE         ; 1:11      __INFO   index-stop
-    ld   BC, format({%-11s},eval(__GET_LOOP_STEP($1))); 3:10      __INFO   BC = step
-    add  HL, BC         ; 1:11      __INFO   index-stop+step{}ifelse(eval((__GET_LOOP_STEP($1))<0),{1},{
+    push HL             ; 1:11      __INFO{}dnl
+__{}ifelse(__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
+__{}    ld   HL, format({%-11s},__GET_LOOP_END($1)); 3:16      __INFO   HL = stop
+__{}    ld    A, E          ; 1:4       __INFO
+__{}    sub   L             ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    sbc   A, H          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO   HL = index-stop},
+__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
+__{}    ld    L, E          ; 1:4       __INFO
+__{}    ld    H, D          ; 1:4       __INFO
+__{}    ld   BC, format({%-11s},__GET_LOOP_END($1)); 4:20      __INFO
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop},
+__{}__IS_NUM(__GET_LOOP_END($1)),1,{
+__{}    ld   HL, format({%-11s},eval(-(__GET_LOOP_END($1)))); 3:10      __INFO   HL =      -stop = -( __GET_LOOP_END($1) )
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop},
+__{}{
+__{}    ld   HL, __FORM({%-11s},-(__GET_LOOP_END($1))); 3:10      __INFO   HL =      -stop = -( __GET_LOOP_END($1) )
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop})
+    ld   BC, format({%-11s},eval(__GET_LOOP_STEP($1))); 3:10      __INFO   BC =            step
+    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step{}ifelse(eval((__GET_LOOP_STEP($1))<0),{1},{
 __{}    jr   nc, leave{}$1-1 ; 2:7/12    __INFO   -step},{
 __{}    jr    c, leave{}$1-1 ; 2:7/12    __INFO   +step})
     ex   DE, HL         ; 1:4       __INFO
