@@ -51,6 +51,53 @@ dnl
 dnl # ( -- )
 define({__ASM_TOKEN_XRLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(xr)){}dnl
+__{}ifelse(__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}                    ;[21:104/77/92] __INFO   variant +1.pointer
+__{}    exx                 ; 1:4       __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    inc  DE             ; 1:6       __INFO   index++
+__{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.{}dnl
+__{}ifelse(__IS_NUM(+__GET_LOOP_END($1)),1,{
+__{}__{}    ld    A,(__HEX_HL(+__GET_LOOP_END($1)))    ; 3:13      __INFO   lo(real_stop)},
+__{}{
+__{}__{}    ld    A,format({%-12s},__GET_LOOP_END($1)); 3:13      __INFO   lo(real_stop)})
+__{}    xor   E             ; 1:4       __INFO
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO{}dnl
+__{}ifelse(__IS_NUM(+__GET_LOOP_END($1)),1,{
+__{}__{}    ld    A,(__HEX_HL(1+__GET_LOOP_END($1)))    ; 3:13      __INFO   hi(real_stop)},
+__{}__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO   hi(real_stop)})
+__{}    xor   D             ; 1:4       __INFO},
+
+1,0,{dnl # Vadne!!! Pouziva HL misto DE
+__{}undefine({_TMP_STACK_INFO}){}dnl
+__{}define({_TMP_INFO},{__INFO}){}dnl
+__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,8,38,0,38){}dnl # before index++  (except stop)
+__{}define({__BEFORE_PRICE},_TMP_BEST_P){}dnl
+__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,38,do{}$1{}save,28){}dnl   # after  index++  (except stop)
+__{}define({__AFTER_PRICE},_TMP_BEST_P){}dnl
+__{}ifelse(eval(__BEFORE_PRICE>=__AFTER_PRICE),1,{dnl
+__{}__{}define({_TMP_STACK_INFO},{__INFO
+__{}__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}__{}    inc  DE             ; 1:6       __INFO   index++})
+__{}__{}_TMP_BEST_CODE},
+__{}{dnl
+__{}__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,8,38,0,38){}dnl # before index++  (except stop)
+__{}__{}define({_TMP_STACK_INFO},{__INFO
+__{}__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}__{}    ld    D,(HL)        ; 1:7       __INFO})
+__{}__{}_TMP_BEST_CODE
+__{}__{}    inc  DE             ; 1:6       __INFO   index++})},
+
+{
+dnl # predelat __MAKE_BEST_CODE_R16_CP! Haze chyby pokud je parametr promenna.
 __{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7){}dnl  # before index++ (except stop)
 __{}define({__P1},_TMP_BEST_P){}dnl
 __{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),  3,13,2,-7){}dnl  # after index++  (except stop)
@@ -66,20 +113,67 @@ __{}__{}_TMP_BEST_CODE},
 __{}{dnl
 __{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7)
 __{}__{}_TMP_BEST_CODE
-__{}__{}    inc  DE             ; 1:6       __INFO   index++})
+__{}__{}    inc  DE             ; 1:6       __INFO   index++})})
     jp   nz, do{}$1{}save  ; 3:10      __INFO
 leave{}$1:               ;           __INFO
     inc  HL             ; 1:6       __INFO
     exx                 ; 1:4       __INFO   R:( index -- )
-exit{}$1:                ; 1:4       __INFO}){}dnl
+exit{}$1:                ;           __INFO}){}dnl
 dnl
 dnl
 dnl # ( -- )
 define({__ASM_TOKEN_SUB1_XRADDLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(xr)){}dnl
-__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7){}dnl  # after index--  (including stop)
+__{}ifelse(__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}                    ;[20:101/89/89] __INFO   variant +1.pointer
+__{}    exx                 ; 1:4       __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.{}dnl
+__{}ifelse(__IS_NUM(+__GET_LOOP_END($1)),1,{
+__{}__{}    ld    A,(__HEX_HL(+__GET_LOOP_END($1)))    ; 3:13      __INFO   lo(real_stop)},
+__{}{
+__{}__{}    ld    A,format({%-12s},__GET_LOOP_END($1)); 3:13      __INFO   lo(real_stop)})
+__{}    xor   E             ; 1:4       __INFO
+__{}    jr   nz, $+6        ; 2:7/12    __INFO{}dnl
+__{}ifelse(__IS_NUM(+__GET_LOOP_END($1)),1,{
+__{}__{}    ld    A,(__HEX_HL(1+__GET_LOOP_END($1)))    ; 3:13      __INFO   hi(real_stop)},
+__{}__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO   hi(real_stop)})
+__{}    xor   D             ; 1:4       __INFO
+__{}    dec  DE             ; 1:6       __INFO   index--},
+
+1,0,{dnl # Vadne!!! Pouziva HL misto DE
+__{}undefine({_TMP_STACK_INFO}){}dnl
+__{}define({_TMP_INFO},{__INFO}){}dnl
+__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,38,0,38){}dnl # before index--  (including stop)
+__{}define({__BEFORE_PRICE},_TMP_BEST_P){}dnl
+__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1)-1,8,38,do{}$1{}save,28){}dnl   # after  index--  (including stop)
+__{}define({__AFTER_PRICE},_TMP_BEST_P){}dnl
+__{}ifelse(eval(__BEFORE_PRICE>=__AFTER_PRICE),1,{dnl
+__{}__{}define({_TMP_STACK_INFO},{__INFO
+__{}__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}__{}    dec  DE             ; 1:6       __INFO   index++})
+__{}__{}_TMP_BEST_CODE},
+__{}{dnl
+__{}__{}__EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,38,0,38){}dnl # before index--  (including stop)
+__{}__{}define({_TMP_STACK_INFO},{__INFO
+__{}__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}__{}    ld    D,(HL)        ; 1:7       __INFO})
+__{}__{}_TMP_BEST_CODE
+__{}__{}    dec  DE             ; 1:6       __INFO   index++})},
+
+
+{
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,0,0){}dnl  # after index--  (including stop)
 __{}define({__P1},_TMP_BEST_P){}dnl
-__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,2,-7){}dnl    # before index-- (including stop)
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,13,0,0){}dnl    # before index-- (including stop)
 __{}define({__P2},_TMP_BEST_P)
     exx                 ; 1:4       __INFO
     ld    E,(HL)        ; 1:7       __INFO
@@ -90,9 +184,9 @@ __{}eval(__P1>__P2),1,{
 __{}__{}_TMP_BEST_CODE
 __{}__{}    dec  DE             ; 1:6       __INFO   index--},
 __{}{dnl
-__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,2,-7)
+__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,13,0,0)
 __{}__{}    dec  DE             ; 1:6       __INFO   index--
-__{}__{}_TMP_BEST_CODE})
+__{}__{}_TMP_BEST_CODE})})
     jp   nz, do{}$1{}save  ; 3:10      __INFO
 leave{}$1:               ;           __INFO
     inc  HL             ; 1:6       __INFO
@@ -126,6 +220,33 @@ __{}__{}__LD_R_NUM(__INFO,A,__HEX_L(_TEMP_REAL_STOP))
 __{}{
 __{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,_TEMP_REAL_STOP,2,7,2,-7){}dnl
 __{}_TMP_BEST_CODE})},
+
+__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}    exx                 ; 1:4       __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index{}dnl
+__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   DE = index+2},
+__{}{
+__{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
+__{}__{}    inc  DE             ; 1:6       __INFO
+__{}__{}    inc   E             ; 1:4       __INFO   DE = index+2
+__{}__{}  else
+__{}__{}    inc   E             ; 1:4       __INFO
+__{}__{}    inc  DE             ; 1:6       __INFO   DE = index+2
+__{}__{}  endif})
+__{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
+__{}    ld   BC,format({%-12s},__GET_LOOP_END($1)); 4:20      __INFO
+__{}    ld    A, E          ; 1:4       __INFO
+__{}    sub   C             ; 1:4       __INFO   lo (index+2)-stop
+__{}    rra                 ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    sbc   A, B          ; 1:4       __INFO   hi (index+2)-stop},
+
 {
 __{}    exx                 ; 1:4       __INFO
 __{}    ld    E,(HL)        ; 1:7       __INFO

@@ -4283,9 +4283,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_EQ_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4313,9 +4313,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_UEQ_DROP_JP_FALSE},{__MAKE_CODE_EQ_DROP_JP_FALSE($@)}){}dnl
 dnl
 dnl
@@ -4326,9 +4326,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_NE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4356,9 +4356,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_UNE_DROP_JP_FALSE},{__MAKE_CODE_UNE_DROP_JP_FALSE($@)}){}dnl
 dnl
 dnl
@@ -4370,9 +4370,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_LT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4405,9 +4405,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_ULT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4437,9 +4437,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_GE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4472,9 +4472,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_UGE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4504,9 +4504,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_LE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4539,9 +4539,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_ULE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4571,9 +4571,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_GT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4606,9 +4606,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_UGT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -4641,9 +4641,9 @@ dnl #   $5 = +-clocks jump no eq
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__EQ_DROP},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -5236,9 +5236,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_EQ_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -5262,9 +5262,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_NE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -5285,9 +5285,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_GT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -5423,9 +5423,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_LE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -5560,9 +5560,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_LT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -5699,9 +5699,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_GE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -5841,9 +5841,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_UEQ_DROP_JP_FALSE},{__MAKE_CODE_PUSH_EQ_DROP_JP_FALSE($@)}){}dnl
 dnl
 dnl
@@ -5856,9 +5856,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_UNE_DROP_JP_FALSE},{__MAKE_CODE_PUSH_NE_DROP_JP_FALSE($@)}){}dnl
 dnl
 dnl
@@ -5871,9 +5871,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_ULT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -5986,9 +5986,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_UGE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -6088,9 +6088,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_UGT_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -6202,9 +6202,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_PUSH_ULE_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -6306,9 +6306,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_EQ_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -6318,12 +6318,18 @@ __{}_TYP_SINGLE,small,{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   ( x -- x ) $1 <> HL}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10)
+__{}__{}define({__PRICE}, _TMP_BEST_P){}dnl
+__{}__{}define({__BYTES}, _TMP_BEST_B){}dnl
+__{}__{}define({__CLOCKS},_TMP_BEST_C){}dnl
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp   nz, format({%-11s},$2); 3:10      _TMP_INFO},
 __{}{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   ( x -- x ) HL == $1}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10,$2,0)
+__{}__{}define({__PRICE}, _TMP_BEST_P){}dnl
+__{}__{}define({__BYTES}, _TMP_BEST_B){}dnl
+__{}__{}define({__CLOCKS},_TMP_BEST_C){}dnl
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp   nz, format({%-11s},$2); 3:10      _TMP_INFO}){}dnl
 }){}dnl
@@ -6338,9 +6344,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_NE_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -6351,6 +6357,9 @@ __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   ( x1 -- x1 ) HL <> $1}){}dnl
 __{}__{}__EQ_MAKE_BEST_CODE($1,3,10,3,0)
 __{}__{}_TMP_BEST_CODE
+__{}__{}define({__PRICE}, _TMP_BEST_P){}dnl
+__{}__{}define({__BYTES}, _TMP_BEST_B){}dnl
+__{}__{}define({__CLOCKS},_TMP_BEST_C){}dnl
 __{}__{}    jp    z, format({%-11s},$2); 3:10      _TMP_INFO}){}dnl
 }){}dnl
 dnl
@@ -6367,9 +6376,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_LT_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -6559,9 +6568,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_GE_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -6750,9 +6759,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_GT_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -6941,9 +6950,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_LE_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -7132,9 +7141,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_UEQ_JP_FALSE},{__MAKE_CODE_DUP_PUSH_EQ_JP_FALSE($@)}){}dnl
 dnl
 dnl
@@ -7147,9 +7156,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_UNE_JP_FALSE},{__MAKE_CODE_PUSH_DUP_NE_JP_FALSE($@)}){}dnl
 dnl
 dnl
@@ -7162,9 +7171,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_ULT_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -7280,9 +7289,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_UGE_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -7370,9 +7379,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_UGT_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -7470,9 +7479,9 @@ dnl #            __INFO = info
 dnl #   _TMP_STACK_INFO = stack info
 dnl #
 dnl # Out:
-dnl #   _TMP_BEST_P       price = 16*(clocks + 4*bytes)
-dnl #   _TMP_BEST_B       bytes
-dnl #   _TMP_BEST_C       clocks
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_DUP_PUSH_ULE_JP_FALSE},{dnl
 __{}ifelse(eval($#<2),1,{
 __{}__{}.error {$0}(): Missing parameter!},
@@ -7834,11 +7843,81 @@ define({__MAKE_BEST_CODE_R16_CP},{dnl
 __{}dnl ---------------------------------
 __{}define({_TMP_INFO},$1){}dnl
 __{}define({_TMP_STACK_INFO},$2){}dnl
+__{}ifelse(dnl
+__{}__IS_MEM_REF($1):$3:_TYP_SINGLE,{1:HL:small},{dnl
+__{}__{}define({_TMP_BEST_CODE},{dnl
+__{}__{}    ld   BC{,} format({%-11s},$4); 4:20      _TMP_INFO
+__{}__{}    xor   A             ; 1:4       _TMP_INFO   cp HL{,} BC
+__{}__{}    sbc  HL{,} BC         ; 2:15      _TMP_INFO   cp HL{,} BC
+__{}__{}    add  HL{,} BC         ; 1:11      _TMP_INFO   cp HL{,} BC}){}dnl
+__{}define({_TMP_BEST_B},$5+8){}dnl
+__{}define({_TMP_BEST_C},eval($6+50)){}dnl
+__{}define({_TMP_BEST_P},eval(_TMP_BEST_C+__BYTE_PRICE*_TMP_BEST_B)){}dnl
+__{}},
+
+__{}__IS_MEM_REF($4):__IS_NUM($7+0),1:1,{dnl
+__{}__{}define({_TMP_BEST_CODE},{dnl
+__{}__{}    ld    A{,}format({%-12s},$4); 3:13      _TMP_INFO
+__{}__{}    xor   substr($3,1,1)             ; 1:4       _TMP_INFO
+__{}__{}    jr   nz{,} format({%-11s},$+eval($7+6)); 2:7/12    _TMP_INFO
+__{}__{}    ld    A{,}format({%-12s},($4+1)); 3:13      _TMP_INFO
+__{}__{}    xor   substr($3,0,1)             ; 1:4       _TMP_INFO}){}dnl
+__{}define({_TMP_BEST_B},$5+10){}dnl
+__{}define({_TMP_BEST_C1},eval($6+13+4+12)){}dnl
+__{}define({_TMP_BEST_C2},eval($6+13+4+7+13+4)){}dnl
+__{}define({_TMP_BEST_C},eval((_TMP_BEST_C1+_TMP_BEST_C2)/2)){}dnl
+__{}define({_TMP_BEST_P},eval(_TMP_BEST_C+__BYTE_PRICE*_TMP_BEST_B)){}dnl
+__{}},
+
+__{}__IS_MEM_REF($4),1,{dnl
+__{}__{}define({_TMP_BEST_CODE},{dnl
+__{}__{}    ld    A{,}format({%-12s},$4); 3:13      _TMP_INFO
+__{}__{}    xor   substr($3,1,1)             ; 1:4       _TMP_INFO
+__{}__{}    jp   nz{,} format({%-11s},$7); 3:10      _TMP_INFO
+__{}__{}    ld    A{,}format({%-12s},($4+1)); 3:13      _TMP_INFO
+__{}__{}    xor   substr($3,0,1)             ; 1:4       _TMP_INFO}){}dnl
+__{}define({_TMP_BEST_B},$5+11){}dnl
+__{}define({_TMP_BEST_C1},eval($8+13+4+10)){}dnl
+__{}define({_TMP_BEST_C2},eval($6+13+4+10+13+4)){}dnl
+__{}define({_TMP_BEST_C},eval((_TMP_BEST_C1+_TMP_BEST_C2)/2)){}dnl
+__{}define({_TMP_BEST_P},eval(_TMP_BEST_C+__BYTE_PRICE*_TMP_BEST_B)){}dnl
+__{}},
+
+__IS_NUM($4):__IS_NUM($7+0),0:1,{dnl
+__{}__{}define({_TMP_BEST_CODE},{dnl
+__{}__{}    ld    A{,} low format({%-7s},$4); 2:7       _TMP_INFO
+__{}__{}    xor   substr($3,1,1)             ; 1:4       _TMP_INFO
+__{}__{}    jr   nz{,} format({%-11s},$+eval($7+5)); 2:7/12    _TMP_INFO
+__{}__{}    ld    A{,} high format({%-6s},$4); 2:7       _TMP_INFO
+__{}__{}    xor   substr($3,0,1)             ; 1:4       _TMP_INFO}){}dnl
+__{}define({_TMP_BEST_B},$5+8){}dnl
+__{}define({_TMP_BEST_C1},eval($6+7+4+12)){}dnl
+__{}define({_TMP_BEST_C2},eval($6+7+4+7+7+4)){}dnl
+__{}define({_TMP_BEST_C},eval((_TMP_BEST_C1+_TMP_BEST_C2)/2)){}dnl
+__{}define({_TMP_BEST_P},eval(_TMP_BEST_C+__BYTE_PRICE*_TMP_BEST_B)){}dnl
+__{}},
+
+__IS_NUM($4),0,{
+__{}__{}define({_TMP_BEST_CODE},{dnl
+__{}__{}    ld    A{,} low format({%-7s},$4); 2:7       _TMP_INFO
+__{}__{}    xor   substr($3,1,1)             ; 1:4       _TMP_INFO
+__{}__{}    jp   nz{,} format({%-11s},$7); 3:10      _TMP_INFO
+__{}__{}    ld    A{,} high format({%-6s},$4); 2:7       _TMP_INFO
+__{}__{}    xor   substr($3,0,1)             ; 1:4       _TMP_INFO}){}dnl
+__{}define({_TMP_BEST_B},$5+9){}dnl
+__{}define({_TMP_BEST_C1},eval($8+7+4+10)){}dnl
+__{}define({_TMP_BEST_C2},eval($6+7+4+10+7+4)){}dnl
+__{}define({_TMP_BEST_C},eval((_TMP_BEST_C1+_TMP_BEST_C2)/2)){}dnl
+__{}define({_TMP_BEST_P},eval(_TMP_BEST_C+__BYTE_PRICE*_TMP_BEST_B)){}dnl
+},
+
+{
 __{}__EQ_MAKE_CODE($3,$4,$5,$6,$7,$8){}dnl
 __{}define({_TMP_BEST_P},__EQ_PRICE){}dnl
 __{}define({_TMP_BEST_B},__EQ_BYTES){}dnl
 __{}define({_TMP_BEST_C},__EQ_CLOCKS){}dnl
 __{}define({_TMP_BEST_CODE},__EQ_CODE){}dnl
+}){}dnl
 }){}dnl
 dnl
 dnl

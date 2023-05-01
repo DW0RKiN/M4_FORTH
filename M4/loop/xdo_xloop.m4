@@ -257,7 +257,7 @@ __{}__IS_MEM_REF(__GET_LOOP_END($1)),1,{
 __{}__{}                     ;[18:90/63/70] __INFO   variant +1.pointer
 __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. -1 ..__GET_LOOP_END($1)
-__{}__{}    inc  BC             ; 1:6       __INFO   index--
+__{}__{}    inc  BC             ; 1:6       __INFO   index++
 __{}__{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.{}dnl
 __{}__{}ifelse(__IS_NUM(+__GET_LOOP_END($1)),1,{
 __{}__{}__{}    ld    A,(__HEX_HL(+__GET_LOOP_END($1)))    ; 3:13      __INFO   lo(real_stop)},
@@ -268,7 +268,7 @@ __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO{}dnl
 __{}__{}ifelse(__IS_NUM(+__GET_LOOP_END($1)),1,{
 __{}__{}__{}    ld    A,(__HEX_HL(1+__GET_LOOP_END($1)))    ; 3:13      __INFO   hi(real_stop)},
 __{}__{}__IS_MEM_REF(__GET_LOOP_END($1)),1,{
-__{}__{}__{}    ld    A,format({%-12s},(__GET_LOOP_END($1)+1)); 3:13      __INFO   hi(real_stop)})
+__{}__{}__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO   hi(real_stop)})
 __{}__{}    xor   B             ; 1:4       __INFO
 __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
 
@@ -412,6 +412,7 @@ __{}__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSIT
 __{}__{}__{}    ld    A, C          ; 1:4       __INFO
 __{}__{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{}x false positive if he was first})})},
+
 __{}__IS_MEM_REF(__GET_LOOP_END($1)),1,{
 __{}__{}                     ;[17:87/75/67] __INFO   variant -1.pointer
 __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
@@ -427,10 +428,11 @@ __{}__{}__{}  .warning: Used for Stop pointer, unlike the specification, the poi
 __{}__{}__{}    ld    A,format({%-12s},__GET_LOOP_END($1)); 3:13      __INFO   lo(real_stop)
 __{}__{}__{}    xor   C             ; 1:4       __INFO
 __{}__{}__{}    jr   nz, $+6        ; 2:7/12    __INFO
-__{}__{}__{}    ld    A,format({%-12s},(__GET_LOOP_END($1)+1)); 3:13      __INFO   hi(real_stop)})
+__{}__{}__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO   hi(real_stop)})
 __{}__{}    xor   B             ; 1:4       __INFO
 __{}__{}    dec  BC             ; 1:6       __INFO   index--
 __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+
 __{}{dnl
 __{}__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)):__IS_MEM_REF(__GET_LOOP_END($1)),0:0,{
 __{}__{}  if (__GET_LOOP_BEGIN($1) = __GET_LOOP_END($1))
