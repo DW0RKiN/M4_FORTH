@@ -852,7 +852,7 @@ __{}__{}__{}__{}__SET_LOOP_END(  $3,__T_ARRAY_1(0)){}dnl
 __{}__{}__{}__{}__SET_LOOP_BEGIN($3,__T_ARRAY_2(0)){}dnl
 __{}__{}__{}__{}__SET_TOKEN({__TOKEN_DO},__T_INFO(0){ }$2,$3)},{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
 
-            __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSH:2:__TOKEN_QDO,              {ifelse(__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
+            __T_NAME(0):__T_ITEMS(0):$1,                      __TOKEN_PUSHS:2:__TOKEN_QDO,             {ifelse(__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
 __{}__{}__{}__{}__SET_LOOP_END(  $3,__T_ARRAY_1(0)){}dnl
 __{}__{}__{}__{}__SET_LOOP_BEGIN($3,__T_ARRAY_2(0)){}dnl
 __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__T_INFO(0){ }$2,$3)},{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
@@ -887,6 +887,9 @@ __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_DROP:__TOKEN_PUSHS:2:__
 dnl # PUSH3
 push3,,,
 
+_errprint(__T_NAME(1)(__T_ITEMS(1)):__T_NAME(0)(__T_ITEMS(0)):$1{
+}),x,blah,
+
             __T_NAME(0):eval(__T_ITEMS(0)>2):$1,                          {__TOKEN_PUSHS:1:__TOKEN_DO},        {ifelse(dnl
 __{}__{}__{}__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
 __{}__{}__{}__{}__SET_LOOP_END(  $3,__T_REVERSE_2(0)){}dnl
@@ -902,6 +905,7 @@ __{}__{}__{}__{}__SET_LOOP_END(  $3,__T_REVERSE_1(0)){}dnl
 __{}__{}__{}__{}__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ drop}, __DROP_1_PAR(__T_ARRAY(0))){}dnl
 __{}__{}__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN($1,__GET_LOOP_END($3){ }__GET_LOOP_BEGIN($3){ }$2,shift(shift($@)))},
 __{}__{}__{}{__INC_TOKEN_COUNT{}__SET_TOKEN($@)})},
+
 
             __T_NAME(0):eval(__T_ITEMS(0)>2):$1,                          {__TOKEN_PUSHS:1:__TOKEN_QDO},        {ifelse(dnl
 __{}__{}__{}__GET_LOOP_BEGIN($3):__GET_LOOP_END($3),{:},{dnl
