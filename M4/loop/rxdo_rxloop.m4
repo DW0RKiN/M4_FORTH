@@ -176,22 +176,46 @@ __{}ifelse(__IS_NUM(__GET_LOOP_END($1)):__IS_NUM(__GET_LOOP_BEGIN($1)):__IS_NUM(
 __{}__{}__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
                         ;           __INFO   real_stop:_TEMP_REAL_STOP, run _TEMP_X{x}
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,(HL)        ; 1:7       __INFO   
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO   DE = index
-__{}ifelse(eval((__GET_LOOP_BEGIN($1)) & 1),1,{dnl
-    inc  DE             ; 1:6       __INFO
-    inc   E             ; 1:4       __INFO   DE = index+2},
-{dnl
-    inc   E             ; 1:4       __INFO
-    inc  DE             ; 1:6       __INFO   DE = index+2}){}dnl
-__{}ifelse(_TEMP_HI_FALSE_POSITIVE,0,{dnl
-__{}__{}__LD_R_NUM(__INFO,A,__HEX_H(_TEMP_REAL_STOP))
-    cp    D             ; 1:4       __INFO   hi(real_stop) exclusivity},
+    ld    D,(HL)        ; 1:7       __INFO   DE = index{}dnl
+__{}ifelse(dnl
+__{}__HEX_L(__GET_LOOP_END($1)):_TEMP_LO_FALSE_POSITIVE,0x00:0,{
+__{}    inc   E             ; 1:4       __INFO   index++
+__{}    inc   E             ; 1:4       __INFO   index++},
+__{}__HEX_L(__GET_LOOP_END($1)):_TEMP_LO_FALSE_POSITIVE,0x01:0,{
+__{}    inc   E             ; 1:4       __INFO   index++
+__{}    inc   E             ; 1:4       __INFO   index++},
+__{}__HEX_H(__GET_LOOP_BEGIN($1)):_TEMP_LO_FALSE_POSITIVE,__HEX_H(__GET_LOOP_END($1)):0,{
+__{}    inc   E             ; 1:4       __INFO   index++
+__{}    inc   E             ; 1:4       __INFO   index++},
+__{}__HEX_L(1&(__GET_LOOP_BEGIN($1))),0x01,{
+__{}    inc  DE             ; 1:6       __INFO   index++
+__{}    inc   E             ; 1:4       __INFO   index++},
+__{}{
+__{}    inc   E             ; 1:4       __INFO   index++
+__{}    inc  DE             ; 1:6       __INFO   index++}){}dnl
+__{}ifelse(dnl
+__{}_TEMP_LO_FALSE_POSITIVE:__HEX_L(_TEMP_REAL_STOP),0:0x00,{},
+__{}_TEMP_LO_FALSE_POSITIVE:__HEX_L(_TEMP_REAL_STOP),0:0x01,{
+__{}__{}    ld    A, E          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO   lo(real_stop) exclusivity},
+__{}_TEMP_LO_FALSE_POSITIVE:__HEX_L(_TEMP_REAL_STOP),0:0xFF,{
+__{}__{}    ld    A, E          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO   lo(real_stop) exclusivity},
 __{}_TEMP_LO_FALSE_POSITIVE,0,{dnl
 __{}__{}__LD_R_NUM(__INFO,A,__HEX_L(_TEMP_REAL_STOP))
-    cp    E             ; 1:4       __INFO   lo(real_stop) exclusivity},
-__{}{
+__{}    cp    E             ; 1:4       __INFO   lo(real_stop) exclusivity},
+__{}_TEMP_LO_FALSE_POSITIVE:__HEX_L(_TEMP_REAL_STOP),0:0x01,{
+__{}__{}    ld    A, D          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO   hi(real_stop) exclusivity},
+__{}_TEMP_LO_FALSE_POSITIVE:__HEX_L(_TEMP_REAL_STOP),0:0xFF,{
+__{}__{}    ld    A, D          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO   hi(real_stop) exclusivity},
+__{}_TEMP_HI_FALSE_POSITIVE,0,{dnl
+__{}__{}__LD_R_NUM(__INFO,A,__HEX_H(_TEMP_REAL_STOP))
+__{}    cp    D             ; 1:4       __INFO   hi(real_stop) exclusivity},
+__{}{dnl
 __{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,_TEMP_REAL_STOP,2,7,2,-7){}dnl
 __{}_TMP_BEST_CODE})},
 
@@ -200,50 +224,72 @@ __{}    exx                 ; 1:4       __INFO
 __{}    ld    E,(HL)        ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld    D,(HL)        ; 1:7       __INFO   DE = index{}dnl
-__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
-__{}__{}    inc  DE             ; 1:6       __INFO
-__{}__{}    inc  DE             ; 1:6       __INFO   DE = index+2},
+__{}ifelse(__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0001,{
+__{}__{}    inc  DE             ; 1:6       __INFO   index++
+__{}__{}    inc   E             ; 1:4       __INFO   index++},
+__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
+__{}__{}    inc   E             ; 1:4       __INFO   index++
+__{}__{}    inc  DE             ; 1:6       __INFO   index++},
+__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}__{}    inc  DE             ; 1:6       __INFO   index++
+__{}__{}    inc  DE             ; 1:6       __INFO   index++},
 __{}{
 __{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
-__{}__{}    inc  DE             ; 1:6       __INFO
-__{}__{}    inc   E             ; 1:4       __INFO   DE = index+2
+__{}__{}    inc  DE             ; 1:6       __INFO   index++
+__{}__{}    inc   E             ; 1:4       __INFO   index++
 __{}__{}  else
-__{}__{}    inc   E             ; 1:4       __INFO
-__{}__{}    inc  DE             ; 1:6       __INFO   DE = index+2
+__{}__{}    inc   E             ; 1:4       __INFO   index++
+__{}__{}    inc  DE             ; 1:6       __INFO   index++
 __{}__{}  endif})
 __{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
 __{}    ld   BC,format({%-12s},__GET_LOOP_END($1)); 4:20      __INFO
 __{}    ld    A, E          ; 1:4       __INFO
-__{}    sub   C             ; 1:4       __INFO   lo (index+2)-stop
+__{}    sub   C             ; 1:4       __INFO   lo(index+2-stop)
 __{}    rra                 ; 1:4       __INFO
 __{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
 __{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
 __{}    ld    A, D          ; 1:4       __INFO
-__{}    sbc   A, B          ; 1:4       __INFO   hi (index+2)-stop},
+__{}    sbc   A, B          ; 1:4       __INFO   hi(index+2-stop)},
 
-{
+__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
 __{}    exx                 ; 1:4       __INFO
 __{}    ld    E,(HL)        ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index{}dnl
-__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
-__{}__{}    inc  DE             ; 1:6       __INFO
-__{}__{}    inc  DE             ; 1:6       __INFO   DE = index+2},
-__{}{
-__{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
-__{}__{}    inc  DE             ; 1:6       __INFO
-__{}__{}    inc   E             ; 1:4       __INFO   DE = index+2
-__{}__{}  else
-__{}__{}    inc   E             ; 1:4       __INFO
-__{}__{}    inc  DE             ; 1:6       __INFO   DE = index+2
-__{}__{}  endif})
+__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
+__{}    inc  DE             ; 1:6       __INFO   index++
+__{}    inc  DE             ; 1:6       __INFO   index++
 __{}    ld    A, E          ; 1:4       __INFO
 __{}    sub  low format({%-11s},__GET_LOOP_END($1)); 2:7       __INFO   lo (index+2)-stop
 __{}    rra                 ; 1:4       __INFO
 __{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
 __{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
 __{}    ld    A, D          ; 1:4       __INFO
-__{}    sbc   A, high format({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   hi (index+2)-stop})
+__{}    sbc   A, high format({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   hi (index+2)-stop},
+
+{
+__{}    exx                 ; 1:4       __INFO
+__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    inc   L             ; 1:4       __INFO
+__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index{}dnl
+__{}ifelse(__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0001,{
+__{}__{}    inc  DE             ; 1:6       __INFO   index++
+__{}__{}    inc   E             ; 1:4       __INFO   index++},
+__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
+__{}__{}    inc   E             ; 1:4       __INFO   index++
+__{}__{}    inc  DE             ; 1:6       __INFO   index++},
+__{}{
+__{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
+__{}__{}    inc  DE             ; 1:6       __INFO   index++
+__{}__{}    inc   E             ; 1:4       __INFO   index++
+__{}__{}  else
+__{}__{}    inc   E             ; 1:4       __INFO   index++
+__{}__{}    inc  DE             ; 1:6       __INFO   index++
+__{}__{}  endif})
+__{}__{}    ld    A, E          ; 1:4       __INFO
+__{}__{}    xor  low  __FORM({%-11s},__GET_LOOP_END($1)+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   lo(real_stop)
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
+__{}__{}    ld    A, D          ; 1:4       __INFO
+__{}__{}    xor  high __FORM({%-10s},__GET_LOOP_END($1)+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   hi(real_stop)})
     jp   nz, do{}$1{}save  ; 3:10      __INFO
 leave{}$1:               ;           __INFO
     inc  HL             ; 1:6       __INFO

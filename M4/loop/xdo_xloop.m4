@@ -548,22 +548,78 @@ __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{
 __{}__{}    ld    A, B          ; 1:4       __INFO
 __{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
 __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x false positive if he was first})},
+
+
+
+__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}                    ;[20:89/101/81] __INFO   variant +2.pointer end
+__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +2 ..(__GET_LOOP_END($1)){}dnl
+__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}__{}    inc  BC             ; 1:6       __INFO   index++
+__{}__{}    ld    A, format({%-11s},__GET_LOOP_END($1)); 3:13      __INFO
+__{}__{}    sub   C             ; 1:4       __INFO   lo(stop-(index+1))
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
+__{}__{}    jr   nz, $+6        ; 2:7/12    __INFO
+__{}__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO
+__{}__{}    sbc   A, B          ; 1:4       __INFO   hi(stop-(index+1))
+__{}__{}    inc  BC             ; 1:6       __INFO   index++},
+__{}{dnl
+__{}__{}ifelse(__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0001,{
+__{}__{}__{}    inc  BC             ; 1:6       __INFO   index++},
+__{}__{}__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
+__{}__{}__{}    inc   C             ; 1:4       __INFO   index++},
+__{}__{}{
+__{}__{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
+__{}__{}__{}    inc  BC             ; 1:6       __INFO   index++
+__{}__{}__{}  else
+__{}__{}__{}    inc   C             ; 1:4       __INFO   index++
+__{}__{}__{}  endif})
+__{}__{}    ld    A, format({%-11s},__GET_LOOP_END($1)); 3:13      __INFO
+__{}__{}    sub   C             ; 1:4       __INFO   lo(stop-(index+1))
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
+__{}__{}    jr   nz, $+6        ; 2:7/12    __INFO
+__{}__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO
+__{}__{}    sbc   A, B          ; 1:4       __INFO   hi(stop-(index+1)){}dnl
+__{}__{}ifelse(__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0001,{
+__{}__{}__{}    inc   C             ; 1:4       __INFO   index++},
+__{}__{}__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
+__{}__{}__{}    inc  BC             ; 1:6       __INFO   index++},
+__{}__{}{
+__{}__{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
+__{}__{}__{}    inc   C             ; 1:4       __INFO   index++
+__{}__{}__{}  else
+__{}__{}__{}    inc  BC             ; 1:6       __INFO   index++
+__{}__{}__{}  endif})})
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+
+__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}                     ;[19:71/92/72] __INFO   variant +2.pointer_from
+__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +2 ..(__GET_LOOP_END($1))
+__{}    inc  BC             ; 1:6       __INFO   index++
+__{}    inc  BC             ; 1:6       __INFO   index++
+__{}    ld    A, C          ; 1:4       __INFO
+__{}    sub  low __FORM({%-11s},__GET_LOOP_END($1)); 2:7       __INFO   lo(index+2-stop)
+__{}    rra                 ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    sbc   A, high __FORM({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   hi(index+2-stop)
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+
 {
 __{}                     ;[17:61/82/62] __INFO   variant +2.variable
 __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +2 ..(__GET_LOOP_END($1)){}dnl
-__{}ifelse(__IS_MEM_REF(__GET_LOOP_END($1)),1,{
-__{}__{}  .error Dodelat pointer na End!},
-__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}ifelse(__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0001,{
 __{}__{}    inc  BC             ; 1:6       __INFO   index++
-__{}__{}    inc  BC             ; 1:6       __INFO   index++
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    sub  low format({%-11s},__GET_LOOP_END($1)); 2:7       __INFO   lo(index+2-stop)
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
-__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
-__{}__{}    ld    A, B          ; 1:4       __INFO
-__{}__{}    sbc   A, high format({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   hi(index+2-stop)},
+__{}__{}    inc   C             ; 1:4       __INFO   index++},
+__{}__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
+__{}__{}    inc   C             ; 1:4       __INFO   index++
+__{}__{}    inc  BC             ; 1:6       __INFO   index++},
 __{}{
 __{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
 __{}__{}    inc  BC             ; 1:6       __INFO   index++
@@ -571,12 +627,12 @@ __{}__{}    inc   C             ; 1:4       __INFO   index++
 __{}__{}  else
 __{}__{}    inc   C             ; 1:4       __INFO   index++
 __{}__{}    inc  BC             ; 1:6       __INFO   index++
-__{}__{}  endif
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    xor  low  __FORM({%-11s},__GET_LOOP_END($1)+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   lo(real_stop)
-__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
-__{}__{}    ld    A, B          ; 1:4       __INFO
-__{}__{}    xor  high __FORM({%-10s},__GET_LOOP_END($1)+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   hi(real_stop)})
+__{}__{}  endif})
+__{}    ld    A, C          ; 1:4       __INFO
+__{}    xor  low  __FORM({%-11s},__GET_LOOP_END($1)+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   lo(real_stop)
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    xor  high __FORM({%-10s},__GET_LOOP_END($1)+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   hi(real_stop)
 __{}    jp   nz, do{}$1{}save  ; 3:10      __INFO})
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO{}dnl
@@ -700,22 +756,76 @@ __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_LO_FALSE_POSITIVE{
 __{}__{}    ld    A, B          ; 1:4       __INFO
 __{}__{}    xor  __HEX_H(_TEMP_REAL_STOP)           ; 2:7       __INFO   hi(real_stop)
 __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{}x false positive if he was first})},
+
+__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}                    ;[20:89/101/81] __INFO   variant -2.pointer end
+__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. -2 ..__GET_LOOP_END($1){}dnl
+__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}__{}    ld    A, format({%-11s},__GET_LOOP_END($1)); 3:13      __INFO
+__{}__{}    sub   C             ; 1:4       __INFO   lo(stop-(index-1))
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
+__{}__{}    jr   nz, $+6        ; 2:7/12    __INFO
+__{}__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO
+__{}__{}    sbc   A, B          ; 1:4       __INFO   hi(stop-(index-1))
+__{}__{}    dec  BC             ; 1:6       __INFO   index--},
+__{}{dnl
+__{}__{}ifelse(__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0001,{
+__{}__{}__{}    dec   C             ; 1:4       __INFO   index--},
+__{}__{}__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
+__{}__{}__{}    dec  BC             ; 1:6       __INFO   index--},
+__{}__{}{
+__{}__{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
+__{}__{}__{}    dec   C             ; 1:4       __INFO   index--
+__{}__{}__{}  else
+__{}__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}__{}__{}  endif})
+__{}__{}    ld    A, format({%-11s},__GET_LOOP_END($1)); 3:13      __INFO
+__{}__{}    sub   C             ; 1:4       __INFO   lo(stop-(index-1))
+__{}__{}    rra                 ; 1:4       __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
+__{}__{}    jr   nz, $+6        ; 2:7/12    __INFO
+__{}__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO
+__{}__{}    sbc   A, B          ; 1:4       __INFO   hi(stop-(index-1)){}dnl
+__{}__{}ifelse(__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0001,{
+__{}__{}__{}    dec  BC             ; 1:6       __INFO   index--},
+__{}__{}__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
+__{}__{}__{}    dec   C             ; 1:4       __INFO   index--},
+__{}__{}{
+__{}__{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
+__{}__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}__{}__{}  else
+__{}__{}__{}    dec   C             ; 1:4       __INFO   index--
+__{}__{}__{}  endif})})
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+
+__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}                     ;[18:83/89/69] __INFO   variant -2.pointer
+__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
+__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. -2 ..__GET_LOOP_END($1)
+__{}    ld    A, C          ; 1:4       __INFO
+__{}    sub  low __FORM({%-11s},__GET_LOOP_END($1)); 2:7       __INFO   lo(index-stop)
+__{}    rra                 ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
+__{}    jr   nz, $+5        ; 2:7/12    __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    sbc   A, high __FORM({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   hi(index-stop)
+__{}    dec  BC             ; 1:6       __INFO   index--
+__{}    dec  BC             ; 1:6       __INFO   index--
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+
 {
 __{}                     ;[17:61/82/62] __INFO   variant -2.variable
 __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. -2 ..__GET_LOOP_END($1){}dnl
-__{}ifelse(__IS_MEM_REF(__GET_LOOP_END($1)),1,{
-__{}__{}  .error Dodelat pointer na End!},
-__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    sub  low format({%-11s},__GET_LOOP_END($1)); 2:7       __INFO   lo(index-stop)
-__{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
-__{}__{}    jr   nz, $+5        ; 2:7/12    __INFO
-__{}__{}    ld    A, B          ; 1:4       __INFO
-__{}__{}    sbc   A, high format({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   hi(index-stop)
-__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}ifelse(__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0001,{
+__{}__{}    dec   C             ; 1:4       __INFO   index--
 __{}__{}    dec  BC             ; 1:6       __INFO   index--},
+__{}__HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
+__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}__{}    dec   C             ; 1:4       __INFO   index--},
 __{}{
 __{}__{}  if ((__GET_LOOP_BEGIN($1)) & 1)
 __{}__{}    dec   C             ; 1:4       __INFO   index--
@@ -723,12 +833,12 @@ __{}__{}    dec  BC             ; 1:6       __INFO   index--
 __{}__{}  else
 __{}__{}    dec  BC             ; 1:6       __INFO   index--
 __{}__{}    dec   C             ; 1:4       __INFO   index--
-__{}__{}  endif
-__{}__{}    ld    A, C          ; 1:4       __INFO
-__{}__{}    xor  low  __FORM({%-11s},__GET_LOOP_END($1)-2+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   lo(real_stop)
-__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
-__{}__{}    ld    A, B          ; 1:4       __INFO
-__{}__{}    xor  high __FORM({%-10s},__GET_LOOP_END($1)-2+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   hi(real_stop)})
+__{}__{}  endif})
+__{}    ld    A, C          ; 1:4       __INFO
+__{}    xor  low  __FORM({%-11s},__GET_LOOP_END($1)-2+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   lo(real_stop)
+__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
+__{}    ld    A, B          ; 1:4       __INFO
+__{}    xor  high __FORM({%-10s},__GET_LOOP_END($1)-2+(1&((__GET_LOOP_BEGIN($1))xor(__GET_LOOP_END($1))))); 2:7       __INFO   hi(real_stop)
 __{}    jp   nz, do{}$1{}save  ; 3:10      __INFO})
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO{}dnl

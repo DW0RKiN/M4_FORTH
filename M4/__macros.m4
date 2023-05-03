@@ -1293,7 +1293,8 @@ dnl
 dnl
 dnl
 define({__LD_R_NUM},{dnl
-__{}define({__CODE},$0_PLUS_ESCAPE($1,$2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),shift(shift(shift($@))))){}dnl # remove one level {{{,}}}
+__{}define({__CODE_ESCAPE},$0_PLUS_ESCAPE($1,$2,ifelse(__IS_NUM($3),1,__HEX_L($3),$3),shift(shift(shift($@))))){}dnl # remove one level {{{,}}}
+__{}define({__CODE},__CODE_ESCAPE){}dnl # remove one level {{,}}
 __{}__CODE{}dnl
 }){}dnl
 dnl
@@ -7874,8 +7875,8 @@ __{}__{}    xor   substr($3,0,1)             ; 1:4       _TMP_INFO}){}dnl
 __{}define({__EQ_CODE},__EQ_CODE_COMMA){}dnl
 __{}define({_TMP_BEST_CODE},__EQ_CODE){}dnl
 __{}define({_TMP_BEST_B},$5+10){}dnl
-__{}define({_TMP_BEST_C1},eval($6+13+4+12)){}dnl
-__{}define({_TMP_BEST_C2},eval($6+13+4+7+13+4)){}dnl
+__{}define({_TMP_BEST_C1},eval($6+29)){}dnl
+__{}define({_TMP_BEST_C2},eval($6+41)){}dnl
 __{}define({_TMP_BEST_C},eval((_TMP_BEST_C1+_TMP_BEST_C2)/2)){}dnl
 __{}define({_TMP_BEST_P},eval(_TMP_BEST_C+__BYTE_PRICE*_TMP_BEST_B)){}dnl
 __{}},
@@ -7890,8 +7891,8 @@ __{}__{}    xor   substr($3,0,1)             ; 1:4       _TMP_INFO}){}dnl
 __{}define({__EQ_CODE},__EQ_CODE_COMMA){}dnl
 __{}define({_TMP_BEST_CODE},__EQ_CODE){}dnl
 __{}define({_TMP_BEST_B},$5+11){}dnl
-__{}define({_TMP_BEST_C1},eval($8+13+4+10)){}dnl
-__{}define({_TMP_BEST_C2},eval($6+13+4+10+13+4)){}dnl
+__{}define({_TMP_BEST_C1},eval($8+27)){}dnl
+__{}define({_TMP_BEST_C2},eval($6+44)){}dnl
 __{}define({_TMP_BEST_C},eval((_TMP_BEST_C1+_TMP_BEST_C2)/2)){}dnl
 __{}define({_TMP_BEST_P},eval(_TMP_BEST_C+__BYTE_PRICE*_TMP_BEST_B)){}dnl
 __{}},
