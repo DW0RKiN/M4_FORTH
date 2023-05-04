@@ -4181,7 +4181,7 @@ __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{{{,}}} _TMP_R1          ; 1:4       _TMP_INFO
-__{}__{}    xor   __HEX_L(_TMP_N1 ^ 0xFF)          ; 2:7       _TMP_INFO   x[1] = 0xFF ^ __HEX_L(_TMP_N1 ^ 0xFF)})},
+__{}__{}    xor   __HEX_L(_TMP_N1 ^ 0xFF)          ; 2:7       _TMP_INFO   0xFF = x[1] ^ __HEX_L(_TMP_N1 ^ 0xFF) = __HEX_L(_TMP_N1) ^ __HEX_L(_TMP_N1 ^ 0xFF)})},
 __{}_TMP_N2:_TMP_N1,{2:1},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},12){}dnl
