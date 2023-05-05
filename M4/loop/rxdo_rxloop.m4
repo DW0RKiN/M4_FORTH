@@ -117,14 +117,16 @@ __{}ifelse(dnl
 __{}__HEX_HL(__GET_LOOP_BEGIN($1)+1):__IS_NUM(__GET_LOOP_BEGIN($1)),__HEX_HL(__GET_LOOP_END($1)):1,{
 __{}__{}    exx                 ; 1:4       __INFO   variant: +1.no_loop
 __{}__{}    inc   L             ; 1:4       __INFO},
-__{}__HEX_L(__GET_LOOP_END($1)):__HEX_L(__GET_LOOP_END($1)-(__GET_LOOP_BEGIN($1))<=256),0x00:0x01,{
+
+__{}__HEX_L(__GET_LOOP_END($1)):__HEX_L(__GET_LOOP_END($1)>__GET_LOOP_BEGIN($1)):__HEX_L(__GET_LOOP_END($1)-(__GET_LOOP_BEGIN($1))<=256),0x00:0x01:0x01,{
 __{}__{}    exx                 ; 1:4       __INFO   variant: +1; lo(stop)=0 && repeat <= 256
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    D,(HL)        ; 1:7       __INFO
 __{}__{}    inc   E             ; 1:4       __INFO   index++
 __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-__{}__HEX_H(__GET_LOOP_BEGIN($1)):__HEX_L(__GET_LOOP_END($1)-(__GET_LOOP_BEGIN($1))<=256),__HEX_H(__GET_LOOP_END($1)):0x01,{
+
+__{}__HEX_H(__GET_LOOP_BEGIN($1)):__HEX_L(__GET_LOOP_END($1)>__GET_LOOP_BEGIN($1)):__HEX_L(__GET_LOOP_END($1)-(__GET_LOOP_BEGIN($1))<=256),__HEX_H(__GET_LOOP_END($1)):0x01:0x01,{
 __{}__{}    exx                 ; 1:4       __INFO   variant: +1; hi(from)=hi(stop) && repeat <= 256
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
@@ -137,25 +139,34 @@ __{}__{}{
 __{}__{}__{}    ld    A, __HEX_L(__GET_LOOP_END($1))       ; 2:7       __INFO
 __{}__{}__{}    xor   E             ; 1:4       __INFO   x[1] = __HEX_L(__GET_LOOP_END($1))})
 __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
-__{}__HEX_L(__GET_LOOP_END($1)-(__GET_LOOP_BEGIN($1))<=256),0x01,{
+
+__{}__HEX_L(__GET_LOOP_END($1)-(__GET_LOOP_BEGIN($1))<=256):__HEX_L(__GET_LOOP_END($1)>__GET_LOOP_BEGIN($1)),0x01:0x01,{
 __{}__{}    exx                 ; 1:4       __INFO   variant: +1; repeat <= 256
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO
-__{}__{}    inc  DE             ; 1:6       __INFO   index++{}dnl
+__{}__{}    ld    D,(HL)        ; 1:7       __INFO{}dnl
 __{}__{}ifelse(__HEX_L(__GET_LOOP_END($1)),0xFF,{
+__{}__{}__{}    inc  DE             ; 1:6       __INFO   index++
 __{}__{}__{}    ld    A, E          ; 1:4       __INFO
 __{}__{}__{}    inc   A             ; 1:4       __INFO   x[1] = 0xFF},
 __{}__{}__HEX_L(__GET_LOOP_END($1)),0x00,{
+__{}__{}__{}    inc  DE             ; 1:6       __INFO   index++
 __{}__{}__{}    ld    A, E          ; 1:4       __INFO
 __{}__{}__{}    or    A             ; 1:4       __INFO   x[1] = 0x00},
 __{}__{}__HEX_L(__GET_LOOP_END($1)),0x01,{
+__{}__{}__{}    inc  DE             ; 1:6       __INFO   index++
 __{}__{}__{}    ld    A, E          ; 1:4       __INFO
 __{}__{}__{}    dec   A             ; 1:4       __INFO   x[1] = 0x01},
+__{}__{}__HEX_L(__GET_LOOP_END($1)):__HEX_L(__GET_LOOP_END($1)-(__GET_LOOP_BEGIN($1))<256),0x02:0x01,{
+__{}__{}__{}    ld    A, E          ; 1:4       __INFO   repeat < 256
+__{}__{}__{}    inc  DE             ; 1:6       __INFO   index++
+__{}__{}__{}    dec   A             ; 1:4       __INFO   x[1] = 0x02},
 __{}__{}{
+__{}__{}__{}    inc  DE             ; 1:6       __INFO   index++
 __{}__{}__{}    ld    A, __HEX_L(__GET_LOOP_END($1))       ; 2:7       __INFO
 __{}__{}__{}    xor   E             ; 1:4       __INFO   x[1] = __HEX_L(__GET_LOOP_END($1))})
 __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+
 __{}{
 __{}__{}    exx                 ; 1:4       __INFO   variant: +1.default
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
@@ -172,12 +183,11 @@ __{}__{}define({__P2},_TMP_BEST_P){}dnl
 __{}__{}define({__C2},__EQ_CODE){}dnl
 __{}__{}ifelse(eval(__P1>=__P2),1,{
 __{}__{}__{}    inc  DE             ; 1:6       __INFO   index++{}dnl
-__{}__{}__{}__C2
-__{}__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO},
+__{}__{}__{}__C2},
 __{}__{}{dnl
 __{}__{}__{}__C1
-__{}__{}__{}    inc  DE             ; 1:6       __INFO   index++
-__{}__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO}){}dnl
+__{}__{}__{}    inc  DE             ; 1:6       __INFO   index++})
+__{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO{}dnl
 __{}})
 __{}leave{}$1:               ;           __INFO
 __{}    inc  HL             ; 1:6       __INFO
