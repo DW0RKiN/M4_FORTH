@@ -1523,6 +1523,17 @@ dnl # X...
 dnl # Y...
 dnl # Z...
 z,,,
+
+            __T_NAME(0):$1,              __TOKEN_DUP:__TOKEN_ZX_BORDER,             {__SET_TOKEN({__TOKEN_DUP_ZX_BORDER},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:1:__TOKEN_ZX_BORDER,         {__SET_TOKEN({__TOKEN_PUSH_ZX_BORDER},__T_INFO(0){ }$2,__T_ARRAY(0))},
+            __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_ZX_BORDER, {dnl
+__{}ifelse(__T_REVERSE_1(1),__T_REVERSE_2(1),{dnl
+__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_DUP_ZX_BORDER},__T_REVERSE_1(1){ }$2,__T_REVERSE_1(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS, __T_INFO(1){ drop},__DROP_1_PAR(__T_ARRAY(1)))},
+__{}{dnl
+__{}__{}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_ZX_BORDER},__T_REVERSE_1(1){ }$2,__T_REVERSE_1(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS, __T_INFO(1){ drop},__DROP_1_PAR(__T_ARRAY(1)))})},
+
+
+
         {dnl
 __{}__{}__{}__INC_TOKEN_COUNT{}dnl
 __{}__{}__{}ifelse($1,__TOKEN_LOOP,{__SET_LOOP_STEP($3,1)}){}dnl

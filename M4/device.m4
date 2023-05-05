@@ -1316,7 +1316,7 @@ define({ZX_BORDER},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZX_BORDER},{zx_border},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX_BORDER},{
+define({__ASM_TOKEN_ZX_BORDER},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    A, L          ; 1:4       __INFO   ( color -- )
     out (254),A         ; 2:11      __INFO   0=blk,1=blu,2=red,3=mag,4=grn,5=cyn,6=yel,7=wht
@@ -1324,12 +1324,48 @@ __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl
+dnl # ZX Spectrum set border color
+define({DUP_ZX_BORDER},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_ZX_BORDER},{dup zx_border},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_ZX_BORDER},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, L          ; 1:4       __INFO   ( color -- )
+    out (254),A         ; 2:11      __INFO   0=blk,1=blu,2=red,3=mag,4=grn,5=cyn,6=yel,7=wht}){}dnl
+dnl
+dnl
+dnl # ZX Spectrum set border color
+define({PUSH_ZX_BORDER},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ZX_BORDER},{$1 zx_border},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ZX_BORDER},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing color parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}    ld    A,format({%-12s},$1); 3:13      __INFO   ( -- )
+__{}    out (254),A         ; 2:11      __INFO   0=blk,1=blu,2=red,3=mag,4=grn,5=cyn,6=yel,7=wht},
+__{}__IS_NUM($1),1,{
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   ( -- )
+__{}    out (254),A         ; 2:11      __INFO   0=blk,1=blu,2=red,3=mag,4=grn,5=cyn,6=yel,7=wht},
+__{}{
+__{}    ld    A, __FORM({%-11s},$1); 2:7       __INFO   ( -- )
+__{}    out (254),A         ; 2:11      __INFO   0=blk,1=blu,2=red,3=mag,4=grn,5=cyn,6=yel,7=wht{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # ZX Spectrum ROM routine clear srceen
 define({ZX_CLS},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZX_CLS},{zx_cls},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZX_CLS},{
+define({__ASM_TOKEN_ZX_CLS},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( -- )
     push HL             ; 1:11      __INFO
