@@ -137,6 +137,8 @@ __{}eval( regexp({$1},{[;?'",yzYZ_g-wG-W.]}) != -1 ),{1},{0},dnl # Any letter (e
 __{}eval( regexp({$1},{\(^\|[^0]\)[xX]}) != -1 ),{1},{0},dnl # x without leading zero
 __{}eval( regexp({$1},{[a-fA-F0-9]0[xX]}) != -1 ),{1},{0},dnl # 0x inside hex characters or numbers, like 3210x or abc0x
 __{}eval( regexp({$1},{\(^\|[^xX0-9a-fA-F]+\)[0-9a-fA-F]*[a-fA-F]}) != -1 ),{1},{0},dnl # hex characters without leading 0x
+__{}eval( regexp({$1},{^[ ]*[<>=]}) == 0 ),{1},{0},dnl # logical operator for two variables, but the left is missing
+__{}eval( regexp({$1},{[<>=+-/*][ ]*$}) != -1 ),{1},{0},dnl # math operator for two variables, but the right is missing
 __{}{dnl
 __{}__{}eval( __IS_MEM_REF($1)==0 && ifelse(eval($1),{},{0},{1}) ){}dnl
 })}){}dnl

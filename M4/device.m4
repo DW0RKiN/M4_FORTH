@@ -60,13 +60,20 @@ __{}})dnl
 dnl
 dnl
 dnl
-define({PRINT_STRING_STACK},{ifdef({__STRING_NUM_STACK},{
+define({PRINT_ESCAPED_STRING_STACK},{ifdef({__STRING_NUM_STACK},{
 __{}ifelse(substr(__STRING_STACK,0,7),{    db },{string{}__STRING_NUM_STACK:
 __{}__{}__STRING_STACK
 __{}__{}format({%-21s},size{}__STRING_NUM_STACK )EQU $ - string{}__STRING_NUM_STACK},
 __{}{dnl
 __{}__{}__STRING_STACK}){}dnl
-__{}popdef({__STRING_NUM_STACK}){}popdef({__STRING_STACK}){}PRINT_STRING_STACK})})dnl
+__{}popdef({__STRING_NUM_STACK}){}popdef({__STRING_STACK}){}PRINT_ESCAPED_STRING_STACK})})dnl
+dnl
+dnl
+dnl
+define({PRINT_STRING_STACK},{dnl
+__{}define({$0_TEMP},PRINT_ESCAPED_STRING_STACK){}dnl
+__{}$0_TEMP{}dnl
+})dnl
 dnl
 dnl
 dnl
@@ -101,36 +108,36 @@ dnl
 dnl
 dnl
 dnl # conversion to string
-dnl # "T","e","x","t",,"",,       --> "T","e","x","t"
-dnl # "Text",,"",,                --> "Text"
-dnl # "Text",0x0D,"",,            --> "Text",0x0D
-define({__CONVERSION_TO_STRING},{regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2}}){}dnl
+dnl # {{"T","e","x","t",,"",,}}       --> {{"T","e","x","t"}}
+dnl # {{"Text",,"",,}}                --> {{"Text"}}
+dnl # {{"Text",0x0D,"",,}}            --> {{"Text",0x0D}}
+define({__CONVERSION_TO_STRING},{regexp({$*},{^{\(.*\)\([^"]"\|[^", ]+\)\s*\(,[ ]*\(""\|\)\s*\)*}$},{{{\1\2}}}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
 dnl # conversion to string_z
-dnl # "T","e","x","t",,"",,       --> "T","e","x","t", 0x00
-dnl # "Text",,"",,                --> "Text", 0x00
-dnl # "Text",0x0D,"",,            --> "Text",0x0D, 0x00
-define({__CONVERSION_TO_STRING_Z},{regexp({$*},{^\(.*\)\([^"]"\|[^", ]+\)\s*\(,\(""\|\)\s*\)*$},{{\1\2, 0x00}}){}dnl
+dnl # {{"T","e","x","t",,"",,}}       --> {{"T","e","x","t", 0x00}}
+dnl # {{"Text",,"",,}}                --> {{"Text", 0x00}}
+dnl # {{"Text",0x0D,"",,}}            --> {{"Text",0x0D, 0x00}}
+define({__CONVERSION_TO_STRING_Z},{regexp({$*},{^{\(.*\)\([^"]"\|[^", ]+\)\s*\(,[ ]*\(""\|\)\s*\)*}$},{{{\1\2, 0x00}}}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
 dnl # conversion to string_i
-dnl # "T","e","x","t",,"",,       --> "T","e","x","t" + 0x80
-dnl # "Text",,"",,                --> "Tex","t" + 0x80
-dnl # "Text",0x0D,"",,            --> "Text",0x0D + 0x80
+dnl # {{"T","e","x","t",,"",,}}       --> {{"T","e","x","t" + 0x80}}
+dnl # {{"Text",,"",,}}                --> {{"Tex","t" + 0x80}}
+dnl # {{"Text",0x0D,"",,}}            --> {{"Text",0x0D + 0x80}}
 define({__CONVERSION_TO_STRING_I},{ifelse(dnl
-__{}__{}regexp({$*},     {^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{"x","x"}}),{"x","x"},
-__{}__{}__{}{regexp({$*},{^\(.*\)\("[^"]"\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}})},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
-__{}__{}regexp({$*},     {^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{"...xx"}}),{"...xx"},
-__{}__{}__{}{regexp({$*},{^\(.*".*[^"]\)\([^"]\)"\s*\(,\(""\|\)\s*\)*\s*$},{{\1","\2" + 0x80}})},dnl # "Hello"                  --> "Hell","o"+0x80
-__{}__{}regexp({$*},     {^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{x,x}}),{x,x},
-__{}__{}__{}{regexp({$*},{^\(.*\)\s*\([^",]*[^", ]+\)\s*\(,\(""\|\)\s*\)*\s*$},{{\1\2 + 0x80}})},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
+__{}__{}regexp({$*},     {^{\(.*\)\("[^"]"\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{"x","x"}}),{"x","x"},
+__{}__{}__{}{regexp({$*},{^{\(.*\)\("[^"]"\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{{\1\2 + 0x80}}})},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
+__{}__{}regexp({$*},     {^{\(.*".*[^"]\)\([^"]\)"\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{"...xx"}}),{"...xx"},
+__{}__{}__{}{regexp({$*},{^{\(.*".*[^"]\)\([^"]\)"\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{{\1","\2" + 0x80}}})},dnl # "Hello"                  --> "Hell","o"+0x80
+__{}__{}regexp({$*},     {^{\(.*\)\s*\([^",]*[^", ]+\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{x,x}}),{x,x},
+__{}__{}__{}{regexp({$*},{^{\(.*\)\s*\([^",]*[^", ]+\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{{\1\2 + 0x80}}})},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
 __{}__{}{dnl
-__{}__{}__{}regexp({$*},{^\(.+[^ ]\)\s*$},{{\1 + 0x80}}){}errprint({
+__{}__{}__{}regexp({$*},{^{\(.+[^ ]\)\s*}$},{{{\1 + 0x80}}}){}errprint({
   .warning {$0}:($*) Last character not found. Check if you have an even number of characters "})}){}dnl           # ???                      --> ??? + 0x80
 }){}dnl
 dnl
@@ -609,7 +616,7 @@ __{}__ADD_TOKEN({__TOKEN_DOTZXROM},{.zxrom},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DOTZXROM},{dnl
-__{}define({__INFO},{.zxrom}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __def({USE_ZXPRT_S16})
     call ZXPRT_S16      ; 3:17      .zxrom   ( x -- )})dnl
 dnl
@@ -1047,7 +1054,7 @@ dnl # .( string)
 dnl # ( -- )
 dnl # print string
 define({PRINT},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRINT},{print},{{$@}}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT},{print},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PRINT},{dnl
@@ -1060,7 +1067,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
 __{}__ALLOCATE_STRING(__CONVERSION_TO_STRING($*))
-__{}    push DE             ; 1:11      print     ifelse(eval(len({$*})<60),{1},{$*})
+__{}    push DE             ; 1:11      print     ifelse(eval(len($*)<60),{1},$*)
 __{}    ld   BC, size{}__STRING_MATCH    ; 3:10      print     Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      print     Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
@@ -1074,7 +1081,7 @@ dnl # .( string\x00)
 dnl # ( -- )
 dnl # print null-terminated string
 define({PRINT_Z},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRINT_Z},{print_z},{{$@}}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT_Z},{print_z},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PRINT_Z},{dnl
@@ -1099,7 +1106,7 @@ dnl # .( strin\xE7)
 dnl # ( -- )
 dnl # print string ending with inverted most significant bit
 define({PRINT_I},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRINT_I},{print_i},{{$@}}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PRINT_I},{print_i},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PRINT_I},{dnl
@@ -1123,7 +1130,7 @@ dnl # s" string"
 dnl # ( -- addr n )
 dnl # addr = address string, n = lenght(string)
 define({STRING},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING},{string},{{$@}}){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING},{string},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING},{dnl
@@ -1148,7 +1155,7 @@ dnl # s" string\x00" drop
 dnl # ( -- addr )
 dnl # store null-terminated string
 define({STRING_Z},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING_Z},{string_z},{{$@}}){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_Z},{string_z},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING_Z},{dnl
@@ -1172,7 +1179,7 @@ dnl # s" string\x00" 2drop
 dnl # ( -- )
 dnl # store null-terminated string
 define({STRING_Z_DROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING_Z_DROP},{string_z_drop},{{$@}}){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_Z_DROP},{string_z_drop},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING_Z_DROP},{dnl
@@ -1198,7 +1205,7 @@ dnl # s" strin\xE7" drop
 dnl # ( -- addr )
 dnl # store inverted_msb-terminated string
 define({STRING_I},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING_I},{string_i},{{$@}}){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_I},{string_i},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING_I},{dnl
@@ -1221,7 +1228,7 @@ dnl # s" strin\xE7" 2drop
 dnl # ( -- )
 dnl # store inverted_msb-terminated string
 define({STRING_I_DROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_STRING_I_DROP},{string_i_drop},{{$@}}){}dnl
+__{}__ADD_TOKEN({__TOKEN_STRING_I_DROP},{string_i_drop},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING_I_DROP},{dnl
