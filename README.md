@@ -715,7 +715,9 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 
 |<sub> Original   |<sub>       M4 FORTH        |<sub>  Data stack                   |<sub>  Comment                                |
 | :-------------: | :------------------------: | :--------------------------------- | :------------------------------------------- |
-|<sub>            |<sub>        PUDOT(b)       |<sub>( p_10 p2 p1 -- p_10 p2 p1 )   |<sub> b=´bytes, print [p2], [p_10]=10, after: [p1]= 0, [p2]=first_number 
+|<sub>            |<sub>        PDOT(b)        |<sub>( p_10 p2 p1 -- p_10 p2 p1 )   |<sub> b=bytes, print [p2], [p_10]=10, after: [p1]= 0, [p2]=first_number 
+|<sub>            |<sub> DEC_PDOT(b,p_10,p_tmp)|<sub>        ( p1 -- p1 )           |<sub> b=bytes, print [p1], [p_10]=10, after: [p_tmp]=0, [p1]=first_number
+|<sub>            |<sub>        PUDOT(b)       |<sub>( p_10 p2 p1 -- p_10 p2 p1 )   |<sub> b=bytes, print [p2], [p_10]=10, after: [p1]= 0, [p2]=first_number 
 |<sub>            |<sub>DEC_PUDOT(b,p_10,p_tmp)|<sub>        ( p1 -- p1 )           |<sub> b=bytes, print [p1], [p_10]=10, after: [p_tmp]=0, [p1]=first_number
 |<sub>            |<sub>      HEX_PUDOT(b)     |<sub>        ( p1 -- p1 )           |<sub> b=bytes, print [p1]
 
