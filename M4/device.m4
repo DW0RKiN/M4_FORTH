@@ -250,6 +250,106 @@ __{}    push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
 dnl
+dnl # ( p_num -- p_num ) $1=size_bytes $2=pointer_to_10 $3=pointer_to_tmp
+dnl # prints a $1*8-bit unsigned number with no spaces
+define({DEC_PDOT},{dnl
+ifelse(eval($#<3),1,{
+__{}  .error {$0}(): Missing  parameter! Need: dec_pudot(size_bytes,pointer_to_10,pointer_to_tmp)},
+__{}eval($#>3),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__def({USE_PRT_P}){}dnl
+__{}define({USE_PUDIVMOD}){}dnl
+__{}ifdef({PUDM_MIN},{ifelse(eval(PUDM_MIN>$1),1,{define({PUDM_MIN},$1)})},{define({PUDM_MIN},$1)}){}dnl
+__{}ifdef({PUDM_MAX},{ifelse(eval(PUDM_MAX<$1),1,{define({PUDM_MAX},$1)})},{define({PUDM_MAX},$1)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_DEC_PDOT},{dec pu.},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DEC_PDOT},{dnl
+ifelse(eval($#<3),1,{
+__{}  .error {$0}(): Missing  parameter! Need: dec_pudot(size_bytes,pointer_to_10,pointer_to_tmp)},
+__{}eval($#>3),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   ( p_num -- p_num ) p_10=$2 && p_temp=$3
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}define({__TMP_CODE},__LD_R16({HL},$3,{A},__HEX_L($1))){}__TMP_CODE{}dnl
+__{}define({__TMP_CODE},__LD_R16({BC},$2,{A},__HEX_L($1),{HL},$3)){}__TMP_CODE
+__{}    call PRT_P          ; 3:17      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO   [p_num]==first number}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( p_num -- p_num ) $1=size_bytes $2=pointer_to_10 $3=pointer_to_tmp
+dnl # prints a $1*8-bit unsigned number with no spaces
+define({DEC_PUDOT},{dnl
+ifelse(eval($#<3),1,{
+__{}  .error {$0}(): Missing  parameter! Need: dec_pudot(size_bytes,pointer_to_10,pointer_to_tmp)},
+__{}eval($#>3),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}__def({USE_PRT_PU}){}dnl
+__{}define({USE_PUDIVMOD}){}dnl
+__{}ifdef({PUDM_MIN},{ifelse(eval(PUDM_MIN>$1),1,{define({PUDM_MIN},$1)})},{define({PUDM_MIN},$1)}){}dnl
+__{}ifdef({PUDM_MAX},{ifelse(eval(PUDM_MAX<$1),1,{define({PUDM_MAX},$1)})},{define({PUDM_MAX},$1)}){}dnl
+__{}__ADD_TOKEN({__TOKEN_DEC_PUDOT},{dec pu.},$@)}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DEC_PUDOT},{dnl
+ifelse(eval($#<3),1,{
+__{}  .error {$0}(): Missing  parameter! Need: dec_pudot(size_bytes,pointer_to_10,pointer_to_tmp)},
+__{}eval($#>3),1,{
+__{}  .error {$0}($@): Unexpected parameter!},
+__IS_MEM_REF($1),{1},{
+__{}  .error {$0}($@): Parameter is pointer!},
+__SAVE_EVAL($1),{0},{
+__{}  .error {$0}($@): The parameter is 0!},
+__SAVE_EVAL($1>256),{1},{
+__{}  .error {$0}($@): The parameter is greater than 256!},
+__SAVE_EVAL($1<0),{1},{
+__{}  .error {$0}($@): The parameter is negative!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   ( p_num -- p_num ) p_10=$2 && p_temp=$3
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}define({__TMP_CODE},__LD_R16({HL},$3,{A},__HEX_L($1))){}__TMP_CODE{}dnl
+__{}define({__TMP_CODE},__LD_R16({BC},$2,{A},__HEX_L($1),{HL},$3)){}__TMP_CODE
+__{}    call PRT_PU         ; 3:17      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO   [p_num]==first number}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # hex pu. bs
 dnl # ( p -- p )
 dnl # prints a $1*8-bit number with no spaces

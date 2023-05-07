@@ -275,6 +275,27 @@ __{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 })}){}dnl
 dnl
 dnl
+dnl # nip num over
+dnl # ( b a -- a num a )
+define({NIP_PUSH_OVER},{dnl
+__{}__ADD_TOKEN({__TOKEN_NIP_PUSH_OVER},{nip $1 over},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NIP_PUSH_OVER},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_MEM_REF($1),{1},{
+__{}    push HL             ; 1:11      __INFO   ( b a -- a $1 a )
+__{}    ld   DE, format({%-11s},$1); 4:20      __INFO},
+__{}{
+__{}    push HL             ; 1:11      __INFO   ( b a -- a $1 a )
+__{}    ld   DE, __FORM({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
 dnl
 dnl # ( -- $1 $2 $3 ... )
 define({PUSHS},{dnl
@@ -1902,6 +1923,22 @@ dnl
 define({__ASM_TOKEN_NIP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      __INFO   ( b a -- a )}){}dnl
+dnl
+dnl
+dnl
+dnl # ( b a -- a a )
+define({NIP_DUP},{dnl
+__{}__ADD_TOKEN({__TOKEN_NIP_DUP},{nip dup},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NIP_DUP},{dnl
+ifelse(eval($#>1),1,{
+__{}  .error {$0}($@): Unexpected parameters!},
+{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    E, L          ; 1:4       __INFO   ( b a -- a a )
+__{}    ld    D, H          ; 1:4       __INFO{}dnl
+})}){}dnl
 dnl
 dnl
 dnl # nip 3

@@ -392,6 +392,8 @@ dup,,,
 
 __T_NAME(1):__T_NAME(0):$1, __TOKEN_DUP:__TOKEN_DUP_TYPE_I:__TOKEN_DROP,{__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_TYPE_I},__T_INFO(1){ }__T_INFO(0),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},
 
+            __T_NAME(0):$1,{__TOKEN_NIP:__TOKEN_DUP},               {__SET_TOKEN({__TOKEN_NIP_DUP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
             __T_NAME(0):$1,{__TOKEN_DUP:__TOKEN_DOT},               {__SET_TOKEN({__TOKEN_DUP_DOT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             
             
@@ -688,6 +690,7 @@ __{}__{}__{}})},
             __T_NAME(0)=__T_HEX_REVERSE_1(0):$1,         __TOKEN_PUSHS=0x0000:__TOKEN_QDUP,                    {},
             __T_NAME(0):__T_IS_NUM_REVERSE_1(0):$1,      __TOKEN_PUSHS:1:__TOKEN_QDUP,                         {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ }$2,__T_ARRAY(0),__T_REVERSE_1(0))},
 
+__T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,     __TOKEN_NIP:__TOKEN_PUSHS:1:__TOKEN_OVER,                         {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NIP_PUSH_OVER},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_OVER,                         {__SET_TOKEN({__TOKEN_PUSH_OVER},     __T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_2OVER,                        {__SET_TOKEN({__TOKEN_PUSH_2OVER},    __T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):$1,                              __TOKEN_PUSH_2OVER:__TOKEN_NIP,                       {__SET_TOKEN({__TOKEN_OVER_PUSH_SWAP},__T_INFO(0){ }$2,__T_ARRAY(0))},
