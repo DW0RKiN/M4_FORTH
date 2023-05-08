@@ -74,20 +74,15 @@ _tmp3                EQU __create__tmp3
     ld  (__create__tmp3),HL; 3:16      0x0001 ,
     pop  HL             ; 1:10      0x0001 , 0x0000 , ... 0x0000 ,
                         ;[33:179]   0x0001 , 0x0000 , ... 0x0000 ,
-    push DE             ; 1:11      _99 _tmp3 _tmp2 19
-    push HL             ; 1:11      _99 _tmp3 _tmp2 19
-    ld   HL, _99        ; 3:10      _99 _tmp3 _tmp2 19
-    push HL             ; 1:11      _99 _tmp3 _tmp2 19
-    ld   HL, _tmp3      ; 3:10      _99 _tmp3 _tmp2 19
-    push HL             ; 1:11      _99 _tmp3 _tmp2 19
-    ld   DE, _tmp2      ; 3:10      _99 _tmp3 _tmp2 19
-    ld   HL, 0x0013     ; 3:10      _99 _tmp3 _tmp2 19
-    ld    B, H          ; 1:4       for_101   ( i -- )
-    ld    C, L          ; 1:4       for_101
-    ex   DE, HL         ; 1:4       for_101
-    pop  DE             ; 1:10      for_101   index
-for101:                 ;           for_101
-    ld  (idx101),BC     ; 4:20      for_101   save index
+    push DE             ; 1:11      _99 _tmp3 _tmp2 19 drop   ( -- _99 _tmp3 _tmp2 )  # DE DE HL
+    push HL             ; 1:11      _99 _tmp3 _tmp2 19 drop
+    ld   DE, _99        ; 3:10      _99 _tmp3 _tmp2 19 drop
+    push DE             ; 1:11      _99 _tmp3 _tmp2 19 drop
+    ld   DE, _tmp3      ; 3:10      _99 _tmp3 _tmp2 19 drop
+    ld   HL, _tmp2      ; 3:10      _99 _tmp3 _tmp2 19 drop
+    ld    A, 19         ; 2:7       19 for_101   ( -- )
+for101:                 ;           19 for_101
+    ld  (idx101),A      ; 3:13      19 for_101   save index
     pop  BC             ; 1:10      p144u*
     ld    A, 0x12       ; 2:7       p144u*
     call PXUMUL         ; 3:17      p144u*
@@ -112,11 +107,10 @@ for101:                 ;           for_101
     ld    A, 0x0D       ; 2:7       cr   Pollutes: AF, AF', DE', BC'
     rst   0x10          ; 1:11      cr   putchar(reg A) with ZX 48K ROM
 idx101 EQU $+1          ;           next_101
-    ld   BC, 0x0000     ; 3:10      next_101   idx always points to a 16-bit index
-    ld    A, B          ; 1:4       next_101
-    or    C             ; 1:4       next_101
-    dec  BC             ; 1:6       next_101   index--, zero flag unaffected
-    jp   nz, for101     ; 3:10      next_101
+    ld    A, 0x00       ; 2:7       next_101   idx always points to a 16-bit index
+    nop                 ; 1:4       next_101
+    sub  0x01           ; 2:7       next_101   index--
+    jp   nc, for101     ; 3:10      next_101
 leave101:               ;           next_101
     pop  HL             ; 1:10      drop drop drop   ( c b a -- )
     pop  HL             ; 1:10      drop drop drop
