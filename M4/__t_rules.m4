@@ -678,8 +678,11 @@ __{}__{}__{}})},
             __T_NAME(0):$1,                              __TOKEN_PUSH_CFETCH:__TOKEN_ADD,                      {__SET_TOKEN({__TOKEN_PUSH_CFETCH_ADD},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):$1,                              __TOKEN_PUSH_CFETCH:__TOKEN_SUB,                      {__SET_TOKEN({__TOKEN_PUSH_CFETCH_SUB},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
 
-            __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_FOR,                          {__SET_LOOP_BEGIN($3,__T_ARRAY_1(0)){}__SET_TOKEN({__TOKEN_PUSH_FOR},__T_INFO(0){ }$2,$3)},
-            __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_QFOR,                         {__SET_LOOP_BEGIN($3,__T_ARRAY_1(0)){}__SET_TOKEN({__TOKEN_PUSH_QFOR},__T_INFO(0){ }$2,$3)},
+            __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_FOR,                          {__SET_LOOP_BEGIN($3,__T_REVERSE_1(0)){}__SET_TOKEN({__TOKEN_PUSH_FOR}, __T_INFO(0){ }$2,$3)},
+            __T_NAME(0):__T_ITEMS(0):$1,                 __TOKEN_PUSHS:1:__TOKEN_QFOR,                         {__SET_LOOP_BEGIN($3,__T_REVERSE_1(0)){}__SET_TOKEN({__TOKEN_PUSH_QFOR},__T_INFO(0){ }$2,$3)},
+            __T_NAME(0):eval(__T_ITEMS(0)>1):$1,         __TOKEN_PUSHS:1:__TOKEN_FOR,                          {__SET_LOOP_BEGIN($3,__T_REVERSE_1(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_FOR}, __CONCATENATE_WITH({ },__T_REVERSE_1(1),$2),$3){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__T_INFO(1){ }drop,__DROP_1_PAR(__T_ARRAY(1)))},
+            __T_NAME(0):eval(__T_ITEMS(0)>1):$1,         __TOKEN_PUSHS:1:__TOKEN_QFOR,                         {__SET_LOOP_BEGIN($3,__T_REVERSE_1(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_QFOR},__CONCATENATE_WITH({ },__T_REVERSE_1(1),$2),$3){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__T_INFO(1){ }drop,__DROP_1_PAR(__T_ARRAY(1)))},
+                      
             __T_NAME(0)-$1,                              __TOKEN_PUSH_FOR-__TOKEN_I,                           {__SET_TOKEN({__TOKEN_PUSH_FOR_I},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0)-$1,                              __TOKEN_PUSH_QFOR-__TOKEN_I,                          {__SET_TOKEN({__TOKEN_PUSH_QFOR_I},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
