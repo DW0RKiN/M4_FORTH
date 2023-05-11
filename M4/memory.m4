@@ -1046,8 +1046,8 @@ __{}__{}    djnz $-5            ; 2:8/13    __SHORT_INFO
 __{}__{}    pop  HL             ; 1:10      __SHORT_INFO
 __{}__{}                        ;format({%-11s},[15:eval(36+$#*43)])__SHORT_INFO},
 
-__{}eval($#>3 && __PUSHS_COMMA_ANALYSIS_ADD_LOX==$# && __HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM+__HEX_L($2-($1)))==0x00),{1},{
-__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+x to (0)
+__{}eval($#>3 && __PUSHS_COMMA_ANALYSIS_ADD_LOX==$#):__HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM+__HEX_L($2-($1))),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-x to x
 __{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __SHORT_INFO
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __SHORT_INFO
@@ -1061,8 +1061,8 @@ __{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
 __{}__{}    pop  HL             ; 1:10      __SHORT_INFO
 __{}__{}                        ;format({%-11s},[17:eval(43+$#*42)])__SHORT_INFO},
 
-__{}eval($#>3 && __PUSHS_COMMA_ANALYSIS_ADD_HIX==$# && __HEX_L(__HEX_H(__PUSHS_COMMA_ANALYSIS_LAST_NUM)+__HEX_H($2-($1)))==0x00),{1},{
-__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+256*x to (hi=0)
+__{}eval($#>3 && __PUSHS_COMMA_ANALYSIS_ADD_HIX==$#):__HEX_L(__HEX_H(__PUSHS_COMMA_ANALYSIS_LAST_NUM)+__HEX_H($2)-__HEX_H($1)),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-256*x to 256*x
 __{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __SHORT_INFO
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __SHORT_INFO
@@ -1076,8 +1076,98 @@ __{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
 __{}__{}    pop  HL             ; 1:10      __SHORT_INFO
 __{}__{}                        ;format({%-11s},[17:eval(43+$#*42)])__SHORT_INFO},
 
+__{}eval($#>3 && __PUSHS_COMMA_ANALYSIS_ADD_LOX==$#):__HEX_L(2*($1)-$2),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-x from x
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME+eval(LAST_HERE_ADD+2*$#-1)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld    A, __HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM)       ; 2:7       __SHORT_INFO
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_H($1)+__HEX_L($1-($2)))     ; 3:10      __SHORT_INFO
+__{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),B          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    add   A, C          ; 1:4       __SHORT_INFO
+__{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[17:eval(43+$#*42)])__SHORT_INFO},
+
+__{}eval($#>3 && __PUSHS_COMMA_ANALYSIS_ADD_HIX==$#):__HEX_L(2*__HEX_H($1)-__HEX_H($2)),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-256*x from 256*x
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME+eval(LAST_HERE_ADD+2*$#-1)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld    A, __HEX_H(__PUSHS_COMMA_ANALYSIS_LAST_NUM)       ; 2:7       __SHORT_INFO
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L(__HEX_H($1)-__HEX_H($2))+__HEX_L($1))     ; 3:10      __SHORT_INFO
+__{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    add   A, B          ; 1:4       __SHORT_INFO
+__{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[17:eval(43+$#*42)])__SHORT_INFO},
+
+__{}eval($#>3 && $#<256 && __PUSHS_COMMA_ANALYSIS_ADD_LOX==$#):__HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-x to 0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld    A, __HEX_L(2*($1)-($2))       ; 2:7       __SHORT_INFO
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_H($1)+__HEX_L($2-($1)))     ; 3:10      __SHORT_INFO
+__{}__{}    add   A, C          ; 1:4       __SHORT_INFO
+__{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
+__{}__{}    inc  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),B          ; 1:7       __SHORT_INFO
+__{}__{}    inc  HL             ; 1:6       __SHORT_INFO
+__{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[17:eval(43+$#*42)])__SHORT_INFO},
+
+__{}eval($#>3 && $#<256 && __PUSHS_COMMA_ANALYSIS_ADD_HIX==$#):__HEX_H(__PUSHS_COMMA_ANALYSIS_LAST_NUM),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-256*x to hi=0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld    A, __HEX_L(2*__HEX_H($1)-__HEX_H($2))       ; 2:7       __SHORT_INFO
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L(__HEX_H($2)-__HEX_H($1))+__HEX_L($1))     ; 3:10      __SHORT_INFO
+__{}__{}    add   A, B          ; 1:4       __SHORT_INFO
+__{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
+__{}__{}    inc  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
+__{}__{}    inc  HL             ; 1:6       __SHORT_INFO
+__{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[17:eval(43+$#*42)])__SHORT_INFO},
+
+__{}eval($#>3 && $#<256 && __PUSHS_COMMA_ANALYSIS_ADD_LOX==$#):__HEX_L($1),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-x from 0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME+eval(LAST_HERE_ADD+2*$#-1)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld    A, __HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM+$2-($1))       ; 2:7       __SHORT_INFO
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_H($1)+__HEX_L($1-($2)))     ; 3:10      __SHORT_INFO
+__{}__{}    add   A, C          ; 1:4       __SHORT_INFO
+__{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),B          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[17:eval(43+$#*42)])__SHORT_INFO},
+
+__{}eval($#>3 && $#<256 && __PUSHS_COMMA_ANALYSIS_ADD_HIX==$#):__HEX_H($1),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-256*x from hi=0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME+eval(LAST_HERE_ADD+2*$#-1)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld    A, __HEX_L(__HEX_H(__PUSHS_COMMA_ANALYSIS_LAST_NUM)+__HEX_H($2)-__HEX_H($1))       ; 2:7       __SHORT_INFO
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_L(__HEX_H($1)-__HEX_H($2))+__HEX_L($1))     ; 3:10      __SHORT_INFO
+__{}__{}    add   A, B          ; 1:4       __SHORT_INFO
+__{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[17:eval(43+$#*42)])__SHORT_INFO},
+
 __{}eval($#>4 && __PUSHS_COMMA_ANALYSIS_ADD_LOX==$#),{1},{
-__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+x
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-x
 __{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __SHORT_INFO
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __SHORT_INFO
@@ -1092,7 +1182,7 @@ __{}__{}    pop  HL             ; 1:10      __SHORT_INFO
 __{}__{}                        ;format({%-11s},[18:eval(43+$#*46)])__SHORT_INFO},
 
 __{}eval($#>4 && __PUSHS_COMMA_ANALYSIS_ADD_HIX==$#),{1},{
-__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+256*x
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:+-256*x
 __{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __SHORT_INFO
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __SHORT_INFO
@@ -1106,17 +1196,59 @@ __{}__{}    djnz $-6            ; 2:8/13    __SHORT_INFO
 __{}__{}    pop  HL             ; 1:10      __SHORT_INFO
 __{}__{}                        ;format({%-11s},[18:eval(43+$#*46)])__SHORT_INFO},
 
-__{}eval($#>3 && __HEX_L($1)<=128 && __PUSHS_COMMA_ANALYSIS_SUB1==$# && __HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM)==0x00),{1},{
+__{}eval($#>3 && $#<256 && __PUSHS_COMMA_ANALYSIS_SUB1==$#):__HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM),{1:0x00},{
 __{}__{}    push HL             ; 1:11      __SHORT_INFO   step:-1 to 0
 __{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __SHORT_INFO
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
-__{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __SHORT_INFO
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_H($1)+__HEX_L($1+1))     ; 3:10      __SHORT_INFO
+__{}__{}    dec   C             ; 1:4       __SHORT_INFO
 __{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
 __{}__{}    inc  HL             ; 1:6       __SHORT_INFO
 __{}__{}    ld  (HL),B          ; 1:7       __SHORT_INFO
 __{}__{}    inc  HL             ; 1:6       __SHORT_INFO
-__{}__{}    dec   C             ; 1:4       __SHORT_INFO
-__{}__{}    jp    p, $-5        ; 3:10      __SHORT_INFO
+__{}__{}    jp   nz, $-5        ; 3:10      __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[16:eval(41+$#*40)])__SHORT_INFO},
+
+__{}eval($#>3 && $#<256 && __PUSHS_COMMA_ANALYSIS_SUB1==$#):__HEX_L($1),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:-1 from 0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME+eval(LAST_HERE_ADD+2*$#-1)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_H($1)+__HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM-1))     ; 3:10      __SHORT_INFO
+__{}__{}    inc   C             ; 1:4       __SHORT_INFO
+__{}__{}    ld  (HL),B          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    jp   nz, $-5        ; 3:10      __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[16:eval(41+$#*40)])__SHORT_INFO},
+
+__{}eval($#>3 && $#<256 && __PUSHS_COMMA_ANALYSIS_SUB256==$#):__HEX_H(__PUSHS_COMMA_ANALYSIS_LAST_NUM),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:-256 to hi=0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_H($1+256)+__HEX_L($1))     ; 3:10      __SHORT_INFO
+__{}__{}    dec   B             ; 1:4       __SHORT_INFO
+__{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
+__{}__{}    inc  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),B          ; 1:7       __SHORT_INFO
+__{}__{}    inc  HL             ; 1:6       __SHORT_INFO
+__{}__{}    jp   nz, $-5        ; 3:10      __SHORT_INFO
+__{}__{}    pop  HL             ; 1:10      __SHORT_INFO
+__{}__{}                        ;format({%-11s},[16:eval(41+$#*40)])__SHORT_INFO},
+
+__{}eval($#>3 && $#<256 && __PUSHS_COMMA_ANALYSIS_SUB256==$#):__HEX_H($1),{1:0x00},{
+__{}__{}    push HL             ; 1:11      __SHORT_INFO   step:-256 from hi=0
+__{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME+eval(LAST_HERE_ADD+2*$#-1)); 3:10      __SHORT_INFO
+__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
+__{}__{}    ld   BC, __HEX_HL(256*__HEX_H(__PUSHS_COMMA_ANALYSIS_LAST_NUM-256)+__HEX_L($1))     ; 3:10      __SHORT_INFO
+__{}__{}    inc   B             ; 1:4       __SHORT_INFO
+__{}__{}    ld  (HL),B          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    jp   nz, $-5        ; 3:10      __SHORT_INFO
 __{}__{}    pop  HL             ; 1:10      __SHORT_INFO
 __{}__{}                        ;format({%-11s},[16:eval(41+$#*40)])__SHORT_INFO},
 
@@ -7536,7 +7668,7 @@ __{}__IS_MEM_REF($2),1,{
 __{}  .error {$0}($@): Second parameter is memory reference!},
 __{}{
 __{}                        ;[26:204]   __INFO
-__{}    ld   SP, format({%-11s},$1); 3:10      __INFO   from = $1 .. $1+15
+__{}    ld   SP, format({%-11s},$1); 3:10      __INFO   from = $1+0 .. $1+15
 __{}    pop  AF             ; 1:10      __INFO
 __{}    pop  BC             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO
@@ -7547,7 +7679,7 @@ __{}    pop  DE             ; 1:10      __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    ex   AF, AF'        ; 1:4       __INFO
 __{}    pop  AF             ; 1:10      __INFO
-__{}    ld   SP, format({%-11s},$2); 3:10      __INFO   to = $2-16 .. $2-1
+__{}    ld   SP, format({%-11s},$2+16); 3:10      __INFO   to = $2+15 .. $2-0
 __{}    push AF             ; 1:11      __INFO
 __{}    ex   AF, AF'        ; 1:4       __INFO
 __{}    push HL             ; 1:11      __INFO
