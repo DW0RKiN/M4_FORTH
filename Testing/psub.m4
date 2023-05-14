@@ -115,6 +115,27 @@ PPUSH_VALUE(BYTES_SIZE,0x330A3309330833073306,L_lo_var)
 PPUSH_VALUE(BYTES_SIZE,0x0A330933083307330633,L_hi_var)
   PCONSTANT(BYTES_SIZE,0x0A330933083307330633,L_hi_con)
   PUSH(L_hi_con,L_hi_var) CALL(Odecti,( p_constant p_variable -- ))
+   
+__ASM({; dw n*x..+-x..0 ; M})
+PPUSH_VALUE(BYTES_SIZE,0x3300330333063309330C,M_lo_var)
+  PCONSTANT(BYTES_SIZE,0x3300330333063309330C,M_lo_con)
+  PUSH(M_lo_con,M_lo_var) CALL(Odecti,( p_constant p_variable -- ))
+  
+PPUSH_VALUE(BYTES_SIZE,0x00330333063309330C33,M_hi_var)
+  PCONSTANT(BYTES_SIZE,0x00330333063309330C33,M_hi_con)
+  PUSH(M_hi_con,M_hi_var) CALL(Odecti,( p_constant p_variable -- ))
+
+__ASM({; dw 0..+-x..n*x ; N})
+PPUSH_VALUE(BYTES_SIZE,0x330C3309330633033300,N_lo_var)
+  PCONSTANT(BYTES_SIZE,0x330C3309330633033300,N_lo_con)
+  PUSH(N_lo_con,N_lo_var) CALL(Odecti,( p_constant p_variable -- ))
+  
+PPUSH_VALUE(BYTES_SIZE,0x0C330933063303330033,N_hi_var)
+  PCONSTANT(BYTES_SIZE,0x0C330933063303330033,N_hi_con)
+  PUSH(N_hi_con,N_hi_var) CALL(Odecti,( p_constant p_variable -- ))
+  
+  
+  
 
 PRINT_Z({"Depth: "}) DEPTH UDOT CR
 
