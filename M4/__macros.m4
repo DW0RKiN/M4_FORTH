@@ -1,6 +1,11 @@
 define({__},{})dnl
 dnl
 dnl
+dnl # output --> {output}
+dnl # define({X},{{1,}}) define({Y},__ESCAPING(X)) define({Z},__ESCAPING(Y)) define({X},{{2,}}) Z Y X --> 1, 1, 2,
+define({__ESCAPING},{{{$1}}}){}dnl
+dnl
+dnl
 dnl
 dnl # is used to calculate the difficulty of the code
 dnl # prize = clocks + (__BYTE_PRICE * bytes)
@@ -112,6 +117,7 @@ dnl #           --> 0
 dnl # abc       --> 0
 dnl # 0a        --> 0
 dnl # 0g        --> 0
+dnl # 09        --> 0 because it is not a valid octal number
 dnl # 3.14159   --> 0 no integer!
 dnl # 1.0E1     --> 0 fail
 dnl # 1E1       --> 0 fail
@@ -134,6 +140,7 @@ __{}__IS_MEM_REF($1),1,{0},
 __{}eval( regexp({$1},{[0-9]}) == -1 ),{1},{0},dnl # ( -- )
 __{}eval( regexp({$1},{()}) != -1 ),{1},{0},dnl #
 __{}eval( regexp({$1},{[;?'",yzYZ_g-wG-W.]}) != -1 ),{1},{0},dnl # Any letter (except a,b,c,d,e,f,x) or underscore (_) or dot (.)
+__{}eval( regexp({$1},{\(^\|[^xX0-9a-fA-F]+\)0[0-9a-fA-F]*[9a-fA-F]}) != -1 ),{1},{0},dnl # not valid octal number
 __{}eval( regexp({$1},{\(^\|[^0]\)[xX]}) != -1 ),{1},{0},dnl # x without leading zero
 __{}eval( regexp({$1},{[a-fA-F0-9]0[xX]}) != -1 ),{1},{0},dnl # 0x inside hex characters or numbers, like 3210x or abc0x
 __{}eval( regexp({$1},{\(^\|[^xX0-9a-fA-F]+\)[0-9a-fA-F]*[a-fA-F]}) != -1 ),{1},{0},dnl # hex characters without leading 0x

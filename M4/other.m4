@@ -200,7 +200,7 @@ define({__ASM},{dnl
 __{}__ADD_TOKEN({__TOKEN_ASM},{__asm},{{{$@}}})}){}dnl
 dnl
 define({__ASM_TOKEN_ASM},{
-__{}define($0_TMP,__UNBOXING($@)){}dnl
+__{}define({$0_TMP},__UNBOXING($@)){}dnl
 __{}$0_TMP}){}dnl
 dnl
 dnl
