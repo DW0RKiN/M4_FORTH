@@ -197,10 +197,11 @@ dnl
 dnl # ( -- ? )
 dnl # inline asm
 define({__ASM},{dnl
-__{}__ADD_TOKEN({__TOKEN_ASM},{__asm},{$@})}){}dnl
+__{}__ADD_TOKEN({__TOKEN_ASM},{__asm},{{{$@}}})}){}dnl
 dnl
 define({__ASM_TOKEN_ASM},{
-__UNBOXING($@)}){}dnl
+__{}define($0_TMP,__UNBOXING($@)){}dnl
+__{}$0_TMP}){}dnl
 dnl
 dnl
 dnl
