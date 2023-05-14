@@ -160,9 +160,8 @@ __{}__ADD_TOKEN({__TOKEN_CALL},{call},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CALL},{dnl
-__{}define({__INFO},{call}){}dnl
-
-    call format({%-15s},$1); 3:17      call ( -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+    call format({%-15s},$1); 3:17      call ifelse($2,,( -- ),$2)}){}dnl
 dnl
 dnl
 dnl # ( addr -- )
