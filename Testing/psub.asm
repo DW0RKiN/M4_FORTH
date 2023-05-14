@@ -1,4 +1,4 @@
-ORG 0x8000
+    ORG 0x8000
 
 
 
@@ -189,8 +189,31 @@ N_hi_var             EQU __create_N_hi_var
   
    
   
+
+
+O_lo_var             EQU __create_O_lo_var
+
   
+   
   
+
+O_hi_var             EQU __create_O_hi_var
+
+  
+   
+
+
+
+P_lo_var             EQU __create_P_lo_var
+
+  
+   
+  
+
+P_hi_var             EQU __create_P_hi_var
+
+  
+   
 
    
 
@@ -779,6 +802,88 @@ N_hi_var             EQU __create_N_hi_var
     push HL             ; 1:11      N_hi_con N_hi_var
     ld   DE, N_hi_con   ; 3:10      N_hi_con N_hi_var
     ld   HL, N_hi_var   ; 3:10      N_hi_con N_hi_var
+    call Odecti         ; 3:17      call ( p_constant p_variable -- )
+; dw x..-1..1 ; A
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x330F , 0x330C , ... 0x3303 ,   version: O.lo <lo..+-x..x>
+    ld   HL, __create_O_lo_var; 3:10      0x330F , 0x330C , ... 0x3303 ,
+    ld    A, 0x0F       ; 2:7       0x330F , 0x330C , ... 0x3303 ,
+    ld   BC, 0x33FD     ; 3:10      0x330F , 0x330C , ... 0x3303 ,
+    ld  (HL),A          ; 1:7       0x330F , 0x330C , ... 0x3303 ,
+    inc  HL             ; 1:6       0x330F , 0x330C , ... 0x3303 ,
+    ld  (HL),B          ; 1:7       0x330F , 0x330C , ... 0x3303 ,
+    inc  HL             ; 1:6       0x330F , 0x330C , ... 0x3303 ,
+    add   A, C          ; 1:4       0x330F , 0x330C , ... 0x3303 ,
+    jr   nz, $-5        ; 2:7/12    0x330F , 0x330C , ... 0x3303 ,
+    pop  HL             ; 1:10      0x330F , 0x330C , ... 0x3303 ,
+                        ;[17:253]   0x330F , 0x330C , ... 0x3303 ,
+                        ;           no_segment(10)
+                        ;[8:42]     O_lo_con O_lo_var   ( -- O_lo_con O_lo_var )
+    push DE             ; 1:11      O_lo_con O_lo_var
+    push HL             ; 1:11      O_lo_con O_lo_var
+    ld   DE, O_lo_con   ; 3:10      O_lo_con O_lo_var
+    ld   HL, O_lo_var   ; 3:10      O_lo_con O_lo_var
+    call Odecti         ; 3:17      call ( p_constant p_variable -- )
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x0F33 , 0x0C33 , ... 0x0333 ,   version: O.hi <hi..+-x..x>
+    ld   HL, __create_O_hi_var; 3:10      0x0F33 , 0x0C33 , ... 0x0333 ,
+    ld    A, 0x0F       ; 2:7       0x0F33 , 0x0C33 , ... 0x0333 ,
+    ld   BC, 0xFD33     ; 3:10      0x0F33 , 0x0C33 , ... 0x0333 ,
+    ld  (HL),C          ; 1:7       0x0F33 , 0x0C33 , ... 0x0333 ,
+    inc  HL             ; 1:6       0x0F33 , 0x0C33 , ... 0x0333 ,
+    ld  (HL),A          ; 1:7       0x0F33 , 0x0C33 , ... 0x0333 ,
+    inc  HL             ; 1:6       0x0F33 , 0x0C33 , ... 0x0333 ,
+    add   A, B          ; 1:4       0x0F33 , 0x0C33 , ... 0x0333 ,
+    jr   nz, $-5        ; 2:7/12    0x0F33 , 0x0C33 , ... 0x0333 ,
+    pop  HL             ; 1:10      0x0F33 , 0x0C33 , ... 0x0333 ,
+                        ;[17:253]   0x0F33 , 0x0C33 , ... 0x0333 ,
+                        ;           no_segment(10)
+                        ;[8:42]     O_hi_con O_hi_var   ( -- O_hi_con O_hi_var )
+    push DE             ; 1:11      O_hi_con O_hi_var
+    push HL             ; 1:11      O_hi_con O_hi_var
+    ld   DE, O_hi_con   ; 3:10      O_hi_con O_hi_var
+    ld   HL, O_hi_var   ; 3:10      O_hi_con O_hi_var
+    call Odecti         ; 3:17      call ( p_constant p_variable -- )
+; dw x..-1..1 ; A
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x3303 , 0x3306 , ... 0x330F ,   version: P.lo <x..+-x..lo>
+    ld   HL, __create_P_lo_var+9; 3:10      0x3303 , 0x3306 , ... 0x330F ,
+    ld    A, 0x0F       ; 2:7       0x3303 , 0x3306 , ... 0x330F ,
+    ld   BC, 0x33FD     ; 3:10      0x3303 , 0x3306 , ... 0x330F ,
+    ld  (HL),B          ; 1:7       0x3303 , 0x3306 , ... 0x330F ,
+    dec  HL             ; 1:6       0x3303 , 0x3306 , ... 0x330F ,
+    ld  (HL),A          ; 1:7       0x3303 , 0x3306 , ... 0x330F ,
+    dec  HL             ; 1:6       0x3303 , 0x3306 , ... 0x330F ,
+    add   A, C          ; 1:4       0x3303 , 0x3306 , ... 0x330F ,
+    jr   nz, $-5        ; 2:7/12    0x3303 , 0x3306 , ... 0x330F ,
+    pop  HL             ; 1:10      0x3303 , 0x3306 , ... 0x330F ,
+                        ;[17:253]   0x3303 , 0x3306 , ... 0x330F ,
+                        ;           no_segment(10)
+                        ;[8:42]     P_lo_con P_lo_var   ( -- P_lo_con P_lo_var )
+    push DE             ; 1:11      P_lo_con P_lo_var
+    push HL             ; 1:11      P_lo_con P_lo_var
+    ld   DE, P_lo_con   ; 3:10      P_lo_con P_lo_var
+    ld   HL, P_lo_var   ; 3:10      P_lo_con P_lo_var
+    call Odecti         ; 3:17      call ( p_constant p_variable -- )
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x0333 , 0x0633 , ... 0x0F33 ,   version: P.hi <x..+-x..hi>
+    ld   HL, __create_P_hi_var+9; 3:10      0x0333 , 0x0633 , ... 0x0F33 ,
+    ld    A, 0x0F       ; 2:7       0x0333 , 0x0633 , ... 0x0F33 ,
+    ld   BC, 0xFD33     ; 3:10      0x0333 , 0x0633 , ... 0x0F33 ,
+    ld  (HL),A          ; 1:7       0x0333 , 0x0633 , ... 0x0F33 ,
+    dec  HL             ; 1:6       0x0333 , 0x0633 , ... 0x0F33 ,
+    ld  (HL),C          ; 1:7       0x0333 , 0x0633 , ... 0x0F33 ,
+    dec  HL             ; 1:6       0x0333 , 0x0633 , ... 0x0F33 ,
+    add   A, B          ; 1:4       0x0333 , 0x0633 , ... 0x0F33 ,
+    jr   nz, $-5        ; 2:7/12    0x0333 , 0x0633 , ... 0x0F33 ,
+    pop  HL             ; 1:10      0x0333 , 0x0633 , ... 0x0F33 ,
+                        ;[17:253]   0x0333 , 0x0633 , ... 0x0F33 ,
+                        ;           no_segment(10)
+                        ;[8:42]     P_hi_con P_hi_var   ( -- P_hi_con P_hi_var )
+    push DE             ; 1:11      P_hi_con P_hi_var
+    push HL             ; 1:11      P_hi_con P_hi_var
+    ld   DE, P_hi_con   ; 3:10      P_hi_con P_hi_var
+    ld   HL, P_hi_var   ; 3:10      P_hi_con P_hi_var
     call Odecti         ; 3:17      call ( p_constant p_variable -- )
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
     call PRINT_STRING_Z ; 3:17      print_z
@@ -2226,3 +2331,91 @@ N_hi_con:               ; = 0x0C330933063303330033
     dw 0x0633
     dw 0x0933
     dw 0x0C33
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_O_lo_var:      ;
+    dw 0x330F           ;           0x330F comma
+    dw 0x330C           ;           0x330C comma
+    dw 0x3309           ;           0x3309 comma
+    dw 0x3306           ;           0x3306 comma
+    dw 0x3303           ;           0x3303 comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+O_lo_con:               ; = 0x330333063309330C330F
+    dw 0x330F
+    dw 0x330C
+    dw 0x3309
+    dw 0x3306
+    dw 0x3303
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_O_hi_var:      ;
+    dw 0x0F33           ;           0x0F33 comma
+    dw 0x0C33           ;           0x0C33 comma
+    dw 0x0933           ;           0x0933 comma
+    dw 0x0633           ;           0x0633 comma
+    dw 0x0333           ;           0x0333 comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+O_hi_con:               ; = 0x0333063309330C330F33
+    dw 0x0F33
+    dw 0x0C33
+    dw 0x0933
+    dw 0x0633
+    dw 0x0333
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_P_lo_var:      ;
+    dw 0x3303           ;           0x3303 comma
+    dw 0x3306           ;           0x3306 comma
+    dw 0x3309           ;           0x3309 comma
+    dw 0x330C           ;           0x330C comma
+    dw 0x330F           ;           0x330F comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+P_lo_con:               ; = 0x330F330C330933063303
+    dw 0x3303
+    dw 0x3306
+    dw 0x3309
+    dw 0x330C
+    dw 0x330F
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_P_hi_var:      ;
+    dw 0x0333           ;           0x0333 comma
+    dw 0x0633           ;           0x0633 comma
+    dw 0x0933           ;           0x0933 comma
+    dw 0x0C33           ;           0x0C33 comma
+    dw 0x0F33           ;           0x0F33 comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+P_hi_con:               ; = 0x0F330C33093306330333
+    dw 0x0333
+    dw 0x0633
+    dw 0x0933
+    dw 0x0C33
+    dw 0x0F33
