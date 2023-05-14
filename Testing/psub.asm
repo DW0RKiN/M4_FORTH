@@ -137,6 +137,32 @@ J_hi_var             EQU __create_J_hi_var
   
    
   
+
+
+K_lo_var             EQU __create_K_lo_var
+
+  
+   
+  
+
+K_hi_var             EQU __create_K_hi_var
+
+  
+   
+
+
+
+L_lo_var             EQU __create_L_lo_var
+
+  
+   
+  
+
+L_hi_var             EQU __create_L_hi_var
+
+  
+   
+
    
 
 
@@ -564,6 +590,84 @@ J_hi_var             EQU __create_J_hi_var
     push HL             ; 1:11      J_hi_con J_hi_var
     ld   DE, J_hi_con   ; 3:10      J_hi_con J_hi_var
     ld   HL, J_hi_var   ; 3:10      J_hi_con J_hi_var
+    call Odecti         ; 3:17      call ( p_constant p_variable -- )
+; dw x..-1..1 ; A
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x330A , 0x3309 , ... 0x3306 ,   version: K.lo <lo..-1..lo>
+    ld   HL, __create_K_lo_var; 3:10      0x330A , 0x3309 , ... 0x3306 ,
+    ld   BC, 0x050A     ; 3:10      0x330A , 0x3309 , ... 0x3306 ,
+    ld  (HL),C          ; 1:7       0x330A , 0x3309 , ... 0x3306 ,
+    inc  HL             ; 1:6       0x330A , 0x3309 , ... 0x3306 ,
+    ld  (HL),0x33       ; 2:10      0x330A , 0x3309 , ... 0x3306 ,
+    inc  HL             ; 1:6       0x330A , 0x3309 , ... 0x3306 ,
+    dec   C             ; 1:4       0x330A , 0x3309 , ... 0x3306 ,
+    djnz $-6            ; 2:8/13    0x330A , 0x3309 , ... 0x3306 ,
+    pop  HL             ; 1:10      0x330A , 0x3309 , ... 0x3306 ,
+                        ;[16:266]   0x330A , 0x3309 , ... 0x3306 ,
+                        ;           no_segment(10)
+                        ;[8:42]     K_lo_con K_lo_var   ( -- K_lo_con K_lo_var )
+    push DE             ; 1:11      K_lo_con K_lo_var
+    push HL             ; 1:11      K_lo_con K_lo_var
+    ld   DE, K_lo_con   ; 3:10      K_lo_con K_lo_var
+    ld   HL, K_lo_var   ; 3:10      K_lo_con K_lo_var
+    call Odecti         ; 3:17      call ( p_constant p_variable -- )
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x0A33 , 0x0933 , ... 0x0633 ,   version: K.hi <hi..-1..hi>
+    ld   HL, __create_K_hi_var; 3:10      0x0A33 , 0x0933 , ... 0x0633 ,
+    ld   BC, 0x050A     ; 3:10      0x0A33 , 0x0933 , ... 0x0633 ,
+    ld  (HL),0x33       ; 2:10      0x0A33 , 0x0933 , ... 0x0633 ,
+    inc  HL             ; 1:6       0x0A33 , 0x0933 , ... 0x0633 ,
+    ld  (HL),C          ; 1:7       0x0A33 , 0x0933 , ... 0x0633 ,
+    inc  HL             ; 1:6       0x0A33 , 0x0933 , ... 0x0633 ,
+    dec   C             ; 1:4       0x0A33 , 0x0933 , ... 0x0633 ,
+    djnz $-6            ; 2:8/13    0x0A33 , 0x0933 , ... 0x0633 ,
+    pop  HL             ; 1:10      0x0A33 , 0x0933 , ... 0x0633 ,
+                        ;[16:266]   0x0A33 , 0x0933 , ... 0x0633 ,
+                        ;           no_segment(10)
+                        ;[8:42]     K_hi_con K_hi_var   ( -- K_hi_con K_hi_var )
+    push DE             ; 1:11      K_hi_con K_hi_var
+    push HL             ; 1:11      K_hi_con K_hi_var
+    ld   DE, K_hi_con   ; 3:10      K_hi_con K_hi_var
+    ld   HL, K_hi_var   ; 3:10      K_hi_con K_hi_var
+    call Odecti         ; 3:17      call ( p_constant p_variable -- )
+; dw x..-1..1 ; A
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x3306 , 0x3307 , ... 0x330A ,   version: L.lo <lo..+1..lo>
+    ld   HL, __create_L_lo_var; 3:10      0x3306 , 0x3307 , ... 0x330A ,
+    ld   BC, 0x0506     ; 3:10      0x3306 , 0x3307 , ... 0x330A ,
+    ld  (HL),C          ; 1:7       0x3306 , 0x3307 , ... 0x330A ,
+    inc  HL             ; 1:6       0x3306 , 0x3307 , ... 0x330A ,
+    ld  (HL),0x33       ; 2:10      0x3306 , 0x3307 , ... 0x330A ,
+    inc  HL             ; 1:6       0x3306 , 0x3307 , ... 0x330A ,
+    inc   C             ; 1:4       0x3306 , 0x3307 , ... 0x330A ,
+    djnz $-6            ; 2:8/13    0x3306 , 0x3307 , ... 0x330A ,
+    pop  HL             ; 1:10      0x3306 , 0x3307 , ... 0x330A ,
+                        ;[16:266]   0x3306 , 0x3307 , ... 0x330A ,
+                        ;           no_segment(10)
+                        ;[8:42]     L_lo_con L_lo_var   ( -- L_lo_con L_lo_var )
+    push DE             ; 1:11      L_lo_con L_lo_var
+    push HL             ; 1:11      L_lo_con L_lo_var
+    ld   DE, L_lo_con   ; 3:10      L_lo_con L_lo_var
+    ld   HL, L_lo_var   ; 3:10      L_lo_con L_lo_var
+    call Odecti         ; 3:17      call ( p_constant p_variable -- )
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x0633 , 0x0733 , ... 0x0A33 ,   version: L.hi <hi..+1..hi>
+    ld   HL, __create_L_hi_var; 3:10      0x0633 , 0x0733 , ... 0x0A33 ,
+    ld   BC, 0x0506     ; 3:10      0x0633 , 0x0733 , ... 0x0A33 ,
+    ld  (HL),0x33       ; 2:10      0x0633 , 0x0733 , ... 0x0A33 ,
+    inc  HL             ; 1:6       0x0633 , 0x0733 , ... 0x0A33 ,
+    ld  (HL),C          ; 1:7       0x0633 , 0x0733 , ... 0x0A33 ,
+    inc  HL             ; 1:6       0x0633 , 0x0733 , ... 0x0A33 ,
+    inc   C             ; 1:4       0x0633 , 0x0733 , ... 0x0A33 ,
+    djnz $-6            ; 2:8/13    0x0633 , 0x0733 , ... 0x0A33 ,
+    pop  HL             ; 1:10      0x0633 , 0x0733 , ... 0x0A33 ,
+                        ;[16:266]   0x0633 , 0x0733 , ... 0x0A33 ,
+                        ;           no_segment(10)
+                        ;[8:42]     L_hi_con L_hi_var   ( -- L_hi_con L_hi_var )
+    push DE             ; 1:11      L_hi_con L_hi_var
+    push HL             ; 1:11      L_hi_con L_hi_var
+    ld   DE, L_hi_con   ; 3:10      L_hi_con L_hi_var
+    ld   HL, L_hi_var   ; 3:10      L_hi_con L_hi_var
     call Odecti         ; 3:17      call ( p_constant p_variable -- )
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
     call PRINT_STRING_Z ; 3:17      print_z
@@ -1835,3 +1939,91 @@ J_hi_con:               ; = 0x04330333023301330033
     dw 0x0233
     dw 0x0333
     dw 0x0433
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_K_lo_var:      ;
+    dw 0x330A           ;           0x330A comma
+    dw 0x3309           ;           0x3309 comma
+    dw 0x3308           ;           0x3308 comma
+    dw 0x3307           ;           0x3307 comma
+    dw 0x3306           ;           0x3306 comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+K_lo_con:               ; = 0x3306330733083309330A
+    dw 0x330A
+    dw 0x3309
+    dw 0x3308
+    dw 0x3307
+    dw 0x3306
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_K_hi_var:      ;
+    dw 0x0A33           ;           0x0A33 comma
+    dw 0x0933           ;           0x0933 comma
+    dw 0x0833           ;           0x0833 comma
+    dw 0x0733           ;           0x0733 comma
+    dw 0x0633           ;           0x0633 comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+K_hi_con:               ; = 0x06330733083309330A33
+    dw 0x0A33
+    dw 0x0933
+    dw 0x0833
+    dw 0x0733
+    dw 0x0633
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_L_lo_var:      ;
+    dw 0x3306           ;           0x3306 comma
+    dw 0x3307           ;           0x3307 comma
+    dw 0x3308           ;           0x3308 comma
+    dw 0x3309           ;           0x3309 comma
+    dw 0x330A           ;           0x330A comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+L_lo_con:               ; = 0x330A3309330833073306
+    dw 0x3306
+    dw 0x3307
+    dw 0x3308
+    dw 0x3309
+    dw 0x330A
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_L_hi_var:      ;
+    dw 0x0633           ;           0x0633 comma
+    dw 0x0733           ;           0x0733 comma
+    dw 0x0833           ;           0x0833 comma
+    dw 0x0933           ;           0x0933 comma
+    dw 0x0A33           ;           0x0A33 comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+L_hi_con:               ; = 0x0A330933083307330633
+    dw 0x0633
+    dw 0x0733
+    dw 0x0833
+    dw 0x0933
+    dw 0x0A33
