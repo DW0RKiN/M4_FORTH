@@ -97,6 +97,19 @@ G_hi_var             EQU __create_G_hi_var
 
   
    
+
+
+
+H_lo_var             EQU __create_H_lo_var
+
+  
+   
+  
+
+H_hi_var             EQU __create_H_hi_var
+
+  
+   
   
    
 
@@ -408,6 +421,45 @@ G_hi_var             EQU __create_G_hi_var
     push HL             ; 1:11      G_hi_con G_hi_var
     ld   DE, G_hi_con   ; 3:10      G_hi_con G_hi_var
     ld   HL, G_hi_var   ; 3:10      G_hi_con G_hi_var
+    call Odecti         ; 3:17      call ( -- )
+; dw 0..-1..x ; H
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x3300 , 0x33FF , ... 0x33FC ,   version: H.lo <0..-1..lo>
+    ld   HL, __create_H_lo_var+9; 3:10      0x3300 , 0x33FF , ... 0x33FC ,
+    ld   BC, 0x33FB     ; 3:10      0x3300 , 0x33FF , ... 0x33FC ,
+    inc   C             ; 1:4       0x3300 , 0x33FF , ... 0x33FC ,
+    ld  (HL),B          ; 1:7       0x3300 , 0x33FF , ... 0x33FC ,
+    dec  HL             ; 1:6       0x3300 , 0x33FF , ... 0x33FC ,
+    ld  (HL),C          ; 1:7       0x3300 , 0x33FF , ... 0x33FC ,
+    dec  HL             ; 1:6       0x3300 , 0x33FF , ... 0x33FC ,
+    jp   nz, $-5        ; 3:10      0x3300 , 0x33FF , ... 0x33FC ,
+    pop  HL             ; 1:10      0x3300 , 0x33FF , ... 0x33FC ,
+                        ;[16:241]   0x3300 , 0x33FF , ... 0x33FC ,
+                        ;           no_segment(10)
+                        ;[8:42]     H_lo_con H_lo_var   ( -- H_lo_con H_lo_var )
+    push DE             ; 1:11      H_lo_con H_lo_var
+    push HL             ; 1:11      H_lo_con H_lo_var
+    ld   DE, H_lo_con   ; 3:10      H_lo_con H_lo_var
+    ld   HL, H_lo_var   ; 3:10      H_lo_con H_lo_var
+    call Odecti         ; 3:17      call ( -- )
+                        ;           no_segment(10)
+    push HL             ; 1:11      0x0033 , 0xFF33 , ... 0xFC33 ,   version: H.hi <0..-1..hi>
+    ld   HL, __create_H_hi_var+9; 3:10      0x0033 , 0xFF33 , ... 0xFC33 ,
+    ld   BC, 0xFB33     ; 3:10      0x0033 , 0xFF33 , ... 0xFC33 ,
+    inc   B             ; 1:4       0x0033 , 0xFF33 , ... 0xFC33 ,
+    ld  (HL),B          ; 1:7       0x0033 , 0xFF33 , ... 0xFC33 ,
+    dec  HL             ; 1:6       0x0033 , 0xFF33 , ... 0xFC33 ,
+    ld  (HL),C          ; 1:7       0x0033 , 0xFF33 , ... 0xFC33 ,
+    dec  HL             ; 1:6       0x0033 , 0xFF33 , ... 0xFC33 ,
+    jp   nz, $-5        ; 3:10      0x0033 , 0xFF33 , ... 0xFC33 ,
+    pop  HL             ; 1:10      0x0033 , 0xFF33 , ... 0xFC33 ,
+                        ;[16:241]   0x0033 , 0xFF33 , ... 0xFC33 ,
+                        ;           no_segment(10)
+                        ;[8:42]     H_hi_con H_hi_var   ( -- H_hi_con H_hi_var )
+    push DE             ; 1:11      H_hi_con H_hi_var
+    push HL             ; 1:11      H_hi_con H_hi_var
+    ld   DE, H_hi_con   ; 3:10      H_hi_con H_hi_var
+    ld   HL, H_hi_var   ; 3:10      H_hi_con H_hi_var
     call Odecti         ; 3:17      call ( -- )
     ld   BC, string101  ; 3:10      print_z   Address of null-terminated string101
     call PRINT_STRING_Z ; 3:17      print_z
@@ -1547,3 +1599,47 @@ G_hi_con:               ; = 0x00330133023303330433
     dw 0x0233
     dw 0x0133
     dw 0x0033
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_H_lo_var:      ;
+    dw 0x3300           ;           0x3300 comma
+    dw 0x33FF           ;           0x33FF comma
+    dw 0x33FE           ;           0x33FE comma
+    dw 0x33FD           ;           0x33FD comma
+    dw 0x33FC           ;           0x33FC comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+H_lo_con:               ; = 0x33FC33FD33FE33FF3300
+    dw 0x3300
+    dw 0x33FF
+    dw 0x33FE
+    dw 0x33FD
+    dw 0x33FC
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+__create_H_hi_var:      ;
+    dw 0x0033           ;           0x0033 comma
+    dw 0xFF33           ;           0xFF33 comma
+    dw 0xFE33           ;           0xFE33 comma
+    dw 0xFD33           ;           0xFD33 comma
+    dw 0xFC33           ;           0xFC33 comma
+; The padding will fill if the following X bytes overflow the 256 byte segment.
+; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
+if  ((($ + 10 - 1) / 256) != ($/256))
+  DEFS    (($/256)+1)*256 - $
+endif
+H_hi_con:               ; = 0xFC33FD33FE33FF330033
+    dw 0x0033
+    dw 0xFF33
+    dw 0xFE33
+    dw 0xFD33
+    dw 0xFC33
