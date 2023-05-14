@@ -1,4 +1,4 @@
-dnl ## Memory
+    dnl ## Memory
 dnl
 dnl
 dnl
@@ -1311,9 +1311,9 @@ __{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME+eval(LAST_HERE_ADD+2*$#-1)); 
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
 __{}__{}    ld    A, __HEX_L(__PUSHS_COMMA_ANALYSIS_LAST_NUM)       ; 2:7       __SHORT_INFO
 __{}__{}    ld   BC, __HEX_HL(256*__HEX_H($1)+__HEX_L($1-($2)))     ; 3:10      __SHORT_INFO
-__{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
-__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
 __{}__{}    ld  (HL),B          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
 __{}__{}    dec  HL             ; 1:6       __SHORT_INFO
 __{}__{}    add   A, C          ; 1:4       __SHORT_INFO
 __{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
@@ -1326,9 +1326,9 @@ __{}__{}    ld   HL, format({%-11s},LAST_HERE_NAME+eval(LAST_HERE_ADD+2*$#-1)); 
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2*$#)){}dnl
 __{}__{}    ld    A, __HEX_H(__PUSHS_COMMA_ANALYSIS_LAST_NUM)       ; 2:7       __SHORT_INFO
 __{}__{}    ld   BC, __HEX_HL(256*__HEX_L(__HEX_H($1)-__HEX_H($2))+__HEX_L($1))     ; 3:10      __SHORT_INFO
-__{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
-__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
 __{}__{}    ld  (HL),A          ; 1:7       __SHORT_INFO
+__{}__{}    dec  HL             ; 1:6       __SHORT_INFO
+__{}__{}    ld  (HL),C          ; 1:7       __SHORT_INFO
 __{}__{}    dec  HL             ; 1:6       __SHORT_INFO
 __{}__{}    add   A, B          ; 1:4       __SHORT_INFO
 __{}__{}    jr   nz, $-5        ; 2:7/12    __SHORT_INFO
