@@ -11,83 +11,92 @@ PCONSTANT(BYTES_SIZE,0, _tmp_print)
 __ASM({; dw x..-1..1 ; A})
 PPUSH_VALUE(BYTES_SIZE,0x33013302330333043305,A_lo_var)
   PCONSTANT(BYTES_SIZE,0x33013302330333043305,A_lo_con)
-  PUSH(A_lo_con,A_lo_var) CALL(Odecti)
+  PUSH(A_lo_con,A_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0x01330233033304330533,A_hi_var)
   PCONSTANT(BYTES_SIZE,0x01330233033304330533,A_hi_con)
-  PUSH(A_hi_con,A_hi_var) CALL(Odecti)
+  PUSH(A_hi_con,A_hi_var) CALL(Odecti,( p_constant p_variable -- ))
 
 __ASM({; dw 1..+1..x ; B})
 PPUSH_VALUE(BYTES_SIZE,0x33053304330333023301,B_lo_var)
   PCONSTANT(BYTES_SIZE,0x33053304330333023301,B_lo_con)
-  PUSH(B_lo_con,B_lo_var) CALL(Odecti)
+  PUSH(B_lo_con,B_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0x05330433033302330133,B_hi_var)
   PCONSTANT(BYTES_SIZE,0x05330433033302330133,B_hi_con)
-  PUSH(B_hi_con,B_hi_var) CALL(Odecti)
+  PUSH(B_hi_con,B_hi_var) CALL(Odecti,( p_constant p_variable -- ))
 
 __ASM({; dw x..-2..2 ; C})
 PPUSH_VALUE(BYTES_SIZE,0x3302330433063308330A,C_lo_var)
   PCONSTANT(BYTES_SIZE,0x3302330433063308330A,C_lo_con)
-  PUSH(C_lo_con,C_lo_var) CALL(Odecti)
+  PUSH(C_lo_con,C_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0x02330433063308330A33,C_hi_var)
   PCONSTANT(BYTES_SIZE,0x02330433063308330A33,C_hi_con)
-  PUSH(C_hi_con,C_hi_var) CALL(Odecti)
+  PUSH(C_hi_con,C_hi_var) CALL(Odecti,( p_constant p_variable -- ))
 
 __ASM({; dw 2..+2..x ; D})
 PPUSH_VALUE(BYTES_SIZE,0x330A3308330633043302,D_lo_var)
   PCONSTANT(BYTES_SIZE,0x330A3308330633043302,D_lo_con)
-  PUSH(D_lo_con,D_lo_var) CALL(Odecti)
+  PUSH(D_lo_con,D_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0x0A330833063304330233,D_hi_var)
   PCONSTANT(BYTES_SIZE,0x0A330833063304330233,D_hi_con)
-  PUSH(D_hi_con,D_hi_var) CALL(Odecti)
+  PUSH(D_hi_con,D_hi_var) CALL(Odecti,( p_constant p_variable -- ))
 
 __ASM({; dw x..-2..1 ; E})
 PPUSH_VALUE(BYTES_SIZE,0x33013303330533073309,E_lo_var)
   PCONSTANT(BYTES_SIZE,0x33013303330533073309,E_lo_con)
-  PUSH(E_lo_con,E_lo_var) CALL(Odecti)
+  PUSH(E_lo_con,E_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0x01330333053307330933,E_hi_var)
   PCONSTANT(BYTES_SIZE,0x01330333053307330933,E_hi_con)
-  PUSH(E_hi_con,E_hi_var) CALL(Odecti)
+  PUSH(E_hi_con,E_hi_var) CALL(Odecti,( p_constant p_variable -- ))
 
 __ASM({; dw 1..+2..x ; F})
 PPUSH_VALUE(BYTES_SIZE,0x33093307330533033301,F_lo_var)
   PCONSTANT(BYTES_SIZE,0x33093307330533033301,F_lo_con)
-  PUSH(F_lo_con,F_lo_var) CALL(Odecti)
+  PUSH(F_lo_con,F_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0x09330733053303330133,F_hi_var)
   PCONSTANT(BYTES_SIZE,0x09330733053303330133,F_hi_con)
-  PUSH(F_hi_con,F_hi_var) CALL(Odecti)
+  PUSH(F_hi_con,F_hi_var) CALL(Odecti,( p_constant p_variable -- ))
   
 __ASM({; dw x..-1..0 ; G})
 PPUSH_VALUE(BYTES_SIZE,0x33003301330233033304,G_lo_var)
   PCONSTANT(BYTES_SIZE,0x33003301330233033304,G_lo_con)
-  PUSH(G_lo_con,G_lo_var) CALL(Odecti)
+  PUSH(G_lo_con,G_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0x00330133023303330433,G_hi_var)
   PCONSTANT(BYTES_SIZE,0x00330133023303330433,G_hi_con)
-  PUSH(G_hi_con,G_hi_var) CALL(Odecti)
+  PUSH(G_hi_con,G_hi_var) CALL(Odecti,( p_constant p_variable -- ))
 
 __ASM({; dw 0..-1..x ; H})
 PPUSH_VALUE(BYTES_SIZE,0x33FC33FD33FE33FF3300,H_lo_var)
   PCONSTANT(BYTES_SIZE,0x33FC33FD33FE33FF3300,H_lo_con)
-  PUSH(H_lo_con,H_lo_var) CALL(Odecti)
+  PUSH(H_lo_con,H_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0xFC33FD33FE33FF330033,H_hi_var)
   PCONSTANT(BYTES_SIZE,0xFC33FD33FE33FF330033,H_hi_con)
-  PUSH(H_hi_con,H_hi_var) CALL(Odecti)
+  PUSH(H_hi_con,H_hi_var) CALL(Odecti,( p_constant p_variable -- ))
 
 __ASM({; dw x..+1..0 ; I})
 PPUSH_VALUE(BYTES_SIZE,0x330033FF33FE33FD33FC,I_lo_var)
   PCONSTANT(BYTES_SIZE,0x330033FF33FE33FD33FC,I_lo_con)
-  PUSH(I_lo_con,I_lo_var) CALL(Odecti)
+  PUSH(I_lo_con,I_lo_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PPUSH_VALUE(BYTES_SIZE,0x0033FF33FE33FD33FC33,I_hi_var)
   PCONSTANT(BYTES_SIZE,0x0033FF33FE33FD33FC33,I_hi_con)
-  PUSH(I_hi_con,I_hi_var) CALL(Odecti)
+  PUSH(I_hi_con,I_hi_var) CALL(Odecti,( p_constant p_variable -- ))
+
+__ASM({; dw 0..+1..x ; J})
+PPUSH_VALUE(BYTES_SIZE,0x33043303330233013300,J_lo_var)
+  PCONSTANT(BYTES_SIZE,0x33043303330233013300,J_lo_con)
+  PUSH(J_lo_con,J_lo_var) CALL(Odecti,( p_constant p_variable -- ))
+  
+PPUSH_VALUE(BYTES_SIZE,0x04330333023301330033,J_hi_var)
+  PCONSTANT(BYTES_SIZE,0x04330333023301330033,J_hi_con)
+  PUSH(J_hi_con,J_hi_var) CALL(Odecti,( p_constant p_variable -- ))
   
 PRINT_Z({"Depth: "}) DEPTH UDOT CR
 
