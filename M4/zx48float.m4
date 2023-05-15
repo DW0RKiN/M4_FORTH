@@ -671,30 +671,38 @@ __{}__def({USE_Z0LT})
 dnl
 dnl
 dnl
+dnl # ZVARIABLE(name,value)
+dnl # ZVARIABLE(name)
 define({ZVARIABLE},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZVARIABLE},{zvariable},$@){}dnl
+__{}define({__PSIZE_$1},5){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZVARIABLE},{zvariable $1 $2},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZVARIABLE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-dnl
-__{}ifelse($1,{},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}    .error zvariable($@): Missing parameter with variable name!})},
-__{}{dnl
-__{}__{}ifelse($#,{1},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}$1:
-__{}__{}  db 0x00
-__{}__{}  db 0x00
-__{}__{}  db 0x00
-__{}__{}  db 0x00
-__{}__{}  db 0x00})},
-__{}__{}$#,{2},{ZX48FSTRING_TO_FHEX($2)define({ALL_VARIABLE},ALL_VARIABLE
-__{}__{}format({%-24s},$1:); = $2 = format({%a},$2) = exp:0x{}ZXTEMP_EXP mantissa:0x{}ZXTEMP_MANTISSA_1{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_3{}ZXTEMP_MANTISSA_4 (big-endien)
-__{}__{}  db 0x{}ZXTEMP_EXP
-__{}__{}  dw 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1
-__{}__{}  dw 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3)},
-__{}__{}{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    .error zvariable($@): To many parameters!})}){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter with variable name!},
+__{}eval($#>2),{1},{
+__{}__{}    .error {$0}($@): To many parameters!},
+__{}eval($#),{1},{
+__{}__{}format({%-24s},{});           __INFO{}dnl
+__{}__{}define({__PSIZE_$1},5){}dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1){}dnl
+__{}__{}pushdef({LAST_HERE_ADD},5){}dnl
+__{}__{}__{}__ADD_DB_VARIABLE($1,0,__INFO){}dnl
+__{}__{}__{}__ADD_DW_VARIABLE(,0,__INFO){}dnl
+__{}__{}__{}__ADD_DW_VARIABLE(,0,__INFO)},
+__{}{
+__{}__{}format({%-24s},{});           __INFO{}dnl
+__{}__{}define({__PSIZE_$1},5){}dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1){}dnl
+__{}__{}pushdef({LAST_HERE_ADD},5){}dnl
+__{}__{}ZX48FSTRING_TO_FHEX($2){}dnl
+__{}__{}__ADD_SPEC_VARIABLE({
+}format({%-24s},$1:){;           }__INFO{   = $2 = }format({%a},$2){
+}    db 0x{}ZXTEMP_EXP{             ;           }__INFO{   = exp
+}    db 0x{}ZXTEMP_MANTISSA_1{             ;           }__INFO{   = sign + high 7 bits mantissa (big-endien)
+}    db 0x{}ZXTEMP_MANTISSA_2{,0x}ZXTEMP_MANTISSA_3{,0x}ZXTEMP_MANTISSA_4{   ;           }__INFO{   = low mantissa (big-endien)}){}dnl
 __{}}){}dnl
 })dnl
 dnl

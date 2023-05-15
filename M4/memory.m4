@@ -284,7 +284,7 @@ dnl
 dnl
 dnl
 define({PUSHDOT_DVALUE},{dnl
-__{}define({__PSIZE_}$1,4)dnl
+__{}define({__PSIZE_$1},4)dnl
 __{}__ADD_TOKEN({__TOKEN_PUSHDOT_DVALUE},{$1. dvalue {$2}},$@){}dnl
 }){}dnl
 dnl
