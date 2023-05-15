@@ -684,12 +684,12 @@ __{}{dnl
 __{}__{}ifelse(eval((LAST_HERE_ADD+$1)<0),{1},{dnl
 __{}__{}__{}ifelse(LAST_HERE_NAME,{VARIABLE_SECTION},{dnl
 __{}__{}__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1)){}dnl
-__{}__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}  .warning push_allot($1): Deallocation under VARIABLE_SECTION!
-__{}__{}__{}__{}format({%-24s},{    ORG $}$1);           $1 allot   (deallocation)})},
+__{}__{}__{}__{}__ADD_SPEC_VARIABLE({
+  .warning push_allot($1): Deallocation under VARIABLE_SECTION!
+format({%-24s},{    ORG $}$1);           __INFO   (deallocation)})},
 __{}__{}__{}{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}}format({%-24s},{    ORG $-}LAST_HERE_ADD{}){;           $1 allot   (deallocation }LAST_HERE_ADD{ bytes from }LAST_HERE_NAME{)}){}dnl
+__{}__{}__{}__ADD_SPEC_VARIABLE({
+}format({%-24s},{    ORG $-}LAST_HERE_ADD{}){;           __INFO   (deallocation }LAST_HERE_ADD{ bytes from }LAST_HERE_NAME{)}){}dnl
 __{}__{}__{}__{}popdef({LAST_HERE_NAME}){}dnl
 __{}__{}__{}__{}define({PUSH_ALLOT_TEMP},eval($1+LAST_HERE_ADD)){}dnl
 __{}__{}__{}__{}popdef({LAST_HERE_ADD}){}dnl
@@ -697,9 +697,9 @@ __{}__{}__{}__{}__ASM_TOKEN_PUSH_ALLOT(PUSH_ALLOT_TEMP)})},
 __{}__{}{dnl
 __{}__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1))dnl
 __{}__{}__{}ifelse(eval(($1)>0),{1},{__ADD_SPEC_VARIABLE({
-__{}__{}__{}__{}ds $1})},
+    ds $1})},
 __{}__{}__{}eval(($1)<0),{1},{__ADD_SPEC_VARIABLE({
-__{}__{}__{}__{}format({%-24s},{    ORG $}$1);           $1 allot   ( allocation }$1{ bytes from }LAST_HERE_NAME{)})}){}dnl
+__{}__{}__{}__{}format({%-24s},{    ORG $}$1);           __INFO   ( allocation }$1{ bytes from }LAST_HERE_NAME{)})}){}dnl
 __{}__{}}){}dnl
 __{}}){}dnl
 }){}dnl
