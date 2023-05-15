@@ -841,12 +841,11 @@ __{}dnl # __PUSHS_COMMA_ANALYSIS_SUB1
 __{}dnl # __PUSHS_COMMA_ANALYSIS_SUB256
 __{}dnl # __PUSHS_COMMA_ANALYSIS_SUB16
 __{}dnl # __PUSHS_COMMA_ANALYSIS_SAME
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    dw format({%-17s},$1);           $1 comma}){}dnl
+__{}__ADD_DW_VARIABLE(,$1,{$1 ,}){}dnl
 __{}ifelse(eval($#>2),{1},{__PUSHS_COMMA_ANALYSIS(shift($@))},
 __{}{dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}    dw format({%-17s},$2);           $2 comma})}){}dnl
+__{}__{}__ADD_DW_VARIABLE(,$2,{$2 ,}){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -877,9 +876,8 @@ __{}__CODE_16BIT
 __{}    ld  format({%-16s},(LAST_HERE_NAME{}+LAST_HERE_ADD){,}BC); 4:20      $2 ,{}dnl
 __{}undefine({__COMMA}){}dnl
 __{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}    dw format({%-17s},$1);           $1 comma
-__{}__{}    dw format({%-17s},$2);           $2 comma})},
+__{}__ADD_DW_VARIABLE(,$1,{$1 ,}){}dnl
+__{}__ADD_DW_VARIABLE(,$2,{$2 ,})},
 {dnl
 __{}define({PUSHS_COMMA_SUM},$#){}dnl
 __{}define({__PUSHS_COMMA_ANALYSIS_ADD_LOX},1){}dnl
@@ -897,7 +895,7 @@ __{}define({__PUSHS_COMMA_ANALYSIS_SAME},1){}dnl
 __{}define({__PUSHS_COMMA_ANALYSIS_LAST_NUM},0xBAAAD){}dnl # ERR0R
 __{}__PUSHS_COMMA_ANALYSIS($@){}dnl
 __{}define({__SHORT_INFO},{$1 , $2 , ... __PUSHS_COMMA_ANALYSIS_LAST ,}){}dnl
-__{}ifelse({debug},{debug},{errprint(
+__{}ifelse({debug},{debug_},{errprint(
 __{}__{}              {PUSHS_COMMA_SUM} = PUSHS_COMMA_SUM
 __{}__{} {__PUSHS_COMMA_ANALYSIS_ADD_LOX} = __PUSHS_COMMA_ANALYSIS_ADD_LOX
 __{}__{} {__PUSHS_COMMA_ANALYSIS_ADD_HIX} = __PUSHS_COMMA_ANALYSIS_ADD_HIX
@@ -1811,11 +1809,11 @@ __{}__{}define({__PSIZE_}$3,$1){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$3)dnl
 __{}__{}pushdef({LAST_HERE_ADD},$1)dnl
 __{}__{}ifelse($4,,{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__ADD_SPEC_VARIABLE({
 __{}__{}__{}__{}$3:})},
 __{}__{}{dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}__{}}format({%-24s},{$3:}){; = }$4)}){}dnl
+__{}__{}__{}__ADD_SPEC_VARIABLE({
+}format({%-24s},{$3:}){;           }__INFO{   = }$4)}){}dnl
 __{}__{}__ALLOC_CONST_REC(eval($1),$2,$3){}dnl
 __{}}){}dnl
 }){}dnl
@@ -1937,9 +1935,10 @@ __{}__IS_NUM($2),0,{
 __{}__{}  .error {$0}($@): M4 does not know $2 parameter value!},
 __{}{dnl
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$2)){}dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},$1:);           __INFO
-__{}__{}__{}    ds format({%-17s},$2);           __INFO})}){}dnl
+__{}__{}__ADD_SPEC_VARIABLE({
+}format({%-24s},$1:){;           }__INFO{
+}    ds format({%-17s},$2){;           }__INFO){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
