@@ -16,8 +16,8 @@ define({__ADD_DB_VARIABLE},{dnl
 __{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE){}dnl
 __{}__{}ifelse({$1},,,{
 __{}__{}__{}format({%-30s},{{{{$1}}}}:);           {{{$3}}}}){}dnl
-__{}__{}ifelse(__IS_NUM($2),1,{
-__{}__{}    db __HEX_L($2)             ;           {{{$3}}}   = eval($2)},
+__{}__{}ifelse(__IS_NUM({{$2}}),1,{
+__{}__{}    db __HEX_L($2)             ;           {{{$3}}}   = eval(__HEX_L($2))},
 __{}__{}{
 __{}__{}    db format({%-23s},{{{{$2}}}});           {{{$3}}}}){}dnl
 __{}){}dnl
@@ -31,8 +31,12 @@ dnl #    $3 info
 define({__ADD_DW_VARIABLE},{dnl
 __{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE){}dnl
 __{}__{}ifelse({$1},,,{
-__{}__{}__{}format({%-30s},{{{{$1}}}}:);           {{{$3}}}}){
-__{}__{}    dw format({%-21s},{{{$2}}});           {{$3}}}){}dnl
+__{}__{}__{}format({%-30s},{{{{$1}}}}:);           {{{$3}}}}){}dnl
+__{}__{}ifelse(__IS_NUM({{$2}}),1,{
+__{}__{}    dw __HEX_HL($2)           ;           {{{$3}}}   = eval(__HEX_HL($2))},
+__{}__{}{
+__{}__{}    dw format({%-23s},{{{{$2}}}});           {{{$3}}}}){}dnl
+__{}){}dnl
 }){}dnl
 dnl
 dnl
@@ -43,13 +47,16 @@ dnl #    $2 dd value
 dnl #    $3 info
 define({__ADD_DD_VARIABLE},{dnl
 __{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE){}dnl
-__{}__{}ifelse(__HEX_DEHL($2),0x00000000,,{
-__{}__{}__{}format({%-24s},{});{}dnl
-__{}__{}__{} = eval($2) = __HEX_DEHL($2) = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)}){}dnl
 __{}__{}ifelse({$1},,,{
-__{}__{}__{}format({%-30s},{{{{$1}}}}:);           {{{$3}}}}){
-__{}__{}    dw __HEX_HL($2)           ;           {{$3}}
-__{}__{}    dw __HEX_DE($2)           ;           {{$3}}}){}dnl
+__{}__{}__{}format({%-30s},{{{{$1}}}}:);           {{{$3}}}}ifelse(__IS_NUM({{$2}}),1,{   = eval($2) = __HEX_DEHL($2) = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)})){}dnl
+__{}__{}ifelse(__IS_NUM({{$2}}),1,{
+__{}__{}    dw __HEX_HL($2)           ;           {{{$3}}}   = eval(__HEX_HL($2))
+__{}__{}    dw __HEX_DE($2)           ;           {{{$3}}}   = eval(__HEX_DE($2))},
+__{}__{}{
+__{}__{}  .error Unknown value "{{{$2}}}"! High 16 bites lost...
+__{}__{}    dw format({%-23s},{{{{$2}}}});           {{{$3}}}
+__{}__{}    dw 0x0000           ;           {{{$3}}}}){}dnl
+__{}){}dnl
 }){}dnl
 dnl
 dnl
@@ -502,23 +509,17 @@ __{}$#,1,{dnl
 __{}__{}define({__PSIZE_}$1,2){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}__{}pushdef({LAST_HERE_ADD},2)dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},$1:);           }__INFO{
-__{}__{}__{}    dw 0x0000           ;           }__INFO)},
+__{}__{}__ADD_DW_VARIABLE($1,0,__INFO)},
 __{}__IS_NUM($2),1,{dnl
 __{}__{}define({__PSIZE_}$1,2){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}__{}pushdef({LAST_HERE_ADD},2)dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},$1:);           }__INFO{   = ifelse(substr($2,0,2),{0x},eval($2),substr($2,0,2),{0X},eval($2),__HEX_HL($2))
-__{}__{}__{}    dw __HEX_HL($2)           ;           }__INFO)},
+__{}__{}__ADD_DW_VARIABLE($1,$2,__INFO)},
 __{}{dnl
 __{}__{}define({__PSIZE_}$1,2){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}__{}pushdef({LAST_HERE_ADD},2)dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},$1:);           }__INFO{
-__{}__{}__{}    dw format({%-17s},$2);           }__INFO)}){}dnl
+__{}__{}__ADD_DW_VARIABLE($1,$2,__INFO)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -589,38 +590,35 @@ __{}$#,{1},{dnl
 __{}__{}define({__PSIZE_}$1,4){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}__{}pushdef({LAST_HERE_ADD},4)dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},$1:);           }__INFO{
-__{}__{}__{}    dw 0x0000           ;           }__INFO{
-__{}__{}__{}    dw 0x0000           ;           }__INFO)},
+__{}__{}__ADD_DD_VARIABLE($1,0,__INFO)},
 __{}__IS_NUM($2),0,{
-__{}__{}  .error {$0}($@): M4 does not know $2 parameter value!},
+__{}__{}  .error {$0}($@): M4 does not know $2 parameter value!
+__{}__{}define({__PSIZE_}$1,4){}dnl
+__{}__{}pushdef({LAST_HERE_NAME},$1)dnl
+__{}__{}pushdef({LAST_HERE_ADD},4)dnl
+__{}__{}__ADD_DD_VARIABLE($1,$2,__INFO)},
 __{}{dnl
 __{}__{}define({__PSIZE_}$1,4){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}__{}pushdef({LAST_HERE_ADD},4)dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}format({%-24s},$1:);           }__INFO{   ifelse(substr($2,0,2),{0x},eval($2),substr($2,0,2),{0X},eval($2),__HEX_DEHL($2)){}dnl
-__{}__{}__{} = db __HEX_L($2) __HEX_H($2) __HEX_E($2) __HEX_D($2)
-__{}__{}__{}    dw __HEX_HL($2)           ;           }__INFO{   = eval(($2) & 0xffff)
-__{}__{}__{}    dw __HEX_DE($2)           ;           }__INFO{   = eval((($2) >> 16) & 0xffff)})}){}dnl
+__{}__{}__ADD_DD_VARIABLE($1,$2,__INFO)}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
 dnl # CREATE(name)         --> make data space pointer
 define({CREATE},{dnl
-ifelse($1,{},{
+ifelse({$1},{},{
 __{}  .error {$0}(): Missing name parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-__IS_REG($1),{1},{
+__IS_REG({$1}),{1},{
 __{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
-__IS_INSTRUCTION($1),{1},{
+__IS_INSTRUCTION({$1}),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
 {
-format({%-21s},$1){}EQU __create_{}$1{}dnl
-__{}__ADD_TOKEN({__TOKEN_CREATE},{create},__create_{}$1){}dnl
+format({%-21s},{{$1}}){EQU __create_$1}{}dnl
+__{}__ADD_TOKEN({__TOKEN_CREATE},{create {{$1}}},{__create_$1}){}dnl
 })}){}dnl
 dnl
 define({__ASM_TOKEN_CREATE},{dnl
@@ -633,11 +631,12 @@ __IS_REG($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the registry name! Try: _{$1}},
 __IS_INSTRUCTION($1),{1},{
 __{}  .error {$0}($@): The variable name is identical to the instruction name! Try: _{$1}},
-{dnl
+{
+__{}format({%-24s},{});           __INFO{}dnl
 __{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}pushdef({LAST_HERE_ADD},0)dnl
-__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}format({%-24s},{$1:});}){}dnl
+__{}__ADD_SPEC_VARIABLE({
+}format({%-24s},{{$1:}});           __INFO){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -675,32 +674,35 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_ALLOT},{$1 allot},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_ALLOT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing name parameter!},
-eval($#>1),{1},{
-__{}  .error {$0}($@): $# parameters found in macro!},
-__IS_NUM($1),{0},{
-__{}  .error {$0}($@): Bad parameter! M4 does not know the numeric value of the parameter.},
-{dnl
-__{}ifelse(eval((LAST_HERE_ADD+$1)<0),{1},{dnl
-__{}__{}ifelse(LAST_HERE_NAME,{VARIABLE_SECTION},{dnl
-__{}__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1)){}dnl
-__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}  .warning push_allot($1): Deallocation under VARIABLE_SECTION!
-__{}__{}__{}format({%-24s},{    ORG $}$1);           $1 allot   (deallocation)})},
-__{}__{}{dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}}format({%-24s},{    ORG $-}LAST_HERE_ADD{}){;           $1 allot   (deallocation }LAST_HERE_ADD{ bytes from }LAST_HERE_NAME{)}){}dnl
-__{}__{}__{}popdef({LAST_HERE_NAME}){}dnl
-__{}__{}__{}define({PUSH_ALLOT_TEMP},eval($1+LAST_HERE_ADD)){}dnl
-__{}__{}__{}popdef({LAST_HERE_ADD}){}dnl
-__{}__{}__{}__ASM_TOKEN_PUSH_ALLOT(PUSH_ALLOT_TEMP)})},
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing name parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}__IS_NUM($1),{0},{
+__{}__{}  .error {$0}($@): Bad parameter! M4 does not know the numeric value of the parameter.},
 __{}{dnl
-__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1))dnl
-__{}__{}ifelse(eval(($1)>0),{1},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}ds $1})},
-__{}__{}eval(($1)<0),{1},{define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}format({%-24s},{    ORG $}$1);           $1 allot   ( allocation }$1{ bytes from }LAST_HERE_NAME{)})})})})}){}dnl
+__{}__{}ifelse(eval((LAST_HERE_ADD+$1)<0),{1},{dnl
+__{}__{}__{}ifelse(LAST_HERE_NAME,{VARIABLE_SECTION},{dnl
+__{}__{}__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1)){}dnl
+__{}__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}  .warning push_allot($1): Deallocation under VARIABLE_SECTION!
+__{}__{}__{}__{}format({%-24s},{    ORG $}$1);           $1 allot   (deallocation)})},
+__{}__{}__{}{dnl
+__{}__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
+__{}__{}__{}__{}}format({%-24s},{    ORG $-}LAST_HERE_ADD{}){;           $1 allot   (deallocation }LAST_HERE_ADD{ bytes from }LAST_HERE_NAME{)}){}dnl
+__{}__{}__{}__{}popdef({LAST_HERE_NAME}){}dnl
+__{}__{}__{}__{}define({PUSH_ALLOT_TEMP},eval($1+LAST_HERE_ADD)){}dnl
+__{}__{}__{}__{}popdef({LAST_HERE_ADD}){}dnl
+__{}__{}__{}__{}__ASM_TOKEN_PUSH_ALLOT(PUSH_ALLOT_TEMP)})},
+__{}__{}{dnl
+__{}__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1))dnl
+__{}__{}__{}ifelse(eval(($1)>0),{1},{__ADD_SPEC_VARIABLE({
+__{}__{}__{}__{}ds $1})},
+__{}__{}__{}eval(($1)<0),{1},{__ADD_SPEC_VARIABLE({
+__{}__{}__{}__{}format({%-24s},{    ORG $}$1);           $1 allot   ( allocation }$1{ bytes from }LAST_HERE_NAME{)})}){}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
