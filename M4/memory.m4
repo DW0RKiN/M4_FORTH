@@ -636,7 +636,7 @@ __{}format({%-24s},{});           __INFO{}dnl
 __{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}pushdef({LAST_HERE_ADD},0)dnl
 __{}__ADD_SPEC_VARIABLE({
-}format({%-24s},{{$1:}});           __INFO){}dnl
+}format({%-26s},{{$1:}});           __INFO){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -673,7 +673,6 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_ALLOT},{$1 allot},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_ALLOT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing name parameter!},
 __{}eval($#>1),{1},{
@@ -681,25 +680,29 @@ __{}__{}  .error {$0}($@): $# parameters found in macro!},
 __{}__IS_NUM($1),{0},{
 __{}__{}  .error {$0}($@): Bad parameter! M4 does not know the numeric value of the parameter.},
 __{}{dnl
+__{}__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__{}ifdef({$0_TEMP},,{
+__{}__{}__{}format({%-24s},{});           __INFO}){}dnl
+__{}__{}undefine({$0_TEMP}){}dnl
 __{}__{}ifelse(eval((LAST_HERE_ADD+$1)<0),{1},{dnl
 __{}__{}__{}ifelse(LAST_HERE_NAME,{VARIABLE_SECTION},{dnl
 __{}__{}__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1)){}dnl
 __{}__{}__{}__{}__ADD_SPEC_VARIABLE({
   .warning push_allot($1): Deallocation under VARIABLE_SECTION!
-format({%-24s},{    ORG $}$1);           __INFO   (deallocation)})},
+}format({%-24s},{    ORG $}$1){;           }__INFO{   = deallocation})},
 __{}__{}__{}{dnl
 __{}__{}__{}__ADD_SPEC_VARIABLE({
-}format({%-24s},{    ORG $-}LAST_HERE_ADD{}){;           __INFO   (deallocation }LAST_HERE_ADD{ bytes from }LAST_HERE_NAME{)}){}dnl
+}format({%-24s},{    ORG $-}LAST_HERE_ADD{}){;           }__INFO{   deallocation }LAST_HERE_ADD{ bytes from }LAST_HERE_NAME){}dnl
 __{}__{}__{}__{}popdef({LAST_HERE_NAME}){}dnl
-__{}__{}__{}__{}define({PUSH_ALLOT_TEMP},eval($1+LAST_HERE_ADD)){}dnl
+__{}__{}__{}__{}define({$0_TEMP},eval($1+LAST_HERE_ADD)){}dnl
 __{}__{}__{}__{}popdef({LAST_HERE_ADD}){}dnl
-__{}__{}__{}__{}__ASM_TOKEN_PUSH_ALLOT(PUSH_ALLOT_TEMP)})},
+__{}__{}__{}__{}$0($0_TEMP)})},
 __{}__{}{dnl
 __{}__{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+$1))dnl
 __{}__{}__{}ifelse(eval(($1)>0),{1},{__ADD_SPEC_VARIABLE({
-    ds $1})},
+}format({%-24s},{    ds }$1){;           }__INFO)},
 __{}__{}__{}eval(($1)<0),{1},{__ADD_SPEC_VARIABLE({
-__{}__{}__{}__{}format({%-24s},{    ORG $}$1);           __INFO   ( allocation }$1{ bytes from }LAST_HERE_NAME{)})}){}dnl
+}format({%-24s},{    ORG $}$1){;           }__INFO{   allocation $1 bytes from }LAST_HERE_NAME)}){}dnl
 __{}__{}}){}dnl
 __{}}){}dnl
 }){}dnl
