@@ -711,7 +711,7 @@ dnl
 dnl
 dnl # COMMA      --> reserve one word = TOS
 define({COMMA},{dnl
-__{}__ADD_TOKEN({__TOKEN_COMMA},{{,}},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_COMMA},{{{,}}},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_COMMA},{dnl
@@ -723,8 +723,9 @@ __{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,
 __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}    dw 0x0000           ;           __INFO})})}){}dnl
+__{}__{}__ADD_DW_VARIABLE(,0,__INFO){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
