@@ -731,7 +731,7 @@ dnl
 dnl
 dnl # PUSH_COMMA(8)      --> reserve one word = 8
 define({PUSH_COMMA},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_COMMA},{$1 __COMMA},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_COMMA},{$1 {{,}}},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_COMMA},{dnl
@@ -740,16 +740,16 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
+__{}__{}undefine({__INFO}){}dnl
+__{}__{}undefine({_TMP_INFO}){}dnl
+__{}__{}__LD_REG16({BC},__HEX_HL($1)){}dnl
 __{}__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__{}define({_TMP_INFO},__COMPILE_INFO){}dnl
-__{}__{}__LD_REG16({BC},__HEX_HL($1)){}dnl
-__{}__{}define({__COMMA},{,}){}dnl
 __{}__{}__CODE_16BIT
 __{}__{}    ld  format({%-16s},(LAST_HERE_NAME{}ifelse(eval(LAST_HERE_ADD!=0),1,+LAST_HERE_ADD)){,}BC); 4:20      __INFO{}dnl
-__{}__{}undefine({__COMMA}){}dnl
 __{}__{}define({LAST_HERE_ADD},eval(LAST_HERE_ADD+2))dnl
-__{}__{}define({ALL_VARIABLE},ALL_VARIABLE{
-__{}__{}__{}    dw format({%-17s},$1);           }__CONCATENATE_WITH({ },__INFO))}){}dnl
+__{}__{}__ADD_DW_VARIABLE(,$1,__INFO){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
