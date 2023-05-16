@@ -15,6 +15,18 @@ __{}    ld   HL, (0x5C65)   ; 3:16      _zdepth   {STKEND} - Address of temporar
 __{}    ld   BC, (0x5C63)   ; 4:20      _zdepth   {STKBOT} - Address of bottom of calculator stack
 __{}    xor   A             ; 1:4       _zdepth
 __{}    sbc  HL, BC         ; 2:15      _zdepth   HL = 5*n
+__{}  if 1
+__{}    jr   nc, _ZDEPTH_D5 ; 2:7/12    _zdepth
+__{}    sub   L             ; 1:4       _zdepth
+__{}    ld    L, A          ; 1:4       _zdepth
+__{}    sbc   A, H          ; 1:4       _zdepth
+__{}    sub   L             ; 1:4       _zdepth
+__{}    ld    H, A          ; 1:4       _zdepth
+__{}    ld    A, '-'        ; 2:7       _zdepth   -
+__{}__PUTCHAR_A(_zdepth)
+__{}    xor   A             ; 1:4       _zdepth
+__{}_ZDEPTH_D5:             ;           _zdepth
+__{}  endif
 __{}    ld   BC, 0x1005     ; 3:10      _zdepth
 __{}    add  HL, HL         ; 1:11      _zdepth
 __{}    adc   A, A          ; 1:4       _zdepth
@@ -34,6 +46,18 @@ __{}    ld   HL, (0x5C65)   ; 3:16      _zdepth   {STKEND} - Address of temporar
 __{}    ld   BC, (0x5C63)   ; 4:20      _zdepth   {STKBOT} - Address of bottom of calculator stack
 __{}    xor   A             ; 1:4       _zdepth
 __{}    sbc  HL, BC         ; 2:15      _zdepth   HL = 5*n
+__{}  if 1
+__{}    jr   nc, _ZDEPTH_D5 ; 2:7/12    _zdepth
+__{}    sub   L             ; 1:4       _zdepth
+__{}    ld    L, A          ; 1:4       _zdepth
+__{}    sbc   A, H          ; 1:4       _zdepth
+__{}    sub   L             ; 1:4       _zdepth
+__{}    ld    H, A          ; 1:4       _zdepth
+__{}    ld    A, '-'        ; 2:7       _zdepth   -
+__{}__PUTCHAR_A(_zdepth)
+__{}    xor   A             ; 1:4       _zdepth
+__{}_ZDEPTH_D5:             ;           _zdepth
+__{}  endif
 __{}    ld    B, H          ; 1:4       _zdepth
 __{}    ld    C, L          ; 1:4       _zdepth   1x = base
 __{}    add  HL, HL         ; 1:11      _zdepth
