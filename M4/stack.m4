@@ -3482,6 +3482,11 @@ define({DEPTH},{dnl
 __{}__ADD_TOKEN({__TOKEN_DEPTH},{depth},$@){}dnl
 }){}dnl
 dnl
+dnl # HL=0004 && c=0 --> DEPTH=+1
+dnl # HL=0002 && c=0 --> DEPTH=+0
+dnl # HL=0000 && c=0 --> DEPTH=-1
+dnl # HL=FFFE && c=1 --> DEPTH=-2
+dnl # HL=FFFC && c=1 --> DEPTH=-3
 define({__ASM_TOKEN_DEPTH},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[13:72]    __INFO   ( -- +n )
@@ -3490,7 +3495,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ld   HL,(Stop+1)    ; 3:16      __INFO
     or    A             ; 1:4       __INFO
     sbc  HL, SP         ; 2:15      __INFO
-    srl   H             ; 2:8       __INFO
+    rr    H             ; 2:8       __INFO
     rr    L             ; 2:8       __INFO
     dec  HL             ; 1:6       __INFO}){}dnl
 dnl
