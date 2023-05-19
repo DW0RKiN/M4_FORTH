@@ -1,0 +1,49 @@
+include(`../M4/FIRST.M4')dnl
+ORG 0x8000
+INIT(60000)
+define({USE_FONT_5x8})
+
+define({_TYP_SINGLE},small)
+
+ZVARIABLE(zvar1,7.0366596661249E+13)
+
+PUSH(0x5C65) FETCH HEX UDOT PRINT_Z({" = STKEND:Address of top of calculator stack",0x0D})
+PUSH(0x5C63) FETCH HEX UDOT PRINT_Z({" = STKBOT:Addr. of bottom of calculator stack",0x0D})
+PRINT_Z({"ZDepth: "}) ZDEPTH UDOT CR
+
+PUSHDOT(2147483647) _2DUP DDOT PUSH('=') EMIT D_TO_Z ZDUP ZDOT CR 
+
+PRINT_Z({"ZDepth: "}) ZDEPTH UDOT CR
+
+PUSH(32767) DUP DOT PUSH('=') EMIT S_TO_Z ZDUP ZDOT CR
+
+PRINT_Z({"ZDepth: "}) ZDEPTH UDOT CR
+
+PRINT_Z({'*',0x0D}) 
+ZMUL ZDUP ZDOT CR
+
+PRINT_Z({"ZDepth: "}) ZDEPTH UDOT CR
+
+PRINT_Z({'-',0x0D}) 
+
+PUSH(zvar1) ZFETCH
+
+ZDUP ZDOT CR
+
+PRINT_Z({"ZDepth: "}) ZDEPTH UDOT CR
+
+ZSUB
+PUSH('=') EMIT ZDUP ZDOT CR
+
+PRINT_Z({"ZDepth: "}) ZDEPTH UDOT CR
+
+ZDROP
+PRINT_Z({"ZDepth: "}) ZDEPTH UDOT CR
+
+PUSH(0x5C65) FETCH HEX UDOT PRINT_Z({" = STKEND:Address of top of calculator stack",0x0D})
+PUSH(0x5C63) FETCH HEX UDOT PRINT_Z({" = STKBOT:Addr. of bottom of calculator stack",0x0D})
+
+PRINT_Z({"ZDepth: "}) ZDEPTH UDOT CR
+PRINT_Z({"Depth: "}) DEPTH UDOT CR
+
+STOP
