@@ -1,4 +1,4 @@
-ORG 0x8000
+    ORG 0x8000
 
 
 
@@ -8,7 +8,7 @@ BYTES_SIZE           EQU 18
 
 
 
-_tmp3                EQU __create__tmp3
+_tmp3              EQU __create__tmp3
 
 
 
@@ -60,6 +60,7 @@ _tmp3                EQU __create__tmp3
                         ;           no_segment(18)
                         ;           no_segment(18)
                         ;           no_segment(18)
+                        ;           create _tmp3
     push HL             ; 1:11      0x0001 , 0x0000 , ... 0x0000 ,   default version
     ld   HL, 0x0000     ; 3:10      0x0000 ,
     ld  (__create__tmp3+2),HL; 3:16      0x0000 ,
@@ -90,12 +91,12 @@ for101:                 ;           19 for_101
     push DE             ; 1:11      2dup
     push HL             ; 1:11      2dup   ( b a -- b a b a )
     ex   DE, HL         ; 1:4       swap   ( b a -- a b )
-                        ;[8:785]    18 move   ( from_addr to_addr -- )   u = 18 words
-    ld   BC, 0x0024     ; 3:10      18 move   BC = 36 chars
-    ex   DE, HL         ; 1:4       18 move   HL = from_addr, DE = to_addr
-    ldir                ; 2:u*42-5  18 move   addr++
-    pop  HL             ; 1:10      18 move
-    pop  DE             ; 1:10      18 move
+                        ;[8:407]    18/2 move   ( from_addr to_addr -- )   u = 18/2 words
+    ld   BC, 0x0012     ; 3:10      18/2 move   BC = 18 chars
+    ex   DE, HL         ; 1:4       18/2 move   HL = from_addr, DE = to_addr
+    ldir                ; 2:u*42-5  18/2 move   addr++
+    pop  HL             ; 1:10      18/2 move
+    pop  DE             ; 1:10      18/2 move
     ld    A, 0x12       ; 2:7       dec pu.   ( p_num -- p_num ) p_10=_10 && p_temp=_tmp_print
     push DE             ; 1:11      dec pu.
     ex   DE, HL         ; 1:4       dec pu.
@@ -123,7 +124,7 @@ leave101:               ;           next_101
     ld   HL,(Stop+1)    ; 3:16      depth
     or    A             ; 1:4       depth
     sbc  HL, SP         ; 2:15      depth
-    srl   H             ; 2:8       depth
+    rr    H             ; 2:8       depth
     rr    L             ; 2:8       depth
     dec  HL             ; 1:6       depth
     call PRT_U16        ; 3:17      u.   ( u -- )
@@ -934,76 +935,76 @@ VARIABLE_SECTION:
 
 ; The padding will fill if the following X bytes overflow the 256 byte segment.
 ; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
-if  ((($ + 18 - 1) / 256) != ($/256))
-  DEFS    (($/256)+1)*256 - $
-endif
-_10:                    ; = 10
-    dw 0x000a
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
+  if  ((($ + 18 - 1) / 256) != ($/256))
+    DEFS    (($/256)+1)*256 - $
+  endif
+_10:                    ;           p18constant 10   = 10
+    dw 0x000A           ;           p18constant 10   = 10
+    dw 0x0000           ;           p18constant 10   = 0
+    dw 0x0000           ;           p18constant 10   = 0
+    dw 0x0000           ;           p18constant 10   = 0
+    dw 0x0000           ;           p18constant 10   = 0
+    dw 0x0000           ;           p18constant 10   = 0
+    dw 0x0000           ;           p18constant 10   = 0
+    dw 0x0000           ;           p18constant 10   = 0
+    dw 0x0000           ;           p18constant 10   = 0
 ; The padding will fill if the following X bytes overflow the 256 byte segment.
 ; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
-if  ((($ + 18 - 1) / 256) != ($/256))
-  DEFS    (($/256)+1)*256 - $
-endif
-_99:                    ; = 99
-    dw 0x0063
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
+  if  ((($ + 18 - 1) / 256) != ($/256))
+    DEFS    (($/256)+1)*256 - $
+  endif
+_99:                    ;           p18constant 99   = 99
+    dw 0x0063           ;           p18constant 99   = 99
+    dw 0x0000           ;           p18constant 99   = 0
+    dw 0x0000           ;           p18constant 99   = 0
+    dw 0x0000           ;           p18constant 99   = 0
+    dw 0x0000           ;           p18constant 99   = 0
+    dw 0x0000           ;           p18constant 99   = 0
+    dw 0x0000           ;           p18constant 99   = 0
+    dw 0x0000           ;           p18constant 99   = 0
+    dw 0x0000           ;           p18constant 99   = 0
 ; The padding will fill if the following X bytes overflow the 256 byte segment.
 ; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
-if  ((($ + 18 - 1) / 256) != ($/256))
-  DEFS    (($/256)+1)*256 - $
-endif
-_tmp_print:             ; = 0
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
+  if  ((($ + 18 - 1) / 256) != ($/256))
+    DEFS    (($/256)+1)*256 - $
+  endif
+_tmp_print:             ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
 ; The padding will fill if the following X bytes overflow the 256 byte segment.
 ; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
-if  ((($ + 18 - 1) / 256) != ($/256))
-  DEFS    (($/256)+1)*256 - $
-endif
-_tmp2:                  ; = 0
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
-    dw 0x0000
+  if  ((($ + 18 - 1) / 256) != ($/256))
+    DEFS    (($/256)+1)*256 - $
+  endif
+_tmp2:                  ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
+    dw 0x0000           ;           p18constant 0   = 0
 ; The padding will fill if the following X bytes overflow the 256 byte segment.
 ; Any use of Allot with a negative value exceeding this address will result in undefined behavior.
-if  ((($ + 18 - 1) / 256) != ($/256))
-  DEFS    (($/256)+1)*256 - $
-endif
-__create__tmp3:         ;
-    dw 0x0001           ;           0x0001 comma
-    dw 0x0000           ;           0x0000 comma
-    dw 0x0000           ;           0x0000 comma
-    dw 0x0000           ;           0x0000 comma
-    dw 0x0000           ;           0x0000 comma
-    dw 0x0000           ;           0x0000 comma
-    dw 0x0000           ;           0x0000 comma
-    dw 0x0000           ;           0x0000 comma
-    dw 0x0000           ;           0x0000 comma
+  if  ((($ + 18 - 1) / 256) != ($/256))
+    DEFS    (($/256)+1)*256 - $
+  endif
+__create__tmp3:         ;           create _tmp3
+    dw 0x0001           ;           0x0001 ,   = 1
+    dw 0x0000           ;           0x0000 ,   = 0
+    dw 0x0000           ;           0x0000 ,   = 0
+    dw 0x0000           ;           0x0000 ,   = 0
+    dw 0x0000           ;           0x0000 ,   = 0
+    dw 0x0000           ;           0x0000 ,   = 0
+    dw 0x0000           ;           0x0000 ,   = 0
+    dw 0x0000           ;           0x0000 ,   = 0
+    dw 0x0000           ;           0x0000 ,   = 0
