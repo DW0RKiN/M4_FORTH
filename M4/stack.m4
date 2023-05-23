@@ -1781,6 +1781,16 @@ __{}define({__INFO},__COMPILE_INFO)
     ld   L, E           ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl # ( c b a -- b c )
+define({DROP_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP_SWAP},{drop swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROP_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    pop HL              ; 1:11      __INFO   ( c b a -- b c )}){}dnl
+dnl
+dnl
 dnl
 dnl # drop 50
 dnl # ( a -- 50 )

@@ -6332,19 +6332,19 @@ __{}__{}.error {$0}($@): Unexpected parameter!},
 __{}_TYP_SINGLE,small,{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   ( x -- x ) $1 <> HL}){}dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,3,10)
+__{}__{}__EQ_MAKE_BEST_CODE($1,3,10){}dnl
 __{}__{}define({__PRICE}, _TMP_BEST_P){}dnl
 __{}__{}define({__BYTES}, _TMP_BEST_B){}dnl
-__{}__{}define({__CLOCKS},_TMP_BEST_C){}dnl
+__{}__{}define({__CLOCKS},_TMP_BEST_C)
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp   nz, format({%-11s},$2); 3:10      _TMP_INFO},
 __{}{dnl
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}define({_TMP_STACK_INFO},{__INFO   ( x -- x ) HL == $1}){}dnl
-__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,$2,0)
+__{}__{}__EQ_MAKE_BEST_CODE($1,3,10,$2,0){}dnl
 __{}__{}define({__PRICE}, _TMP_BEST_P){}dnl
 __{}__{}define({__BYTES}, _TMP_BEST_B){}dnl
-__{}__{}define({__CLOCKS},_TMP_BEST_C){}dnl
+__{}__{}define({__CLOCKS},_TMP_BEST_C)
 __{}__{}_TMP_BEST_CODE
 __{}__{}    jp   nz, format({%-11s},$2); 3:10      _TMP_INFO}){}dnl
 }){}dnl
