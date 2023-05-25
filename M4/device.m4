@@ -1482,3 +1482,94 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # ( -- bool ) 
+dnl # Check press key Q
+define({PRESSKEY_Q},{dnl
+__{}__ADD_TOKEN({__TOKEN_PRESSKEY_Q},{press_q},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PRESSKEY_Q},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( -- bool )
+    ex   DE, HL         ; 1:4       __INFO
+    ld   BC, 0xFBFE     ; 3:10      __INFO
+    in    A,(C)         ; 2:12      __INFO
+    rrca                ; 1:4       __INFO
+    ccf                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- bool ) 
+dnl # Check press key A
+define({PRESSKEY_A},{dnl
+__{}__ADD_TOKEN({__TOKEN_PRESSKEY_A},{press_a},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PRESSKEY_A},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( -- bool )
+    ex   DE, HL         ; 1:4       __INFO
+    ld   BC, 0xFDFE     ; 3:10      __INFO
+    in    A,(C)         ; 2:12      __INFO
+    rrca                ; 1:4       __INFO
+    ccf                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- bool ) 
+dnl # Check press key P
+define({PRESSKEY_P},{dnl
+__{}__ADD_TOKEN({__TOKEN_PRESSKEY_P},{press_p},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PRESSKEY_P},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( -- bool )
+    ex   DE, HL         ; 1:4       __INFO
+    ld   BC, 0xDFFE     ; 3:10      __INFO
+    in    A,(C)         ; 2:12      __INFO
+    rrca                ; 1:4       __INFO
+    ccf                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- bool ) 
+dnl # Check press key O
+define({PRESSKEY_O},{dnl
+__{}__ADD_TOKEN({__TOKEN_PRESSKEY_O},{press_o},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PRESSKEY_O},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( -- bool )
+    ex   DE, HL         ; 1:4       __INFO
+    ld   BC, 0xDFFE     ; 3:10      __INFO
+    in    A,(C)         ; 2:12      __INFO
+    rrca                ; 1:4       __INFO
+    rrca                ; 1:4       __INFO
+    ccf                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- bool ) 
+dnl # Check press key M
+define({PRESSKEY_M},{dnl
+__{}__ADD_TOKEN({__TOKEN_PRESSKEY_M},{press_m},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PRESSKEY_M},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    push DE             ; 1:11      __INFO   ( -- bool )
+    ex   DE, HL         ; 1:4       __INFO
+    ld   BC, 0x7FFE     ; 3:10      __INFO
+    in    A,(C)         ; 2:12      __INFO
+    and  0x04           ; 2:7       __INFO
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
