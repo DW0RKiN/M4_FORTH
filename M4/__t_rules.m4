@@ -643,6 +643,9 @@ pushdot,,,
 dnl # PUSH
 push,,,
 
+            __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_PRESSKEY,                             {__SET_TOKEN({__TOKEN_PUSH_PRESSKEY},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_PRESSKEY,                             {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_PRESSKEY}, __CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
+
             __T_NAME(0):__T_ITEMS(0):$1:__PSIZE_$3,         __TOKEN_PUSHS:1:__TOKEN_TO:2,                      {__SET_TOKEN({__TOKEN_PUSH_TO},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0),shift(shift($@)))},
             __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__PSIZE_$3, __TOKEN_PUSHS:1:__TOKEN_TO:2,                      {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_TO}, __CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),__T_LAST_1_PAR(1),shift(shift($@))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
 
