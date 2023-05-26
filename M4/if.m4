@@ -20,6 +20,62 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
+dnl # if zero_flag
+define({IF_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_IF_ZF},{if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_IF_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # if not_zero_flag
+define({IF_NZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_IF_NZF},{if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_IF_NZF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # if carry_flag
+define({IF_CF},{dnl
+__{}__ADD_TOKEN({__TOKEN_IF_ZF},{if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_IF_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # if not_carry_flag
+define({IF_NCF},{dnl
+__{}__ADD_TOKEN({__TOKEN_IF_NZF},{if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_IF_NZF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # else
 define({ELSE},{dnl
 __{}__ADD_TOKEN({__TOKEN_ELSE},{else},$@){}dnl
