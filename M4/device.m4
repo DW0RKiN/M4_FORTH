@@ -1482,8 +1482,55 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+define({__TESTKEY_B},0x7F10){}dnl
+define({__TESTKEY_H},0xBF10){}dnl
+define({__TESTKEY_Y},0xDF10){}dnl
+define({__TESTKEY_6},0xEF10){}dnl
+define({__TESTKEY_5},0xF710){}dnl
+define({__TESTKEY_T},0xFB10){}dnl
+define({__TESTKEY_G},0xFD10){}dnl
+define({__TESTKEY_V},0xFE10){}dnl
+dnl
+define({__TESTKEY_N},0x7F08){}dnl
+define({__TESTKEY_J},0xBF08){}dnl
+define({__TESTKEY_U},0xDF08){}dnl
+define({__TESTKEY_7},0xEF08){}dnl
+define({__TESTKEY_4},0xF708){}dnl
+define({__TESTKEY_R},0xFB08){}dnl
+define({__TESTKEY_F},0xFD08){}dnl
+define({__TESTKEY_C},0xFE08){}dnl
+dnl
+define({__TESTKEY_M},0x7F04){}dnl
+define({__TESTKEY_K},0xBF04){}dnl
+define({__TESTKEY_I},0xDF04){}dnl
+define({__TESTKEY_8},0xEF04){}dnl
+define({__TESTKEY_3},0xF704){}dnl
+define({__TESTKEY_E},0xFB04){}dnl
+define({__TESTKEY_D},0xFD04){}dnl
+define({__TESTKEY_X},0xFE04){}dnl
+dnl
+define({__TESTKEY_SYMBOL_SHIFT},0x7F02){}dnl
+define({__TESTKEY_L},0xBF02){}dnl
+define({__TESTKEY_O},0xDF02){}dnl
+define({__TESTKEY_9},0xEF02){}dnl
+define({__TESTKEY_2},0xF702){}dnl
+define({__TESTKEY_W},0xFB02){}dnl
+define({__TESTKEY_S},0xFD02){}dnl
+define({__TESTKEY_Z},0xFE02){}dnl
+dnl
+define({__TESTKEY_SPACE},0x7F01){}dnl
+define({__TESTKEY_ENTER},0xBF01){}dnl
+define({__TESTKEY_P},0xDF01){}dnl
+define({__TESTKEY_0},0xEF01){}dnl
+define({__TESTKEY_1},0xF701){}dnl
+define({__TESTKEY_Q},0xFB01){}dnl
+define({__TESTKEY_A},0xFD01){}dnl
+define({__TESTKEY_CAPS_SHIFT},0xFE01){}dnl
+dnl
+dnl
+dnl
 dnl # ( mask -- bool ) 
-dnl # Check press key
+dnl # Check test key
 dnl # H=0x7F L= ...BNMs_
 dnl # H=0xBF L= ...HJKLe
 dnl # H=0xDF L= ...YUIOP
@@ -1492,11 +1539,11 @@ dnl # H=0xF7 L= ...54321
 dnl # H=0xFB L= ...TREWQ
 dnl # H=0xFD L= ...GFDSA
 dnl # H=0xFE L= ...VCXZc
-define({PRESSKEY},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY},{presskey},$@){}dnl
+define({TESTKEY},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY},{testkey},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY},{dnl
+define({__ASM_TOKEN_TESTKEY},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld    B, H          ; 1:4       __INFO   ( mask -- bool )
     ld    C, 0xFE       ; 2:7       __INFO
@@ -1508,12 +1555,12 @@ dnl
 dnl
 dnl
 dnl # ( -- bool ) 
-dnl # Check press key
-define({PUSH_PRESSKEY},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_PRESSKEY},{$1 presskey},$@){}dnl
+dnl # Check test key
+define({PUSH_TESTKEY},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY},{$1 testkey},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PUSH_PRESSKEY},{dnl
+define({__ASM_TOKEN_PUSH_TESTKEY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
@@ -1522,7 +1569,49 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  true == press {}dnl
+__{}__{}ifelse(dnl
+__{}__{}__{}__HEX_HL($1),__TESTKEY_B,           {{"B"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_H,           {{"H"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Y,           {{"Y"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_6,           {{"6"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_5,           {{"5"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_T,           {{"T"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_G,           {{"G"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_V,           {{"V"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_N,           {{"N"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_J,           {{"J"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_U,           {{"U"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_7,           {{"7"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_4,           {{"4"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_R,           {{"R"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_F,           {{"F"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_C,           {{"C"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_M,           {{"M"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_K,           {{"K"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_I,           {{"I"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_8,           {{"8"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_3,           {{"3"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_E,           {{"E"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_D,           {{"D"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_X,           {{"X"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SYMBOL_SHIFT,{{"SYMBOL SHIFT"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_L,           {{"L"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_O,           {{"O"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_9,           {{"9"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_2,           {{"2"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_W,           {{"W"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_S,           {{"S"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Z,           {{"Z"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SPACE,       {{"SPACE"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_ENTER,       {{"ENTER"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_P,           {{"P"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_0,           {{"0"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_1,           {{"1"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Q,           {{"Q"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_A,           {{"A"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_CAPS_SHIFT,  {{"CAPS SHIFT"}},
+__{}__{}__{}{"???"})
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}ifelse(dnl
 __{}__{}__HEX_L($1),0x01,{
@@ -1549,18 +1638,20 @@ __{}__{}__{}    ld   BC, 0xFE+(0xFF00&($1)); 3:10      __INFO
 __{}__{}__{}    in    A,(C)         ; 2:12      __INFO
 __{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO
 __{}__{}__{}    sub  0x01           ; 2:7       __INFO
-__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO})}){}dnl
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO{}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
 }){}dnl
 dnl   
 dnl
 dnl
 dnl # ( -- bool ) 
-dnl # Check press key Q
-define({PRESSKEY_Q},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_Q},{press_q},$@){}dnl
+dnl # Check test key Q
+define({TESTKEY_Q},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_Q},{test_q},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_Q},{dnl
+define({__ASM_TOKEN_TESTKEY_Q},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( -- bool )
     ex   DE, HL         ; 1:4       __INFO
@@ -1573,12 +1664,12 @@ dnl
 dnl
 dnl
 dnl # ( -- bool ) 
-dnl # Check press key A
-define({PRESSKEY_A},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_A},{press_a},$@){}dnl
+dnl # Check test key A
+define({TESTKEY_A},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_A},{test_a},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_A},{dnl
+define({__ASM_TOKEN_TESTKEY_A},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( -- bool )
     ex   DE, HL         ; 1:4       __INFO
@@ -1591,12 +1682,12 @@ dnl
 dnl
 dnl
 dnl # ( -- bool ) 
-dnl # Check press key P
-define({PRESSKEY_P},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_P},{press_p},$@){}dnl
+dnl # Check test key P
+define({TESTKEY_P},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_P},{test_p},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_P},{dnl
+define({__ASM_TOKEN_TESTKEY_P},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( -- bool )
     ex   DE, HL         ; 1:4       __INFO
@@ -1609,12 +1700,12 @@ dnl
 dnl
 dnl
 dnl # ( -- bool ) 
-dnl # Check press key O
-define({PRESSKEY_O},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_O},{press_o},$@){}dnl
+dnl # Check test key O
+define({TESTKEY_O},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_O},{test_o},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_O},{dnl
+define({__ASM_TOKEN_TESTKEY_O},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( -- bool )
     ex   DE, HL         ; 1:4       __INFO
@@ -1628,12 +1719,12 @@ dnl
 dnl
 dnl
 dnl # ( -- bool ) 
-dnl # Check press key M
-define({PRESSKEY_M},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_M},{press_m},$@){}dnl
+dnl # Check test key M
+define({TESTKEY_M},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_M},{test_m},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_M},{dnl
+define({__ASM_TOKEN_TESTKEY_M},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     push DE             ; 1:11      __INFO   ( -- bool )
     ex   DE, HL         ; 1:4       __INFO
@@ -1646,12 +1737,12 @@ dnl
 dnl
 dnl
 dnl # ( -- ) 
-dnl # Check press key Q
-define({PRESSKEY_Q_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_Q_ZF},{press_q},$@){}dnl
+dnl # Check test key Q
+define({TESTKEY_Q_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_Q_ZF},{test_q},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_Q_ZF},{dnl
+define({__ASM_TOKEN_TESTKEY_Q_ZF},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld   BC, 0xFBFE     ; 3:10      __INFO
     in    A,(C)         ; 2:12      __INFO
@@ -1660,12 +1751,12 @@ dnl
 dnl
 dnl
 dnl # ( -- ) 
-dnl # Check press key A
-define({PRESSKEY_A_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_A_ZF},{press_a},$@){}dnl
+dnl # Check test key A
+define({TESTKEY_A_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_A_ZF},{test_a},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_A_ZF},{dnl
+define({__ASM_TOKEN_TESTKEY_A_ZF},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld   BC, 0xFDFE     ; 3:10      __INFO
     in    A,(C)         ; 2:12      __INFO
@@ -1674,12 +1765,12 @@ dnl
 dnl
 dnl
 dnl # ( -- ) 
-dnl # Check press key P
-define({PRESSKEY_P_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_P_ZF},{press_p},$@){}dnl
+dnl # Check test key P
+define({TESTKEY_P_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_P_ZF},{test_p},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_P_ZF},{dnl
+define({__ASM_TOKEN_TESTKEY_P_ZF},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld   BC, 0xDFFE     ; 3:10      __INFO
     in    A,(C)         ; 2:12      __INFO
@@ -1688,12 +1779,12 @@ dnl
 dnl
 dnl
 dnl # ( -- ) 
-dnl # Check press key O
-define({PRESSKEY_O_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_O_ZF},{press_o},$@){}dnl
+dnl # Check test key O
+define({TESTKEY_O_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_O_ZF},{test_o},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_O_ZF},{dnl
+define({__ASM_TOKEN_TESTKEY_O_ZF},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld   BC, 0xDFFE     ; 3:10      __INFO
     in    A,(C)         ; 2:12      __INFO
@@ -1702,12 +1793,12 @@ dnl
 dnl
 dnl
 dnl # ( -- ) 
-dnl # Check press key M
-define({PRESSKEY_M_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_PRESSKEY_M_ZF},{press_m},$@){}dnl
+dnl # Check test key M
+define({TESTKEY_M_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_M_ZF},{test_m},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PRESSKEY_M_ZF},{dnl
+define({__ASM_TOKEN_TESTKEY_M_ZF},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ld   BC, 0x7FFE     ; 3:10      __INFO
     in    A,(C)         ; 2:12      __INFO
