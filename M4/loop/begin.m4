@@ -2500,6 +2500,446 @@ __{}__{}.error {$0}(): Missing parameter!},
 dnl
 dnl
 dnl
+dnl
+dnl
+dnl # ---------------------------------------------------------------------------
+dnl # Device
+dnl # ---------------------------------------------------------------------------
+dnl
+dnl
+dnl
+dnl # ( mask -- ) 
+dnl # Check test key
+define({TESTKEY_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_UNTIL},{testkey until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEY_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( mask -- )
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO
+__{}__{}    and   L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( mask -- ) 
+dnl # Check test key
+define({TESTKEY_0EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_0EQ_UNTIL},{testkey 0= until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEY_0EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( mask -- )
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO
+__{}__{}    and   L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    z, begin{}BEGIN_STACK   ; 3:10      __INFO
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- ) 
+dnl # Check test key
+define({PUSH_TESTKEY_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_UNTIL},{$1 testkey until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEY_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}{dnl
+__{}__{}ifelse(dnl
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO},
+__{}__{}{
+__{}__{}__{}    ld    A,high __FORM({%-7s},$1); 2:7       __INFO}){}dnl
+__{}__{}   ( -- )  if press {}dnl
+__{}__{}ifelse(dnl
+__{}__{}__{}__HEX_HL($1),__TESTKEY_B,           {{"B"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_H,           {{"H"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Y,           {{"Y"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_6,           {{"6"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_5,           {{"5"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_T,           {{"T"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_G,           {{"G"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_V,           {{"V"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_N,           {{"N"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_J,           {{"J"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_U,           {{"U"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_7,           {{"7"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_4,           {{"4"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_R,           {{"R"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_F,           {{"F"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_C,           {{"C"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_M,           {{"M"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_K,           {{"K"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_I,           {{"I"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_8,           {{"8"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_3,           {{"3"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_E,           {{"E"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_D,           {{"D"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_X,           {{"X"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SYMBOL_SHIFT,{{"SYMBOL SHIFT"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_L,           {{"L"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_O,           {{"O"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_9,           {{"9"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_2,           {{"2"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_W,           {{"W"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_S,           {{"S"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Z,           {{"Z"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SPACE,       {{"SPACE"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_ENTER,       {{"ENTER"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_P,           {{"P"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_0,           {{"0"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_1,           {{"1"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Q,           {{"Q"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_A,           {{"A"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_CAPS_SHIFT,  {{"CAPS SHIFT"}},
+__{}__{}__{}{"???"})
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_L($1),0x01,{
+__{}__{}__{}    rrca                ; 1:4       __INFO
+__{}__{}__{}    jp    c, begin{}BEGIN_STACK   ; 3:10      __INFO},
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    and  __HEX_L($1)           ; 2:7       __INFO
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO},
+__{}__{}{
+__{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO
+__{}__{}__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO{}dnl
+__{}__{}})
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- ) 
+dnl # Check test key
+define({PUSH_TESTKEY_0EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_0EQ_UNTIL},{$1 testkey 0= until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEY_0EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}{dnl
+__{}__{}ifelse(dnl
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO},
+__{}__{}{
+__{}__{}__{}    ld    A,high __FORM({%-7s},$1); 2:7       __INFO}){}dnl
+__{}__{}   ( -- )  if press {}dnl
+__{}__{}ifelse(dnl
+__{}__{}__{}__HEX_HL($1),__TESTKEY_B,           {{"B"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_H,           {{"H"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Y,           {{"Y"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_6,           {{"6"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_5,           {{"5"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_T,           {{"T"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_G,           {{"G"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_V,           {{"V"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_N,           {{"N"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_J,           {{"J"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_U,           {{"U"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_7,           {{"7"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_4,           {{"4"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_R,           {{"R"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_F,           {{"F"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_C,           {{"C"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_M,           {{"M"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_K,           {{"K"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_I,           {{"I"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_8,           {{"8"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_3,           {{"3"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_E,           {{"E"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_D,           {{"D"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_X,           {{"X"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SYMBOL_SHIFT,{{"SYMBOL SHIFT"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_L,           {{"L"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_O,           {{"O"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_9,           {{"9"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_2,           {{"2"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_W,           {{"W"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_S,           {{"S"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Z,           {{"Z"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SPACE,       {{"SPACE"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_ENTER,       {{"ENTER"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_P,           {{"P"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_0,           {{"0"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_1,           {{"1"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Q,           {{"Q"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_A,           {{"A"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_CAPS_SHIFT,  {{"CAPS SHIFT"}},
+__{}__{}__{}{"???"})
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_L($1),0x01,{
+__{}__{}__{}    rrca                ; 1:4       __INFO
+__{}__{}__{}    jp   nc, begin{}BEGIN_STACK   ; 3:10      __INFO},
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    and  __HEX_L($1)           ; 2:7       __INFO
+__{}__{}__{}    jp    z, begin{}BEGIN_STACK   ; 3:10      __INFO},
+__{}__{}{
+__{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO
+__{}__{}__{}    jp    z, begin{}BEGIN_STACK   ; 3:10      __INFO{}dnl
+__{}__{}})
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( mask -- ) 
+dnl # Check test key
+define({TESTKEY_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_WHILE},{testkey while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEY_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( mask -- )
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO
+__{}__{}    and   L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( mask -- ) 
+dnl # Check test key
+define({TESTKEY_0EQ_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_0EQ_WHILE},{testkey 0= while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEY_0EQ_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    ld    A, H          ; 1:4       __INFO   ( mask -- )
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO
+__{}__{}    and   L             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- ) 
+dnl # Check test key
+define({PUSH_TESTKEY_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_WHILE},{$1 testkey while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEY_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}{dnl
+__{}__{}ifelse(dnl
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO},
+__{}__{}{
+__{}__{}__{}    ld    A,high __FORM({%-7s},$1); 2:7       __INFO}){}dnl
+__{}__{}   ( -- )  if press {}dnl
+__{}__{}ifelse(dnl
+__{}__{}__{}__HEX_HL($1),__TESTKEY_B,           {{"B"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_H,           {{"H"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Y,           {{"Y"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_6,           {{"6"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_5,           {{"5"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_T,           {{"T"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_G,           {{"G"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_V,           {{"V"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_N,           {{"N"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_J,           {{"J"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_U,           {{"U"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_7,           {{"7"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_4,           {{"4"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_R,           {{"R"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_F,           {{"F"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_C,           {{"C"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_M,           {{"M"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_K,           {{"K"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_I,           {{"I"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_8,           {{"8"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_3,           {{"3"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_E,           {{"E"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_D,           {{"D"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_X,           {{"X"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SYMBOL_SHIFT,{{"SYMBOL SHIFT"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_L,           {{"L"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_O,           {{"O"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_9,           {{"9"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_2,           {{"2"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_W,           {{"W"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_S,           {{"S"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Z,           {{"Z"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SPACE,       {{"SPACE"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_ENTER,       {{"ENTER"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_P,           {{"P"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_0,           {{"0"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_1,           {{"1"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Q,           {{"Q"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_A,           {{"A"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_CAPS_SHIFT,  {{"CAPS SHIFT"}},
+__{}__{}__{}{"???"})
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_L($1),0x01,{
+__{}__{}__{}    rrca                ; 1:4       __INFO
+__{}__{}__{}    jp    c, break{}BEGIN_STACK   ; 3:10      __INFO},
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    and  __HEX_L($1)           ; 2:7       __INFO
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO},
+__{}__{}{
+__{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO
+__{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO{}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- ) 
+dnl # Check test key
+define({PUSH_TESTKEY_0EQ_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_0EQ_WHILE},{$1 testkey 0= while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEY_0EQ_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}{dnl
+__{}__{}ifelse(dnl
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO},
+__{}__{}{
+__{}__{}__{}    ld    A,high __FORM({%-7s},$1); 2:7       __INFO}){}dnl
+__{}__{}   ( -- )  if press {}dnl
+__{}__{}ifelse(dnl
+__{}__{}__{}__HEX_HL($1),__TESTKEY_B,           {{"B"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_H,           {{"H"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Y,           {{"Y"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_6,           {{"6"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_5,           {{"5"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_T,           {{"T"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_G,           {{"G"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_V,           {{"V"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_N,           {{"N"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_J,           {{"J"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_U,           {{"U"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_7,           {{"7"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_4,           {{"4"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_R,           {{"R"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_F,           {{"F"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_C,           {{"C"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_M,           {{"M"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_K,           {{"K"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_I,           {{"I"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_8,           {{"8"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_3,           {{"3"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_E,           {{"E"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_D,           {{"D"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_X,           {{"X"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SYMBOL_SHIFT,{{"SYMBOL SHIFT"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_L,           {{"L"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_O,           {{"O"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_9,           {{"9"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_2,           {{"2"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_W,           {{"W"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_S,           {{"S"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Z,           {{"Z"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SPACE,       {{"SPACE"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_ENTER,       {{"ENTER"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_P,           {{"P"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_0,           {{"0"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_1,           {{"1"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Q,           {{"Q"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_A,           {{"A"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_CAPS_SHIFT,  {{"CAPS SHIFT"}},
+__{}__{}__{}{"???"})
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_L($1),0x01,{
+__{}__{}__{}    rrca                ; 1:4       __INFO
+__{}__{}__{}    jp   nc, break{}BEGIN_STACK   ; 3:10      __INFO},
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    and  __HEX_L($1)           ; 2:7       __INFO
+__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO},
+__{}__{}{
+__{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO
+__{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO{}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ----------------------- 32 bit -----------------------
 dnl # ------ signed_32_bit_cond while ( d2 d1 -- ) ---------
 dnl
