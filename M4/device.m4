@@ -1545,12 +1545,35 @@ __{}__ADD_TOKEN({__TOKEN_TESTKEY},{testkey},$@){}dnl
 dnl
 define({__ASM_TOKEN_TESTKEY},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    B, H          ; 1:4       __INFO   ( mask -- bool )
-    ld    C, 0xFE       ; 2:7       __INFO
-    in    A,(C)         ; 2:12      __INFO
-    and   L             ; 1:4       __INFO
-    sub  0x01           ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+__{}    ld    A, H          ; 1:4       __INFO   ( mask -- bool )
+__{}    in    A,(0xFE)      ; 2:11      __INFO
+__{}    and   L             ; 1:4       __INFO
+__{}    sub  0x01           ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( mask -- bool ) 
+dnl # Check test key
+dnl # H=0x7F L= ...BNMs_
+dnl # H=0xBF L= ...HJKLe
+dnl # H=0xDF L= ...YUIOP
+dnl # H=0xEF L= ...67890
+dnl # H=0xF7 L= ...54321
+dnl # H=0xFB L= ...TREWQ
+dnl # H=0xFD L= ...GFDSA
+dnl # H=0xFE L= ...VCXZc
+define({TESTKEY_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEY_ZF},{testkey},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEY_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    A, H          ; 1:4       __INFO   ( mask -- ) set zf
+__{}    in    A,(0xFE)      ; 2:11      __INFO
+__{}    and   L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -1615,194 +1638,107 @@ __{}__{}__{}{"???"})
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}ifelse(dnl
 __{}__{}__HEX_L($1),0x01,{
-__{}__{}__{}    ld   BC, __HEX_HL((0xFF00&($1))+0xFE)     ; 3:10      __INFO
-__{}__{}__{}    in    A,(C)         ; 2:12      __INFO
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
+__{}__{}__{}    in    A,(0xFE)      ; 2:11      __INFO
 __{}__{}__{}    rrca                ; 1:4       __INFO
 __{}__{}__{}    ccf                 ; 1:4       __INFO
 __{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}__HEX_L($1),0x02,{
-__{}__{}__{}    ld   BC, __HEX_HL((0xFF00&($1))+0xFE)     ; 3:10      __INFO
-__{}__{}__{}    in    A,(C)         ; 2:12      __INFO
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
+__{}__{}__{}    in    A,(0xFE)      ; 2:11      __INFO
 __{}__{}__{}    rrca                ; 1:4       __INFO
 __{}__{}__{}    rrca                ; 1:4       __INFO
 __{}__{}__{}    ccf                 ; 1:4       __INFO
 __{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}__IS_NUM($1),1,{
-__{}__{}__{}    ld   BC, __HEX_HL((0xFF00&($1))+0xFE)     ; 3:10      __INFO
-__{}__{}__{}    in    A,(C)         ; 2:12      __INFO
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO
+__{}__{}__{}    in    A,(0xFE)      ; 2:11      __INFO
 __{}__{}__{}    and  __HEX_L($1)           ; 2:7       __INFO
 __{}__{}__{}    sub  0x01           ; 2:7       __INFO
 __{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}__{}{
-__{}__{}__{}    ld   BC, 0xFE+(0xFF00&($1)); 3:10      __INFO
-__{}__{}__{}    in    A,(C)         ; 2:12      __INFO
+__{}__{}__{}    ld    A,high __FORM({%-7s},$1); 2:7       __INFO
+__{}__{}__{}    in    A,(0xFE)      ; 2:11      __INFO
 __{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO
 __{}__{}__{}    sub  0x01           ; 2:7       __INFO
 __{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO{}dnl
 __{}__{}}){}dnl
 __{}}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- bool ) 
+dnl # Check test key
+define({PUSH_TESTKEY_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_ZF},{$1 testkey},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEY_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}{dnl
+__{}__{}ifelse(dnl
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO},
+__{}__{}{
+__{}__{}__{}    ld    A,high __FORM({%-7s},$1); 2:7       __INFO}){}dnl
+__{}__{}   ( -- )  set zf == press {}dnl
+__{}__{}ifelse(dnl
+__{}__{}__{}__HEX_HL($1),__TESTKEY_B,           {{"B"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_H,           {{"H"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Y,           {{"Y"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_6,           {{"6"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_5,           {{"5"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_T,           {{"T"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_G,           {{"G"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_V,           {{"V"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_N,           {{"N"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_J,           {{"J"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_U,           {{"U"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_7,           {{"7"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_4,           {{"4"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_R,           {{"R"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_F,           {{"F"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_C,           {{"C"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_M,           {{"M"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_K,           {{"K"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_I,           {{"I"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_8,           {{"8"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_3,           {{"3"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_E,           {{"E"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_D,           {{"D"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_X,           {{"X"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SYMBOL_SHIFT,{{"SYMBOL SHIFT"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_L,           {{"L"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_O,           {{"O"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_9,           {{"9"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_2,           {{"2"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_W,           {{"W"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_S,           {{"S"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Z,           {{"Z"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_SPACE,       {{"SPACE"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_ENTER,       {{"ENTER"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_P,           {{"P"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_0,           {{"0"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_1,           {{"1"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_Q,           {{"Q"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_A,           {{"A"}},
+__{}__{}__{}__HEX_HL($1),__TESTKEY_CAPS_SHIFT,  {{"CAPS SHIFT"}},
+__{}__{}__{}{"???"})
+__{}__{}    in    A,(0xFE)      ; 2:11      __INFO{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__IS_NUM($1),1,{
+__{}__{}__{}    and  __HEX_L($1)           ; 2:7       __INFO},
+__{}__{}{
+__{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl   
-dnl
-dnl
-dnl # ( -- bool ) 
-dnl # Check test key Q
-define({TESTKEY_Q},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_Q},{test_q},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_Q},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    push DE             ; 1:11      __INFO   ( -- bool )
-    ex   DE, HL         ; 1:4       __INFO
-    ld   BC, 0xFBFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    rrca                ; 1:4       __INFO
-    ccf                 ; 1:4       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- bool ) 
-dnl # Check test key A
-define({TESTKEY_A},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_A},{test_a},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_A},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    push DE             ; 1:11      __INFO   ( -- bool )
-    ex   DE, HL         ; 1:4       __INFO
-    ld   BC, 0xFDFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    rrca                ; 1:4       __INFO
-    ccf                 ; 1:4       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- bool ) 
-dnl # Check test key P
-define({TESTKEY_P},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_P},{test_p},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_P},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    push DE             ; 1:11      __INFO   ( -- bool )
-    ex   DE, HL         ; 1:4       __INFO
-    ld   BC, 0xDFFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    rrca                ; 1:4       __INFO
-    ccf                 ; 1:4       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- bool ) 
-dnl # Check test key O
-define({TESTKEY_O},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_O},{test_o},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_O},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    push DE             ; 1:11      __INFO   ( -- bool )
-    ex   DE, HL         ; 1:4       __INFO
-    ld   BC, 0xDFFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    rrca                ; 1:4       __INFO
-    rrca                ; 1:4       __INFO
-    ccf                 ; 1:4       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- bool ) 
-dnl # Check test key M
-define({TESTKEY_M},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_M},{test_m},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_M},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    push DE             ; 1:11      __INFO   ( -- bool )
-    ex   DE, HL         ; 1:4       __INFO
-    ld   BC, 0x7FFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    and  0x04           ; 2:7       __INFO
-    sub  0x01           ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- ) 
-dnl # Check test key Q
-define({TESTKEY_Q_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_Q_ZF},{test_q},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_Q_ZF},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld   BC, 0xFBFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    and  0x01           ; 2:7       __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- ) 
-dnl # Check test key A
-define({TESTKEY_A_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_A_ZF},{test_a},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_A_ZF},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld   BC, 0xFDFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    and  0x01           ; 2:7       __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- ) 
-dnl # Check test key P
-define({TESTKEY_P_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_P_ZF},{test_p},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_P_ZF},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld   BC, 0xDFFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    and  0x01           ; 2:7       __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- ) 
-dnl # Check test key O
-define({TESTKEY_O_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_O_ZF},{test_o},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_O_ZF},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld   BC, 0xDFFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    and  0x02           ; 2:7       __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( -- ) 
-dnl # Check test key M
-define({TESTKEY_M_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_TESTKEY_M_ZF},{test_m},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_TESTKEY_M_ZF},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld   BC, 0x7FFE     ; 3:10      __INFO
-    in    A,(C)         ; 2:12      __INFO
-    and  0x04           ; 2:7       __INFO}){}dnl
-dnl
 dnl
 dnl
