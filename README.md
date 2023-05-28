@@ -700,10 +700,64 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>                     |<sub>      CLEARKEY       |<sub>                        |<sub>          ( -- )          |<sub> clear key buff        |
 |<sub>         key         |<sub>        KEY          |<sub>                        |<sub>          ( -- key )      |<sub>                       |
 |<sub>        key?         |<sub>        KEY?         |<sub>                        |<sub>          ( -- flag )     |<sub>                       |
+|<sub>                     |<sub>       TESTKEY       |<sub>                        |<sub>     ( mask -- bool )     |<sub> test if key is pressed|
 |<sub>       accept        |<sub>       ACCEPT        |<sub>                        |<sub> ( addr max -- loaded )   |<sub>                       |
 |<sub>       accept        |<sub>      ACCEPT_Z       |<sub>                        |<sub> ( addr max -- loaded )   |<sub> C-style string        |
 |<sub>                     |<sub>       ZX_CLS        |<sub>                        |<sub>          ( -- )          |<sub> ZX48:clear screen     |
 |<sub>                     |<sub>      ZX_BORDER      |<sub>                        |<sub>    ( color -- )          |<sub> ZX48:set border color |
+
+
+Infinite loop until "Q" is pressed:
+
+    BEGIN
+    PUSH(__TESTKEY_Q) TESTKEY UNTIL
+    
+All 40 keys mask:
+
+    __TESTKEY_B            = 0x7F10
+    __TESTKEY_H            = 0xBF10
+    __TESTKEY_Y            = 0xDF10
+    __TESTKEY_6            = 0xEF10
+    __TESTKEY_5            = 0xF710
+    __TESTKEY_T            = 0xFB10
+    __TESTKEY_G            = 0xFD10
+    __TESTKEY_V            = 0xFE10
+    
+    __TESTKEY_N            = 0x7F08
+    __TESTKEY_J            = 0xBF08
+    __TESTKEY_U            = 0xDF08
+    __TESTKEY_7            = 0xEF08
+    __TESTKEY_4            = 0xF708
+    __TESTKEY_R            = 0xFB08
+    __TESTKEY_F            = 0xFD08
+    __TESTKEY_C            = 0xFE08
+    
+    __TESTKEY_M            = 0x7F04
+    __TESTKEY_K            = 0xBF04
+    __TESTKEY_I            = 0xDF04
+    __TESTKEY_8            = 0xEF04
+    __TESTKEY_3            = 0xF704
+    __TESTKEY_E            = 0xFB04
+    __TESTKEY_D            = 0xFD04
+    __TESTKEY_X            = 0xFE04
+    
+    __TESTKEY_SYMBOL_SHIFT = 0x7F02
+    __TESTKEY_L            = 0xBF02
+    __TESTKEY_O            = 0xDF02
+    __TESTKEY_9            = 0xEF02
+    __TESTKEY_2            = 0xF702
+    __TESTKEY_W            = 0xFB02
+    __TESTKEY_S            = 0xFD02
+    __TESTKEY_Z            = 0xFE02
+    
+    __TESTKEY_SPACE        = 0x7F01
+    __TESTKEY_ENTER        = 0xBF01
+    __TESTKEY_P            = 0xDF01
+    __TESTKEY_0            = 0xEF01
+    __TESTKEY_1            = 0xF701
+    __TESTKEY_Q            = 0xFB01
+    __TESTKEY_A            = 0xFD01
+    __TESTKEY_CAPS_SHIFT   = 0xFE01
 
 I'm testing a 5x8 font that changes the output from 8x8 if define({USE_FONT_5x8}) is entered at the beginning of the program.
 
