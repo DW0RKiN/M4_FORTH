@@ -631,7 +631,11 @@ o...,,,
 dnl # P
 p,,,
 
-            __T_NAME(0):$1,   __TOKEN_PDSUB:__TOKEN_NEGATE, {__SET_TOKEN({__TOKEN_PDSUB_NEGATE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,   __TOKEN_PDSUB:__TOKEN_NEGATE,   {__SET_TOKEN({__TOKEN_PDSUB_NEGATE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            
+            __T_NAME(0):$1,   __TOKEN_TUCK:__TOKEN_PORTSTORE, {__SET_TOKEN({__TOKEN_TUCK_PORTSTORE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            
 
 dnl # PUSHDOT
 pushdot,,,
@@ -647,9 +651,8 @@ push,,,
             __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_TESTKEY,                             {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_TESTKEY}, __CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
             
             __T_NAME(0):$1,                      __TOKEN_PUSH_TESTKEY:__TOKEN_0EQ,                            {__SET_TOKEN({__TOKEN_PUSH_TESTKEY_0EQ},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):$1,                      __TOKEN_TESTKEY:__TOKEN_0EQ,                                 {__SET_TOKEN({__TOKEN_TESTKEY_0EQ},     __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
 
-            
-            
             __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_TESTKEY_ZF,                          {__SET_TOKEN({__TOKEN_PUSH_TESTKEY_ZF},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_TESTKEY_ZF,                          {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_TESTKEY_ZF}, __CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
 
