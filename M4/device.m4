@@ -1527,6 +1527,24 @@ define({__TESTKEY_Q},0xFB01){}dnl
 define({__TESTKEY_A},0xFD01){}dnl
 define({__TESTKEY_CAPS_SHIFT},0xFE01){}dnl
 dnl
+define({__TESTKEY_SINCLAIR1_LEFT}, __TESTKEY_1){}dnl
+define({__TESTKEY_SINCLAIR1_RIGHT},__TESTKEY_2){}dnl
+define({__TESTKEY_SINCLAIR1_DOWN}, __TESTKEY_3){}dnl
+define({__TESTKEY_SINCLAIR1_UP},   __TESTKEY_4){}dnl
+define({__TESTKEY_SINCLAIR1_FIRE}, __TESTKEY_5){}dnl
+dnl
+define({__TESTKEY_SINCLAIR2_LEFT}, __TESTKEY_6){}dnl
+define({__TESTKEY_SINCLAIR2_RIGHT},__TESTKEY_7){}dnl
+define({__TESTKEY_SINCLAIR2_DOWN}, __TESTKEY_8){}dnl
+define({__TESTKEY_SINCLAIR2_UP},   __TESTKEY_9){}dnl
+define({__TESTKEY_SINCLAIR2_FIRE}, __TESTKEY_0){}dnl
+dnl
+define({__TESTKEY_CURSOR_LEFT}, __TESTKEY_5){}dnl
+define({__TESTKEY_CURSOR_DOWN}, __TESTKEY_6){}dnl
+define({__TESTKEY_CURSOR_UP},   __TESTKEY_7){}dnl
+define({__TESTKEY_CURSOR_RIGHT},__TESTKEY_8){}dnl
+define({__TESTKEY_CURSOR_FIRE}, __TESTKEY_0){}dnl
+dnl
 dnl
 dnl
 dnl # ( mask -- bool ) 
@@ -1853,6 +1871,64 @@ __{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl   
+dnl
+dnl
+dnl # ( port -- char ) 
+define({PORTFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PORTFETCH},{port@},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PORTFETCH},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    B, H          ; 1:4       __INFO   ( port -- char )
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    in    L,(C)         ; 2:12      __INFO
+__{}    ld    H, 0x00       ; 2:7       __INFO}){}dnl
+dnl   
+dnl
+dnl
+dnl # ( char port -- ) 
+define({PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PORTSTORE},{port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    B, H          ; 1:4       __INFO   ( char port -- )
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    out  (C),E          ; 2:12      __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO}){}dnl
+dnl   
+dnl
+dnl
+dnl # ( char port -- char port ) 
+define({_2DUP_PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_PORTSTORE},{2dup port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    B, H          ; 1:4       __INFO   ( char port -- char port )
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    out  (C),E          ; 2:12      __INFO}){}dnl
+dnl   
+dnl
+dnl
+dnl # ( char port -- port ) 
+define({TUCK_PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TUCK_PORTSTORE},{tuck port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TUCK_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    ld    B, H          ; 1:4       __INFO   ( char port -- port )
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    out  (C),E          ; 2:12      __INFO
+__{}    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl
 dnl
 dnl
