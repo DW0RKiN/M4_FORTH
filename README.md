@@ -703,6 +703,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>                     |<sub>       TESTKEY       |<sub>                        |<sub>     ( mask -- bool )     |<sub> test if key is pressed|
 |<sub>       accept        |<sub>       ACCEPT        |<sub>                        |<sub> ( addr max -- loaded )   |<sub>                       |
 |<sub>       accept        |<sub>      ACCEPT_Z       |<sub>                        |<sub> ( addr max -- loaded )   |<sub> C-style string        |
+|<sub>                     |<sub>      PORTFETCH      |<sub>                        |<sub>     ( port -- char )     |<sub> in char,(port)        |
+|<sub>                     |<sub>      PORTSTORE      |<sub>                        |<sub>( char port -- )          |<sub> out (port),char       |
 |<sub>                     |<sub>       ZX_CLS        |<sub>                        |<sub>          ( -- )          |<sub> ZX48:clear screen     |
 |<sub>                     |<sub>      ZX_BORDER      |<sub>                        |<sub>    ( color -- )          |<sub> ZX48:set border color |
 
