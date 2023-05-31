@@ -1870,7 +1870,7 @@ __{}__{}{
 __{}__{}__{}    and  low __FORM({%-11s},$1); 2:7       __INFO}){}dnl
 __{}}){}dnl
 }){}dnl
-dnl   
+dnl
 dnl
 dnl
 dnl # ( port -- char ) 
@@ -1884,6 +1884,36 @@ __{}    ld    B, H          ; 1:4       __INFO   ( port -- char )
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    in    L,(C)         ; 2:12      __INFO
 __{}    ld    H, 0x00       ; 2:7       __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- char ) 
+define({PUSH_PORTFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_PORTFETCH},{$1 port@},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_PORTFETCH},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- char )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}ifelse(__HEX_H($1),0x00,{
+__{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}dnl
+__{}__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}__{}    ld    H, A          ; 1:4       __INFO
+__{}__{}__{}    in    A,(__HEX_L($1))      ; 2:11      __INFO
+__{}__{}__{}    ld    L, A          ; 1:4       __INFO},
+__{}__{}{dnl
+__{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}dnl
+__{}__{}__{}$0_TEMP
+__{}__{}__{}    in    L,(C)         ; 2:12      __INFO{}dnl
+__{}__{}__{}__LD_R_NUM(__INFO,{H},0x00,{BC},$1)}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl   
 dnl
 dnl
