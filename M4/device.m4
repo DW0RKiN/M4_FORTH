@@ -1902,7 +1902,6 @@ __{}{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- char )
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}ifelse(__HEX_H($1),0x00,{
-__{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}dnl
 __{}__{}__{}    xor   A             ; 1:4       __INFO
 __{}__{}__{}    ld    H, A          ; 1:4       __INFO
 __{}__{}__{}    in    A,(__HEX_L($1))      ; 2:11      __INFO
@@ -1912,6 +1911,36 @@ __{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}dnl
 __{}__{}__{}$0_TEMP
 __{}__{}__{}    in    L,(C)         ; 2:12      __INFO{}dnl
 __{}__{}__{}__LD_R_NUM(__INFO,{H},0x00,{BC},$1)}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- char x ) 
+define({PUSH_PORTFETCH_PUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_PORTFETCH_PUSH},{$1 port@ $2},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_PORTFETCH_PUSH},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- char $2 )
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}ifelse(__HEX_H($1),0x00,{
+__{}__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}__{}    ld    D, A          ; 1:4       __INFO
+__{}__{}__{}    in    A,(__HEX_L($1))      ; 2:11      __INFO
+__{}__{}__{}    ld    E, A          ; 1:4       __INFO{}dnl
+__{}__{}__{}define({$0_TEMP},__LD_R16({HL},$2,D,0x00)){}$0_TEMP},
+__{}__{}{dnl
+__{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP{}dnl
+__{}__{}__{}define({$0_TEMP},__LD_R16({HL},$2,{BC},$1)){}$0_TEMP{}dnl
+__{}__{}__{}__LD_R_NUM(__INFO,{D},0x00,{BC},$1,{HL},$2)
+__{}__{}__{}    in    E,(C)         ; 2:12      __INFO}){}dnl
 __{}}){}dnl
 }){}dnl
 dnl   
