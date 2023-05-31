@@ -18,6 +18,23 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
+dnl
+dnl # ( x2 x1 -- )  set zf: x1 & x2
+define({AND_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_AND_ZF},{and},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_AND_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- )  set zf: x2 & x1
+    and   L             ; 1:4       __INFO
+    jr   nz, $+4        ; 2:7/12    __INFO
+    ld    A, D          ; 1:4       __INFO
+    and   H             ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
 dnl # ( x2 x1 -- x2 x )
 dnl # x = x1 & x2
 define({OVER_SWAP_AND},{dnl
@@ -91,6 +108,22 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    A, D          ; 1:4       __INFO
     or    H             ; 1:4       __INFO
     ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- )  set zf: x1 | x2
+define({OR_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_OR_ZF},{or},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OR_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, L          ; 1:4       __INFO   ( x2 x1 -- )  set zf: x2 | x1
+    or    H             ; 1:4       __INFO
+    or    D             ; 1:4       __INFO
+    or    E             ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
@@ -242,6 +275,20 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    A, D          ; 1:4       __INFO
     xor   H             ; 1:4       __INFO
     ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- )  set zf: x1 ^ x2
+define({XOR_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_XOR_ZF},{xor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_XOR_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    or    A             ; 1:4       __INFO   ( x2 x1 -- )  set zf: x2 ^ x1
+    sbc  HL, DE         ; 2:15      __INFO
+    pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
