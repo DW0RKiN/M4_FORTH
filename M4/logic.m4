@@ -2973,6 +2973,13 @@ __{}__{}                        ;[5:26]     __INFO   ( char -- bool )  bool: cha
 __{}__{}    ld    A, L          ; 1:4       __INFO   ignores higher bytes
 __{}__{}    add   A, 0xFF       ; 2:7       __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
+__{}__HEX_L($1),0x00,{
+__{}__{}                        ;[7:26/24]     __INFO   ( char -- bool )  bool: char <> $1
+__{}__{}    or    A             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    jr    z, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    A, 0xFF       ; 2:7       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO   HL= flag},
 __{}__HEX_L($1),0x01,{
 __{}__{}                        ;[6:30]     __INFO   ( char -- bool )  bool: char <> $1
 __{}__{}    ld    A, L          ; 1:4       __INFO
