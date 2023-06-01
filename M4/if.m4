@@ -1635,6 +1635,101 @@ dnl # 8bit
 dnl # ---------------------------------------------------------------------------
 dnl
 dnl
+dnl
+dnl
+dnl # ------ push scond if ---------
+dnl
+dnl # num c= if
+define({PUSH_CEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CEQ_IF},{$1 c= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CEQ_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameters!},
+__{}__IS_MEM_REF($1),{1},{
+__{}    ld    A, format({%-11s},$1); 3:13      __INFO   ( char -- )
+__{}    xor   L             ; 1:4       __INFO
+__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__IS_NUM($1),0,{
+__{}    ld    A, __FORM({%-11s},$1); 2:7       __INFO   ( char -- )
+__{}    xor   L             ; 1:4       __INFO
+__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_L($1),0x00,{
+__{}    inc   L             ; 1:4       __INFO   ( char -- )
+__{}    dec   L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_L($1),0x01,{
+__{}    dec   L             ; 1:4       __INFO   ( char -- )
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_L($1),0xFF,{
+__{}    inc   L             ; 1:4       __INFO   ( char -- )
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}{
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   ( char -- )
+__{}    xor   L             ; 1:4       __INFO
+__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # num c<> if
+define({PUSH_CNE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CNE_IF},{$1 c<> if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CNE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameters!},
+__{}__IS_MEM_REF($1),{1},{
+__{}    ld    A, format({%-11s},$1); 3:13      __INFO   ( char -- )
+__{}    xor   L             ; 1:4       __INFO
+__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__IS_NUM($1),0,{
+__{}    ld    A, __FORM({%-11s},$1); 2:7       __INFO   ( char -- )
+__{}    xor   L             ; 1:4       __INFO
+__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_L($1),0x00,{
+__{}    inc   L             ; 1:4       __INFO   ( char -- )
+__{}    dec   L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_L($1),0x01,{
+__{}    dec   L             ; 1:4       __INFO   ( char -- )
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__HEX_L($1),0xFF,{
+__{}    inc   L             ; 1:4       __INFO   ( char -- )
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}{
+__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   ( char -- )
+__{}    xor   L             ; 1:4       __INFO
+__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # dup char = if
 define({DUP_PUSH_CEQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_CEQ_IF},{dup $1 c= if},$@){}dnl
