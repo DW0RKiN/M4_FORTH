@@ -681,6 +681,23 @@ __{}define({__INFO},__COMPILE_INFO)
     sub   H             ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
 dnl
+dnl
+dnl # 1+ 0=
+dnl # ( x1 -- flag )
+dnl # if ( x1 == 0xFFFF ) flag = 0xFFFF; else flag = 0;
+define({_1ADD_0EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_1ADD_0EQ},{1+ 0=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1ADD_0EQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[6:30]     __INFO   ( x -- flag )  flag: x == -1
+    ld    A, H          ; 1:4       __INFO
+    and   L             ; 1:4       __INFO
+    add   A, 0x01       ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
+dnl
+dnl
 dnl # 0<>
 dnl # ( x1 -- flag )
 dnl # if ( x1<>0 ) flag = 0; else flag = 0xFFFF;
