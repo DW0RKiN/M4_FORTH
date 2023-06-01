@@ -8,7 +8,7 @@ __{}__{}
 __{}__{}ZX_INK               EQU 0x10     ; zx_constant   colour
 __{}__{}ZX_PAPER             EQU 0x11     ; zx_constant   colour
 __{}__{}ZX_FLASH             EQU 0x12     ; zx_constant   0 or 1
-__{}__{}ZX_BRIGHT            EQU 0x13     ; zx_constant   0 or 1 
+__{}__{}ZX_BRIGHT            EQU 0x13     ; zx_constant   0 or 1
 __{}__{}ZX_INVERSE           EQU 0x14     ; zx_constant   0 or 1
 __{}__{}ZX_OVER              EQU 0x15     ; zx_constant   0 or 1
 __{}__{}ZX_AT                EQU 0x16     ; zx_constant   Y,X
@@ -1547,7 +1547,7 @@ define({__TESTKEY_CURSOR_FIRE}, __TESTKEY_0){}dnl
 dnl
 dnl
 dnl
-dnl # ( mask -- bool ) 
+dnl # ( mask -- bool )
 dnl # Check test key
 dnl # H=0x7F L= ...BNMs_
 dnl # H=0xBF L= ...HJKLe
@@ -1571,7 +1571,7 @@ __{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( mask -- bool ) 
+dnl # ( mask -- bool )
 dnl # Check test key
 dnl # H=0x7F L= ...BNMs_
 dnl # H=0xBF L= ...HJKLe
@@ -1595,7 +1595,7 @@ __{}    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( mask -- bool ) 
+dnl # ( mask -- bool )
 dnl # Check test key
 dnl # H=0x7F L= ...BNMs_
 dnl # H=0xBF L= ...HJKLe
@@ -1619,7 +1619,7 @@ __{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- bool ) 
+dnl # ( -- bool )
 dnl # Check test key
 define({PUSH_TESTKEY},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY},{$1 testkey},$@){}dnl
@@ -1710,7 +1710,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- bool ) 
+dnl # ( -- bool )
 dnl # Check test key
 define({PUSH_TESTKEY_0EQ},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_0EQ},{$1 testkey 0=},$@){}dnl
@@ -1799,7 +1799,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- bool ) 
+dnl # ( -- bool )
 dnl # Check test key
 define({PUSH_TESTKEY_ZF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_ZF},{$1 testkey},$@){}dnl
@@ -1873,7 +1873,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( port -- char ) 
+dnl # ( port -- char )
 define({PORTFETCH},{dnl
 __{}__ADD_TOKEN({__TOKEN_PORTFETCH},{port@},$@){}dnl
 }){}dnl
@@ -1887,7 +1887,7 @@ __{}    ld    H, 0x00       ; 2:7       __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- char ) 
+dnl # ( -- char )
 define({PUSH_PORTFETCH},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_PORTFETCH},{$1 port@},$@){}dnl
 }){}dnl
@@ -1916,7 +1916,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- char x ) 
+dnl # ( -- char x )
 define({PUSH_PORTFETCH_PUSH},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_PORTFETCH_PUSH},{$1 port@ $2},$@){}dnl
 }){}dnl
@@ -1958,7 +1958,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- x )  x: port($1) | $2 
+__{}__{}    push DE             ; 1:11      __INFO   ( -- x )  x: port($1) | $2
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$2)){}$0_TEMP{}dnl
 __{}__{}ifelse(__IS_MEM_REF($1),1,{dnl
@@ -2012,10 +2012,10 @@ __{}__{}{
 __{}__{}__{}    and  format({%-15s},$2); 2:7       __INFO}){}dnl
 __{}}){}dnl
 }){}dnl
-dnl   
 dnl
 dnl
-dnl # ( char port -- ) 
+dnl
+dnl # ( char port -- )
 define({PORTSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_PORTSTORE},{port!},$@){}dnl
 }){}dnl
@@ -2027,10 +2027,10 @@ __{}    ld    C, L          ; 1:4       __INFO
 __{}    out  (C),E          ; 2:12      __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO}){}dnl
-dnl   
 dnl
 dnl
-dnl # ( char port -- char port ) 
+dnl
+dnl # ( char port -- char port )
 define({_2DUP_PORTSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_PORTSTORE},{2dup port!},$@){}dnl
 }){}dnl
@@ -2040,10 +2040,10 @@ __{}define({__INFO},__COMPILE_INFO)
 __{}    ld    B, H          ; 1:4       __INFO   ( char port -- char port )
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    out  (C),E          ; 2:12      __INFO}){}dnl
-dnl   
 dnl
 dnl
-dnl # ( char port -- port ) 
+dnl
+dnl # ( char port -- port )
 define({TUCK_PORTSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_TUCK_PORTSTORE},{tuck port!},$@){}dnl
 }){}dnl
