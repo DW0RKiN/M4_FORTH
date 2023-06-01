@@ -1414,7 +1414,7 @@ dnl # --------------------------------------------------------------------------
 dnl
 dnl
 dnl
-dnl # ( mask -- ) 
+dnl # ( mask -- )
 dnl # Check test key
 define({TESTKEY_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_TESTKEY_IF},{testkey if},$@){}dnl
@@ -1439,7 +1439,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( mask -- ) 
+dnl # ( mask -- )
 dnl # Check test key
 define({TESTKEY_0EQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_TESTKEY_0EQ_IF},{testkey 0= if},$@){}dnl
@@ -1464,7 +1464,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ) 
+dnl # ( -- )
 dnl # Check test key
 define({PUSH_TESTKEY_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_IF},{$1 testkey if},$@){}dnl
@@ -1547,7 +1547,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ) 
+dnl # ( -- )
 dnl # Check test key
 define({PUSH_TESTKEY_0EQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_0EQ_IF},{$1 testkey 0= if},$@){}dnl
@@ -1945,7 +1945,7 @@ __{}ifelse(_TYP_DOUBLE:__IS_MEM_REF($2),small:1,{dnl
 __{}    ld   BC, format({%-11s},$2); 4:20      __INFO
 __{}    xor   A             ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO
-__{}    add  HL, BC         ; 1:11      __INFO   cp HL, BC 
+__{}    add  HL, BC         ; 1:11      __INFO   cp HL, BC
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__IS_MEM_REF($2),1,{dnl
                      ;[14:54/27,54] __INFO   ( d -- d )   HL == $2
@@ -2065,7 +2065,7 @@ __{}__{}__{}                        ;[11:60]    __INFO   ( d -- d )   HL <> $2
 __{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      __INFO
 __{}__{}__{}    xor   A             ; 1:4       __INFO
 __{}__{}__{}    sbc  HL, BC         ; 2:15      __INFO
-__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   cp HL, BC 
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   cp HL, BC
 __{}__{}__{}    jr   nz, format({%-11s},$+eval(2+_TMP_BEST_B)); 2:7/12    __INFO},
 __{}__{}__IS_MEM_REF($2),1,{
 __{}__{}__{}                     ;[12:48/29,53] __INFO   ( d -- d )   HL <> $2

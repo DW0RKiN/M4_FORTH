@@ -288,7 +288,7 @@ __{}ifelse(__IS_NUM(__GET_LOOP_END($1)):__IS_NUM(__GET_LOOP_BEGIN($1)):__IS_NUM(
 __{}__{}__LOOP_ANALYSIS(__GET_LOOP_STEP($1),__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
                         ;           __INFO   real_stop:_TEMP_REAL_STOP, run _TEMP_X{x}
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO   
+    ld    E,(HL)        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     ld    D,(HL)        ; 1:7       __INFO   DE = index{}dnl
 __{}ifelse(dnl
