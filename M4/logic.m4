@@ -2885,12 +2885,26 @@ __{}__{}                        ;[5:26]     __INFO   ( char -- bool )  bool: cha
 __{}__{}    ld    A, L          ; 1:4       __INFO   ignores higher bytes
 __{}__{}    sub  0x01           ; 2:7       __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
+__{}__HEX_L($1):_TYP_SINGLE,0x01:fast,{
+__{}__{}                        ;[7:26/27]  __INFO   ( char -- bool )  bool: char <> $1
+__{}__{}    ld    H, 0xFF       ; 2:7       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    jr    z, $+3        ; 2:7/12    __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    ld    L, H          ; 1:4       __INFO   HL= flag},
 __{}__HEX_L($1),0x01,{
 __{}__{}                        ;[6:30]     __INFO   ( char -- bool )  bool: char == $1
 __{}__{}    ld    A, L          ; 1:4       __INFO
 __{}__{}    dec   A             ; 1:4       __INFO   ignores higher bytes
 __{}__{}    sub  0x01           ; 2:7       __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
+__{}__HEX_L($1):_TYP_SINGLE,0xFF:fast,{
+__{}__{}                        ;[7:26/27]  __INFO   ( char -- bool )  bool: char <> $1
+__{}__{}    ld    H, 0xFF       ; 2:7       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    jr    z, $+3        ; 2:7/12    __INFO
+__{}__{}    inc   H             ; 1:4       __INFO
+__{}__{}    ld    L, H          ; 1:4       __INFO   HL= flag},
 __{}__HEX_L($1),0xFF,{
 __{}__{}                        ;[6:30]     __INFO   ( char -- bool )  bool: char == $1
 __{}__{}    ld    A, L          ; 1:4       __INFO
@@ -2968,30 +2982,44 @@ __{}__{}    ld    A, format({%-11s},$1); 2:7       __INFO
 __{}__{}    xor   L             ; 1:4       __INFO   ignores higher bytes
 __{}__{}    add   A, 0xFF       ; 2:7       __INFO
 __{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL= flag},
-__{}__HEX_L($1),0x00,{
+__{}__HEX_L($1):_TYP_SINGLE,0x00:fast,{
+__{}__{}                        ;[7:26/24]     __INFO   ( char -- bool )  bool: char <> $1
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    jr    z, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    L, 0xFF       ; 2:7       __INFO
+__{}__{}    ld    H, L          ; 1:4       __INFO   HL= flag},
+__{}__HEX_L($1),0x00x,{
 __{}__{}                        ;[5:26]     __INFO   ( char -- bool )  bool: char <> $1
 __{}__{}    ld    A, L          ; 1:4       __INFO   ignores higher bytes
 __{}__{}    add   A, 0xFF       ; 2:7       __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
-__{}__HEX_L($1),0x00,{
-__{}__{}                        ;[7:26/24]     __INFO   ( char -- bool )  bool: char <> $1
-__{}__{}    or    A             ; 1:4       __INFO   ignores higher bytes
-__{}__{}    jr    z, $+4        ; 2:7/12    __INFO
-__{}__{}    ld    A, 0xFF       ; 2:7       __INFO
-__{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO   HL= flag},
 __{}__HEX_L($1),0x01,{
-__{}__{}                        ;[6:30]     __INFO   ( char -- bool )  bool: char <> $1
-__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}    dec   A             ; 1:4       __INFO   ignores higher bytes
-__{}__{}    add   A, 0xFF       ; 2:7       __INFO
-__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
+__{}__{}                        ;[6:22/20]  __INFO   ( char -- bool )  bool: char <> $1
+__{}__{}    dec   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    jr    z, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    L, 0xFF       ; 2:7       __INFO
+__{}__{}    ld    H, L          ; 1:4       __INFO   HL= flag},
 __{}__HEX_L($1),0xFF,{
-__{}__{}                        ;[6:30]     __INFO   ( char -- bool )  bool: char <> $1
-__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}    inc   A             ; 1:4       __INFO   ignores higher bytes
-__{}__{}    add   A, 0xFF       ; 2:7       __INFO
-__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
+__{}__{}                        ;[6:22/20]  __INFO   ( char -- bool )  bool: char <> $1
+__{}__{}    inc   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    jr    z, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    L, 0xFF       ; 2:7       __INFO
+__{}__{}    ld    H, L          ; 1:4       __INFO   HL= flag},
+__{}__HEX_L($1),0x02,{
+__{}__{}                        ;[7:26/24]  __INFO   ( char -- bool )  bool: char <> $1
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    jr    z, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    L, 0xFF       ; 2:7       __INFO
+__{}__{}    ld    H, L          ; 1:4       __INFO   HL= flag},
+__{}__HEX_L($1),0xFE,{
+__{}__{}                        ;[7:26/24]  __INFO   ( char -- bool )  bool: char <> $1
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    jr    z, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    L, 0xFF       ; 2:7       __INFO
+__{}__{}    ld    H, L          ; 1:4       __INFO   HL= flag},
 __{}{
 __{}__{}                        ;[7:33]     __INFO   ( char -- bool )  bool: char <> $1
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
