@@ -2855,6 +2855,57 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
+dnl # ( char -- bool )  bool: char == $1
+define({PUSH_CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_CEQ},{$1 c=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_CEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing address parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}                        ;[8:39]     __INFO   ( char -- bool )  bool: char == $1
+__{}__{}    ld    A, format({%-11s},$1); 3:13      __INFO
+__{}__{}    xor   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL= flag},
+__{}__IS_NUM($1),{0},{dnl
+__{}__{}  .warning {$0}($@): M4 does not know the "{$1}" value and therefore cannot optimize the code.
+__{}__{}                        ;[7:33]     __INFO   ( char -- bool )  bool: char == $1
+__{}__{}    ld    A, format({%-11s},$1); 2:7       __INFO
+__{}__{}    xor   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL= flag},
+__{}__HEX_L($1),0x00,{
+__{}__{}                        ;[5:26]     __INFO   ( char -- bool )  bool: char == $1
+__{}__{}    ld    A, L          ; 1:4       __INFO   ignores higher bytes
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
+__{}__HEX_L($1),0x01,{
+__{}__{}                        ;[6:30]     __INFO   ( char -- bool )  bool: char == $1
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
+__{}__HEX_L($1),0xFF,{
+__{}__{}                        ;[6:30]     __INFO   ( char -- bool )  bool: char == $1
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag},
+__{}{
+__{}__{}                        ;[7:33]     __INFO   ( char -- bool )  bool: char == $1
+__{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO
+__{}__{}    xor   L             ; 1:4       __INFO   ignores higher bytes
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL= flag{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
 dnl
 dnl # 8 rshift swap 8 rshift C=
 dnl # ( x1 x2 -- flag )
