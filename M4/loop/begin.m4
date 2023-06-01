@@ -2508,7 +2508,7 @@ dnl # --------------------------------------------------------------------------
 dnl
 dnl
 dnl
-dnl # ( mask -- ) 
+dnl # ( mask -- )
 dnl # Check test key
 define({TESTKEY_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_TESTKEY_UNTIL},{testkey until},$@){}dnl
@@ -2534,7 +2534,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( mask -- ) 
+dnl # ( mask -- )
 dnl # Check test key
 define({TESTKEY_0EQ_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_TESTKEY_0EQ_UNTIL},{testkey 0= until},$@){}dnl
@@ -2560,7 +2560,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ) 
+dnl # ( -- )
 dnl # Check test key
 define({PUSH_TESTKEY_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_UNTIL},{$1 testkey until},$@){}dnl
@@ -2644,7 +2644,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ) 
+dnl # ( -- )
 dnl # Check test key
 define({PUSH_TESTKEY_0EQ_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_0EQ_UNTIL},{$1 testkey 0= until},$@){}dnl
@@ -2728,7 +2728,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( mask -- ) 
+dnl # ( mask -- )
 dnl # Check test key
 define({TESTKEY_WHILE},{dnl
 __{}__ADD_TOKEN({__TOKEN_TESTKEY_WHILE},{testkey while},$@){}dnl
@@ -2752,7 +2752,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( mask -- ) 
+dnl # ( mask -- )
 dnl # Check test key
 define({TESTKEY_0EQ_WHILE},{dnl
 __{}__ADD_TOKEN({__TOKEN_TESTKEY_0EQ_WHILE},{testkey 0= while},$@){}dnl
@@ -2776,7 +2776,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ) 
+dnl # ( -- )
 dnl # Check test key
 define({PUSH_TESTKEY_WHILE},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_WHILE},{$1 testkey while},$@){}dnl
@@ -2858,7 +2858,7 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- ) 
+dnl # ( -- )
 dnl # Check test key
 define({PUSH_TESTKEY_0EQ_WHILE},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEY_0EQ_WHILE},{$1 testkey 0= while},$@){}dnl
