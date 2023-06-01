@@ -499,7 +499,7 @@ BIN16_DEC:              ;           bin16_dec
     ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
 BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
-__{}__PUTCHAR_A(bin16_dec) 
+__{}__PUTCHAR_A(bin16_dec)
     ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec}){}dnl
 dnl
@@ -1879,7 +1879,7 @@ dnl
 ifdef({USE_Fill3},{__def({USE_Fill2})
 ;==============================================================================
 ; ( address u char ret -- ret address+u x ) (address..address+u-1) = char
-;  In: (SP+2) = address, DE = u, L = char 
+;  In: (SP+2) = address, DE = u, L = char
 ; Out:  A = char
 ;      BC = 0
 ;      DE = address+u
@@ -2254,7 +2254,7 @@ __{}    inc  BC             ; 1:6       print_string_z
 __{}    or    A             ; 1:4       print_string_z
 __{}    jp   nz, $-eval(3+__BYTES)        ; 3:10      print_string_z
 __{}    ret                 ; 1:10      print_string_z{}dnl
-}){}dnl   
+}){}dnl
 dnl
 dnl
 dnl
@@ -2300,15 +2300,15 @@ MAX_X           equ 51       ; x = 0..50
 MAX_Y           equ 24       ; y = 0..23
 CURCHL          equ 0x5C51
 PRINT_OUT       equ 0x5CBB
-    
+
 set_ink:                ;           putchar   0x10
     ld   HL, self_attr  ; 3:10      putchar
     xor (HL)            ; 1:7       putchar
     and 0x07            ; 2:7       putchar
     xor (HL)            ; 1:7       putchar
     jr  set_attr        ; 2:12      putchar
-    
-set_paper:              ;           putchar   0x11          
+
+set_paper:              ;           putchar   0x11
     ld   HL, self_attr  ; 3:10      putchar
     add   A, A          ; 1:4       putchar   2x
     add   A, A          ; 1:4       putchar   4x
@@ -2317,7 +2317,7 @@ set_paper:              ;           putchar   0x11
     and 0x38            ; 2:7       putchar
     xor (HL)            ; 1:7       putchar
     jr  set_attr        ; 2:12      putchar
-    
+
 set_flash:              ;           putchar   0x12
     rra                 ; 1:4       putchar   carry = flash
     ld   HL, self_attr  ; 3:10      putchar
@@ -2325,7 +2325,7 @@ set_flash:              ;           putchar   0x12
     adc   A, A          ; 1:4       putchar
     rrca                ; 1:4       putchar
     jr  set_attr        ; 2:12      putchar
-    
+
 set_bright:             ;           putchar   0x13
     ld   HL, self_attr  ; 3:10      putchar
     rrca                ; 1:4       putchar
@@ -2334,7 +2334,7 @@ set_bright:             ;           putchar   0x13
     and 0x40            ; 2:7       putchar
     xor (HL)            ; 1:7       putchar
     jr   set_attr       ; 2:12      putchar
-    
+
 set_inverse:            ;           putchar   0x14
     ld   HL, self_attr  ; 3:10      putchar
     ld    A,(HL)        ; 1:7       putchar
@@ -2352,14 +2352,14 @@ set_inverse:            ;           putchar   0x14
     xor (HL)            ; 1:7       putchar   A = fbii ippp
 
 set_attr:               ;           putchar
-    ld  (HL),A          ; 1:7       putchar   save new attr   
+    ld  (HL),A          ; 1:7       putchar   save new attr
 clean_set_0:            ;           putchar
     xor   A             ; 1:4       putchar
 clean_set_A:            ;           putchar
     ld  (self_jmp),A    ; 3:13      putchar
     pop  HL             ; 1:10      putchar
     ret                 ; 1:10      putchar
-    
+
 set_over:               ;           putchar   0x15
     jr   clean_set_0    ; 2:12      putchar
 
@@ -2385,10 +2385,10 @@ set_at_x:               ;           putchar
     jr   delete         ; 2:12      putchar   0x0C
     jr   enter          ; 2:12      putchar   0x0D
     jr   not_used       ; 2:12      putchar   0x0E
-    jr   not_used       ; 2:12      putchar   0x0F    
+    jr   not_used       ; 2:12      putchar   0x0F
   endif
-  
-tab_spec:               ;           putchar 
+
+tab_spec:               ;           putchar
     jr   set_ink        ; 2:12      putchar   0x10
     jr   set_paper      ; 2:12      putchar   0x11
     jr   set_flash      ; 2:12      putchar   0x12
@@ -2404,7 +2404,7 @@ set_tab:                ;           putchar
     jr   nc,$-2         ; 2:7/12    putchar
     add   A, MAX_X      ; 2:7       putchar   (new x) mod MAX_X
     cp    L             ; 1:4       putchar
-    call  c, next_line  ; 3:10/17   putchar   new x < (old x+1) 
+    call  c, next_line  ; 3:10/17   putchar   new x < (old x+1)
 set_tab_A               ;           putchar
     ld    L, A          ; 1:4       putchar
     ld  (putchar_yx),HL ; 3:16      putchar   save new cursor
@@ -2428,7 +2428,7 @@ print_comma:            ;           putchar   0x06
     cp    L             ; 1:4       putchar
     jr   nc, set_tab_A  ; 2:12      putchar
     xor   A             ; 1:4       putchar
-    
+
 enter:                  ;           putchar   0x0D
     call  z, next_line  ; 3:10/17   putchar
 enter_exit:             ;           putchar
@@ -2436,7 +2436,7 @@ enter_exit:             ;           putchar
     pop  HL             ; 1:10      putchar   load HL
     ret                 ; 3:10
 
-    
+
 print_edit:             ;           putchar   0x07
 cursor_right:           ;           putchar   0x09
 cursor_down:            ;           putchar   0x0A
@@ -2477,27 +2477,27 @@ jump_from:
     cp   0x08               ; 2:7       >print_tab
     jr   nc, print_question ; 2:7/12
 
-draw_spec:    
+draw_spec:
     add   A,A               ; 1:4       2x
     sub  jump_from-tab_spec ; 2:7
     ld  (self_jmp),A        ; 3:13
 draw_spec_exit:             ;
     pop  HL                 ; 1:10
     ret                     ; 1:10
-    
+
 print_token:
     ex   DE, HL             ; 1:4
     ld   DE, 0x0095	        ; 3:10      The base address of the token table
     sub  0xA5               ; 2:7
     push AF                 ; 1:11      Save the code on the stack. (Range +00 to +5A, RND to COPY).
-    
+
 ; Input
 ;   A   Message table entry number
 ;   DE  Message table start address
 ; Output
 ;   DE  Address of the first character of message number A
 ;   F   Carry flag: suppress (set) or allow (reset) a leading space
-    call 0x0C41             ; 3:17      {THE 'TABLE SEARCH' SUBROUTINE} 
+    call 0x0C41             ; 3:17      {THE 'TABLE SEARCH' SUBROUTINE}
     ex   DE, HL             ; 1:4
 
     ld    A,' '             ; 2:7       {A 'space' will be printed before the message/token if required (bit 0 of FLAGS reset).}
@@ -2514,7 +2514,7 @@ token_loop:
     inc  HL                 ; 1:6       Advance the pointer.
     add   A, A              ; 1:4       The 'inverted bit' goes to the carry flag and signals the end of the message/token; otherwise jump back.
     jr   nc, token_loop     ; 2:7/12
-    
+
 ; Now consider whether a 'trailing space' is required.
 
     pop  HL                 ; 1:10      For messages, H holds +00; for tokens, H holds +00 to +5A.
@@ -2524,7 +2524,7 @@ token_loop:
     jr    c, draw_spec_exit ; 2:7/12
     ld    A, H              ; 1:4       Examine the value in H and return if it indicates a message, RND, INKEY$ or PI.
     cp   0x03               ; 2:7
-    ld    A, ' '            ; 2:7       All other cases will require a 'trailing space'.    
+    ld    A, ' '            ; 2:7       All other cases will require a 'trailing space'.
     ret   c                 ; 1:5/11
     pop  HL                 ; 1:10
 print_char:
@@ -2533,7 +2533,7 @@ print_char_HL:
 ifdef({USE_FONT_5x8},{
     exx                     ; 1:4})
     push DE                 ; 1:11    uschovat DE na zásobník
-    push BC                 ; 1:11    uschovat BC na zásobník    
+    push BC                 ; 1:11    uschovat BC na zásobník
 ifdef({USE_FONT_5x8_CALL},{
     exx                     ; 1:4})
     push HL                 ; 1:11    uschovat HL na zásobník
@@ -2544,7 +2544,7 @@ ifdef({USE_FONT_5x8_CALL},{
     ld    L, A              ; 1:4     2x
     ld    H, 0x00           ; 1:4     C je nenulové
     add  HL, HL             ; 1:11    4x
-    add  HL, BC             ; 1:11    přičíst bázovou adresu masek znaků    
+    add  HL, BC             ; 1:11    přičíst bázovou adresu masek znaků
     exx                     ; 1:4
 
 ;# YX -> ATTR
@@ -2558,7 +2558,7 @@ putchar_y      equ     $+2
     add   A, A              ; 1:4     4*X
     add   A, E              ; 1:4     5*X
     ld    B, A              ; 1:4     save 5*X
-    
+
     xor   D                 ; 1:4
     and 0xF8                ; 2:7
     xor   D                 ; 1:4
@@ -2567,7 +2567,7 @@ putchar_y      equ     $+2
     rrca                    ; 1:4
     ld    L, A              ; 1:4
 
-    ld    A, D              ; 1:4   
+    ld    A, D              ; 1:4
     or  0xC7                ; 2:7     110y y111, reset carry
     rra                     ; 1:4     0110 yy11, set carry
     rrca                    ; 1:4     1011 0yy1, set carry
@@ -2582,11 +2582,11 @@ self_attr       equ $+1
     and 0x18                ; 2:7
     or  0x40                ; 2:7
     ld    H, A              ; 1:4
-    
+
     ld    A, B              ; 1:4     load 5*X
     and 0x07                ; 2:7
     cpl                     ; 1:4
-    add   A, 0x09           ; 2:7         
+    add   A, 0x09           ; 2:7
     ld    B, A              ; 2:7     pocitadlo pro pocatecni posun vlevo masky znaku
     exx                     ; 1:4
     ld    C, A              ; 1:4
@@ -2594,10 +2594,10 @@ self_attr       equ $+1
     ex   DE, HL             ; 1:4
     ld   HL, 0x00F0         ; 3:10
     add  HL, HL             ; 1:11    pocatecni posun masky
-    djnz  $-1               ; 2:8/13        
+    djnz  $-1               ; 2:8/13
     ex   DE, HL             ; 1:4
 
-    ld    C, 4          ; 2:7       putchar   draw        
+    ld    C, 4          ; 2:7       putchar   draw
 putchar_c:              ;           putchar   draw
     exx                 ; 1:4       putchar   draw
     ld    A,(HL)        ; 1:7       putchar   draw
@@ -2607,7 +2607,7 @@ putchar_c:              ;           putchar   draw
     djnz  $-1           ; 2:8/13    putchar   draw
     ld    B, A          ; 1:4       putchar   draw
     exx                 ; 1:4       putchar   draw
-    ld    B, 2          ; 2:7       putchar   draw 
+    ld    B, 2          ; 2:7       putchar   draw
 putchar_b:              ;           putchar   draw
     xor (HL)            ; 1:7       putchar   draw
     and   D             ; 1:4       putchar   draw
@@ -2636,10 +2636,10 @@ putchar_b:              ;           putchar   draw
     exx                 ; 1:4       putchar   draw
 
 ;     halt
-    
+
     djnz putchar_b      ; 2:8/13    putchar   draw
-    
-    dec   C             ; 2:7       putchar   draw 
+
+    dec   C             ; 2:7       putchar   draw
     jr   nz, putchar_c  ; 2/7/12    putchar   draw
 
 ifdef({USE_FONT_5x8_CALL},{
@@ -2648,10 +2648,10 @@ ifdef({USE_FONT_5x8_CALL},{
 ifdef({USE_FONT_5x8_CALL},{dnl
     exx                 ; 1:4       putchar})
     pop  BC             ; 1:10      putchar   obnovit obsah BC ze zásobníku
-    pop  DE             ; 1:10      putchar   obnovit obsah DE ze zásobníku    
+    pop  DE             ; 1:10      putchar   obnovit obsah DE ze zásobníku
 ifdef({USE_FONT_5x8},{dnl
     exx                 ; 1:4       putchar})
-;   fall to next cursor    
+;   fall to next cursor
 
 ; Output: [putchar_yx] = cursor right
 next_cursor:            ;
@@ -2703,7 +2703,7 @@ FONT_5x8:
     db %00000010,%01110110,%00110111,%00100000 ; 0x24 $
     db %00001100,%11010010,%01001011,%00110000 ; 0x25 %
     db %00000000,%11101010,%01011010,%11010000 ; 0x26 &
-    db %00000011,%00010010,%00000000,%00000000 ; 0x27 '    
+    db %00000011,%00010010,%00000000,%00000000 ; 0x27 '
     db %00000010,%01000100,%01000100,%00100000 ; 0x28 (
     db %00000100,%00100010,%00100010,%01000000 ; 0x29 )
     db %00000000,%00001010,%01001010,%00000000 ; 0x2A *
@@ -2712,7 +2712,7 @@ FONT_5x8:
     db %00000000,%00000000,%11100000,%00000000 ; 0x2D -
     db %00000000,%00000000,%00000000,%01000000 ; 0x2E .
     db %00000000,%00010010,%01001000,%00000000 ; 0x2F /
-    
+
     db %00000110,%10011011,%11011001,%01100000 ; 0x30 0
     db %00000010,%01100010,%00100010,%01110000 ; 0x31 1
     db %00000110,%10010001,%01101000,%11110000 ; 0x32 2
@@ -2729,7 +2729,7 @@ FONT_5x8:
     db %00000000,%00000111,%00000111,%00000000 ; 0x3D =
     db %00000000,%01000010,%00010010,%01000000 ; 0x3E >
     db %00001110,%00010010,%01000000,%01000000 ; 0x3F ?
-    
+
     db %00000000,%01101111,%10111000,%01100000 ; 0x40 @
     db %00000110,%10011001,%11111001,%10010000 ; 0x41 A
     db %00001110,%10011110,%10011001,%11100000 ; 0x42 B
@@ -2746,7 +2746,7 @@ FONT_5x8:
     db %00001001,%11111001,%10011001,%10010000 ; 0x4D M
     db %00001001,%11011011,%10011001,%10010000 ; 0x4E N
     db %00000110,%10011001,%10011001,%01100000 ; 0x4F O
-    
+
     db %00001110,%10011001,%11101000,%10000000 ; 0x50 P
     db %00000110,%10011001,%10011010,%01010000 ; 0x51 Q
     db %00001110,%10011001,%11101001,%10010000 ; 0x52 R
@@ -2763,7 +2763,7 @@ FONT_5x8:
     db %00001110,%00100010,%00100010,%11100000 ; 0x5D ]
     db %00000010,%01010000,%00000000,%00000000 ; 0x5E ^
     db %00000000,%00000000,%00000000,%11110000 ; 0x5F _
-    
+
     db %00000011,%01001110,%01000100,%11110000 ; 0x60 ` GBP
     db %00000000,%01100001,%01111001,%01110000 ; 0x61 a
     db %00001000,%11101001,%10011001,%11100000 ; 0x62 b
@@ -2780,7 +2780,7 @@ FONT_5x8:
     db %00000000,%11001011,%10111011,%10010000 ; 0x6D m
     db %00000000,%10101101,%10011001,%10010000 ; 0x6E n
     db %00000000,%01101001,%10011001,%01100000 ; 0x6F o
-   
+
     db %00000000,%11101001,%10011001,%11101000 ; 0x70 p
     db %00000000,%01111001,%10011001,%01110001 ; 0x71 q
     db %00000000,%10101101,%10001000,%10000000 ; 0x72 r
