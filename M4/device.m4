@@ -2023,7 +2023,7 @@ __{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
 __{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP   ( -- ) set zf: port($1) and $2{}dnl
 __{}__{}__LD_R_NUM(__INFO,{A},$2,{BC},$1)
 __{}__{}    in    C,(C)         ; 2:12      __INFO
-__{}__{}    and  C              ; 1:4       __INFO},
+__{}__{}    and   C             ; 1:4       __INFO},
 __{}{dnl
 __{}__{}ifelse(__IS_MEM_REF($1),1,{dnl
 __{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP   ( -- ) set zf: port($1) and $2
@@ -2041,6 +2041,46 @@ __{}__{}__IS_NUM($2),1,{
 __{}__{}__{}    and  __HEX_L($2)           ; 2:7       __INFO},
 __{}__{}{
 __{}__{}__{}    and  format({%-15s},$2); 2:7       __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- ) set zf: (port($1) c| $2) = 0xFF
+define({PUSH_PORTFETCH_PUSH_COR_1CADD_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_PORTFETCH_PUSH_COR_1CADD_ZF},{$1 port@ $2 cor 1c+ zf},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_PORTFETCH_PUSH_COR_1CADD_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
+__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP   ( -- ) set zf: port($1) and $2{}dnl
+__{}__{}__LD_R_NUM(__INFO,{A},$2,{BC},$1)
+__{}__{}    in    C,(C)         ; 2:12      __INFO
+__{}__{}    or    C             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO},
+__{}{dnl
+__{}__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP   ( -- ) set zf: port($1) and $2
+__{}__{}__{}    in    A,(C)         ; 2:12      __INFO},
+__{}__{}__IS_NUM($1),1,{dnl
+__{}__{}__{}__LD_R_NUM(__INFO,A,__HEX_H($1)){   ( -- ) set zf: port($1) and $2}
+__{}__{}__{}    in    A,(__HEX_L($1))      ; 2:11      __INFO},
+__{}__{}{dnl
+__{}__{}__{}__LD_R_NUM(__INFO,A,high $1){   ( -- ) set zf: port($1) and $2}
+__{}__{}__{}    in    A,format({%-12s},(low $1)); 2:11      __INFO}){}dnl
+__{}__{}ifelse(__IS_MEM_REF($2),1,{dnl
+__{}__{}__{}define({$0_TEMP},__LD_R16({BC},$2,{BC},$1)){}$0_TEMP
+__{}__{}__{}    and  C              ; 1:4       __INFO},
+__{}__{}__IS_NUM($2),1,{
+__{}__{}__{}    or   __HEX_L($2)           ; 2:7       __INFO},
+__{}__{}{
+__{}__{}__{}    or   format({%-15s},$2); 2:7       __INFO})
+__{}__{}    inc   A             ; 1:4       __INFO{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
