@@ -21,58 +21,58 @@ dnl
 dnl
 dnl
 dnl # if zero_flag
-define({IF_ZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_IF_ZF},{if},$@){}dnl
+define({ZF_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZF_IF},{zf if},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_IF_ZF},{dnl
+define({__ASM_TOKEN_ZF_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO   nzf = false}){}dnl
 dnl
 dnl
 dnl
 dnl # if not_zero_flag
-define({IF_NZF},{dnl
-__{}__ADD_TOKEN({__TOKEN_IF_NZF},{if},$@){}dnl
+define({NZF_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_NZF_IF},{nzf if},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_IF_NZF},{dnl
+define({__ASM_TOKEN_NZF_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO   zf = false}){}dnl
 dnl
 dnl
 dnl
 dnl # if carry_flag
-define({IF_CF},{dnl
-__{}__ADD_TOKEN({__TOKEN_IF_CF},{if},$@){}dnl
+define({CF_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_CF_IF},{cf if},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_IF_CF},{dnl
+define({__ASM_TOKEN_CF_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO   ncf = false}){}dnl
 dnl
 dnl
 dnl
 dnl # if not_carry_flag
-define({IF_NCF},{dnl
-__{}__ADD_TOKEN({__TOKEN_IF_NCF},{if},$@){}dnl
+define({NCF_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_NCF_IF},{ncf if},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_IF_NCF},{dnl
+define({__ASM_TOKEN_NCF_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+    jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO   cf = false}){}dnl
 dnl
 dnl
 dnl
