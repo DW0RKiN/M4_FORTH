@@ -538,6 +538,9 @@ i....,,,
             __T_NAME(1):__T_NAME(0):$1,   __TOKEN_2OVER_NIP_CFETCH:__TOKEN_0CEQ:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
             __T_NAME(1):__T_NAME(0):$1,   __TOKEN_2OVER_NIP_CFETCH:__TOKEN_0CNE:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_NIP_CFETCH_0CNE_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
 
+            __T_NAME(0):$1,                        __TOKEN_1ADD:__TOKEN_0CEQ,                 {__SET_TOKEN({__TOKEN_1ADD_0CEQ},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,                     __TOKEN_1ADD_0CEQ:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_1ADD_0CEQ_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            
             __T_NAME(0):$1,                         __TOKEN_1ADD:__TOKEN_0EQ,                 {__SET_TOKEN({__TOKEN_1ADD_0EQ},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                      __TOKEN_1ADD_0EQ:__TOKEN_IF,                 {__SET_TOKEN({__TOKEN_1ADD_0EQ_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
