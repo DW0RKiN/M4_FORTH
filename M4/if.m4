@@ -249,6 +249,25 @@ __{}__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
 dnl
 dnl
 dnl
+dnl # 1+ 0c= if
+dnl # ( char -- )
+define({_1ADD_0CEQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_1ADD_0CEQ_IF},{+1 0c= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1ADD_0CEQ_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[6:28]     __INFO   ( char -- )  flag: char == 255
+    inc   L             ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # 2over nip c@ 0 c= if
 define({_2OVER_NIP_CFETCH_0CEQ_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},{2over nip c@ 0 c= if},$@){}dnl
