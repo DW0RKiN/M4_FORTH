@@ -749,6 +749,21 @@ __{}define({__INFO},__COMPILE_INFO)
     inc  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
+dnl # ( x --  )
+define({_1ADD_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_1ADD_ZF},{1+ zf},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1ADD_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, L          ; 1:4       __INFO   ( x -- ) set zf: x + 1
+    and   H             ; 1:4       __INFO
+    inc   A             ; 1:4       __INFO   set zf
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # "1-"
 dnl # ( x1 -- x )
 dnl # x = x1 - 1
@@ -1114,32 +1129,127 @@ dnl
 dnl
 dnl
 dnl # ( x2 x1 -- x3 )
-dnl # x3 = hi(x1) + lo(lo(x2) + lo(x1))
+dnl # x = 256*hi(x1) + lo(x1+x2)
 define({CADD},{dnl
 __{}__ADD_TOKEN({__TOKEN_CADD},{c+},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )  x3 = hi(x1) + lo(lo(x2) + lo(x1))
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = 256*hi(x1) + lo(x2 + x1)
     add   A, L          ; 1:4       __INFO
     ld    L, A          ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
+dnl # ( x2 x1 -- x3 )
+dnl # x = 256*(hi(x1)+hi(x2)) + lo(x1)
+define({HADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_HADD},{h+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = 256*(hi(x2) + hi(x1)) + lo(x1)
+    add   A, H          ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
 dnl
 dnl # ( x2 x1 -- x3 )
-dnl # x3 = hi(x1) + lo(lo(x2) - lo(x1))
+dnl # x = 256*hi(x1) + lo(x2-x1)
 define({CSUB},{dnl
 __{}__ADD_TOKEN({__TOKEN_CSUB},{c-},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_CSUB},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )  x3 = hi(x1) + lo(lo(x2) - lo(x1))
-    sub   A, L          ; 1:4       __INFO
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = 256*hi(x1) + lo(x2 - x1)
+    sub   L             ; 1:4       __INFO
     ld    L, A          ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )
+dnl # x = 256*(hi(x2)-hi(x1)) + lo(x1)
+define({HSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_HSUB},{h-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_HSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = 256*(hi(x2) - hi(x1)) + lo(x1)
+    sub   H             ; 1:4       __INFO
+    ld    H, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x1 -- x2 )
+dnl # x2 = 256*hi(x1) + lo(x1+1)
+define({_1CADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_1CADD},{1c+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1CADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc   L             ; 1:4       __INFO   ( x1 -- x2 )   x2 = 256*hi(x1) + lo(x1 + 1)}){}dnl
+dnl
+dnl
+dnl # ( x -- )   set zf: lo(x) c+ 1
+define({_1CADD_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_1CADD_ZF},{1c+ zf},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1CADD_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc   L             ; 1:4       __INFO   ( x -- )   set zf: lo(x) c+ 1
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x1 -- x2 )
+dnl # x2 = x1+256
+define({_1HADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_1HADD},{1h+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1HADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc   H             ; 1:4       __INFO   ( x1 -- x2 )   x2 = x1 + 256}){}dnl
+dnl
+dnl
+dnl # ( x -- )   set zf: hi(x) c+ 1
+define({_1HADD_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_1HADD_ZF},{1h+ zf},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1HADD_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    inc   H             ; 1:4       __INFO   ( x -- )   set zf: hi(x) c+ 1
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( x1 -- x2 )
+dnl # x2 = 256*hi(x1) + lo(x1-1)
+define({_1CSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_1CSUB},{1c-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1CSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    dec   L             ; 1:4       __INFO   ( x1 -- x2 )   x2 = 256*hi(x1) + lo(x1 - 1)}){}dnl
+dnl
+dnl
+dnl # ( x1 -- x2 )
+dnl # x2 = x1-256
+define({_1HSUB},{dnl
+__{}__ADD_TOKEN({__TOKEN_1HSUB},{1h-},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1HSUB},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    dec   H             ; 1:4       __INFO   ( x1 -- x2 )   x2 = x1 - 256}){}dnl
 dnl
 dnl
 dnl
@@ -1168,36 +1278,6 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x2 x3 )  x3 = hi(x1) + lo(lo(x2) - lo(x1))
     sub   A, L          ; 1:4       __INFO
     ld    L, A          ; 1:4       __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( x2 x1 -- x3 )
-dnl # x3 = hi(hi(x2) + hi(x1)) + lo(x1)
-define({HADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_HADD},{h+},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_HADD},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )  x3 = hi(hi(x2) + hi(x1)) + lo(x1)
-    add   A, H          ; 1:4       __INFO
-    ld    H, A          ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
-dnl
-dnl
-dnl
-dnl # ( x2 x1 -- x3 )
-dnl # x3 = hi(hi(x2) - hi(x1)) + lo(x1)
-define({HSUB},{dnl
-__{}__ADD_TOKEN({__TOKEN_HSUB},{h-},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_HSUB},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld    A, D          ; 1:4       __INFO   ( x2 x1 -- x3 )  x3 = hi(hi(x2) - hi(x1)) + lo(x1)
-    sub   A, H          ; 1:4       __INFO
-    ld    H, A          ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
