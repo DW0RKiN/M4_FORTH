@@ -77,16 +77,30 @@ dnl
 dnl
 dnl # ( -- )
 define({ZF_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZF_UNTIL},{zf until},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZF_UNTIL},{zf until BEGIN_STACK},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZF_UNTIL},{dnl
-__{}define({__INFO},{zf until}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    jp   nz, begin{}BEGIN_STACK   ; 3:10      zf until BEGIN_STACK   ( -- )   zero flag
-__{}break{}BEGIN_STACK:               ;           zf until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
+    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO   ( -- )   nzf = false
+__{}break{}BEGIN_STACK:               ;           __INFO{}popdef({BEGIN_STACK})})}){}dnl
+dnl
+dnl
+dnl # ( -- )
+define({NZF_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_NZF_UNTIL},{nzf until BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NZF_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0}($@) for non-existent {BEGIN}},
+{
+    jp    z, begin{}BEGIN_STACK   ; 3:10      __INFO   ( -- )   zf = false
+__{}break{}BEGIN_STACK:               ;           __INFO{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
 dnl # ( flag -- )
@@ -1327,6 +1341,32 @@ __{}.error {$0}($@) for non-existent {BEGIN}},
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
     jp    z, break{}BEGIN_STACK   ; 3:10      __INFO})}){}dnl
+dnl
+dnl
+dnl # ( -- )
+define({ZF_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZF_WHILE},{zf while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZF_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0}($@) for non-existent {BEGIN}},
+{
+    jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO   nzf = false})}){}dnl
+dnl
+dnl
+dnl # ( -- )
+define({NZF_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_NZF_WHILE},{nzf while BEGIN_STACK},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_NZF_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}.error {$0}($@) for non-existent {BEGIN}},
+{
+    jp    z, break{}BEGIN_STACK   ; 3:10      __INFO   zf = false})}){}dnl
 dnl
 dnl
 dnl # ( flag -- flag )
