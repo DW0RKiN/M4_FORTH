@@ -291,6 +291,19 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 
 ![Example of how to check the word PUSH_ADD in the terminal using the bash script check_word.sh](PUSH_ADD_check.png)
 
+#### 8bit
+
+|<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |<sub>  Comment                 |
+| :-------------: | :---------------: | :------------------: | :----------------------------- | :---------------------------- |
+|<sub>            |<sub>     CADD     |<sub>                 |<sub>   ( x2 x1 -- x3 )         |<sub> x3=256*hi(x1)+lo(x2+x1)  |
+|<sub>            |<sub>     CSUB     |<sub>                 |<sub>   ( x2 x1 -- x3 )         |<sub> x3=256*hi(x1)+lo(x2-x1)  |
+|<sub>            |<sub>     HADD     |<sub>                 |<sub>   ( x2 x1 -- x3 )         |<sub> x3=256*(hi(x1)+hi(x2))+lo(x1) |
+|<sub>            |<sub>     HSUB     |<sub>                 |<sub>   ( x2 x1 -- x3 )         |<sub> x3=256*(hi(x2)-hi(x1))+lo(x1) |
+|<sub>            |<sub>    _1CADD    |<sub>                 |<sub>      ( x1 -- x2 )         |<sub> x2=256*hi(x1)+lo(x1+1)   |
+|<sub>            |<sub>    _1CSUB    |<sub>                 |<sub>      ( x1 -- x2 )         |<sub> x2=256*hi(x1)+lo(x1-1)   |
+|<sub>            |<sub>    _1HADD    |<sub>                 |<sub>      ( x1 -- x1+`256` )   |
+|<sub>            |<sub>    _1HSUB    |<sub>                 |<sub>      ( x1 -- x1-`256` )   |
+
 #### 32bit
 
 ( d32 -- hi16 lo16 )
