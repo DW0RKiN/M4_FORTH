@@ -2514,6 +2514,67 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # ( x2 x1 -- x3 )  x3 = hi(x1) + lo((x2 | x1) + 1)
+define({COR_1CADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_COR_1CADD},{cor 1c+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_COR_1CADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = hi(x1) + lo((x2 | x1) + 1)
+    or    L             ; 1:4       __INFO
+    inc   A             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- )   set zf: lo(x2 | x1) c+ 1
+define({COR_1CADD_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_COR_1CADD_ZF},{cor 1c+ zf},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_COR_1CADD_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- )   set zf: lo(x2 | x1) c+ 1
+    or    L             ; 1:4       __INFO
+    inc   A             ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x3 )  x3 = hi(x1) + lo((x2 | x1) + 1)
+define({COR_1ADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_COR_1ADD},{cor 1+},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_COR_1ADD},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- x3 )   x3 = hi(x1) + lo(x2 | x1) + 1
+    or    L             ; 1:4       __INFO
+    ld    L, A          ; 1:4       __INFO
+    inc  HL             ; 1:6       __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- )   set zf: 256*hi(x1) + lo(x2 | x1) +1
+define({COR_1ADD_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_COR_1ADD_ZF},{cor 1+ zf},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_COR_1ADD_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+    ld    A, E          ; 1:4       __INFO   ( x2 x1 -- )   set zf: 256*hi(x1) + lo(x2 | x1) +1
+    or    L             ; 1:4       __INFO
+    and   H             ; 1:4       __INFO
+    inc   A             ; 1:4       __INFO
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl # ( x2 x1 -- x3 )  x3 = hi(x2 | x1) + lo(x1)
 define({HOR},{dnl
 __{}__ADD_TOKEN({__TOKEN_HOR},{hor},$@){}dnl
