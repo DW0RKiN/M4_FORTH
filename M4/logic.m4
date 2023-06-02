@@ -2873,6 +2873,31 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # 1+ 0c=
+dnl # ( char -- flag )
+dnl # if ( char == 0xFF ) flag = 0xFFFF; else flag = 0;
+define({_1ADD_0CEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_1ADD_0CEQ},{1+ 0c=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_1ADD_0CEQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(_TYP_SINGLE,fast,{
+__{}__{}                        ;[7:26/24]  __INFO   ( char -- flag )  flag: char == 255
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    jr    z, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    L, 0x01       ; 2:7       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld    H, L          ; 1:4       __INFO   HL = flag},
+__{}{
+__{}__{}                        ;[5:26]     __INFO   ( char -- flag )  flag: char == 255
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    add   A, 0x01       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( char -- bool )  bool: char == $1
 define({PUSH_CEQ},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_CEQ},{$1 c=},$@){}dnl
