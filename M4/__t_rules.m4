@@ -664,6 +664,16 @@ push,,,
             __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_PORTFETCH,                           {__SET_TOKEN({__TOKEN_PUSH_PORTFETCH},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_PORTFETCH,                           {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_PORTFETCH}, __CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
 
+__T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_OVER:__TOKEN_PUSHS:1:__TOKEN_PORTSTORE,              {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_OVER_PUSH_PORTSTORE}, __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+__T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_DUP:__TOKEN_PUSHS:1:__TOKEN_PORTSTORE,               {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_PUSH_PORTSTORE},  __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+
+__T_NAME(1):__T_ITEMS(1):__T_NAME(0):$1,         __TOKEN_PUSHS:1:__TOKEN_2DUP:__TOKEN_PORTSTORE,              {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_PUSH_2DUP_PORTSTORE},  __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__T_ARRAY(1)){}__DELETE_LAST_TOKEN},            
+            __T_NAME(0):$1,                      __TOKEN_2DUP:__TOKEN_PORTSTORE,                              {__SET_TOKEN({__TOKEN_2DUP_PORTSTORE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_PORTSTORE,                           {__SET_TOKEN({__TOKEN_PUSH_PORTSTORE},  __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:2:__TOKEN_PORTSTORE,                           {__SET_TOKEN({__TOKEN_PUSH2_PORTSTORE}, __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_PORTSTORE,                           {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_PORTSTORE}, __CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
+
             __T_NAME(0):$1,                      __TOKEN_PUSH_TESTKEY:__TOKEN_0EQ,                            {__SET_TOKEN({__TOKEN_PUSH_TESTKEY_0EQ},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):$1,                      __TOKEN_TESTKEY:__TOKEN_0EQ,                                 {__SET_TOKEN({__TOKEN_TESTKEY_0EQ},     __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
 
