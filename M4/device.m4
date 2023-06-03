@@ -2101,16 +2101,127 @@ __{}    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
+dnl # ( char -- )
+define({PUSH_PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_PORTSTORE},{$1 port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}dnl
+__{}__{}$0_TEMP   ( char -- )   port($1) = char
+__{}__{}    out  (C),L          ; 2:12      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( char -- char )
+define({DUP_PUSH_PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_PORTSTORE},{dup $1 port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}dnl
+__{}__{}$0_TEMP   ( char -- char )   port($1) = char
+__{}__{}    out  (C),L          ; 2:12      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( char x -- char x )
+define({OVER_PUSH_PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_PUSH_PORTSTORE},{over $1 port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_PUSH_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}dnl
+__{}__{}$0_TEMP   ( char x -- char x )   port($1) = char
+__{}__{}    out  (C),E          ; 2:12      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( char -- char $1 )
+define({PUSH_2DUP_PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_2DUP_PORTSTORE},{$1 2dup port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_2DUP_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    push DE             ; 1:11      __INFO   ( char -- char $1 )   port($1) = char
+__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    out  (C),E          ; 2:12      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({PUSH2_PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_PORTSTORE},{$1 $2 port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),1,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({$0_TEMP},__LD_R16({BC},$2)){}dnl
+__{}__{}$0_TEMP   ( -- )   port($2) = $1{}dnl
+__{}__{}__LD_R_NUM(__INFO,A,$1)
+__{}__{}    out  (C),A          ; 2:12      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( char port -- char port )
 define({_2DUP_PORTSTORE},{dnl
 __{}__ADD_TOKEN({__TOKEN_2DUP_PORTSTORE},{2dup port!},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_PORTSTORE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-__{}    ld    B, H          ; 1:4       __INFO   ( char port -- char port )
-__{}    ld    C, L          ; 1:4       __INFO
-__{}    out  (C),E          ; 2:12      __INFO}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    ld    C, L          ; 1:4       __INFO   ( char x -- char x )   port(x) = char
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    out  (C),E          ; 2:12      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2125,6 +2236,88 @@ __{}    ld    B, H          ; 1:4       __INFO   ( char port -- port )
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    out  (C),E          ; 2:12      __INFO
 __{}    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( char -- )
+define({BC_PORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_BC_PORTSTORE},{bc port!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_BC_PORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    out  (C),L          ; 2:12      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:11      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( char -- char )
+define({DUP_BC_CPORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_BC_CPORTSTORE},{dup bc cport!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_BC_CPORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    out  (C),L          ; 2:12      __INFO   ( char -- char )   port(BC) = char{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x -- x )
+define({DUP_BC_HPORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_BC_HPORTSTORE},{dup bc hport!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_BC_HPORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    out  (C),H          ; 2:12      __INFO   ( x -- x )   port(BC) = hi(x){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( char x -- char x )
+define({OVER_BC_CPORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_BC_CPORTSTORE},{over bc cport!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_BC_CPORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    out  (C),E          ; 2:12      __INFO   ( char x -- char x )   port(BC) = char{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( x2 x1 -- x2 x1 )
+define({OVER_BC_HPORTSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_BC_HPORTSTORE},{over bc hport!},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_BC_HPORTSTORE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    out  (C),D          ; 2:12      __INFO   ( x2 x1 -- x2 x1 )   port(BC) = hi(x2){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
