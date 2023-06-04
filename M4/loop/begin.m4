@@ -2812,6 +2812,138 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # ( mask -- )
+define({TESTKEMPSTON_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEMPSTON_WHILE},{testkempston if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEMPSTON_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#>0),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( mask -- )  port(kempston) or +1 0= if
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp   nz, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( mask -- )
+define({TESTKEMPSTON_0EQ_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEMPSTON_0EQ_WHILE},{testkempston 0= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEMPSTON_0EQ_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#>0),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( mask -- )  port(kempston) or +1 0<> if
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    z, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({PUSH_TESTKEMPSTON_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON_WHILE},{$1 testkempston if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEMPSTON_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}__IS_MEM_REF($1),1,{dnl
+__{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP   ( -- )    port(kempston) $1 or +1 0= if
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    jp   nz, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO},
+__{}__IS_NUM($1),1,{dnl
+__{}__{}define({$0_TMP},__TESTKEMPSTON_NAME($1)){}dnl
+__{}__{}ifelse($0_TMP,{"???"},{dnl
+__{}__{}__{}ifelse(eval((128 & ($1))==0 || (3 & ($1))==0 || (12 & ($1))==0),1,{
+__{}__{}__{}__{}  .warning Nonsence mask! Each bit that is tested must be 0 and the others 1.})
+__{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )    port(kempston) $1 or +1 0= if
+__{}__{}__{}    or   __HEX_L($1)           ; 2:7       __INFO   "multibit test"
+__{}__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}__{}    jp   nz, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO},
+__{}__{}{
+__{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  port(kempston) $1 invert and 0<> if
+__{}__{}__{}    and  __HEX_L(255 ^ ($1))           ; 2:7       __INFO   $0_TMP
+__{}__{}__{}    jp    z, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO})},
+__{}{
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- bool )  port(kempston) $1 or +1 0= if
+__{}__{}    or   __FORM({%-15s},$1); 2:7       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    jp   nz, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({PUSH_TESTKEMPSTON_0EQ_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON_0EQ_WHILE},{$1 testkempston 0= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEMPSTON_0EQ_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}$1,{},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+__{}__IS_MEM_REF($1),1,{dnl
+__{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP   ( -- )    port(kempston) $1 or +1 0= if
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    jp    z, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO},
+__{}__IS_NUM($1),1,{dnl
+__{}__{}define({$0_TMP},__TESTKEMPSTON_NAME($1)){}dnl
+__{}__{}ifelse($0_TMP,{"???"},{dnl
+__{}__{}__{}ifelse(eval((128 & ($1))==0 || (3 & ($1))==0 || (12 & ($1))==0),1,{
+__{}__{}__{}__{}  .warning Nonsence mask! Each bit that is tested must be 0 and the others 1.})
+__{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )    port(kempston) $1 or +1 0= if
+__{}__{}__{}    or   __HEX_L($1)           ; 2:7       __INFO   "multibit test"
+__{}__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}__{}    jp    z, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO},
+__{}__{}{
+__{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  port(kempston) $1 invert and 0<> if
+__{}__{}__{}    and  __HEX_L(255 ^ ($1))           ; 2:7       __INFO   $0_TMP
+__{}__{}__{}    jp   nz, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO})},
+__{}{
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- bool )  port(kempston) $1 or +1 0= if
+__{}__{}    or   __FORM({%-15s},$1); 2:7       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    jp    z, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ----------------------- 32 bit -----------------------
 dnl # ------ signed_32_bit_cond while ( d2 d1 -- ) ---------
 dnl
