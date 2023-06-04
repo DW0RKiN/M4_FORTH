@@ -1648,12 +1648,18 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}__IS_MEM_REF($1),1,{dnl
+__{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP   ( -- )    port(kempston) $1 or +1 0= if
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO
 __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__IS_NUM($1),1,{dnl
+__{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}__{}define({$0_TMP},__TESTKEMPSTON_NAME($1)){}dnl
 __{}__{}ifelse($0_TMP,{"???"},{dnl
 __{}__{}__{}ifelse(eval((128 & ($1))==0 || (3 & ($1))==0 || (12 & ($1))==0),1,{
@@ -1666,7 +1672,10 @@ __{}__{}{
 __{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  port(kempston) $1 invert and 0<> if
 __{}__{}__{}    and  __HEX_L(255 ^ ($1))           ; 2:7       __INFO   $0_TMP
 __{}__{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO})},
-__{}{
+__{}{dnl
+__{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}__{}pushdef({THEN_STACK}, IF_COUNT)
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- bool )  port(kempston) $1 or +1 0= if
 __{}__{}    or   __FORM({%-15s},$1); 2:7       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
@@ -1689,12 +1698,18 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}__IS_MEM_REF($1),1,{dnl
+__{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP   ( -- )    port(kempston) $1 or +1 0= if
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO
 __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
 __{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__IS_NUM($1),1,{dnl
+__{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}__{}define({$0_TMP},__TESTKEMPSTON_NAME($1)){}dnl
 __{}__{}ifelse($0_TMP,{"???"},{dnl
 __{}__{}__{}ifelse(eval((128 & ($1))==0 || (3 & ($1))==0 || (12 & ($1))==0),1,{
@@ -1707,7 +1722,10 @@ __{}__{}{
 __{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  port(kempston) $1 invert and 0<> if
 __{}__{}__{}    and  __HEX_L(255 ^ ($1))           ; 2:7       __INFO   $0_TMP
 __{}__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO})},
-__{}{
+__{}{dnl
+__{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}__{}pushdef({THEN_STACK}, IF_COUNT)
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- bool )  port(kempston) $1 or +1 0= if
 __{}__{}    or   __FORM({%-15s},$1); 2:7       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
