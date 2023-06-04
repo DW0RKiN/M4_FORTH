@@ -2820,7 +2820,10 @@ __{}{
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- bool )  port(kempston) $1 or +1 0= if
 __{}__{}    or   __FORM({%-15s},$1); 2:7       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
-__{}__{}    jp    z, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO}){}dnl
+__{}__{}    jp    z, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO{}dnl
+__{}})
+__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}popdef({BEGIN_STACK}){}dnl
 }){}dnl
 dnl
 dnl
