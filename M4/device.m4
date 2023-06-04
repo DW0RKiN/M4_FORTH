@@ -1547,6 +1547,53 @@ define({__TESTKEY_CURSOR_FIRE}, __TESTKEY_0){}dnl
 dnl
 dnl
 dnl
+define({__TESTKEY_NAME},{dnl
+__{}ifelse(dnl
+__{}__{}__HEX_HL($1),__TESTKEY_B,           {{"B"}},
+__{}__{}__HEX_HL($1),__TESTKEY_H,           {{"H"}},
+__{}__{}__HEX_HL($1),__TESTKEY_Y,           {{"Y"}},
+__{}__{}__HEX_HL($1),__TESTKEY_6,           {{"6"}},
+__{}__{}__HEX_HL($1),__TESTKEY_5,           {{"5"}},
+__{}__{}__HEX_HL($1),__TESTKEY_T,           {{"T"}},
+__{}__{}__HEX_HL($1),__TESTKEY_G,           {{"G"}},
+__{}__{}__HEX_HL($1),__TESTKEY_V,           {{"V"}},
+__{}__{}__HEX_HL($1),__TESTKEY_N,           {{"N"}},
+__{}__{}__HEX_HL($1),__TESTKEY_J,           {{"J"}},
+__{}__{}__HEX_HL($1),__TESTKEY_U,           {{"U"}},
+__{}__{}__HEX_HL($1),__TESTKEY_7,           {{"7"}},
+__{}__{}__HEX_HL($1),__TESTKEY_4,           {{"4"}},
+__{}__{}__HEX_HL($1),__TESTKEY_R,           {{"R"}},
+__{}__{}__HEX_HL($1),__TESTKEY_F,           {{"F"}},
+__{}__{}__HEX_HL($1),__TESTKEY_C,           {{"C"}},
+__{}__{}__HEX_HL($1),__TESTKEY_M,           {{"M"}},
+__{}__{}__HEX_HL($1),__TESTKEY_K,           {{"K"}},
+__{}__{}__HEX_HL($1),__TESTKEY_I,           {{"I"}},
+__{}__{}__HEX_HL($1),__TESTKEY_8,           {{"8"}},
+__{}__{}__HEX_HL($1),__TESTKEY_3,           {{"3"}},
+__{}__{}__HEX_HL($1),__TESTKEY_E,           {{"E"}},
+__{}__{}__HEX_HL($1),__TESTKEY_D,           {{"D"}},
+__{}__{}__HEX_HL($1),__TESTKEY_X,           {{"X"}},
+__{}__{}__HEX_HL($1),__TESTKEY_SYMBOL_SHIFT,{{"SYMBOL SHIFT"}},
+__{}__{}__HEX_HL($1),__TESTKEY_L,           {{"L"}},
+__{}__{}__HEX_HL($1),__TESTKEY_O,           {{"O"}},
+__{}__{}__HEX_HL($1),__TESTKEY_9,           {{"9"}},
+__{}__{}__HEX_HL($1),__TESTKEY_2,           {{"2"}},
+__{}__{}__HEX_HL($1),__TESTKEY_W,           {{"W"}},
+__{}__{}__HEX_HL($1),__TESTKEY_S,           {{"S"}},
+__{}__{}__HEX_HL($1),__TESTKEY_Z,           {{"Z"}},
+__{}__{}__HEX_HL($1),__TESTKEY_SPACE,       {{"SPACE"}},
+__{}__{}__HEX_HL($1),__TESTKEY_ENTER,       {{"ENTER"}},
+__{}__{}__HEX_HL($1),__TESTKEY_P,           {{"P"}},
+__{}__{}__HEX_HL($1),__TESTKEY_0,           {{"0"}},
+__{}__{}__HEX_HL($1),__TESTKEY_1,           {{"1"}},
+__{}__{}__HEX_HL($1),__TESTKEY_Q,           {{"Q"}},
+__{}__{}__HEX_HL($1),__TESTKEY_A,           {{"A"}},
+__{}__{}__HEX_HL($1),__TESTKEY_CAPS_SHIFT,  {{"CAPS SHIFT"}},
+__{}__{}{{"???"}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( mask -- bool )
 dnl # Check test key
 dnl # H=0x7F L= ...BNMs_
@@ -1634,49 +1681,7 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  true == press {}dnl
-__{}__{}ifelse(dnl
-__{}__{}__{}__HEX_HL($1),__TESTKEY_B,           {{"B"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_H,           {{"H"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_Y,           {{"Y"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_6,           {{"6"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_5,           {{"5"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_T,           {{"T"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_G,           {{"G"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_V,           {{"V"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_N,           {{"N"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_J,           {{"J"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_U,           {{"U"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_7,           {{"7"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_4,           {{"4"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_R,           {{"R"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_F,           {{"F"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_C,           {{"C"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_M,           {{"M"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_K,           {{"K"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_I,           {{"I"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_8,           {{"8"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_3,           {{"3"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_E,           {{"E"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_D,           {{"D"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_X,           {{"X"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_SYMBOL_SHIFT,{{"SYMBOL SHIFT"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_L,           {{"L"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_O,           {{"O"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_9,           {{"9"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_2,           {{"2"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_W,           {{"W"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_S,           {{"S"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_Z,           {{"Z"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_SPACE,       {{"SPACE"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_ENTER,       {{"ENTER"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_P,           {{"P"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_0,           {{"0"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_1,           {{"1"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_Q,           {{"Q"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_A,           {{"A"}},
-__{}__{}__{}__HEX_HL($1),__TESTKEY_CAPS_SHIFT,  {{"CAPS SHIFT"}},
-__{}__{}__{}{"???"})
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  true == press __TESTKEY_NAME($1)
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}ifelse(dnl
 __{}__{}__HEX_L($1),0x01,{
@@ -1890,7 +1895,7 @@ __{}__ADD_TOKEN({__TOKEN_TESTKEMPSTON},{testkempston},$@){}dnl
 dnl
 define({__ASM_TOKEN_TESTKEMPSTON},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-__{}    in    A,(0x1F)      ; 2:11      __INFO   ( mask -- bool )  bool: $1 cor +1c 0c=
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( mask -- bool )  bool: port(kempston) cor +1c 0c=
 __{}    or    L             ; 1:4       __INFO
 __{}    add   A, 0x01       ; 2:7       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
@@ -1904,7 +1909,7 @@ __{}__ADD_TOKEN({__TOKEN_TESTKEMPSTON_ZF},{testkempston zf},$@){}dnl
 dnl
 define({__ASM_TOKEN_TESTKEMPSTON_ZF},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-__{}    in    A,(0x1F)      ; 2:11      __INFO   ( mask -- )  zf: $1 cor +1c 0c=
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( mask -- )  zf: port(kempston) cor +1c 0c=
 __{}    or    L             ; 1:4       __INFO
 __{}    inc   A             ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
@@ -1912,7 +1917,7 @@ __{}    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- bool )  bool: $1 cor +1c 0c=
+dnl # ( -- bool )  bool: mask & port(kempston)
 define({PUSH_TESTKEMPSTON},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON},{$1 testkempston},$@){}dnl
 }){}dnl
@@ -1920,7 +1925,7 @@ dnl
 define({__ASM_TOKEN_PUSH_TESTKEMPSTON},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__IS_MEM_REF($1),1,{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: $1 cor +1c 0c=
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cor +1c 0c=
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO
@@ -1928,31 +1933,33 @@ __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
 __{}__{}    sub  0x01           ; 2:7       __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO},
-__{}ifelse(dnl
-__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_RIGHT),1,
-__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_LEFT),1,
-__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_DOWN),1,
-__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_UP),1,
-__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_FIRE),1,
-__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_FIRE2),1,
-__{}__HEX_L($1),0xBF,1,
-__{}__HEX_L($1),0x7F,1,0),1,{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: $1 cand 0c<>
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
-__{}__{}    and  __HEX_L(255 ^ ($1))           ; 2:7       __INFO
-__{}__{}    add   A, 0xFF       ; 2:7       __INFO
-__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
-__{}__IS_NUM($1),1,{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: $1 cor +1c 0c=
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
-__{}__{}    or   __HEX_L($1)           ; 2:7       __INFO
-__{}__{}    inc   A             ; 1:4       __INFO
-__{}__{}    sub  0x01           ; 2:7       __INFO
-__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__IS_NUM($1),1,{dnl
+__{}__{}define({$0_TMP},ifelse(dnl
+__{}__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_RIGHT),right,
+__{}__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_LEFT),left,
+__{}__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_DOWN),down,
+__{}__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_UP),up,
+__{}__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_FIRE),fire,
+__{}__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_FIRE2),fire2,
+__{}__{}__HEX_L($1),0xBF,6th bit,
+__{}__{}__HEX_L($1),0x7F,7th bit,???)){}dnl
+__{}__{}ifelse($0_TMP,???,{
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cor +1c 0c=
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}__{}    or   __HEX_L($1)           ; 2:7       __INFO   $0_TMP
+__{}__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}{
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cand 0c<>
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}__{}    and  __HEX_L(255 ^ ($1))           ; 2:7       __INFO   $0_TMP
+__{}__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO})},
 __{}{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: $1 cor +1c 0c=
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cor +1c 0c=
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO
 __{}__{}    or   __FORM({%-15s},$1); 2:7       __INFO
@@ -1971,17 +1978,17 @@ dnl
 define({__ASM_TOKEN_PUSH_TESTKEMPSTON_ZF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__IS_MEM_REF($1),1,{
-__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: $1 cor +1c
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: port(kempston) $1 cor +1c
 __{}    ld    C, A          ; 1:4       __INFO
-__{}    ld   __FORM({%-15s},$1); 3:13      __INFO
+__{}    ld    A,substr(__FORM({%-13s},$1),1); 3:13      __INFO
 __{}    or    C             ; 1:4       __INFO
 __{}    inc   A             ; 1:4       __INFO},
 __{}__IS_NUM($1),1,{
-__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: $1 cor +1c
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: port(kempston) $1 cor +1c
 __{}    or   __HEX_L($1)           ; 2:7       __INFO
 __{}    inc   A             ; 1:4       __INFO},
 __{}{
-__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: $1 cor +1c
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: port(kempston) $1 cor +1c
 __{}    or   __FORM({%-15s},$1); 2:7       __INFO
 __{}    inc   A             ; 1:4       __INFO}){}dnl
 }){}dnl
