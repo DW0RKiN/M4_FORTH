@@ -1873,6 +1873,121 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl
+define({__TESTKEMPSTON_RIGHT},0xFFFE){}dnl
+define({__TESTKEMPSTON_LEFT}, 0xFFFD){}dnl
+define({__TESTKEMPSTON_DOWN}, 0xFFFB){}dnl
+define({__TESTKEMPSTON_UP},   0xFFF7){}dnl
+define({__TESTKEMPSTON_FIRE}, 0xFFEF){}dnl
+define({__TESTKEMPSTON_FIRE2},0xFFDF){}dnl
+dnl
+dnl
+dnl
+dnl # ( mask -- bool )
+define({TESTKEMPSTON},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEMPSTON},{testkempston},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEMPSTON},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( mask -- bool )  bool: $1 cor +1c 0c=
+__{}    or    L             ; 1:4       __INFO
+__{}    add   A, 0x01       ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( mask -- )  zf: $1 cor +1c 0c=
+define({TESTKEMPSTON_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_TESTKEMPSTON_ZF},{testkempston zf},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_TESTKEMPSTON_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( mask -- )  zf: $1 cor +1c 0c=
+__{}    or    L             ; 1:4       __INFO
+__{}    inc   A             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- bool )  bool: $1 cor +1c 0c=
+define({PUSH_TESTKEMPSTON},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON},{$1 testkempston},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEMPSTON},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: $1 cor +1c 0c=
+__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}ifelse(dnl
+__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_RIGHT),1,
+__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_LEFT),1,
+__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_DOWN),1,
+__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_UP),1,
+__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_FIRE),1,
+__{}__HEX_L($1),__HEX_L(__TESTKEMPSTON_FIRE2),1,
+__{}__HEX_L($1),0xBF,1,
+__{}__HEX_L($1),0x7F,1,0),1,{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: $1 cand 0c<>
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}    and  __HEX_L(255 ^ ($1))           ; 2:7       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__IS_NUM($1),1,{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: $1 cor +1c 0c=
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}    or   __HEX_L($1)           ; 2:7       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: $1 cor +1c 0c=
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}    or   __FORM({%-15s},$1); 2:7       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )  bool: $1 cor +1c 0c=
+define({PUSH_TESTKEMPSTON_ZF},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON_ZF},{$1 testkempston zf},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEMPSTON_ZF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: $1 cor +1c
+__{}    ld    C, A          ; 1:4       __INFO
+__{}    ld   __FORM({%-15s},$1); 3:13      __INFO
+__{}    or    C             ; 1:4       __INFO
+__{}    inc   A             ; 1:4       __INFO},
+__{}__IS_NUM($1),1,{
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: $1 cor +1c
+__{}    or   __HEX_L($1)           ; 2:7       __INFO
+__{}    inc   A             ; 1:4       __INFO},
+__{}{
+__{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: $1 cor +1c
+__{}    or   __FORM({%-15s},$1); 2:7       __INFO
+__{}    inc   A             ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( port -- char )
 define({PORTFETCH},{dnl
 __{}__ADD_TOKEN({__TOKEN_PORTFETCH},{port@},$@){}dnl
@@ -1907,8 +2022,7 @@ __{}__{}__{}    ld    H, A          ; 1:4       __INFO
 __{}__{}__{}    in    A,(__HEX_L($1))      ; 2:11      __INFO
 __{}__{}__{}    ld    L, A          ; 1:4       __INFO},
 __{}__{}{dnl
-__{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}dnl
-__{}__{}__{}$0_TEMP
+__{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP
 __{}__{}__{}    in    L,(C)         ; 2:12      __INFO{}dnl
 __{}__{}__{}__LD_R_NUM(__INFO,{H},0x00,{BC},$1)}){}dnl
 __{}}){}dnl
