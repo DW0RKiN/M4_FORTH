@@ -1894,6 +1894,53 @@ __{}__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
 dnl
 dnl
 dnl
+dnl # ( -- bool )  bool: mask & port(kempston) =0
+define({PUSH_TESTKEMPSTON_0EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON_0EQ},{$1 testkempston 0=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_TESTKEMPSTON_0EQ},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(__IS_MEM_REF($1),1,{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cor +1c 0c<>
+__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}    or    L             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__IS_NUM($1),1,{dnl
+__{}__{}define({$0_TMP},__TESTKEMPSTON_NAME($1)){}dnl
+__{}__{}ifelse($0_TMP,{"???"},{dnl
+__{}__{}__{}ifelse(eval((128 & ($1))==0 || (3 & ($1))==0 || (12 & ($1))==0),1,{
+__{}__{}__{}__{}  .warning Nonsence mask! Each bit that is tested must be 0 and the others 1.})
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cor +1c 0c<>
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}__{}    or   __HEX_L($1)           ; 2:7       __INFO   "multibit test"
+__{}__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}__{}{
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cand 0c=
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}__{}    and  __HEX_L(255 ^ ($1))           ; 2:7       __INFO   $0_TMP
+__{}__{}__{}    sub  0x01           ; 2:7       __INFO
+__{}__{}__{}    sbc  HL, HL         ; 2:15      __INFO})},
+__{}{
+__{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cor +1c 0c<>
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    in    A,(0x1F)      ; 2:11      __INFO
+__{}__{}    or   __FORM({%-15s},$1); 2:7       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    add   A, 0xFF       ; 2:7       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( -- )  bool: $1 cor +1c 0c=
 define({PUSH_TESTKEMPSTON_ZF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON_ZF},{$1 testkempston zf},$@){}dnl
