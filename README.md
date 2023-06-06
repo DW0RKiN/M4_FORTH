@@ -714,6 +714,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>         key         |<sub>        KEY          |<sub>                        |<sub>          ( -- key )      |<sub>                       |
 |<sub>        key?         |<sub>        KEY?         |<sub>                        |<sub>          ( -- flag )     |<sub>                       |
 |<sub>                     |<sub>       TESTKEY       |<sub>                        |<sub>     ( mask -- bool )     |<sub> test if key is pressed|
+|<sub>                     |<sub>    TESTKEMPSTON     |<sub>                        |<sub>     ( mask -- bool )     |<sub> test if kempston is pressed|
 |<sub>       accept        |<sub>       ACCEPT        |<sub>                        |<sub> ( addr max -- loaded )   |<sub>                       |
 |<sub>       accept        |<sub>      ACCEPT_Z       |<sub>                        |<sub> ( addr max -- loaded )   |<sub> C-style string        |
 |<sub>                     |<sub>      PORTFETCH      |<sub>                        |<sub>     ( port -- char )     |<sub> in char,(port)        |
@@ -773,6 +774,35 @@ All 40 keys mask:
     __TESTKEY_Q            = 0xFB01
     __TESTKEY_A            = 0xFD01
     __TESTKEY_CAPS_SHIFT   = 0xFE01
+    
+Alias
+
+    __TESTKEY_SINCLAIR1_LEFT  = __TESTKEY_1
+    __TESTKEY_SINCLAIR1_RIGHT = __TESTKEY_2
+    __TESTKEY_SINCLAIR1_DOWN  = __TESTKEY_3
+    __TESTKEY_SINCLAIR1_UP    = __TESTKEY_4
+    __TESTKEY_SINCLAIR1_FIRE  = __TESTKEY_5
+
+    __TESTKEY_SINCLAIR2_LEFT  = __TESTKEY_6
+    __TESTKEY_SINCLAIR2_RIGHT = __TESTKEY_7
+    __TESTKEY_SINCLAIR2_DOWN  = __TESTKEY_8
+    __TESTKEY_SINCLAIR2_UP    = __TESTKEY_9
+    __TESTKEY_SINCLAIR2_FIRE  = __TESTKEY_0
+
+    __TESTKEY_CURSOR_LEFT     = __TESTKEY_5
+    __TESTKEY_CURSOR_DOWN     = __TESTKEY_6
+    __TESTKEY_CURSOR_UP       = __TESTKEY_7
+    __TESTKEY_CURSOR_RIGHT    = __TESTKEY_8
+    __TESTKEY_CURSOR_FIRE     = __TESTKEY_0
+
+Kempston joystick
+
+    __TESTKEMPSTON_RIGHT   = 0xFFFE
+    __TESTKEMPSTON_LEFT    = 0xFFFD
+    __TESTKEMPSTON_DOWN    = 0xFFFB
+    __TESTKEMPSTON_UP      = 0xFFF7
+    __TESTKEMPSTON_FIRE    = 0xFFEF
+    __TESTKEMPSTON_FIRE2   = 0xFFDF
 
 I'm testing a 5x8 font that changes the output from 8x8 if define({USE_FONT_5x8}) is entered at the beginning of the program.
 
