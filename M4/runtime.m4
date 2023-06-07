@@ -72,6 +72,22 @@ T_CLOSE_E EQU $+1       ;           t_close
 dnl
 dnl
 dnl
+ifdef({USE_OCTODE2K16},{
+;==============================================================================
+PLAY_OCTODE:            ;[:]        play_octode
+    push DE             ; 1:11      play_octode
+    push HL             ; 1:11      play_octode
+    ex   DE, HL         ; 1:4       play_octode
+    push HL             ; 1:11      play_octode
+    call OCTODE2K16_ROUTINE; 3:17      play_octode
+    pop  HL             ; 1:10      play_octode
+    ex   DE, HL         ; 1:4       play_octode
+    pop  HL             ; 1:10      play_octode
+    pop  DE             ; 1:10      play_octode
+    ret                 ; 1:10      play_octode}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_U32BCD},{
 BIN32BCD:               ;[122:]     bin32bcd
     push HL             ; 1:11      bin32bcd
@@ -2803,6 +2819,16 @@ dnl
 ifdef({__STRING_NUM_STACK},{
 
 STRING_SECTION:{}PRINT_STRING_STACK
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_OCTODE2K16},{
+;==============================================================================
+include(M4PATH{}/../octode2k16/octode2k16.asm)
+;==============================================================================
+musicData:
+include(M4PATH{}/../octode2k16/USE_OCTODE2K16){}dnl
 }){}dnl
 dnl
 dnl
