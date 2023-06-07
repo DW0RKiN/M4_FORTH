@@ -2423,6 +2423,25 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # ( -- )
+define({MUSIC},{dnl
+__{}__ADD_TOKEN({__TOKEN_MUSIC},{music},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_MUSIC},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}($@): Missing filename parameter! Need: music(octode2k16.xm.dat) or music(octode2k15.xm.dat or music(octode.xm.dat))},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__def({USE_OCTODE2K16},$1)
+__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO   ( -- ){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl
 dnl
 dnl
