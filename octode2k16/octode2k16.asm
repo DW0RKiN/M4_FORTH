@@ -32,6 +32,11 @@ else
   PCTRL_B   equ 0x00
 endif
 
+
+; Input:
+; (seqpntr) = music_data:
+; nameloop = music_loop:
+
 OCTODE2K16_ROUTINE:
     ei                  ; 1:4       detect kempston
     halt                ; 1:4
@@ -41,12 +46,7 @@ OCTODE2K16_ROUTINE:
     ld (maskKempston),A ; 3:13
 _skip:                  ;
     di                  ; 1:4
-    exx                 ; 1:4
-    push HL             ; 1:11      preserve HL' for return to BASIC
-    exx                 ; 1:4
     ld  (oldSP),SP      ; 4:20
-    ld   HL,musicData   ; 3:10
-    ld  (seqpntr),HL    ; 3:16
 
 ;******************************************************************
 rdseq:
@@ -61,7 +61,8 @@ seqpntr equ $+1
     
    ;jp   exit           ;[3:10]     uncomment to disable looping
     
-    ld   SP, loop       ; 3:10      get loop point
+nameloop equ $+1
+    ld   SP, 0x0000     ; 3:10      get loop point
     jr   rdseq+3        ; 2:12
 
 ;******************************************************************
@@ -103,8 +104,6 @@ exit:
 ;   iiii dd, ss         ; b:tt      ...
 oldSP equ $+1
     ld   SP, 0x0000     ; 3:10      ...
-    pop  HL             ; 1:10      ...
-    exx                 ; 1:4
     ei                  ; 1:4
     ret                 ; 1:10
 ;******************************************************************
