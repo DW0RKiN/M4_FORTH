@@ -22,7 +22,7 @@ uint16_t assignNoteRow(int row);
 
 int main(int argc, char *argv[]){
 
-	cout << "XM 2 OCTODE2k16 CONVERTER\n";
+	cout << "XM 2 OCTODE2k16 CONVERTER" << endl;
 
 	//check for "-v" flag
 	if(argc==2 && argv[1][0]!='-' && argv[1][1]!='v' && argv[1][2]!=0)
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
 
 	if(fileName==NULL)
 	{
-		cout << "Usage: " << argv[0] << " filename.xm -v\n";
+		cout << "Usage: " << argv[0] << " filename.xm -v" << endl;
 		exit(-2);
 	}
 		
@@ -57,19 +57,37 @@ int main(int argc, char *argv[]){
 	//open music.xm
 	XMFILE.open (fileName, ios::in | ios::binary);
 	if (!XMFILE.is_open()) {
-		cout << "Error: Could not open " << fileName << "\n";
+		cout << "Error: Could not open " << fileName << endl;
 		return -1;
 	}
 
-	strcat(fileName,".dat");
+	int i = -1;
 
-	//create music.xm.dat
+	//swap .xm suffix to .dat
+	while (fileName[++i]);
+		
+	while (i>0 && fileName[i]!='.') i--;
+		
+	if (i == 0) {
+		XMFILE.close();
+		cout << "Error: Not found .xm suffix" << endl;
+		return -1;
+	}
+	    
+	fileName[i+1] = 'd';
+	fileName[i+2] = 'a';
+	fileName[i+3] = 't';
+	fileName[i+4] = 0;
+
+	//create music.dat
 	ASMFILE.open (fileName, ios::out | ios::trunc);
 	if (!ASMFILE.is_open()) {
-		cout << "Error: Could not create " << fileName << " - need to set write permission?\n";
+		cout << "Error: Could not create " << fileName << " - need to set write permission?" << endl;
 		return -1;
 	}
-	
+
+	//cut suffix	
+	fileName[i] = 0;
 
 	//get filesize
 	XMFILE.seekg(0,ios_base::end);
@@ -97,7 +115,7 @@ int main(int argc, char *argv[]){
 	songlength = xmdata[64];
 	
 	if (verbose) {
-		cout << "song length: " << +xmdata[64] << "\nunique patterns: " << +xmdata[70] << "\nglobal speed: " << +xmdata[76] << endl;
+		cout << "song length: " << +xmdata[64] << endl << "unique patterns: " << +xmdata[70] << endl << "global speed: " << +xmdata[76] << endl;
 		cout << "XM header length: " << +xmHeaderLength << endl;
 	}
 	
@@ -113,7 +131,7 @@ int main(int argc, char *argv[]){
 		ptnOffsetList[i+1] = ptnOffsetList[i] + xmdata[fileOffset] + xmdata[fileOffset+7] + (xmdata[fileOffset+8]<<8);
 		fileOffset = fileOffset + xmdata[fileOffset+7] + (xmdata[fileOffset+8]<<8) + 9;
 		
-		if (verbose) cout << "pattern " << i << " starts at " << ptnOffsetList[i] << ", length " << ptnLengths[i] << " rows\n";
+		if (verbose) cout << "pattern " << i << " starts at " << ptnOffsetList[i] << ", length " << ptnLengths[i] << " rows" << endl;
 	
 	}
 	
@@ -232,7 +250,7 @@ int main(int argc, char *argv[]){
  								if (temp == 97) temp = 0;		//silence
 								
 								if ((ch < 8) && (temp > 84)) {
-									cout << "Warning: Out-of-range note in pattern " << +ptn << ", channel " << +ch << " replaced with a rest.\n";
+									cout << "Warning: Out-of-range note in pattern " << +ptn << ", channel " << +ch << " replaced with a rest." << endl;
 									temp = 0;
 								}
 								if (ch < 8) noteVals[row][ch] = temp;
@@ -294,7 +312,7 @@ int main(int argc, char *argv[]){
  						if (temp == 97) temp = 0;		//silence
 						
 						if ((ch < 8) && (temp > 84)) {
-							cout << "Warning: Out-of-range note in pattern " << +ptn << ", channel " << +ch << " replaced with a rest.\n";
+							cout << "Warning: Out-of-range note in pattern " << +ptn << ", channel " << +ch << " replaced with a rest." << endl;
 							temp = 0;
 						}
 						
@@ -344,7 +362,7 @@ int main(int argc, char *argv[]){
 
 				pRowPntr[ptn][row] = assignNoteRow(row);
 				if (pRowPntr[ptn][row] > 1935) {
-					cout << "Error: Song too large.\n";
+					cout << "Error: Song too large." << endl;
 					delete[] xmdata;
 					xmdata = NULL;
 					return -1;
@@ -355,53 +373,52 @@ int main(int argc, char *argv[]){
 
 
 
-	//construct music.asm
-	ASMFILE << ";sequence\n";
+	//construct music.dat
+	ASMFILE << fileName << "_data:" << endl << ";sequence" << endl;
 	
 	//print sequence
 	for (int i = 0; i < songlength; i++) {
-		if (i == loopPoint) ASMFILE << "loop\n";
-		ASMFILE << "\tdw ptn" << hex << +sequence[i] << endl;
+		if (i == loopPoint) ASMFILE << fileName << "_loop:" << endl;
+		ASMFILE << "\tdw " << fileName << "_ptn" << hex << +sequence[i] << endl;
 	}
-	ASMFILE << "\tdw 0\n\n";
+	ASMFILE << "\tdw 0" << endl << endl;
 	
 	//print patterns
 	for (int i = 0; i < uniqueptns; i++) {
 		
 		if (isPatternUsed(i)) {
 		
-			ASMFILE << "ptn" << hex << +i << endl;
+			ASMFILE << fileName << "_ptn" << hex << +i << ":" << endl;
 			
 			for (int j = 1; j <= ptnLengths[i]; j++) {
 			
-				ASMFILE << "\tdw #" << +pSpeeds[i][j];
+				ASMFILE << "\tdw 0x" << +pSpeeds[i][j];
 				if (pDrumTrigs[i][j] != 0x80) ASMFILE << "0";
 				ASMFILE << +pDrumTrigs[i][j] << ",";
-				if (pDrumTrigs[i][j]) ASMFILE << "#00" << hex << +pDrums[i][j] << ",";
-				ASMFILE << "row" << hex << pRowPntr[i][j] << endl;
+				if (pDrumTrigs[i][j]) ASMFILE << "0x00" << hex << +pDrums[i][j] << ",";
+				ASMFILE << fileName << "_row" << hex << pRowPntr[i][j] << endl;
 			}
 			
-			ASMFILE << "\tdb #40\n\n";		
+			ASMFILE << "\tdb 0x40" << endl << endl;
 		}	
 	}
 	
 	
 	//print row buffers
-	ASMFILE << "\n\n;row buffers\n";
+	ASMFILE << endl << endl << ";row buffers" << endl;
 	for (int i = 0; i <= maxRows; i++) {
 	
-		ASMFILE << "row" << hex << +i << "\tdw ";
+		ASMFILE << fileName << "_row" << hex << +i << ":\tdw ";
 		for (int j = 0; j < 8; j++) {
 		
-			ASMFILE << "#" << +noteRows[i][j];
+			ASMFILE << "0x" << +noteRows[i][j];
 			if (j == 7) ASMFILE << endl;
 			else ASMFILE << ",";
 		}
 	}
+	ASMFILE << endl;
 
-
-
- 	cout << "Success!\n";
+ 	cout << "Success!" << endl;
 
 	delete[] xmdata;
 	xmdata = NULL;
@@ -454,7 +471,7 @@ bool verifyXMParams(uint8_t numberOfChannels) {
 	}
 	
 	if (!xmValid) {
-		cout << "Error: Not a valid XM file.\n";
+		cout << "Error: Not a valid XM file." << endl;
 		delete[] xmdata;
 		xmdata = NULL;
 		return false;
@@ -468,7 +485,7 @@ bool verifyXMParams(uint8_t numberOfChannels) {
 	}
 	
 	if (xmdata[68] != numberOfChannels) {
-		cout << "Error: XM has " << +xmdata[68] << " channels instead of " << +numberOfChannels << ".\n";
+		cout << "Error: XM has " << +xmdata[68] << " channels instead of " << +numberOfChannels << "." << endl;
 		delete[] xmdata;
 		xmdata = NULL;
 		return false;
