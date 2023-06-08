@@ -75,16 +75,26 @@ dnl
 ifdef({USE_OCTODE2K16},{
 ;==============================================================================
 PLAY_OCTODE:            ;[:]        play_octode
+    ld  (nameloop),BC   ; 4:20      play_octode     set song loop addr
+
+    xor   A             ; 1:4       play_octode
+    in    A,(0xFE)      ; 2:11      play_octode     read kbd
+    or  0xE0            ; 2:7       play_octode
+    inc   A             ; 1:4       play_octode
+    jr   nz, $-6        ; 2:7/12    play_octode     until no presss
+    
     push DE             ; 1:11      play_octode
     push HL             ; 1:11      play_octode
-    ex   DE, HL         ; 1:4       play_octode
+    exx                 ; 1:4       play_octode
     push HL             ; 1:11      play_octode
     call OCTODE2K16_ROUTINE; 3:17      play_octode
     pop  HL             ; 1:10      play_octode
-    ex   DE, HL         ; 1:4       play_octode
+    exx                 ; 1:4       play_octode
     pop  HL             ; 1:10      play_octode
     pop  DE             ; 1:10      play_octode
-    ret                 ; 1:10      play_octode}){}dnl
+    ret                 ; 1:10      play_octode
+;==============================================================================
+include(M4PATH{}/../octode2k16/octode2k16.asm)}){}dnl
 dnl
 dnl
 dnl
@@ -2825,11 +2835,7 @@ dnl
 dnl
 ifdef({USE_OCTODE2K16},{
 ;==============================================================================
-include(M4PATH{}/../octode2k16/octode2k16.asm)
-;==============================================================================
-musicData:
-include(M4PATH{}/../octode2k16/USE_OCTODE2K16){}dnl
-}){}dnl
+__INCLUDE_FILE}){}dnl
 dnl
 dnl
 dnl
