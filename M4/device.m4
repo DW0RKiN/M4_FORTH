@@ -1474,11 +1474,14 @@ __{}__ADD_TOKEN({__TOKEN_ZX_CLS},{zx_cls},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZX_CLS},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    push DE             ; 1:11      __INFO   ( -- )
-    push HL             ; 1:11      __INFO
-    call 0x0DAF         ; 3:17      __INFO
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
+__{}    push DE             ; 1:11      __INFO   ( -- )
+__{}    push HL             ; 1:11      __INFO
+__{}    call 0x0DAF         ; 3:17      __INFO{}dnl
+__{}ifdef({USE_FONT_5x8},{
+__{}__{}    ld   HL, putchar    ; 3:10      __INFO
+__{}__{}    ld  (PRINT_OUT),HL  ; 3:10      __INFO})
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
