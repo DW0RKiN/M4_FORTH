@@ -2423,20 +2423,31 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+define({__INCLUDE_FILE},{dnl
+__{}ifdef({__INCLUDE_FILE_DATA},{
+include(__INCLUDE_FILE_DATA){}popdef({__INCLUDE_FILE_DATA}){}__INCLUDE_FILE}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( -- )
 define({MUSIC},{dnl
 __{}__ADD_TOKEN({__TOKEN_MUSIC},{music},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_MUSIC},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($#<1),1,{
-__{}__{}  .error {$0}($@): Missing filename parameter! Need: music(octode2k16.xm.dat) or music(octode2k15.xm.dat or music(octode.xm.dat))},
+__{}__{}  .error {$0}($@): Missing filename without suffix parameter! Need: music(octode2k16) or music(octode2k15) or music(octode)},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
-__{}__{}__def({USE_OCTODE2K16},$1)
-__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO   ( -- ){}dnl
+__{}__{}define({__INFO},__COMPILE_INFO{($1)}){}dnl
+__{}__{}__def({USE_OCTODE2K16},$1){}dnl
+__{}__{}pushdef({__INCLUDE_FILE_DATA},M4PATH{}/../octode2k16/$1.dat)
+__{}__{}    ld   BC, format({%-11s},$1_data); 3:10      __INFO   ( -- )
+__{}__{}    ld  (seqpntr),BC    ; 4:20      __INFO
+__{}__{}    ld   BC, format({%-11s},$1_loop); 3:10      __INFO
+__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
