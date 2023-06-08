@@ -224,7 +224,7 @@ basec equ high($)
     ds 3            ;12
     
     ret   c             ; 1:5/11    timing, branch never taken
-    ld    B, PCTRL_B    ; 2:7       B = #10
+    ld    B, PCTRL_B    ; 2:7       B = 0x10
     ;-----------------  ; [:192]
     
     dw OUT_C_0x00       ; 2:12      sound on
@@ -253,13 +253,13 @@ basec equ high($)
         
     ld    R, A          ; 1:9       timing
     ld   BC, PCTRL      ; 3:10      ...
-    dw OUT_C_0x00       ; 2:12      12__168
+    dw OUT_C_0x00       ; 2:12      ...168
 
     adc   A, 0x00       ; 2:7       ...
     ret   c             ; 1:5/11    timing
     ;-----------------  ; [:192]
     
-    dw OUT_C_0x00       ; 2:12      12__
+    dw OUT_C_0x00       ; 2:12      ...
     
     ex   DE, HL         ; 1:4       DE' is accu ch6
     pop  BC             ; 1:10
@@ -283,14 +283,14 @@ basec equ high($)
     
     exx                 ; 1:4       ...
     ld   BC, PCTRL      ; 3:10      ...
-    dw OUT_C_0x00       ; 2:12      12__168
+    dw OUT_C_0x00       ; 2:12      ...168
     
     ex   AF, AF'        ; 1:4
     dec   A             ; 1:4
     ex   AF, AF'        ; 1:4
     ;-----------------  ; [:192]
     
-    dw OUT_C_0x00       ; 2:12      12__
+    dw OUT_C_0x00       ; 2:12      ...
     
 ;   iiii dd, ss         ; b:tt      ...
     adc   A, 0x00       ; 2:7       ...
@@ -315,7 +315,7 @@ basec equ high($)
     ex  (SP),HL         ; 1:19      timing
     ex  (SP),HL         ; 1:19      timing
 
-    dw OUT_C_0x00       ; 2:12      12__168
+    dw OUT_C_0x00       ; 2:12      ...168
         
     ds 2                ; 2:8       timing
     jp  (HL)            ; 1:4       jump to next frame
@@ -331,7 +331,7 @@ core1:                  ;           vol 1 - 24t
     ex   AF, AF'        ; 1:4       update timer
     dec   A             ; 1:4
     ex   AF, AF'        ; 1:4
-    dw OUT_C_0x00       ; 2:12      12__24        ;switch sound off
+    dw OUT_C_0x00       ; 2:12      ...24        ;switch sound off
 
     ld   HL,(addBuffer) ; 3:16      get ch1 accu
     pop  BC             ; 1:10      get ch1 base freq
@@ -350,14 +350,14 @@ core1:                  ;           vol 1 - 24t
     ret   c             ; 1:5/11    timing, branch never taken
     ds 2                ; 2:8       timing
     
-    ld   BC, PCTRL      ; 3:10      BC = #10fe
+    ld   BC, PCTRL      ; 3:10      BC = 0x10fe
     ;-----------------  ; [:192]
     
     dw OUT_C_B          ; 2:12      sound on
     ex   AF, AF'        ; 1:4       update timer again (for better speed control)
     dec   A             ; 1:4
     ex   AF, AF'        ; 1:4
-    dw OUT_C_0x00       ; 2:12      12__24
+    dw OUT_C_0x00       ; 2:12      ...24
     
     ld   HL,(addBuffer+4);3:16      as above for ch3
     pop  BC             ; 1:10
@@ -383,10 +383,10 @@ core1:                  ;           vol 1 - 24t
     ld   BC, PCTRL      ; 3:10      ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     ld    B, H          ; 1:4       ...
     rl    B             ; 2:8       ...
-    dw OUT_C_0x00       ; 2:12      12__24
+    dw OUT_C_0x00       ; 2:12      ...24
     
     adc   A, 0x00       ; 2:7       ...
     
@@ -413,9 +413,9 @@ core1:                  ;           vol 1 - 24t
     nop                 ; 1:4       
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     ds 3                ; 3:12      timing
-    dw OUT_C_0x00       ; 2:12      12__24
+    dw OUT_C_0x00       ; 2:12      ...24
     
     exx                 ; 1:4       ...
     ld    B, IYH        ; 2:8       ...
@@ -459,7 +459,7 @@ core2:                  ;           vol 2 - 48t
     ex   AF, AF'        ; 1:4
     ld   HL,(addBuffer) ; 3:16      get ch1 accu
     ds 2                ; 2:8       timing
-    dw OUT_C_0x00       ; 2:12      12__48        ;switch sound off
+    dw OUT_C_0x00       ; 2:12      ...48        ;switch sound off
 
     pop  BC             ; 1:10      get ch1 base freq
     add  HL, BC         ; 1:11      add them up
@@ -476,7 +476,7 @@ core2:                  ;           vol 2 - 48t
     
     ret   c             ; 1:5/11    timing, branch never taken
     
-    ld   BC, PCTRL      ; 3:10      BC = #10fe
+    ld   BC, PCTRL      ; 3:10      BC = 0x10fe
     ;-----------------  ; [:192]
     
     dw OUT_C_B          ; 2:12      sound on
@@ -485,7 +485,7 @@ core2:                  ;           vol 2 - 48t
     ex   AF, AF'        ; 1:4
     ld   HL,(addBuffer+4);3:16      as above for ch3
     ds 2            ;8
-    dw OUT_C_0x00       ; 2:12      12__48
+    dw OUT_C_0x00       ; 2:12      ...48
     
     pop  BC             ; 1:10
     add  HL, BC         ; 1:11
@@ -509,14 +509,14 @@ core2:                  ;           vol 2 - 48t
     ld   BC, PCTRL      ; 3:10      ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
     add  HL, BC         ; 1:11      HL' is ch5 accu
     ld    B, H          ; 1:4       ...
     ld    R, A          ; 1:9       timing
     nop                 ; 1:4       
     exx                 ; 1:4       ...
-    dw OUT_C_0x00       ; 2:12      12__48
+    dw OUT_C_0x00       ; 2:12      ...48
     
     exx                 ; 1:4       ...
     rl    B             ; 2:8       ...
@@ -540,7 +540,7 @@ core2:                  ;           vol 2 - 48t
     ld   BC, PCTRL      ; 3:10      timing
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
     
     adc   A, 0x00       ; 2:7       ...
@@ -549,7 +549,7 @@ core2:                  ;           vol 2 - 48t
     pop  BC             ; 1:10
     
     exx                 ; 1:4       ...
-    dw OUT_C_0x00       ; 2:12      12__48
+    dw OUT_C_0x00       ; 2:12      ...48
     exx                 ; 1:4       ...
         
     add  IY, BC         ; 2:15      IY is accu ch8
@@ -593,7 +593,7 @@ core3:                  ;           vol 3 - 72t
     ld (addBuffer),HL   ; 3:16      store ch1 accu
     ld    C, 0xFE       ; 2:7       ...
 
-    dw OUT_C_0x00       ; 2:12      12__72        ;switch sound off
+    dw OUT_C_0x00       ; 2:12      ...72        ;switch sound off
 
     rl    H             ; 2:8       rotate bit 7 into volume accu
     rla                 ; 1:4       ...
@@ -610,7 +610,7 @@ core3:                  ;           vol 3 - 72t
     ex   AF, AF'        ; 1:4
     inc  BC             ; 1:6       timing 
     
-    ld   BC, PCTRL      ; 3:10      BC = #10fe
+    ld   BC, PCTRL      ; 3:10      BC = 0x10fe
     ;-----------------  ; [:192]
     
     dw OUT_C_B          ; 2:12      sound on
@@ -621,7 +621,7 @@ core3:                  ;           vol 3 - 72t
     ld (addBuffer+4),HL ; 3:16      ...
     
     ld    C, 0xFE       ; 2:7       ...
-    dw OUT_C_0x00       ; 2:12      12__72
+    dw OUT_C_0x00       ; 2:12      ...72
     
     rl    H             ; 2:8       ...
     adc   A, 0x00       ; 2:7       ...
@@ -643,7 +643,7 @@ core3:                  ;           vol 3 - 72t
     ld   BC, PCTRL      ; 3:10      ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
     
     ld    B, H          ; 1:4       ...
@@ -656,7 +656,7 @@ core3:                  ;           vol 3 - 72t
     nop                 ; 1:4       
     
     exx                 ; 1:4       ...
-    dw OUT_C_0x00       ; 2:12      12__72
+    dw OUT_C_0x00       ; 2:12      ...72
     exx                 ; 1:4       ...
     
     rl    B             ; 2:8       ...
@@ -677,7 +677,7 @@ core3:                  ;           vol 3 - 72t
     ld   BC, PCTRL      ; 3:10      ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
     
     add  IY, BC         ; 2:15      IY is accu ch8
@@ -689,7 +689,7 @@ core3:                  ;           vol 3 - 72t
     
     exx                 ; 1:4       ...
     ld   HL,-16         ; 3:10      point SP to beginning of pattern row again
-    dw OUT_C_0x00       ; 2:12      12__72
+    dw OUT_C_0x00       ; 2:12      ...72
 
     add  HL, SP         ; 1:11      ...
     ld   SP, HL         ; 1:6       ...
@@ -730,7 +730,7 @@ core4:                  ;           vol 4 - 96t
     ld   HL,(addBuffer+2);3:16      as above, for ch2
 
     ld    C, 0xFE       ; 2:7       ...
-    dw OUT_C_0x00       ; 2:12      12__96        ;switch sound off
+    dw OUT_C_0x00       ; 2:12      ...96        ;switch sound off
 
     rla                 ; 1:4       ...
         
@@ -745,7 +745,7 @@ core4:                  ;           vol 4 - 96t
     ex   AF, AF'        ; 1:4
     inc  BC             ; 1:6       timing 
     
-    ld   BC, PCTRL      ; 3:10      BC = #10fe
+    ld   BC, PCTRL      ; 3:10      BC = 0x10fe
     ;-----------------  ; [:192]
     
     dw OUT_C_B          ; 2:12      sound on
@@ -761,7 +761,7 @@ core4:                  ;           vol 4 - 96t
     ex   DE, HL         ; 1:4       DE is ch4 accu
     
     ld    C, 0xFE       ; 2:7       ...
-    dw OUT_C_0x00       ; 2:12      12__96
+    dw OUT_C_0x00       ; 2:12      ...96
         
     pop  BC             ; 1:10      add base freq as usual
     add  HL, BC         ; 1:11
@@ -779,7 +779,7 @@ core4:                  ;           vol 4 - 96t
     ld   BC, PCTRL      ; 3:10      ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
     
     add  HL, BC         ; 1:11      HL' is ch5 accu
@@ -794,7 +794,7 @@ core4:                  ;           vol 4 - 96t
     ld r,a            ;9
     
     exx                 ; 1:4       ...
-    dw OUT_C_0x00       ; 2:12      12__96
+    dw OUT_C_0x00       ; 2:12      ...96
     exx                 ; 1:4       ...
     
     adc   A, 0x00       ; 2:7       ...
@@ -812,7 +812,7 @@ core4:                  ;           vol 4 - 96t
     ld   BC, PCTRL      ; 3:10      ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
     
     adc   A, 0x00       ; 2:7       ...
@@ -828,7 +828,7 @@ core4:                  ;           vol 4 - 96t
     ld   SP, HL         ; 1:6       ...
     nop                 ; 1:4       
     
-    dw OUT_C_0x00       ; 2:12      12__96
+    dw OUT_C_0x00       ; 2:12      ...96
 
     add   A, basec      ; 2:7       calculate which core to use for next frame
     ld    H, A          ; 1:4       and put the value in HL
@@ -867,7 +867,7 @@ core5:                  ;           vol 5 - 120t
     ds 5                ; 5:20      timing
 
     ld    C, 0xFE       ; 2:7       ...
-    dw OUT_C_0x00       ; 2:12      12__120    ;switch sound off
+    dw OUT_C_0x00       ; 2:12      ...120    ;switch sound off
 
     pop  BC             ; 1:10
     add  HL, BC         ; 1:11
@@ -876,7 +876,7 @@ core5:                  ;           vol 5 - 120t
     ld    R, A          ; 1:9       timing
     nop                 ; 1:4       
     
-    ld   BC, PCTRL      ; 3:10      BC = #10fe
+    ld   BC, PCTRL      ; 3:10      BC = 0x10fe
     ;-----------------  ; [:192]
     
     dw OUT_C_B          ; 2:12      sound on
@@ -896,7 +896,7 @@ core5:                  ;           vol 5 - 120t
     ld    B,(HL)        ; 1:7       timing
     ld    B,(HL)        ; 1:7       timing
     ld    C, 0xFE       ; 2:7       ...
-    dw OUT_C_0x00       ; 2:12      12__120
+    dw OUT_C_0x00       ; 2:12      ...120
         
     pop  BC             ; 1:10      add base freq as usual
     add  HL, BC         ; 1:11
@@ -909,7 +909,7 @@ core5:                  ;           vol 5 - 120t
     ld   BC, PCTRL      ; 3:10      ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
         
     pop  BC             ; 1:10      get base freq ch5
@@ -927,7 +927,7 @@ core5:                  ;           vol 5 - 120t
     inc  BC             ; 1:6       timing
     pop  BC             ; 1:10
     exx                 ; 1:4       ...
-    dw OUT_C_0x00       ; 2:12      12__120
+    dw OUT_C_0x00       ; 2:12      ...120
     exx                 ; 1:4       ...
     
     ex   DE, HL         ; 1:4       ... 
@@ -942,7 +942,7 @@ core5:                  ;           vol 5 - 120t
     exx                 ; 1:4       ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
         
     add  IY, BC         ; 2:15      IY is accu ch8
@@ -966,7 +966,7 @@ core5:                  ;           vol 5 - 120t
     nop                 ; 1:4       
     
     
-    dw OUT_C_0x00       ; 2:12      12__120
+    dw OUT_C_0x00       ; 2:12      ...120
     
     ld   BC, PCTRL      ; 3:10      not necessary, just for timing
         
@@ -1000,14 +1000,14 @@ core6:                  ;           vol 6 - 144t
     
     ld    C,(HL)        ; 1:7       timing
     ld    C, 0xFE       ; 2:7       ...
-    dw OUT_C_0x00       ; 2:12      12__144    ;switch sound off
+    dw OUT_C_0x00       ; 2:12      ...144    ;switch sound off
     
     rl    H             ; 2:8       ...
     adc   A, 0x00       ; 2:7       ...
     
     ld    B,(HL)        ; 1:7       timing
     nop                 ; 1:4               
-    ld   BC, PCTRL      ; 3:10      BC = #10fe
+    ld   BC, PCTRL      ; 3:10      BC = 0x10fe
     ;-----------------  ; [:192]
     
     dw OUT_C_B          ; 2:12      sound on
@@ -1029,7 +1029,7 @@ core6:                  ;           vol 6 - 144t
     
     ld    R, A          ; 1:9       timing
     ld    C, 0xFE       ; 2:7       ...
-    dw OUT_C_0x00       ; 2:12      12__144
+    dw OUT_C_0x00       ; 2:12      ...144
         
     
     ld    B,(HL)        ; 1:7       timing    
@@ -1039,7 +1039,7 @@ core6:                  ;           vol 6 - 144t
     ld   BC, PCTRL      ; 3:10      ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
         
     pop  BC             ; 1:10      get base freq ch5
@@ -1062,7 +1062,7 @@ core6:                  ;           vol 6 - 144t
     nop                 ; 1:4       
     
     exx                 ; 1:4       ...
-    dw OUT_C_0x00       ; 2:12      12__144
+    dw OUT_C_0x00       ; 2:12      ...144
     exx                 ; 1:4       ...
     
     ld    B, IXH        ; 2:8       ...
@@ -1074,7 +1074,7 @@ core6:                  ;           vol 6 - 144t
     exx                 ; 1:4       ...
     ;-----------------  ; [:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
     
     pop  BC             ; 1:10    
@@ -1100,7 +1100,7 @@ core6:                  ;           vol 6 - 144t
     jp    z,updateTimer0; 3:10      and update if necessary
     ex   AF, AF'        ; 1:4
     
-    dw OUT_C_0x00       ; 2:12      12__144
+    dw OUT_C_0x00       ; 2:12      ...144
         
     ds 8                ; 8:32      timing (to match updateTimer length)
     
@@ -1132,11 +1132,12 @@ core7:                  ;           vol 7 - 168t
     ld   HL,(addBuffer+4);3:16      as above for ch3
     
     ld    C, 0xFE       ; 2:7       ...
-    dw OUT_C_0x00       ; 2:12      12__168    ;switch sound off
+                       ;[30:168]
+    dw OUT_C_0x00       ; 2:12      switch sound off
     
     ret   c             ; 1:5/11    timing, branch never taken
-    ld    B, PCTRL_B    ; 2:7       B = #10
-    ;-----------------  ; [:192]
+    ld    B, PCTRL_B    ; 2:7       B = 0x10
+    ;----------------- ;[35:192]
     
     dw OUT_C_B          ; 2:12      sound on
     
@@ -1163,13 +1164,14 @@ core7:                  ;           vol 7 - 168t
         
     ld    R, A          ; 1:9       timing
     ld   BC, PCTRL      ; 3:10      ...
-    dw OUT_C_0x00       ; 2:12      12__168
+                       ;[32:168]
+    dw OUT_C_0x00       ; 2:12      ...
 
     adc   A, 0x00       ; 2:7       ...
     ret   c             ; 1:5/11    timing
-    ;-----------------  ; [:192]
+    ;----------------- ;[35:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     
     ex   DE, HL         ; 1:4       DE' is accu ch6
     pop  BC             ; 1:10
@@ -1193,14 +1195,15 @@ core7:                  ;           vol 7 - 168t
     
     exx                 ; 1:4       ...
     ld   BC, PCTRL      ; 3:10      ...
-    dw OUT_C_0x00       ; 2:12      12__168
+                       ;[32:168]
+    dw OUT_C_0x00       ; 2:12      ...
     
     ex   AF, AF'        ; 1:4
     dec   A             ; 1:4
     ex   AF, AF'        ; 1:4
-    ;-----------------  ; [:192]
+    ;----------------- ;[37:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     
     adc   A, 0x00       ; 2:7       ...
 
@@ -1217,18 +1220,18 @@ core7:                  ;           vol 7 - 168t
     
     ex   AF, AF'        ; 1:4       check if timer has expired
     dec   A             ; 1:4
-    jp z,updateTimerX    ;10        ;and update if necessary
+    jp    z,updateTimerX; 3:10      and update if necessary
+    
     ret   z             ; 1:5/11    timing
     ex   AF, AF'        ; 1:4
-    
     ex  (SP),HL         ; 1:19      timing
     ex  (SP),HL         ; 1:19      timing
-                ;    (47)
-    dw OUT_C_0x00       ; 2:12      12__168
+                       ;[25:168]
+    dw OUT_C_0x00       ; 2:12      ...
         
     ds 2                ; 2:8       timing
     jp  (HL)            ; 1:4       jump to next frame
-    ;-----------------  ; [:192]
+    ;----------------- ;[30:192]
 
         
 ;*********************************************************************************************
@@ -1255,14 +1258,13 @@ core8:                  ;           vol 8 - 192t
     ld   HL,(addBuffer+4);3:16      as above for ch3
     
     ld    C, 0xFE       ; 2:7       ...
-    ds 3                ; 3:12      timing
-    
+    ds 3                ; 3:12      timing    
     ret   c             ; 1:5/11    timing, branch never taken
-    ld    B, PCTRL_B    ; 2:7       B = #10
-    ;-----------------  ; [:192]
+    
+    ld    B, PCTRL_B    ; 2:7       B = 0x10
+    ;----------------- ;[36:192]
     
     dw OUT_C_B          ; 2:12      sound on
-    
     pop  BC             ; 1:10
     add  HL, BC         ; 1:11
     ld (addBuffer+4),HL ; 3:16      ...
@@ -1286,13 +1288,14 @@ core8:                  ;           vol 8 - 192t
         
     ld    R, A          ; 1:9       timing
     ld   BC, PCTRL      ; 3:10      ...
-    dw OUT_C_B          ; 2:12      12__168
+                       ;[30:168]
+    dw OUT_C_B          ; 2:12      ...
 
     adc   A, 0x00       ; 2:7       ...
     ret   c             ; 1:5/11    timing
-    ;-----------------  ; [:192]
+    ;----------------- ;[35:192]
     
-    dw OUT_C_B          ; 2:12      12__
+    dw OUT_C_B          ; 2:12      ...
     
     ex   DE, HL         ; 1:4       DE' is accu ch6
     pop  BC             ; 1:10
@@ -1316,14 +1319,14 @@ core8:                  ;           vol 8 - 192t
     
     exx                 ; 1:4       ...
     ld   BC, PCTRL      ; 3:10      ...
-    dw OUT_C_B          ; 2:12      12__168
+                       ;[32:168]
+    dw OUT_C_B          ; 2:12      ...
     
     ex   AF, AF'        ; 1:4
     dec   A             ; 1:4
     ex   AF, AF'        ; 1:4
-    ;-----------------  ; [:192]
-    
-    dw OUT_C_B          ; 2:12      12__
+    ;----------------- ;[37:192]
+    dw OUT_C_B          ; 2:12      ...
     
     adc   A, 0x00       ; 2:7       ...
 
@@ -1346,10 +1349,9 @@ core8:                  ;           vol 8 - 192t
     
     ex  (SP),HL         ; 1:19      timing
     ex  (SP),HL         ; 1:19      timing
-
-    dw OUT_C_B          ; 2:12      12__168
+    ;----------------- ;[25:168]
+    dw OUT_C_B          ; 2:12      ...
         
     ds 2                ; 2:8       timing
     jp  (HL)            ; 1:4       jump to next frame
-    ;-----------------  ;--192
-;   iiii dd, ss         ; b:tt      ...
+    ;----------------- ;[30:192]
