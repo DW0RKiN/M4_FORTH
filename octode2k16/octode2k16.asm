@@ -690,13 +690,13 @@ core3:                  ;           vol 3 - 72t
     adc   A, 0x00       ; 2:7       ...
     
     ex   DE, HL         ; 1:4       ... 
-    pop  BC             ; 1:10
+    pop  BC             ; 1:10      get base freq ch7
     add  IX, BC         ; 2:15      IX is accu ch7
     ld    B, IXH        ; 2:8       ...
     rl    B             ; 2:8       ...
     adc   A, 0x00       ; 2:7       ...
     
-    pop  BC             ; 1:10
+    pop  BC             ; 1:10      get base freq ch8
     
     exx                 ; 1:4       ...
     ld    B,(HL)        ; 1:7       timing
@@ -1172,7 +1172,7 @@ core7:                  ;           vol 7 - 168t
     rla                 ; 1:4       ...
     
     ld  HL,(addBuffer+2); 3:16      as above, for ch2
-    pop  BC             ; 1:10
+    pop  BC             ; 1:10      get ch2 base freq
     add  HL, BC         ; 1:11
     ld  (addBuffer+2),HL; 3:16      store ch2 accu
     rl    H             ; 2:8       ...
@@ -1190,15 +1190,15 @@ core7:                  ;           vol 7 - 168t
     
     dw OUT_C_B          ; 2:12      switch sound on
     
-    pop  BC             ; 1:10
+    pop  BC             ; 1:10      get ch3 base freq
     add  HL, BC         ; 1:11
     ld  (addBuffer+4),HL; 3:16      store ch3 accu
     rl    H             ; 2:8       ...
     adc   A, 0x00       ; 2:7       ...
 
     ex   DE, HL         ; 1:4       DE is ch4 accu
-    pop  BC             ; 1:10      add base freq as usual
-    add  HL, BC         ; 1:11
+    pop  BC             ; 1:10      get ch4 base freq
+    add  HL, BC         ; 1:11      add base freq as usual
     ex   DE, HL         ; 1:4       ... 
     ld    B, D          ; 1:4       get bit 7 of ch4 accu without modifying the accu itself
     rl    B             ; 2:8       ...
@@ -1223,7 +1223,7 @@ core7:                  ;           vol 7 - 168t
     dw OUT_C_B          ; 2:12      switch sound on/off
     
     ex   DE, HL         ; 1:4       DE' is accu ch6
-    pop  BC             ; 1:10
+    pop  BC             ; 1:10      get base freq ch6
     add  HL, BC         ; 1:11
     ld    B, H          ; 1:4       ...
     rl    B             ; 2:8       ...
