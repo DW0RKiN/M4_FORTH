@@ -152,9 +152,9 @@ If the original sample wave has a highly skewed, asymmetrical course, it may app
 - I will do `Adv. Edit`. The value is set by clicking right on the column of numbers (from) and the number of the row (to).
 
 
-    Shift+F3 - cut track
-    Shift+F4 - copy track
-    Shift+F5 - paste track
+      Shift+F3 - cut track
+      Shift+F4 - copy track
+      Shift+F5 - paste track
 
 To edit an item, you must have the "cursor line" set correctly. 
 It is the middle row, colored differently, and in it the current Track and the item that can be edited are marked in black.
