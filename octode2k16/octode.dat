@@ -79,7 +79,7 @@ octode_ptn1:
 	dw 0x300,octode_row1
 	dw 0x300,octode_row2
 	dw 0x300,octode_row8
-	dw 0x304,0x0080,octode_row9
+	dw 0x301,0x0080,octode_row9
 	dw 0x300,octode_rowa
 	dw 0x304,0x0080,octode_rowb
 	dw 0x300,octode_rowb
@@ -87,7 +87,7 @@ octode_ptn1:
 	dw 0x300,octode_rowc
 	dw 0x304,0x0080,octode_row9
 	dw 0x300,octode_row9
-	dw 0x304,0x0080,octode_rowa
+	dw 0x301,0x0080,octode_rowa
 	dw 0x300,octode_rowa
 	dw 0x300,octode_rowd
 	dw 0x300,octode_rowa
@@ -95,7 +95,7 @@ octode_ptn1:
 	dw 0x300,octode_rowf
 	dw 0x300,octode_rowe
 	dw 0x300,octode_row10
-	dw 0x304,0x0080,octode_row11
+	dw 0x301,0x0080,octode_row11
 	dw 0x300,octode_row1
 	dw 0x304,0x0080,octode_row11
 	dw 0x300,octode_row11
@@ -103,7 +103,7 @@ octode_ptn1:
 	dw 0x300,octode_row1
 	dw 0x304,0x0080,octode_row11
 	dw 0x300,octode_row11
-	dw 0x304,0x0080,octode_row1
+	dw 0x301,0x0080,octode_row1
 	dw 0x300,octode_row1
 	dw 0x304,0x0080,octode_row4
 	dw 0x300,octode_row1
@@ -111,7 +111,7 @@ octode_ptn1:
 	dw 0x300,octode_row1
 	dw 0x300,octode_row6
 	dw 0x300,octode_row12
-	dw 0x304,0x0080,octode_row13
+	dw 0x301,0x0080,octode_row13
 	dw 0x300,octode_row14
 	dw 0x304,0x0080,octode_row15
 	dw 0x300,octode_row15
@@ -119,7 +119,7 @@ octode_ptn1:
 	dw 0x300,octode_rowa
 	dw 0x304,0x0080,octode_row16
 	dw 0x300,octode_row16
-	dw 0x304,0x0080,octode_rowc
+	dw 0x301,0x0080,octode_rowc
 	dw 0x300,octode_rowc
 	dw 0x304,0x0080,octode_row17
 	dw 0x300,octode_rowc
@@ -127,7 +127,7 @@ octode_ptn1:
 	dw 0x300,octode_rowa
 	dw 0x300,octode_rowd
 	dw 0x300,octode_row18
-	dw 0x304,0x0080,octode_row19
+	dw 0x301,0x0080,octode_row19
 	dw 0x300,octode_row1
 	dw 0x304,0x0080,octode_row19
 	dw 0x300,octode_row19
@@ -135,7 +135,7 @@ octode_ptn1:
 	dw 0x300,octode_row1
 	dw 0x304,0x0080,octode_row1
 	dw 0x300,octode_row1
-	dw 0x304,0x0080,octode_row1
+	dw 0x301,0x0080,octode_row1
 	dw 0x300,octode_row1
 	dw 0x300,octode_row1
 	dw 0x300,octode_row1

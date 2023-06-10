@@ -58,9 +58,9 @@ seqpntr equ $+1
     or    H             ; 1:4
     ld  (seqpntr),SP    ; 4:20      ...
     jr   nz, rdptn0     ; 2:7/12    ...
-    
-   ;jp   exit           ;[3:10]     uncomment to disable looping
-    
+ifdef({__NO_LOOP_MUSIC},{
+    jp   exit           ; 3:10      ...})
+
 nameloop equ $+1
     ld   SP, 0x0000     ; 3:10      get loop point
     jr   rdseq+3        ; 2:12
