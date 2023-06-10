@@ -64,7 +64,7 @@ When using the XM template, consider the following:
 - All other effect commands, including volume settings on tones will be ignored.
 
 
-By default, Octode 2k16 will loop until a key is pressed. To disable looping "define({__NO_LOOP_MUSIC})".
+By default, Octode 2k16 will loop until a key is pressed. To disable looping `define({__NO_LOOP_MUSIC})`.
 
 When you're done with composing run: 
 
@@ -138,21 +138,26 @@ I recommend FastTracker2 for editing music files. You can also find it in reposi
 
 ### My procedure is as follows
 
-I will make a copy of xm.
+- I will make a copy of xm. 
+You will then return to the original for comparison, and you will have new samples in the edited version that will change the sound.
 
-I'll look through the used samples and find out which are the drums. Compare them from loudest to loudest. I'm not interested in the type of punch. The loudest beat in the edited file will be sample number 2 "kick", the middle number 3 "snare" and the least noisy will be number 4 "hihat".
+- I'll look through the used samples and find out which are the drums. Compare drums from loudest to quietest. I'm not interested in the type of punch. 
+The loudest beat in the edited file will be sample number 2 `kick`, the middle number 3 `snare` and the least noisy will be number 4 `hihat`.
 
-The last sample may have a strange course and play in a different key, so after replacing it with 01_tone it would play in a different pitch, so in all occurrences this may mean a manual shift of the octave.
+- All other non-drum samples will be replaced with a regular wave, number 1 `tone`.
+If the original sample wave has a highly skewed, asymmetrical course, it may appear to be playing in a different key, it may appear to be playing in a different key. Then all of them have to be moved by the difference in tonnage.
 
-I delete all samples and upload samples 01_tone.wav, 02_kick.wav, 03_snare.wav, 04_hihat.wav.
+- I delete all samples and upload samples `01_tone.wav`, `02_kick.wav`, `03_snare.wav` and `04_hihat.wav`.
 
-I will do "Adv. Edit". The value is set by right-clicking on the column of numbers (from) and the number of the row (to).
+- I will do `Adv. Edit`. The value is set by clicking right on the column of numbers (from) and the number of the row (to).
 
 
     Shift+F3 - cut track
     Shift+F4 - copy track
     Shift+F5 - paste track
 
-To edit an item, you must have the cursor "line" set correctly. It is the middle row and there is a black space in it that shows what is currently being edited. Or what track is active. Cursor movement is by shortcuts or cursor arrows.
+To edit an item, you must have the "cursor line" set correctly. 
+It is the middle row, colored differently, and in it the current Track and the item that can be edited are marked in black.
+Cursor movement is by shortcuts or cursor arrows.
 
 You may need to press space first to activate edit mode.
