@@ -1,15 +1,38 @@
 #!/bin/sh
 
-[ $# -lt 1 ] && printf "Need filename!\n" && exit 1
+# Use:
+#   compile.sh name_without_suffix
+#   compile.sh name_without_suffix start_addr
+#   compile.sh name_without_suffix start_addr no_emul
+#   compile.sh name_without_suffix start_addr emulator parameters
 
-if [ ! -s $1.m4 ] ; then
-    printf "$1.m4 not found!\n" >&2;
-    exit 2
-fi
+# ------------------- Parameter reading
+
+[ $# -lt 1 ] && printf "Error: Need filename!\n" >&2 && exit 1
+
+name=$1
+shift
+
+[ ! -s $name.m4 ] && printf "Error: $name.m4 not found!\n" >&2 && exit 2
+
+case $1 in
+    0x[0-9a-fA-F]*) addr=$(printf "%d" $1); shift ;;
+    ''|*[!0-9]*) ;;
+    *) addr=$1; shift ;;
+esac
+
+[ ! -z $1 ] && emul=$1 && shift
+
+printf "name: $name.m4\n"
+printf "addr: $addr\n"
+printf "emul: $emul\n"
+printf "parameters: $*\n\n"
+
+# ------------------- Compilation m4>asm
 
 printf "Compilation m4>asm: ...";
 
-m4 $1.m4 > $1.asm
+m4 $name.m4 > $name.asm
 
 error=$?      
 
@@ -19,20 +42,22 @@ if [ $error != 0 ] ; then
 fi
 printf "ok!\n";
 
-if [ -f $1.bin ] ; then
-    old=$(ls -l $1.bin)
+if [ -f $name.bin ] ; then
+    old=$(ls -l $name.bin)
 else 
     old="not exist"
 fi
 
+# ------------------- Compilation asm>bin
+
 printf "Compilation asm>bin: ...";
 
-if [ $# -lt 2 ] ; then
-    pasmo -d                   $1.asm $1.bin > smaz
-    pasmo --tap                $1.asm $1_bin.tap 2>/dev/null
+if [ -z $addr ] ; then
+    pasmo -d                   $name.asm $name.bin > smaz
+    pasmo --tap                $name.asm $name.tap 2>/dev/null
 else
-    pasmo -d    --equ __ORG=$2 $1.asm $1.bin > smaz
-    pasmo --tap --equ __ORG=$2 $1.asm $1_bin.tap 2>/dev/null
+    pasmo -d    --equ __ORG=$addr $name.asm $name.bin > smaz
+    pasmo --tap --equ __ORG=$addr $name.asm $name.tap 2>/dev/null
 fi
 
 error=$?      
@@ -41,33 +66,28 @@ if [ $error != 0 ] ; then
     printf "fail! error: $error\n";
     exit 4
 fi
-if [ ! -s $1_bin.tap ] ; then
-    printf "fail! $1_bin.tap not exist\n";
+if [ ! -s $name.tap ] ; then
+    printf "fail! $name.tap not exist\n";
     exit 5
 fi
 printf "ok!\n";
 
 printf "old: $old\n"
 printf "new: " 
-ls -l $1.bin
+ls -l $name.bin
 
-if [ $# -lt 2 ] ; then
-    exit 0
-fi
+[ -z $addr ] && exit 0
 
-# -------------------  if $2 use  -------------------
+# ------------------- Generate loader if addr exist
 
-
-
-#generate loader.bas
 if [ ! -f loader.bas ] ; then
     printf "Generate basic loader...\n"
     printf "10 LOAD \"\" CODE\n" > loader.bas
     printf "20 POKE 23672,0: POKE 23673,0: POKE 23674,0\n" >> loader.bas
-    printf "30 RANDOMIZE USR $2\n" >> loader.bas
+    printf "30 RANDOMIZE USR $addr\n" >> loader.bas
     printf "40 PAUSE 1: LET s=PEEK 23672+256*PEEK 23673+65536*PEEK 23674: LET s=s/50: LET m=INT (INT s/60): LET h=INT (m/60): PRINT \"Time: \";h;\"h \";m-60*h;\"min \";INT ((s-60*m)*100)/100;\"s \";: PAUSE 0: STOP\n" >> loader.bas
 else
-    printf "The existing loader will be used\n"
+    printf "The existing loader.bas will be used\n"
 fi
 
 printf "Compilation bas>tap: ...";
@@ -82,19 +102,36 @@ if [ $error != 0 ] ; then
 fi
 printf "ok!\n";
 
+# ------------------- Concatenate loader with code and clean
 
-cat loader.tap $1_bin.tap > $1.tap
-
+mv ./$name.tap ./${name}_bin.tap
+cat loader.tap ${name}_bin.tap > $name.tap
 rm loader.tap
-rm $1_bin.tap
+rm ${name}_bin.tap
 
-if ! [ -x "$(command -v fuse-sdl)" ] ; then
-    if ! [ -x "$(command -v fuse)" ] ; then
-        echo 'Error: fuse or fuse-sdl is not installed.' >&2
-        exit 7
-    else
-        fuse --no-confirm-actions -m 48 -t $1.tap
-    fi
-else
-    fuse-sdl --no-confirm-actions -m 48 -t $1.tap
+# ------------------- Run the ZX Spectrum emulator
+
+[ "$emul" = "no_emul" ] && exit 0
+
+if [ ! -z $emul ] ; then
+    [ ! -x "$(command -v $emul)" ] && printf "Error: $emul not found!\n" >&2 && exit 7
+    $emul $* $name.tap
+    exit 0
 fi
+
+if [ -x "$(command -v fuse)" ] ; then
+    fuse --no-confirm-actions -m 48 -t $name.tap
+    exit 0
+fi
+
+if [ -x "$(command -v fuse-sdl)" ] ; then
+    fuse-sdl --no-confirm-actions -m 48 -t $name.tap
+    exit 0
+fi
+
+if [ -x "$(command -v fbzx)" ] ; then
+    fbzx $name.tap
+    exit 0
+fi
+
+printf "No ZX Spectrum emulator found installed. Tried fuse, fuse-sdl and fbzx."
