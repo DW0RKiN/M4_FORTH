@@ -35,11 +35,7 @@ printf "Compilation m4>asm: ...";
 m4 $name.m4 > $name.asm
 
 error=$?      
-
-if [ $error != 0 ] ; then
-    printf "fail! error: $error\n";
-    exit 3
-fi
+[ $error != 0 ] && printf "fail!\nError: $error\n" && exit 3
 printf "ok!\n";
 
 if [ -f $name.bin ] ; then
@@ -61,15 +57,8 @@ else
 fi
 
 error=$?      
-
-if [ $error != 0 ] ; then
-    printf "fail! error: $error\n";
-    exit 4
-fi
-if [ ! -s $name.tap ] ; then
-    printf "fail! $name.tap not exist\n";
-    exit 5
-fi
+[ $error != 0 ] && printf "fail!\nError: $error\n" && exit 4
+[ ! -s $name.bin ] && printf "fail!\nError: $name.bin not exist or is empty\n" && exit 5
 printf "ok!\n";
 
 printf "old: $old\n"
@@ -95,11 +84,8 @@ printf "Compilation bas>tap: ...";
 zmakebas -o loader.tap loader.bas
 
 error=$?      
+[ $error != 0 ] && printf "fail!\nError: $error\n" && exit 6
 
-if [ $error != 0 ] ; then
-    printf "fail! error: $error\n";
-    exit 6
-fi
 printf "ok!\n";
 
 # ------------------- Concatenate loader with code and clean
@@ -120,12 +106,12 @@ if [ ! -z $emul ] ; then
 fi
 
 if [ -x "$(command -v fuse)" ] ; then
-    fuse --no-confirm-actions -m 48 -t $name.tap
+    fuse -m 48 -t $name.tap
     exit 0
 fi
 
 if [ -x "$(command -v fuse-sdl)" ] ; then
-    fuse-sdl --no-confirm-actions -m 48 -t $name.tap
+    fuse-sdl -m 48 -t $name.tap
     exit 0
 fi
 
