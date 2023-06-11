@@ -105,19 +105,12 @@ if [ ! -z $emul ] ; then
     exit 0
 fi
 
-if [ -x "$(command -v fuse)" ] ; then
-    fuse -m 48 -t $name.tap
-    exit 0
-fi
-
-if [ -x "$(command -v fuse-sdl)" ] ; then
-    fuse-sdl -m 48 -t $name.tap
-    exit 0
-fi
-
-if [ -x "$(command -v fbzx)" ] ; then
-    fbzx $name.tap
-    exit 0
-fi
+for emul in "fuse -m 48" "fuse-sdl -m 48" "fbzx" 
+do
+    if [ -x "$(command -v ${emul%% *})" ] ; then
+        $emul $name.tap
+        exit 0
+    fi
+done
 
 printf "No ZX Spectrum emulator found installed. Tried fuse, fuse-sdl and fbzx."
