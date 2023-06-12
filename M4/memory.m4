@@ -133,6 +133,49 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # Include file to variable
+dnl #   The file must be without commas
+dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
+dnl # VARIABLEFILE(path,name,suffix)    --> name_data: dw 0,1,2,3,...
+define({VARIABLEFILE},{dnl
+__{}define({$0__TMP},sinclude(M4PATH{}$1{}$2{}$3)){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}ifdef({$2_size},1,0),0,{
+__{}__{}  .error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined $2_size{}dnl
+__{}__{}errprint(error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined "$2_size"{
+})},
+__{}{dnl
+__{}__{}define({__PSIZE_}$2,eval($2_size)){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_VARIABLEFILE},{datafile $2$3},$@){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_VARIABLEFILE},{dnl
+__{}define({$0__TMP},sinclude(M4PATH{}$1{}$2{}$3)){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}ifdef({$2_size},1,0),0,{
+__{}__{}  .error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined $2_size{}dnl
+__{}__{}errprint(error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined "$2_size"{
+})},
+__{}{dnl
+__{}__{}__{}define({__INFO},__COMPILE_INFO{($1$2$3)}){}dnl
+__{}__{}define({$0__TMP},include(M4PATH{}$1{}$2{}$3)){}dnl
+__{}__{}define({__PSIZE_}$2,eval($2_size)){}dnl
+__{}__{}__ASM_TOKEN_CREATE(__file_$2){}dnl
+__{}__{}pushdef({LAST_HERE_ADD},__PSIZE_$2)dnl
+__{}__{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE)
+__{}__{}__{}include(M4PATH{}$1{}$2{}$3)){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # VALUE(name)    --> (name) = TOS
 define({VALUE},{dnl
 __{}define({__PSIZE_}$1,2)dnl
