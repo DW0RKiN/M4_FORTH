@@ -22,6 +22,7 @@ octode2k16_loop:
 	dw octode2k16_ptnb
 	dw octode2k16_ptne
 	dw 0
+; 0x2a bytes
 
 octode2k16_ptn1:
 	dw 0x300,octode2k16_row0
@@ -89,6 +90,7 @@ octode2k16_ptn1:
 	dw 0x300,octode2k16_rowe
 	dw 0x300,octode2k16_rowf
 	db 0x40
+; 0x101 bytes
 
 octode2k16_ptn2:
 	dw 0x300,octode2k16_row15
@@ -156,6 +158,7 @@ octode2k16_ptn2:
 	dw 0x300,octode2k16_row23
 	dw 0x300,octode2k16_row24
 	db 0x40
+; 0x101 bytes
 
 octode2k16_ptn3:
 	dw 0x300,octode2k16_row10
@@ -223,6 +226,7 @@ octode2k16_ptn3:
 	dw 0x300,octode2k16_row41
 	dw 0x300,octode2k16_row42
 	db 0x40
+; 0x101 bytes
 
 octode2k16_ptn4:
 	dw 0x300,octode2k16_row43
@@ -290,6 +294,7 @@ octode2k16_ptn4:
 	dw 0x300,octode2k16_row51
 	dw 0x300,octode2k16_row52
 	db 0x40
+; 0x101 bytes
 
 octode2k16_ptn5:
 	dw 0x301,0x0080,octode2k16_row57
@@ -357,6 +362,7 @@ octode2k16_ptn5:
 	dw 0x301,0x0040,octode2k16_rowe
 	dw 0x300,octode2k16_row62
 	db 0x40
+; 0x141 bytes
 
 octode2k16_ptn6:
 	dw 0x301,0x0080,octode2k16_row66
@@ -424,6 +430,7 @@ octode2k16_ptn6:
 	dw 0x301,0x0040,octode2k16_row51
 	dw 0x300,octode2k16_row71
 	db 0x40
+; 0x141 bytes
 
 octode2k16_ptn8:
 	dw 0x300,octode2k16_row75
@@ -491,6 +498,7 @@ octode2k16_ptn8:
 	dw 0x300,octode2k16_row7e
 	dw 0x300,octode2k16_row77
 	db 0x40
+; 0x101 bytes
 
 octode2k16_ptn9:
 	dw 0x300,octode2k16_row84
@@ -558,6 +566,7 @@ octode2k16_ptn9:
 	dw 0x300,octode2k16_row7e
 	dw 0x300,octode2k16_row77
 	db 0x40
+; 0x101 bytes
 
 octode2k16_ptna:
 	dw 0x300,octode2k16_row84
@@ -625,6 +634,7 @@ octode2k16_ptna:
 	dw 0x301,0x0040,octode2k16_row7e
 	dw 0x301,0x0050,octode2k16_row77
 	db 0x40
+; 0x111 bytes
 
 octode2k16_ptnb:
 	dw 0x301,0x0080,octode2k16_row8e
@@ -692,6 +702,7 @@ octode2k16_ptnb:
 	dw 0x301,0x0040,octode2k16_row23
 	dw 0x300,octode2k16_row17
 	db 0x40
+; 0x141 bytes
 
 octode2k16_ptnd:
 	dw 0x301,0x0080,octode2k16_row98
@@ -759,6 +770,7 @@ octode2k16_ptnd:
 	dw 0x301,0x0040,octode2k16_rowe
 	dw 0x300,octode2k16_row2
 	db 0x40
+; 0x141 bytes
 
 octode2k16_ptne:
 	dw 0x301,0x0080,octode2k16_row8e
@@ -826,6 +838,7 @@ octode2k16_ptne:
 	dw 0x301,0x0040,octode2k16_row23
 	dw 0x300,octode2k16_row17
 	db 0x40
+; 0x141 bytes
 
 
 
@@ -993,3 +1006,6 @@ octode2k16_row9f:	dw 0x0,0x0,0xbfd,0x0,0x17f9,0x984,0xbfd,0x1000
 octode2k16_rowa0:	dw 0x0,0x0,0x984,0x1307,0x1307,0x984,0xbfd,0x1000
 octode2k16_rowa1:	dw 0x0,0x0,0x984,0x0,0x1307,0x984,0xbfd,0x1000
 
+; 0xa20 bytes
+; file_size = 0x17a6 bytes
+; define({octode2k16_size}, 0x17a6)
