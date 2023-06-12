@@ -376,12 +376,21 @@ int main(int argc, char *argv[]){
 
 
 	//construct music.dat
-	ASMFILE << fileName << "_data:" << endl << ";sequence" << endl;
+
+	ASMFILE << "; relocatable file:" << endl;
+	ASMFILE << ";   the base address is " << fileName << endl;
+	ASMFILE << ";   the loop address is " << fileName << "_loop" << endl;
+	ASMFILE << "; M4 support:" << endl;
+	ASMFILE << ";   no one comma" << endl;
+	ASMFILE << ";   macro file_size defined" << endl << endl;
+	
+	ASMFILE << "  ifndef " << fileName << endl << fileName << " equ $" << endl << "  endif" << endl << endl;
+	ASMFILE << ";sequence" << endl;
 	
 	//print sequence
 	block_size = 0;
 	for (int i = 0; i < songlength; i++) {
-		if (i == loopPoint) ASMFILE << fileName << "_loop:" << endl;
+		if (i == loopPoint) ASMFILE << fileName << "_loop equ " << fileName << " + 0x" << block_size << endl;
 		ASMFILE << "\tdw " << fileName << "_ptn" << hex << +sequence[i] << endl;
 		block_size += 2;
 	}
@@ -397,19 +406,19 @@ int main(int argc, char *argv[]){
 		
 		if (isPatternUsed(i)) {
 		
-			ASMFILE << fileName << "_ptn" << hex << +i << ":" << endl;
+			ASMFILE << fileName << "_ptn" << hex << +i << " equ " << fileName <<" + 0x" << file_size << endl;
 			
 			for (int j = 1; j <= ptnLengths[i]; j++) {
 			
 				ASMFILE << "\tdw 0x" << +pSpeeds[i][j];
 				if (pDrumTrigs[i][j] != 0x80) 
 					ASMFILE << "0";
-				ASMFILE << +pDrumTrigs[i][j] << ",";
+				ASMFILE << +pDrumTrigs[i][j] << endl << "\tdw ";
 				if (pDrumTrigs[i][j]) { 
-					ASMFILE << "0x00" << hex << +pDrums[i][j] << ",";
+					ASMFILE << "0x00" << hex << +pDrums[i][j] << endl << "\tdw ";
 					block_size += 2;
 				}
-				ASMFILE << fileName << "_row" << hex << pRowPntr[i][j] << endl;
+				ASMFILE << fileName << "_row" << hex << pRowPntr[i][j] << endl << endl;
 				block_size += 4;
 			}
 			
@@ -424,14 +433,16 @@ int main(int argc, char *argv[]){
 	//print row buffers
 	block_size = 0;
 	ASMFILE << endl << endl << ";row buffers" << endl;
+	ASMFILE << fileName << "_rows equ " << fileName << " + 0x" << file_size << endl;
+	
 	for (int i = 0; i <= maxRows; i++) {
 	
-		ASMFILE << fileName << "_row" << hex << +i << ":\tdw ";
+		ASMFILE << fileName << "_row" << hex << +i << " equ " << fileName << "_rows + 0x" << block_size << endl << "\tdw ";
 		for (int j = 0; j < 8; j++) {
 		
 			ASMFILE << "0x" << +noteRows[i][j];
-			if (j == 7) ASMFILE << endl;
-			else ASMFILE << ",";
+			if (j == 7) ASMFILE << endl << endl;
+			else ASMFILE << endl << "\tdw ";
 		}
 		block_size += 16;
 	}
