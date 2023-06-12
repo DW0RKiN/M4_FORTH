@@ -75,8 +75,10 @@ if [ ! -f loader.bas ] ; then
     printf "20 POKE 23672,0: POKE 23673,0: POKE 23674,0\n" >> loader.bas
     printf "30 RANDOMIZE USR $addr\n" >> loader.bas
     printf "40 PAUSE 1: LET s=PEEK 23672+256*PEEK 23673+65536*PEEK 23674: LET s=s/50: LET m=INT (INT s/60): LET h=INT (m/60): PRINT \"Time: \";h;\"h \";m-60*h;\"min \";INT ((s-60*m)*100)/100;\"s \";: PAUSE 0: STOP\n" >> loader.bas
+    remove="yes"
 else
     printf "The existing loader.bas will be used\n"
+    remove=""
 fi
 
 printf "Compilation bas>tap: ...";
@@ -94,6 +96,7 @@ mv ./$name.tap ./${name}_bin.tap
 cat loader.tap ${name}_bin.tap > $name.tap
 rm loader.tap
 rm ${name}_bin.tap
+[ "remove" = "yes" ] && rm loader.bas
 
 # ------------------- Run the ZX Spectrum emulator
 
