@@ -8,6 +8,8 @@ using namespace std;
 
 unsigned char songlength;
 int16_t maxRows = -1;
+int file_size = 0;
+int block_size = 0;
 char * fileName = NULL;
 bool verbose = false;
 uint8_t *xmdata = NULL;
@@ -377,14 +379,21 @@ int main(int argc, char *argv[]){
 	ASMFILE << fileName << "_data:" << endl << ";sequence" << endl;
 	
 	//print sequence
+	block_size = 0;
 	for (int i = 0; i < songlength; i++) {
 		if (i == loopPoint) ASMFILE << fileName << "_loop:" << endl;
 		ASMFILE << "\tdw " << fileName << "_ptn" << hex << +sequence[i] << endl;
+		block_size += 2;
 	}
-	ASMFILE << "\tdw 0" << endl << endl;
+	ASMFILE << "\tdw 0" << endl;
+	block_size += 2;
+	ASMFILE << "; 0x" << block_size << " bytes" << endl << endl;
+	file_size += block_size;
 	
 	//print patterns
 	for (int i = 0; i < uniqueptns; i++) {
+		
+		block_size = 0;
 		
 		if (isPatternUsed(i)) {
 		
@@ -393,18 +402,27 @@ int main(int argc, char *argv[]){
 			for (int j = 1; j <= ptnLengths[i]; j++) {
 			
 				ASMFILE << "\tdw 0x" << +pSpeeds[i][j];
-				if (pDrumTrigs[i][j] != 0x80) ASMFILE << "0";
+				if (pDrumTrigs[i][j] != 0x80) 
+					ASMFILE << "0";
 				ASMFILE << +pDrumTrigs[i][j] << ",";
-				if (pDrumTrigs[i][j]) ASMFILE << "0x00" << hex << +pDrums[i][j] << ",";
+				if (pDrumTrigs[i][j]) { 
+					ASMFILE << "0x00" << hex << +pDrums[i][j] << ",";
+					block_size += 2;
+				}
 				ASMFILE << fileName << "_row" << hex << pRowPntr[i][j] << endl;
+				block_size += 4;
 			}
 			
-			ASMFILE << "\tdb 0x40" << endl << endl;
+			ASMFILE << "\tdb 0x40" << endl;
+			block_size += 1;
+			ASMFILE << "; 0x" << block_size << " bytes" << endl << endl;
+			file_size += block_size;
 		}	
 	}
 	
 	
 	//print row buffers
+	block_size = 0;
 	ASMFILE << endl << endl << ";row buffers" << endl;
 	for (int i = 0; i <= maxRows; i++) {
 	
@@ -415,8 +433,13 @@ int main(int argc, char *argv[]){
 			if (j == 7) ASMFILE << endl;
 			else ASMFILE << ",";
 		}
+		block_size += 16;
 	}
 	ASMFILE << endl;
+	ASMFILE << "; 0x" << block_size << " bytes" << endl;
+	file_size += block_size;
+	ASMFILE << "; file_size = 0x" << file_size << " bytes" << endl;
+	ASMFILE << "; define({" << fileName << "_size}, 0x" << file_size << ")" << endl;
 
  	cout << "Success!" << endl;
 
