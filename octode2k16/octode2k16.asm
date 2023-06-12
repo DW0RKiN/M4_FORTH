@@ -22,22 +22,45 @@ CMOS EQU 2
 OUT_C_B     equ 0x41ed  ; out (C),B    ; 2:12
 OUT_C_0x00  equ 0x71ed  ; out (C),0x00 ; 2:12
 
-if 1
+  if 1
 ; Z80=NMOS              ; values for NMOS Z80
-  PCTRL     equ 0x10fe
-  PCTRL_B   equ 0x10
-else
+PCTRL       equ 0x10fe
+PCTRL_B     equ 0x10
+  else
 ; Z80=CMOS              ; values for CMOS Z80
-  PCTRL     equ 0x00fe
-  PCTRL_B   equ 0x00
-endif
-
+PCTRL       equ 0x00fe
+PCTRL_B     equ 0x00
+  endif
 
 ; Input:
 ; (seqpntr) = music_data:
 ; nameloop = music_loop:
 
 OCTODE2K16_ROUTINE:
+  if (OCTODE2K16_ROUTINE<0x1000)
+    .warning The routine OCTODE2K16_ROUTINE address < 0x1000! You are probably over 64kb. Must be 0x8000+.
+  endif
+  if (OCTODE2K16_ROUTINE<0x2000)
+    .warning The routine OCTODE2K16_ROUTINE address < 0x2000! You are probably over 64kb. Must be 0x8000+.
+  endif
+  if (OCTODE2K16_ROUTINE<0x3000)
+    .warning The routine OCTODE2K16_ROUTINE address < 0x3000! You are probably over 64kb. Must be 0x8000+.
+  endif
+  if (OCTODE2K16_ROUTINE<0x4000)
+    .warning The routine OCTODE2K16_ROUTINE address < 0x4000! You are probably over 64kb. Must be 0x8000+.
+  endif
+  if (OCTODE2K16_ROUTINE<0x5000)
+    .warning The routine OCTODE2K16_ROUTINE address < 0x5000! Must be 0x8000+.
+  endif
+  if (OCTODE2K16_ROUTINE<0x6000)
+    .warning The routine OCTODE2K16_ROUTINE address < 0x6000! Must be 0x8000+.
+  endif
+  if (OCTODE2K16_ROUTINE<0x7000)
+    .warning The routine OCTODE2K16_ROUTINE address < 0x7000! Must be 0x8000+.
+  endif
+  if (OCTODE2K16_ROUTINE<0x8000)
+    .warning The routine OCTODE2K16_ROUTINE address < 0x8000! Must be 0x8000+.
+  endif
     ei                  ; 1:4       detect kempston
     halt                ; 1:4
     in    A,(0x1F)      ; 2:11
