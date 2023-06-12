@@ -15,6 +15,7 @@ _first_last__loop:
 	dw _first_last__ptn4
 	dw _first_last__ptn6
 	dw 0
+; 0x1c bytes
 
 _first_last__ptn0:
 	dw 0x404,0x0080,_first_last__row0
@@ -82,6 +83,7 @@ _first_last__ptn0:
 	dw 0x401,0x0080,_first_last__row36
 	dw 0x400,_first_last__row37
 	db 0x40
+; 0x123 bytes
 
 _first_last__ptn1:
 	dw 0x400,_first_last__row38
@@ -149,6 +151,7 @@ _first_last__ptn1:
 	dw 0x404,0x0080,_first_last__row3e
 	dw 0x404,0x0080,_first_last__row3e
 	db 0x40
+; 0x121 bytes
 
 _first_last__ptn2:
 	dw 0x404,0x0080,_first_last__row47
@@ -216,6 +219,7 @@ _first_last__ptn2:
 	dw 0x401,0x0080,_first_last__row66
 	dw 0x400,_first_last__row66
 	db 0x40
+; 0x123 bytes
 
 _first_last__ptn3:
 	dw 0x400,_first_last__row67
@@ -283,6 +287,7 @@ _first_last__ptn3:
 	dw 0x400,_first_last__row99
 	dw 0x400,_first_last__row9a
 	db 0x40
+; 0x101 bytes
 
 _first_last__ptn4:
 	dw 0x400,_first_last__row9b
@@ -350,6 +355,7 @@ _first_last__ptn4:
 	dw 0x400,_first_last__rowd9
 	dw 0x400,_first_last__rowda
 	db 0x40
+; 0x101 bytes
 
 _first_last__ptn5:
 	dw 0x404,0x0080,_first_last__rowdb
@@ -417,6 +423,7 @@ _first_last__ptn5:
 	dw 0x401,0x0080,_first_last__row10c
 	dw 0x400,_first_last__row10d
 	db 0x40
+; 0x123 bytes
 
 _first_last__ptn6:
 	dw 0x400,_first_last__row9b
@@ -484,6 +491,7 @@ _first_last__ptn6:
 	dw 0x400,_first_last__row123
 	dw 0x400,_first_last__row124
 	db 0x40
+; 0x101 bytes
 
 _first_last__ptn7:
 	dw 0x404,0x0080,_first_last__row125
@@ -551,6 +559,7 @@ _first_last__ptn7:
 	dw 0x404,0x0080,_first_last__row13f
 	dw 0x404,0x0080,_first_last__row138
 	db 0x40
+; 0x131 bytes
 
 
 
@@ -876,3 +885,6 @@ _first_last__row13d:	dw 0x0,0x1c82,0x1307,0x800,0x0,0x0,0x0,0x0
 _first_last__row13e:	dw 0x0,0x3905,0x260e,0x800,0x0,0x0,0x0,0x0
 _first_last__row13f:	dw 0x0,0x3905,0x1307,0x800,0x0,0x0,0x0,0x0
 
+; 0x1400 bytes
+; file_size = 0x1cda bytes
+; define({_first_last__size}, 0x1cda)
