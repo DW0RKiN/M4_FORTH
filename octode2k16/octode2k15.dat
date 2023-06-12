@@ -14,6 +14,7 @@ octode2k15_loop:
 	dw octode2k15_ptn3
 	dw octode2k15_ptn3
 	dw 0
+; 0x1a bytes
 
 octode2k15_ptn0:
 	dw 0x404,0x0080,octode2k15_row0
@@ -49,6 +50,7 @@ octode2k15_ptn0:
 	dw 0x401,0x0080,octode2k15_row6
 	dw 0x400,octode2k15_row7
 	db 0x40
+; 0x93 bytes
 
 octode2k15_ptn1:
 	dw 0x404,0x0080,octode2k15_row9
@@ -84,6 +86,7 @@ octode2k15_ptn1:
 	dw 0x401,0x0080,octode2k15_rowf
 	dw 0x400,octode2k15_row10
 	db 0x40
+; 0x93 bytes
 
 octode2k15_ptn2:
 	dw 0x204,0x0080,octode2k15_row11
@@ -151,6 +154,7 @@ octode2k15_ptn2:
 	dw 0x200,octode2k15_row18
 	dw 0x200,octode2k15_row10
 	db 0x40
+; 0x113 bytes
 
 octode2k15_ptn3:
 	dw 0x204,0x0080,octode2k15_row19
@@ -218,6 +222,7 @@ octode2k15_ptn3:
 	dw 0x200,octode2k15_row20
 	dw 0x200,octode2k15_row10
 	db 0x40
+; 0x113 bytes
 
 octode2k15_ptn4:
 	dw 0x204,0x0080,octode2k15_row21
@@ -285,6 +290,7 @@ octode2k15_ptn4:
 	dw 0x200,octode2k15_row28
 	dw 0x200,octode2k15_row10
 	db 0x40
+; 0x113 bytes
 
 
 
@@ -331,3 +337,6 @@ octode2k15_row26:	dw 0x5a8,0x78d,0x285,0x142,0x0,0xbfd,0xf1a,0x78d
 octode2k15_row27:	dw 0x5fe,0x5fe,0x285,0x142,0x0,0xbfd,0xf1a,0x78d
 octode2k15_row28:	dw 0x5fe,0x5a8,0x285,0x142,0x0,0xbfd,0xf1a,0x78d
 
+; 0x290 bytes
+; file_size = 0x709 bytes
+; define({octode2k15_size}, 0x709)
