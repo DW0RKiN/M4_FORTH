@@ -29,6 +29,7 @@ pd_dawn_loop:
 	dw pd_dawn_ptnf
 	dw pd_dawn_ptne
 	dw 0
+; 0x38 bytes
 
 pd_dawn_ptn0:
 	dw 0x400,pd_dawn_row0
@@ -96,6 +97,7 @@ pd_dawn_ptn0:
 	dw 0x400,pd_dawn_row12
 	dw 0x400,pd_dawn_row12
 	db 0x40
+; 0x101 bytes
 
 pd_dawn_ptn1:
 	dw 0x400,pd_dawn_row17
@@ -163,6 +165,7 @@ pd_dawn_ptn1:
 	dw 0x400,pd_dawn_row14
 	dw 0x400,pd_dawn_row14
 	db 0x40
+; 0x101 bytes
 
 pd_dawn_ptn2:
 	dw 0x400,pd_dawn_row2c
@@ -230,6 +233,7 @@ pd_dawn_ptn2:
 	dw 0x400,pd_dawn_row2a
 	dw 0x400,pd_dawn_row2a
 	db 0x40
+; 0x101 bytes
 
 pd_dawn_ptn3:
 	dw 0x800,pd_dawn_row3a
@@ -297,6 +301,7 @@ pd_dawn_ptn3:
 	dw 0x500,pd_dawn_row47
 	dw 0x500,pd_dawn_row47
 	db 0x40
+; 0x101 bytes
 
 pd_dawn_ptn4:
 	dw 0x480,0x0080,pd_dawn_row4a
@@ -364,6 +369,7 @@ pd_dawn_ptn4:
 	dw 0x404,0x0080,pd_dawn_row5a
 	dw 0x400,pd_dawn_row5a
 	db 0x40
+; 0x143 bytes
 
 pd_dawn_ptn5:
 	dw 0x400,pd_dawn_row2c
@@ -431,6 +437,7 @@ pd_dawn_ptn5:
 	dw 0x400,pd_dawn_row5a
 	dw 0x400,pd_dawn_row5a
 	db 0x40
+; 0x101 bytes
 
 pd_dawn_ptn6:
 	dw 0x400,pd_dawn_row2c
@@ -498,6 +505,7 @@ pd_dawn_ptn6:
 	dw 0x400,pd_dawn_row12
 	dw 0x400,pd_dawn_row12
 	db 0x40
+; 0x101 bytes
 
 pd_dawn_ptn7:
 	dw 0x480,0x0080,pd_dawn_row65
@@ -565,6 +573,7 @@ pd_dawn_ptn7:
 	dw 0x401,0x0080,pd_dawn_row75
 	dw 0x400,pd_dawn_row75
 	db 0x40
+; 0x145 bytes
 
 pd_dawn_ptn8:
 	dw 0x400,pd_dawn_row4a
@@ -632,6 +641,7 @@ pd_dawn_ptn8:
 	dw 0x400,pd_dawn_row5a
 	dw 0x400,pd_dawn_row5a
 	db 0x40
+; 0x101 bytes
 
 pd_dawn_ptn9:
 	dw 0x480,0x0080,pd_dawn_row76
@@ -699,6 +709,7 @@ pd_dawn_ptn9:
 	dw 0x401,0x0080,pd_dawn_row81
 	dw 0x400,pd_dawn_row81
 	db 0x40
+; 0x145 bytes
 
 pd_dawn_ptna:
 	dw 0x480,0x0080,pd_dawn_row76
@@ -766,6 +777,7 @@ pd_dawn_ptna:
 	dw 0x401,0x0080,pd_dawn_row73
 	dw 0x400,pd_dawn_row73
 	db 0x40
+; 0x145 bytes
 
 pd_dawn_ptnb:
 	dw 0x480,0x0080,pd_dawn_row87
@@ -833,6 +845,7 @@ pd_dawn_ptnb:
 	dw 0x401,0x0080,pd_dawn_row4b
 	dw 0x400,pd_dawn_row4b
 	db 0x40
+; 0x145 bytes
 
 pd_dawn_ptnc:
 	dw 0x480,0x0080,pd_dawn_row94
@@ -900,6 +913,7 @@ pd_dawn_ptnc:
 	dw 0x401,0x0080,pd_dawn_row76
 	dw 0x400,pd_dawn_row76
 	db 0x40
+; 0x145 bytes
 
 pd_dawn_ptnd:
 	dw 0x480,0x0080,pd_dawn_row96
@@ -967,6 +981,7 @@ pd_dawn_ptnd:
 	dw 0x401,0x0080,pd_dawn_row65
 	dw 0x400,pd_dawn_row65
 	db 0x40
+; 0x145 bytes
 
 pd_dawn_ptne:
 	dw 0x480,0x0080,pd_dawn_rowa6
@@ -1034,6 +1049,7 @@ pd_dawn_ptne:
 	dw 0x401,0x0080,pd_dawn_rowac
 	dw 0x400,pd_dawn_rowac
 	db 0x40
+; 0x145 bytes
 
 pd_dawn_ptnf:
 	dw 0x480,0x0080,pd_dawn_row96
@@ -1101,6 +1117,7 @@ pd_dawn_ptnf:
 	dw 0x401,0x0080,pd_dawn_row65
 	dw 0x400,pd_dawn_row65
 	db 0x40
+; 0x145 bytes
 
 pd_dawn_ptn10:
 	dw 0x480,0x0080,pd_dawn_row76
@@ -1168,6 +1185,7 @@ pd_dawn_ptn10:
 	dw 0x401,0x0080,pd_dawn_row73
 	dw 0x400,pd_dawn_row73
 	db 0x40
+; 0x145 bytes
 
 
 
@@ -1347,3 +1365,6 @@ pd_dawn_rowab:	dw 0xe41,0x4c2,0x0,0x0,0x0,0x0,0x0,0x0
 pd_dawn_rowac:	dw 0xe41,0x721,0x0,0x0,0x0,0x0,0x0,0x0
 pd_dawn_rowad:	dw 0x155c,0x721,0x0,0x0,0x0,0x0,0x0,0x0
 
+; 0xae0 bytes
+; file_size = 0x1ecf bytes
+; define({pd_dawn_size}, 0x1ecf)
