@@ -101,7 +101,7 @@ __{}__{}pushdef({__STRING_STACK},{{    db $*}})},
 __{}{dnl
 __{}__{}pushdef({__STRING_STACK},{dnl
 __{}__{}__{}string}__STRING_LAST{   EQU  string}__STRING_MATCH{
-__{}__{}__{}  size}__STRING_LAST{   EQU    size}__STRING_MATCH)}){}dnl
+__{}__{}__{}size}__STRING_LAST{     EQU    size}__STRING_MATCH)}){}dnl
 __{}pushdef({__STRING_NUM_STACK},__STRING_LAST){}dnl
 })dnl
 dnl
@@ -2426,15 +2426,16 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-define({__INCLUDE_FILE},{dnl
-__{}ifdef({__INCLUDE_FILE_DATA},{
-include(__INCLUDE_FILE_DATA){}popdef({__INCLUDE_FILE_DATA}){}__INCLUDE_FILE}){}dnl
-}){}dnl
 dnl
 dnl
 dnl
 dnl # ( -- )
 define({MUSIC},{dnl
+__{}define({__INCLUDE_FILE},{dnl
+__{}__{}ifdef({__INCLUDE_FILE_DATA},{
+; incfile(__INCLUDE_FILE_DATA)
+include(__INCLUDE_FILE_DATA){}popdef({__INCLUDE_FILE_DATA}){}$0}){}dnl
+__{}}){}dnl
 __{}__ADD_TOKEN({__TOKEN_MUSIC},{music},$@){}dnl
 }){}dnl
 dnl
@@ -2445,15 +2446,106 @@ __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({__INFO},__COMPILE_INFO{($1)}){}dnl
-__{}__{}__def({USE_OCTODE2K16},$1){}dnl
-__{}__{}pushdef({__INCLUDE_FILE_DATA},M4PATH{}/../octode2k16/$1.dat)
-__{}__{}    ld   BC, format({%-11s},$1_data); 3:10      __INFO   ( -- )
-__{}__{}    ld  (seqpntr),BC    ; 4:20      __INFO
-__{}__{}    ld   BC, format({%-11s},$1_loop); 3:10      __INFO
-__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO{}dnl
+__{}__{}__def({USE_MUSIC}){}dnl
+__{}__{}define({$0__TMP},include(M4PATH{}../octode2k16/$1.dat)){}dnl
+__{}__{}pushdef({__INCLUDE_FILE_DATA},M4PATH{}../octode2k16/$1.dat)
+__{}__{}; eval($1_size)
+__{}__{}    push DE             ; 1:11      __INFO   ( -- )
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL, format({%-11s},$2); 3:10      __INFO
+__{}__{}    ld   DE, format({%-11s},$2_loop); 3:10      __INFO
+__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
+dnl
+dnl
+dnl # ( -- )
+define({VARIABLEFILE_PLAY},{dnl
+__{}define({$0__TMP},sinclude(M4PATH{}$1{}$2{}$3)){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}ifdef({$2_size},1,0),0,{
+__{}__{}  .error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined $2_size{}dnl
+__{}__{}errprint(error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined "$2_size"{
+})},
+__{}{dnl
+__{}__{}__ADD_TOKEN({__TOKEN_VARIABLEFILE_PLAY},{variablefile play},$@){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_VARIABLEFILE_PLAY},{dnl
+__{}define({$0__TMP},sinclude(M4PATH{}$1{}$2{}$3)){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}ifdef({$2_size},1,0),0,{
+__{}__{}  .error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined $2_size{}dnl
+__{}__{}errprint(error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined "$2_size"{
+})},
+__{}{dnl
+__{}__{}__ASM_TOKEN_VARIABLEFILE($@){}dnl
+__{}__{}define({__INFO},__COMPILE_INFO{({$1$2$3})}){}dnl
+__{}__{}__def({USE_PLAY}){}dnl
+__{}__{}format({%-24s},$2 equ __file_$2);           __INFO   ( -- )
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL, format({%-11s},$2); 3:10      __INFO
+__{}__{}    ld   DE, format({%-11s},$2_loop); 3:10      __INFO
+__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({VARIABLEFILE_BUFFERPLAY},{dnl
+__{}define({$0__TMP},sinclude(M4PATH{}$1{}$2{}$3)){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}ifdef({$2_size},1,0),0,{
+__{}__{}  .error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined $2_size{}dnl
+__{}__{}errprint(error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined "$2_size"{
+})},
+__{}{dnl
+__{}__{}__ADD_TOKEN({__TOKEN_VARIABLEFILE_BUFFERPLAY},{variablefile bufferplay},$@){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_VARIABLEFILE_BUFFERPLAY},{dnl
+__{}define({$0__TMP},sinclude(M4PATH{}$1{}$2{}$3)){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}ifdef({$2_size},1,0),0,{
+__{}__{}  .error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined $2_size{}dnl
+__{}__{}errprint(error {$0}($@): File "M4PATH{}$1{}$2{}$3" not found! Or inside the file is not defined "$2_size"{
+})},
+__{}{dnl
+__{}__{}__ASM_TOKEN_VARIABLEFILE($@){}dnl
+__{}__{}define({__INFO},__COMPILE_INFO{($1$2$3)}){}dnl
+__{}__{}__def({USE_PLAY}){}dnl
+__{}__{}__ASM_TOKEN_PUSH3_MOVE(__file_$2,PLAY_OCTODE_BUFFER,eval((__PSIZE_$2+1)/2))
+__{}__{}format({%-24s},$2 equ PLAY_OCTODE_BUFFER);           __INFO   ( -- )
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL, format({%-11s},$2); 3:10      __INFO
+__{}__{}    ld   DE, format({%-11s},$2_loop); 3:10      __INFO
+__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
