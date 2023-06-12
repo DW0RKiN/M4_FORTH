@@ -126,6 +126,103 @@ A minimal song data set would thus look like this:
          db #40
     row
          dw #200,#400,#300,#0,#0,#0,#0,#0
+         
+### Modifications due to M4 FORTH
+
+The original looked something like this:
+
+     loop
+           dw ptn0
+           dw 0
+     ptn0
+           dw #300,row0
+           dw #380,#0080,row1
+           db #40
+     row0
+           dw #200,#400,#300,#0,#0,#0,#0,#0
+     row1
+           dw #0,#200,#e41,#0,#0,#0,#0,#0
+
+First, I renamed the labels according to the file name and removed the # character, which is a comment character for M4:
+
+
+    filename_loop:
+          dw filename_ptn0
+          dw 0
+    filename_ptn0:
+          dw 0x300, filename_row0
+          dw 0x380,#0080,filename_row1
+          db 0x40
+    filename_row0:
+          dw 0x200,0x400,0x300,0x0,0x0,0x0,0x0,0x0
+    filename_row1:
+          dw 0x0,0x200,0xe41,0x0,0x0,0x0,0x0,0x0
+
+Then he granted it to reallocators:
+
+       ifndef filename
+    filename equ $
+       endif
+    filename_loop equ filename+0x0
+          dw filename_ptn0
+          dw 0
+    filename_ptn0 equ filename+0x4
+          dw 0x300, filename_row0
+          dw 0x380,0x0080,filename_row1
+          db 0x40
+    filename_rows equ filename+0x9
+    filename_row0 equ filename_rows+0x0
+          dw 0x200,0x400,0x300,0x0,0x0,0x0,0x0,0x0
+    filename_row0 equ filename_rows+0x1
+          dw 0x0,0x200,0xe41,0x0,0x0,0x0,0x0,0x0
+
+The comma character causes problems when loading with M4, so I removed it everywhere.
+But I still had a problem with the fact that I need M4 FORTH to know the size of the file after connection (after compilation) so that I can correctly place it in the VARIABLE_SECTION and know how much space it took.
+
+So I added it in the end
+
+    ; define({filename_size}, 0x29)
+
+
+I achieved that, except for changing the name "label" to "filename_label", it is backwards compatible and M4 FORTH can work with it as a variable.
+
+       ifndef filename
+    filename equ $
+       endif
+       
+    filename_loop equ filename+0x0
+          dw filename_ptn0
+          dw 0
+          
+    filename_ptn0 equ filename+0x4
+          dw 0x300
+          dw filename_row0
+          
+          dw 0x380
+          dw 0x0080
+          dw filename_row1
+          db 0x40
+      
+    filename_rows equ filename+0x9
+    filename_row0 equ filename_rows+0x0
+          dw 0x200
+          dw 0x400
+          dw 0x300
+          dw 0x0
+          dw 0x0
+          dw 0x0
+          dw 0x0
+          dw 0x0
+          
+    filename_row0 equ filename_rows+0x1
+          dw 0x0
+          dw 0x200
+          dw 0xe41
+          dw 0x0
+          dw 0x0
+          dw 0x0
+          dw 0x0
+          dw 0x0
 
 
 ## FastTracker II
@@ -139,7 +236,7 @@ I recommend FastTracker2 for editing music files. You can also find it in reposi
 ### My procedure is as follows
 
 - I will make a copy of xm. 
-You will then return to the original for comparison, and you will have new samples in the edited version that will change the sound.
+You will then return to the original for comparison, because you will have new samples in the edited version that will change the sound.
 
 - I'll look through the used samples and find out which are the drums. Compare drums from loudest to quietest. I'm not interested in the type of punch. 
 The loudest beat in the edited file will be sample number 2 `kick`, the middle number 3 `snare` and the least noisy will be number 4 `hihat`.
