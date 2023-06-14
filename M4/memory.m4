@@ -7225,16 +7225,16 @@ __{}__{}__{}__{}  .warning  {$0}($@): Trying to copy data bigger 64k!})
 __{}__{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}__{}__RESET_ADD_LD_REG16{}dnl
 __{}__{}__{}__ADD_LD_REG16(                {BC},2*$3){}dnl
-__{}__{}__{}__ADD_LD_REG16(        {HL},$2,{BC},2*$3){}dnl
-__{}__{}__{}__ADD_LD_REG16({DE},$1,{HL},$2,{BC},2*$3){}dnl
+__{}__{}__{}__ADD_LD_REG16(        {HL},$1,{BC},2*$3){}dnl
+__{}__{}__{}__ADD_LD_REG16({DE},$2,{HL},$1,{BC},2*$3){}dnl
 __{}__{}__{}                      format({%-13s},;[eval(__SUM_BYTES_16BIT+6)]:[eval(37+__SUM_CLOCKS_16BIT+$3*42)]) __INFO   # default version
 __{}__{}__{}    push DE             ; 1:11      __INFO   ( -- )  from = $1, to = $2, u = $3 words
 __{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__{}__LD_REG16({BC},2*$3){}dnl
 __{}__{}__{}__CODE_16BIT{}dnl
-__{}__{}__{}__LD_REG16({HL},$2,{BC},2*$3){}dnl
+__{}__{}__{}__LD_REG16({HL},$1,{BC},2*$3){}dnl
 __{}__{}__{}__CODE_16BIT{}dnl
-__{}__{}__{}__LD_REG16({DE},$1,{HL},$2,{BC},2*$3){}dnl
+__{}__{}__{}__LD_REG16({DE},$2,{HL},$1,{BC},2*$3){}dnl
 __{}__{}__{}__CODE_16BIT
 __{}__{}__{}    ldir                ; 2:16/21   __INFO   addr++
 __{}__{}__{}    pop  HL             ; 1:10      __INFO
