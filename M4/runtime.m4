@@ -2119,6 +2119,230 @@ SEED EQU $+1
 dnl
 dnl
 dnl
+ifdef({USE_LZE},{
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Busy soft ;; LZE optimized depacker ;; 08.07.2016 ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;# Format of packed data
+;# ~~~~~~~~~~~~~~~~~~~~~
+;# <Block><Block>...<Block><EndMark>
+;#
+;# Unpacked data blk:  <BlockLength> <Data..>
+;# Repeated sequence:  <BlockLength> <Offset>
+;#
+;# <BlockLength>
+;#   bit 6 ..... Identification: 0 = unpacked data, 1 = repeated sequence
+;#   bit 7 ..... Length store: 0 = 6-bit length 0..63, 1 = 14-bit length 0..16383
+;#   bit 0-5 ... whole 6-bit length  or  high byte of 14-bit length
+;#   Additonal second byte: low byte of length in case of 14-bit length
+;#
+;# <Data..>
+;#   Data bytes what are directly copied by LDIR
+;#
+;# <Offset>
+;#   bit 7 ..... Offset store: 0 = 7-bit offset 0..127, 1 = 15-bit offset 0..32767
+;#   bit 0-6 ... whole 7-bit offset  or  high byte of 15-bit offset
+;#   Additonal second byte: low byte of offset in case of 15-bit offset
+;#
+;# Length = 0 means end mark.
+
+DEPREP_LZE:             ;           depack_lze
+    push BC             ; 1:11      depack_lze      Save block length
+    ld    A, 0x7F       ; 2:7       depack_lze
+    call DEPNUM_LZE     ; 3:17      depack_lze      Get relative offset of packed sequence
+    ex  (SP),HL         ; 1:19      depack_lze
+    push HL             ; 1:11      depack_lze
+    ld    H, D          ; 1:4       depack_lze      DE = destination address
+    ld    L, E          ; 1:4       depack_lze
+    sbc  HL, BC         ; 2:15      depack_lze      HL = begin of source sequence in already unpacked data
+    pop  BC             ; 1:10      depack_lze      BC = length of sequence
+    ldir                ; 2:16/21   depack_lze      Copy sequence
+    pop  HL             ; 1:10      depack_lze
+;   ...fall down to depack_lze
+
+;# Input:
+;#  HL = address of source packed data
+;#  DE = address of destination to depack data
+;# ===========================================
+DEPACK_LZE:             ;           depack_lze
+  if 1
+    ld    A,(HL)        ; 1:7       depack_lze
+    bit   6, A          ; 2:8       depack_lze
+    push AF             ; 1:11      depack_lze
+    and  0x3F           ; 2:7       depack_lze   
+    call DEPNUM_LZE+1   ; 3:17      depack_lze      Get length of block
+    pop  AF             ; 1:10      depack_lze
+    jr   nz, DEPREP_LZE ; 2:7/12    depack_lze      If packed block then jump
+    
+    or    A             ; 1:4       depack_lze
+    ret   z             ; 1:5/11    depack_lze
+  else
+    bit   6,(HL)        ; 2:12      depack_lze      Get identification of block: 0=unpacked, 1=packed
+    push AF             ; 1:11      depack_lze
+    ld    A, 0x3F       ; 2:7       depack_lze   
+    call DEPNUM_LZE     ; 3:17      depack_lze      Get length of block
+    pop  AF             ; 1:10      depack_lze
+    jr   nz, DEPREP_LZE ; 2:7/12    depack_lze      If packed block then jump
+    ld    A, B          ; 1:4       depack_lze
+    or    C             ; 1:4       depack_lze      If length = 0 then end of depacking
+    ret   z             ; 1:5/11    depack_lze
+  endif
+    ldir                ; 2:16/21   depack_lze      Copy unpacked data block
+    jr   DEPACK_LZE     ; 2:12      depack_lze
+    
+DEPNUM_LZE:             ;           depack_lze
+    and (HL)            ; 1:7       depack_lze      Mask one-byte value or high byte of two-byte value
+    ld    C, A          ; 1:4       depack_lze
+    ld    B, 0x00       ; 2:7       depack_lze      BC = value or high type of value
+    bit   7,(HL)        ; 2:12      depack_lze
+    inc  HL             ; 1:6       depack_lze
+    ret   z             ; 1:5/11    depack_lze      If short value then return
+    ld    B, C          ; 1:4       depack_lze
+    ld    C,(HL)        ; 1:7       depack_lze      Get low byte of two-byte value
+    inc  HL             ; 1:6       depack_lze
+    ret                 ; 1:10      depack_lze
+                       ;[46:]}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_LZE2},{
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Busy soft ;; LZE optimized depacker ;; 08.07.2016 ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;# Modified routine for extracting files.
+;# Original first byte token:
+;#      %DP.. ....
+;# Now first byte token:
+;#      %P... ...D
+;# Where P = packed bit flag
+;# Where D = double byte bit flag
+
+;# Format of packed data
+;# ~~~~~~~~~~~~~~~~~~~~~
+;# <Block><Block>...<Block><EndMark>
+;#
+;# Unpacked data blk:  <BlockLength> <Data..>
+;# Repeated sequence:  <BlockLength> <Offset>
+;#
+;# <BlockLength>
+;#   bit P ..... Identification: 0 = unpacked data, 1 = repeated sequence
+;#   bit D ..... Identification: 0 = one byte     , 1 = two bytes
+;#   bit ? ..... Data bit
+;#
+;#              P543 210D
+;#   %0000 0000 1??? ???0 =   packed one byte   (6 bits)
+;#   %0000 0000 0??? ???0 = unpacked one byte   (6 bits)
+;#
+;#    Pdcb a98D 7654 3210
+;#   %1??? ???1 ???? ???? =   packed two bytes  (14 bits)
+;#   %0??? ???1 ???? ???? = unpacked two bytes  (14 bits)
+;#
+;# <Data..>
+;#   Data bytes what are directly copied by LDIR
+;#
+;# <Offset>
+;#   bit D ..... Identification: 0 = one byte     , 1 = two bytes
+;#   bit ? ..... Data bit
+;#
+;#              6543 210D
+;#   %0000 0000 ???? ???0 =   packed one byte   (7 bits)
+;#   %0000 0000 ???? ???0 = unpacked one byte   (7 bits)
+;#
+;#    edcb a98D 7654 3210
+;#   %???? ???1 ???? ???? =   packed two bytes  (15 bits)
+;#   %???? ???1 ???? ???? = unpacked two bytes  (15 bits)
+;#
+;# Length = 0 means end mark.
+
+DEPREP_LZE2:            ;           depack_lze2{}dnl
+ifelse(USE_LZE2,fast,{
+    ld    A,(HL)        ; 1:7       depack_lze2     A = %6543210D; D = Double bit
+    rra                 ; 1:4       depack_lze2     6543210D -> .6543210 carry=D
+    jr   nc,DEPACK_LZE2L; 2:7/12    depack_lze2
+;# .... ...1 .... ....
+    inc  HL             ; 1:6       depack_lze2     Get low byte of two-byte value
+    push HL             ; 1:11      depack_lze2
+    ld    L,(HL)        ; 1:7       depack_lze2
+    ld    H, A          ; 1:4       depack_lze2     HL = DE - HL
+    jr   DEPACK_LZE2S   ; 2:7/12    depack_lze2
+DEPACK_LZE2L:
+;# 0000 0000 .... ...0
+    push HL             ; 1:11      depack_lze2     HL = DE - 0A
+    ld    L, A          ; 1:4       depack_lze2
+    ld    H, 0x00       ; 2:7       depack_lze2
+DEPACK_LZE2S:
+    ld    A, E          ; 1:4       depack_lze2
+    sub   L             ; 1:4       depack_lze2    
+    ld    L, A          ; 1:4       depack_lze2
+    ld    A, D          ; 1:4       depack_lze2
+    sbc   H             ; 1:4       depack_lze2    
+    ld    H, A          ; 1:4       depack_lze2
+
+    ldir                ; 2:16/21   depack_lze2     Copy sequence
+    pop  HL             ; 1:10      depack_lze2
+    inc  HL             ; 1:6       depack_lze2
+                        ;[15:124]   depack_lze2},{
+    push BC             ; 1:11      depack_lze2     Save block length
+    ld    A,(HL)        ; 1:7       depack_lze2     A = %6543210D; D = Double bit
+    call DEPNUM_LZE2    ; 3:17      depack_lze2     Get relative offset of packed sequence
+    ex  (SP),HL         ; 1:19      depack_lze2     Load block lengt and save address of source packed data
+    push HL             ; 1:11      depack_lze2     Save block length
+    ld    H, D          ; 1:4       depack_lze2     DE = destination address
+    ld    L, E          ; 1:4       depack_lze2
+    sbc  HL, BC         ; 2:15      depack_lze2     HL = begin of source sequence in already unpacked data
+    pop  BC             ; 1:10      depack_lze2     BC = length of sequence
+    
+    ldir                ; 2:16/21   depack_lze2     Copy sequence
+    pop  HL             ; 1:10      depack_lze2
+                        ;[15:124]   depack_lze2})
+
+;# Input:
+;#  HL = address of source packed data
+;#  DE = address of destination to depack data
+;# ===========================================
+DEPACK_LZE2:            ;           depack_lze2   
+    ld    A,(HL)        ; 1:7       depack_lze2     A = %P543210D; P = Packed bit; D = Double bit
+    or    A             ; 1:4       depack_lze2     Reset carry and set sign and zero flag
+    rla                 ; 1:4       depack_lze2     A = %??????D0; sign unaffected
+    rrca                ; 1:4       depack_lze2     A = %0??????D; sign unaffected, reset carry
+    call DEPNUM_LZE2    ; 3:17      depack_lze2     Get length of block; sign and zero flag unaffected
+    jp    m, DEPREP_LZE2; 3:10      depack_lze2     If packed block then jump
+                        ;[10:46]    depack_lze2
+    ret   z             ; 1:5/11    depack_lze2     If zero then end of depacking
+    ldir                ; 2:16/21   depack_lze2     Copy unpacked data block
+    jr   DEPACK_LZE2    ; 2:12      depack_lze2
+
+;# Input:
+;#      reset carry
+;#      A  = (HL)
+;#      HL = address of source packed data
+;# Output1:
+;#      carry and sign and zero flag unaffected
+;#      BC = %0000 0000 0s?? ????
+;#      HL++
+;# Output2:
+;#      carry and sign and zero flag unaffected
+;#      BC = %0s?? ???? ???? ????
+;#      HL+= 2
+DEPNUM_LZE2:            ;           depack_lze2     
+    inc  HL             ; 1:6       depack_lze2
+    rra                 ; 1:4       depack_lze2     6543210D -> .6543210 carry=D
+    ld    C, A          ; 1:4       depack_lze2
+    ld    B, 0x00       ; 2:7       depack_lze2
+    ret  nc             ; 1:5/11    depack_lze2     If short value then return BC = %0000 0000 0??? ????
+                       ;[ 6:26]     depack_lze2
+    ccf                 ; 1:4       depack_lze2
+    ld    B, C          ; 1:4       depack_lze2
+    ld    C,(HL)        ; 1:7       depack_lze2     Get low byte of two-byte value
+    inc  HL             ; 1:6       depack_lze2
+    ret                 ; 1:10      depack_lze2     BC = %0??? ???? ???? ????
+                        ;[5:31]     depack_lze2
+}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_ACCEPT},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
 ;==============================================================================
 ; Read string from keyboard
@@ -2696,7 +2920,7 @@ __{}    pop  HL             ; 1:10      putchar})
 dnl
 dnl
 dnl
-ifelse(eval(ifdef({USE_MUSIC},1,0)+ifdef({USE_PLAY},1,0)>0),1,{
+ifdef({USE_PLAY},{
 ;==============================================================================
 PLAY_OCTODE:            ;[:]        play_octode
     ld  (seqpntr),HL    ; 3:16      play_octode     set addr song start
@@ -2841,10 +3065,11 @@ VARIABLE_SECTION:
 dnl
 dnl
 dnl
-ifdef({USE_MUSIC},{define({USE_PLAY})
-;==============================================================================
-__INCLUDE_FILE
-}){}dnl
+__INCLUDE_TXT_FILE{}dnl
+dnl
+dnl
+dnl
+__INCLUDE_BIN_FILE{}dnl
 dnl
 dnl
 dnl
@@ -2853,7 +3078,80 @@ ifdef({USE_PLAY},{
 include(M4PATH{}/../octode2k16/octode2k16.asm)
 ;==============================================================================
 PLAY_OCTODE_BUFFER:
+  if (PLAY_OCTODE_BUFFER+USE_PLAY<PLAY_OCTODE_BUFFER)
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x8000)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x8000+ bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x7000)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x7000 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x6000)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x6000 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x5000)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x5000 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x4000)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x4000 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x3000)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x3000 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x2000)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 8193..12288 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x1000)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 4097..8192 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x0800)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 2049..4096 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x0400)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 1025..2048 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x0200)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 513..1024 bytes
+    endif
+    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x0100)
+        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 257..512 bytes
+    endif
+    .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0..256 bytes
+  endif
+  if (PLAY_OCTODE_BUFFER+USE_PLAY>0xFF00)
+    .warning Buffer PLAY_OCTODE_BUFFER rewrite 0xFF00+ address!
+  endif
 }){}dnl
+dnl
+dnl
+dnl
+ifelse(ALL_VARIABLE,{},,{
+  if ($<0x0100)
+    .error Overflow 64k! over 0..255 bytes
+  endif
+  if ($<0x0200)
+    .error Overflow 64k! over 256..511 bytes
+  endif
+  if ($<0x0400)
+    .error Overflow 64k! over 512..1023 bytes
+  endif
+  if ($<0x0800)
+    .error Overflow 64k! over 1024..2047 bytes
+  endif
+  if ($<0x1000)
+    .error Overflow 64k! over 2048..4095 bytes
+  endif
+  if ($<0x2000)
+    .error Overflow 64k! over 4096..8191 bytes
+  endif
+  if ($<0x3000)
+    .error Overflow 64k! over 8192..12287 bytes
+  endif
+  if ($<0x4000)
+    .error Overflow 64k! over 12288..16383 bytes
+  endif
+  if ($>0xFF00)
+    .warning Data ends at 0xFF00+ address!
+  endif}){}dnl
 dnl
 dnl
 dnl
