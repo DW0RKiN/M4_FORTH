@@ -2255,35 +2255,61 @@ ifdef({USE_LZE2},{
 ;#   %???? ???1 ???? ???? = unpacked two bytes  (15 bits)
 ;#
 ;# Length = 0 means end mark.
-
-DEPREP_LZE2:            ;           depack_lze2{}dnl
 ifelse(USE_LZE2,fast,{
-    ld    A,(HL)        ; 1:7       depack_lze2     A = %6543210D; D = Double bit
-    rra                 ; 1:4       depack_lze2     6543210D -> .6543210 carry=D
-    jr   nc,DEPACK_LZE2L; 2:7/12    depack_lze2
+DEPREP_LZE2:            ;           depack_lze2(fast)
+    ld    A,(HL)        ; 1:7       depack_lze2(fast)     A = %6543210D; D = Double bit
+    rra                 ; 1:4       depack_lze2(fast)     6543210D -> .6543210 carry=D
+    jr   nc,DEPREP_LZE2A; 2:7/12    depack_lze2(fast)
 ;# .... ...1 .... ....
-    inc  HL             ; 1:6       depack_lze2     Get low byte of two-byte value
-    push HL             ; 1:11      depack_lze2
-    ld    L,(HL)        ; 1:7       depack_lze2
-    ld    H, A          ; 1:4       depack_lze2     HL = DE - HL
-    jr   DEPACK_LZE2S   ; 2:7/12    depack_lze2
-DEPACK_LZE2L:
+    inc  HL             ; 1:6       depack_lze2(fast)     Get low byte of two-byte value
+    push HL             ; 1:11      depack_lze2(fast)
+    ld    L,(HL)        ; 1:7       depack_lze2(fast)
+    ld    H, A          ; 1:4       depack_lze2(fast)     HL = DE - HL
+    jr   DEPREP_LZE2B   ; 2:12      depack_lze2(fast)
+DEPREP_LZE2A:
 ;# 0000 0000 .... ...0
-    push HL             ; 1:11      depack_lze2     HL = DE - 0A
-    ld    L, A          ; 1:4       depack_lze2
-    ld    H, 0x00       ; 2:7       depack_lze2
-DEPACK_LZE2S:
-    ld    A, E          ; 1:4       depack_lze2
-    sub   L             ; 1:4       depack_lze2    
-    ld    L, A          ; 1:4       depack_lze2
-    ld    A, D          ; 1:4       depack_lze2
-    sbc   H             ; 1:4       depack_lze2    
-    ld    H, A          ; 1:4       depack_lze2
+    push HL             ; 1:11      depack_lze2(fast)     HL = DE - 0A
+    ld    L, A          ; 1:4       depack_lze2(fast)
+    ld    H, 0x00       ; 2:7       depack_lze2(fast)
+DEPREP_LZE2B:
+    ld    A, E          ; 1:4       depack_lze2(fast)
+    sub   L             ; 1:4       depack_lze2(fast)    
+    ld    L, A          ; 1:4       depack_lze2(fast)
+    ld    A, D          ; 1:4       depack_lze2(fast)
+    sbc   A, H          ; 1:4       depack_lze2(fast)    
+    ld    H, A          ; 1:4       depack_lze2(fast)
 
-    ldir                ; 2:16/21   depack_lze2     Copy sequence
-    pop  HL             ; 1:10      depack_lze2
-    inc  HL             ; 1:6       depack_lze2
-                        ;[15:124]   depack_lze2},{
+    ldir                ; 2:16/21   depack_lze2(fast)     Copy sequence
+    pop  HL             ; 1:10      depack_lze2(fast)
+    inc  HL             ; 1:6       depack_lze2(fast)
+                        ;[15:124]   depack_lze2(fast)
+                        
+;# Input:
+;#  HL = address of source packed data
+;#  DE = address of destination to depack data
+;# ===========================================
+DEPACK_LZE2:            ;           depack_lze2(fast)   
+    xor   A             ; 1:4       depack_lze2(fast)     reset carry
+    ld    B, A          ; 1:4       depack_lze2(fast)
+    or  (HL)            ; 1:7       depack_lze2(fast)     A = %P??????D; P = packed bit; D = double bit; set sign and zero flag
+    inc  HL             ; 1:6       depack_lze2(fast)
+    rla                 ; 1:4       depack_lze2(fast)     A = %??????D0; sign unaffected
+    rrca                ; 1:4       depack_lze2(fast)     A = %0??????D; sign unaffected; reset carry
+    rra                 ; 1:4       depack_lze2(fast)     A = %00??????; sign unaffected; carry=D
+    ld    C, A          ; 1:4       depack_lze2(fast)
+    jr   nc,DEPACK_LZE2A; 2:7/12    depack_lze2(fast)     One byte lengt
+    ccf                 ; 1:4       depack_lze2(fast)
+    ld    B, C          ; 1:4       depack_lze2(fast)
+    ld    C,(HL)        ; 1:7       depack_lze2(fast)     Get low byte of two-byte value
+    inc  HL             ; 1:6       depack_lze2(fast)    
+DEPACK_LZE2A:           ;           depack_lze2(fast)
+    jp    m, DEPREP_LZE2; 3:10      depack_lze2(fast)     If packed block then jump
+                        ;[10:46]    depack_lze2(fast)
+    ret   z             ; 1:5/11    depack_lze2(fast)     If zero then end of depacking
+    ldir                ; 2:16/21   depack_lze2(fast)     Copy unpacked data block
+    jr   DEPACK_LZE2    ; 2:12      depack_lze2(fast)},
+{
+DEPREP_LZE2:            ;           depack_lze2
     push BC             ; 1:11      depack_lze2     Save block length
     ld    A,(HL)        ; 1:7       depack_lze2     A = %6543210D; D = Double bit
     call DEPNUM_LZE2    ; 3:17      depack_lze2     Get relative offset of packed sequence
@@ -2296,8 +2322,7 @@ DEPACK_LZE2S:
     
     ldir                ; 2:16/21   depack_lze2     Copy sequence
     pop  HL             ; 1:10      depack_lze2
-                        ;[15:124]   depack_lze2})
-
+                        ;[15:124]   depack_lze2
 ;# Input:
 ;#  HL = address of source packed data
 ;#  DE = address of destination to depack data
@@ -2338,7 +2363,7 @@ DEPNUM_LZE2:            ;           depack_lze2
     ld    C,(HL)        ; 1:7       depack_lze2     Get low byte of two-byte value
     inc  HL             ; 1:6       depack_lze2
     ret                 ; 1:10      depack_lze2     BC = %0??? ???? ???? ????
-                        ;[5:31]     depack_lze2
+                        ;[5:31]     depack_lze2}){}dnl
 }){}dnl
 dnl
 dnl
