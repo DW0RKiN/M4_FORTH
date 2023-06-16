@@ -2166,7 +2166,7 @@ DEPREP_LZE:             ;           depack_lze
 ;#  DE = address of destination to depack data
 ;# ===========================================
 DEPACK_LZE:             ;           depack_lze
-  if 1
+ifelse(1,1,{dnl
     ld    A,(HL)        ; 1:7       depack_lze
     bit   6, A          ; 2:8       depack_lze
     push AF             ; 1:11      depack_lze
@@ -2176,8 +2176,8 @@ DEPACK_LZE:             ;           depack_lze
     jr   nz, DEPREP_LZE ; 2:7/12    depack_lze      If packed block then jump
     
     or    A             ; 1:4       depack_lze
-    ret   z             ; 1:5/11    depack_lze
-  else
+    ret   z             ; 1:5/11    depack_lze},
+{dnl
     bit   6,(HL)        ; 2:12      depack_lze      Get identification of block: 0=unpacked, 1=packed
     push AF             ; 1:11      depack_lze
     ld    A, 0x3F       ; 2:7       depack_lze   
@@ -2186,8 +2186,8 @@ DEPACK_LZE:             ;           depack_lze
     jr   nz, DEPREP_LZE ; 2:7/12    depack_lze      If packed block then jump
     ld    A, B          ; 1:4       depack_lze
     or    C             ; 1:4       depack_lze      If length = 0 then end of depacking
-    ret   z             ; 1:5/11    depack_lze
-  endif
+    ret   z             ; 1:5/11    depack_lze})
+
     ldir                ; 2:16/21   depack_lze      Copy unpacked data block
     jr   DEPACK_LZE     ; 2:12      depack_lze
     
@@ -2311,7 +2311,7 @@ DEPACK_LZE2A:           ;           depack_lze2(fast)
 {
 DEPREP_LZE2:            ;           depack_lze2
     push BC             ; 1:11      depack_lze2     Save block length
-    ld    A,(HL)        ; 1:7       depack_lze2     A = %6543210D; D = Double bit
+    ld    A,(HL)        ; 1:7       depack_lze2     A = %???? ???D; D = Double bit
     call DEPNUM_LZE2    ; 3:17      depack_lze2     Get relative offset of packed sequence
     ex  (SP),HL         ; 1:19      depack_lze2     Load block lengt and save address of source packed data
     push HL             ; 1:11      depack_lze2     Save block length
@@ -2328,10 +2328,10 @@ DEPREP_LZE2:            ;           depack_lze2
 ;#  DE = address of destination to depack data
 ;# ===========================================
 DEPACK_LZE2:            ;           depack_lze2   
-    ld    A,(HL)        ; 1:7       depack_lze2     A = %P543210D; P = Packed bit; D = Double bit
+    ld    A,(HL)        ; 1:7       depack_lze2     A = %P??? ???D; P = Packed bit; D = Double bit
     or    A             ; 1:4       depack_lze2     Reset carry and set sign and zero flag
-    rla                 ; 1:4       depack_lze2     A = %??????D0; sign unaffected
-    rrca                ; 1:4       depack_lze2     A = %0??????D; sign unaffected, reset carry
+    rla                 ; 1:4       depack_lze2     A = %???? ??D0; sign unaffected
+    rrca                ; 1:4       depack_lze2     A = %0??? ???D; sign unaffected, reset carry
     call DEPNUM_LZE2    ; 3:17      depack_lze2     Get length of block; sign and zero flag unaffected
     jp    m, DEPREP_LZE2; 3:10      depack_lze2     If packed block then jump
                         ;[10:46]    depack_lze2
@@ -2365,6 +2365,94 @@ DEPNUM_LZE2:            ;           depack_lze2
     ret                 ; 1:10      depack_lze2     BC = %0??? ???? ???? ????
                         ;[5:31]     depack_lze2}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_LZ_},{
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Busy soft ;; LZE optimized depacker ;; 08.07.2016 ;;
+;; Modified routine by _Dw0rkin        ;; 15.07.2023 ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;# Format of packed data
+;# ~~~~~~~~~~~~~~~~~~~~~
+;# <Block><Block>...<Block><EndMark>
+;#
+;# Unpacked data blk:  <BlockLength> <Data..>
+;# Repeated sequence:  <BlockLength> <Offset>
+;#
+;# <BlockLength>
+;#   bit P ..... Identification: 0 = unpacked data, 1 = repeated sequence
+;#   bit D ..... Identification: 0 = one byte     , 1 = two bytes
+;#   bit ? ..... Data bit
+;#
+;#    D543 210P               %            54 3210
+;#   %0??? ???1 ------------> %0000 0000 00?? ???? = size one byte   packed (6 bits)
+;#   %0??? ???0 ------------> %0000 0000 00?? ???? = size one byte unpacked (6 bits)
+;#
+;#    Ddcb a98P 7654 3210 -->    dc ba98 7654 3210
+;#   %1??? ???1 ???? ???? --> %00?? ???? ???? ???? = size two bytes   packed (14 bits)
+;#   %0??? ???1 ???? ???? --> %00?? ???? ???? ???? = size two bytes unpacked (14 bits)
+;#
+;# <Data..>
+;#   Data bytes what are directly copied by LDIR
+;#
+;# <Negative_Offset>
+;#   bit D ..... Identification: 0 = one byte, 1 = two bytes
+;#   bit ? ..... Data bit
+;#
+;#   %6543 210D               %           654 3210
+;#   %???? ???0 ------------> %1111 1111 1??? ???? = negative offset one byte   (7 bits)
+;#
+;#   %edcb a98D 7654 3210     % edc ba98 7654 3210
+;#   %???? ???1 ???? ???? --> %1??? ???? ???? ???? = negative offset two bytes  (15 bits)
+;#
+;# Length = 0 means end mark.
+DEPREP_LZ_:             ;           depack_lz_
+    ld    A,(HL)        ; 1:7       depack_lz_      A = %???? ???D; D = Double bit; carry = 1
+    rra                 ; 1:4       depack_lz_      A = %???? ???D -> %1??? ???? & carry=D
+    jr   nc, DEPREP_LZ_A; 2:7/12    depack_lz_
+    inc  HL             ; 1:6       depack_lz_
+    push HL             ; 1:11      depack_lz_
+    ld    L,(HL)        ; 1:7       depack_lz_      Get low byte of two-byte value
+    ld    H, A          ; 1:4       depack_lz_      HL = %1??? ???? ???? ???? = 15 bits negative offset
+    jr   DEPREP_LZ_B    ; 2:12      depack_lz_
+DEPREP_LZ_A:            ;           depack_lz_
+    push HL             ; 1:11      depack_lz_
+    ld    L, A          ; 1:4       depack_lz_
+    ld    H, 0xFF       ; 2:7       depack_lz_      HL = %1111 1111 1??? ???? = 7 bits negative offset
+DEPREP_LZ_B:            ;           depack_lz_
+    add  HL, DE         ; 1:11      depack_lz_
+
+    ldir                ; 2:16/21   depack_lz_      Copy sequence
+    pop  HL             ; 1:10      depack_lz_
+    inc  HL             ; 1:6       depack_lz_
+                       ;[19:123]    depack_lz_
+;   ...fall down to depack_lz_                        
+;# Input:
+;#  HL = address of source packed data
+;#  DE = address of destination to depack data
+;# ===========================================
+DEPACK_LZ_:             ;           depack_lz_   
+    xor   A             ; 1:4       depack_lz_      reset carry
+    ld    B, A          ; 1:4       depack_lz_
+    or  (HL)            ; 1:7       depack_lz_      A = %D??????P; P = packed bit; D = double bit; set sign and zero flag
+    inc  HL             ; 1:6       depack_lz_
+    rla                 ; 1:4       depack_lz_      A = %??????P0; sign unaffected
+    rrca                ; 1:4       depack_lz_      A = %0??????P; sign unaffected; reset carry
+
+    rra                 ; 1:4       depack_lz_      A = %00??????; sign unaffected; carry=P
+    ld    C, A          ; 1:4       depack_lz_
+    jp    p, DEPACK_LZ_A; 3:10      depack_lz_      One byte length
+    ld    B, C          ; 1:4       depack_lz_
+    ld    C,(HL)        ; 1:7       depack_lz_      Get low byte of two-byte value
+    inc  HL             ; 1:6       depack_lz_    
+DEPACK_LZ_A:            ;           depack_lz_
+    jr    c, DEPREP_LZ_ ; 2:7/12    depack_lz_      If packed block then jump
+    ret   z             ; 1:5/11    depack_lz_      If zero then end of depacking
+    ldir                ; 2:16/21   depack_lz_      Copy unpacked data block
+    jr   DEPACK_LZ_     ; 2:12      depack_lz_
+                       ;[21:104]    depack_lz_}){}dnl
 dnl
 dnl
 dnl
