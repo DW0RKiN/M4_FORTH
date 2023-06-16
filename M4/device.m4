@@ -2517,16 +2517,24 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}define({USE_PLAY},0){}dnl
 __{}__{}__def({USE_INCFILE}){}dnl
-__{}__{}ifelse($3,.lze,{__def({USE_LZE})},{__def({USE_LZE2})}){}dnl
 __{}__{}pushdef({__INCLUDE_BIN_FILE_FULLNAME},M4PATH{{$1$2$3}}){}dnl
 __{}__{}pushdef({__INCLUDE_BIN_FILE_NAME},{{$2}})
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, format({%-11s},__file_$2); 3:10      __INFO    from 
 __{}__{}    ld   DE, format({%-11s},__BUFFER-2); 3:10      __INFO    to
-__{}__{}ifelse($3,.lze,{dnl
+__{}__{}ifelse(dnl
+__{}__{}$3,.lze,{dnl
+__{}__{}__{}__def({USE_LZE}){}dnl
 __{}__{}__{}    call DEPACK_LZE     ; 3:17      __INFO},
+__{}__{}$3,.lz_,{dnl
+__{}__{}__{}__def({USE_LZ_}){}dnl
+__{}__{}__{}    call DEPACK_LZ_     ; 3:17      __INFO},
+__{}__{}$3,.zx0,{dnl
+__{}__{}__{}__def({USE_ZX0}){}dnl
+__{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO},
 __{}__{}{dnl
+__{}__{}__{}__def({USE_LZE2}){}dnl
 __{}__{}__{}    call DEPACK_LZE2    ; 3:17      __INFO})
 __{}__{}    ld   HL, format({%-11s},__BUFFER-2); 3:10      __INFO
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
