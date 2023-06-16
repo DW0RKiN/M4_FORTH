@@ -2522,20 +2522,19 @@ __{}__{}pushdef({__INCLUDE_BIN_FILE_NAME},{{$2}})
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, format({%-11s},__file_$2); 3:10      __INFO    from 
-__{}__{}    ld   DE, format({%-11s},__BUFFER-2); 3:10      __INFO    to
+__{}__{}    ld   DE, format({%-11s},__BUFFER-2); 3:10      __INFO    to{}dnl
 __{}__{}ifelse(dnl
-__{}__{}$3,.lze,{dnl
-__{}__{}__{}__def({USE_LZE}){}dnl
-__{}__{}__{}    call DEPACK_LZE     ; 3:17      __INFO},
-__{}__{}$3,.lz_,{dnl
+__{}__{}$3,.lzm,{
+__{}__{}__{}__def({USE_LZM}){}dnl
+__{}__{}__{}    call LZM_DEPACK     ; 3:17      __INFO},
+__{}__{}$3,.lz_,{
 __{}__{}__{}__def({USE_LZ_}){}dnl
-__{}__{}__{}    call DEPACK_LZ_     ; 3:17      __INFO},
-__{}__{}$3,.zx0,{dnl
+__{}__{}__{}    call LZ__DEPACK     ; 3:17      __INFO},
+__{}__{}$3,.zx0,{
 __{}__{}__{}__def({USE_ZX0}){}dnl
 __{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO},
-__{}__{}{dnl
-__{}__{}__{}__def({USE_LZE2}){}dnl
-__{}__{}__{}    call DEPACK_LZE2    ; 3:17      __INFO})
+__{}__{}{
+__{}__{}__{}    call DEPACK         ; 3:17      __INFO})
 __{}__{}    ld   HL, format({%-11s},__BUFFER-2); 3:10      __INFO
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
