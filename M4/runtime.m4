@@ -2975,8 +2975,14 @@ dnl
 dnl
 dnl
 ifdef({USE_PLAY},{
-;==============================================================================
+;# ============================================================================
+;# Input: HL = data address
+;# Pollutes: AF, HL, DE
 PLAY_OCTODE:            ;[:]        play_octode
+    ld    E,(HL)        ; 1:7       play_octode
+    inc  HL             ; 1:6       play_octode
+    ld    D,(HL)        ; 1:7       play_octode     DE = addr loop
+    inc  HL             ; 1:6       play_octode     HL = addr data
     ld  (seqpntr),HL    ; 3:16      play_octode     set addr song start
     ld  (nameloop),DE   ; 4:20      play_octode     set addr song loop
     xor   A             ; 1:4       play_octode
