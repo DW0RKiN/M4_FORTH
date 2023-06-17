@@ -14,7 +14,7 @@
 ;        IX  - add cntr 7
 ;        IY  - add cntr 8
 ;         A  - vol.add
-;       A',{I} - timer
+;       A',I - timer
 
 NMOS EQU 1
 CMOS EQU 2
@@ -33,8 +33,48 @@ PCTRL_B     equ 0x00
   endif
 
 ; Input:
-; (seqpntr) = music_data:
-; nameloop = music_loop:
+; (seqpntr)  = address music data (name_xm_start)
+; (nameloop) = address music loop (name_xm_loop)
+
+;   dw name_xm_loop
+
+; name_xm_start:
+;   dw name_xm_ptn0
+;   dw name_xm_ptn1
+; name_xm_loop:
+;   dw name_xm_ptn2
+;   ...
+;
+; name_xm_ptn0:
+;   dw 0x480
+;   dw 0x0020
+;   dw name_xm_row0
+;
+;   dw 0x480
+;   dw 0x0040
+;   dw name_xm_row1
+;   ...
+; name_xm_ptn1:
+;   ...
+
+;	dw 0x480
+;	dw 0x0080
+;	dw name_xm_row2
+
+; row buffers
+; name_xm_rows equ name_xm + 0x5ba
+; name_xm_row0 equ name_xm_rows + 0x0
+;   dw 0x0
+;   dw 0x17f9
+;   dw 0x4c2
+;   dw 0x0
+;   dw 0x0
+;   dw 0x1307
+;   dw 0x1307
+;   dw 0x2000
+
+; name_xm_row1 equ name_xm_rows + 0x10
+;   ...
 
 OCTODE2K16_ROUTINE:
   if (OCTODE2K16_ROUTINE<0x1000)
@@ -81,8 +121,9 @@ seqpntr equ $+1
     or    H             ; 1:4
     ld  (seqpntr),SP    ; 4:20      ...
     jr   nz, rdptn0     ; 2:7/12    ...
-ifdef({__NO_LOOP_MUSIC},{
-    jp   exit           ; 3:10      ...})
+  ifdef __NO_LOOP_MUSIC
+    jp   exit           ; 3:10      ...
+  endif
 
 nameloop equ $+1
     ld   SP, 0x0000     ; 3:10      get loop point
@@ -94,20 +135,20 @@ updateTimer0:
     nop                 ; 1:4       ...
     dw OUT_C_0x00       ; 2:12      switch sound off
 updateTimer:
-    ld    A, {I}          ; 2:9
+    ld    A, I          ; 2:9
     dec   A             ; 1:4
     jp    z, readNextRow; 3:10      ...
-    ld    {I}, A          ; 2:9
+    ld    I, A          ; 2:9
     xor   A             ; 1:4
     ex   AF, AF'        ; 1:4
     jp  (HL)            ; 1:4
     ;. . . . . . . . . ;[11:44]     TODO: adjust timings!
                 
 updateTimerX:
-    ld    A, {I}          ; 2:9
+    ld    A, I          ; 2:9
     dec   A             ; 1:4
     jp    z, readNextRow; 3:10      ...
-    ld    {I}, A          ; 2:9
+    ld    I, A          ; 2:9
     xor   A             ; 1:4
     ex   AF, AF'        ; 1:4
     ld    A,(HL)        ; 1:7       timing
@@ -157,7 +198,7 @@ patpntr equ $+1         ;           fetch pointer to pattern data
     pop  AF             ; 1:10      ...
     jr    z, rdseq      ; 2:7/12    ...
     
-    ld    {I}, A          ; 2:9       timer
+    ld    I, A          ; 2:9       timer
     
     jr    c, drumNoise  ; 2:7/12    ...
     jp   pe, drumKick   ; 3:10      ...
