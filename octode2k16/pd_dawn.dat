@@ -9,6 +9,10 @@
 pd_dawn equ $
   endif
 
+;loop
+	dw pd_dawn_loop
+
+pd_dawn_start equ pd_dawn + 0x2
 ;sequence
 	dw pd_dawn_ptn3
 	dw pd_dawn_ptn8
@@ -20,7 +24,7 @@ pd_dawn equ $
 	dw pd_dawn_ptn2
 	dw pd_dawn_ptn5
 	dw pd_dawn_ptn4
-pd_dawn_loop equ pd_dawn + 0x14
+pd_dawn_loop equ pd_dawn + 0x16
 	dw pd_dawn_ptn7
 	dw pd_dawn_ptna
 	dw pd_dawn_ptn7
@@ -39,9 +43,9 @@ pd_dawn_loop equ pd_dawn + 0x14
 	dw pd_dawn_ptnf
 	dw pd_dawn_ptne
 	dw 0
-; 0x38 bytes
+; 0x3a bytes
 
-pd_dawn_ptn0 equ pd_dawn + 0x38
+pd_dawn_ptn0 equ pd_dawn + 0x3a
 	dw 0x400
 	dw pd_dawn_row0
 
@@ -237,7 +241,7 @@ pd_dawn_ptn0 equ pd_dawn + 0x38
 	db 0x40
 ; 0x101 bytes
 
-pd_dawn_ptn1 equ pd_dawn + 0x139
+pd_dawn_ptn1 equ pd_dawn + 0x13b
 	dw 0x400
 	dw pd_dawn_row17
 
@@ -433,7 +437,7 @@ pd_dawn_ptn1 equ pd_dawn + 0x139
 	db 0x40
 ; 0x101 bytes
 
-pd_dawn_ptn2 equ pd_dawn + 0x23a
+pd_dawn_ptn2 equ pd_dawn + 0x23c
 	dw 0x400
 	dw pd_dawn_row2c
 
@@ -629,7 +633,7 @@ pd_dawn_ptn2 equ pd_dawn + 0x23a
 	db 0x40
 ; 0x101 bytes
 
-pd_dawn_ptn3 equ pd_dawn + 0x33b
+pd_dawn_ptn3 equ pd_dawn + 0x33d
 	dw 0x800
 	dw pd_dawn_row3a
 
@@ -825,7 +829,7 @@ pd_dawn_ptn3 equ pd_dawn + 0x33b
 	db 0x40
 ; 0x101 bytes
 
-pd_dawn_ptn4 equ pd_dawn + 0x43c
+pd_dawn_ptn4 equ pd_dawn + 0x43e
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row4a
@@ -1054,7 +1058,7 @@ pd_dawn_ptn4 equ pd_dawn + 0x43c
 	db 0x40
 ; 0x143 bytes
 
-pd_dawn_ptn5 equ pd_dawn + 0x57f
+pd_dawn_ptn5 equ pd_dawn + 0x581
 	dw 0x400
 	dw pd_dawn_row2c
 
@@ -1250,7 +1254,7 @@ pd_dawn_ptn5 equ pd_dawn + 0x57f
 	db 0x40
 ; 0x101 bytes
 
-pd_dawn_ptn6 equ pd_dawn + 0x680
+pd_dawn_ptn6 equ pd_dawn + 0x682
 	dw 0x400
 	dw pd_dawn_row2c
 
@@ -1446,7 +1450,7 @@ pd_dawn_ptn6 equ pd_dawn + 0x680
 	db 0x40
 ; 0x101 bytes
 
-pd_dawn_ptn7 equ pd_dawn + 0x781
+pd_dawn_ptn7 equ pd_dawn + 0x783
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row65
@@ -1676,7 +1680,7 @@ pd_dawn_ptn7 equ pd_dawn + 0x781
 	db 0x40
 ; 0x145 bytes
 
-pd_dawn_ptn8 equ pd_dawn + 0x8c6
+pd_dawn_ptn8 equ pd_dawn + 0x8c8
 	dw 0x400
 	dw pd_dawn_row4a
 
@@ -1872,7 +1876,7 @@ pd_dawn_ptn8 equ pd_dawn + 0x8c6
 	db 0x40
 ; 0x101 bytes
 
-pd_dawn_ptn9 equ pd_dawn + 0x9c7
+pd_dawn_ptn9 equ pd_dawn + 0x9c9
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row76
@@ -2102,7 +2106,7 @@ pd_dawn_ptn9 equ pd_dawn + 0x9c7
 	db 0x40
 ; 0x145 bytes
 
-pd_dawn_ptna equ pd_dawn + 0xb0c
+pd_dawn_ptna equ pd_dawn + 0xb0e
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row76
@@ -2332,7 +2336,7 @@ pd_dawn_ptna equ pd_dawn + 0xb0c
 	db 0x40
 ; 0x145 bytes
 
-pd_dawn_ptnb equ pd_dawn + 0xc51
+pd_dawn_ptnb equ pd_dawn + 0xc53
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row87
@@ -2562,7 +2566,7 @@ pd_dawn_ptnb equ pd_dawn + 0xc51
 	db 0x40
 ; 0x145 bytes
 
-pd_dawn_ptnc equ pd_dawn + 0xd96
+pd_dawn_ptnc equ pd_dawn + 0xd98
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row94
@@ -2792,7 +2796,7 @@ pd_dawn_ptnc equ pd_dawn + 0xd96
 	db 0x40
 ; 0x145 bytes
 
-pd_dawn_ptnd equ pd_dawn + 0xedb
+pd_dawn_ptnd equ pd_dawn + 0xedd
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row96
@@ -3022,7 +3026,7 @@ pd_dawn_ptnd equ pd_dawn + 0xedb
 	db 0x40
 ; 0x145 bytes
 
-pd_dawn_ptne equ pd_dawn + 0x1020
+pd_dawn_ptne equ pd_dawn + 0x1022
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_rowa6
@@ -3252,7 +3256,7 @@ pd_dawn_ptne equ pd_dawn + 0x1020
 	db 0x40
 ; 0x145 bytes
 
-pd_dawn_ptnf equ pd_dawn + 0x1165
+pd_dawn_ptnf equ pd_dawn + 0x1167
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row96
@@ -3482,7 +3486,7 @@ pd_dawn_ptnf equ pd_dawn + 0x1165
 	db 0x40
 ; 0x145 bytes
 
-pd_dawn_ptn10 equ pd_dawn + 0x12aa
+pd_dawn_ptn10 equ pd_dawn + 0x12ac
 	dw 0x480
 	dw 0x0080
 	dw pd_dawn_row76
@@ -3715,7 +3719,7 @@ pd_dawn_ptn10 equ pd_dawn + 0x12aa
 
 
 ;row buffers
-pd_dawn_rows equ pd_dawn + 0x13ef
+pd_dawn_rows equ pd_dawn + 0x13f1
 pd_dawn_row0 equ pd_dawn_rows + 0x0
 	dw 0x1000
 	dw 0x800
@@ -5458,5 +5462,5 @@ pd_dawn_rowad equ pd_dawn_rows + 0xad0
 
 
 ; 0xae0 bytes
-; file_size = 0x1ecf bytes
-; define({pd_dawn_size}, 0x1ecf)
+; file_size = 0x1ed1 bytes
+; define({pd_dawn_size}, 0x1ed1)
