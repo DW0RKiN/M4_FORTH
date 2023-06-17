@@ -9,8 +9,12 @@
 _first_last_ equ $
   endif
 
+;loop
+	dw _first_last__loop
+
+_first_last__start equ _first_last_ + 0x2
 ;sequence
-_first_last__loop equ _first_last_ + 0x0
+_first_last__loop equ _first_last_ + 0x2
 	dw _first_last__ptn1
 	dw _first_last__ptn2
 	dw _first_last__ptn2
@@ -25,9 +29,9 @@ _first_last__loop equ _first_last_ + 0x0
 	dw _first_last__ptn4
 	dw _first_last__ptn6
 	dw 0
-; 0x1c bytes
+; 0x1e bytes
 
-_first_last__ptn0 equ _first_last_ + 0x1c
+_first_last__ptn0 equ _first_last_ + 0x1e
 	dw 0x404
 	dw 0x0080
 	dw _first_last__row0
@@ -240,7 +244,7 @@ _first_last__ptn0 equ _first_last_ + 0x1c
 	db 0x40
 ; 0x123 bytes
 
-_first_last__ptn1 equ _first_last_ + 0x13f
+_first_last__ptn1 equ _first_last_ + 0x141
 	dw 0x400
 	dw _first_last__row38
 
@@ -452,7 +456,7 @@ _first_last__ptn1 equ _first_last_ + 0x13f
 	db 0x40
 ; 0x121 bytes
 
-_first_last__ptn2 equ _first_last_ + 0x260
+_first_last__ptn2 equ _first_last_ + 0x262
 	dw 0x404
 	dw 0x0080
 	dw _first_last__row47
@@ -665,7 +669,7 @@ _first_last__ptn2 equ _first_last_ + 0x260
 	db 0x40
 ; 0x123 bytes
 
-_first_last__ptn3 equ _first_last_ + 0x383
+_first_last__ptn3 equ _first_last_ + 0x385
 	dw 0x400
 	dw _first_last__row67
 
@@ -861,7 +865,7 @@ _first_last__ptn3 equ _first_last_ + 0x383
 	db 0x40
 ; 0x101 bytes
 
-_first_last__ptn4 equ _first_last_ + 0x484
+_first_last__ptn4 equ _first_last_ + 0x486
 	dw 0x400
 	dw _first_last__row9b
 
@@ -1057,7 +1061,7 @@ _first_last__ptn4 equ _first_last_ + 0x484
 	db 0x40
 ; 0x101 bytes
 
-_first_last__ptn5 equ _first_last_ + 0x585
+_first_last__ptn5 equ _first_last_ + 0x587
 	dw 0x404
 	dw 0x0080
 	dw _first_last__rowdb
@@ -1270,7 +1274,7 @@ _first_last__ptn5 equ _first_last_ + 0x585
 	db 0x40
 ; 0x123 bytes
 
-_first_last__ptn6 equ _first_last_ + 0x6a8
+_first_last__ptn6 equ _first_last_ + 0x6aa
 	dw 0x400
 	dw _first_last__row9b
 
@@ -1466,7 +1470,7 @@ _first_last__ptn6 equ _first_last_ + 0x6a8
 	db 0x40
 ; 0x101 bytes
 
-_first_last__ptn7 equ _first_last_ + 0x7a9
+_first_last__ptn7 equ _first_last_ + 0x7ab
 	dw 0x404
 	dw 0x0080
 	dw _first_last__row125
@@ -1689,7 +1693,7 @@ _first_last__ptn7 equ _first_last_ + 0x7a9
 
 
 ;row buffers
-_first_last__rows equ _first_last_ + 0x8da
+_first_last__rows equ _first_last_ + 0x8dc
 _first_last__row0 equ _first_last__rows + 0x0
 	dw 0x800
 	dw 0x2000
@@ -4892,5 +4896,5 @@ _first_last__row13f equ _first_last__rows + 0x13f0
 
 
 ; 0x1400 bytes
-; file_size = 0x1cda bytes
-; define({_first_last__size}, 0x1cda)
+; file_size = 0x1cdc bytes
+; define({_first_last__size}, 0x1cdc)
