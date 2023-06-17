@@ -170,7 +170,8 @@ __{}__{}define({__PSIZE_}$2,eval($2_size)){}dnl
 __{}__{}__ASM_TOKEN_CREATE(__file_$2){}dnl
 __{}__{}pushdef({LAST_HERE_ADD},__PSIZE_$2)dnl
 __{}__{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE)
-__{}__{}__{}include({$1$2$3})){}dnl
+__{}__{}__{}    include {$1$2$3}
+__{}__{}__{}                        ;format({%-11s}, __PSIZE_$2:0)__INFO){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -211,7 +212,7 @@ __{}__{}__ASM_TOKEN_CREATE(__file_$2){}dnl
 __{}__{}pushdef({LAST_HERE_ADD},__PSIZE_$2)dnl
 __{}__{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE)
 __{}__{}__{}    incbin {$1$2$3}
-__{}__{}__{}                        ; __PSIZE_$2:0){}dnl
+__{}__{}__{}                        ;format({%-11s}, __PSIZE_$2:0)__INFO){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -720,7 +721,7 @@ __{}format({%-24s},{});           __INFO{}dnl
 __{}pushdef({LAST_HERE_NAME},$1)dnl
 __{}pushdef({LAST_HERE_ADD},0)dnl
 __{}__ADD_SPEC_VARIABLE({
-}format({%-26s},{{$1:}});           __INFO){}dnl
+}format({%-36s},format({%-26s},{{$1:}});)__INFO){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
