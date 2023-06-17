@@ -2499,10 +2499,15 @@ dnl
 dnl
 dnl # ( -- )
 define({PACKFILE_UNPACK_BUFFERPLAY},{dnl
-__{}ifelse(eval($#<3),1,{
-__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
-__{}eval($#>3),1,{
+__{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
+__{}ifelse(eval($#<4),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,dest_addr)},
+__{}eval($#>4),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__PSIZE_$2,{},{
+__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
+__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{
+})},
 __{}{
 __{}__{}__ADD_TOKEN({__TOKEN_PACKFILE_UNPACK_BUFFERPLAY},{packfile($1$2$3) unpack bufferplay},$@){}dnl
 __{}}){}dnl
@@ -2510,19 +2515,22 @@ __{}}){}dnl
 dnl
 define({__ASM_TOKEN_PACKFILE_UNPACK_BUFFERPLAY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(eval($#<3),1,{
-__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
-__{}eval($#>3),1,{
+__{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
+__{}ifelse(eval($#<4),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,dest_addr)},
+__{}eval($#>4),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__PSIZE_$2,{},{
+__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
+__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{
+})},
 __{}{dnl
 __{}__{}define({USE_PLAY},0){}dnl
-__{}__{}__def({USE_INCFILE}){}dnl
-__{}__{}pushdef({__INCLUDE_BIN_FILE_FULLNAME},M4PATH{{$1$2$3}}){}dnl
-__{}__{}pushdef({__INCLUDE_BIN_FILE_NAME},{{$2}})
-__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}__ASM_TOKEN_VARIABLEBINFILE($1,$2,$3)
+__{}__{}    push DE             ; 1:11      __INFO      packed size: __PSIZE_$2
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, format({%-11s},__file_$2); 3:10      __INFO    from 
-__{}__{}    ld   DE, format({%-11s},__BUFFER-2); 3:10      __INFO    to{}dnl
+__{}__{}    ld   DE, format({%-11s},$4-2); 3:10      __INFO    to{}dnl
 __{}__{}ifelse(dnl
 __{}__{}$3,.lzm,{
 __{}__{}__{}__def({USE_LZM}){}dnl
@@ -2535,10 +2543,7 @@ __{}__{}__{}__def({USE_ZX0}){}dnl
 __{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO},
 __{}__{}{
 __{}__{}__{}    call DEPACK         ; 3:17      __INFO})
-__{}__{}define({__PSIZE_$2},{__FILE_SIZE(M4PATH{$1$2$3})}){}dnl
-__{}__{}
-__{}__{}                        ;           __INFO      packed size: __PSIZE_$2
-__{}__{}    ld   HL, format({%-11s},__BUFFER-2); 3:10      __INFO
+__{}__{}    ld   HL, format({%-11s},$4-2); 3:10      __INFO
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld    D,(HL)        ; 1:7       __INFO      DE = addr loop
