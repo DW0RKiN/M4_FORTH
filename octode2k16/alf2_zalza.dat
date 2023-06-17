@@ -9,16 +9,20 @@
 alf2_zalza equ $
   endif
 
+;loop
+	dw alf2_zalza_loop
+
+alf2_zalza_start equ alf2_zalza + 0x2
 ;sequence
-alf2_zalza_loop equ alf2_zalza + 0x0
+alf2_zalza_loop equ alf2_zalza + 0x2
 	dw alf2_zalza_ptn0
 	dw alf2_zalza_ptn1
 	dw alf2_zalza_ptn2
 	dw alf2_zalza_ptn3
 	dw 0
-; 0xa bytes
+; 0xc bytes
 
-alf2_zalza_ptn0 equ alf2_zalza + 0xa
+alf2_zalza_ptn0 equ alf2_zalza + 0xc
 	dw 0x480
 	dw 0x0020
 	dw alf2_zalza_row0
@@ -263,7 +267,7 @@ alf2_zalza_ptn0 equ alf2_zalza + 0xa
 	db 0x40
 ; 0x163 bytes
 
-alf2_zalza_ptn1 equ alf2_zalza + 0x16d
+alf2_zalza_ptn1 equ alf2_zalza + 0x16f
 	dw 0x480
 	dw 0x0020
 	dw alf2_zalza_row3c
@@ -509,7 +513,7 @@ alf2_zalza_ptn1 equ alf2_zalza + 0x16d
 	db 0x40
 ; 0x165 bytes
 
-alf2_zalza_ptn2 equ alf2_zalza + 0x2d2
+alf2_zalza_ptn2 equ alf2_zalza + 0x2d4
 	dw 0x480
 	dw 0x0054
 	dw alf2_zalza_row63
@@ -763,7 +767,7 @@ alf2_zalza_ptn2 equ alf2_zalza + 0x2d2
 	db 0x40
 ; 0x175 bytes
 
-alf2_zalza_ptn3 equ alf2_zalza + 0x447
+alf2_zalza_ptn3 equ alf2_zalza + 0x449
 	dw 0x480
 	dw 0x0020
 	dw alf2_zalza_row7a
@@ -1019,7 +1023,7 @@ alf2_zalza_ptn3 equ alf2_zalza + 0x447
 
 
 ;row buffers
-alf2_zalza_rows equ alf2_zalza + 0x5ba
+alf2_zalza_rows equ alf2_zalza + 0x5bc
 alf2_zalza_row0 equ alf2_zalza_rows + 0x0
 	dw 0x0
 	dw 0x17f9
@@ -2482,5 +2486,5 @@ alf2_zalza_row91 equ alf2_zalza_rows + 0x910
 
 
 ; 0x920 bytes
-; file_size = 0xeda bytes
-; define({alf2_zalza_size}, 0xeda)
+; file_size = 0xedc bytes
+; define({alf2_zalza_size}, 0xedc)
