@@ -13,6 +13,11 @@ define({__BYTE_PRICE},4){}dnl
 dnl
 dnl
 dnl
+dnl # __FILE_SIZE(../M4/xxx/filename.abc) --> 123 (bytes)
+define({__FILE_SIZE},{esyscmd(stat -c%s "M4PATH{$1}")}){}dnl
+dnl
+dnl
+dnl
 define({__PUTCHAR_A},{dnl
 __{}ifdef({USE_FONT_5x8_CALL},{dnl
 __{}__{}define({__BYTES},3){}dnl
