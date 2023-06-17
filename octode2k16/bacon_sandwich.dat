@@ -9,8 +9,12 @@
 bacon_sandwich equ $
   endif
 
+;loop
+	dw bacon_sandwich_loop
+
+bacon_sandwich_start equ bacon_sandwich + 0x2
 ;sequence
-bacon_sandwich_loop equ bacon_sandwich + 0x0
+bacon_sandwich_loop equ bacon_sandwich + 0x2
 	dw bacon_sandwich_ptn2
 	dw bacon_sandwich_ptn5
 	dw bacon_sandwich_ptn4
@@ -30,9 +34,9 @@ bacon_sandwich_loop equ bacon_sandwich + 0x0
 	dw bacon_sandwich_ptn0
 	dw bacon_sandwich_ptn1
 	dw 0
-; 0x26 bytes
+; 0x28 bytes
 
-bacon_sandwich_ptn0 equ bacon_sandwich + 0x26
+bacon_sandwich_ptn0 equ bacon_sandwich + 0x28
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row0
@@ -260,7 +264,7 @@ bacon_sandwich_ptn0 equ bacon_sandwich + 0x26
 	db 0x40
 ; 0x141 bytes
 
-bacon_sandwich_ptn1 equ bacon_sandwich + 0x167
+bacon_sandwich_ptn1 equ bacon_sandwich + 0x169
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row17
@@ -488,7 +492,7 @@ bacon_sandwich_ptn1 equ bacon_sandwich + 0x167
 	db 0x40
 ; 0x141 bytes
 
-bacon_sandwich_ptn2 equ bacon_sandwich + 0x2a8
+bacon_sandwich_ptn2 equ bacon_sandwich + 0x2aa
 	dw 0x300
 	dw bacon_sandwich_row2a
 
@@ -684,7 +688,7 @@ bacon_sandwich_ptn2 equ bacon_sandwich + 0x2a8
 	db 0x40
 ; 0x101 bytes
 
-bacon_sandwich_ptn3 equ bacon_sandwich + 0x3a9
+bacon_sandwich_ptn3 equ bacon_sandwich + 0x3ab
 	dw 0x300
 	dw bacon_sandwich_row3b
 
@@ -888,7 +892,7 @@ bacon_sandwich_ptn3 equ bacon_sandwich + 0x3a9
 	db 0x40
 ; 0x111 bytes
 
-bacon_sandwich_ptn4 equ bacon_sandwich + 0x4ba
+bacon_sandwich_ptn4 equ bacon_sandwich + 0x4bc
 	dw 0x300
 	dw bacon_sandwich_row4b
 
@@ -1084,7 +1088,7 @@ bacon_sandwich_ptn4 equ bacon_sandwich + 0x4ba
 	db 0x40
 ; 0x101 bytes
 
-bacon_sandwich_ptn5 equ bacon_sandwich + 0x5bb
+bacon_sandwich_ptn5 equ bacon_sandwich + 0x5bd
 	dw 0x300
 	dw bacon_sandwich_row5c
 
@@ -1280,7 +1284,7 @@ bacon_sandwich_ptn5 equ bacon_sandwich + 0x5bb
 	db 0x40
 ; 0x101 bytes
 
-bacon_sandwich_ptn6 equ bacon_sandwich + 0x6bc
+bacon_sandwich_ptn6 equ bacon_sandwich + 0x6be
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row1
@@ -1508,7 +1512,7 @@ bacon_sandwich_ptn6 equ bacon_sandwich + 0x6bc
 	db 0x40
 ; 0x141 bytes
 
-bacon_sandwich_ptn7 equ bacon_sandwich + 0x7fd
+bacon_sandwich_ptn7 equ bacon_sandwich + 0x7ff
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row17
@@ -1737,7 +1741,7 @@ bacon_sandwich_ptn7 equ bacon_sandwich + 0x7fd
 	db 0x40
 ; 0x143 bytes
 
-bacon_sandwich_ptn8 equ bacon_sandwich + 0x940
+bacon_sandwich_ptn8 equ bacon_sandwich + 0x942
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row2
@@ -1965,7 +1969,7 @@ bacon_sandwich_ptn8 equ bacon_sandwich + 0x940
 	db 0x40
 ; 0x141 bytes
 
-bacon_sandwich_ptn9 equ bacon_sandwich + 0xa81
+bacon_sandwich_ptn9 equ bacon_sandwich + 0xa83
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row73
@@ -2194,7 +2198,7 @@ bacon_sandwich_ptn9 equ bacon_sandwich + 0xa81
 	db 0x40
 ; 0x143 bytes
 
-bacon_sandwich_ptna equ bacon_sandwich + 0xbc4
+bacon_sandwich_ptna equ bacon_sandwich + 0xbc6
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row2
@@ -2422,7 +2426,7 @@ bacon_sandwich_ptna equ bacon_sandwich + 0xbc4
 	db 0x40
 ; 0x141 bytes
 
-bacon_sandwich_ptnb equ bacon_sandwich + 0xd05
+bacon_sandwich_ptnb equ bacon_sandwich + 0xd07
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row7a
@@ -2651,7 +2655,7 @@ bacon_sandwich_ptnb equ bacon_sandwich + 0xd05
 	db 0x40
 ; 0x143 bytes
 
-bacon_sandwich_ptnc equ bacon_sandwich + 0xe48
+bacon_sandwich_ptnc equ bacon_sandwich + 0xe4a
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_row8c
@@ -2879,7 +2883,7 @@ bacon_sandwich_ptnc equ bacon_sandwich + 0xe48
 	db 0x40
 ; 0x141 bytes
 
-bacon_sandwich_ptnd equ bacon_sandwich + 0xf89
+bacon_sandwich_ptnd equ bacon_sandwich + 0xf8b
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_rowa3
@@ -3108,7 +3112,7 @@ bacon_sandwich_ptnd equ bacon_sandwich + 0xf89
 	db 0x40
 ; 0x143 bytes
 
-bacon_sandwich_ptne equ bacon_sandwich + 0x10cc
+bacon_sandwich_ptne equ bacon_sandwich + 0x10ce
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_rowb3
@@ -3336,7 +3340,7 @@ bacon_sandwich_ptne equ bacon_sandwich + 0x10cc
 	db 0x40
 ; 0x141 bytes
 
-bacon_sandwich_ptnf equ bacon_sandwich + 0x120d
+bacon_sandwich_ptnf equ bacon_sandwich + 0x120f
 	dw 0x304
 	dw 0x0080
 	dw bacon_sandwich_rowbb
@@ -3571,7 +3575,7 @@ bacon_sandwich_ptnf equ bacon_sandwich + 0x120d
 
 
 ;row buffers
-bacon_sandwich_rows equ bacon_sandwich + 0x1356
+bacon_sandwich_rows equ bacon_sandwich + 0x1358
 bacon_sandwich_row0 equ bacon_sandwich_rows + 0x0
 	dw 0x0
 	dw 0x557
@@ -5564,5 +5568,5 @@ bacon_sandwich_rowc6 equ bacon_sandwich_rows + 0xc60
 
 
 ; 0xc70 bytes
-; file_size = 0x1fc6 bytes
-; define({bacon_sandwich_size}, 0x1fc6)
+; file_size = 0x1fc8 bytes
+; define({bacon_sandwich_size}, 0x1fc8)
