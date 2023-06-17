@@ -2449,45 +2449,22 @@ __{}__{}$0}){}dnl
 dnl
 dnl
 dnl
-dnl # ( -- )
-define({MUSIC},{dnl
-__{}ifelse(0,1,{errprint({$0}($@){
-})}){}dnl
-__{}define({$0__TMP},sinclude({$1$2$3})){}dnl
-__{}ifelse(eval($#<3),1,{
-__{}__{}  .error {$0}($@): Missing parameters! Need variablefile(path,name,.suffix)},
-__{}eval($#>3),1,{
+dnl # ( addr -- )
+define({PLAY},{dnl
+__{}ifelse(eval($#>0),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}ifdef({$2_size},1,0),0,{
-__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}dnl
-__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{
-})},
 __{}{dnl
-__{}__{}__ADD_TOKEN({__TOKEN_MUSIC},{music($1,$2,$3)},$@){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PLAY},{play},$@){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_MUSIC},{dnl
-__{}define({$0__TMP},sinclude({$1$2$3})){}dnl
-__{}ifelse(eval($#<3),1,{
-__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
-__{}eval($#>3),1,{
+define({__ASM_TOKEN_PLAY},{dnl
+__{}ifelse(eval($#>0),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}ifdef({$2_size},1,0),0,{
-__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}dnl
-__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{
-})},
 __{}{dnl
 __{}__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__{}__def({USE_PLAY},0){}dnl
-__{}__{}__def({USE_INCFILE}){}dnl
-__{}__{}define({$0__TMP},include(M4PATH{}$1{}$2{}$3)){}dnl
-__{}__{}pushdef({__INCLUDE_TXT_FILE_FULLNAME},M4PATH{{$1$2$3}}){}dnl
-__{}__{}pushdef({__INCLUDE_TXT_FILE_NAME},{{$2}})
-__{}__{}; eval($2_size)
-__{}__{}    push DE             ; 1:11      __INFO   ( -- )
-__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}    ld   HL, format({%-11s},$2); 3:10      __INFO      HL = addr data
+__{}__{}__def({USE_OCTODE})
+__{}__{}    push DE             ; 1:11      __INFO   ( addr -- )
 __{}__{}    call PLAY_OCTODE    ; 3:17      __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO{}dnl
@@ -2497,7 +2474,37 @@ dnl
 dnl
 dnl
 dnl # ( -- )
-define({PACKFILE_UNPACK_BUFFERPLAY},{dnl
+define({PUSH_PLAY},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}($@): Missing parameters! Need {$0}(data_addr)},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUSH_PLAY},{$1 play},$@){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_PLAY},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need {$0}(data_addr)},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__{}__def({USE_OCTODE})
+__{}__{}    push DE             ; 1:11      __INFO   ( -- )
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL, format({%-11s},$1); 3:10      __INFO      HL = addr data
+__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({VARIABLEBINFILE_UNPACK_BUFFERPLAY},{dnl
 __{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
 __{}ifelse(eval($#<4),1,{
 __{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,dest_addr)},
@@ -2508,11 +2515,11 @@ __{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
 __{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{
 })},
 __{}{
-__{}__{}__ADD_TOKEN({__TOKEN_PACKFILE_UNPACK_BUFFERPLAY},{packfile($1,$2,$3) unpack bufferplay},$@){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_VARIABLEBINFILE_UNPACK_BUFFERPLAY},{variablebinfile($1,$2,$3) unpack bufferplay},$@){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PACKFILE_UNPACK_BUFFERPLAY},{dnl
+define({__ASM_TOKEN_VARIABLEBINFILE_UNPACK_BUFFERPLAY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
 __{}ifelse(eval($#<4),1,{
@@ -2524,8 +2531,14 @@ __{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
 __{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{
 })},
 __{}{dnl
-__{}__{}define({USE_PLAY},0){}dnl
-__{}__{}__ASM_TOKEN_VARIABLEBINFILE($1,$2,$3)
+__{}__{}__def({USE_OCTODE}){}dnl
+__{}__{}__def({USE_BUFFERPLAY},$4){}dnl
+__{}__{}__ASM_TOKEN_VARIABLEBINFILE($1,$2,$3){}dnl
+__{}__{}ifdef({BUFFERPLAY_SIZE},{dnl
+__{}__{}__{}ifelse(eval(BUFFERPLAY_SIZE<__PSIZE_$2),1,{dnl
+__{}__{}__{}__{}define({BUFFERPLAY_SIZE},__PSIZE_$2)})},
+__{}__{}{dnl
+__{}__{}__{}define({BUFFERPLAY_SIZE},__PSIZE_$2)})
 __{}__{}    push DE             ; 1:11      __INFO      packed size: __PSIZE_$2
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, format({%-11s},__file_$2); 3:10      __INFO    from 
@@ -2584,9 +2597,8 @@ __{}__{}__ADD_SPEC_VARIABLE({
     .error __file_$2 < 0x8000, music data must be at 0x8000+ address! 
   endif}){}dnl
 __{}__{}__ASM_TOKEN_VARIABLEFILE($@){}dnl
-__{}__{}__def({USE_PLAY},0){}dnl
-__{}__{}format({%-24s},$2 equ __file_$2);           __INFO   ( -- )
-__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}__def({USE_OCTODE})
+__{}__{}    push DE             ; 1:11      __INFO   ( -- )
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, format({%-11s},$2); 3:10      __INFO      HL = addr data
 __{}__{}    call PLAY_OCTODE    ; 3:17      __INFO
@@ -2599,7 +2611,7 @@ dnl
 dnl
 dnl # ( -- )
 define({VARIABLEFILE_BUFFERPLAY},{dnl
-__{}define({$0__TMP},sinclude(M4PATH{}$1{}$2{}$3)){}dnl
+__{}define({$0__TMP},sinclude({$1$2$3})){}dnl
 __{}ifelse(eval($#<3),1,{
 __{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
 __{}eval($#>3),1,{
@@ -2615,7 +2627,7 @@ __{}}){}dnl
 dnl
 define({__ASM_TOKEN_VARIABLEFILE_BUFFERPLAY},{dnl
 __{}__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}define({$0__TMP},sinclude(M4PATH{}$1{}$2{}$3)){}dnl
+__{}define({$0__TMP},sinclude({$1$2$3})){}dnl
 __{}ifelse(eval($#<3),1,{
 __{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
 __{}eval($#>3),1,{
@@ -2625,17 +2637,20 @@ __{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}d
 __{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{
 })},
 __{}{dnl
+__{}__{}__ADD_SPEC_VARIABLE({
+}format({%-20s},$2) EQU BUFFERPLAY){}dnl
 __{}__{}__ASM_TOKEN_VARIABLEFILE($@){}dnl
-__{}__{}ifdef({USE_PLAY},{dnl
-__{}__{}__{}ifelse(eval(USE_PLAY<__PSIZE_$2),1,{dnl
-__{}__{}__{}__{}define({USE_PLAY},__PSIZE_$2)})},
+__{}__{}__def({USE_OCTODE}){}dnl
+__{}__{}__def({USE_BUFFERPLAY}){}dnl
+__{}__{}ifdef({BUFFERPLAY_SIZE},{dnl
+__{}__{}__{}ifelse(eval(BUFFERPLAY_SIZE<__PSIZE_$2),1,{dnl
+__{}__{}__{}__{}define({BUFFERPLAY_SIZE},__PSIZE_$2)})},
 __{}__{}{dnl
-__{}__{}__{}define({USE_PLAY},__PSIZE_$2)})
-__{}__{}__ASM_TOKEN_PUSH3_CMOVE(__file_$2,PLAY_OCTODE_BUFFER,__PSIZE_$2)
-__{}__{}format({%-24s},$2 equ PLAY_OCTODE_BUFFER);           __INFO   ( -- )
+__{}__{}__{}define({BUFFERPLAY_SIZE},__PSIZE_$2)})
+__{}__{}__ASM_TOKEN_PUSH3_CMOVE(__file_$2,BUFFERPLAY,__PSIZE_$2)
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
-__{}__{}    ld   HL, format({%-11s},$2); 3:10      __INFO      HL = addr data
+__{}__{}    ld   HL, BUFFERPLAY ; 3:10     __INFO      HL = addr data
 __{}__{}    call PLAY_OCTODE    ; 3:17      __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO{}dnl
