@@ -190,7 +190,12 @@ I achieved that, except for changing the name "label" to "filename_label", it is
     filename equ $
        endif
        
-    filename_loop equ filename+0x0
+    ; loop  
+          dw filename_loop
+    
+    filename_start equ filename+0x2
+    ; sequence
+    filename_loop equ filename+0x2
           dw filename_ptn0
           dw 0
           
