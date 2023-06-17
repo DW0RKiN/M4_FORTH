@@ -9,12 +9,16 @@
 octode2k16 equ $
   endif
 
+;loop
+	dw octode2k16_loop
+
+octode2k16_start equ octode2k16 + 0x2
 ;sequence
 	dw octode2k16_ptn8
 	dw octode2k16_ptn8
 	dw octode2k16_ptn9
 	dw octode2k16_ptna
-octode2k16_loop equ octode2k16 + 0x8
+octode2k16_loop equ octode2k16 + 0xa
 	dw octode2k16_ptn1
 	dw octode2k16_ptn1
 	dw octode2k16_ptn2
@@ -32,9 +36,9 @@ octode2k16_loop equ octode2k16 + 0x8
 	dw octode2k16_ptnb
 	dw octode2k16_ptne
 	dw 0
-; 0x2a bytes
+; 0x2c bytes
 
-octode2k16_ptn1 equ octode2k16 + 0x2a
+octode2k16_ptn1 equ octode2k16 + 0x2c
 	dw 0x300
 	dw octode2k16_row0
 
@@ -230,7 +234,7 @@ octode2k16_ptn1 equ octode2k16 + 0x2a
 	db 0x40
 ; 0x101 bytes
 
-octode2k16_ptn2 equ octode2k16 + 0x12b
+octode2k16_ptn2 equ octode2k16 + 0x12d
 	dw 0x300
 	dw octode2k16_row15
 
@@ -426,7 +430,7 @@ octode2k16_ptn2 equ octode2k16 + 0x12b
 	db 0x40
 ; 0x101 bytes
 
-octode2k16_ptn3 equ octode2k16 + 0x22c
+octode2k16_ptn3 equ octode2k16 + 0x22e
 	dw 0x300
 	dw octode2k16_row10
 
@@ -622,7 +626,7 @@ octode2k16_ptn3 equ octode2k16 + 0x22c
 	db 0x40
 ; 0x101 bytes
 
-octode2k16_ptn4 equ octode2k16 + 0x32d
+octode2k16_ptn4 equ octode2k16 + 0x32f
 	dw 0x300
 	dw octode2k16_row43
 
@@ -818,7 +822,7 @@ octode2k16_ptn4 equ octode2k16 + 0x32d
 	db 0x40
 ; 0x101 bytes
 
-octode2k16_ptn5 equ octode2k16 + 0x42e
+octode2k16_ptn5 equ octode2k16 + 0x430
 	dw 0x301
 	dw 0x0080
 	dw octode2k16_row57
@@ -1046,7 +1050,7 @@ octode2k16_ptn5 equ octode2k16 + 0x42e
 	db 0x40
 ; 0x141 bytes
 
-octode2k16_ptn6 equ octode2k16 + 0x56f
+octode2k16_ptn6 equ octode2k16 + 0x571
 	dw 0x301
 	dw 0x0080
 	dw octode2k16_row66
@@ -1274,7 +1278,7 @@ octode2k16_ptn6 equ octode2k16 + 0x56f
 	db 0x40
 ; 0x141 bytes
 
-octode2k16_ptn8 equ octode2k16 + 0x6b0
+octode2k16_ptn8 equ octode2k16 + 0x6b2
 	dw 0x300
 	dw octode2k16_row75
 
@@ -1470,7 +1474,7 @@ octode2k16_ptn8 equ octode2k16 + 0x6b0
 	db 0x40
 ; 0x101 bytes
 
-octode2k16_ptn9 equ octode2k16 + 0x7b1
+octode2k16_ptn9 equ octode2k16 + 0x7b3
 	dw 0x300
 	dw octode2k16_row84
 
@@ -1666,7 +1670,7 @@ octode2k16_ptn9 equ octode2k16 + 0x7b1
 	db 0x40
 ; 0x101 bytes
 
-octode2k16_ptna equ octode2k16 + 0x8b2
+octode2k16_ptna equ octode2k16 + 0x8b4
 	dw 0x300
 	dw octode2k16_row84
 
@@ -1870,7 +1874,7 @@ octode2k16_ptna equ octode2k16 + 0x8b2
 	db 0x40
 ; 0x111 bytes
 
-octode2k16_ptnb equ octode2k16 + 0x9c3
+octode2k16_ptnb equ octode2k16 + 0x9c5
 	dw 0x301
 	dw 0x0080
 	dw octode2k16_row8e
@@ -2098,7 +2102,7 @@ octode2k16_ptnb equ octode2k16 + 0x9c3
 	db 0x40
 ; 0x141 bytes
 
-octode2k16_ptnd equ octode2k16 + 0xb04
+octode2k16_ptnd equ octode2k16 + 0xb06
 	dw 0x301
 	dw 0x0080
 	dw octode2k16_row98
@@ -2326,7 +2330,7 @@ octode2k16_ptnd equ octode2k16 + 0xb04
 	db 0x40
 ; 0x141 bytes
 
-octode2k16_ptne equ octode2k16 + 0xc45
+octode2k16_ptne equ octode2k16 + 0xc47
 	dw 0x301
 	dw 0x0080
 	dw octode2k16_row8e
@@ -2557,7 +2561,7 @@ octode2k16_ptne equ octode2k16 + 0xc45
 
 
 ;row buffers
-octode2k16_rows equ octode2k16 + 0xd86
+octode2k16_rows equ octode2k16 + 0xd88
 octode2k16_row0 equ octode2k16_rows + 0x0
 	dw 0x400
 	dw 0x400
@@ -4180,5 +4184,5 @@ octode2k16_rowa1 equ octode2k16_rows + 0xa10
 
 
 ; 0xa20 bytes
-; file_size = 0x17a6 bytes
-; define({octode2k16_size}, 0x17a6)
+; file_size = 0x17a8 bytes
+; define({octode2k16_size}, 0x17a8)
