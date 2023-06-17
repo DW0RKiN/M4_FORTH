@@ -2147,18 +2147,18 @@ ifdef({USE_LZM},{
 ;#          One byte relative offset
 ;# <EndMark> is 0x00
 
-LZM_REP:                ;           lzm_depack      
+LZM_REP:                ;           lzm_depack
     ld    A, E          ; 1:4       lzm_depack      Determine address of source sequence
     sub (HL)            ; 1:7       lzm_depack      DE = destination address
-    inc  HL             ; 1:6       lzm_depack      
-    push HL             ; 1:11      lzm_depack      
+    inc  HL             ; 1:6       lzm_depack
+    push HL             ; 1:11      lzm_depack
     ld    L, A          ; 1:4       lzm_depack
     sbc   A, A          ; 1:4       lzm_depack
     add   A, D          ; 1:4       lzm_depack
     ld    H, A          ; 1:4       lzm_depack
     ldir                ; 2:16/21   lzm_depack      Copy repeated sequence
-    pop	 HL             ; 1:10      lzm_depack      
-;   ...fall down to lzm_depack                        
+    pop	 HL             ; 1:10      lzm_depack
+;   ...fall down to lzm_depack
 LZM_DEPACK:             ;           lzm_depack
     ld    B, 0x00       ; 2:7       lzm_depack      All copied blocks will be no longer than 255 bytes
 LZM_LOOP:               ;           lzm_depack
@@ -2224,12 +2224,12 @@ LZ__DEPREP2:            ;           lz__depack(small)      DE = negative offset
     ldir                ; 2:16/21   lz__depack(small)      Copy sequence
     pop  HL             ; 1:10      lz__depack(small)
                   ;[18:107/95+ldir] lz__depack(small)
-;   ...fall down to lz__depack                        
+;   ...fall down to lz__depack
 ;# Input:
 ;#  HL = address of source packed data
 ;#  DE = address of destination to depack data
 ;# ===========================================
-LZ__DEPACK:             ;           lz__depack(small)   
+LZ__DEPACK:             ;           lz__depack(small)
     xor   A             ; 1:4       lz__depack(small)      reset carry
     ld    B, A          ; 1:4       lz__depack(small)
     or  (HL)            ; 1:7       lz__depack(small)      A = %D??????P; P = packed bit; D = double bit; set sign and zero flag
@@ -2242,7 +2242,7 @@ LZ__DEPACK:             ;           lz__depack(small)
     jp    p, LZ__DEPACK2; 3:10      lz__depack(small)      One byte length
     ld    B, C          ; 1:4       lz__depack(small)
     ld    C,(HL)        ; 1:7       lz__depack(small)      Get low byte of two-byte value
-    inc  HL             ; 1:6       lz__depack(small)    
+    inc  HL             ; 1:6       lz__depack(small)
 LZ__DEPACK2:            ;           lz__depack(small)
     jr    c, LZ__DEPREP ; 2:7/12    lz__depack(small)      If packed block then jump
     ret   z             ; 1:5/11    lz__depack(small)      If zero then end of depacking
@@ -2303,12 +2303,12 @@ LZ__DEPREP3:            ;           lz__depack
     pop  HL             ; 1:10      lz__depack
     inc  HL             ; 1:6       lz__depack
                    ;[19:85/72+ldir] lz__depack
-;   ...fall down to lz__depack                        
+;   ...fall down to lz__depack
 ;# Input:
 ;#  HL = address of source packed data
 ;#  DE = address of destination to depack data
 ;# ===========================================
-LZ__DEPACK:             ;           lz__depack   
+LZ__DEPACK:             ;           lz__depack
     xor   A             ; 1:4       lz__depack      reset carry
     ld    B, A          ; 1:4       lz__depack
     or  (HL)            ; 1:7       lz__depack      A = %D??????P; P = packed bit; D = double bit; set sign and zero flag
@@ -2321,7 +2321,7 @@ LZ__DEPACK:             ;           lz__depack
     jp    p, LZ__DEPACK2; 3:10      lz__depack      One byte length
     ld    B, C          ; 1:4       lz__depack
     ld    C,(HL)        ; 1:7       lz__depack      Get low byte of two-byte value
-    inc  HL             ; 1:6       lz__depack    
+    inc  HL             ; 1:6       lz__depack
 LZ__DEPACK2:            ;           lz__depack
     jr    c, LZ__DEPREP ; 2:7/12    lz__depack      If packed block then jump
     ret   z             ; 1:5/11    lz__depack      If zero then end of depacking
@@ -2341,18 +2341,18 @@ ifdef({USE_ZX0},{
 ;#   DE: destination address (decompressing)
 ;# ----------------------------------------------------------------------------
 
-ZX0_DEPACK:             ;           zx0_depack     
+ZX0_DEPACK:             ;           zx0_depack
     ld   BC, 0xFFFF     ; 3:10      zx0_depack      preserve default offset 1
-    push BC             ; 1:11      zx0_depack     
-    inc  BC             ; 1:6       zx0_depack     
-    ld    A, 0x80       ; 2:7       zx0_depack     
+    push BC             ; 1:11      zx0_depack
+    inc  BC             ; 1:6       zx0_depack
+    ld    A, 0x80       ; 2:7       zx0_depack
 ZX0_LIT:                ;           zx0_depack      literals
     call ZX0_ELIAS      ; 3:17      zx0_depack      obtain length
     ldir                ; 2:16/21   zx0_depack      copy literals
     add   A, A          ; 1:4       zx0_depack      copy from last offset or new offset?
-    jr    c, ZX0_NEW_OFF; 2:7/12    zx0_depack     
+    jr    c, ZX0_NEW_OFF; 2:7/12    zx0_depack
     call ZX0_ELIAS      ; 3:17      zx0_depack      obtain length
-ZX0_COPY:               ;           zx0_depack     
+ZX0_COPY:               ;           zx0_depack
     ex  (SP),HL         ; 1:19      zx0_depack      preserve source, restore offset
     push HL             ; 1:11      zx0_depack      preserve offset
     add  HL, DE         ; 1:11      zx0_depack      calculate destination - offset
@@ -2360,39 +2360,39 @@ ZX0_COPY:               ;           zx0_depack
     pop  HL             ; 1:10      zx0_depack      restore offset
     ex  (SP),HL         ; 1:19      zx0_depack      preserve offset, restore source
     add   A, A          ; 1:4       zx0_depack      copy from literals or new offset?
-    jr   nc, ZX0_LIT    ; 2:7/12    zx0_depack     
+    jr   nc, ZX0_LIT    ; 2:7/12    zx0_depack
 ZX0_NEW_OFF:            ;           zx0_depack      new offset
     pop   BC            ; 1:10      zx0_depack      discard last offset
     ld     C, 0xFE      ; 2:7       zx0_depack      prepare negative offset
     call  ZX0E_LOOP     ; 3:17      zx0_depack      obtain offset MSB
-    inc    C            ; 1:4       zx0_depack     
+    inc    C            ; 1:4       zx0_depack
     ret    z            ; 1:5/11    zx0_depack      check end marker
-    ld     B, C         ; 1:4       zx0_depack     
+    ld     B, C         ; 1:4       zx0_depack
     ld     C,(HL)       ; 1:7       zx0_depack      obtain offset LSB
-    inc   HL            ; 1:6       zx0_depack     
+    inc   HL            ; 1:6       zx0_depack
     rr     B            ; 2:8       zx0_depack      last offset bit becomes first length bit
-    rr     C            ; 2:8       zx0_depack     
+    rr     C            ; 2:8       zx0_depack
     push  BC            ; 1:11      zx0_depack      preserve new offset
     ld    BC, 0x0001    ; 3:10      zx0_depack      obtain length
-    call  nc, ZX0E_BT   ; 3:10/17   zx0_depack     
-    inc   BC            ; 1:6       zx0_depack     
-    jr    ZX0_COPY      ; 2:12      zx0_depack     
-                                    zx0_depack     
+    call  nc, ZX0E_BT   ; 3:10/17   zx0_depack
+    inc   BC            ; 1:6       zx0_depack
+    jr    ZX0_COPY      ; 2:12      zx0_depack
+
 ZX0_ELIAS:              ;           zx0_depack      elias
     inc    C            ; 1:4       zx0_depack      interlaced Elias gamma coding
-ZX0E_LOOP:              ;           zx0_depack     
-    add    A, A         ; 1:4       zx0_depack     
-    jr    nz, ZX0E_SKIP ; 2:7/12    zx0_depack     
+ZX0E_LOOP:              ;           zx0_depack
+    add    A, A         ; 1:4       zx0_depack
+    jr    nz, ZX0E_SKIP ; 2:7/12    zx0_depack
     ld     A,(HL)       ; 1:7       zx0_depack      load another group of 8 bits
-    inc   HL            ; 1:6       zx0_depack     
-    rla                 ; 1:4       zx0_depack     
-ZX0E_SKIP:              ;           zx0_depack     
-    ret    c            ; 1:5/11    zx0_depack     
+    inc   HL            ; 1:6       zx0_depack
+    rla                 ; 1:4       zx0_depack
+ZX0E_SKIP:              ;           zx0_depack
+    ret    c            ; 1:5/11    zx0_depack
 ZX0E_BT:                ;           zx0_depack      backtrack
-    add    A, A         ; 1:4       zx0_depack     
-    rl     C            ; 2:8       zx0_depack     
-    rl     B            ; 2:8       zx0_depack     
-    jr    ZX0E_LOOP     ; 2:12      zx0_depack     
+    add    A, A         ; 1:4       zx0_depack
+    rl     C            ; 2:8       zx0_depack
+    rl     B            ; 2:8       zx0_depack
+    jr    ZX0E_LOOP     ; 2:12      zx0_depack
 ; -----------------------------------------------------------------------------}){}dnl
 dnl
 dnl
@@ -2974,7 +2974,7 @@ __{}    pop  HL             ; 1:10      putchar})
 dnl
 dnl
 dnl
-ifdef({USE_PLAY},{
+ifdef({USE_OCTODE},{
 ;# ============================================================================
 ;# Input: HL = data address
 ;# Pollutes: AF, HL, DE
@@ -3133,58 +3133,58 @@ __INCLUDE_BIN_FILE{}dnl
 dnl
 dnl
 dnl
-ifdef({USE_PLAY},{
-;==============================================================================
-include(M4PATH{}/../octode2k16/octode2k16.asm)
-;==============================================================================
-PLAY_OCTODE_BUFFER:
-  if (PLAY_OCTODE_BUFFER+USE_PLAY<PLAY_OCTODE_BUFFER)
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x8000)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x8000+ bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x7000)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x7000 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x6000)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x6000 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x5000)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x5000 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x4000)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x4000 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x3000)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0x3000 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x2000)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 8193..12288 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x1000)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 4097..8192 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x0800)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 2049..4096 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x0400)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 1025..2048 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x0200)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 513..1024 bytes
-    endif
-    if (PLAY_OCTODE_BUFFER+USE_PLAY>0x0100)
-        .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 257..512 bytes
-    endif
-    .error Buffer PLAY_OCTODE_BUFFER overflow 64k! over 0..256 bytes
-  endif
-  if (PLAY_OCTODE_BUFFER+USE_PLAY>0xFF00)
-    .warning Buffer PLAY_OCTODE_BUFFER rewrite 0xFF00+ address!
-  endif
+ifdef({USE_OCTODE},{
+;# ============================================================================
+;# Octode 2k16 play routine
+include M4PATH{}../octode2k16/octode2k16.asm
 }){}dnl
 dnl
 dnl
 dnl
-ifelse(ALL_VARIABLE,{},,{
+ifdef({USE_BUFFERPLAY},{
+;# ============================================================================
+__{}ifelse(USE_BUFFERPLAY,,,{dnl
+__{}__{}    ORG USE_BUFFERPLAY})
+__{}__{}BUFFERPLAY:{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({BUFFERPLAY_SIZE},{
+BUFFERPLAY_END       equ   BUFFERPLAY+BUFFERPLAY_SIZE
+  if (BUFFERPLAY_END<BUFFERPLAY)
+    if (BUFFERPLAY_END>=0x8000)
+        .error Buffer overflow 64k! over 32768..65535 bytes
+    endif
+    if (BUFFERPLAY_END>=0x4000)
+        .error Buffer overflow 64k! over 16384..32767 bytes
+    endif
+    if (BUFFERPLAY_END>=0x2000)
+        .error Buffer overflow 64k! over 8192..16383 bytes
+    endif
+    if (BUFFERPLAY_END>=0x1000)
+        .error Buffer overflow 64k! over 4096..8191 bytes
+    endif
+    if (BUFFERPLAY_END>=0x0800)
+        .error Buffer overflow 64k! over 2048..4095 bytes
+    endif
+    if (BUFFERPLAY_END>=0x0400)
+        .error Buffer overflow 64k! over 1024..2047 bytes
+    endif
+    if (BUFFERPLAY_END>=0x0200)
+        .error Buffer overflow 64k! over 512..1023 bytes
+    endif
+    if (BUFFERPLAY_END>=0x0100)
+        .error Buffer overflow 64k! over 256..511 bytes
+    endif
+    .error Buffer overflow 64k! over 0..255 bytes
+  endif
+  if (BUFFERPLAY_END>0xFF00)
+    .warning Buffer BUFFERPLAY rewrite 0xFF00+ address!
+  endif
+},
+{ifelse(ALL_VARIABLE,{},,{
+;# ============================================================================
   if ($<0x0100)
     .error Overflow 64k! over 0..255 bytes
   endif
@@ -3211,7 +3211,9 @@ ifelse(ALL_VARIABLE,{},,{
   endif
   if ($>0xFF00)
     .warning Data ends at 0xFF00+ address!
-  endif}){}dnl
+  endif{}dnl
+}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
