@@ -13,8 +13,13 @@ define({__BYTE_PRICE},4){}dnl
 dnl
 dnl
 dnl
-dnl # __FILE_SIZE(../M4/xxx/filename.abc) --> 123 (bytes)
-define({__FILE_SIZE},{esyscmd(stat -c%s "M4PATH{$1}")}){}dnl
+dnl # __FILE_SIZE(../M4/xxx/filename.abc) --> 123 (bytes or empty)
+dnl # problem s posix?
+define({__FILE_SIZE},{esyscmd(stat -c%s "M4PATH$1" 2>/dev/null| tr -d '\n\t\r')}){}dnl
+dnl # problem s posix?
+define({__FILE_SIZE},{esyscmd(find "M4PATH$1" -printf "%s" 2>/dev/null)}){}dnl
+dnl # problem s posix?
+define({__FILE_SIZE},{esyscmd(wc -c M4PATH$1 2>/dev/null | cut -f 1 -d " "| tr -d '\n\t\r')}){}dnl
 dnl
 dnl
 dnl
