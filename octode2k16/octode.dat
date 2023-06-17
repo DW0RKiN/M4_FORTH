@@ -9,16 +9,20 @@
 octode equ $
   endif
 
+;loop
+	dw octode_loop
+
+octode_start equ octode + 0x2
 ;sequence
-octode_loop equ octode + 0x0
+octode_loop equ octode + 0x2
 	dw octode_ptn0
 	dw octode_ptn0
 	dw octode_ptn1
 	dw octode_ptn1
 	dw 0
-; 0xa bytes
+; 0xc bytes
 
-octode_ptn0 equ octode + 0xa
+octode_ptn0 equ octode + 0xc
 	dw 0x304
 	dw 0x0080
 	dw octode_row0
@@ -235,7 +239,7 @@ octode_ptn0 equ octode + 0xa
 	db 0x40
 ; 0x12b bytes
 
-octode_ptn1 equ octode + 0x135
+octode_ptn1 equ octode + 0x137
 	dw 0x304
 	dw 0x0080
 	dw octode_row2
@@ -456,7 +460,7 @@ octode_ptn1 equ octode + 0x135
 
 
 ;row buffers
-octode_rows equ octode + 0x262
+octode_rows equ octode + 0x264
 octode_row0 equ octode_rows + 0x0
 	dw 0x400
 	dw 0x3f6
@@ -719,5 +723,5 @@ octode_row19 equ octode_rows + 0x190
 
 
 ; 0x1a0 bytes
-; file_size = 0x402 bytes
-; define({octode_size}, 0x402)
+; file_size = 0x404 bytes
+; define({octode_size}, 0x404)
