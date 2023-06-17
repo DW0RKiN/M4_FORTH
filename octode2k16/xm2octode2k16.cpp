@@ -385,10 +385,15 @@ int main(int argc, char *argv[]){
 	ASMFILE << ";   macro file_size defined" << endl << endl;
 	
 	ASMFILE << "  ifndef " << fileName << endl << fileName << " equ $" << endl << "  endif" << endl << endl;
-	ASMFILE << ";sequence" << endl;
+	
+	ASMFILE << ";loop" << endl;
+	ASMFILE << "\tdw " << fileName << "_loop" << endl << endl;
+	block_size = 2;
 	
 	//print sequence
-	block_size = 0;
+	ASMFILE << fileName << "_start equ " << fileName << " + 0x" << block_size << endl;
+	ASMFILE << ";sequence" << endl;
+
 	for (int i = 0; i < songlength; i++) {
 		if (i == loopPoint) ASMFILE << fileName << "_loop equ " << fileName << " + 0x" << block_size << endl;
 		ASMFILE << "\tdw " << fileName << "_ptn" << hex << +sequence[i] << endl;
