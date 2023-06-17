@@ -9,8 +9,12 @@
 algar_thegermansroom equ $
   endif
 
+;loop
+	dw algar_thegermansroom_loop
+
+algar_thegermansroom_start equ algar_thegermansroom + 0x2
 ;sequence
-algar_thegermansroom_loop equ algar_thegermansroom + 0x0
+algar_thegermansroom_loop equ algar_thegermansroom + 0x2
 	dw algar_thegermansroom_ptn0
 	dw algar_thegermansroom_ptn1
 	dw algar_thegermansroom_ptn2
@@ -41,9 +45,9 @@ algar_thegermansroom_loop equ algar_thegermansroom + 0x0
 	dw algar_thegermansroom_ptn17
 	dw algar_thegermansroom_ptn18
 	dw 0
-; 0x3c bytes
+; 0x3e bytes
 
-algar_thegermansroom_ptn0 equ algar_thegermansroom + 0x3c
+algar_thegermansroom_ptn0 equ algar_thegermansroom + 0x3e
 	dw 0x300
 	dw algar_thegermansroom_row0
 
@@ -239,7 +243,7 @@ algar_thegermansroom_ptn0 equ algar_thegermansroom + 0x3c
 	db 0x40
 ; 0x101 bytes
 
-algar_thegermansroom_ptn1 equ algar_thegermansroom + 0x13d
+algar_thegermansroom_ptn1 equ algar_thegermansroom + 0x13f
 	dw 0x300
 	dw algar_thegermansroom_row1
 
@@ -435,7 +439,7 @@ algar_thegermansroom_ptn1 equ algar_thegermansroom + 0x13d
 	db 0x40
 ; 0x101 bytes
 
-algar_thegermansroom_ptn2 equ algar_thegermansroom + 0x23e
+algar_thegermansroom_ptn2 equ algar_thegermansroom + 0x240
 	dw 0x300
 	dw algar_thegermansroom_row5
 
@@ -631,7 +635,7 @@ algar_thegermansroom_ptn2 equ algar_thegermansroom + 0x23e
 	db 0x40
 ; 0x101 bytes
 
-algar_thegermansroom_ptn3 equ algar_thegermansroom + 0x33f
+algar_thegermansroom_ptn3 equ algar_thegermansroom + 0x341
 	dw 0x300
 	dw algar_thegermansroom_row5
 
@@ -831,7 +835,7 @@ algar_thegermansroom_ptn3 equ algar_thegermansroom + 0x33f
 	db 0x40
 ; 0x109 bytes
 
-algar_thegermansroom_ptn4 equ algar_thegermansroom + 0x448
+algar_thegermansroom_ptn4 equ algar_thegermansroom + 0x44a
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_rowc
@@ -1059,7 +1063,7 @@ algar_thegermansroom_ptn4 equ algar_thegermansroom + 0x448
 	db 0x40
 ; 0x141 bytes
 
-algar_thegermansroom_ptn5 equ algar_thegermansroom + 0x589
+algar_thegermansroom_ptn5 equ algar_thegermansroom + 0x58b
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row22
@@ -1287,7 +1291,7 @@ algar_thegermansroom_ptn5 equ algar_thegermansroom + 0x589
 	db 0x40
 ; 0x141 bytes
 
-algar_thegermansroom_ptn6 equ algar_thegermansroom + 0x6ca
+algar_thegermansroom_ptn6 equ algar_thegermansroom + 0x6cc
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_rowc
@@ -1515,7 +1519,7 @@ algar_thegermansroom_ptn6 equ algar_thegermansroom + 0x6ca
 	db 0x40
 ; 0x141 bytes
 
-algar_thegermansroom_ptn7 equ algar_thegermansroom + 0x80b
+algar_thegermansroom_ptn7 equ algar_thegermansroom + 0x80d
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row45
@@ -1743,7 +1747,7 @@ algar_thegermansroom_ptn7 equ algar_thegermansroom + 0x80b
 	db 0x40
 ; 0x141 bytes
 
-algar_thegermansroom_ptn8 equ algar_thegermansroom + 0x94c
+algar_thegermansroom_ptn8 equ algar_thegermansroom + 0x94e
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row60
@@ -1971,7 +1975,7 @@ algar_thegermansroom_ptn8 equ algar_thegermansroom + 0x94c
 	db 0x40
 ; 0x141 bytes
 
-algar_thegermansroom_ptn9 equ algar_thegermansroom + 0xa8d
+algar_thegermansroom_ptn9 equ algar_thegermansroom + 0xa8f
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row7a
@@ -2199,7 +2203,7 @@ algar_thegermansroom_ptn9 equ algar_thegermansroom + 0xa8d
 	db 0x40
 ; 0x141 bytes
 
-algar_thegermansroom_ptna equ algar_thegermansroom + 0xbce
+algar_thegermansroom_ptna equ algar_thegermansroom + 0xbd0
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row60
@@ -2427,7 +2431,7 @@ algar_thegermansroom_ptna equ algar_thegermansroom + 0xbce
 	db 0x40
 ; 0x141 bytes
 
-algar_thegermansroom_ptnb equ algar_thegermansroom + 0xd0f
+algar_thegermansroom_ptnb equ algar_thegermansroom + 0xd11
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_rowa6
@@ -2648,7 +2652,7 @@ algar_thegermansroom_ptnb equ algar_thegermansroom + 0xd0f
 	db 0x40
 ; 0x133 bytes
 
-algar_thegermansroom_ptnc equ algar_thegermansroom + 0xe42
+algar_thegermansroom_ptnc equ algar_thegermansroom + 0xe44
 	dw 0x380
 	dw 0x00a
 	dw algar_thegermansroom_rowbd
@@ -2852,7 +2856,7 @@ algar_thegermansroom_ptnc equ algar_thegermansroom + 0xe42
 	db 0x40
 ; 0x111 bytes
 
-algar_thegermansroom_ptnd equ algar_thegermansroom + 0xf53
+algar_thegermansroom_ptnd equ algar_thegermansroom + 0xf55
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_rowd0
@@ -3061,7 +3065,7 @@ algar_thegermansroom_ptnd equ algar_thegermansroom + 0xf53
 	db 0x40
 ; 0x11b bytes
 
-algar_thegermansroom_ptne equ algar_thegermansroom + 0x106e
+algar_thegermansroom_ptne equ algar_thegermansroom + 0x1070
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_rowdd
@@ -3281,7 +3285,7 @@ algar_thegermansroom_ptne equ algar_thegermansroom + 0x106e
 	db 0x40
 ; 0x131 bytes
 
-algar_thegermansroom_ptnf equ algar_thegermansroom + 0x119f
+algar_thegermansroom_ptnf equ algar_thegermansroom + 0x11a1
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_rowfb
@@ -3501,7 +3505,7 @@ algar_thegermansroom_ptnf equ algar_thegermansroom + 0x119f
 	db 0x40
 ; 0x131 bytes
 
-algar_thegermansroom_ptn10 equ algar_thegermansroom + 0x12d0
+algar_thegermansroom_ptn10 equ algar_thegermansroom + 0x12d2
 	dw 0x380
 	dw 0x0020
 	dw algar_thegermansroom_row122
@@ -3721,7 +3725,7 @@ algar_thegermansroom_ptn10 equ algar_thegermansroom + 0x12d0
 	db 0x40
 ; 0x131 bytes
 
-algar_thegermansroom_ptn11 equ algar_thegermansroom + 0x1401
+algar_thegermansroom_ptn11 equ algar_thegermansroom + 0x1403
 	dw 0x380
 	dw 0x0020
 	dw algar_thegermansroom_row13b
@@ -3941,7 +3945,7 @@ algar_thegermansroom_ptn11 equ algar_thegermansroom + 0x1401
 	db 0x40
 ; 0x131 bytes
 
-algar_thegermansroom_ptn12 equ algar_thegermansroom + 0x1532
+algar_thegermansroom_ptn12 equ algar_thegermansroom + 0x1534
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_rowdd
@@ -4161,7 +4165,7 @@ algar_thegermansroom_ptn12 equ algar_thegermansroom + 0x1532
 	db 0x40
 ; 0x131 bytes
 
-algar_thegermansroom_ptn13 equ algar_thegermansroom + 0x1663
+algar_thegermansroom_ptn13 equ algar_thegermansroom + 0x1665
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row14a
@@ -4381,7 +4385,7 @@ algar_thegermansroom_ptn13 equ algar_thegermansroom + 0x1663
 	db 0x40
 ; 0x131 bytes
 
-algar_thegermansroom_ptn14 equ algar_thegermansroom + 0x1794
+algar_thegermansroom_ptn14 equ algar_thegermansroom + 0x1796
 	dw 0x380
 	dw 0x006
 	dw algar_thegermansroom_row169
@@ -4601,7 +4605,7 @@ algar_thegermansroom_ptn14 equ algar_thegermansroom + 0x1794
 	db 0x40
 ; 0x131 bytes
 
-algar_thegermansroom_ptn15 equ algar_thegermansroom + 0x18c5
+algar_thegermansroom_ptn15 equ algar_thegermansroom + 0x18c7
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row18a
@@ -4821,7 +4825,7 @@ algar_thegermansroom_ptn15 equ algar_thegermansroom + 0x18c5
 	db 0x40
 ; 0x131 bytes
 
-algar_thegermansroom_ptn16 equ algar_thegermansroom + 0x19f6
+algar_thegermansroom_ptn16 equ algar_thegermansroom + 0x19f8
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row18b
@@ -5028,7 +5032,7 @@ algar_thegermansroom_ptn16 equ algar_thegermansroom + 0x19f6
 	db 0x40
 ; 0x117 bytes
 
-algar_thegermansroom_ptn17 equ algar_thegermansroom + 0x1b0d
+algar_thegermansroom_ptn17 equ algar_thegermansroom + 0x1b0f
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row18b
@@ -5241,7 +5245,7 @@ algar_thegermansroom_ptn17 equ algar_thegermansroom + 0x1b0d
 	db 0x40
 ; 0x123 bytes
 
-algar_thegermansroom_ptn18 equ algar_thegermansroom + 0x1c30
+algar_thegermansroom_ptn18 equ algar_thegermansroom + 0x1c32
 	dw 0x380
 	dw 0x0080
 	dw algar_thegermansroom_row1c1
@@ -5345,7 +5349,7 @@ algar_thegermansroom_ptn18 equ algar_thegermansroom + 0x1c30
 
 
 ;row buffers
-algar_thegermansroom_rows equ algar_thegermansroom + 0x1cb3
+algar_thegermansroom_rows equ algar_thegermansroom + 0x1cb5
 algar_thegermansroom_row0 equ algar_thegermansroom_rows + 0x0
 	dw 0x800
 	dw 0x0
@@ -9868,5 +9872,5 @@ algar_thegermansroom_row1c3 equ algar_thegermansroom_rows + 0x1c30
 
 
 ; 0x1c40 bytes
-; file_size = 0x38f3 bytes
-; define({algar_thegermansroom_size}, 0x38f3)
+; file_size = 0x38f5 bytes
+; define({algar_thegermansroom_size}, 0x38f5)
