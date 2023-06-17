@@ -2535,6 +2535,9 @@ __{}__{}__{}__def({USE_ZX0}){}dnl
 __{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO},
 __{}__{}{
 __{}__{}__{}    call DEPACK         ; 3:17      __INFO})
+__{}__{}define({__PSIZE_$2},{__FILE_SIZE(M4PATH{$1$2$3})}){}dnl
+__{}__{}
+__{}__{}                        ;           __INFO      packed size: __PSIZE_$2
 __{}__{}    ld   HL, format({%-11s},__BUFFER-2); 3:10      __INFO
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
