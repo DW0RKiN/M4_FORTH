@@ -646,7 +646,7 @@ p,,,
 
             __T_NAME(0):$1,   __TOKEN_TUCK:__TOKEN_PORTSTORE, {__SET_TOKEN({__TOKEN_TUCK_PORTSTORE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
-
+            __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_PLAY,                                {__SET_TOKEN({__TOKEN_PUSH_PLAY},   __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
 
 dnl # PUSHDOT
 pushdot,,,
@@ -1567,6 +1567,11 @@ t...,,,
 
 
 dnl # U...
+u...,,,
+            __T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_PUSHS:1:__TOKEN_UNPACK,                    {__SET_TOKEN({__TOKEN_PUSH_UNPACK},   __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):__T_ITEMS(0):$1,            __TOKEN_PUSHS:2:__TOKEN_UNPACK,                    {__SET_TOKEN({__TOKEN_PUSH2_UNPACK},  __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):eval(__T_ITEMS(0)>2):$1,    __TOKEN_PUSHS:1:__TOKEN_UNPACK, {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH2_UNPACK},__REMOVE_COMMA(__T_LAST_2_PAR(1)){ }$2,__T_LAST_2_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS, __T_INFO(1){ 2drop},__DROP_2_PAR(__T_ARRAY(1)))},
+
 dnl # V...
 dnl # W...
 w...,,,
