@@ -399,7 +399,8 @@ int main(int argc, char *argv[]){
 		ASMFILE << "\tdw " << fileName << "_ptn" << hex << +sequence[i] << endl;
 		block_size += 2;
 	}
-	ASMFILE << "\tdw 0" << endl;
+	ASMFILE << "\tdb 0\t; lo = repeat times" << endl;
+	ASMFILE << "\tdb 0\t; hi = end mark" << endl;
 	block_size += 2;
 	ASMFILE << "; 0x" << block_size << " bytes" << endl << endl;
 	file_size += block_size;
