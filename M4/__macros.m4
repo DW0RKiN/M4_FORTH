@@ -6,6 +6,13 @@ dnl # define({X},{{1,}}) define({Y},__ESCAPING(X)) define({Z},__ESCAPING(Y)) def
 define({__ESCAPING},{{{$1}}}){}dnl
 dnl
 dnl
+define({__UNESCAPING},$1){}dnl
+dnl
+dnl
+define({__CR},{
+}){}dnl
+dnl
+dnl
 dnl
 dnl # is used to calculate the difficulty of the code
 dnl # prize = clocks + (__BYTE_PRICE * bytes)
@@ -15,11 +22,25 @@ dnl
 dnl
 dnl # __FILE_SIZE(../M4/xxx/filename.abc) --> 123 (bytes or empty)
 dnl # problem s posix?
-define({__FILE_SIZE},{esyscmd(stat -c%s "M4PATH$1" 2>/dev/null| tr -d '\n\t\r')}){}dnl
+define({__FILE_SIZE_VER4},{esyscmd({stat -c%s "$1" 2>/dev/null| tr -d '\n\t\r'})}){}dnl
 dnl # problem s posix?
-define({__FILE_SIZE},{esyscmd(find "M4PATH$1" -printf "%s" 2>/dev/null)}){}dnl
+define({__FILE_SIZE_VER3},{esyscmd({find "$1" -printf "%s" 2>/dev/null})}){}dnl
 dnl # problem s posix?
-define({__FILE_SIZE},{esyscmd(wc -c M4PATH$1 2>/dev/null | cut -f 1 -d " "| tr -d '\n\t\r')}){}dnl
+define({__FILE_SIZE},{esyscmd({wc -c $1 2>/dev/null | cut -f 1 -d " "| tr -d '\n\t\r'})}){}dnl
+dnl # problem s posix?
+define({__FILE_SIZE},{esyscmd({wc -c $1 2>/dev/null | a=$(cut -f 1 -d " "); printf "$a"})}){}dnl
+dnl
+dnl
+dnl
+define({__TEST_TXTFILE_SIZE},{dnl
+__{}undefine({$2_size}){}dnl
+__{}define({__SIZE},0){}dnl
+__{}esyscmd({grep -o 'define({$2_size},[^)]*)' $1$2$3 2>/dev/null}){}dnl
+__{}ifdef({$2_size},{dnl
+__{}__{}define({__SIZE},{$2}_size)},
+__{}{dnl
+__{}__{}define({$2_size},0)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
