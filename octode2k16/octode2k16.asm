@@ -116,15 +116,22 @@ rdseq:
 ;   iiii dd, ss         ; b:tt      ...
 seqpntr equ $+1
     ld   SP, 0x0000     ; 3:10      ...
-    xor   A             ; 1:4       ...
+;     xor   A             ; 1:4       ...
     pop  HL             ; 1:10      pattern pointer to HL
-    or    H             ; 1:4
+;     or    H             ; 1:4
+    inc   H             ; 1:4
+    dec   H             ; 1:4
     ld  (seqpntr),SP    ; 4:20      ...
     jr   nz, rdptn0     ; 2:7/12    ...
   ifdef __NO_LOOP_MUSIC
     jp   exit           ; 3:10      ...
   endif
-
+  ifdef __LIMITED_TIMES_LOOP_MUSIC
+    dec   L             ; 1:4
+    push HL             ; 1:11
+    pop  HL             ; 1:10
+    jr    z, exit       ; 2:7/12    ...
+  endif
 nameloop equ $+1
     ld   SP, 0x0000     ; 3:10      get loop point
     jr   rdseq+3        ; 2:12
@@ -287,11 +294,11 @@ basec equ high($)
     ld  HL,(addBuffer+4); 3:16      as above for ch3
     
     ld    C, 0xFE       ; 2:7       ...
-    ds 3            ;12
+    ds 3                ; 3:12
     
     ret   c             ; 1:5       timing, branch never taken
     ld    B, PCTRL_B    ; 2:7       B = 0x10
-    ;----------------- ;[  :192]
+    ;----------------- ;[36:192]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
     
@@ -319,13 +326,13 @@ basec equ high($)
         
     ld    R, A          ; 1:9       timing
     ld   BC, PCTRL      ; 3:10      0x10fe
-    ;----------------- ;[  :168]
+    ;----------------- ;[30:168]
 
     dw OUT_C_0x00       ; 2:12      switch sound off
 
     adc   A, 0x00       ; 2:7       ...
     ret   c             ; 1:5/11    timing
-    ;----------------- ;[  :192]
+    ;----------------- ;[35:192]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
     
@@ -351,14 +358,14 @@ basec equ high($)
     
     exx                 ; 1:4       ...
     ld   BC, PCTRL      ; 3:10      0x10fe
-    ;----------------- ;[  :168]
+    ;----------------- ;[32:168]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
     
     ex   AF, AF'        ; 1:4
     dec   A             ; 1:4
     ex   AF, AF'        ; 1:4
-    ;----------------- ;[  :192]
+    ;----------------- ;[37:192]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
     
@@ -384,14 +391,14 @@ basec equ high($)
     
     ex  (SP),HL         ; 1:19      timing
     ex  (SP),HL         ; 1:19      timing
-    ;----------------- ;[  :168]
+    ;----------------- ;[25:168]
 
     dw OUT_C_0x00       ; 2:12      switch sound off
         
     ds 2                ; 2:8       timing
     jp  (HL)            ; 1:4       jump to next frame
-    ;----------------- ;[  :192]
-
+    ;----------------- ;[30:192]
+                      ;[138:768]
 
 ;*********************************************************************************************
     org 256*(1+(high($)))
@@ -402,7 +409,7 @@ core1:                  ;           vol 1 - 24t
     ex   AF, AF'        ; 1:4       update timer
     dec   A             ; 1:4
     ex   AF, AF'        ; 1:4
-    ;----------------- ;[  :24]
+    ;-----------------  ;[5:24]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
 
@@ -424,13 +431,13 @@ core1:                  ;           vol 1 - 24t
     ds 2                ; 2:8       timing
     
     ld   BC, PCTRL      ; 3:10      BC = 0x10fe
-    ;+++++++++++++++++ ;[  :192]
+    ;+++++++++++++++++ ;[36:192]
     
     dw OUT_C_B          ; 2:12      sound on
     ex   AF, AF'        ; 1:4       update timer again (for better speed control)
     dec   A             ; 1:4
     ex   AF, AF'        ; 1:4
-    ;----------------- ;[  :24]
+    ;-----------------  ;[5:24]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
     
@@ -456,12 +463,12 @@ core1:                  ;           vol 1 - 24t
     add  HL, BC         ; 1:11      HL' is ch5 accu
     
     ld   BC, PCTRL      ; 3:10      0x10fe
-    ;+++++++++++++++++ ;[  :192]
+    ;+++++++++++++++++ ;[35:192]
     
     dw OUT_C_B          ; 2:12      ...
     ld    B, H          ; 1:4       ...
     rl    B             ; 2:8       ...
-    ;----------------- ;[  :24]
+    ;-----------------  ;[5:24]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
     
@@ -488,11 +495,11 @@ core1:                  ;           vol 1 - 24t
     ld   BC, PCTRL      ; 3:10      0x10fe
     ld   BC, PCTRL      ; 3:10      timing
     nop                 ; 1:4       
-    ;+++++++++++++++++ ;[  :192]
+    ;+++++++++++++++++ ;[38:192]
     
     dw OUT_C_B          ; 2:12      ...
     ds 3                ; 3:12      timing
-    ;----------------- ;[  :24]
+    ;-----------------  ;[5:24]
 
     dw OUT_C_0x00       ; 2:12      switch sound off
     
@@ -524,8 +531,8 @@ core1:                  ;           vol 1 - 24t
     ds 8                ; 8:32      timing (to match updateTimer length)
     
     jp  (HL)            ; 1:4       jump to next frame
-    ;. . . . . . . . . ;[  :192]
-    
+    ;. . . . . . . . . ;[46:192]
+                      ;[155:768]
     
 ;*********************************************************************************************
     org 256*(1+(high($)))
@@ -538,7 +545,7 @@ core2:                  ;           vol 2 - 48t
     ex   AF, AF'        ; 1:4
     ld   HL,(addBuffer) ; 3:16      get ch1 accu
     ds 2                ; 2:8       timing
-    ;----------------- ;[  :48]
+    ;----------------- ;[10:48]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
 
@@ -558,7 +565,7 @@ core2:                  ;           vol 2 - 48t
     ret   c             ; 1:5       timing, branch never taken
     
     ld   BC, PCTRL      ; 3:10      BC = 0x10fe
-    ;+++++++++++++++++ ;[  :192]
+    ;+++++++++++++++++ ;[36:192]
     
     dw OUT_C_B          ; 2:12      sound on
     ex   AF, AF'        ; 1:4       update timer again (for better speed control)
@@ -566,7 +573,7 @@ core2:                  ;           vol 2 - 48t
     ex   AF, AF'        ; 1:4
     ld  HL,(addBuffer+4); 3:16      as above for ch3
     ds 2                ; 2:8       timing
-    ;----------------- ;[  :48]
+    ;----------------- ;[10:48]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
     
@@ -590,7 +597,7 @@ core2:                  ;           vol 2 - 48t
     exx                 ; 1:4       ...
     
     ld   BC, PCTRL      ; 3:10      0x10fe
-    ;+++++++++++++++++ ;[  :192]
+    ;+++++++++++++++++ ;[37:192]
     
     dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
@@ -599,7 +606,7 @@ core2:                  ;           vol 2 - 48t
     ld    R, A          ; 1:9       timing
     nop                 ; 1:4       
     exx                 ; 1:4       ...
-    ;----------------- ;[  :48]
+    ;-----------------  ;[8:48]
 
     dw OUT_C_0x00       ; 2:12      switch sound off
     
@@ -623,7 +630,7 @@ core2:                  ;           vol 2 - 48t
     exx                 ; 1:4       ...
     ld   BC, PCTRL      ; 3:10      0x10fe
     ld   BC, PCTRL      ; 3:10      timing
-    ;+++++++++++++++++ ;[  :192]
+    ;+++++++++++++++++ ;[38:192]
     
     dw OUT_C_B          ; 2:12      ...
     exx                 ; 1:4       ...
@@ -634,7 +641,7 @@ core2:                  ;           vol 2 - 48t
     pop  BC             ; 1:10
     
     exx                 ; 1:4       ...
-    ;----------------- ;[  :48]
+    ;-----------------  ;[9:48]
     
     dw OUT_C_0x00       ; 2:12      switch sound off
     exx                 ; 1:4       ...
@@ -664,9 +671,9 @@ core2:                  ;           vol 2 - 48t
     xor   A             ; 1:4
     
     jp  (HL)            ; 1:4       jump to next frame
-    ;. . . . . . . . . ;[  :192]
-    
-    
+    ;. . . . . . . . . ;[42:192]
+                      ;[153:768]
+   
 ;*********************************************************************************************
     org 256*(1+(high($)))
 ;   iiii dd, ss         ; b:tt      ...
