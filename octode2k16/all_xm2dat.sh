@@ -11,8 +11,7 @@ if [ ! -f ./xm2octode2k16 ] ; then
 fi
    
 for file in *.xm; do
-	printf "Convert $file\n"
-	./xm2octode2k16 $file
+	./xm2octode2k16 $file $@
 	error=$?      
 	[ $error != 0 ] && printf "Error: $error\n" >&2 && exit 1
 done
