@@ -10,7 +10,9 @@ unsigned char songlength;
 int16_t maxRows = -1;
 int file_size = 0;
 int block_size = 0;
+char zero[] = "0";
 char * fileName = NULL;
+char * repeatTimes = zero;
 bool verbose = false;
 uint8_t *xmdata = NULL;
 uint16_t notes[257][8];
@@ -23,38 +25,26 @@ bool verifyXMParams(uint8_t numberOfChannels);
 uint16_t assignNoteRow(int row);
 
 int main(int argc, char *argv[]){
-
-	cout << "XM 2 OCTODE2k16 CONVERTER" << endl;
-
-	//check for "-v" flag
-	if(argc==2 && argv[1][0]!='-' && argv[1][1]!='v' && argv[1][2]!=0)
-	{
-		songlength--;
-		fileName=argv[1];
-	} else if(argc==3) 
-	{
-		if(argv[1][0]=='-' && argv[1][1]=='v' && argv[1][2]==0) 
+ 
+	for (int i = 1; i < argc; i++) {
+		if (strcmp(argv[i],"-v")==0)
 			verbose=true;
+		else if (argv[i][0]=='-' && argv[i][1]=='r' && argv[i][2]=='=')
+			repeatTimes=&argv[i][3];		
 		else
-		{
-			songlength--;
-			fileName=argv[1];
-		}
-		if(argv[2][0]=='-' && argv[2][1]=='v' && argv[2][2]==0) 
-			verbose=true;
-		else
-		{
-			songlength--;
-			fileName=argv[2];
-		}	   
-	}
+			fileName=argv[i];
+    }
+    
+	cout << "XM 2 OCTODE2k16 CONVERTER (for M4 FORTH version)" << endl;
+	cout << "\tfilename: " << fileName << endl;
+	cout << "\t-v: " << ((verbose) ? "yes" : "no") << endl;
+	cout << "\t-r: " << repeatTimes << " times" << endl;
 
-	if(fileName==NULL)
+	if (fileName==NULL)
 	{
-		cout << "Usage: " << argv[0] << " filename.xm -v" << endl;
+		cout << "Usage: " << argv[0] << " filename.xm -v -r=num" << endl;
 		exit(-2);
 	}
-		
 
 	//open music.xm
 	XMFILE.open (fileName, ios::in | ios::binary);
@@ -399,7 +389,7 @@ int main(int argc, char *argv[]){
 		ASMFILE << "\tdw " << fileName << "_ptn" << hex << +sequence[i] << endl;
 		block_size += 2;
 	}
-	ASMFILE << "\tdb 0\t; lo = repeat times" << endl;
+	ASMFILE << "\tdb " << repeatTimes <<"\t; lo = repeat times" << endl;
 	ASMFILE << "\tdb 0\t; hi = end mark" << endl;
 	block_size += 2;
 	ASMFILE << "; 0x" << block_size << " bytes" << endl << endl;
