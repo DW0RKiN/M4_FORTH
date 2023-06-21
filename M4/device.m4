@@ -2544,7 +2544,7 @@ __{}__{}{dnl
 __{}__{}__{}define({BUFFERPLAY_SIZE},__SIZE)})
 __{}__{}    push DE             ; 1:11      __INFO    packed size: __SIZE
 __{}__{}    push HL             ; 1:11      __INFO
-__{}__{}    ld   HL, format({%-11s},__file_$2); 3:10      __INFO    from 
+__{}__{}    ld   HL, format({%-11s},__file_$2); 3:10      __INFO    from
 __{}__{}    ld   DE, format({%-11s},$4); 3:10      __INFO    to{}dnl
 __{}__{}ifelse(dnl
 __{}__{}ifdef({USE_ZX0},1,0),1,{
@@ -2604,7 +2604,7 @@ __{}__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__{}define({__PSIZE_$2},__SIZE){}dnl
 __{}__{}__ADD_SPEC_VARIABLE({
   if ($<0x8000)
-    .error __file_}}$2{{ < 0x8000, music data must be at 0x8000+ address! 
+    .error __file_}}$2{{ < 0x8000, music data must be at 0x8000+ address!
   endif}){}dnl
 __{}__{}__ASM_TOKEN_CREATE(__UNESCAPING(__file_$2)){}dnl
 __{}__{}pushdef({LAST_HERE_ADD},__SIZE)dnl
