@@ -1,7 +1,7 @@
 /////////////////////////////////////////////
 // Lz_Packer 01 based on                   //
 // Busy soft // LzePacker 01 // 01.11.2016 //
-// Modified by _Dworkin     // 15.07.2023  //
+// Modified by _Dworkin     // 27.07.2023  //
 /////////////////////////////////////////////
 
 // Debug output level: 0=none, 1=small, 2=large, 3=oops, 4=WTF?!, 5=... //
