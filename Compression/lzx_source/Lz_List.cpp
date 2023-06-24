@@ -25,16 +25,19 @@
 #define TYPZX7 4	// Original ZX7 compression - 1 bit for each unpacked byte and 1 bit + elias-gama length for sekvence
 #define TYPBLK 5	// Bitstream BLK first simple - elias-gama length for both sekvence and unpacked block + 1 bit for sekvence / unpacked
 #define TYPBS1 6	// Bitstream LZX standart 1 - 0=unpack byte, 10=2 byte sek, 110=3 byte sek, 1110 + EG length = sekvence, 1111 + EG length = unpacked block
+#define TYPZX0 7	// Original ZX0 compression - 1 bit for each unpacked byte and 1 bit + elias-gama length for sekvence
 
 // Systems for coding offsets:
 
 #define POSLZM 1	// Standart for LZM compression - one byte (8 bit) offset
 #define POSLZE 2	// Standart for LZE compression - one or two byte (7 or 15 bit) offset
-#define POSLZ_ 3	// Standart for LZE compression - one or two byte (7 or 15 bit) negative offset
+#define POSLZ_ 3	// Standart for LZ_ compression - like LZE with binary incompatibility for flags and negative offset
 #define POSOF4 4	// Four step offsets (1,2,3,4 or 2,4,6,8 or 3,6,9,12 or 4,8,12,16 bits)
 #define POSOF1 5	// One fixed offset used for all sekvences
 #define POSOF2 6	// Two fixed offsets (similar than ZX7)
 #define POSOFD 7	// Simple elias-gama coding offset
+#define POSZX0 8	// Elias(MSB(offset)+1)  LSB(offset)  Elias(length-1)
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -48,7 +51,10 @@
 
 #define MAXLEN 80000
 
-int bits;
+int bits; // every file start with 0x80;
+int first_zx0_literal; // 0 = false
+int last_zx0_literal; // 0 = repeat offset, 1 = new offset, 2 = unpack
+int last_zx0_offset;
 int data_len;
 int over_len;
 int overhead;
@@ -81,9 +87,10 @@ int GetBit(void)
 		over_len++;
 	}
 	overhead++;
-	if (DBG > 1) printf(" %c ", (bits >> 8) & 0x01 | '0');
+	if (DBG > 1) printf(" %c ", ((bits >> 8) & 0x01) + '0');
 	return (bits >> 8) & 0x01;
 }
+
 
 int GetByte(void)
 {
@@ -100,6 +107,7 @@ int StandaloneFirstByte()
 	case TYPLZE:
 	case TYPLZ_:
 	case TYPBLK: return 0;
+	case TYPZX0:
 	case TYPZX7:
 	case TYPBS1: return 1;
 	default: return -1;
@@ -129,6 +137,7 @@ int GetValue(int bitwide)
 	return value;
 }
 
+// bitwide je inicializovana hodnota s pocatecnim poctem nulovych bitu
 int GetEliasGama(int bitwide)
 {
 	if (DBG > 1) printf(" (EG:%u) ", bitwide);
@@ -140,6 +149,31 @@ int GetEliasGama(int bitwide)
 	if (DBG > 1) printf(" (%u) ", value);
 	return value;
 }
+
+
+// origin je pocatecni nastaveni hodnoty
+// 0x0001 pro delku
+// 0x??FE pro ofset
+int GetInterlacedEliasGama(int origin)
+{
+	if (DBG > 1) printf(" (IEG:%u) ", origin);
+	while (!GetBit())
+	{ 
+		origin <<= 1;
+		origin += GetBit();
+	}
+	return origin;
+}
+
+
+// origin je pocatecni nastaveni hodnoty
+// 0x0001 pro delku
+// 0x??FE pro ofset
+int GetInterlacedEliasGama_no_first_check(int origin)
+{	
+	return GetInterlacedEliasGama(2*origin + GetBit());
+}
+
 
 int GetBlockParams(int *resoff, int *reslen)
 {
@@ -173,6 +207,36 @@ int GetBlockParams(int *resoff, int *reslen)
 		length = GetEliasGama(0);	if (!length) return 0; // End mark //
 		if (DBG > 1) printf(" - ");
 		packed = !GetBit();	if (packed) length++;
+		break;
+	case TYPZX0:
+		if (first_zx0_literal)
+		{
+			first_zx0_literal = 0;
+			last_zx0_literal = 2; // unpacked
+		} 
+		else
+		{
+			if (last_zx0_literal < 2)
+			{
+				last_zx0_literal = GetBit();
+				if (!last_zx0_literal) 
+					last_zx0_literal = 2;
+			}
+			else 
+			{
+				last_zx0_literal = GetBit();
+			}
+		}
+		if ( last_zx0_literal == 2 )
+			length = GetInterlacedEliasGama(1);
+		else
+		{
+			length = 0;
+			packed = 1;
+		}
+		
+		if (DBG>2)
+			printf("\nnew literal: %i\n",last_zx0_literal);
 		break;
 	case TYPZX7:
 		length = 1;
@@ -268,6 +332,43 @@ int GetBlockParams(int *resoff, int *reslen)
 		offset = GetValue(offset1bits * (width + 1));
 		for (int adds = width; adds >= 0; adds--) offset += 1 << (adds * offset1bits);
 		break;
+	case POSZX0:
+		// packed
+		if ( last_zx0_literal == 0 ) // same offset
+		{
+			offset = last_zx0_offset;
+			*reslen = GetInterlacedEliasGama(1);
+			offset = last_zx0_offset;
+		}
+		else
+		{
+			offset = GetInterlacedEliasGama(0x00FE);
+						
+			offset++;
+			offset &= 0xFF;
+			
+			if (!offset) // End mark //
+			{
+				*reslen = 0;
+				*resoff = 0;
+				break;
+			}
+
+			offset <<= 8;
+			offset += GetByte();
+
+			if (offset & 1)
+				*reslen = 2;
+			else
+				*reslen = GetInterlacedEliasGama_no_first_check(1) + 1;
+			
+			offset >>= 1;
+			offset ^= 0x7FFF;
+			offset++;
+
+			last_zx0_offset = offset;
+		}
+		break;
 	default:
 		printf("\nError in %s: Unknown offset coding %u\n", packed_name, compress_posi);
 		return 1;
@@ -286,6 +387,7 @@ void DisplayCompression()
 	case TYPLZM: printf("LZM"); break;
 	case TYPLZE: printf("LZE"); break;
 	case TYPLZ_: printf("LZ_"); break;
+	case TYPZX0: printf("ZX0"); break;
 	case TYPZX7: printf("ZX7"); break;
 	case TYPBLK: printf("BLK"); break;
 	case TYPBS1: printf("BS1"); break;
@@ -303,9 +405,10 @@ void DisplayCompression()
 	case POSOF1: z = printf("fixed offset %2u", offset1bits); break;
 	case POSOF2: z = printf("two offsets %2u %u", offset1bits, offset2bits); break;
 	case POSOFD: z = printf("elias-gama offset"); break;
+	case POSZX0: z = printf("elias(hi(offset)+1)  lo(offset)"); break;
 	default:	 z = printf("(unknown)");
 	}
-	printf(" %s ", "...................." + z);
+	printf(" %s ",          "..............................." + z);
 }
 
 int main(int number_of_params, char **parameters)
@@ -411,6 +514,12 @@ int main(int number_of_params, char **parameters)
 				compress_posi = POSLZ_;
 				if (DBG) puts("Compress type: LZ_");
 			}
+			else if (name_length > 4 && !stricmp(packed_name + name_length - 4, ".zx0"))
+			{
+				compress_type = TYPZX0;
+				compress_posi = POSZX0;
+				if (DBG) puts("Compress type: ZX0");
+			}
 			else
 			{
 				printf("Cannot determine compress type for file %s\n", packed_name); continue;
@@ -494,6 +603,8 @@ int main(int number_of_params, char **parameters)
 		}
 
 		bits = 0x80;
+		first_zx0_literal=1;
+		last_zx0_offset=1;
 		overhead = 0;
 		packed_index = 0;
 		unpack_index = prolog_size;
@@ -501,9 +612,12 @@ int main(int number_of_params, char **parameters)
 		int packed_count = 0;
 		int unpack_count = 0;
 		
-		printf("packed_index:%+6d\n",packed_index);
-		printf("unpack_index:%+6d\n",unpack_index);
-
+		if (DBG>1)
+		{
+			printf("packed_index:%+6d\n",packed_index);
+			printf("unpack_index:%+6d\n",unpack_index);
+		}
+		
 		if (stand1stbyte)
 		{
 			if (!make_depack)
@@ -603,13 +717,13 @@ int main(int number_of_params, char **parameters)
 		if (err) continue;
 		if (DBG || !make_depack) putchar('\n');
 
-		printf("%-32s  %5u => %-5u  NumSek: %-4u  Packed: %-5u  NoPack: %-5u  Overhead: %-5u (%u bits)\n",
+		printf("%-32s \n\t%5u => %-5u  NumSek: %-4u  Packed: %-5u  NoPack: %-5u  Overhead: %-5u (%u bits)\n",
 			packed_name, packed_index, unpack_index, numsek, packed_count, unpack_count, (overhead + 7) >> 3, overhead);
 
 		if (make_depack)
 		{
 			FILE *unpack_file = fopen(unpack_name, "wb"); if (!unpack_file) { perror(unpack_name); continue; }
-			if (unpack_index != fwrite(unpack_data+prolog_size, 1, unpack_index-prolog_size, unpack_file)) printf("Can't write %s\n", unpack_name);
+			if ((unsigned int) unpack_index-prolog_size != fwrite(unpack_data+prolog_size, 1, unpack_index-prolog_size, unpack_file)) printf("Can't write %s\n", unpack_name);
 			fclose(unpack_file);
 		}
 
