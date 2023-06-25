@@ -6,6 +6,29 @@ to=./Output
 addr=49152
 use_prolog="no"
 
+help_info () {
+	echo "Use: $0 -c compression -t path_to -a addr -use_prolog file1 file2 ... path/*.dat" >&2
+	echo "" >&2
+	echo "	if file start with '-' char, you can use -- before file1" >&2
+	echo "" >&2
+	echo "	-use_prolog  ...Slightly higher compression ratio." >&2
+	echo "			For a scenario where several smaller files are compressed." >&2
+	echo "			And later independently decompressed to the same buffer address." >&2
+	echo "			Because each compressed file will be stored before the decompression buffer." >&2
+	echo "			So every next compressed file will be able to refer to more and more previous files." >&2
+	echo "			The smallest files will be packed first, so they will be closer to the buffer." >&2
+	echo "			Only for Lz_Pack and LzmPack." >&2
+	echo "			Warning: File order, content, and addresses must not be changed." >&2
+	echo "" >&2
+	echo "	Default:" >&2
+	echo "	   compression: zx0" >&2
+	echo "	       path to: ./Output/" >&2
+	echo "	   buffer addr: 49152" >&2
+	echo "	    use_prolog: no" >&2
+}
+
+printf "Bash script mass compiling asm files using \"pasmo\" for the given address\n\tand then compressing the resulting bin files.\n\n"
+
 #handle command line options
 while [ $# -gt 0 ] ; do
 	if [ "$1" = "-c" ] ; then
@@ -21,26 +44,12 @@ while [ $# -gt 0 ] ; do
 	elif [ "$1" = "--" ] ; then
 		shift
 		break
+	elif [ "$1" = "-h" ] ; then
+		help_info
+		exit 0
 	elif [ "${1%%-*}" = "" ] ; then
 		echo "Error! Bad parameter: $1\n" >&2
-		echo "Use: $0 -c compression -t path_to -a addr --use_prolog file1 file2 ..." >&2
-		echo "" >&2
-		echo "	if file start with '-' char, you can use -- before file1" >&2
-		echo "" >&2
-		echo "	-use_prolog  ...Slightly higher compression ratio." >&2
-		echo "			For a scenario where several smaller files are compressed." >&2
-		echo "			And later independently decompressed to the same buffer address." >&2
-		echo "			Because each compressed file will be stored before the decompression buffer." >&2
-		echo "			So every next compressed file will be able to refer to more and more previous files." >&2
-		echo "			The smallest files will be packed first, so they will be closer to the buffer." >&2
-		echo "			Only for Lz_Pack and LzmPack." >&2
-		echo "			Warning: File order, content, and addresses must not be changed." >&2
-		echo "" >&2
-		echo "Default:" >&2
-		echo "   compression: zx0" >&2
-		echo "       path to: ./Output/" >&2
-		echo "   buffer addr: 49152" >&2
-		echo "    use_prolog: no" >&2
+		help_info
 		exit 1
 	else
 		break
@@ -49,11 +58,13 @@ while [ $# -gt 0 ] ; do
 	shift
 done
 
-printf "compression program: $compression\n"
-printf "            path to: $to\n"
-printf "        buffer addr: $addr\n"
-printf "       source files: $@\n\n"
+printf "(compression program) -c : $compression\n"
+printf "            (path to) -t : $to\n"
+printf "        (buffer addr) -a : $addr\n"
+printf "             -use_prolog : $use_prolog\n"
+printf "             source files: $@\n\n"
 
+[ $# -eq 0 ] && printf "Error: need source file name! Try $0 -h\n" >&2 && exit 2
 
 if [ ! -f ./$compression ] ; then
 	if [ "$compression" = "zx0" ] ; then
@@ -74,8 +85,6 @@ if [ ! -f ./$compression ] ; then
 
 	[ ! -f ./$compression ] &&  echo "Compilation ${compression}.cpp failed!" >&2 && exit 3
 fi
-
-
 
 bin_files=""
 
@@ -102,7 +111,7 @@ pack_files=""
 [ "$use_prolog" = "yes" ] && printf "" > tmp_delete_this && incbin=""
 start_addr=$addr
 
-for file in $(ls -rS $bin_files)
+for file in $(ls -rS -- $bin_files)
 do
 	# name.abc.txt --> ${file%.*}  --> name.abc
 	# name.abc.txt --> ${file%%.*} --> name
