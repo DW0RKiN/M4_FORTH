@@ -64,18 +64,18 @@ printf "        (buffer addr) -a : $addr\n"
 printf "             -use_prolog : $use_prolog\n"
 printf "             source files: $@\n\n"
 
-[ $# -eq 0 ] && printf "Error: need source file name! Try $0 -h\n" >&2 && exit 2
+[ $# -eq 0 ] && printf "Error: need source file name! Try $0 -h\n" >&2 && exit 3
 
 if [ ! -f ./$compression ] ; then
 	if [ "$compression" = "zx0" ] ; then
-		[ ! -f ./zx0_source/Makefile ] && echo "File $compression and ./zx0_source/make not found!" >&2 && exit 2
+		[ ! -f ./zx0_source/Makefile ] && echo "File $compression and ./zx0_source/make not found!" >&2 && exit 4
 		printf "Compile ${compression}.c\n"
 		cd ./zx0_source/
 		make
 		mv zx0 ../zx0
 		cd ..
 	else
-		[ ! -f ./lzx_source/${compression}.cpp ] && echo "File $compression and ./lzx_source/${compression}.cpp not found!" >&2 && exit 2
+		[ ! -f ./lzx_source/${compression}.cpp ] && echo "File $compression and ./lzx_source/${compression}.cpp not found!" >&2 && exit 4
 		cd ./lzx_source/
 		printf "Compile ${compression}.cpp\n"
 		g++ ./${compression}.cpp -o $compression
@@ -83,8 +83,12 @@ if [ ! -f ./$compression ] ; then
 		cd ..
 	fi
 
-	[ ! -f ./$compression ] &&  echo "Compilation ${compression}.cpp failed!" >&2 && exit 3
+	[ ! -f ./$compression ] &&  echo "Compilation ${compression}.cpp failed!" >&2 && exit 5
 fi
+
+
+[ ! -d ${to} ] && mkdir ${to} 
+[ $? != 0 ] && exit 6
 
 bin_files=""
 
@@ -104,7 +108,7 @@ do
 
 	pasmo --equ $no_suffix=$addr $file $to/${no_suffix}.bin 
 	error=$?
-	[ $error != 0 ] && printf "pasmo error: $error\n" >&2 && exit 2
+	[ $error != 0 ] && printf "pasmo error: $error\n" >&2 && exit 7
 done
 
 pack_files=""
@@ -126,7 +130,7 @@ do
 		pack_files="$pack_files $to/${no_suffix}.zx0"
 		./$compression $file ${to}/${no_suffix}.zx0
 		error=$?
-		[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 2
+		[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 8
 
 	elif [ "$compression" = "Lz_Pack" ] ; then
 		pack_files="$pack_files $to/${no_suffix}.lz_"
@@ -136,7 +140,7 @@ do
 
 			./$compression $file -p tmp_delete_this
 			error=$?
-			[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 2
+			[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 8
 			
 			size=$(wc -c $to/${no_suffix}.lz_)
 			size=${size%% *}
@@ -148,7 +152,7 @@ do
 		else
 			./$compression $file
 			error=$?
-			[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 2
+			[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 8
 
 		fi
 	elif [ "$compression" = "LzmPack" ] ; then
@@ -160,7 +164,7 @@ do
 
 			./$compression $file -p tmp_delete_this
 			error=$?
-			[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 2
+			[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 8
 
 			size=$(wc -c $to/${no_suffix}.lzm)
 			size=${size%% *}
@@ -172,13 +176,13 @@ do
 		else
 			./$compression $file
 			error=$?
-			[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 2
+			[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 8
 
 		fi	
 	else
 		./$compression $file
 		error=$?
-		[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 2
+		[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 8
 
 	fi
 
