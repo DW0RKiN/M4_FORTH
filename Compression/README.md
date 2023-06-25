@@ -3,7 +3,9 @@
 Used by ZX0 compressor
 
 `?` is a flag bit
+
 `-` is a flag bit with a value of `0` meaning the continuation of the bit stream
+
 `+` is a flag bit with a value of `1` meaning the end of the bit stream
 
                                                                               output with input _1_
