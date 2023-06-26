@@ -20,7 +20,7 @@ __BUFFER equ 0xC000
 
 
 
-text_y equ (24+10-1)/2
+text_y equ (24+10)/2
 text_x equ (51-24)/2
          
     INIT(28000)
@@ -31,7 +31,8 @@ text_x equ (51-24)/2
 
     BEGIN
         PRINT_I({ZX_INK, ZX_BLUE, ZX_PAPER, ZX_BLACK})
-        PRINT_I({ZX_AT,text_y-0,text_x," 0: exit "})
+        PRINT_I({ZX_AT,text_y+1,text_x," e: exit "})
+        PRINT_I({ZX_AT,text_y-0,text_x," 0: _first_last_ "})
         PRINT_I({ZX_AT,text_y-1,text_x," 1: octode     test "})
         PRINT_I({ZX_AT,text_y-2,text_x," 2: octode2k15 test "})
         PRINT_I({ZX_AT,text_y-3,text_x," 3: octode2k16 test "})
@@ -40,13 +41,18 @@ text_x equ (51-24)/2
         PRINT_I({ZX_AT,text_y-6,text_x," 6: algar_thegermansroom "})
         PRINT_I({ZX_AT,text_y-7,text_x," 7: bacon_sandwich "})
         PRINT_I({ZX_AT,text_y-8,text_x," 8: cja_h_what_is_love "})
-        PRINT_I({ZX_AT,text_y-9,text_x," 9: _first_last_ "})
+        PRINT_I({ZX_AT,text_y-9,text_x," 9: clop_hybrid_sparta "})
         PRINT_I({ZX_INK, ZX_RED})
 
-        PUSH(__TESTKEY_0) TESTKEY 
+        PUSH(__TESTKEY_E) TESTKEY 
     IF     
-        PRINT_I({ZX_AT,text_y-0,text_x," 0: exit "})
+        PRINT_I({ZX_AT,text_y+1,text_x," 0: exit "})
         BREAK 
+    ELSE
+        PUSH(__TESTKEY_0) TESTKEY 
+    IF 
+        PRINT_I({ZX_AT,text_y-0,text_x," A: _first_last_ "})
+        VARIABLEBINFILE_UNPACK_BUFFERPLAY(../Compression/Output/,_first_last_,SUFFIX,__BUFFER) 
     ELSE
         PUSH(__TESTKEY_1) TESTKEY 
     IF 
@@ -90,10 +96,10 @@ text_x equ (51-24)/2
     ELSE
         PUSH(__TESTKEY_9) TESTKEY 
     IF 
-        PRINT_I({ZX_AT,text_y-9,text_x," 9: _first_last_ "})
-        VARIABLEBINFILE_UNPACK_BUFFERPLAY(../Compression/Output/,_first_last_,SUFFIX,__BUFFER) 
+        PRINT_I({ZX_AT,text_y-9,text_x," 9: clop_hybrid_sparta "})
+        VARIABLEBINFILE_UNPACK_BUFFERPLAY(../Compression/Output/,clop_hybrid_sparta,SUFFIX,__BUFFER) 
     ELSE
-    THEN THEN THEN THEN THEN THEN THEN THEN THEN THEN
+    THEN THEN THEN THEN THEN THEN THEN THEN THEN THEN THEN
     AGAIN
 
     DEPTH
