@@ -88,7 +88,7 @@ fi
 
 
 [ ! -d ${to} ] && mkdir ${to} 
-[ $? != 0 ] && exit 6
+[ $? != 0 ] && printf "Error: Not found destination directory!\n" >&2 exit 6
 
 bin_files=""
 
@@ -128,7 +128,7 @@ do
 
 	if [ "$compression" = "zx0" ] ; then
 		pack_files="$pack_files $to/${no_suffix}.zx0"
-		./$compression $file ${to}/${no_suffix}.zx0
+		./$compression -f $file ${to}/${no_suffix}.zx0
 		error=$?
 		[ $error != 0 ] && printf "$compression error: $error\n" >&2 && exit 8
 
