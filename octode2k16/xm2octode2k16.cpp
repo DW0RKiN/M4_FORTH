@@ -37,8 +37,8 @@ int main(int argc, char *argv[]){
     
 	cout << "XM 2 OCTODE2k16 CONVERTER (for M4 FORTH version)" << endl;
 	cout << "\tfilename: " << fileName << endl;
-	cout << "\t-v: " << ((verbose) ? "yes" : "no") << endl;
-	cout << "\t-r: " << repeatTimes << " times" << endl;
+	cout << "\t       -v " << ((verbose) ? "yes" : "no") << endl;
+	cout << "\t       -r=" << repeatTimes << " times" << endl;
 
 	if (fileName==NULL)
 	{

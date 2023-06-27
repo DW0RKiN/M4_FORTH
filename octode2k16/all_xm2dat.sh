@@ -1,5 +1,7 @@
 #!/bin/sh
 
+from=./Data/
+
 #check ./xm2octode2k16
 if [ ! -f ./xm2octode2k16 ] ; then
 	printf "Compile xm2octode2k16.cpp\n"
@@ -10,8 +12,8 @@ if [ ! -f ./xm2octode2k16 ] ; then
 	exit 2
 fi
    
-for file in *.xm; do
-	./xm2octode2k16 $file $@
+for file in ${from}*.xm; do
+	./xm2octode2k16 $@ $file 
 	error=$?      
 	[ $error != 0 ] && printf "Error: $error\n" >&2 && exit 1
 done

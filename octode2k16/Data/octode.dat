@@ -1,0 +1,728 @@
+; relocatable file:
+;   the base address is ./Data/octode
+;   the loop address is ./Data/octode_loop
+; M4 support:
+;   no one comma
+;   macro file_size defined
+
+  ifndef ./Data/octode
+./Data/octode equ $
+  endif
+
+;loop
+	dw ./Data/octode_loop
+
+./Data/octode_start equ ./Data/octode + 0x2
+;sequence
+./Data/octode_loop equ ./Data/octode + 0x2
+	dw ./Data/octode_ptn0
+	dw ./Data/octode_ptn0
+	dw ./Data/octode_ptn1
+	dw ./Data/octode_ptn1
+	db 2	; lo = repeat times
+	db 0	; hi = end mark
+; 0xc bytes
+
+./Data/octode_ptn0 equ ./Data/octode + 0xc
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row0
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row2
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row3
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row3
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row2
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row2
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row3
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row3
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row4
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row4
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row5
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row5
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row4
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row4
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row5
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row5
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row6
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row6
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row7
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row7
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row6
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row6
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row7
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row7
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row2
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row2
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row3
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row3
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row2
+
+	dw 0x300
+	dw ./Data/octode_row8
+
+	dw 0x300
+	dw ./Data/octode_row8
+
+	dw 0x300
+	dw ./Data/octode_row8
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	db 0x40
+; 0x12b bytes
+
+./Data/octode_ptn1 equ ./Data/octode + 0x137
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row2
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row2
+
+	dw 0x300
+	dw ./Data/octode_row8
+
+	dw 0x301
+	dw 0x0080
+	dw ./Data/octode_row9
+
+	dw 0x300
+	dw ./Data/octode_rowa
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_rowb
+
+	dw 0x300
+	dw ./Data/octode_rowb
+
+	dw 0x300
+	dw ./Data/octode_rowc
+
+	dw 0x300
+	dw ./Data/octode_rowc
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row9
+
+	dw 0x300
+	dw ./Data/octode_row9
+
+	dw 0x301
+	dw 0x0080
+	dw ./Data/octode_rowa
+
+	dw 0x300
+	dw ./Data/octode_rowa
+
+	dw 0x300
+	dw ./Data/octode_rowd
+
+	dw 0x300
+	dw ./Data/octode_rowa
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_rowe
+
+	dw 0x300
+	dw ./Data/octode_rowf
+
+	dw 0x300
+	dw ./Data/octode_rowe
+
+	dw 0x300
+	dw ./Data/octode_row10
+
+	dw 0x301
+	dw 0x0080
+	dw ./Data/octode_row11
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row11
+
+	dw 0x300
+	dw ./Data/octode_row11
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row11
+
+	dw 0x300
+	dw ./Data/octode_row11
+
+	dw 0x301
+	dw 0x0080
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row4
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row6
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row6
+
+	dw 0x300
+	dw ./Data/octode_row12
+
+	dw 0x301
+	dw 0x0080
+	dw ./Data/octode_row13
+
+	dw 0x300
+	dw ./Data/octode_row14
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row15
+
+	dw 0x300
+	dw ./Data/octode_row15
+
+	dw 0x300
+	dw ./Data/octode_rowa
+
+	dw 0x300
+	dw ./Data/octode_rowa
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row16
+
+	dw 0x300
+	dw ./Data/octode_row16
+
+	dw 0x301
+	dw 0x0080
+	dw ./Data/octode_rowc
+
+	dw 0x300
+	dw ./Data/octode_rowc
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row17
+
+	dw 0x300
+	dw ./Data/octode_rowc
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_rowd
+
+	dw 0x300
+	dw ./Data/octode_rowa
+
+	dw 0x300
+	dw ./Data/octode_rowd
+
+	dw 0x300
+	dw ./Data/octode_row18
+
+	dw 0x301
+	dw 0x0080
+	dw ./Data/octode_row19
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row19
+
+	dw 0x300
+	dw ./Data/octode_row19
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x304
+	dw 0x0080
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x301
+	dw 0x0080
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	dw 0x300
+	dw ./Data/octode_row1
+
+	db 0x40
+; 0x12d bytes
+
+
+
+;row buffers
+./Data/octode_rows equ ./Data/octode + 0x264
+./Data/octode_row0 equ ./Data/octode_rows + 0x0
+	dw 0x400
+	dw 0x3f6
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row1 equ ./Data/octode_rows + 0x10
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row2 equ ./Data/octode_rows + 0x20
+	dw 0x400
+	dw 0x3f6
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row3 equ ./Data/octode_rows + 0x30
+	dw 0x800
+	dw 0x7ec
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row4 equ ./Data/octode_rows + 0x40
+	dw 0x2ab
+	dw 0x2a5
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row5 equ ./Data/octode_rows + 0x50
+	dw 0x557
+	dw 0x54a
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row6 equ ./Data/octode_rows + 0x60
+	dw 0x2ff
+	dw 0x2f8
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row7 equ ./Data/octode_rows + 0x70
+	dw 0x5fe
+	dw 0x5ef
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row8 equ ./Data/octode_rows + 0x80
+	dw 0x400
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row9 equ ./Data/octode_rows + 0x90
+	dw 0x0
+	dw 0x0
+	dw 0x800
+	dw 0xa14
+	dw 0x5fe
+	dw 0x1000
+	dw 0x800
+	dw 0x0
+
+./Data/octode_rowa equ ./Data/octode_rows + 0xa0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x1000
+	dw 0x800
+	dw 0x0
+
+./Data/octode_rowb equ ./Data/octode_rows + 0xb0
+	dw 0x0
+	dw 0x0
+	dw 0x800
+	dw 0xa14
+	dw 0x5fe
+	dw 0x11f6
+	dw 0x8fb
+	dw 0x0
+
+./Data/octode_rowc equ ./Data/octode_rows + 0xc0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x11f6
+	dw 0x8fb
+	dw 0x0
+
+./Data/octode_rowd equ ./Data/octode_rows + 0xd0
+	dw 0x400
+	dw 0x3f6
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x1000
+	dw 0x800
+	dw 0x0
+
+./Data/octode_rowe equ ./Data/octode_rows + 0xe0
+	dw 0x2ab
+	dw 0x2a5
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0xd74
+	dw 0x6ba
+	dw 0x0
+
+./Data/octode_rowf equ ./Data/octode_rows + 0xf0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0xd74
+	dw 0x6ba
+	dw 0x0
+
+./Data/octode_row10 equ ./Data/octode_rows + 0x100
+	dw 0x2ab
+	dw 0x2ab
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0xd74
+	dw 0x6ba
+	dw 0x0
+
+./Data/octode_row11 equ ./Data/octode_rows + 0x110
+	dw 0x0
+	dw 0x0
+	dw 0x557
+	dw 0xd74
+	dw 0x800
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row12 equ ./Data/octode_rows + 0x120
+	dw 0x2ff
+	dw 0x2ff
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/octode_row13 equ ./Data/octode_rows + 0x130
+	dw 0x0
+	dw 0x0
+	dw 0x5fe
+	dw 0xf1a
+	dw 0x8fb
+	dw 0xf1a
+	dw 0x78d
+	dw 0x0
+
+./Data/octode_row14 equ ./Data/octode_rows + 0x140
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0xf1a
+	dw 0x78d
+	dw 0x0
+
+./Data/octode_row15 equ ./Data/octode_rows + 0x150
+	dw 0x0
+	dw 0x0
+	dw 0x5fe
+	dw 0xf1a
+	dw 0x8fb
+	dw 0x1000
+	dw 0x800
+	dw 0x0
+
+./Data/octode_row16 equ ./Data/octode_rows + 0x160
+	dw 0x0
+	dw 0x0
+	dw 0x5fe
+	dw 0xf1a
+	dw 0x8fb
+	dw 0x11f6
+	dw 0x8fb
+	dw 0x0
+
+./Data/octode_row17 equ ./Data/octode_rows + 0x170
+	dw 0x2ff
+	dw 0x2f8
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x11f6
+	dw 0x8fb
+	dw 0x0
+
+./Data/octode_row18 equ ./Data/octode_rows + 0x180
+	dw 0x400
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x1000
+	dw 0x800
+	dw 0x0
+
+./Data/octode_row19 equ ./Data/octode_rows + 0x190
+	dw 0x0
+	dw 0x0
+	dw 0x800
+	dw 0xa14
+	dw 0x5fe
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+
+; 0x1a0 bytes
+; file_size = 0x404 bytes
+; define({./Data/octode_size}, 0x404)

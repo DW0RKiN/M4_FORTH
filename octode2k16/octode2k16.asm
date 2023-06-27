@@ -16,6 +16,9 @@
 ;         A  - vol.add
 ;       A',I - timer
 
+
+ifndef OCTODE2K16_ROUTINE
+
 NMOS EQU 1
 CMOS EQU 2
 
@@ -24,8 +27,13 @@ OUT_C_0x00  equ 0x71ed  ; out (C),0x00 ; 2:12
 
   if 1
 ; Z80=NMOS              ; values for NMOS Z80
-PCTRL       equ 0x10fe
-PCTRL_B     equ 0x10
+
+    ifndef SHOW_BORDER_COLOR
+SHOW_BORDER_COLOR equ 0
+    endif
+
+PCTRL       equ 0x10fe + 256*SHOW_BORDER_COLOR
+PCTRL_B     equ 0x10 + SHOW_BORDER_COLOR
   else
 ; Z80=CMOS              ; values for CMOS Z80
 PCTRL       equ 0x00fe
@@ -1477,3 +1485,4 @@ core8:                  ;           vol 8 - 192t
     jp  (HL)            ; 1:4       jump to next frame
     ;. . . . . . . . . ;[30:192]
                       ;[138:768]
+endif

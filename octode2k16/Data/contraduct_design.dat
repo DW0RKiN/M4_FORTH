@@ -1,0 +1,7212 @@
+; relocatable file:
+;   the base address is ./Data/contraduct_design
+;   the loop address is ./Data/contraduct_design_loop
+; M4 support:
+;   no one comma
+;   macro file_size defined
+
+  ifndef ./Data/contraduct_design
+./Data/contraduct_design equ $
+  endif
+
+;loop
+	dw ./Data/contraduct_design_loop
+
+./Data/contraduct_design_start equ ./Data/contraduct_design + 0x2
+;sequence
+	dw ./Data/contraduct_design_ptn0
+./Data/contraduct_design_loop equ ./Data/contraduct_design + 0x4
+	dw ./Data/contraduct_design_ptn1
+	dw ./Data/contraduct_design_ptn2
+	dw ./Data/contraduct_design_ptn1
+	dw ./Data/contraduct_design_ptn3
+	dw ./Data/contraduct_design_ptn4
+	dw ./Data/contraduct_design_ptn5
+	dw ./Data/contraduct_design_ptn6
+	dw ./Data/contraduct_design_ptn7
+	dw ./Data/contraduct_design_ptn8
+	dw ./Data/contraduct_design_ptn9
+	dw ./Data/contraduct_design_ptna
+	dw ./Data/contraduct_design_ptnb
+	db 2	; lo = repeat times
+	db 0	; hi = end mark
+; 0x1e bytes
+
+./Data/contraduct_design_ptn0 equ ./Data/contraduct_design + 0x1e
+	dw 0x680
+	dw 0x0040
+	dw ./Data/contraduct_design_row0
+
+	dw 0x680
+	dw 0x0040
+	dw ./Data/contraduct_design_row1
+
+	dw 0x680
+	dw 0x0040
+	dw ./Data/contraduct_design_row2
+
+	dw 0x680
+	dw 0x0040
+	dw ./Data/contraduct_design_row2
+
+	dw 0x680
+	dw 0x0040
+	dw ./Data/contraduct_design_row3
+
+	dw 0x680
+	dw 0x0040
+	dw ./Data/contraduct_design_row3
+
+	dw 0x680
+	dw 0x0040
+	dw ./Data/contraduct_design_row4
+
+	dw 0x680
+	dw 0x0040
+	dw ./Data/contraduct_design_row5
+
+	db 0x40
+; 0x31 bytes
+
+./Data/contraduct_design_ptn1 equ ./Data/contraduct_design + 0x4f
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row6
+
+	dw 0x600
+	dw ./Data/contraduct_design_row7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8
+
+	dw 0x600
+	dw ./Data/contraduct_design_row9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowd
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowf
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row10
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row12
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row13
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row15
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row16
+
+	dw 0x600
+	dw ./Data/contraduct_design_row7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8
+
+	dw 0x600
+	dw ./Data/contraduct_design_row9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowd
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowf
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row10
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row12
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row13
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row17
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row15
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row18
+
+	dw 0x600
+	dw ./Data/contraduct_design_row19
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row20
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row21
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row22
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row23
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row24
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row25
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row26
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row18
+
+	dw 0x600
+	dw ./Data/contraduct_design_row19
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row20
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row21
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row12
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row24
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row15
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptn2 equ ./Data/contraduct_design + 0x1b0
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row27
+
+	dw 0x600
+	dw ./Data/contraduct_design_row28
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row29
+
+	dw 0x600
+	dw ./Data/contraduct_design_row2a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row2e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row30
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row31
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row32
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row33
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row34
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row35
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row36
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row37
+
+	dw 0x600
+	dw ./Data/contraduct_design_row28
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row29
+
+	dw 0x600
+	dw ./Data/contraduct_design_row2a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row2e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row30
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row31
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row32
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row33
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row34
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row38
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row36
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row39
+
+	dw 0x600
+	dw ./Data/contraduct_design_row3a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3b
+
+	dw 0x600
+	dw ./Data/contraduct_design_row3c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row40
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row41
+
+	dw 0x600
+	dw ./Data/contraduct_design_row42
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row43
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row44
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row45
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row46
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row25
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row47
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row39
+
+	dw 0x600
+	dw ./Data/contraduct_design_row3a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3b
+
+	dw 0x600
+	dw ./Data/contraduct_design_row3c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row40
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row41
+
+	dw 0x600
+	dw ./Data/contraduct_design_row42
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row43
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row12
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row48
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row25
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row49
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptn3 equ ./Data/contraduct_design + 0x311
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row27
+
+	dw 0x600
+	dw ./Data/contraduct_design_row28
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row29
+
+	dw 0x600
+	dw ./Data/contraduct_design_row2a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row2e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row30
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row31
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row32
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row33
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row34
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row35
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row36
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row37
+
+	dw 0x600
+	dw ./Data/contraduct_design_row28
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row29
+
+	dw 0x600
+	dw ./Data/contraduct_design_row2a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row2e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row2f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row30
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row31
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row32
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row33
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row34
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row38
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row36
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row39
+
+	dw 0x600
+	dw ./Data/contraduct_design_row3a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3b
+
+	dw 0x600
+	dw ./Data/contraduct_design_row3c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row3f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row40
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row41
+
+	dw 0x600
+	dw ./Data/contraduct_design_row42
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row43
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row44
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row45
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row46
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row25
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row47
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row4a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row4b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row4c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row4d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row4e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row4f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row50
+
+	dw 0x604
+	dw 0x0020
+	dw ./Data/contraduct_design_row51
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row52
+
+	dw 0x600
+	dw ./Data/contraduct_design_row53
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row54
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row55
+
+	dw 0x600
+	dw ./Data/contraduct_design_row56
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row57
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row58
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row59
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptn4 equ ./Data/contraduct_design + 0x472
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row5b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row5d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row60
+
+	dw 0x600
+	dw ./Data/contraduct_design_row61
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row62
+
+	dw 0x600
+	dw ./Data/contraduct_design_row63
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row60
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row64
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row5f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row65
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row66
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row67
+
+	dw 0x600
+	dw ./Data/contraduct_design_row68
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row69
+
+	dw 0x600
+	dw ./Data/contraduct_design_row6a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row6b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row6c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row6d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row6e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row6f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row70
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row6d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row71
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row72
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row65
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row73
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row66
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row74
+
+	dw 0x600
+	dw ./Data/contraduct_design_row75
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row76
+
+	dw 0x600
+	dw ./Data/contraduct_design_row77
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row78
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row79
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row7a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row7b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row7c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row7d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row7a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row7e
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row7f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row80
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row81
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row82
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row83
+
+	dw 0x600
+	dw ./Data/contraduct_design_row84
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row85
+
+	dw 0x600
+	dw ./Data/contraduct_design_row7e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row78
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row79
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row7a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row86
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row7c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row7d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row87
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row71
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row88
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row89
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row69
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8a
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptn5 equ ./Data/contraduct_design + 0x5d3
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8b
+
+	dw 0x600
+	dw ./Data/contraduct_design_row8c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row8e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row90
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row91
+
+	dw 0x600
+	dw ./Data/contraduct_design_row92
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row93
+
+	dw 0x600
+	dw ./Data/contraduct_design_row94
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row91
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row95
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row90
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row96
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row97
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row98
+
+	dw 0x600
+	dw ./Data/contraduct_design_row99
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row9a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row9b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row9c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row9d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row9e
+
+	dw 0x600
+	dw ./Data/contraduct_design_row9f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa0
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowa1
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row9e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa2
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa3
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa4
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa5
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa6
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa7
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowa8
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa5
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowa9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowaa
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowab
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowac
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowad
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowae
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowaf
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowac
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb0
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_rowab
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb1
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb3
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa7
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowa8
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa5
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowa9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowaa
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowab
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowac
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowad
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb4
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowb5
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb6
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row71
+
+	dw 0x604
+	dw 0x0020
+	dw ./Data/contraduct_design_row72
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb8
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowb9
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptn6 equ ./Data/contraduct_design + 0x734
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row5b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row5d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row5f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row60
+
+	dw 0x600
+	dw ./Data/contraduct_design_row61
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row62
+
+	dw 0x600
+	dw ./Data/contraduct_design_row63
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row60
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row64
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row5f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowba
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row69
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row66
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row67
+
+	dw 0x600
+	dw ./Data/contraduct_design_row68
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row69
+
+	dw 0x600
+	dw ./Data/contraduct_design_row6a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowbb
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row88
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowbc
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowbd
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row6f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row70
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row6d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row71
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_rowbe
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowbf
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row73
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc0
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row74
+
+	dw 0x600
+	dw ./Data/contraduct_design_row75
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row76
+
+	dw 0x600
+	dw ./Data/contraduct_design_row77
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc1
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc3
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowc4
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc5
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowc6
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc3
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row77
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc8
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowca
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row74
+
+	dw 0x600
+	dw ./Data/contraduct_design_row75
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row76
+
+	dw 0x600
+	dw ./Data/contraduct_design_row77
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc1
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc3
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowcb
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowcc
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowcd
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowce
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowcf
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc8
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowd0
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowc0
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptn7 equ ./Data/contraduct_design + 0x895
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowd1
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowd2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row8e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row90
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row91
+
+	dw 0x600
+	dw ./Data/contraduct_design_row92
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row93
+
+	dw 0x600
+	dw ./Data/contraduct_design_row94
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row91
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row95
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row90
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row96
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row97
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowd3
+
+	dw 0x600
+	dw ./Data/contraduct_design_row8c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row8e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row90
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row91
+
+	dw 0x600
+	dw ./Data/contraduct_design_row92
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowd4
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowd5
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowd6
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowa2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowd7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowd8
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowd9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowda
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowdb
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowdc
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowdd
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowde
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowdf
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe0
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe1
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowe2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe3
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowe4
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe1
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row8e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe0
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe5
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe6
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowe8
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowe9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowea
+
+	dw 0x600
+	dw ./Data/contraduct_design_roweb
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowec
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowed
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowee
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowef
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowf0
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowf1
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowf2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowf3
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row72
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowf4
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowf5
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowf6
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptn8 equ ./Data/contraduct_design + 0x9f6
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowf7
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowf8
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowf9
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowfa
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowfb
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowfc
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowfd
+
+	dw 0x600
+	dw ./Data/contraduct_design_rowfe
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_rowff
+
+	dw 0x600
+	dw ./Data/contraduct_design_row100
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row101
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row102
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row103
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row104
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row105
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row106
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row107
+
+	dw 0x600
+	dw ./Data/contraduct_design_row108
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row109
+
+	dw 0x600
+	dw ./Data/contraduct_design_row10a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row10b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row10c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row10d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row10e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row10f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row110
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row111
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row112
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row113
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row114
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row115
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row116
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row117
+
+	dw 0x600
+	dw ./Data/contraduct_design_row118
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row119
+
+	dw 0x600
+	dw ./Data/contraduct_design_row11a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row10c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row11d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11e
+
+	dw 0x600
+	dw ./Data/contraduct_design_row11f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row120
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row121
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row122
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row123
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row124
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row125
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row117
+
+	dw 0x600
+	dw ./Data/contraduct_design_row118
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row119
+
+	dw 0x600
+	dw ./Data/contraduct_design_row11a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row10c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row11d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row11e
+
+	dw 0x600
+	dw ./Data/contraduct_design_row11f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row120
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row112
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row113
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row123
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row126
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row127
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptn9 equ ./Data/contraduct_design + 0xb57
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row128
+
+	dw 0x600
+	dw ./Data/contraduct_design_row129
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row12a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row12b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row12c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row12d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row12e
+
+	dw 0x600
+	dw ./Data/contraduct_design_row12f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row130
+
+	dw 0x600
+	dw ./Data/contraduct_design_row131
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row132
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row133
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row134
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row135
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row136
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row137
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row138
+
+	dw 0x600
+	dw ./Data/contraduct_design_row139
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row13a
+
+	dw 0x600
+	dw ./Data/contraduct_design_row13b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row13c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row13d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row13e
+
+	dw 0x600
+	dw ./Data/contraduct_design_row13f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row140
+
+	dw 0x600
+	dw ./Data/contraduct_design_row141
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row142
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row143
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row144
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row145
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row146
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row137
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row147
+
+	dw 0x600
+	dw ./Data/contraduct_design_row148
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row149
+
+	dw 0x600
+	dw ./Data/contraduct_design_row14a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row14e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row150
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row151
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row152
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row153
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row154
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row124
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row155
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row147
+
+	dw 0x600
+	dw ./Data/contraduct_design_row148
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row149
+
+	dw 0x600
+	dw ./Data/contraduct_design_row14a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row14e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row14f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row150
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row151
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row112
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row156
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row157
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row124
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row158
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptna equ ./Data/contraduct_design + 0xcb8
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row159
+
+	dw 0x600
+	dw ./Data/contraduct_design_row15a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row15b
+
+	dw 0x600
+	dw ./Data/contraduct_design_row15c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row15d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row15e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row15f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row160
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row161
+
+	dw 0x600
+	dw ./Data/contraduct_design_row162
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row163
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row164
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row165
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row166
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row167
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row168
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row169
+
+	dw 0x600
+	dw ./Data/contraduct_design_row16a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row16b
+
+	dw 0x600
+	dw ./Data/contraduct_design_row16c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row16d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row16e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row16f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row170
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row171
+
+	dw 0x600
+	dw ./Data/contraduct_design_row172
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row173
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row174
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row175
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row166
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row176
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row168
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row177
+
+	dw 0x600
+	dw ./Data/contraduct_design_row178
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row179
+
+	dw 0x600
+	dw ./Data/contraduct_design_row17a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row17b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row16e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row17c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row17d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row17e
+
+	dw 0x600
+	dw ./Data/contraduct_design_row17f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row180
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row181
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row182
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row183
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row184
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row185
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row177
+
+	dw 0x600
+	dw ./Data/contraduct_design_row178
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row179
+
+	dw 0x600
+	dw ./Data/contraduct_design_row17a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row17b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row16e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row17c
+
+	dw 0x600
+	dw ./Data/contraduct_design_row17d
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row17e
+
+	dw 0x600
+	dw ./Data/contraduct_design_row17f
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row180
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row174
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row175
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row183
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row167
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row186
+
+	db 0x40
+; 0x161 bytes
+
+./Data/contraduct_design_ptnb equ ./Data/contraduct_design + 0xe19
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row187
+
+	dw 0x600
+	dw ./Data/contraduct_design_row188
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row189
+
+	dw 0x600
+	dw ./Data/contraduct_design_row18a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row18b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row18c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row18d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row18e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row18f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row190
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row191
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row192
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row193
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row194
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row195
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row196
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row197
+
+	dw 0x600
+	dw ./Data/contraduct_design_row198
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row199
+
+	dw 0x600
+	dw ./Data/contraduct_design_row19a
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row19b
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row19c
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row19d
+
+	dw 0x600
+	dw ./Data/contraduct_design_row19e
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row19f
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1a0
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a1
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a3
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a4
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a5
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row196
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a6
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1a7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a8
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1a9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1aa
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1ab
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1ac
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1ad
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1ae
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1af
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1b0
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1b1
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1b2
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1b3
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row184
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1b4
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a6
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1a7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1a8
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1a9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1aa
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1ab
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1ac
+
+	dw 0x604
+	dw 0x0020
+	dw ./Data/contraduct_design_row1ad
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1b5
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1b6
+
+	dw 0x604
+	dw 0x0080
+	dw ./Data/contraduct_design_row1b7
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1b8
+
+	dw 0x600
+	dw ./Data/contraduct_design_row1b9
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1ba
+
+	dw 0x601
+	dw 0x0080
+	dw ./Data/contraduct_design_row1bb
+
+	dw 0x604
+	dw 0x0030
+	dw ./Data/contraduct_design_row1bc
+
+	db 0x40
+; 0x161 bytes
+
+
+
+;row buffers
+./Data/contraduct_design_rows equ ./Data/contraduct_design + 0xf7a
+./Data/contraduct_design_row0 equ ./Data/contraduct_design_rows + 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row1 equ ./Data/contraduct_design_rows + 0x10
+	dw 0x0
+	dw 0x800
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row2 equ ./Data/contraduct_design_rows + 0x20
+	dw 0x0
+	dw 0x800
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row3 equ ./Data/contraduct_design_rows + 0x30
+	dw 0x0
+	dw 0x984
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row4 equ ./Data/contraduct_design_rows + 0x40
+	dw 0x0
+	dw 0x557
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row5 equ ./Data/contraduct_design_rows + 0x50
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row6 equ ./Data/contraduct_design_rows + 0x60
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x260e
+	dw 0x557
+	dw 0xaae
+	dw 0x0
+
+./Data/contraduct_design_row7 equ ./Data/contraduct_design_rows + 0x70
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x557
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row8 equ ./Data/contraduct_design_rows + 0x80
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row9 equ ./Data/contraduct_design_rows + 0x90
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x1000
+	dw 0x155c
+	dw 0xaae
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_rowa equ ./Data/contraduct_design_rows + 0xa0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x557
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowb equ ./Data/contraduct_design_rows + 0xb0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowc equ ./Data/contraduct_design_rows + 0xc0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x260e
+	dw 0x1000
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowd equ ./Data/contraduct_design_rows + 0xd0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2000
+	dw 0x155c
+	dw 0x557
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowe equ ./Data/contraduct_design_rows + 0xe0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0xaae
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowf equ ./Data/contraduct_design_rows + 0xf0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2000
+	dw 0x260e
+	dw 0x557
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_row10 equ ./Data/contraduct_design_rows + 0x100
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row11 equ ./Data/contraduct_design_rows + 0x110
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2ff2
+	dw 0x2ab7
+	dw 0x984
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row12 equ ./Data/contraduct_design_rows + 0x120
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x1000
+	dw 0x2000
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row13 equ ./Data/contraduct_design_rows + 0x130
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x260e
+	dw 0x155c
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row14 equ ./Data/contraduct_design_rows + 0x140
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2ff2
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row15 equ ./Data/contraduct_design_rows + 0x150
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+	dw 0x1000
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row16 equ ./Data/contraduct_design_rows + 0x160
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x260e
+	dw 0x557
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row17 equ ./Data/contraduct_design_rows + 0x170
+	dw 0x0
+	dw 0xbfd
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2ff2
+	dw 0xbfd
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row18 equ ./Data/contraduct_design_rows + 0x180
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x260e
+	dw 0x43d
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row19 equ ./Data/contraduct_design_rows + 0x190
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x43d
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row1a equ ./Data/contraduct_design_rows + 0x1a0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0x87a
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row1b equ ./Data/contraduct_design_rows + 0x1b0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x1000
+	dw 0x155c
+	dw 0x87a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row1c equ ./Data/contraduct_design_rows + 0x1c0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x43d
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row1d equ ./Data/contraduct_design_rows + 0x1d0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x260e
+	dw 0x1000
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row1e equ ./Data/contraduct_design_rows + 0x1e0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2000
+	dw 0x155c
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1f equ ./Data/contraduct_design_rows + 0x1f0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0x87a
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row20 equ ./Data/contraduct_design_rows + 0x200
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2000
+	dw 0x260e
+	dw 0x87a
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_row21 equ ./Data/contraduct_design_rows + 0x210
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row22 equ ./Data/contraduct_design_rows + 0x220
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ff2
+	dw 0x2ab7
+	dw 0x87a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row23 equ ./Data/contraduct_design_rows + 0x230
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x1000
+	dw 0x2000
+	dw 0x87a
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row24 equ ./Data/contraduct_design_rows + 0x240
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x260e
+	dw 0x155c
+	dw 0x43d
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row25 equ ./Data/contraduct_design_rows + 0x250
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2ff2
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row26 equ ./Data/contraduct_design_rows + 0x260
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2000
+	dw 0x1000
+	dw 0x87a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row27 equ ./Data/contraduct_design_rows + 0x270
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x260e
+	dw 0x390
+	dw 0xaae
+	dw 0x0
+
+./Data/contraduct_design_row28 equ ./Data/contraduct_design_rows + 0x280
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x390
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row29 equ ./Data/contraduct_design_rows + 0x290
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0x721
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row2a equ ./Data/contraduct_design_rows + 0x2a0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x1000
+	dw 0x155c
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row2b equ ./Data/contraduct_design_rows + 0x2b0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x390
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_row2c equ ./Data/contraduct_design_rows + 0x2c0
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x65a
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_row2d equ ./Data/contraduct_design_rows + 0x2d0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x260e
+	dw 0x1000
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row2e equ ./Data/contraduct_design_rows + 0x2e0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2000
+	dw 0x155c
+	dw 0x390
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row2f equ ./Data/contraduct_design_rows + 0x2f0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0x721
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row30 equ ./Data/contraduct_design_rows + 0x300
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2000
+	dw 0x260e
+	dw 0x390
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_row31 equ ./Data/contraduct_design_rows + 0x310
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row32 equ ./Data/contraduct_design_rows + 0x320
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x2ff2
+	dw 0x2ab7
+	dw 0x65a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row33 equ ./Data/contraduct_design_rows + 0x330
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x1000
+	dw 0x2000
+	dw 0x65a
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_row34 equ ./Data/contraduct_design_rows + 0x340
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x260e
+	dw 0x155c
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row35 equ ./Data/contraduct_design_rows + 0x350
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2ff2
+	dw 0x721
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row36 equ ./Data/contraduct_design_rows + 0x360
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x2000
+	dw 0x1000
+	dw 0x65a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row37 equ ./Data/contraduct_design_rows + 0x370
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x260e
+	dw 0x390
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row38 equ ./Data/contraduct_design_rows + 0x380
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2ff2
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row39 equ ./Data/contraduct_design_rows + 0x390
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x260e
+	dw 0x400
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row3a equ ./Data/contraduct_design_rows + 0x3a0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x400
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row3b equ ./Data/contraduct_design_rows + 0x3b0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row3c equ ./Data/contraduct_design_rows + 0x3c0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1000
+	dw 0x155c
+	dw 0x800
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row3d equ ./Data/contraduct_design_rows + 0x3d0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x400
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row3e equ ./Data/contraduct_design_rows + 0x3e0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x721
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row3f equ ./Data/contraduct_design_rows + 0x3f0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x260e
+	dw 0x1000
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row40 equ ./Data/contraduct_design_rows + 0x400
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x2000
+	dw 0x155c
+	dw 0x400
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row41 equ ./Data/contraduct_design_rows + 0x410
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0x800
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row42 equ ./Data/contraduct_design_rows + 0x420
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x2000
+	dw 0x260e
+	dw 0x800
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_row43 equ ./Data/contraduct_design_rows + 0x430
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row44 equ ./Data/contraduct_design_rows + 0x440
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2ff2
+	dw 0x2ab7
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row45 equ ./Data/contraduct_design_rows + 0x450
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x1000
+	dw 0x2000
+	dw 0x721
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row46 equ ./Data/contraduct_design_rows + 0x460
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x260e
+	dw 0x155c
+	dw 0x400
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row47 equ ./Data/contraduct_design_rows + 0x470
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2000
+	dw 0x1000
+	dw 0x721
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row48 equ ./Data/contraduct_design_rows + 0x480
+	dw 0x0
+	dw 0x4c2
+	dw 0x0
+	dw 0x260e
+	dw 0x155c
+	dw 0x4c2
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row49 equ ./Data/contraduct_design_rows + 0x490
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x2000
+	dw 0x1000
+	dw 0xaae
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row4a equ ./Data/contraduct_design_rows + 0x4a0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x260e
+	dw 0x400
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row4b equ ./Data/contraduct_design_rows + 0x4b0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row4c equ ./Data/contraduct_design_rows + 0x4c0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x2ab7
+	dw 0x2000
+	dw 0x800
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row4d equ ./Data/contraduct_design_rows + 0x4d0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1000
+	dw 0x155c
+	dw 0x800
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row4e equ ./Data/contraduct_design_rows + 0x4e0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x2000
+	dw 0x400
+	dw 0x0
+	dw 0x2000
+
+./Data/contraduct_design_row4f equ ./Data/contraduct_design_rows + 0x4f0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x721
+	dw 0x0
+	dw 0x2000
+
+./Data/contraduct_design_row50 equ ./Data/contraduct_design_rows + 0x500
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x260e
+	dw 0x1000
+	dw 0x400
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row51 equ ./Data/contraduct_design_rows + 0x510
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x2000
+	dw 0x155c
+	dw 0x400
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row52 equ ./Data/contraduct_design_rows + 0x520
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x260e
+	dw 0x2000
+	dw 0x800
+	dw 0x2ab7
+	dw 0x260e
+
+./Data/contraduct_design_row53 equ ./Data/contraduct_design_rows + 0x530
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x260e
+	dw 0x260e
+	dw 0x800
+	dw 0x2000
+	dw 0x1966
+
+./Data/contraduct_design_row54 equ ./Data/contraduct_design_rows + 0x540
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x260e
+	dw 0x2000
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row55 equ ./Data/contraduct_design_rows + 0x550
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+	dw 0x2ab7
+	dw 0x984
+	dw 0x2ff2
+	dw 0x155c
+
+./Data/contraduct_design_row56 equ ./Data/contraduct_design_rows + 0x560
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+	dw 0x2000
+	dw 0x984
+	dw 0x1000
+	dw 0x2000
+
+./Data/contraduct_design_row57 equ ./Data/contraduct_design_rows + 0x570
+	dw 0x0
+	dw 0x4c2
+	dw 0x0
+	dw 0x1966
+	dw 0x155c
+	dw 0x4c2
+	dw 0x260e
+	dw 0x2000
+
+./Data/contraduct_design_row58 equ ./Data/contraduct_design_rows + 0x580
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x1307
+	dw 0x2ff2
+	dw 0x984
+	dw 0x2ab7
+	dw 0x2ab7
+
+./Data/contraduct_design_row59 equ ./Data/contraduct_design_rows + 0x590
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x1307
+	dw 0x1000
+	dw 0xaae
+	dw 0x2000
+	dw 0x260e
+
+./Data/contraduct_design_row5a equ ./Data/contraduct_design_rows + 0x5a0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x0
+
+./Data/contraduct_design_row5b equ ./Data/contraduct_design_rows + 0x5b0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row5c equ ./Data/contraduct_design_rows + 0x5c0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row5d equ ./Data/contraduct_design_rows + 0x5d0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0xaae
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row5e equ ./Data/contraduct_design_rows + 0x5e0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row5f equ ./Data/contraduct_design_rows + 0x5f0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row60 equ ./Data/contraduct_design_rows + 0x600
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row61 equ ./Data/contraduct_design_rows + 0x610
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row62 equ ./Data/contraduct_design_rows + 0x620
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0xaae
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row63 equ ./Data/contraduct_design_rows + 0x630
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_row64 equ ./Data/contraduct_design_rows + 0x640
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row65 equ ./Data/contraduct_design_rows + 0x650
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row66 equ ./Data/contraduct_design_rows + 0x660
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row67 equ ./Data/contraduct_design_rows + 0x670
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row68 equ ./Data/contraduct_design_rows + 0x680
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row69 equ ./Data/contraduct_design_rows + 0x690
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row6a equ ./Data/contraduct_design_rows + 0x6a0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0xaae
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row6b equ ./Data/contraduct_design_rows + 0x6b0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row6c equ ./Data/contraduct_design_rows + 0x6c0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row6d equ ./Data/contraduct_design_rows + 0x6d0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row6e equ ./Data/contraduct_design_rows + 0x6e0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row6f equ ./Data/contraduct_design_rows + 0x6f0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0xaae
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row70 equ ./Data/contraduct_design_rows + 0x700
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_row71 equ ./Data/contraduct_design_rows + 0x710
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row72 equ ./Data/contraduct_design_rows + 0x720
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row73 equ ./Data/contraduct_design_rows + 0x730
+	dw 0x0
+	dw 0xbfd
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0xbfd
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row74 equ ./Data/contraduct_design_rows + 0x740
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x43d
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row75 equ ./Data/contraduct_design_rows + 0x750
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x43d
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row76 equ ./Data/contraduct_design_rows + 0x760
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x87a
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row77 equ ./Data/contraduct_design_rows + 0x770
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x87a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row78 equ ./Data/contraduct_design_rows + 0x780
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x43d
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row79 equ ./Data/contraduct_design_rows + 0x790
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row7a equ ./Data/contraduct_design_rows + 0x7a0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row7b equ ./Data/contraduct_design_rows + 0x7b0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row7c equ ./Data/contraduct_design_rows + 0x7c0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x87a
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row7d equ ./Data/contraduct_design_rows + 0x7d0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x87a
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_row7e equ ./Data/contraduct_design_rows + 0x7e0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x87a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row7f equ ./Data/contraduct_design_rows + 0x7f0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x87a
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row80 equ ./Data/contraduct_design_rows + 0x800
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row81 equ ./Data/contraduct_design_rows + 0x810
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row82 equ ./Data/contraduct_design_rows + 0x820
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x87a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row83 equ ./Data/contraduct_design_rows + 0x830
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x43d
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row84 equ ./Data/contraduct_design_rows + 0x840
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x43d
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row85 equ ./Data/contraduct_design_rows + 0x850
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x21e7
+	dw 0x0
+	dw 0x87a
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row86 equ ./Data/contraduct_design_rows + 0x860
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row87 equ ./Data/contraduct_design_rows + 0x870
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row88 equ ./Data/contraduct_design_rows + 0x880
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x1c82
+	dw 0x0
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_row89 equ ./Data/contraduct_design_rows + 0x890
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row8a equ ./Data/contraduct_design_rows + 0x8a0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row8b equ ./Data/contraduct_design_rows + 0x8b0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x0
+
+./Data/contraduct_design_row8c equ ./Data/contraduct_design_rows + 0x8c0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row8d equ ./Data/contraduct_design_rows + 0x8d0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x721
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row8e equ ./Data/contraduct_design_rows + 0x8e0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row8f equ ./Data/contraduct_design_rows + 0x8f0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_row90 equ ./Data/contraduct_design_rows + 0x900
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x65a
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_row91 equ ./Data/contraduct_design_rows + 0x910
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row92 equ ./Data/contraduct_design_rows + 0x920
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x390
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row93 equ ./Data/contraduct_design_rows + 0x930
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x721
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row94 equ ./Data/contraduct_design_rows + 0x940
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_row95 equ ./Data/contraduct_design_rows + 0x950
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x65a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row96 equ ./Data/contraduct_design_rows + 0x960
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row97 equ ./Data/contraduct_design_rows + 0x970
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x65a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row98 equ ./Data/contraduct_design_rows + 0x980
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_row99 equ ./Data/contraduct_design_rows + 0x990
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_row9a equ ./Data/contraduct_design_rows + 0x9a0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x721
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row9b equ ./Data/contraduct_design_rows + 0x9b0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row9c equ ./Data/contraduct_design_rows + 0x9c0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_row9d equ ./Data/contraduct_design_rows + 0x9d0
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x65a
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_row9e equ ./Data/contraduct_design_rows + 0x9e0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row9f equ ./Data/contraduct_design_rows + 0x9f0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x390
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowa0 equ ./Data/contraduct_design_rows + 0xa00
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x721
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowa1 equ ./Data/contraduct_design_rows + 0xa10
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_rowa2 equ ./Data/contraduct_design_rows + 0xa20
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x65a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_rowa3 equ ./Data/contraduct_design_rows + 0xa30
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x1c82
+	dw 0x0
+	dw 0x65a
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_rowa4 equ ./Data/contraduct_design_rows + 0xa40
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_rowa5 equ ./Data/contraduct_design_rows + 0xa50
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowa6 equ ./Data/contraduct_design_rows + 0xa60
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x65a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowa7 equ ./Data/contraduct_design_rows + 0xa70
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowa8 equ ./Data/contraduct_design_rows + 0xa80
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_rowa9 equ ./Data/contraduct_design_rows + 0xa90
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x800
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_rowaa equ ./Data/contraduct_design_rows + 0xaa0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowab equ ./Data/contraduct_design_rows + 0xab0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x721
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowac equ ./Data/contraduct_design_rows + 0xac0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowad equ ./Data/contraduct_design_rows + 0xad0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowae equ ./Data/contraduct_design_rows + 0xae0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x800
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowaf equ ./Data/contraduct_design_rows + 0xaf0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x800
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_rowb0 equ ./Data/contraduct_design_rows + 0xb00
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_rowb1 equ ./Data/contraduct_design_rows + 0xb10
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_rowb2 equ ./Data/contraduct_design_rows + 0xb20
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowb3 equ ./Data/contraduct_design_rows + 0xb30
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x1000
+	dw 0x0
+	dw 0x721
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowb4 equ ./Data/contraduct_design_rows + 0xb40
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x800
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowb5 equ ./Data/contraduct_design_rows + 0xb50
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x800
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_rowb6 equ ./Data/contraduct_design_rows + 0xb60
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowb7 equ ./Data/contraduct_design_rows + 0xb70
+	dw 0x0
+	dw 0x4c2
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x4c2
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_rowb8 equ ./Data/contraduct_design_rows + 0xb80
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x1307
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowb9 equ ./Data/contraduct_design_rows + 0xb90
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x1307
+	dw 0x0
+	dw 0xaae
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowba equ ./Data/contraduct_design_rows + 0xba0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_rowbb equ ./Data/contraduct_design_rows + 0xbb0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x1c82
+	dw 0x0
+	dw 0x557
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowbc equ ./Data/contraduct_design_rows + 0xbc0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x1c82
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowbd equ ./Data/contraduct_design_rows + 0xbd0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x1c82
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowbe equ ./Data/contraduct_design_rows + 0xbe0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowbf equ ./Data/contraduct_design_rows + 0xbf0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_rowc0 equ ./Data/contraduct_design_rows + 0xc00
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowc1 equ ./Data/contraduct_design_rows + 0xc10
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x43d
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowc2 equ ./Data/contraduct_design_rows + 0xc20
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x984
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowc3 equ ./Data/contraduct_design_rows + 0xc30
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowc4 equ ./Data/contraduct_design_rows + 0xc40
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowc5 equ ./Data/contraduct_design_rows + 0xc50
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x87a
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowc6 equ ./Data/contraduct_design_rows + 0xc60
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x87a
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_rowc7 equ ./Data/contraduct_design_rows + 0xc70
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x87a
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowc8 equ ./Data/contraduct_design_rows + 0xc80
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_rowc9 equ ./Data/contraduct_design_rows + 0xc90
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowca equ ./Data/contraduct_design_rows + 0xca0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x87a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowcb equ ./Data/contraduct_design_rows + 0xcb0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x32cc
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowcc equ ./Data/contraduct_design_rows + 0xcc0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x32cc
+	dw 0x0
+	dw 0x87a
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowcd equ ./Data/contraduct_design_rows + 0xcd0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x32cc
+	dw 0x0
+	dw 0x87a
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_rowce equ ./Data/contraduct_design_rows + 0xce0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ff2
+	dw 0x0
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowcf equ ./Data/contraduct_design_rows + 0xcf0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2ff2
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_rowd0 equ ./Data/contraduct_design_rows + 0xd00
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowd1 equ ./Data/contraduct_design_rows + 0xd10
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x0
+
+./Data/contraduct_design_rowd2 equ ./Data/contraduct_design_rows + 0xd20
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_rowd3 equ ./Data/contraduct_design_rows + 0xd30
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowd4 equ ./Data/contraduct_design_rows + 0xd40
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x721
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowd5 equ ./Data/contraduct_design_rows + 0xd50
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x390
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_rowd6 equ ./Data/contraduct_design_rows + 0xd60
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowd7 equ ./Data/contraduct_design_rows + 0xd70
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x65a
+	dw 0xaae
+	dw 0x21e7
+
+./Data/contraduct_design_rowd8 equ ./Data/contraduct_design_rows + 0xd80
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_rowd9 equ ./Data/contraduct_design_rows + 0xd90
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowda equ ./Data/contraduct_design_rows + 0xda0
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x65a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowdb equ ./Data/contraduct_design_rows + 0xdb0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowdc equ ./Data/contraduct_design_rows + 0xdc0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_rowdd equ ./Data/contraduct_design_rows + 0xdd0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowde equ ./Data/contraduct_design_rows + 0xde0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x800
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_rowdf equ ./Data/contraduct_design_rows + 0xdf0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowe0 equ ./Data/contraduct_design_rows + 0xe00
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x721
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowe1 equ ./Data/contraduct_design_rows + 0xe10
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowe2 equ ./Data/contraduct_design_rows + 0xe20
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowe3 equ ./Data/contraduct_design_rows + 0xe30
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x800
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowe4 equ ./Data/contraduct_design_rows + 0xe40
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x800
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_rowe5 equ ./Data/contraduct_design_rows + 0xe50
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_rowe6 equ ./Data/contraduct_design_rows + 0xe60
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowe7 equ ./Data/contraduct_design_rows + 0xe70
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+	dw 0x0
+	dw 0x721
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowe8 equ ./Data/contraduct_design_rows + 0xe80
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowe9 equ ./Data/contraduct_design_rows + 0xe90
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x155c
+
+./Data/contraduct_design_rowea equ ./Data/contraduct_design_rows + 0xea0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_roweb equ ./Data/contraduct_design_rows + 0xeb0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x800
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_rowec equ ./Data/contraduct_design_rows + 0xec0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x400
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowed equ ./Data/contraduct_design_rows + 0xed0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x17f9
+	dw 0x0
+	dw 0x721
+	dw 0xaae
+	dw 0x2000
+
+./Data/contraduct_design_rowee equ ./Data/contraduct_design_rows + 0xee0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowef equ ./Data/contraduct_design_rows + 0xef0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowf0 equ ./Data/contraduct_design_rows + 0xf00
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x800
+	dw 0xaae
+	dw 0x260e
+
+./Data/contraduct_design_rowf1 equ ./Data/contraduct_design_rows + 0xf10
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x1966
+	dw 0x0
+	dw 0x800
+	dw 0xaae
+	dw 0x1966
+
+./Data/contraduct_design_rowf2 equ ./Data/contraduct_design_rows + 0xf20
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x1c82
+	dw 0x0
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowf3 equ ./Data/contraduct_design_rows + 0xf30
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x1c82
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_rowf4 equ ./Data/contraduct_design_rows + 0xf40
+	dw 0x0
+	dw 0x4c2
+	dw 0x0
+	dw 0x2000
+	dw 0x0
+	dw 0x4c2
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_rowf5 equ ./Data/contraduct_design_rows + 0xf50
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_rowf6 equ ./Data/contraduct_design_rows + 0xf60
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x260e
+	dw 0x0
+	dw 0xaae
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_rowf7 equ ./Data/contraduct_design_rows + 0xf70
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x1966
+	dw 0x557
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_rowf8 equ ./Data/contraduct_design_rows + 0xf80
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x155c
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_rowf9 equ ./Data/contraduct_design_rows + 0xf90
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x32cc
+	dw 0xcb3
+	dw 0xaae
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_rowfa equ ./Data/contraduct_design_rows + 0xfa0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x1966
+	dw 0xaae
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_rowfb equ ./Data/contraduct_design_rows + 0xfb0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x155c
+	dw 0x557
+	dw 0x0
+	dw 0x2000
+
+./Data/contraduct_design_rowfc equ ./Data/contraduct_design_rows + 0xfc0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x32cc
+	dw 0xaae
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+
+./Data/contraduct_design_rowfd equ ./Data/contraduct_design_rows + 0xfd0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x17f9
+	dw 0x557
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_rowfe equ ./Data/contraduct_design_rows + 0xfe0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x1307
+	dw 0x557
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_rowff equ ./Data/contraduct_design_rows + 0xff0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x32cc
+	dw 0xcb3
+	dw 0xaae
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row100 equ ./Data/contraduct_design_rows + 0x1000
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x1966
+	dw 0x557
+	dw 0x0
+	dw 0x1966
+
+./Data/contraduct_design_row101 equ ./Data/contraduct_design_rows + 0x1010
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x155c
+	dw 0x557
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row102 equ ./Data/contraduct_design_rows + 0x1020
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x32cc
+	dw 0xcb3
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row103 equ ./Data/contraduct_design_rows + 0x1030
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x32cc
+	dw 0x155c
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+
+./Data/contraduct_design_row104 equ ./Data/contraduct_design_rows + 0x1040
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x32cc
+	dw 0xaae
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row105 equ ./Data/contraduct_design_rows + 0x1050
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x32cc
+	dw 0x17f9
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row106 equ ./Data/contraduct_design_rows + 0x1060
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x32cc
+	dw 0x1307
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row107 equ ./Data/contraduct_design_rows + 0x1070
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x557
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row108 equ ./Data/contraduct_design_rows + 0x1080
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x557
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row109 equ ./Data/contraduct_design_rows + 0x1090
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row10a equ ./Data/contraduct_design_rows + 0x10a0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0xaae
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row10b equ ./Data/contraduct_design_rows + 0x10b0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row10c equ ./Data/contraduct_design_rows + 0x10c0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x984
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row10d equ ./Data/contraduct_design_rows + 0x10d0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row10e equ ./Data/contraduct_design_rows + 0x10e0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x557
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row10f equ ./Data/contraduct_design_rows + 0x10f0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0xaae
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row110 equ ./Data/contraduct_design_rows + 0x1100
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x557
+	dw 0x155c
+	dw 0x1966
+
+./Data/contraduct_design_row111 equ ./Data/contraduct_design_rows + 0x1110
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row112 equ ./Data/contraduct_design_rows + 0x1120
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x984
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row113 equ ./Data/contraduct_design_rows + 0x1130
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x984
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row114 equ ./Data/contraduct_design_rows + 0x1140
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row115 equ ./Data/contraduct_design_rows + 0x1150
+	dw 0x0
+	dw 0xbfd
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0xbfd
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row116 equ ./Data/contraduct_design_rows + 0x1160
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row117 equ ./Data/contraduct_design_rows + 0x1170
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row118 equ ./Data/contraduct_design_rows + 0x1180
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x43d
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row119 equ ./Data/contraduct_design_rows + 0x1190
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x87a
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row11a equ ./Data/contraduct_design_rows + 0x11a0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x87a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row11b equ ./Data/contraduct_design_rows + 0x11b0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x43d
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row11c equ ./Data/contraduct_design_rows + 0x11c0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row11d equ ./Data/contraduct_design_rows + 0x11d0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row11e equ ./Data/contraduct_design_rows + 0x11e0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x87a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row11f equ ./Data/contraduct_design_rows + 0x11f0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x87a
+	dw 0x155c
+	dw 0x1966
+
+./Data/contraduct_design_row120 equ ./Data/contraduct_design_rows + 0x1200
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row121 equ ./Data/contraduct_design_rows + 0x1210
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x87a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row122 equ ./Data/contraduct_design_rows + 0x1220
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x87a
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row123 equ ./Data/contraduct_design_rows + 0x1230
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x43d
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row124 equ ./Data/contraduct_design_rows + 0x1240
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row125 equ ./Data/contraduct_design_rows + 0x1250
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x87a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row126 equ ./Data/contraduct_design_rows + 0x1260
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row127 equ ./Data/contraduct_design_rows + 0x1270
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row128 equ ./Data/contraduct_design_rows + 0x1280
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x390
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row129 equ ./Data/contraduct_design_rows + 0x1290
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row12a equ ./Data/contraduct_design_rows + 0x12a0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x721
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row12b equ ./Data/contraduct_design_rows + 0x12b0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row12c equ ./Data/contraduct_design_rows + 0x12c0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x390
+	dw 0x0
+	dw 0x21e7
+
+./Data/contraduct_design_row12d equ ./Data/contraduct_design_rows + 0x12d0
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x65a
+	dw 0x0
+	dw 0x21e7
+
+./Data/contraduct_design_row12e equ ./Data/contraduct_design_rows + 0x12e0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row12f equ ./Data/contraduct_design_rows + 0x12f0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x390
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row130 equ ./Data/contraduct_design_rows + 0x1300
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x721
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row131 equ ./Data/contraduct_design_rows + 0x1310
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x390
+	dw 0x0
+	dw 0x1966
+
+./Data/contraduct_design_row132 equ ./Data/contraduct_design_rows + 0x1320
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row133 equ ./Data/contraduct_design_rows + 0x1330
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x65a
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row134 equ ./Data/contraduct_design_rows + 0x1340
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x65a
+	dw 0x0
+	dw 0x21e7
+
+./Data/contraduct_design_row135 equ ./Data/contraduct_design_rows + 0x1350
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row136 equ ./Data/contraduct_design_rows + 0x1360
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0x721
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row137 equ ./Data/contraduct_design_rows + 0x1370
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x65a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row138 equ ./Data/contraduct_design_rows + 0x1380
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x390
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row139 equ ./Data/contraduct_design_rows + 0x1390
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x390
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row13a equ ./Data/contraduct_design_rows + 0x13a0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x721
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row13b equ ./Data/contraduct_design_rows + 0x13b0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row13c equ ./Data/contraduct_design_rows + 0x13c0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row13d equ ./Data/contraduct_design_rows + 0x13d0
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x65a
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row13e equ ./Data/contraduct_design_rows + 0x13e0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row13f equ ./Data/contraduct_design_rows + 0x13f0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x390
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row140 equ ./Data/contraduct_design_rows + 0x1400
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x721
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row141 equ ./Data/contraduct_design_rows + 0x1410
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x390
+	dw 0x155c
+	dw 0x1966
+
+./Data/contraduct_design_row142 equ ./Data/contraduct_design_rows + 0x1420
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row143 equ ./Data/contraduct_design_rows + 0x1430
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x65a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row144 equ ./Data/contraduct_design_rows + 0x1440
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x65a
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row145 equ ./Data/contraduct_design_rows + 0x1450
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row146 equ ./Data/contraduct_design_rows + 0x1460
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row147 equ ./Data/contraduct_design_rows + 0x1470
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x400
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row148 equ ./Data/contraduct_design_rows + 0x1480
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x400
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row149 equ ./Data/contraduct_design_rows + 0x1490
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row14a equ ./Data/contraduct_design_rows + 0x14a0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x800
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row14b equ ./Data/contraduct_design_rows + 0x14b0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x400
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row14c equ ./Data/contraduct_design_rows + 0x14c0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x721
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row14d equ ./Data/contraduct_design_rows + 0x14d0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x17f9
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row14e equ ./Data/contraduct_design_rows + 0x14e0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x400
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row14f equ ./Data/contraduct_design_rows + 0x14f0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x800
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row150 equ ./Data/contraduct_design_rows + 0x1500
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x1966
+	dw 0x800
+	dw 0x155c
+	dw 0x1966
+
+./Data/contraduct_design_row151 equ ./Data/contraduct_design_rows + 0x1510
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row152 equ ./Data/contraduct_design_rows + 0x1520
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x0
+	dw 0xcb3
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row153 equ ./Data/contraduct_design_rows + 0x1530
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x721
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row154 equ ./Data/contraduct_design_rows + 0x1540
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x400
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row155 equ ./Data/contraduct_design_rows + 0x1550
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0x721
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row156 equ ./Data/contraduct_design_rows + 0x1560
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x0
+	dw 0x155c
+	dw 0x984
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row157 equ ./Data/contraduct_design_rows + 0x1570
+	dw 0x0
+	dw 0x4c2
+	dw 0x0
+	dw 0x0
+	dw 0xaae
+	dw 0x4c2
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row158 equ ./Data/contraduct_design_rows + 0x1580
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x0
+	dw 0x1307
+	dw 0xaae
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row159 equ ./Data/contraduct_design_rows + 0x1590
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x557
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row15a equ ./Data/contraduct_design_rows + 0x15a0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row15b equ ./Data/contraduct_design_rows + 0x15b0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0xaae
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row15c equ ./Data/contraduct_design_rows + 0x15c0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2ab7
+	dw 0x1966
+	dw 0xaae
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row15d equ ./Data/contraduct_design_rows + 0x15d0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x557
+	dw 0x0
+	dw 0x2000
+
+./Data/contraduct_design_row15e equ ./Data/contraduct_design_rows + 0x15e0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x260e
+	dw 0xaae
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+
+./Data/contraduct_design_row15f equ ./Data/contraduct_design_rows + 0x15f0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x17f9
+	dw 0x557
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row160 equ ./Data/contraduct_design_rows + 0x1600
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x557
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row161 equ ./Data/contraduct_design_rows + 0x1610
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x155c
+	dw 0xcb3
+	dw 0xaae
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row162 equ ./Data/contraduct_design_rows + 0x1620
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x557
+	dw 0x0
+	dw 0x1966
+
+./Data/contraduct_design_row163 equ ./Data/contraduct_design_rows + 0x1630
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x557
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row164 equ ./Data/contraduct_design_rows + 0x1640
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row165 equ ./Data/contraduct_design_rows + 0x1650
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2ab7
+	dw 0x155c
+	dw 0x984
+	dw 0x0
+	dw 0x2000
+
+./Data/contraduct_design_row166 equ ./Data/contraduct_design_rows + 0x1660
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x155c
+	dw 0xaae
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row167 equ ./Data/contraduct_design_rows + 0x1670
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x260e
+	dw 0x17f9
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row168 equ ./Data/contraduct_design_rows + 0x1680
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row169 equ ./Data/contraduct_design_rows + 0x1690
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x557
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row16a equ ./Data/contraduct_design_rows + 0x16a0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x557
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row16b equ ./Data/contraduct_design_rows + 0x16b0
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0xaae
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row16c equ ./Data/contraduct_design_rows + 0x16c0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2ab7
+	dw 0x1966
+	dw 0xaae
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row16d equ ./Data/contraduct_design_rows + 0x16d0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x557
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row16e equ ./Data/contraduct_design_rows + 0x16e0
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x260e
+	dw 0xaae
+	dw 0x984
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row16f equ ./Data/contraduct_design_rows + 0x16f0
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x17f9
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row170 equ ./Data/contraduct_design_rows + 0x1700
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x557
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row171 equ ./Data/contraduct_design_rows + 0x1710
+	dw 0x0
+	dw 0xaae
+	dw 0x0
+	dw 0x155c
+	dw 0xcb3
+	dw 0xaae
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row172 equ ./Data/contraduct_design_rows + 0x1720
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x557
+	dw 0x155c
+	dw 0x1966
+
+./Data/contraduct_design_row173 equ ./Data/contraduct_design_rows + 0x1730
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x557
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row174 equ ./Data/contraduct_design_rows + 0x1740
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x984
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row175 equ ./Data/contraduct_design_rows + 0x1750
+	dw 0x0
+	dw 0x557
+	dw 0x0
+	dw 0x2ab7
+	dw 0x155c
+	dw 0x984
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row176 equ ./Data/contraduct_design_rows + 0x1760
+	dw 0x0
+	dw 0xbfd
+	dw 0x0
+	dw 0x260e
+	dw 0x17f9
+	dw 0xbfd
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row177 equ ./Data/contraduct_design_rows + 0x1770
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row178 equ ./Data/contraduct_design_rows + 0x1780
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x43d
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row179 equ ./Data/contraduct_design_rows + 0x1790
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x87a
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row17a equ ./Data/contraduct_design_rows + 0x17a0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ab7
+	dw 0x1966
+	dw 0x87a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row17b equ ./Data/contraduct_design_rows + 0x17b0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x43d
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row17c equ ./Data/contraduct_design_rows + 0x17c0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x17f9
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row17d equ ./Data/contraduct_design_rows + 0x17d0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x43d
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row17e equ ./Data/contraduct_design_rows + 0x17e0
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x155c
+	dw 0xcb3
+	dw 0x87a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row17f equ ./Data/contraduct_design_rows + 0x17f0
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x87a
+	dw 0x155c
+	dw 0x1966
+
+./Data/contraduct_design_row180 equ ./Data/contraduct_design_rows + 0x1800
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x43d
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row181 equ ./Data/contraduct_design_rows + 0x1810
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x87a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row182 equ ./Data/contraduct_design_rows + 0x1820
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x2ab7
+	dw 0x155c
+	dw 0x87a
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row183 equ ./Data/contraduct_design_rows + 0x1830
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0xaae
+	dw 0x43d
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row184 equ ./Data/contraduct_design_rows + 0x1840
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x260e
+	dw 0x17f9
+	dw 0x984
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row185 equ ./Data/contraduct_design_rows + 0x1850
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x87a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row186 equ ./Data/contraduct_design_rows + 0x1860
+	dw 0x0
+	dw 0x87a
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row187 equ ./Data/contraduct_design_rows + 0x1870
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x390
+	dw 0x0
+	dw 0x0
+
+./Data/contraduct_design_row188 equ ./Data/contraduct_design_rows + 0x1880
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row189 equ ./Data/contraduct_design_rows + 0x1890
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x721
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row18a equ ./Data/contraduct_design_rows + 0x18a0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+	dw 0x1966
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row18b equ ./Data/contraduct_design_rows + 0x18b0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x390
+	dw 0x0
+	dw 0x21e7
+
+./Data/contraduct_design_row18c equ ./Data/contraduct_design_rows + 0x18c0
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x260e
+	dw 0xaae
+	dw 0x65a
+	dw 0x0
+	dw 0x21e7
+
+./Data/contraduct_design_row18d equ ./Data/contraduct_design_rows + 0x18d0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x17f9
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row18e equ ./Data/contraduct_design_rows + 0x18e0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x390
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row18f equ ./Data/contraduct_design_rows + 0x18f0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+	dw 0xcb3
+	dw 0x721
+	dw 0x0
+	dw 0x260e
+
+./Data/contraduct_design_row190 equ ./Data/contraduct_design_rows + 0x1900
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x390
+	dw 0x0
+	dw 0x1966
+
+./Data/contraduct_design_row191 equ ./Data/contraduct_design_rows + 0x1910
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+
+./Data/contraduct_design_row192 equ ./Data/contraduct_design_rows + 0x1920
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x65a
+	dw 0x0
+	dw 0x155c
+
+./Data/contraduct_design_row193 equ ./Data/contraduct_design_rows + 0x1930
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+	dw 0x155c
+	dw 0x65a
+	dw 0x0
+	dw 0x21e7
+
+./Data/contraduct_design_row194 equ ./Data/contraduct_design_rows + 0x1940
+	dw 0x0
+	dw 0x43d
+	dw 0x0
+	dw 0x155c
+	dw 0xaae
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row195 equ ./Data/contraduct_design_rows + 0x1950
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x260e
+	dw 0x17f9
+	dw 0x721
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row196 equ ./Data/contraduct_design_rows + 0x1960
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x65a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row197 equ ./Data/contraduct_design_rows + 0x1970
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x390
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row198 equ ./Data/contraduct_design_rows + 0x1980
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x390
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row199 equ ./Data/contraduct_design_rows + 0x1990
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x721
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row19a equ ./Data/contraduct_design_rows + 0x19a0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+	dw 0x1966
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row19b equ ./Data/contraduct_design_rows + 0x19b0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row19c equ ./Data/contraduct_design_rows + 0x19c0
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x260e
+	dw 0xaae
+	dw 0x65a
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row19d equ ./Data/contraduct_design_rows + 0x19d0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x17f9
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row19e equ ./Data/contraduct_design_rows + 0x19e0
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x390
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row19f equ ./Data/contraduct_design_rows + 0x19f0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+	dw 0xcb3
+	dw 0x721
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1a0 equ ./Data/contraduct_design_rows + 0x1a00
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x390
+	dw 0x155c
+	dw 0x1966
+
+./Data/contraduct_design_row1a1 equ ./Data/contraduct_design_rows + 0x1a10
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x390
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row1a2 equ ./Data/contraduct_design_rows + 0x1a20
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x65a
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row1a3 equ ./Data/contraduct_design_rows + 0x1a30
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x2ab7
+	dw 0x155c
+	dw 0x65a
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row1a4 equ ./Data/contraduct_design_rows + 0x1a40
+	dw 0x0
+	dw 0x390
+	dw 0x0
+	dw 0x155c
+	dw 0xaae
+	dw 0x390
+	dw 0x155c
+	dw 0x21e7
+
+./Data/contraduct_design_row1a5 equ ./Data/contraduct_design_rows + 0x1a50
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x260e
+	dw 0x17f9
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row1a6 equ ./Data/contraduct_design_rows + 0x1a60
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x400
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1a7 equ ./Data/contraduct_design_rows + 0x1a70
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x400
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row1a8 equ ./Data/contraduct_design_rows + 0x1a80
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x800
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row1a9 equ ./Data/contraduct_design_rows + 0x1a90
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x2ab7
+	dw 0x1966
+	dw 0x800
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row1aa equ ./Data/contraduct_design_rows + 0x1aa0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x400
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row1ab equ ./Data/contraduct_design_rows + 0x1ab0
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x260e
+	dw 0xaae
+	dw 0x721
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row1ac equ ./Data/contraduct_design_rows + 0x1ac0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x17f9
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row1ad equ ./Data/contraduct_design_rows + 0x1ad0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x400
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1ae equ ./Data/contraduct_design_rows + 0x1ae0
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x155c
+	dw 0xcb3
+	dw 0x800
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1af equ ./Data/contraduct_design_rows + 0x1af0
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x800
+	dw 0x155c
+	dw 0x1966
+
+./Data/contraduct_design_row1b0 equ ./Data/contraduct_design_rows + 0x1b00
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x400
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row1b1 equ ./Data/contraduct_design_rows + 0x1b10
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x721
+	dw 0x155c
+	dw 0x155c
+
+./Data/contraduct_design_row1b2 equ ./Data/contraduct_design_rows + 0x1b20
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x2ab7
+	dw 0x155c
+	dw 0x721
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row1b3 equ ./Data/contraduct_design_rows + 0x1b30
+	dw 0x0
+	dw 0x400
+	dw 0x0
+	dw 0x155c
+	dw 0xaae
+	dw 0x400
+	dw 0x155c
+	dw 0x2000
+
+./Data/contraduct_design_row1b4 equ ./Data/contraduct_design_rows + 0x1b40
+	dw 0x0
+	dw 0x721
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x721
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1b5 equ ./Data/contraduct_design_rows + 0x1b50
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+	dw 0xcb3
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1b6 equ ./Data/contraduct_design_rows + 0x1b60
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+	dw 0x1966
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1b7 equ ./Data/contraduct_design_rows + 0x1b70
+	dw 0x0
+	dw 0x984
+	dw 0x0
+	dw 0x155c
+	dw 0x155c
+	dw 0x984
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1b8 equ ./Data/contraduct_design_rows + 0x1b80
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x2ab7
+	dw 0xcb3
+	dw 0x800
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1b9 equ ./Data/contraduct_design_rows + 0x1b90
+	dw 0x0
+	dw 0x800
+	dw 0x0
+	dw 0x2ab7
+	dw 0x155c
+	dw 0x800
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1ba equ ./Data/contraduct_design_rows + 0x1ba0
+	dw 0x0
+	dw 0x65a
+	dw 0x0
+	dw 0x155c
+	dw 0xaae
+	dw 0x65a
+	dw 0x155c
+	dw 0x260e
+
+./Data/contraduct_design_row1bb equ ./Data/contraduct_design_rows + 0x1bb0
+	dw 0x0
+	dw 0x4c2
+	dw 0x0
+	dw 0x260e
+	dw 0x17f9
+	dw 0x4c2
+	dw 0x155c
+	dw 0x2ab7
+
+./Data/contraduct_design_row1bc equ ./Data/contraduct_design_rows + 0x1bc0
+	dw 0x0
+	dw 0x4c2
+	dw 0x0
+	dw 0x155c
+	dw 0x1307
+	dw 0x4c2
+	dw 0x155c
+	dw 0x260e
+
+
+; 0x1bd0 bytes
+; file_size = 0x2b4a bytes
+; define({./Data/contraduct_design_size}, 0x2b4a)
