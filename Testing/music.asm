@@ -6,6 +6,7 @@
 ; max unpacked file data is USE_PLAY
 
 __LIMITED_TIMES_LOOP_MUSIC equ 1
+SHOW_BORDER_COLOR EQU 1
 
   ifndef __BUFFER
 __BUFFER equ 0xC000
@@ -19,7 +20,7 @@ __BUFFER equ 0xC000
 
 
 
-text_y equ (24+10)/2
+text_y equ (24-10)/2
 text_x equ (51-24)/2
          
     
@@ -44,7 +45,7 @@ ZX_CYAN              EQU %101     ; zx_constant
 ZX_YELLOW            EQU %110     ; zx_constant
 ZX_WHITE             EQU %111     ; zx_constant
 
-    
+
      
      
 
@@ -60,7 +61,7 @@ ZX_WHITE             EQU %111     ; zx_constant
         
         
         
-        
+
         
 
           
@@ -122,13 +123,7 @@ ZX_WHITE             EQU %111     ; zx_constant
         
  
     
-          
-     
-        
-        
- 
-    
-              
+             
     
 
     
@@ -164,16 +159,22 @@ ZX_WHITE             EQU %111     ; zx_constant
   endif
     ld   HL, 0x6D60     ; 3:10      init   Return address stack = 28000
     exx                 ; 1:4       init
-                       ;[14:12049]  0x5800 3*256 ZX_BLUE   fill(addr,u,char)   variant >0: fill(num,3*256 (max 256),?)
-    ld   BC, 0x5800     ; 3:10      0x5800 3*256 ZX_BLUE   addr
-    ld    A, ZX_BLUE    ; 2:7       0x5800 3*256 ZX_BLUE   char
-    ld  (BC),A          ; 1:7       0x5800 3*256 ZX_BLUE
-    inc  BC             ; 1:6       0x5800 3*256 ZX_BLUE   0x58FF=0x5800+0+3*85
-    ld  (BC),A          ; 1:7       0x5800 3*256 ZX_BLUE
-    inc  BC             ; 1:6       0x5800 3*256 ZX_BLUE   0x59FF=0x5800+1+3*170
-    ld  (BC),A          ; 1:7       0x5800 3*256 ZX_BLUE
-    inc   C             ; 1:4       0x5800 3*256 ZX_BLUE
-    jp   nz, $-6        ; 3:10      0x5800 3*256 ZX_BLUE
+                       ;[22:93807]  0x4000 (24+3)*256 0   fill(addr,u,char)   variant >0: fill(no ptr,4*1728 (no limit),?)
+    push HL             ; 1:11      0x4000 (24+3)*256 0
+    ld   HL, 0x4000     ; 3:10      0x4000 (24+3)*256 0   HL = addr
+    ld   BC, 0x1B00     ; 3:10      0x4000 (24+3)*256 0   B = 27x, C = char
+    ld  (HL),C          ; 1:7       0x4000 (24+3)*256 0
+    inc   L             ; 1:4       0x4000 (24+3)*256 0
+    ld  (HL),C          ; 1:7       0x4000 (24+3)*256 0
+    inc   L             ; 1:4       0x4000 (24+3)*256 0
+    ld  (HL),C          ; 1:7       0x4000 (24+3)*256 0
+    inc   L             ; 1:4       0x4000 (24+3)*256 0
+    ld  (HL),C          ; 1:7       0x4000 (24+3)*256 0
+    inc   L             ; 1:4       0x4000 (24+3)*256 0
+    jp   nz, $-8        ; 3:10      0x4000 (24+3)*256 0
+    inc   H             ; 1:4       0x4000 (24+3)*256 0
+    djnz $-12           ; 2:13/8    0x4000 (24+3)*256 0
+    pop  HL             ; 1:10      0x4000 (24+3)*256 0
     ld    A, ZX_BLACK   ; 2:7       ZX_BLACK zx_border   ( -- )
     out (254),A         ; 2:11      ZX_BLACK zx_border   0=blk,1=blu,2=red,3=mag,4=grn,5=cyn,6=yel,7=wht
 begin101:               ;           begin(101)
@@ -201,22 +202,20 @@ begin101:               ;           begin(101)
     call PRINT_STRING_I ; 3:17      print_i
     ld   BC, string112  ; 3:10      print_i   Address of string112 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
-    ld   BC, string113  ; 3:10      print_i   Address of string113 ending with inverted most significant bit
-    call PRINT_STRING_I ; 3:17      print_i
     ld    A, 0xFB       ; 2:7       0xFB04 testkey if   ( -- )  if press "E"
     in    A,(0xFE)      ; 2:11      0xFB04 testkey if
     and  0x04           ; 2:7       0xFB04 testkey if
     jp   nz, else101    ; 3:10      0xFB04 testkey if
-    ld   BC, string114  ; 3:10      print_i   Address of string114 ending with inverted most significant bit
+    ld   BC, string111  ; 3:10      print_i   Address of string113 ending with inverted most significant bit == string111
     call PRINT_STRING_I ; 3:17      print_i
     jp   break101       ; 3:10      break(101)
     jp   endif101       ; 3:10      else
 else101:                ;           else
-    ld    A, 0xEF       ; 2:7       0xEF01 testkey if   ( -- )  if press "0"
-    in    A,(0xFE)      ; 2:11      0xEF01 testkey if
-    rrca                ; 1:4       0xEF01 testkey if
-    jp    c, else102    ; 3:10      0xEF01 testkey if
-    ld   BC, string115  ; 3:10      print_i   Address of string115 ending with inverted most significant bit
+    ld    A, 0xF7       ; 2:7       0xF701 testkey if   ( -- )  if press "1"
+    in    A,(0xFE)      ; 2:11      0xF701 testkey if
+    rrca                ; 1:4       0xF701 testkey if
+    jp    c, else102    ; 3:10      0xF701 testkey if
+    ld   BC, string102  ; 3:10      print_i   Address of string114 ending with inverted most significant bit == string102
     call PRINT_STRING_I ; 3:17      print_i
                         ;           variablebinfile(../Compression/Output/,_first_last_,.zx0) unpack bufferplay
     push DE             ; 1:11      variablebinfile(../Compression/Output/,_first_last_,.zx0) unpack bufferplay    packed size: 2003
@@ -230,50 +229,14 @@ else101:                ;           else
     pop  DE             ; 1:10      variablebinfile(../Compression/Output/,_first_last_,.zx0) unpack bufferplay
     jp   endif102       ; 3:10      else
 else102:                ;           else
-    ld    A, 0xF7       ; 2:7       0xF701 testkey if   ( -- )  if press "1"
-    in    A,(0xFE)      ; 2:11      0xF701 testkey if
-    rrca                ; 1:4       0xF701 testkey if
-    jp    c, else103    ; 3:10      0xF701 testkey if
-    ld   BC, string104  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string104
-    call PRINT_STRING_I ; 3:17      print_i
-                        ;           variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay
-    push DE             ; 1:11      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay    packed size: 289
-    push HL             ; 1:11      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay
-    ld   HL, __file_octode; 3:10      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay    from
-    ld   DE, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay    to
-    call ZX0_DEPACK     ; 3:17      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay    ZX0 version can be changed by defining USE_LZM or USE_LZ_
-    ld   HL, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay    HL = addr data
-    call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay
-    pop  HL             ; 1:10      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay
-    pop  DE             ; 1:10      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay
-    jp   endif103       ; 3:10      else
-else103:                ;           else
     ld    A, 0xF7       ; 2:7       0xF702 testkey if   ( -- )  if press "2"
     in    A,(0xFE)      ; 2:11      0xF702 testkey if
     and  0x02           ; 2:7       0xF702 testkey if
-    jp   nz, else104    ; 3:10      0xF702 testkey if
-    ld   BC, string105  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string105
-    call PRINT_STRING_I ; 3:17      print_i
-                        ;           variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay
-    push DE             ; 1:11      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay    packed size: 335
-    push HL             ; 1:11      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay
-    ld   HL, __file_octode2k15; 3:10      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay    from
-    ld   DE, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay    to
-    call ZX0_DEPACK     ; 3:17      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay    ZX0 version can be changed by defining USE_LZM or USE_LZ_
-    ld   HL, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay    HL = addr data
-    call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay
-    pop  HL             ; 1:10      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay
-    pop  DE             ; 1:10      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay
-    jp   endif104       ; 3:10      else
-else104:                ;           else
-    ld    A, 0xF7       ; 2:7       0xF704 testkey if   ( -- )  if press "3"
-    in    A,(0xFE)      ; 2:11      0xF704 testkey if
-    and  0x04           ; 2:7       0xF704 testkey if
-    jp   nz, else105    ; 3:10      0xF704 testkey if
-    ld   BC, string106  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string106
+    jp   nz, else103    ; 3:10      0xF702 testkey if
+    ld   BC, string103  ; 3:10      print_i   Address of string115 ending with inverted most significant bit == string103
     call PRINT_STRING_I ; 3:17      print_i
                         ;           variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay
-    push DE             ; 1:11      variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay    packed size: 1256
+    push DE             ; 1:11      variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay    packed size: 1257
     push HL             ; 1:11      variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay
     ld   HL, __file_octode2k16; 3:10      variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay    from
     ld   DE, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay    to
@@ -282,16 +245,16 @@ else104:                ;           else
     call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay
     pop  HL             ; 1:10      variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay
     pop  DE             ; 1:10      variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay
-    jp   endif105       ; 3:10      else
-else105:                ;           else
-    ld    A, 0xF7       ; 2:7       0xF708 testkey if   ( -- )  if press "4"
-    in    A,(0xFE)      ; 2:11      0xF708 testkey if
-    and  0x08           ; 2:7       0xF708 testkey if
-    jp   nz, else106    ; 3:10      0xF708 testkey if
-    ld   BC, string107  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string107
+    jp   endif103       ; 3:10      else
+else103:                ;           else
+    ld    A, 0xF7       ; 2:7       0xF704 testkey if   ( -- )  if press "3"
+    in    A,(0xFE)      ; 2:11      0xF704 testkey if
+    and  0x04           ; 2:7       0xF704 testkey if
+    jp   nz, else104    ; 3:10      0xF704 testkey if
+    ld   BC, string104  ; 3:10      print_i   Address of string116 ending with inverted most significant bit == string104
     call PRINT_STRING_I ; 3:17      print_i
                         ;           variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay
-    push DE             ; 1:11      variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay    packed size: 1212
+    push DE             ; 1:11      variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay    packed size: 1213
     push HL             ; 1:11      variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay
     ld   HL, __file_alf2_zalza; 3:10      variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay    from
     ld   DE, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay    to
@@ -300,13 +263,13 @@ else105:                ;           else
     call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay
     pop  HL             ; 1:10      variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay
     pop  DE             ; 1:10      variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay
-    jp   endif106       ; 3:10      else
-else106:                ;           else
-    ld    A, 0xF7       ; 2:7       0xF710 testkey if   ( -- )  if press "5"
-    in    A,(0xFE)      ; 2:11      0xF710 testkey if
-    and  0x10           ; 2:7       0xF710 testkey if
-    jp   nz, else107    ; 3:10      0xF710 testkey if
-    ld   BC, string108  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string108
+    jp   endif104       ; 3:10      else
+else104:                ;           else
+    ld    A, 0xF7       ; 2:7       0xF708 testkey if   ( -- )  if press "4"
+    in    A,(0xFE)      ; 2:11      0xF708 testkey if
+    and  0x08           ; 2:7       0xF708 testkey if
+    jp   nz, else105    ; 3:10      0xF708 testkey if
+    ld   BC, string105  ; 3:10      print_i   Address of string117 ending with inverted most significant bit == string105
     call PRINT_STRING_I ; 3:17      print_i
                         ;           variablebinfile(../Compression/Output/,pd_dawn,.zx0) unpack bufferplay
     push DE             ; 1:11      variablebinfile(../Compression/Output/,pd_dawn,.zx0) unpack bufferplay    packed size: 1760
@@ -318,16 +281,16 @@ else106:                ;           else
     call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,pd_dawn,.zx0) unpack bufferplay
     pop  HL             ; 1:10      variablebinfile(../Compression/Output/,pd_dawn,.zx0) unpack bufferplay
     pop  DE             ; 1:10      variablebinfile(../Compression/Output/,pd_dawn,.zx0) unpack bufferplay
-    jp   endif107       ; 3:10      else
-else107:                ;           else
-    ld    A, 0xEF       ; 2:7       0xEF10 testkey if   ( -- )  if press "6"
-    in    A,(0xFE)      ; 2:11      0xEF10 testkey if
-    and  0x10           ; 2:7       0xEF10 testkey if
-    jp   nz, else108    ; 3:10      0xEF10 testkey if
-    ld   BC, string109  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string109
+    jp   endif105       ; 3:10      else
+else105:                ;           else
+    ld    A, 0xF7       ; 2:7       0xF710 testkey if   ( -- )  if press "5"
+    in    A,(0xFE)      ; 2:11      0xF710 testkey if
+    and  0x10           ; 2:7       0xF710 testkey if
+    jp   nz, else106    ; 3:10      0xF710 testkey if
+    ld   BC, string106  ; 3:10      print_i   Address of string118 ending with inverted most significant bit == string106
     call PRINT_STRING_I ; 3:17      print_i
                         ;           variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay
-    push DE             ; 1:11      variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay    packed size: 3874
+    push DE             ; 1:11      variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay    packed size: 3875
     push HL             ; 1:11      variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay
     ld   HL, __file_algar_thegermansroom; 3:10      variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay    from
     ld   DE, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay    to
@@ -336,13 +299,13 @@ else107:                ;           else
     call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay
     pop  HL             ; 1:10      variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay
     pop  DE             ; 1:10      variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay
-    jp   endif108       ; 3:10      else
-else108:                ;           else
-    ld    A, 0xEF       ; 2:7       0xEF08 testkey if   ( -- )  if press "7"
-    in    A,(0xFE)      ; 2:11      0xEF08 testkey if
-    and  0x08           ; 2:7       0xEF08 testkey if
-    jp   nz, else109    ; 3:10      0xEF08 testkey if
-    ld   BC, string110  ; 3:10      print_i   Address of string122 ending with inverted most significant bit == string110
+    jp   endif106       ; 3:10      else
+else106:                ;           else
+    ld    A, 0xEF       ; 2:7       0xEF10 testkey if   ( -- )  if press "6"
+    in    A,(0xFE)      ; 2:11      0xEF10 testkey if
+    and  0x10           ; 2:7       0xEF10 testkey if
+    jp   nz, else107    ; 3:10      0xEF10 testkey if
+    ld   BC, string107  ; 3:10      print_i   Address of string119 ending with inverted most significant bit == string107
     call PRINT_STRING_I ; 3:17      print_i
                         ;           variablebinfile(../Compression/Output/,bacon_sandwich,.zx0) unpack bufferplay
     push DE             ; 1:11      variablebinfile(../Compression/Output/,bacon_sandwich,.zx0) unpack bufferplay    packed size: 2018
@@ -354,16 +317,16 @@ else108:                ;           else
     call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,bacon_sandwich,.zx0) unpack bufferplay
     pop  HL             ; 1:10      variablebinfile(../Compression/Output/,bacon_sandwich,.zx0) unpack bufferplay
     pop  DE             ; 1:10      variablebinfile(../Compression/Output/,bacon_sandwich,.zx0) unpack bufferplay
-    jp   endif109       ; 3:10      else
-else109:                ;           else
-    ld    A, 0xEF       ; 2:7       0xEF04 testkey if   ( -- )  if press "8"
-    in    A,(0xFE)      ; 2:11      0xEF04 testkey if
-    and  0x04           ; 2:7       0xEF04 testkey if
-    jp   nz, else110    ; 3:10      0xEF04 testkey if
-    ld   BC, string111  ; 3:10      print_i   Address of string123 ending with inverted most significant bit == string111
+    jp   endif107       ; 3:10      else
+else107:                ;           else
+    ld    A, 0xEF       ; 2:7       0xEF08 testkey if   ( -- )  if press "7"
+    in    A,(0xFE)      ; 2:11      0xEF08 testkey if
+    and  0x08           ; 2:7       0xEF08 testkey if
+    jp   nz, else108    ; 3:10      0xEF08 testkey if
+    ld   BC, string108  ; 3:10      print_i   Address of string120 ending with inverted most significant bit == string108
     call PRINT_STRING_I ; 3:17      print_i
                         ;           variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay
-    push DE             ; 1:11      variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay    packed size: 1948
+    push DE             ; 1:11      variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay    packed size: 1949
     push HL             ; 1:11      variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay
     ld   HL, __file_cja_h_what_is_love; 3:10      variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay    from
     ld   DE, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay    to
@@ -372,16 +335,16 @@ else109:                ;           else
     call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay
     pop  HL             ; 1:10      variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay
     pop  DE             ; 1:10      variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay
-    jp   endif110       ; 3:10      else
-else110:                ;           else
-    ld    A, 0xEF       ; 2:7       0xEF02 testkey if   ( -- )  if press "9"
-    in    A,(0xFE)      ; 2:11      0xEF02 testkey if
-    and  0x02           ; 2:7       0xEF02 testkey if
-    jp   nz, else111    ; 3:10      0xEF02 testkey if
-    ld   BC, string112  ; 3:10      print_i   Address of string124 ending with inverted most significant bit == string112
+    jp   endif108       ; 3:10      else
+else108:                ;           else
+    ld    A, 0xEF       ; 2:7       0xEF04 testkey if   ( -- )  if press "8"
+    in    A,(0xFE)      ; 2:11      0xEF04 testkey if
+    and  0x04           ; 2:7       0xEF04 testkey if
+    jp   nz, else109    ; 3:10      0xEF04 testkey if
+    ld   BC, string109  ; 3:10      print_i   Address of string121 ending with inverted most significant bit == string109
     call PRINT_STRING_I ; 3:17      print_i
                         ;           variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay
-    push DE             ; 1:11      variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay    packed size: 2805
+    push DE             ; 1:11      variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay    packed size: 2743
     push HL             ; 1:11      variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay
     ld   HL, __file_clop_hybrid_sparta; 3:10      variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay    from
     ld   DE, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay    to
@@ -390,9 +353,26 @@ else110:                ;           else
     call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay
     pop  HL             ; 1:10      variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay
     pop  DE             ; 1:10      variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay
-    jp   endif111       ; 3:10      else
-else111:                ;           else
-endif111:               ;           then
+    jp   endif109       ; 3:10      else
+else109:                ;           else
+    ld    A, 0xEF       ; 2:7       0xEF02 testkey if   ( -- )  if press "9"
+    in    A,(0xFE)      ; 2:11      0xEF02 testkey if
+    and  0x02           ; 2:7       0xEF02 testkey if
+    jp   nz, else110    ; 3:10      0xEF02 testkey if
+    ld   BC, string110  ; 3:10      print_i   Address of string122 ending with inverted most significant bit == string110
+    call PRINT_STRING_I ; 3:17      print_i
+                        ;           variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay
+    push DE             ; 1:11      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay    packed size: 2929
+    push HL             ; 1:11      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay
+    ld   HL, __file_contraduct_design; 3:10      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay    from
+    ld   DE, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay    to
+    call ZX0_DEPACK     ; 3:17      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay    ZX0 version can be changed by defining USE_LZM or USE_LZ_
+    ld   HL, __BUFFER   ; 3:10      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay    HL = addr data
+    call PLAY_OCTODE    ; 3:17      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay
+    pop  HL             ; 1:10      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay
+    pop  DE             ; 1:10      variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay
+    jp   endif110       ; 3:10      else
+else110:                ;           else
 endif110:               ;           then
 endif109:               ;           then
 endif108:               ;           then
@@ -414,7 +394,7 @@ break101:               ;           again(101)
     rr    H             ; 2:8       depth
     rr    L             ; 2:8       depth
     dec  HL             ; 1:6       depth
-    ld   BC, string125  ; 3:10      print_i   Address of string125 ending with inverted most significant bit
+    ld   BC, string123  ; 3:10      print_i   Address of string123 ending with inverted most significant bit
     call PRINT_STRING_I ; 3:17      print_i
     call PRT_S16        ; 3:17      .   ( s -- )
     ld    A, 0x0D       ; 2:7       cr   Pollutes: AF, AF', DE', BC'
@@ -1073,13 +1053,9 @@ FONT_5x8:
     db %00000110,%10011011,%10111001,%01100000 ; 0x7F (c)
 
 STRING_SECTION:
-string125:
+string123:
     db 0x0D, "Depth:"," " + 0x80
-size125              EQU $ - string125
-string124   EQU  string112
-size124     EQU    size112
-string123   EQU  string111
-size123     EQU    size111
+size123              EQU $ - string123
 string122   EQU  string110
 size122     EQU    size110
 string121   EQU  string109
@@ -1094,47 +1070,44 @@ string117   EQU  string105
 size117     EQU    size105
 string116   EQU  string104
 size116     EQU    size104
-string115:
-    db ZX_AT,text_y-0,text_x," A: _first_last_"," " + 0x80
-size115              EQU $ - string115
-string114:
-    db ZX_AT,text_y+1,text_x," 0: exit"," " + 0x80
-size114              EQU $ - string114
-string113:
-    db ZX_INK, ZX_RED + 0x80
-size113              EQU $ - string113
+string115   EQU  string103
+size115     EQU    size103
+string114   EQU  string102
+size114     EQU    size102
+string113   EQU  string111
+size113     EQU    size111
 string112:
-    db ZX_AT,text_y-9,text_x," 9: clop_hybrid_sparta"," " + 0x80
+    db ZX_INK, ZX_RED + 0x80
 size112              EQU $ - string112
 string111:
-    db ZX_AT,text_y-8,text_x," 8: cja_h_what_is_love"," " + 0x80
+    db ZX_AT,text_y+9,text_x," e: exit"," " + 0x80
 size111              EQU $ - string111
 string110:
-    db ZX_AT,text_y-7,text_x," 7: bacon_sandwich"," " + 0x80
+    db ZX_AT,text_y+8,text_x," 9: contraduct_design"," " + 0x80
 size110              EQU $ - string110
 string109:
-    db ZX_AT,text_y-6,text_x," 6: algar_thegermansroom"," " + 0x80
+    db ZX_AT,text_y+7,text_x," 8: clop_hybrid_sparta"," " + 0x80
 size109              EQU $ - string109
 string108:
-    db ZX_AT,text_y-5,text_x," 5: pd_dawn"," " + 0x80
+    db ZX_AT,text_y+6,text_x," 7: cja_h_what_is_love"," " + 0x80
 size108              EQU $ - string108
 string107:
-    db ZX_AT,text_y-4,text_x," 4: alf2_zalza"," " + 0x80
+    db ZX_AT,text_y+5,text_x," 6: bacon_sandwich"," " + 0x80
 size107              EQU $ - string107
 string106:
-    db ZX_AT,text_y-3,text_x," 3: octode2k16 test"," " + 0x80
+    db ZX_AT,text_y+4,text_x," 5: algar_thegermansroom"," " + 0x80
 size106              EQU $ - string106
 string105:
-    db ZX_AT,text_y-2,text_x," 2: octode2k15 test"," " + 0x80
+    db ZX_AT,text_y+3,text_x," 4: pd_dawn"," " + 0x80
 size105              EQU $ - string105
 string104:
-    db ZX_AT,text_y-1,text_x," 1: octode     test"," " + 0x80
+    db ZX_AT,text_y+2,text_x," 3: alf2_zalza"," " + 0x80
 size104              EQU $ - string104
 string103:
-    db ZX_AT,text_y-0,text_x," 0: _first_last_"," " + 0x80
+    db ZX_AT,text_y+1,text_x," 2: octode2k16 test"," " + 0x80
 size103              EQU $ - string103
 string102:
-    db ZX_AT,text_y+1,text_x," e: exit"," " + 0x80
+    db ZX_AT,text_y+0,text_x," 1: _first_last_"," " + 0x80
 size102              EQU $ - string102
 string101:
     db ZX_INK, ZX_BLUE, ZX_PAPER, ZX_BLACK + 0x80
@@ -1146,33 +1119,30 @@ VARIABLE_SECTION:
 __file__first_last_:    ;           variablebinfile(../Compression/Output/,_first_last_,.zx0) unpack bufferplay
     incbin ../Compression/Output/_first_last_.zx0
                         ;2003:0     variablebinfile(../Compression/Output/,_first_last_,.zx0) unpack bufferplay
-__file_octode:          ;           variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay
-    incbin ../Compression/Output/octode.zx0
-                        ;289:0      variablebinfile(../Compression/Output/,octode,.zx0) unpack bufferplay
-__file_octode2k15:      ;           variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay
-    incbin ../Compression/Output/octode2k15.zx0
-                        ;335:0      variablebinfile(../Compression/Output/,octode2k15,.zx0) unpack bufferplay
 __file_octode2k16:      ;           variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay
     incbin ../Compression/Output/octode2k16.zx0
-                        ;1256:0     variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay
+                        ;1257:0     variablebinfile(../Compression/Output/,octode2k16,.zx0) unpack bufferplay
 __file_alf2_zalza:      ;           variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay
     incbin ../Compression/Output/alf2_zalza.zx0
-                        ;1212:0     variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay
+                        ;1213:0     variablebinfile(../Compression/Output/,alf2_zalza,.zx0) unpack bufferplay
 __file_pd_dawn:         ;           variablebinfile(../Compression/Output/,pd_dawn,.zx0) unpack bufferplay
     incbin ../Compression/Output/pd_dawn.zx0
                         ;1760:0     variablebinfile(../Compression/Output/,pd_dawn,.zx0) unpack bufferplay
 __file_algar_thegermansroom:;       variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay
     incbin ../Compression/Output/algar_thegermansroom.zx0
-                        ;3874:0     variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay
+                        ;3875:0     variablebinfile(../Compression/Output/,algar_thegermansroom,.zx0) unpack bufferplay
 __file_bacon_sandwich:  ;           variablebinfile(../Compression/Output/,bacon_sandwich,.zx0) unpack bufferplay
     incbin ../Compression/Output/bacon_sandwich.zx0
                         ;2018:0     variablebinfile(../Compression/Output/,bacon_sandwich,.zx0) unpack bufferplay
 __file_cja_h_what_is_love:;         variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay
     incbin ../Compression/Output/cja_h_what_is_love.zx0
-                        ;1948:0     variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay
+                        ;1949:0     variablebinfile(../Compression/Output/,cja_h_what_is_love,.zx0) unpack bufferplay
 __file_clop_hybrid_sparta:;         variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay
     incbin ../Compression/Output/clop_hybrid_sparta.zx0
-                        ;2805:0     variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay
+                        ;2743:0     variablebinfile(../Compression/Output/,clop_hybrid_sparta,.zx0) unpack bufferplay
+__file_contraduct_design:;          variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay
+    incbin ../Compression/Output/contraduct_design.zx0
+                        ;2929:0     variablebinfile(../Compression/Output/,contraduct_design,.zx0) unpack bufferplay
 
 ;# ============================================================================
 ;# Octode 2k16 play routine
