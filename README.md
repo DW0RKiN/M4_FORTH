@@ -734,7 +734,7 @@ Infinite loop until "Q" is pressed:
 
     BEGIN
     PUSH(__TESTKEY_Q) TESTKEY UNTIL
-    
+
 All 40 keys mask:
 
     __TESTKEY_B            = 0x7F10
@@ -745,7 +745,7 @@ All 40 keys mask:
     __TESTKEY_T            = 0xFB10
     __TESTKEY_G            = 0xFD10
     __TESTKEY_V            = 0xFE10
-    
+
     __TESTKEY_N            = 0x7F08
     __TESTKEY_J            = 0xBF08
     __TESTKEY_U            = 0xDF08
@@ -754,7 +754,7 @@ All 40 keys mask:
     __TESTKEY_R            = 0xFB08
     __TESTKEY_F            = 0xFD08
     __TESTKEY_C            = 0xFE08
-    
+
     __TESTKEY_M            = 0x7F04
     __TESTKEY_K            = 0xBF04
     __TESTKEY_I            = 0xDF04
@@ -763,7 +763,7 @@ All 40 keys mask:
     __TESTKEY_E            = 0xFB04
     __TESTKEY_D            = 0xFD04
     __TESTKEY_X            = 0xFE04
-    
+
     __TESTKEY_SYMBOL_SHIFT = 0x7F02
     __TESTKEY_L            = 0xBF02
     __TESTKEY_O            = 0xDF02
@@ -772,7 +772,7 @@ All 40 keys mask:
     __TESTKEY_W            = 0xFB02
     __TESTKEY_S            = 0xFD02
     __TESTKEY_Z            = 0xFE02
-    
+
     __TESTKEY_SPACE        = 0x7F01
     __TESTKEY_ENTER        = 0xBF01
     __TESTKEY_P            = 0xDF01
@@ -781,7 +781,7 @@ All 40 keys mask:
     __TESTKEY_Q            = 0xFB01
     __TESTKEY_A            = 0xFD01
     __TESTKEY_CAPS_SHIFT   = 0xFE01
-    
+
 Alias
 
     __TESTKEY_SINCLAIR1_LEFT  = __TESTKEY_1
@@ -821,9 +821,9 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 
 |<sub> Original   |<sub>       M4 FORTH        |<sub>  Data stack                   |<sub>  Comment                                |
 | :-------------: | :------------------------: | :--------------------------------- | :------------------------------------------- |
-|<sub>            |<sub>        PDOT(b)        |<sub>( p_10 p2 p1 -- p_10 p2 p1 )   |<sub> b=bytes, print [p2], [p_10]=10, after: [p1]= 0, [p2]=first_number 
+|<sub>            |<sub>        PDOT(b)        |<sub>( p_10 p2 p1 -- p_10 p2 p1 )   |<sub> b=bytes, print [p2], [p_10]=10, after: [p1]= 0, [p2]=first_number
 |<sub>            |<sub> DEC_PDOT(b,p_10,p_tmp)|<sub>        ( p1 -- p1 )           |<sub> b=bytes, print [p1], [p_10]=10, after: [p_tmp]=0, [p1]=first_number
-|<sub>            |<sub>        PUDOT(b)       |<sub>( p_10 p2 p1 -- p_10 p2 p1 )   |<sub> b=bytes, print [p2], [p_10]=10, after: [p1]= 0, [p2]=first_number 
+|<sub>            |<sub>        PUDOT(b)       |<sub>( p_10 p2 p1 -- p_10 p2 p1 )   |<sub> b=bytes, print [p2], [p_10]=10, after: [p1]= 0, [p2]=first_number
 |<sub>            |<sub>DEC_PUDOT(b,p_10,p_tmp)|<sub>        ( p1 -- p1 )           |<sub> b=bytes, print [p1], [p_10]=10, after: [p_tmp]=0, [p1]=first_number
 |<sub>            |<sub>      HEX_PUDOT(b)     |<sub>        ( p1 -- p1 )           |<sub> b=bytes, print [p1]
 
