@@ -3136,6 +3136,9 @@ dnl
 ifdef({USE_OCTODE},{
 ;# ============================================================================
 ;# Octode 2k16 play routine
+  if $ < 0x8000
+    ORG 0x8000
+  endif
 include M4PATH{}../octode2k16/octode2k16.asm
 }){}dnl
 dnl
@@ -3144,6 +3147,9 @@ dnl
 ifdef({USE_BUFFERPLAY},{
 ;# ============================================================================
 __{}ifelse(USE_BUFFERPLAY,,,{dnl
+__{}__{}  if ($>USE_BUFFERPLAY)
+__{}__{}    .error Buffer overwrites previous data!
+__{}__{}  endif
 __{}__{}    ORG USE_BUFFERPLAY})
 __{}__{}BUFFERPLAY:{}dnl
 }){}dnl
