@@ -2557,7 +2557,7 @@ dnl # ( -- )
 define({BINFILE_PUSH_UNPACK_PLAY},{dnl
 __{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
 __{}ifelse(eval($#<4),1,{
-__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_adr)},
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_addr)},
 __{}eval($#>4),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__PSIZE_$2,{},{
@@ -2627,7 +2627,7 @@ dnl # ( -- )
 define({VARIABLEBINFILE_UNPACK_BUFFERPLAY},{dnl
 __{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
 __{}ifelse(eval($#<4),1,{
-__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_adr)},
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_addr)},
 __{}eval($#>4),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__PSIZE_$2,{},{
@@ -2690,6 +2690,63 @@ __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({FILEBUFFERPLAY},{dnl
+__{}define({$0_TMP},__TEST_TXTFILE_SIZE({$1},{$2},{$3})){}dnl
+__{}ifelse(eval($#<4),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_addr)},
+__{}eval($#>4),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,0,{
+__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}dnl
+__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}__CR)},
+__{}{dnl
+__{}__{}define({__PSIZE_$2},__SIZE){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_FILEBUFFERPLAY},{filebufferplay({{$1,$2,$3}})},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}},$4){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FILEBUFFERPLAY},{dnl
+__{}define({$0_TMP},__TEST_TXTFILE_SIZE(__UNESCAPING($1),__UNESCAPING($2),__UNESCAPING($3))){}dnl
+__{}ifelse(eval($#<4),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_addr)},
+__{}eval($#>4),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,0,{
+__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}dnl
+__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}__CR)},
+__{}{dnl
+__{}__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__{}__ADD_SPEC_VARIABLE(__CR{}format({%-20s},$2) EQU BUFFERPLAY){}dnl
+__{}__{}define({__PSIZE_$2},__SIZE){}dnl
+__{}__{}__ASM_TOKEN_CREATE(__UNESCAPING(__file_$2)){}dnl
+__{}__{}pushdef({LAST_HERE_ADD},__SIZE)dnl
+__{}__{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE)
+__{}__{}__{}    include {$1$2$3}
+__{}__{}__{}                        ;format({%-11s}, __SIZE:0)__ESCAPING(__COMPILE_INFO)){}dnl
+__{}__{}__def({USE_OCTODE}){}dnl
+__{}__{}__def({USE_BUFFERPLAY},$4){}dnl
+__{}__{}ifdef({BUFFERPLAY_SIZE},{dnl
+__{}__{}__{}ifelse(eval(BUFFERPLAY_SIZE<__SIZE),1,{dnl
+__{}__{}__{}__{}define({BUFFERPLAY_SIZE},__SIZE)})},
+__{}__{}{dnl
+__{}__{}__{}define({BUFFERPLAY_SIZE},__SIZE)})
+__{}__{}    push DE             ; 1:11      __INFO   ( -- )
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL, format({%-11s},__file_$2); 3:10      __INFO   from_addr
+__{}__{}    ld   DE, BUFFERPLAY ; 3:10      __INFO   to_addr
+__{}__{}    ld   BC, __HEX_HL(__SIZE)     ; 3:10      __INFO   __SIZE times
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    ld   HL, BUFFERPLAY ; 3:10      __INFO   HL = addr data
+__{}__{}    call PLAY_OCTODE    ; 3:17      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
 dnl
 dnl
 dnl
