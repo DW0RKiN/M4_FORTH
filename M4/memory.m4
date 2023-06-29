@@ -134,6 +134,83 @@ dnl
 dnl
 dnl
 dnl # Include file to variable
+dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
+dnl # FILE_DROP(path,name,suffix)    --> __file_name: dw 0,1,2,3,...
+define({FILE_DROP},{dnl
+__{}define({$0_TMP},__TEST_TXTFILE_SIZE({$1},{$2},{$3})){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,0,{
+__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}dnl
+__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}__CR)},
+__{}{dnl
+__{}__{}define({__PSIZE_$2},__SIZE){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_FILE_DROP},{file({{$1,$2,$3}}) drop},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FILE_DROP},{dnl
+__{}define({$0_TMP},__TEST_TXTFILE_SIZE(__UNESCAPING($1),__UNESCAPING($2),__UNESCAPING($3))){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,0,{
+__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}dnl
+__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}__CR)},
+__{}{dnl
+__{}__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__{}define({__PSIZE_$2},__SIZE){}dnl
+__{}__{}__ASM_TOKEN_CREATE(__UNESCAPING(__file_$2)){}dnl
+__{}__{}pushdef({LAST_HERE_ADD},__SIZE)dnl
+__{}__{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE)
+__{}__{}__{}    include {$1$2$3}
+__{}__{}__{}                        ;format({%-11s}, __SIZE:0)__ESCAPING(__COMPILE_INFO)){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Include file to variable
+dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
+dnl # FILE(path,name,suffix)    --> ( -- __file_name ) __file_name: dw 0,1,2,3,...
+define({FILE},{dnl
+__{}define({$0_TMP},__TEST_TXTFILE_SIZE({$1},{$2},{$3})){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,0,{
+__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}dnl
+__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}__CR)},
+__{}{dnl
+__{}__{}define({__PSIZE_$2},__SIZE){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_FILE},{file({{$1,$2,$3}})},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FILE},{dnl
+__{}define({$0_TMP},__TEST_TXTFILE_SIZE(__UNESCAPING($1),__UNESCAPING($2),__UNESCAPING($3))){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,0,{
+__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}dnl
+__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}__CR)},
+__{}{dnl
+__{}__{}__ASM_TOKEN_FILE_DROP($@)
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL,format({%-14s},__file_$2); 3:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Include file to variable
 dnl #   The file must be without commas
 dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
 dnl # VARIABLEFILE(path,name,suffix)    --> __file_name: dw 0,1,2,3,...
@@ -153,22 +230,141 @@ __{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_VARIABLEFILE},{dnl
-__{}define({$0_TMP},__TEST_TXTFILE_SIZE(__UNESCAPING($1),__UNESCAPING($2),__UNESCAPING($3))){}dnl
+__{}__TOKEN_FILE_DROP($@){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Include file to variable
+dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
+dnl # BINFILE(path,name,suffix)    --> __file_name: incbin "path/name.suffix"
+define({BINFILE_DROP},{dnl
+__{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
 __{}ifelse(eval($#<3),1,{
 __{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
 __{}eval($#>3),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__SIZE,0,{
-__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}dnl
-__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}__CR)},
+__{}__PSIZE_$2,{},{
+__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
+__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{}__CR)},
+__{}{dnl
+__{}__{}__ADD_TOKEN({__TOKEN_BINFILE_DROP},{binfile({{$1,$2,$3}} drop)},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_BINFILE_DROP},{dnl
+__{}define({__SIZE},__FILE_SIZE(__UNESCAPING($1$2$3))){}dnl
+__{}define({__PSIZE_}$2,__SIZE){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,{},{
+__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
+__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{}__CR)},
 __{}{dnl
 __{}__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__{}define({__PSIZE_$2},__SIZE){}dnl
 __{}__{}__ASM_TOKEN_CREATE(__UNESCAPING(__file_$2)){}dnl
 __{}__{}pushdef({LAST_HERE_ADD},__SIZE)dnl
 __{}__{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE)
-__{}__{}__{}    include {$1$2$3}
+__{}__{}__{}    incbin {$1$2$3}
 __{}__{}__{}                        ;format({%-11s}, __SIZE:0)__ESCAPING(__COMPILE_INFO)){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Include file to variable
+dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
+dnl # BINFILE(path,name,suffix)    --> __file_name: incbin "path/name.suffix"
+define({BINFILE},{dnl
+__{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__PSIZE_$2,{},{
+__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
+__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{}__CR)},
+__{}{dnl
+__{}__{}__ADD_TOKEN({__TOKEN_BINFILE},{binfile({{$1,$2,$3}})},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_BINFILE},{dnl
+__{}define({__SIZE},__FILE_SIZE(__UNESCAPING($1$2$3))){}dnl
+__{}define({__PSIZE_}$2,__SIZE){}dnl
+__{}ifelse(eval($#<3),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
+__{}eval($#>3),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,{},{
+__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
+__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{}__CR)},
+__{}{dnl
+__{}__{}__ASM_TOKEN_BINFILE_DROP($@)
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL,format({%-14s},__file_$2); 3:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Include file to variable
+dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
+dnl # BINFILE(path,name,suffix)    --> __file_name: incbin "path/name.suffix"
+define({BINFILE_PUSH_UNPACK},{dnl
+__{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
+__{}ifelse(eval($#<4),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_addr)},
+__{}eval($#>4),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__PSIZE_$2,{},{
+__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
+__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{}__CR)},
+__{}{dnl
+__{}__{}__ADD_TOKEN({__TOKEN_BINFILE_PUSH_UNPACK},{binfile({{$1,$2,$3}}) $4 unpack},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}},$4){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_BINFILE_PUSH_UNPACK},{dnl
+__{}define({__SIZE},__FILE_SIZE(__UNESCAPING($1$2$3))){}dnl
+__{}define({__PSIZE_}$2,__SIZE){}dnl
+__{}ifelse(eval($#<4),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_addr)},
+__{}eval($#>4),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,{},{
+__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
+__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{}__CR)},
+__{}{dnl
+__{}__{}__ASM_TOKEN_BINFILE_DROP({$1},{$2},{$3}){}dnl
+__{}__{}define({_TMP_INFO},__COMPILE_INFO)
+__{}__{}    push DE             ; 1:11      __INFO    ( -- ) from_addr: __file_$2 to_addr: $4
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({HL},__file_$2){}__CODE_16BIT{}dnl
+__{}__{}__LD_REG16({DE},$4,{HL},__file_$2){}__CODE_16BIT{}dnl
+__{}__{}ifelse(dnl
+__{}__{}ifdef({USE_ZX0},1,0),1,{
+__{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO    ZX0 version can be changed by defining USE_LZM or USE_LZ_},
+__{}__{}ifdef({USE_LZM},1,0),1,{
+__{}__{}__{}    call LZM_DEPACK     ; 3:17      __INFO    LZM version can be changed by defining USE_LZ_ or USE_ZX0},
+__{}__{}ifdef({USE_LZ_},1,0),1,{
+__{}__{}__{}    call LZ__DEPACK     ; 3:17      __INFO    LZ_ version can be changed by defining USE_LZM or USE_ZX0},
+__{}__{}$3,{{.lzm}},{
+__{}__{}__{}__def({USE_LZM}){}dnl
+__{}__{}__{}    call LZM_DEPACK     ; 3:17      __INFO},
+__{}__{}$3,{{.lz_}},{
+__{}__{}__{}__def({USE_LZ_}){}dnl
+__{}__{}__{}    call LZ__DEPACK     ; 3:17      __INFO},
+__{}__{}$3,{{.zx0}},{
+__{}__{}__{}__def({USE_ZX0}){}dnl
+__{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO},
+__{}__{}{
+__{}__{}__{}    call DEPACK         ; 3:17      __INFO    default version can be changed by defining USE_LZM{,} USE_LZ_ or USE_ZX0}){}dnl
+__{}__{}__LD_REG16({HL},$4){}__CODE_16BIT
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -7931,11 +8127,11 @@ dnl
 dnl
 dnl # ( from_addr to_addr -- )
 dnl # Extracts compressed data from_addr to to_addr 
-define({UNPACK},{dnl
-__{}__ADD_TOKEN({__TOKEN_UNPACK},{unpack},$@){}dnl
+define({UNPACK_DROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_UNPACK_DROP},{unpack drop},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_UNPACK},{dnl
+define({__ASM_TOKEN_UNPACK_DROP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($#>0),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
@@ -7957,7 +8153,67 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # ( from_addr to_addr -- to_addr )
+dnl # Extracts compressed data from_addr to to_addr 
+define({UNPACK},{dnl
+__{}__ADD_TOKEN({__TOKEN_UNPACK},{unpack},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_UNPACK},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{define({_TMP_INFO},__INFO)
+__{}__{}    push HL             ; 1:11      __INFO    ( from_addr to_addr -- to_addr )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}ifelse(dnl
+__{}__{}ifdef({USE_ZX0},1,0),1,{
+__{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO    ZX0 version can be changed by defining USE_LZM or USE_LZ_},
+__{}__{}ifdef({USE_LZM},1,0),1,{
+__{}__{}__{}    call LZM_DEPACK     ; 3:17      __INFO    LZM version can be changed by defining USE_LZ_ or USE_ZX0},
+__{}__{}ifdef({USE_LZ_},1,0),1,{
+__{}__{}__{}    call LZ__DEPACK     ; 3:17      __INFO    LZ_ version can be changed by defining USE_LZM or USE_ZX0},
+__{}__{}{
+__{}__{}__{}    call DEPACK         ; 3:17      __INFO    default version can be changed by defining USE_LZM{,} USE_LZ_ or USE_ZX0})
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # ( from_addr -- ) $1: to_addr 
+dnl # Extracts compressed data from TOS to $1
+define({PUSH_UNPACK_DROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_UNPACK_DROP},{$1 unpack drop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_UNPACK_DROP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<1),{1},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{define({_TMP_INFO},__INFO)
+__{}__{}    push DE             ; 1:11      __INFO    ( from_addr -- ) to_addr: $1{}dnl
+__{}__{}__LD_REG16({DE},$1){}__CODE_16BIT{}dnl
+__{}__{}ifelse(dnl
+__{}__{}ifdef({USE_ZX0},1,0),1,{
+__{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO    ZX0 version can be changed by defining USE_LZM or USE_LZ_},
+__{}__{}ifdef({USE_LZM},1,0),1,{
+__{}__{}__{}    call LZM_DEPACK     ; 3:17      __INFO    LZM version can be changed by defining USE_LZ_ or USE_ZX0},
+__{}__{}ifdef({USE_LZ_},1,0),1,{
+__{}__{}__{}    call LZ__DEPACK     ; 3:17      __INFO    LZ_ version can be changed by defining USE_LZM or USE_ZX0},
+__{}__{}{
+__{}__{}__{}    call DEPACK         ; 3:17      __INFO    default version can be changed by defining USE_LZM{,} USE_LZ_ or USE_ZX0})
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( from_addr -- $1 ) $1: to_addr 
 dnl # Extracts compressed data from TOS to $1
 define({PUSH_UNPACK},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_UNPACK},{$1 unpack},$@){}dnl
@@ -7970,8 +8226,41 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{define({_TMP_INFO},__INFO)
-__{}__{}    push DE             ; 1:11      __INFO    ( from_addr -- ) to_addr: $1{}dnl
+__{}__{}    push DE             ; 1:11      __INFO    ( from_addr -- $1 ) to_addr: $1{}dnl
 __{}__{}__LD_REG16({DE},$1){}__CODE_16BIT{}dnl
+__{}__{}ifelse(dnl
+__{}__{}ifdef({USE_ZX0},1,0),1,{
+__{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO    ZX0 version can be changed by defining USE_LZM or USE_LZ_},
+__{}__{}ifdef({USE_LZM},1,0),1,{
+__{}__{}__{}    call LZM_DEPACK     ; 3:17      __INFO    LZM version can be changed by defining USE_LZ_ or USE_ZX0},
+__{}__{}ifdef({USE_LZ_},1,0),1,{
+__{}__{}__{}    call LZ__DEPACK     ; 3:17      __INFO    LZ_ version can be changed by defining USE_LZM or USE_ZX0},
+__{}__{}{
+__{}__{}__{}    call DEPACK         ; 3:17      __INFO    default version can be changed by defining USE_LZM{,} USE_LZ_ or USE_ZX0}){}dnl
+__{}__{}__LD_REG16({HL},$1){}__CODE_16BIT
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- ) $1: from_addr   $2: to_addr 
+dnl # Extracts compressed data from $1 to $2
+define({PUSH2_UNPACK_DROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_UNPACK_DROP},{$1 $2 unpack drop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_UNPACK_DROP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#<2),{1},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{define({_TMP_INFO},__INFO)
+__{}__{}    push DE             ; 1:11      __INFO    ( -- ) from_addr: $1 to_addr: $2
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({HL},$1){}__CODE_16BIT{}dnl
+__{}__{}__LD_REG16({DE},$2,{HL},$1){}__CODE_16BIT{}dnl
 __{}__{}ifelse(dnl
 __{}__{}ifdef({USE_ZX0},1,0),1,{
 __{}__{}__{}    call ZX0_DEPACK     ; 3:17      __INFO    ZX0 version can be changed by defining USE_LZM or USE_LZ_},
@@ -8001,7 +8290,7 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>2),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{define({_TMP_INFO},__INFO)
-__{}__{}    push DE             ; 1:11      __INFO    ( -- ) from_addr: $1 to_addr: $2
+__{}__{}    push DE             ; 1:11      __INFO    ( -- $2 ) from_addr: $1 to_addr: $2
 __{}__{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__LD_REG16({HL},$1){}__CODE_16BIT{}dnl
 __{}__{}__LD_REG16({DE},$2,{HL},$1){}__CODE_16BIT{}dnl
@@ -8013,8 +8302,8 @@ __{}__{}__{}    call LZM_DEPACK     ; 3:17      __INFO    LZM version can be cha
 __{}__{}ifdef({USE_LZ_},1,0),1,{
 __{}__{}__{}    call LZ__DEPACK     ; 3:17      __INFO    LZ_ version can be changed by defining USE_LZM or USE_ZX0},
 __{}__{}{
-__{}__{}__{}    call DEPACK         ; 3:17      __INFO    default version can be changed by defining USE_LZM{,} USE_LZ_ or USE_ZX0})
-__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    call DEPACK         ; 3:17      __INFO    default version can be changed by defining USE_LZM{,} USE_LZ_ or USE_ZX0}){}dnl
+__{}__{}__LD_REG16({HL},$2){}__CODE_16BIT
 __{}__{}    pop  DE             ; 1:10      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
