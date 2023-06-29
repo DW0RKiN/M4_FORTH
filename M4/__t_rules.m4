@@ -436,6 +436,13 @@ __T_NAME(1):__T_NAME(0):$1, __TOKEN_DUP_FETCH:__TOKEN_DUP_EMIT:__TOKEN_DROP, {__
 
 dnl # D...
 d...,,,
+            __T_NAME(0):$1,{__TOKEN_UNPACK:__TOKEN_DROP},       {__SET_TOKEN({__TOKEN_UNPACK_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):$1,{__TOKEN_PUSH_UNPACK:__TOKEN_DROP},  {__SET_TOKEN({__TOKEN_PUSH_UNPACK_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):$1,{__TOKEN_PUSH2_UNPACK:__TOKEN_DROP}, {__SET_TOKEN({__TOKEN_PUSH2_UNPACK_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+
+            __T_NAME(0):$1,{__TOKEN_FILE:__TOKEN_DROP},         {__SET_TOKEN({__TOKEN_FILE_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):$1,{__TOKEN_BINFILE:__TOKEN_DROP},      {__SET_TOKEN({__TOKEN_BINFILE_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            
             __T_NAME(0)-$1,{__TOKEN_DROP-__TOKEN_DROP},         {__SET_TOKEN({__TOKEN_2DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_DROP-__TOKEN_2DROP},        {__SET_TOKEN({__TOKEN_3DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
@@ -647,7 +654,11 @@ p,,,
             __T_NAME(0):$1,   __TOKEN_TUCK:__TOKEN_PORTSTORE, {__SET_TOKEN({__TOKEN_TUCK_PORTSTORE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
             __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_PLAY,                                {__SET_TOKEN({__TOKEN_PUSH_PLAY},   __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
-
+            __T_NAME(0):$1,                      __TOKEN_FILE:__TOKEN_PLAY,                                   {__SET_TOKEN({__TOKEN_FILE_PLAY},   __CONCATENATE_WITH({ },__T_INFO(0),$2),__ESCAPING(__ESCAPING(__T_ARRAY_1(1))),__ESCAPING(__ESCAPING(__T_ARRAY_2(1))),__ESCAPING(__ESCAPING(__T_ARRAY_3(1))))},
+            __T_NAME(0):$1,                      __TOKEN_BINFILE:__TOKEN_PLAY,                                {__SET_TOKEN({__TOKEN_BINFILE_PLAY},__CONCATENATE_WITH({ },__T_INFO(0),$2),__ESCAPING(__ESCAPING(__T_ARRAY_1(1))),__ESCAPING(__ESCAPING(__T_ARRAY_2(1))),__ESCAPING(__ESCAPING(__T_ARRAY_3(1))))},
+__T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_BINFILE:__TOKEN_PUSHS:1:__TOKEN_UNPACK,              {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_BINFILE_PUSH_UNPACK},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__ESCAPING(__ESCAPING(__T_ARRAY_1(1))),__ESCAPING(__ESCAPING(__T_ARRAY_2(1))),__ESCAPING(__ESCAPING(__T_ARRAY_3(1))),__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                      __TOKEN_BINFILE_PUSH_UNPACK:__TOKEN_PLAY,                    {__SET_TOKEN({__TOKEN_BINFILE_PUSH_UNPACK_PLAY},__CONCATENATE_WITH({ },__T_INFO(0),$2),__ESCAPING(__ESCAPING(__T_ARRAY_1(0))),__ESCAPING(__ESCAPING(__T_ARRAY_2(0))),__ESCAPING(__ESCAPING(__T_ARRAY_3(0))),__T_ARRAY_4(0))},
+            
 dnl # PUSHDOT
 pushdot,,,
             __T_NAME(0):$1:__IS_NUM($3),                 __TOKEN_PUSHS:__TOKEN_PUSHDOT:1,                      {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ }$2,__T_ARRAY(0),__HEX_DE($3),__HEX_HL($3))},
