@@ -78,9 +78,18 @@ int main(int argc, char *argv[]){
 		return -1;
 	}
 
-	//cut suffix	
+	//cut suffix
 	fileName[i] = 0;
-
+	//delete path and cut suffix
+	while (i>=0)
+	{
+		if (fileName[i] == '/')
+		{
+		fileName += i+1;
+		i = 0;
+		}
+		i--;
+	}
 	//get filesize
 	XMFILE.seekg(0,ios_base::end);
 	int32_t filesize = XMFILE.tellg();
