@@ -1,1022 +1,1022 @@
 ; relocatable file:
-;   the base address is ./Data/alf2_zalza
-;   the loop address is ./Data/alf2_zalza_loop
+;   the base address is alf2_zalza
+;   the loop address is alf2_zalza_loop
 ; M4 support:
 ;   no one comma
 ;   macro file_size defined
 
-  ifndef ./Data/alf2_zalza
-./Data/alf2_zalza equ $
+  ifndef alf2_zalza
+alf2_zalza equ $
   endif
 
 ;loop
-	dw ./Data/alf2_zalza_loop
+	dw alf2_zalza_loop
 
-./Data/alf2_zalza_start equ ./Data/alf2_zalza + 0x2
+alf2_zalza_start equ alf2_zalza + 0x2
 ;sequence
-./Data/alf2_zalza_loop equ ./Data/alf2_zalza + 0x2
-	dw ./Data/alf2_zalza_ptn0
-	dw ./Data/alf2_zalza_ptn1
-	dw ./Data/alf2_zalza_ptn2
-	dw ./Data/alf2_zalza_ptn3
-	db 2	; lo = repeat times
+alf2_zalza_loop equ alf2_zalza + 0x2
+	dw alf2_zalza_ptn0
+	dw alf2_zalza_ptn1
+	dw alf2_zalza_ptn2
+	dw alf2_zalza_ptn3
+	db 0	; lo = repeat times
 	db 0	; hi = end mark
 ; 0xc bytes
 
-./Data/alf2_zalza_ptn0 equ ./Data/alf2_zalza + 0xc
+alf2_zalza_ptn0 equ alf2_zalza + 0xc
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row0
+	dw alf2_zalza_row0
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row1
+	dw alf2_zalza_row1
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row2
+	dw alf2_zalza_row2
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row3
+	dw alf2_zalza_row3
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row4
+	dw alf2_zalza_row4
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row5
+	dw alf2_zalza_row5
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row6
+	dw alf2_zalza_row6
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row7
+	dw alf2_zalza_row7
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8
+	dw alf2_zalza_row8
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row9
+	dw alf2_zalza_row9
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_rowa
+	dw alf2_zalza_rowa
 
 	dw 0x400
-	dw ./Data/alf2_zalza_rowb
+	dw alf2_zalza_rowb
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_rowc
+	dw alf2_zalza_rowc
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_rowd
+	dw alf2_zalza_rowd
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_rowe
+	dw alf2_zalza_rowe
 
 	dw 0x400
-	dw ./Data/alf2_zalza_rowf
+	dw alf2_zalza_rowf
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row10
+	dw alf2_zalza_row10
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row11
+	dw alf2_zalza_row11
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row12
+	dw alf2_zalza_row12
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row11
+	dw alf2_zalza_row11
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row13
+	dw alf2_zalza_row13
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row14
+	dw alf2_zalza_row14
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row15
+	dw alf2_zalza_row15
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row16
+	dw alf2_zalza_row16
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row17
+	dw alf2_zalza_row17
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row16
+	dw alf2_zalza_row16
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row18
+	dw alf2_zalza_row18
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row19
+	dw alf2_zalza_row19
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row1a
+	dw alf2_zalza_row1a
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row1b
+	dw alf2_zalza_row1b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row1c
+	dw alf2_zalza_row1c
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row1d
+	dw alf2_zalza_row1d
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row1e
+	dw alf2_zalza_row1e
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row1f
+	dw alf2_zalza_row1f
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row20
+	dw alf2_zalza_row20
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row21
+	dw alf2_zalza_row21
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row22
+	dw alf2_zalza_row22
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row23
+	dw alf2_zalza_row23
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row24
+	dw alf2_zalza_row24
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row25
+	dw alf2_zalza_row25
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row26
+	dw alf2_zalza_row26
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row27
+	dw alf2_zalza_row27
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row28
+	dw alf2_zalza_row28
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row29
+	dw alf2_zalza_row29
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row2a
+	dw alf2_zalza_row2a
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row2b
+	dw alf2_zalza_row2b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row2c
+	dw alf2_zalza_row2c
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row2d
+	dw alf2_zalza_row2d
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row2e
+	dw alf2_zalza_row2e
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row2f
+	dw alf2_zalza_row2f
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row30
+	dw alf2_zalza_row30
 
 	dw 0x404
 	dw 0x0020
-	dw ./Data/alf2_zalza_row2f
+	dw alf2_zalza_row2f
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row31
+	dw alf2_zalza_row31
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row32
+	dw alf2_zalza_row32
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row33
+	dw alf2_zalza_row33
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row2f
+	dw alf2_zalza_row2f
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row34
+	dw alf2_zalza_row34
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row35
+	dw alf2_zalza_row35
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row36
+	dw alf2_zalza_row36
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row37
+	dw alf2_zalza_row37
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row38
+	dw alf2_zalza_row38
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row39
+	dw alf2_zalza_row39
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row3a
+	dw alf2_zalza_row3a
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row3b
+	dw alf2_zalza_row3b
 
 	db 0x40
 ; 0x163 bytes
 
-./Data/alf2_zalza_ptn1 equ ./Data/alf2_zalza + 0x16f
+alf2_zalza_ptn1 equ alf2_zalza + 0x16f
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row3c
+	dw alf2_zalza_row3c
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row3d
+	dw alf2_zalza_row3d
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row3e
+	dw alf2_zalza_row3e
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row3f
+	dw alf2_zalza_row3f
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row40
+	dw alf2_zalza_row40
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row41
+	dw alf2_zalza_row41
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row42
+	dw alf2_zalza_row42
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row43
+	dw alf2_zalza_row43
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8
+	dw alf2_zalza_row8
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row9
+	dw alf2_zalza_row9
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_rowa
+	dw alf2_zalza_rowa
 
 	dw 0x400
-	dw ./Data/alf2_zalza_rowb
+	dw alf2_zalza_rowb
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_rowc
+	dw alf2_zalza_rowc
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_rowd
+	dw alf2_zalza_rowd
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_rowe
+	dw alf2_zalza_rowe
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row44
+	dw alf2_zalza_row44
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row10
+	dw alf2_zalza_row10
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row11
+	dw alf2_zalza_row11
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row12
+	dw alf2_zalza_row12
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row11
+	dw alf2_zalza_row11
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row13
+	dw alf2_zalza_row13
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row14
+	dw alf2_zalza_row14
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row15
+	dw alf2_zalza_row15
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row16
+	dw alf2_zalza_row16
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row17
+	dw alf2_zalza_row17
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row16
+	dw alf2_zalza_row16
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row18
+	dw alf2_zalza_row18
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row19
+	dw alf2_zalza_row19
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row1a
+	dw alf2_zalza_row1a
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row45
+	dw alf2_zalza_row45
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row1c
+	dw alf2_zalza_row1c
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row46
+	dw alf2_zalza_row46
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row47
+	dw alf2_zalza_row47
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row48
+	dw alf2_zalza_row48
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row49
+	dw alf2_zalza_row49
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row4a
+	dw alf2_zalza_row4a
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row4b
+	dw alf2_zalza_row4b
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row4c
+	dw alf2_zalza_row4c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row4d
+	dw alf2_zalza_row4d
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row4e
+	dw alf2_zalza_row4e
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row4f
+	dw alf2_zalza_row4f
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row50
+	dw alf2_zalza_row50
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row51
+	dw alf2_zalza_row51
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/alf2_zalza_row52
+	dw alf2_zalza_row52
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row53
+	dw alf2_zalza_row53
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row54
+	dw alf2_zalza_row54
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row55
+	dw alf2_zalza_row55
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row56
+	dw alf2_zalza_row56
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row57
+	dw alf2_zalza_row57
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row58
+	dw alf2_zalza_row58
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row59
+	dw alf2_zalza_row59
 
 	dw 0x404
 	dw 0x0020
-	dw ./Data/alf2_zalza_row5a
+	dw alf2_zalza_row5a
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row5b
+	dw alf2_zalza_row5b
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row5c
+	dw alf2_zalza_row5c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row5d
+	dw alf2_zalza_row5d
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row5a
+	dw alf2_zalza_row5a
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row59
+	dw alf2_zalza_row59
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row5a
+	dw alf2_zalza_row5a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row5b
+	dw alf2_zalza_row5b
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row5e
+	dw alf2_zalza_row5e
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row5f
+	dw alf2_zalza_row5f
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row60
+	dw alf2_zalza_row60
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row61
+	dw alf2_zalza_row61
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row62
+	dw alf2_zalza_row62
 
 	db 0x40
 ; 0x165 bytes
 
-./Data/alf2_zalza_ptn2 equ ./Data/alf2_zalza + 0x2d4
+alf2_zalza_ptn2 equ alf2_zalza + 0x2d4
 	dw 0x480
 	dw 0x0054
-	dw ./Data/alf2_zalza_row63
+	dw alf2_zalza_row63
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row63
+	dw alf2_zalza_row63
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/alf2_zalza_row63
+	dw alf2_zalza_row63
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row63
+	dw alf2_zalza_row63
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row64
+	dw alf2_zalza_row64
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row64
+	dw alf2_zalza_row64
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row63
+	dw alf2_zalza_row63
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row63
+	dw alf2_zalza_row63
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row65
+	dw alf2_zalza_row65
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row65
+	dw alf2_zalza_row65
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row66
+	dw alf2_zalza_row66
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row66
+	dw alf2_zalza_row66
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row67
+	dw alf2_zalza_row67
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row67
+	dw alf2_zalza_row67
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row68
+	dw alf2_zalza_row68
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row68
+	dw alf2_zalza_row68
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row69
+	dw alf2_zalza_row69
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row69
+	dw alf2_zalza_row69
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row69
+	dw alf2_zalza_row69
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row69
+	dw alf2_zalza_row69
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row6a
+	dw alf2_zalza_row6a
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row6a
+	dw alf2_zalza_row6a
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row69
+	dw alf2_zalza_row69
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row69
+	dw alf2_zalza_row69
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row6b
+	dw alf2_zalza_row6b
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row6b
+	dw alf2_zalza_row6b
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row6c
+	dw alf2_zalza_row6c
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row6d
+	dw alf2_zalza_row6d
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row6e
+	dw alf2_zalza_row6e
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row6e
+	dw alf2_zalza_row6e
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row6f
+	dw alf2_zalza_row6f
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row6f
+	dw alf2_zalza_row6f
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row70
+	dw alf2_zalza_row70
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row70
+	dw alf2_zalza_row70
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row70
+	dw alf2_zalza_row70
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row70
+	dw alf2_zalza_row70
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row71
+	dw alf2_zalza_row71
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row71
+	dw alf2_zalza_row71
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row70
+	dw alf2_zalza_row70
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row70
+	dw alf2_zalza_row70
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row72
+	dw alf2_zalza_row72
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row72
+	dw alf2_zalza_row72
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row73
+	dw alf2_zalza_row73
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row73
+	dw alf2_zalza_row73
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row74
+	dw alf2_zalza_row74
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row74
+	dw alf2_zalza_row74
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row75
+	dw alf2_zalza_row75
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row75
+	dw alf2_zalza_row75
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row76
+	dw alf2_zalza_row76
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row76
+	dw alf2_zalza_row76
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row76
+	dw alf2_zalza_row76
 
 	dw 0x404
 	dw 0x0020
-	dw ./Data/alf2_zalza_row76
+	dw alf2_zalza_row76
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row77
+	dw alf2_zalza_row77
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row77
+	dw alf2_zalza_row77
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row76
+	dw alf2_zalza_row76
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row76
+	dw alf2_zalza_row76
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row78
+	dw alf2_zalza_row78
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row78
+	dw alf2_zalza_row78
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row79
+	dw alf2_zalza_row79
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row79
+	dw alf2_zalza_row79
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row78
+	dw alf2_zalza_row78
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row78
+	dw alf2_zalza_row78
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row79
+	dw alf2_zalza_row79
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row79
+	dw alf2_zalza_row79
 
 	db 0x40
 ; 0x175 bytes
 
-./Data/alf2_zalza_ptn3 equ ./Data/alf2_zalza + 0x449
+alf2_zalza_ptn3 equ alf2_zalza + 0x449
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row7a
+	dw alf2_zalza_row7a
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row7a
+	dw alf2_zalza_row7a
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row7a
+	dw alf2_zalza_row7a
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row7b
+	dw alf2_zalza_row7b
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row7c
+	dw alf2_zalza_row7c
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row7c
+	dw alf2_zalza_row7c
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row7d
+	dw alf2_zalza_row7d
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row7d
+	dw alf2_zalza_row7d
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row7e
+	dw alf2_zalza_row7e
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row7e
+	dw alf2_zalza_row7e
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row7f
+	dw alf2_zalza_row7f
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row7f
+	dw alf2_zalza_row7f
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row7d
+	dw alf2_zalza_row7d
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row7d
+	dw alf2_zalza_row7d
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row80
+	dw alf2_zalza_row80
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row80
+	dw alf2_zalza_row80
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row6e
+	dw alf2_zalza_row6e
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row6e
+	dw alf2_zalza_row6e
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row81
+	dw alf2_zalza_row81
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row81
+	dw alf2_zalza_row81
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row6d
+	dw alf2_zalza_row6d
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row6d
+	dw alf2_zalza_row6d
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row81
+	dw alf2_zalza_row81
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row81
+	dw alf2_zalza_row81
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row81
+	dw alf2_zalza_row81
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row81
+	dw alf2_zalza_row81
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row82
+	dw alf2_zalza_row82
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row82
+	dw alf2_zalza_row82
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row83
+	dw alf2_zalza_row83
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row83
+	dw alf2_zalza_row83
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row84
+	dw alf2_zalza_row84
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row84
+	dw alf2_zalza_row84
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row85
+	dw alf2_zalza_row85
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row85
+	dw alf2_zalza_row85
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row85
+	dw alf2_zalza_row85
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row85
+	dw alf2_zalza_row85
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row86
+	dw alf2_zalza_row86
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row86
+	dw alf2_zalza_row86
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row85
+	dw alf2_zalza_row85
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row85
+	dw alf2_zalza_row85
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row87
+	dw alf2_zalza_row87
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row87
+	dw alf2_zalza_row87
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row88
+	dw alf2_zalza_row88
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row88
+	dw alf2_zalza_row88
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row89
+	dw alf2_zalza_row89
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row89
+	dw alf2_zalza_row89
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8a
+	dw alf2_zalza_row8a
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row8a
+	dw alf2_zalza_row8a
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8b
+	dw alf2_zalza_row8b
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row8b
+	dw alf2_zalza_row8b
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8b
+	dw alf2_zalza_row8b
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/alf2_zalza_row8b
+	dw alf2_zalza_row8b
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8c
+	dw alf2_zalza_row8c
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row8c
+	dw alf2_zalza_row8c
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8b
+	dw alf2_zalza_row8b
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8b
+	dw alf2_zalza_row8b
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8d
+	dw alf2_zalza_row8d
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row8d
+	dw alf2_zalza_row8d
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8e
+	dw alf2_zalza_row8e
 
 	dw 0x400
-	dw ./Data/alf2_zalza_row8e
+	dw alf2_zalza_row8e
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row8f
+	dw alf2_zalza_row8f
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row90
+	dw alf2_zalza_row90
 
 	dw 0x480
 	dw 0x0020
-	dw ./Data/alf2_zalza_row91
+	dw alf2_zalza_row91
 
 	dw 0x480
 	dw 0x0040
-	dw ./Data/alf2_zalza_row91
+	dw alf2_zalza_row91
 
 	db 0x40
 ; 0x173 bytes
@@ -1024,8 +1024,8 @@
 
 
 ;row buffers
-./Data/alf2_zalza_rows equ ./Data/alf2_zalza + 0x5bc
-./Data/alf2_zalza_row0 equ ./Data/alf2_zalza_rows + 0x0
+alf2_zalza_rows equ alf2_zalza + 0x5bc
+alf2_zalza_row0 equ alf2_zalza_rows + 0x0
 	dw 0x0
 	dw 0x17f9
 	dw 0x4c2
@@ -1035,7 +1035,7 @@
 	dw 0x1307
 	dw 0x2000
 
-./Data/alf2_zalza_row1 equ ./Data/alf2_zalza_rows + 0x10
+alf2_zalza_row1 equ alf2_zalza_rows + 0x10
 	dw 0x0
 	dw 0x17f9
 	dw 0x4c2
@@ -1045,7 +1045,7 @@
 	dw 0x1307
 	dw 0x2000
 
-./Data/alf2_zalza_row2 equ ./Data/alf2_zalza_rows + 0x20
+alf2_zalza_row2 equ alf2_zalza_rows + 0x20
 	dw 0x0
 	dw 0x17f9
 	dw 0x4c2
@@ -1055,7 +1055,7 @@
 	dw 0x1307
 	dw 0x2000
 
-./Data/alf2_zalza_row3 equ ./Data/alf2_zalza_rows + 0x30
+alf2_zalza_row3 equ alf2_zalza_rows + 0x30
 	dw 0x0
 	dw 0x1966
 	dw 0x4c2
@@ -1065,7 +1065,7 @@
 	dw 0x1307
 	dw 0x2000
 
-./Data/alf2_zalza_row4 equ ./Data/alf2_zalza_rows + 0x40
+alf2_zalza_row4 equ alf2_zalza_rows + 0x40
 	dw 0x0
 	dw 0x1966
 	dw 0x984
@@ -1075,7 +1075,7 @@
 	dw 0x260e
 	dw 0x2000
 
-./Data/alf2_zalza_row5 equ ./Data/alf2_zalza_rows + 0x50
+alf2_zalza_row5 equ alf2_zalza_rows + 0x50
 	dw 0x0
 	dw 0x1966
 	dw 0x984
@@ -1085,7 +1085,7 @@
 	dw 0x260e
 	dw 0x2000
 
-./Data/alf2_zalza_row6 equ ./Data/alf2_zalza_rows + 0x60
+alf2_zalza_row6 equ alf2_zalza_rows + 0x60
 	dw 0x0
 	dw 0x1966
 	dw 0x4c2
@@ -1095,7 +1095,7 @@
 	dw 0x1307
 	dw 0x2000
 
-./Data/alf2_zalza_row7 equ ./Data/alf2_zalza_rows + 0x70
+alf2_zalza_row7 equ alf2_zalza_rows + 0x70
 	dw 0x0
 	dw 0x1c82
 	dw 0x4c2
@@ -1105,7 +1105,7 @@
 	dw 0x1307
 	dw 0x2000
 
-./Data/alf2_zalza_row8 equ ./Data/alf2_zalza_rows + 0x80
+alf2_zalza_row8 equ alf2_zalza_rows + 0x80
 	dw 0x0
 	dw 0x1c82
 	dw 0x4c2
@@ -1115,7 +1115,7 @@
 	dw 0x260e
 	dw 0x1c82
 
-./Data/alf2_zalza_row9 equ ./Data/alf2_zalza_rows + 0x90
+alf2_zalza_row9 equ alf2_zalza_rows + 0x90
 	dw 0x0
 	dw 0x1c82
 	dw 0x4c2
@@ -1125,7 +1125,7 @@
 	dw 0x260e
 	dw 0x1c82
 
-./Data/alf2_zalza_rowa equ ./Data/alf2_zalza_rows + 0xa0
+alf2_zalza_rowa equ alf2_zalza_rows + 0xa0
 	dw 0x0
 	dw 0x1c82
 	dw 0x984
@@ -1135,7 +1135,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_rowb equ ./Data/alf2_zalza_rows + 0xb0
+alf2_zalza_rowb equ alf2_zalza_rows + 0xb0
 	dw 0x0
 	dw 0x1c82
 	dw 0x984
@@ -1145,7 +1145,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_rowc equ ./Data/alf2_zalza_rows + 0xc0
+alf2_zalza_rowc equ alf2_zalza_rows + 0xc0
 	dw 0x0
 	dw 0x1c82
 	dw 0x4c2
@@ -1155,7 +1155,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_rowd equ ./Data/alf2_zalza_rows + 0xd0
+alf2_zalza_rowd equ alf2_zalza_rows + 0xd0
 	dw 0x0
 	dw 0x1c82
 	dw 0x4c2
@@ -1165,7 +1165,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_rowe equ ./Data/alf2_zalza_rows + 0xe0
+alf2_zalza_rowe equ alf2_zalza_rows + 0xe0
 	dw 0x0
 	dw 0x1c82
 	dw 0x984
@@ -1175,7 +1175,7 @@
 	dw 0x260e
 	dw 0x1c82
 
-./Data/alf2_zalza_rowf equ ./Data/alf2_zalza_rows + 0xf0
+alf2_zalza_rowf equ alf2_zalza_rows + 0xf0
 	dw 0x0
 	dw 0x1c82
 	dw 0x4c2
@@ -1185,7 +1185,7 @@
 	dw 0x260e
 	dw 0x1c82
 
-./Data/alf2_zalza_row10 equ ./Data/alf2_zalza_rows + 0x100
+alf2_zalza_row10 equ alf2_zalza_rows + 0x100
 	dw 0x0
 	dw 0x1c82
 	dw 0x800
@@ -1195,7 +1195,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row11 equ ./Data/alf2_zalza_rows + 0x110
+alf2_zalza_row11 equ alf2_zalza_rows + 0x110
 	dw 0x0
 	dw 0x1c82
 	dw 0x800
@@ -1205,7 +1205,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row12 equ ./Data/alf2_zalza_rows + 0x120
+alf2_zalza_row12 equ alf2_zalza_rows + 0x120
 	dw 0x0
 	dw 0x1c82
 	dw 0x800
@@ -1215,7 +1215,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row13 equ ./Data/alf2_zalza_rows + 0x130
+alf2_zalza_row13 equ alf2_zalza_rows + 0x130
 	dw 0x0
 	dw 0x2000
 	dw 0x1000
@@ -1225,7 +1225,7 @@
 	dw 0x2000
 	dw 0x17f9
 
-./Data/alf2_zalza_row14 equ ./Data/alf2_zalza_rows + 0x140
+alf2_zalza_row14 equ alf2_zalza_rows + 0x140
 	dw 0x0
 	dw 0x1c82
 	dw 0x1000
@@ -1235,7 +1235,7 @@
 	dw 0x2000
 	dw 0x17f9
 
-./Data/alf2_zalza_row15 equ ./Data/alf2_zalza_rows + 0x150
+alf2_zalza_row15 equ alf2_zalza_rows + 0x150
 	dw 0x0
 	dw 0x260e
 	dw 0x800
@@ -1245,7 +1245,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row16 equ ./Data/alf2_zalza_rows + 0x160
+alf2_zalza_row16 equ alf2_zalza_rows + 0x160
 	dw 0x0
 	dw 0x260e
 	dw 0x800
@@ -1255,7 +1255,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row17 equ ./Data/alf2_zalza_rows + 0x170
+alf2_zalza_row17 equ alf2_zalza_rows + 0x170
 	dw 0x0
 	dw 0x260e
 	dw 0x800
@@ -1265,7 +1265,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row18 equ ./Data/alf2_zalza_rows + 0x180
+alf2_zalza_row18 equ alf2_zalza_rows + 0x180
 	dw 0x0
 	dw 0x1c82
 	dw 0x1000
@@ -1275,7 +1275,7 @@
 	dw 0x2000
 	dw 0x17f9
 
-./Data/alf2_zalza_row19 equ ./Data/alf2_zalza_rows + 0x190
+alf2_zalza_row19 equ alf2_zalza_rows + 0x190
 	dw 0x0
 	dw 0x1c82
 	dw 0x1000
@@ -1285,7 +1285,7 @@
 	dw 0x2000
 	dw 0x17f9
 
-./Data/alf2_zalza_row1a equ ./Data/alf2_zalza_rows + 0x1a0
+alf2_zalza_row1a equ alf2_zalza_rows + 0x1a0
 	dw 0x0
 	dw 0x1c82
 	dw 0x800
@@ -1295,7 +1295,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row1b equ ./Data/alf2_zalza_rows + 0x1b0
+alf2_zalza_row1b equ alf2_zalza_rows + 0x1b0
 	dw 0x0
 	dw 0x1c82
 	dw 0x800
@@ -1305,7 +1305,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row1c equ ./Data/alf2_zalza_rows + 0x1c0
+alf2_zalza_row1c equ alf2_zalza_rows + 0x1c0
 	dw 0x0
 	dw 0x17f9
 	dw 0x1000
@@ -1315,7 +1315,7 @@
 	dw 0x2000
 	dw 0x17f9
 
-./Data/alf2_zalza_row1d equ ./Data/alf2_zalza_rows + 0x1d0
+alf2_zalza_row1d equ alf2_zalza_rows + 0x1d0
 	dw 0x0
 	dw 0x17f9
 	dw 0x800
@@ -1325,7 +1325,7 @@
 	dw 0x2000
 	dw 0x17f9
 
-./Data/alf2_zalza_row1e equ ./Data/alf2_zalza_rows + 0x1e0
+alf2_zalza_row1e equ alf2_zalza_rows + 0x1e0
 	dw 0x0
 	dw 0x1c82
 	dw 0x65a
@@ -1335,7 +1335,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row1f equ ./Data/alf2_zalza_rows + 0x1f0
+alf2_zalza_row1f equ alf2_zalza_rows + 0x1f0
 	dw 0x0
 	dw 0x1c82
 	dw 0x65a
@@ -1345,27 +1345,27 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row20 equ ./Data/alf2_zalza_rows + 0x200
-	dw 0x0
-	dw 0x1c82
-	dw 0x65a
-	dw 0x17f9
-	dw 0x0
-	dw 0x1c82
-	dw 0x1966
-	dw 0x260e
-
-./Data/alf2_zalza_row21 equ ./Data/alf2_zalza_rows + 0x210
+alf2_zalza_row20 equ alf2_zalza_rows + 0x200
 	dw 0x0
 	dw 0x1c82
 	dw 0x65a
 	dw 0x17f9
 	dw 0x0
+	dw 0x1c82
+	dw 0x1966
+	dw 0x260e
+
+alf2_zalza_row21 equ alf2_zalza_rows + 0x210
+	dw 0x0
+	dw 0x1c82
+	dw 0x65a
+	dw 0x17f9
+	dw 0x0
 	dw 0x0
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row22 equ ./Data/alf2_zalza_rows + 0x220
+alf2_zalza_row22 equ alf2_zalza_rows + 0x220
 	dw 0x0
 	dw 0x1c82
 	dw 0xcb3
@@ -1375,7 +1375,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row23 equ ./Data/alf2_zalza_rows + 0x230
+alf2_zalza_row23 equ alf2_zalza_rows + 0x230
 	dw 0x0
 	dw 0x1c82
 	dw 0xcb3
@@ -1385,7 +1385,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row24 equ ./Data/alf2_zalza_rows + 0x240
+alf2_zalza_row24 equ alf2_zalza_rows + 0x240
 	dw 0x0
 	dw 0x1966
 	dw 0x65a
@@ -1395,7 +1395,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row25 equ ./Data/alf2_zalza_rows + 0x250
+alf2_zalza_row25 equ alf2_zalza_rows + 0x250
 	dw 0x0
 	dw 0x17f9
 	dw 0x65a
@@ -1405,7 +1405,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row26 equ ./Data/alf2_zalza_rows + 0x260
+alf2_zalza_row26 equ alf2_zalza_rows + 0x260
 	dw 0x0
 	dw 0x155c
 	dw 0x65a
@@ -1415,7 +1415,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row27 equ ./Data/alf2_zalza_rows + 0x270
+alf2_zalza_row27 equ alf2_zalza_rows + 0x270
 	dw 0x0
 	dw 0x155c
 	dw 0x65a
@@ -1425,7 +1425,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row28 equ ./Data/alf2_zalza_rows + 0x280
+alf2_zalza_row28 equ alf2_zalza_rows + 0x280
 	dw 0x0
 	dw 0x155c
 	dw 0xcb3
@@ -1435,7 +1435,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row29 equ ./Data/alf2_zalza_rows + 0x290
+alf2_zalza_row29 equ alf2_zalza_rows + 0x290
 	dw 0x0
 	dw 0x155c
 	dw 0xcb3
@@ -1445,7 +1445,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row2a equ ./Data/alf2_zalza_rows + 0x2a0
+alf2_zalza_row2a equ alf2_zalza_rows + 0x2a0
 	dw 0x0
 	dw 0x155c
 	dw 0x65a
@@ -1455,7 +1455,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row2b equ ./Data/alf2_zalza_rows + 0x2b0
+alf2_zalza_row2b equ alf2_zalza_rows + 0x2b0
 	dw 0x0
 	dw 0x155c
 	dw 0xcb3
@@ -1465,7 +1465,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row2c equ ./Data/alf2_zalza_rows + 0x2c0
+alf2_zalza_row2c equ alf2_zalza_rows + 0x2c0
 	dw 0x0
 	dw 0x155c
 	dw 0xcb3
@@ -1475,7 +1475,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row2d equ ./Data/alf2_zalza_rows + 0x2d0
+alf2_zalza_row2d equ alf2_zalza_rows + 0x2d0
 	dw 0x0
 	dw 0x155c
 	dw 0xcb3
@@ -1485,7 +1485,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row2e equ ./Data/alf2_zalza_rows + 0x2e0
+alf2_zalza_row2e equ alf2_zalza_rows + 0x2e0
 	dw 0x0
 	dw 0x155c
 	dw 0x721
@@ -1495,7 +1495,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row2f equ ./Data/alf2_zalza_rows + 0x2f0
+alf2_zalza_row2f equ alf2_zalza_rows + 0x2f0
 	dw 0x0
 	dw 0x155c
 	dw 0x721
@@ -1505,7 +1505,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row30 equ ./Data/alf2_zalza_rows + 0x300
+alf2_zalza_row30 equ alf2_zalza_rows + 0x300
 	dw 0x0
 	dw 0x155c
 	dw 0x721
@@ -1515,7 +1515,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row31 equ ./Data/alf2_zalza_rows + 0x310
+alf2_zalza_row31 equ alf2_zalza_rows + 0x310
 	dw 0x0
 	dw 0x155c
 	dw 0xe41
@@ -1525,7 +1525,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row32 equ ./Data/alf2_zalza_rows + 0x320
+alf2_zalza_row32 equ alf2_zalza_rows + 0x320
 	dw 0x0
 	dw 0x155c
 	dw 0xe41
@@ -1535,7 +1535,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row33 equ ./Data/alf2_zalza_rows + 0x330
+alf2_zalza_row33 equ alf2_zalza_rows + 0x330
 	dw 0x0
 	dw 0x155c
 	dw 0x721
@@ -1545,7 +1545,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row34 equ ./Data/alf2_zalza_rows + 0x340
+alf2_zalza_row34 equ alf2_zalza_rows + 0x340
 	dw 0x0
 	dw 0x1307
 	dw 0x721
@@ -1555,7 +1555,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row35 equ ./Data/alf2_zalza_rows + 0x350
+alf2_zalza_row35 equ alf2_zalza_rows + 0x350
 	dw 0x0
 	dw 0x1307
 	dw 0x721
@@ -1565,7 +1565,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row36 equ ./Data/alf2_zalza_rows + 0x360
+alf2_zalza_row36 equ alf2_zalza_rows + 0x360
 	dw 0x0
 	dw 0x1307
 	dw 0xe41
@@ -1575,7 +1575,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row37 equ ./Data/alf2_zalza_rows + 0x370
+alf2_zalza_row37 equ alf2_zalza_rows + 0x370
 	dw 0x0
 	dw 0x1307
 	dw 0xe41
@@ -1585,7 +1585,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row38 equ ./Data/alf2_zalza_rows + 0x380
+alf2_zalza_row38 equ alf2_zalza_rows + 0x380
 	dw 0x0
 	dw 0x155c
 	dw 0x721
@@ -1595,7 +1595,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row39 equ ./Data/alf2_zalza_rows + 0x390
+alf2_zalza_row39 equ alf2_zalza_rows + 0x390
 	dw 0x0
 	dw 0x155c
 	dw 0x721
@@ -1605,7 +1605,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row3a equ ./Data/alf2_zalza_rows + 0x3a0
+alf2_zalza_row3a equ alf2_zalza_rows + 0x3a0
 	dw 0x0
 	dw 0x155c
 	dw 0xe41
@@ -1615,7 +1615,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row3b equ ./Data/alf2_zalza_rows + 0x3b0
+alf2_zalza_row3b equ alf2_zalza_rows + 0x3b0
 	dw 0x0
 	dw 0x155c
 	dw 0xe41
@@ -1625,7 +1625,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row3c equ ./Data/alf2_zalza_rows + 0x3c0
+alf2_zalza_row3c equ alf2_zalza_rows + 0x3c0
 	dw 0x0
 	dw 0x17f9
 	dw 0x4c2
@@ -1635,7 +1635,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_row3d equ ./Data/alf2_zalza_rows + 0x3d0
+alf2_zalza_row3d equ alf2_zalza_rows + 0x3d0
 	dw 0x0
 	dw 0x17f9
 	dw 0x4c2
@@ -1645,7 +1645,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_row3e equ ./Data/alf2_zalza_rows + 0x3e0
+alf2_zalza_row3e equ alf2_zalza_rows + 0x3e0
 	dw 0x0
 	dw 0x17f9
 	dw 0x4c2
@@ -1655,7 +1655,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_row3f equ ./Data/alf2_zalza_rows + 0x3f0
+alf2_zalza_row3f equ alf2_zalza_rows + 0x3f0
 	dw 0x0
 	dw 0x1966
 	dw 0x4c2
@@ -1665,7 +1665,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_row40 equ ./Data/alf2_zalza_rows + 0x400
+alf2_zalza_row40 equ alf2_zalza_rows + 0x400
 	dw 0x0
 	dw 0x1966
 	dw 0x984
@@ -1675,7 +1675,7 @@
 	dw 0x260e
 	dw 0x1c82
 
-./Data/alf2_zalza_row41 equ ./Data/alf2_zalza_rows + 0x410
+alf2_zalza_row41 equ alf2_zalza_rows + 0x410
 	dw 0x0
 	dw 0x1966
 	dw 0x984
@@ -1685,7 +1685,7 @@
 	dw 0x260e
 	dw 0x1c82
 
-./Data/alf2_zalza_row42 equ ./Data/alf2_zalza_rows + 0x420
+alf2_zalza_row42 equ alf2_zalza_rows + 0x420
 	dw 0x0
 	dw 0x1966
 	dw 0x4c2
@@ -1695,7 +1695,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_row43 equ ./Data/alf2_zalza_rows + 0x430
+alf2_zalza_row43 equ alf2_zalza_rows + 0x430
 	dw 0x0
 	dw 0x1c82
 	dw 0x4c2
@@ -1705,7 +1705,7 @@
 	dw 0x1307
 	dw 0x1c82
 
-./Data/alf2_zalza_row44 equ ./Data/alf2_zalza_rows + 0x440
+alf2_zalza_row44 equ alf2_zalza_rows + 0x440
 	dw 0x0
 	dw 0x1c82
 	dw 0x984
@@ -1715,7 +1715,7 @@
 	dw 0x260e
 	dw 0x1c82
 
-./Data/alf2_zalza_row45 equ ./Data/alf2_zalza_rows + 0x450
+alf2_zalza_row45 equ alf2_zalza_rows + 0x450
 	dw 0x0
 	dw 0x1c82
 	dw 0x1000
@@ -1725,7 +1725,7 @@
 	dw 0x1000
 	dw 0x17f9
 
-./Data/alf2_zalza_row46 equ ./Data/alf2_zalza_rows + 0x460
+alf2_zalza_row46 equ alf2_zalza_rows + 0x460
 	dw 0x0
 	dw 0x17f9
 	dw 0x1000
@@ -1735,7 +1735,7 @@
 	dw 0x2000
 	dw 0x17f9
 
-./Data/alf2_zalza_row47 equ ./Data/alf2_zalza_rows + 0x470
+alf2_zalza_row47 equ alf2_zalza_rows + 0x470
 	dw 0x0
 	dw 0x2000
 	dw 0x65a
@@ -1745,7 +1745,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row48 equ ./Data/alf2_zalza_rows + 0x480
+alf2_zalza_row48 equ alf2_zalza_rows + 0x480
 	dw 0x0
 	dw 0x2000
 	dw 0x65a
@@ -1755,7 +1755,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row49 equ ./Data/alf2_zalza_rows + 0x490
+alf2_zalza_row49 equ alf2_zalza_rows + 0x490
 	dw 0x0
 	dw 0x2000
 	dw 0x65a
@@ -1765,7 +1765,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row4a equ ./Data/alf2_zalza_rows + 0x4a0
+alf2_zalza_row4a equ alf2_zalza_rows + 0x4a0
 	dw 0x0
 	dw 0x2000
 	dw 0x65a
@@ -1775,7 +1775,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row4b equ ./Data/alf2_zalza_rows + 0x4b0
+alf2_zalza_row4b equ alf2_zalza_rows + 0x4b0
 	dw 0x0
 	dw 0x2000
 	dw 0xcb3
@@ -1785,7 +1785,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row4c equ ./Data/alf2_zalza_rows + 0x4c0
+alf2_zalza_row4c equ alf2_zalza_rows + 0x4c0
 	dw 0x0
 	dw 0x2000
 	dw 0xcb3
@@ -1795,7 +1795,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row4d equ ./Data/alf2_zalza_rows + 0x4d0
+alf2_zalza_row4d equ alf2_zalza_rows + 0x4d0
 	dw 0x0
 	dw 0x2000
 	dw 0x65a
@@ -1805,7 +1805,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row4e equ ./Data/alf2_zalza_rows + 0x4e0
+alf2_zalza_row4e equ alf2_zalza_rows + 0x4e0
 	dw 0x0
 	dw 0x2000
 	dw 0x65a
@@ -1815,7 +1815,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row4f equ ./Data/alf2_zalza_rows + 0x4f0
+alf2_zalza_row4f equ alf2_zalza_rows + 0x4f0
 	dw 0x0
 	dw 0x2000
 	dw 0x65a
@@ -1825,7 +1825,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row50 equ ./Data/alf2_zalza_rows + 0x500
+alf2_zalza_row50 equ alf2_zalza_rows + 0x500
 	dw 0x0
 	dw 0x2000
 	dw 0x65a
@@ -1835,7 +1835,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row51 equ ./Data/alf2_zalza_rows + 0x510
+alf2_zalza_row51 equ alf2_zalza_rows + 0x510
 	dw 0x0
 	dw 0x2000
 	dw 0xcb3
@@ -1845,7 +1845,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row52 equ ./Data/alf2_zalza_rows + 0x520
+alf2_zalza_row52 equ alf2_zalza_rows + 0x520
 	dw 0x0
 	dw 0x2000
 	dw 0xcb3
@@ -1855,7 +1855,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row53 equ ./Data/alf2_zalza_rows + 0x530
+alf2_zalza_row53 equ alf2_zalza_rows + 0x530
 	dw 0x0
 	dw 0x260e
 	dw 0x65a
@@ -1865,7 +1865,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row54 equ ./Data/alf2_zalza_rows + 0x540
+alf2_zalza_row54 equ alf2_zalza_rows + 0x540
 	dw 0x0
 	dw 0x260e
 	dw 0x65a
@@ -1875,7 +1875,7 @@
 	dw 0x1966
 	dw 0x260e
 
-./Data/alf2_zalza_row55 equ ./Data/alf2_zalza_rows + 0x550
+alf2_zalza_row55 equ alf2_zalza_rows + 0x550
 	dw 0x0
 	dw 0x1c82
 	dw 0xcb3
@@ -1885,7 +1885,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row56 equ ./Data/alf2_zalza_rows + 0x560
+alf2_zalza_row56 equ alf2_zalza_rows + 0x560
 	dw 0x0
 	dw 0x1c82
 	dw 0xcb3
@@ -1895,7 +1895,7 @@
 	dw 0x32cc
 	dw 0x260e
 
-./Data/alf2_zalza_row57 equ ./Data/alf2_zalza_rows + 0x570
+alf2_zalza_row57 equ alf2_zalza_rows + 0x570
 	dw 0x0
 	dw 0x1c82
 	dw 0x721
@@ -1905,7 +1905,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row58 equ ./Data/alf2_zalza_rows + 0x580
+alf2_zalza_row58 equ alf2_zalza_rows + 0x580
 	dw 0x0
 	dw 0x1c82
 	dw 0x721
@@ -1915,7 +1915,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row59 equ ./Data/alf2_zalza_rows + 0x590
+alf2_zalza_row59 equ alf2_zalza_rows + 0x590
 	dw 0x0
 	dw 0x1c82
 	dw 0x721
@@ -1925,7 +1925,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row5a equ ./Data/alf2_zalza_rows + 0x5a0
+alf2_zalza_row5a equ alf2_zalza_rows + 0x5a0
 	dw 0x0
 	dw 0x1c82
 	dw 0x721
@@ -1935,7 +1935,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row5b equ ./Data/alf2_zalza_rows + 0x5b0
+alf2_zalza_row5b equ alf2_zalza_rows + 0x5b0
 	dw 0x0
 	dw 0x1c82
 	dw 0xe41
@@ -1945,7 +1945,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row5c equ ./Data/alf2_zalza_rows + 0x5c0
+alf2_zalza_row5c equ alf2_zalza_rows + 0x5c0
 	dw 0x0
 	dw 0x1c82
 	dw 0xe41
@@ -1955,7 +1955,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row5d equ ./Data/alf2_zalza_rows + 0x5d0
+alf2_zalza_row5d equ alf2_zalza_rows + 0x5d0
 	dw 0x0
 	dw 0x1c82
 	dw 0x721
@@ -1965,7 +1965,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row5e equ ./Data/alf2_zalza_rows + 0x5e0
+alf2_zalza_row5e equ alf2_zalza_rows + 0x5e0
 	dw 0x0
 	dw 0x2000
 	dw 0xe41
@@ -1975,7 +1975,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row5f equ ./Data/alf2_zalza_rows + 0x5f0
+alf2_zalza_row5f equ alf2_zalza_rows + 0x5f0
 	dw 0x0
 	dw 0x2000
 	dw 0x721
@@ -1985,7 +1985,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row60 equ ./Data/alf2_zalza_rows + 0x600
+alf2_zalza_row60 equ alf2_zalza_rows + 0x600
 	dw 0x0
 	dw 0x2000
 	dw 0xe41
@@ -1995,7 +1995,7 @@
 	dw 0x1c82
 	dw 0x155c
 
-./Data/alf2_zalza_row61 equ ./Data/alf2_zalza_rows + 0x610
+alf2_zalza_row61 equ alf2_zalza_rows + 0x610
 	dw 0x0
 	dw 0x23eb
 	dw 0xe41
@@ -2005,7 +2005,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row62 equ ./Data/alf2_zalza_rows + 0x620
+alf2_zalza_row62 equ alf2_zalza_rows + 0x620
 	dw 0x0
 	dw 0x23eb
 	dw 0xe41
@@ -2015,7 +2015,7 @@
 	dw 0x3905
 	dw 0x155c
 
-./Data/alf2_zalza_row63 equ ./Data/alf2_zalza_rows + 0x630
+alf2_zalza_row63 equ alf2_zalza_rows + 0x630
 	dw 0x0
 	dw 0x5fe
 	dw 0x23eb
@@ -2025,7 +2025,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/alf2_zalza_row64 equ ./Data/alf2_zalza_rows + 0x640
+alf2_zalza_row64 equ alf2_zalza_rows + 0x640
 	dw 0x0
 	dw 0xbfd
 	dw 0x23eb
@@ -2035,7 +2035,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/alf2_zalza_row65 equ ./Data/alf2_zalza_rows + 0x650
+alf2_zalza_row65 equ alf2_zalza_rows + 0x650
 	dw 0x0
 	dw 0x5fe
 	dw 0x23eb
@@ -2045,7 +2045,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/alf2_zalza_row66 equ ./Data/alf2_zalza_rows + 0x660
+alf2_zalza_row66 equ alf2_zalza_rows + 0x660
 	dw 0x0
 	dw 0xbfd
 	dw 0x260e
@@ -2055,7 +2055,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/alf2_zalza_row67 equ ./Data/alf2_zalza_rows + 0x670
+alf2_zalza_row67 equ alf2_zalza_rows + 0x670
 	dw 0x0
 	dw 0x5fe
 	dw 0x260e
@@ -2065,7 +2065,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/alf2_zalza_row68 equ ./Data/alf2_zalza_rows + 0x680
+alf2_zalza_row68 equ alf2_zalza_rows + 0x680
 	dw 0x0
 	dw 0xbfd
 	dw 0x2ab7
@@ -2075,7 +2075,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/alf2_zalza_row69 equ ./Data/alf2_zalza_rows + 0x690
+alf2_zalza_row69 equ alf2_zalza_rows + 0x690
 	dw 0x0
 	dw 0x400
 	dw 0x260e
@@ -2085,7 +2085,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/alf2_zalza_row6a equ ./Data/alf2_zalza_rows + 0x6a0
+alf2_zalza_row6a equ alf2_zalza_rows + 0x6a0
 	dw 0x0
 	dw 0x800
 	dw 0x260e
@@ -2095,7 +2095,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/alf2_zalza_row6b equ ./Data/alf2_zalza_rows + 0x6b0
+alf2_zalza_row6b equ alf2_zalza_rows + 0x6b0
 	dw 0x0
 	dw 0x400
 	dw 0x2000
@@ -2105,7 +2105,7 @@
 	dw 0x1000
 	dw 0x0
 
-./Data/alf2_zalza_row6c equ ./Data/alf2_zalza_rows + 0x6c0
+alf2_zalza_row6c equ alf2_zalza_rows + 0x6c0
 	dw 0x0
 	dw 0x800
 	dw 0x2000
@@ -2115,7 +2115,7 @@
 	dw 0x1000
 	dw 0x0
 
-./Data/alf2_zalza_row6d equ ./Data/alf2_zalza_rows + 0x6d0
+alf2_zalza_row6d equ alf2_zalza_rows + 0x6d0
 	dw 0x0
 	dw 0x800
 	dw 0x23eb
@@ -2125,7 +2125,7 @@
 	dw 0x11f6
 	dw 0x0
 
-./Data/alf2_zalza_row6e equ ./Data/alf2_zalza_rows + 0x6e0
+alf2_zalza_row6e equ alf2_zalza_rows + 0x6e0
 	dw 0x0
 	dw 0x400
 	dw 0x23eb
@@ -2135,7 +2135,7 @@
 	dw 0x11f6
 	dw 0x0
 
-./Data/alf2_zalza_row6f equ ./Data/alf2_zalza_rows + 0x6f0
+alf2_zalza_row6f equ alf2_zalza_rows + 0x6f0
 	dw 0x0
 	dw 0x800
 	dw 0x260e
@@ -2145,7 +2145,7 @@
 	dw 0x1307
 	dw 0x0
 
-./Data/alf2_zalza_row70 equ ./Data/alf2_zalza_rows + 0x700
+alf2_zalza_row70 equ alf2_zalza_rows + 0x700
 	dw 0x0
 	dw 0x557
 	dw 0x2ff2
@@ -2155,7 +2155,7 @@
 	dw 0x17f9
 	dw 0x0
 
-./Data/alf2_zalza_row71 equ ./Data/alf2_zalza_rows + 0x710
+alf2_zalza_row71 equ alf2_zalza_rows + 0x710
 	dw 0x0
 	dw 0xaae
 	dw 0x2ff2
@@ -2165,7 +2165,7 @@
 	dw 0x17f9
 	dw 0x0
 
-./Data/alf2_zalza_row72 equ ./Data/alf2_zalza_rows + 0x720
+alf2_zalza_row72 equ alf2_zalza_rows + 0x720
 	dw 0x0
 	dw 0x557
 	dw 0x2ab7
@@ -2175,7 +2175,7 @@
 	dw 0x155c
 	dw 0x0
 
-./Data/alf2_zalza_row73 equ ./Data/alf2_zalza_rows + 0x730
+alf2_zalza_row73 equ alf2_zalza_rows + 0x730
 	dw 0x0
 	dw 0xaae
 	dw 0x2ab7
@@ -2185,7 +2185,7 @@
 	dw 0x155c
 	dw 0x0
 
-./Data/alf2_zalza_row74 equ ./Data/alf2_zalza_rows + 0x740
+alf2_zalza_row74 equ alf2_zalza_rows + 0x740
 	dw 0x0
 	dw 0x557
 	dw 0x2ab7
@@ -2195,7 +2195,7 @@
 	dw 0x155c
 	dw 0x0
 
-./Data/alf2_zalza_row75 equ ./Data/alf2_zalza_rows + 0x750
+alf2_zalza_row75 equ alf2_zalza_rows + 0x750
 	dw 0x0
 	dw 0xaae
 	dw 0x2ab7
@@ -2205,7 +2205,7 @@
 	dw 0x155c
 	dw 0x0
 
-./Data/alf2_zalza_row76 equ ./Data/alf2_zalza_rows + 0x760
+alf2_zalza_row76 equ alf2_zalza_rows + 0x760
 	dw 0x0
 	dw 0x721
 	dw 0x23eb
@@ -2215,7 +2215,7 @@
 	dw 0x11f6
 	dw 0x0
 
-./Data/alf2_zalza_row77 equ ./Data/alf2_zalza_rows + 0x770
+alf2_zalza_row77 equ alf2_zalza_rows + 0x770
 	dw 0x0
 	dw 0xe41
 	dw 0x23eb
@@ -2225,7 +2225,7 @@
 	dw 0x11f6
 	dw 0x0
 
-./Data/alf2_zalza_row78 equ ./Data/alf2_zalza_rows + 0x780
+alf2_zalza_row78 equ alf2_zalza_rows + 0x780
 	dw 0x0
 	dw 0x721
 	dw 0x2000
@@ -2235,7 +2235,7 @@
 	dw 0x1000
 	dw 0x0
 
-./Data/alf2_zalza_row79 equ ./Data/alf2_zalza_rows + 0x790
+alf2_zalza_row79 equ alf2_zalza_rows + 0x790
 	dw 0x0
 	dw 0xe41
 	dw 0x2000
@@ -2245,7 +2245,7 @@
 	dw 0x1000
 	dw 0x0
 
-./Data/alf2_zalza_row7a equ ./Data/alf2_zalza_rows + 0x7a0
+alf2_zalza_row7a equ alf2_zalza_rows + 0x7a0
 	dw 0x0
 	dw 0x5fe
 	dw 0x1c82
@@ -2255,7 +2255,7 @@
 	dw 0xe41
 	dw 0x0
 
-./Data/alf2_zalza_row7b equ ./Data/alf2_zalza_rows + 0x7b0
+alf2_zalza_row7b equ alf2_zalza_rows + 0x7b0
 	dw 0x0
 	dw 0x5fe
 	dw 0x2000
@@ -2265,7 +2265,7 @@
 	dw 0x1000
 	dw 0x0
 
-./Data/alf2_zalza_row7c equ ./Data/alf2_zalza_rows + 0x7c0
+alf2_zalza_row7c equ alf2_zalza_rows + 0x7c0
 	dw 0x0
 	dw 0xbfd
 	dw 0x2000
@@ -2275,7 +2275,7 @@
 	dw 0x1000
 	dw 0x0
 
-./Data/alf2_zalza_row7d equ ./Data/alf2_zalza_rows + 0x7d0
+alf2_zalza_row7d equ alf2_zalza_rows + 0x7d0
 	dw 0x0
 	dw 0x5fe
 	dw 0x23eb
@@ -2285,7 +2285,7 @@
 	dw 0x11f6
 	dw 0x0
 
-./Data/alf2_zalza_row7e equ ./Data/alf2_zalza_rows + 0x7e0
+alf2_zalza_row7e equ alf2_zalza_rows + 0x7e0
 	dw 0x0
 	dw 0x5fe
 	dw 0x23eb
@@ -2295,7 +2295,7 @@
 	dw 0x11f6
 	dw 0x0
 
-./Data/alf2_zalza_row7f equ ./Data/alf2_zalza_rows + 0x7f0
+alf2_zalza_row7f equ alf2_zalza_rows + 0x7f0
 	dw 0x0
 	dw 0xbfd
 	dw 0x23eb
@@ -2305,7 +2305,7 @@
 	dw 0x11f6
 	dw 0x0
 
-./Data/alf2_zalza_row80 equ ./Data/alf2_zalza_rows + 0x800
+alf2_zalza_row80 equ alf2_zalza_rows + 0x800
 	dw 0x0
 	dw 0xbfd
 	dw 0x23eb
@@ -2315,7 +2315,7 @@
 	dw 0x11f6
 	dw 0x0
 
-./Data/alf2_zalza_row81 equ ./Data/alf2_zalza_rows + 0x810
+alf2_zalza_row81 equ alf2_zalza_rows + 0x810
 	dw 0x0
 	dw 0x400
 	dw 0x260e
@@ -2325,7 +2325,7 @@
 	dw 0x1307
 	dw 0x0
 
-./Data/alf2_zalza_row82 equ ./Data/alf2_zalza_rows + 0x820
+alf2_zalza_row82 equ alf2_zalza_rows + 0x820
 	dw 0x0
 	dw 0x800
 	dw 0x1c82
@@ -2335,7 +2335,7 @@
 	dw 0xe41
 	dw 0x0
 
-./Data/alf2_zalza_row83 equ ./Data/alf2_zalza_rows + 0x830
+alf2_zalza_row83 equ alf2_zalza_rows + 0x830
 	dw 0x0
 	dw 0x400
 	dw 0x1c82
@@ -2345,7 +2345,7 @@
 	dw 0xe41
 	dw 0x0
 
-./Data/alf2_zalza_row84 equ ./Data/alf2_zalza_rows + 0x840
+alf2_zalza_row84 equ alf2_zalza_rows + 0x840
 	dw 0x0
 	dw 0x800
 	dw 0x17f9
@@ -2355,7 +2355,7 @@
 	dw 0xbfd
 	dw 0x0
 
-./Data/alf2_zalza_row85 equ ./Data/alf2_zalza_rows + 0x850
+alf2_zalza_row85 equ alf2_zalza_rows + 0x850
 	dw 0x0
 	dw 0x557
 	dw 0x2000
@@ -2365,7 +2365,7 @@
 	dw 0x1000
 	dw 0x0
 
-./Data/alf2_zalza_row86 equ ./Data/alf2_zalza_rows + 0x860
+alf2_zalza_row86 equ alf2_zalza_rows + 0x860
 	dw 0x0
 	dw 0xaae
 	dw 0x2000
@@ -2375,7 +2375,7 @@
 	dw 0x1000
 	dw 0x0
 
-./Data/alf2_zalza_row87 equ ./Data/alf2_zalza_rows + 0x870
+alf2_zalza_row87 equ alf2_zalza_rows + 0x870
 	dw 0x0
 	dw 0x557
 	dw 0x1c82
@@ -2385,7 +2385,7 @@
 	dw 0xe41
 	dw 0x0
 
-./Data/alf2_zalza_row88 equ ./Data/alf2_zalza_rows + 0x880
+alf2_zalza_row88 equ alf2_zalza_rows + 0x880
 	dw 0x0
 	dw 0xaae
 	dw 0x1c82
@@ -2395,7 +2395,7 @@
 	dw 0xe41
 	dw 0x0
 
-./Data/alf2_zalza_row89 equ ./Data/alf2_zalza_rows + 0x890
+alf2_zalza_row89 equ alf2_zalza_rows + 0x890
 	dw 0x0
 	dw 0x557
 	dw 0x1c82
@@ -2405,7 +2405,7 @@
 	dw 0xe41
 	dw 0x0
 
-./Data/alf2_zalza_row8a equ ./Data/alf2_zalza_rows + 0x8a0
+alf2_zalza_row8a equ alf2_zalza_rows + 0x8a0
 	dw 0x0
 	dw 0xaae
 	dw 0x1c82
@@ -2415,7 +2415,7 @@
 	dw 0xe41
 	dw 0x0
 
-./Data/alf2_zalza_row8b equ ./Data/alf2_zalza_rows + 0x8b0
+alf2_zalza_row8b equ alf2_zalza_rows + 0x8b0
 	dw 0x0
 	dw 0x721
 	dw 0x1307
@@ -2425,7 +2425,7 @@
 	dw 0x984
 	dw 0x0
 
-./Data/alf2_zalza_row8c equ ./Data/alf2_zalza_rows + 0x8c0
+alf2_zalza_row8c equ alf2_zalza_rows + 0x8c0
 	dw 0x0
 	dw 0xe41
 	dw 0x1307
@@ -2435,7 +2435,7 @@
 	dw 0x984
 	dw 0x0
 
-./Data/alf2_zalza_row8d equ ./Data/alf2_zalza_rows + 0x8d0
+alf2_zalza_row8d equ alf2_zalza_rows + 0x8d0
 	dw 0x0
 	dw 0x721
 	dw 0x155c
@@ -2445,7 +2445,7 @@
 	dw 0xaae
 	dw 0x0
 
-./Data/alf2_zalza_row8e equ ./Data/alf2_zalza_rows + 0x8e0
+alf2_zalza_row8e equ alf2_zalza_rows + 0x8e0
 	dw 0x0
 	dw 0xe41
 	dw 0x155c
@@ -2455,7 +2455,7 @@
 	dw 0xaae
 	dw 0x0
 
-./Data/alf2_zalza_row8f equ ./Data/alf2_zalza_rows + 0x8f0
+alf2_zalza_row8f equ alf2_zalza_rows + 0x8f0
 	dw 0x0
 	dw 0x721
 	dw 0x1966
@@ -2465,7 +2465,7 @@
 	dw 0xcb3
 	dw 0x0
 
-./Data/alf2_zalza_row90 equ ./Data/alf2_zalza_rows + 0x900
+alf2_zalza_row90 equ alf2_zalza_rows + 0x900
 	dw 0x0
 	dw 0x721
 	dw 0x17f9
@@ -2475,7 +2475,7 @@
 	dw 0xbfd
 	dw 0x0
 
-./Data/alf2_zalza_row91 equ ./Data/alf2_zalza_rows + 0x910
+alf2_zalza_row91 equ alf2_zalza_rows + 0x910
 	dw 0x0
 	dw 0xe41
 	dw 0x1966
@@ -2488,4 +2488,4 @@
 
 ; 0x920 bytes
 ; file_size = 0xedc bytes
-; define({./Data/alf2_zalza_size}, 0xedc)
+; define({alf2_zalza_size}, 0xedc)

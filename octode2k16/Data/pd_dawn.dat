@@ -1,3718 +1,3718 @@
 ; relocatable file:
-;   the base address is ./Data/pd_dawn
-;   the loop address is ./Data/pd_dawn_loop
+;   the base address is pd_dawn
+;   the loop address is pd_dawn_loop
 ; M4 support:
 ;   no one comma
 ;   macro file_size defined
 
-  ifndef ./Data/pd_dawn
-./Data/pd_dawn equ $
+  ifndef pd_dawn
+pd_dawn equ $
   endif
 
 ;loop
-	dw ./Data/pd_dawn_loop
+	dw pd_dawn_loop
 
-./Data/pd_dawn_start equ ./Data/pd_dawn + 0x2
+pd_dawn_start equ pd_dawn + 0x2
 ;sequence
-	dw ./Data/pd_dawn_ptn3
-	dw ./Data/pd_dawn_ptn8
-	dw ./Data/pd_dawn_ptn0
-	dw ./Data/pd_dawn_ptn1
-	dw ./Data/pd_dawn_ptn2
-	dw ./Data/pd_dawn_ptn6
-	dw ./Data/pd_dawn_ptn1
-	dw ./Data/pd_dawn_ptn2
-	dw ./Data/pd_dawn_ptn5
-	dw ./Data/pd_dawn_ptn4
-./Data/pd_dawn_loop equ ./Data/pd_dawn + 0x16
-	dw ./Data/pd_dawn_ptn7
-	dw ./Data/pd_dawn_ptna
-	dw ./Data/pd_dawn_ptn7
-	dw ./Data/pd_dawn_ptna
-	dw ./Data/pd_dawn_ptn9
-	dw ./Data/pd_dawn_ptn9
-	dw ./Data/pd_dawn_ptn7
-	dw ./Data/pd_dawn_ptna
-	dw ./Data/pd_dawn_ptn7
-	dw ./Data/pd_dawn_ptn10
-	dw ./Data/pd_dawn_ptnb
-	dw ./Data/pd_dawn_ptnb
-	dw ./Data/pd_dawn_ptnc
-	dw ./Data/pd_dawn_ptnd
-	dw ./Data/pd_dawn_ptnc
-	dw ./Data/pd_dawn_ptnf
-	dw ./Data/pd_dawn_ptne
-	db 2	; lo = repeat times
+	dw pd_dawn_ptn3
+	dw pd_dawn_ptn8
+	dw pd_dawn_ptn0
+	dw pd_dawn_ptn1
+	dw pd_dawn_ptn2
+	dw pd_dawn_ptn6
+	dw pd_dawn_ptn1
+	dw pd_dawn_ptn2
+	dw pd_dawn_ptn5
+	dw pd_dawn_ptn4
+pd_dawn_loop equ pd_dawn + 0x16
+	dw pd_dawn_ptn7
+	dw pd_dawn_ptna
+	dw pd_dawn_ptn7
+	dw pd_dawn_ptna
+	dw pd_dawn_ptn9
+	dw pd_dawn_ptn9
+	dw pd_dawn_ptn7
+	dw pd_dawn_ptna
+	dw pd_dawn_ptn7
+	dw pd_dawn_ptn10
+	dw pd_dawn_ptnb
+	dw pd_dawn_ptnb
+	dw pd_dawn_ptnc
+	dw pd_dawn_ptnd
+	dw pd_dawn_ptnc
+	dw pd_dawn_ptnf
+	dw pd_dawn_ptne
+	db 0	; lo = repeat times
 	db 0	; hi = end mark
 ; 0x3a bytes
 
-./Data/pd_dawn_ptn0 equ ./Data/pd_dawn + 0x3a
+pd_dawn_ptn0 equ pd_dawn + 0x3a
 	dw 0x400
-	dw ./Data/pd_dawn_row0
+	dw pd_dawn_row0
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1
+	dw pd_dawn_row1
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2
+	dw pd_dawn_row2
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2
+	dw pd_dawn_row2
 
 	dw 0x400
-	dw ./Data/pd_dawn_row3
+	dw pd_dawn_row3
 
 	dw 0x400
-	dw ./Data/pd_dawn_row3
+	dw pd_dawn_row3
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2
+	dw pd_dawn_row2
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2
+	dw pd_dawn_row2
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4
+	dw pd_dawn_row4
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4
+	dw pd_dawn_row4
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2
+	dw pd_dawn_row2
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2
+	dw pd_dawn_row2
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5
+	dw pd_dawn_row5
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5
+	dw pd_dawn_row5
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2
+	dw pd_dawn_row2
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2
+	dw pd_dawn_row2
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6
+	dw pd_dawn_row6
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6
+	dw pd_dawn_row6
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8
+	dw pd_dawn_row8
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8
+	dw pd_dawn_row8
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9
+	dw pd_dawn_row9
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9
+	dw pd_dawn_row9
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa
+	dw pd_dawn_rowa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa
+	dw pd_dawn_rowa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowb
+	dw pd_dawn_rowb
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowb
+	dw pd_dawn_rowb
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowf
+	dw pd_dawn_rowf
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowf
+	dw pd_dawn_rowf
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_row10
+	dw pd_dawn_row10
 
 	dw 0x400
-	dw ./Data/pd_dawn_row10
+	dw pd_dawn_row10
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_row11
+	dw pd_dawn_row11
 
 	dw 0x400
-	dw ./Data/pd_dawn_row11
+	dw pd_dawn_row11
 
 	dw 0x400
-	dw ./Data/pd_dawn_row12
+	dw pd_dawn_row12
 
 	dw 0x400
-	dw ./Data/pd_dawn_row12
+	dw pd_dawn_row12
 
 	dw 0x400
-	dw ./Data/pd_dawn_row13
+	dw pd_dawn_row13
 
 	dw 0x400
-	dw ./Data/pd_dawn_row13
+	dw pd_dawn_row13
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row15
+	dw pd_dawn_row15
 
 	dw 0x400
-	dw ./Data/pd_dawn_row15
+	dw pd_dawn_row15
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row16
+	dw pd_dawn_row16
 
 	dw 0x400
-	dw ./Data/pd_dawn_row16
+	dw pd_dawn_row16
 
 	dw 0x400
-	dw ./Data/pd_dawn_row12
+	dw pd_dawn_row12
 
 	dw 0x400
-	dw ./Data/pd_dawn_row12
+	dw pd_dawn_row12
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/pd_dawn_ptn1 equ ./Data/pd_dawn + 0x13b
+pd_dawn_ptn1 equ pd_dawn + 0x13b
 	dw 0x400
-	dw ./Data/pd_dawn_row17
+	dw pd_dawn_row17
 
 	dw 0x400
-	dw ./Data/pd_dawn_row17
+	dw pd_dawn_row17
 
 	dw 0x400
-	dw ./Data/pd_dawn_row18
+	dw pd_dawn_row18
 
 	dw 0x400
-	dw ./Data/pd_dawn_row18
+	dw pd_dawn_row18
 
 	dw 0x400
-	dw ./Data/pd_dawn_row19
+	dw pd_dawn_row19
 
 	dw 0x400
-	dw ./Data/pd_dawn_row19
+	dw pd_dawn_row19
 
 	dw 0x400
-	dw ./Data/pd_dawn_row18
+	dw pd_dawn_row18
 
 	dw 0x400
-	dw ./Data/pd_dawn_row18
+	dw pd_dawn_row18
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1a
+	dw pd_dawn_row1a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1a
+	dw pd_dawn_row1a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row18
+	dw pd_dawn_row18
 
 	dw 0x400
-	dw ./Data/pd_dawn_row18
+	dw pd_dawn_row18
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1b
+	dw pd_dawn_row1b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1b
+	dw pd_dawn_row1b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1c
+	dw pd_dawn_row1c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1c
+	dw pd_dawn_row1c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1d
+	dw pd_dawn_row1d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1d
+	dw pd_dawn_row1d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1e
+	dw pd_dawn_row1e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1e
+	dw pd_dawn_row1e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1f
+	dw pd_dawn_row1f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1f
+	dw pd_dawn_row1f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1e
+	dw pd_dawn_row1e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1e
+	dw pd_dawn_row1e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row20
+	dw pd_dawn_row20
 
 	dw 0x400
-	dw ./Data/pd_dawn_row20
+	dw pd_dawn_row20
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1e
+	dw pd_dawn_row1e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row1e
+	dw pd_dawn_row1e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row21
+	dw pd_dawn_row21
 
 	dw 0x400
-	dw ./Data/pd_dawn_row21
+	dw pd_dawn_row21
 
 	dw 0x400
-	dw ./Data/pd_dawn_row22
+	dw pd_dawn_row22
 
 	dw 0x400
-	dw ./Data/pd_dawn_row22
+	dw pd_dawn_row22
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_row23
+	dw pd_dawn_row23
 
 	dw 0x400
-	dw ./Data/pd_dawn_row23
+	dw pd_dawn_row23
 
 	dw 0x400
-	dw ./Data/pd_dawn_row24
+	dw pd_dawn_row24
 
 	dw 0x400
-	dw ./Data/pd_dawn_row24
+	dw pd_dawn_row24
 
 	dw 0x400
-	dw ./Data/pd_dawn_row23
+	dw pd_dawn_row23
 
 	dw 0x400
-	dw ./Data/pd_dawn_row23
+	dw pd_dawn_row23
 
 	dw 0x400
-	dw ./Data/pd_dawn_row25
+	dw pd_dawn_row25
 
 	dw 0x400
-	dw ./Data/pd_dawn_row25
+	dw pd_dawn_row25
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_row26
+	dw pd_dawn_row26
 
 	dw 0x400
-	dw ./Data/pd_dawn_row26
+	dw pd_dawn_row26
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row28
+	dw pd_dawn_row28
 
 	dw 0x400
-	dw ./Data/pd_dawn_row28
+	dw pd_dawn_row28
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row29
+	dw pd_dawn_row29
 
 	dw 0x400
-	dw ./Data/pd_dawn_row29
+	dw pd_dawn_row29
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2a
+	dw pd_dawn_row2a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2a
+	dw pd_dawn_row2a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2b
+	dw pd_dawn_row2b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2b
+	dw pd_dawn_row2b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/pd_dawn_ptn2 equ ./Data/pd_dawn + 0x23c
+pd_dawn_ptn2 equ pd_dawn + 0x23c
 	dw 0x400
-	dw ./Data/pd_dawn_row2c
+	dw pd_dawn_row2c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2c
+	dw pd_dawn_row2c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2e
+	dw pd_dawn_row2e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2e
+	dw pd_dawn_row2e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2f
+	dw pd_dawn_row2f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2f
+	dw pd_dawn_row2f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row30
+	dw pd_dawn_row30
 
 	dw 0x400
-	dw ./Data/pd_dawn_row30
+	dw pd_dawn_row30
 
 	dw 0x400
-	dw ./Data/pd_dawn_row31
+	dw pd_dawn_row31
 
 	dw 0x400
-	dw ./Data/pd_dawn_row31
+	dw pd_dawn_row31
 
 	dw 0x400
-	dw ./Data/pd_dawn_row32
+	dw pd_dawn_row32
 
 	dw 0x400
-	dw ./Data/pd_dawn_row32
+	dw pd_dawn_row32
 
 	dw 0x400
-	dw ./Data/pd_dawn_row33
+	dw pd_dawn_row33
 
 	dw 0x400
-	dw ./Data/pd_dawn_row33
+	dw pd_dawn_row33
 
 	dw 0x400
-	dw ./Data/pd_dawn_row34
+	dw pd_dawn_row34
 
 	dw 0x400
-	dw ./Data/pd_dawn_row34
+	dw pd_dawn_row34
 
 	dw 0x400
-	dw ./Data/pd_dawn_row33
+	dw pd_dawn_row33
 
 	dw 0x400
-	dw ./Data/pd_dawn_row33
+	dw pd_dawn_row33
 
 	dw 0x400
-	dw ./Data/pd_dawn_row35
+	dw pd_dawn_row35
 
 	dw 0x400
-	dw ./Data/pd_dawn_row35
+	dw pd_dawn_row35
 
 	dw 0x400
-	dw ./Data/pd_dawn_row33
+	dw pd_dawn_row33
 
 	dw 0x400
-	dw ./Data/pd_dawn_row33
+	dw pd_dawn_row33
 
 	dw 0x400
-	dw ./Data/pd_dawn_row36
+	dw pd_dawn_row36
 
 	dw 0x400
-	dw ./Data/pd_dawn_row36
+	dw pd_dawn_row36
 
 	dw 0x400
-	dw ./Data/pd_dawn_row37
+	dw pd_dawn_row37
 
 	dw 0x400
-	dw ./Data/pd_dawn_row37
+	dw pd_dawn_row37
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_row24
+	dw pd_dawn_row24
 
 	dw 0x400
-	dw ./Data/pd_dawn_row24
+	dw pd_dawn_row24
 
 	dw 0x400
-	dw ./Data/pd_dawn_row23
+	dw pd_dawn_row23
 
 	dw 0x400
-	dw ./Data/pd_dawn_row23
+	dw pd_dawn_row23
 
 	dw 0x400
-	dw ./Data/pd_dawn_row10
+	dw pd_dawn_row10
 
 	dw 0x400
-	dw ./Data/pd_dawn_row10
+	dw pd_dawn_row10
 
 	dw 0x400
-	dw ./Data/pd_dawn_row38
+	dw pd_dawn_row38
 
 	dw 0x400
-	dw ./Data/pd_dawn_row38
+	dw pd_dawn_row38
 
 	dw 0x400
-	dw ./Data/pd_dawn_row26
+	dw pd_dawn_row26
 
 	dw 0x400
-	dw ./Data/pd_dawn_row26
+	dw pd_dawn_row26
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row28
+	dw pd_dawn_row28
 
 	dw 0x400
-	dw ./Data/pd_dawn_row28
+	dw pd_dawn_row28
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row29
+	dw pd_dawn_row29
 
 	dw 0x400
-	dw ./Data/pd_dawn_row29
+	dw pd_dawn_row29
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row27
+	dw pd_dawn_row27
 
 	dw 0x400
-	dw ./Data/pd_dawn_row39
+	dw pd_dawn_row39
 
 	dw 0x400
-	dw ./Data/pd_dawn_row39
+	dw pd_dawn_row39
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2a
+	dw pd_dawn_row2a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2a
+	dw pd_dawn_row2a
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/pd_dawn_ptn3 equ ./Data/pd_dawn + 0x33d
+pd_dawn_ptn3 equ pd_dawn + 0x33d
 	dw 0x800
-	dw ./Data/pd_dawn_row3a
-
-	dw 0x800
-	dw ./Data/pd_dawn_row3a
+	dw pd_dawn_row3a
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3b
+	dw pd_dawn_row3a
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3b
+	dw pd_dawn_row3b
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3c
+	dw pd_dawn_row3b
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3c
+	dw pd_dawn_row3c
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3b
+	dw pd_dawn_row3c
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3b
+	dw pd_dawn_row3b
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3d
+	dw pd_dawn_row3b
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3d
+	dw pd_dawn_row3d
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3b
+	dw pd_dawn_row3d
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3b
+	dw pd_dawn_row3b
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3c
+	dw pd_dawn_row3b
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3c
+	dw pd_dawn_row3c
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3b
+	dw pd_dawn_row3c
 
 	dw 0x800
-	dw ./Data/pd_dawn_row3b
+	dw pd_dawn_row3b
+
+	dw 0x800
+	dw pd_dawn_row3b
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3e
+	dw pd_dawn_row3e
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3e
+	dw pd_dawn_row3e
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3f
+	dw pd_dawn_row3f
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3f
+	dw pd_dawn_row3f
 
 	dw 0x700
-	dw ./Data/pd_dawn_row40
+	dw pd_dawn_row40
 
 	dw 0x700
-	dw ./Data/pd_dawn_row40
+	dw pd_dawn_row40
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3f
+	dw pd_dawn_row3f
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3f
+	dw pd_dawn_row3f
 
 	dw 0x700
-	dw ./Data/pd_dawn_row41
+	dw pd_dawn_row41
 
 	dw 0x700
-	dw ./Data/pd_dawn_row41
+	dw pd_dawn_row41
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3f
+	dw pd_dawn_row3f
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3f
+	dw pd_dawn_row3f
 
 	dw 0x700
-	dw ./Data/pd_dawn_row40
+	dw pd_dawn_row40
 
 	dw 0x700
-	dw ./Data/pd_dawn_row40
+	dw pd_dawn_row40
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3f
+	dw pd_dawn_row3f
 
 	dw 0x700
-	dw ./Data/pd_dawn_row3f
+	dw pd_dawn_row3f
 
 	dw 0x600
-	dw ./Data/pd_dawn_row42
+	dw pd_dawn_row42
 
 	dw 0x600
-	dw ./Data/pd_dawn_row42
+	dw pd_dawn_row42
 
 	dw 0x600
-	dw ./Data/pd_dawn_row43
+	dw pd_dawn_row43
 
 	dw 0x600
-	dw ./Data/pd_dawn_row43
+	dw pd_dawn_row43
 
 	dw 0x600
-	dw ./Data/pd_dawn_row44
+	dw pd_dawn_row44
 
 	dw 0x600
-	dw ./Data/pd_dawn_row44
+	dw pd_dawn_row44
 
 	dw 0x600
-	dw ./Data/pd_dawn_row43
+	dw pd_dawn_row43
 
 	dw 0x600
-	dw ./Data/pd_dawn_row43
+	dw pd_dawn_row43
 
 	dw 0x600
-	dw ./Data/pd_dawn_row45
+	dw pd_dawn_row45
 
 	dw 0x600
-	dw ./Data/pd_dawn_row45
+	dw pd_dawn_row45
 
 	dw 0x600
-	dw ./Data/pd_dawn_row43
+	dw pd_dawn_row43
 
 	dw 0x600
-	dw ./Data/pd_dawn_row43
+	dw pd_dawn_row43
 
 	dw 0x600
-	dw ./Data/pd_dawn_row44
+	dw pd_dawn_row44
 
 	dw 0x600
-	dw ./Data/pd_dawn_row44
+	dw pd_dawn_row44
 
 	dw 0x600
-	dw ./Data/pd_dawn_row43
+	dw pd_dawn_row43
 
 	dw 0x600
-	dw ./Data/pd_dawn_row43
+	dw pd_dawn_row43
 
 	dw 0x500
-	dw ./Data/pd_dawn_row46
+	dw pd_dawn_row46
 
 	dw 0x500
-	dw ./Data/pd_dawn_row46
+	dw pd_dawn_row46
 
 	dw 0x500
-	dw ./Data/pd_dawn_row47
+	dw pd_dawn_row47
 
 	dw 0x500
-	dw ./Data/pd_dawn_row47
+	dw pd_dawn_row47
 
 	dw 0x500
-	dw ./Data/pd_dawn_row48
+	dw pd_dawn_row48
 
 	dw 0x500
-	dw ./Data/pd_dawn_row48
+	dw pd_dawn_row48
 
 	dw 0x500
-	dw ./Data/pd_dawn_row47
+	dw pd_dawn_row47
 
 	dw 0x500
-	dw ./Data/pd_dawn_row47
+	dw pd_dawn_row47
 
 	dw 0x500
-	dw ./Data/pd_dawn_row49
+	dw pd_dawn_row49
 
 	dw 0x500
-	dw ./Data/pd_dawn_row49
+	dw pd_dawn_row49
 
 	dw 0x500
-	dw ./Data/pd_dawn_row47
+	dw pd_dawn_row47
 
 	dw 0x500
-	dw ./Data/pd_dawn_row47
+	dw pd_dawn_row47
 
 	dw 0x500
-	dw ./Data/pd_dawn_row48
+	dw pd_dawn_row48
 
 	dw 0x500
-	dw ./Data/pd_dawn_row48
+	dw pd_dawn_row48
 
 	dw 0x500
-	dw ./Data/pd_dawn_row47
+	dw pd_dawn_row47
 
 	dw 0x500
-	dw ./Data/pd_dawn_row47
+	dw pd_dawn_row47
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/pd_dawn_ptn4 equ ./Data/pd_dawn + 0x43e
+pd_dawn_ptn4 equ pd_dawn + 0x43e
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row4a
+	dw pd_dawn_row4a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4a
+	dw pd_dawn_row4a
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row4c
+	dw pd_dawn_row4c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4c
+	dw pd_dawn_row4c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row4d
+	dw pd_dawn_row4d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4d
+	dw pd_dawn_row4d
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row4e
+	dw pd_dawn_row4e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4e
+	dw pd_dawn_row4e
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row4f
+	dw pd_dawn_row4f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4f
+	dw pd_dawn_row4f
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row51
+	dw pd_dawn_row51
 
 	dw 0x400
-	dw ./Data/pd_dawn_row51
+	dw pd_dawn_row51
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row52
+	dw pd_dawn_row52
 
 	dw 0x400
-	dw ./Data/pd_dawn_row52
+	dw pd_dawn_row52
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row53
+	dw pd_dawn_row53
 
 	dw 0x400
-	dw ./Data/pd_dawn_row53
+	dw pd_dawn_row53
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row54
+	dw pd_dawn_row54
 
 	dw 0x400
-	dw ./Data/pd_dawn_row54
+	dw pd_dawn_row54
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row56
+	dw pd_dawn_row56
 
 	dw 0x400
-	dw ./Data/pd_dawn_row56
+	dw pd_dawn_row56
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row57
+	dw pd_dawn_row57
 
 	dw 0x400
-	dw ./Data/pd_dawn_row57
+	dw pd_dawn_row57
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row58
+	dw pd_dawn_row58
 
 	dw 0x400
-	dw ./Data/pd_dawn_row58
+	dw pd_dawn_row58
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row59
+	dw pd_dawn_row59
 
 	dw 0x400
-	dw ./Data/pd_dawn_row59
+	dw pd_dawn_row59
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row5b
+	dw pd_dawn_row5b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5b
+	dw pd_dawn_row5b
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row5c
+	dw pd_dawn_row5c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5c
+	dw pd_dawn_row5c
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5d
+	dw pd_dawn_row5d
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5d
+	dw pd_dawn_row5d
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	db 0x40
 ; 0x143 bytes
 
-./Data/pd_dawn_ptn5 equ ./Data/pd_dawn + 0x581
+pd_dawn_ptn5 equ pd_dawn + 0x581
 	dw 0x400
-	dw ./Data/pd_dawn_row2c
+	dw pd_dawn_row2c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2c
+	dw pd_dawn_row2c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2e
+	dw pd_dawn_row2e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2e
+	dw pd_dawn_row2e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5e
+	dw pd_dawn_row5e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5e
+	dw pd_dawn_row5e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5f
+	dw pd_dawn_row5f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5f
+	dw pd_dawn_row5f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row60
+	dw pd_dawn_row60
 
 	dw 0x400
-	dw ./Data/pd_dawn_row60
+	dw pd_dawn_row60
 
 	dw 0x400
-	dw ./Data/pd_dawn_row61
+	dw pd_dawn_row61
 
 	dw 0x400
-	dw ./Data/pd_dawn_row61
+	dw pd_dawn_row61
 
 	dw 0x400
-	dw ./Data/pd_dawn_row62
+	dw pd_dawn_row62
 
 	dw 0x400
-	dw ./Data/pd_dawn_row62
+	dw pd_dawn_row62
 
 	dw 0x400
-	dw ./Data/pd_dawn_row61
+	dw pd_dawn_row61
 
 	dw 0x400
-	dw ./Data/pd_dawn_row61
+	dw pd_dawn_row61
 
 	dw 0x400
-	dw ./Data/pd_dawn_row63
+	dw pd_dawn_row63
 
 	dw 0x400
-	dw ./Data/pd_dawn_row63
+	dw pd_dawn_row63
 
 	dw 0x400
-	dw ./Data/pd_dawn_row61
+	dw pd_dawn_row61
 
 	dw 0x400
-	dw ./Data/pd_dawn_row61
+	dw pd_dawn_row61
 
 	dw 0x400
-	dw ./Data/pd_dawn_row64
+	dw pd_dawn_row64
 
 	dw 0x400
-	dw ./Data/pd_dawn_row64
+	dw pd_dawn_row64
 
 	dw 0x400
-	dw ./Data/pd_dawn_row61
+	dw pd_dawn_row61
 
 	dw 0x400
-	dw ./Data/pd_dawn_row61
+	dw pd_dawn_row61
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowf
+	dw pd_dawn_rowf
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowf
+	dw pd_dawn_rowf
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_row10
+	dw pd_dawn_row10
 
 	dw 0x400
-	dw ./Data/pd_dawn_row10
+	dw pd_dawn_row10
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_row59
+	dw pd_dawn_row59
 
 	dw 0x400
-	dw ./Data/pd_dawn_row59
+	dw pd_dawn_row59
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5b
+	dw pd_dawn_row5b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5b
+	dw pd_dawn_row5b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5c
+	dw pd_dawn_row5c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5c
+	dw pd_dawn_row5c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5d
+	dw pd_dawn_row5d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5d
+	dw pd_dawn_row5d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/pd_dawn_ptn6 equ ./Data/pd_dawn + 0x682
+pd_dawn_ptn6 equ pd_dawn + 0x682
 	dw 0x400
-	dw ./Data/pd_dawn_row2c
+	dw pd_dawn_row2c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2c
+	dw pd_dawn_row2c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2e
+	dw pd_dawn_row2e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2e
+	dw pd_dawn_row2e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5e
+	dw pd_dawn_row5e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5e
+	dw pd_dawn_row5e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5f
+	dw pd_dawn_row5f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5f
+	dw pd_dawn_row5f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row2d
+	dw pd_dawn_row2d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6
+	dw pd_dawn_row6
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6
+	dw pd_dawn_row6
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8
+	dw pd_dawn_row8
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8
+	dw pd_dawn_row8
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9
+	dw pd_dawn_row9
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9
+	dw pd_dawn_row9
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7
+	dw pd_dawn_row7
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa
+	dw pd_dawn_rowa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa
+	dw pd_dawn_rowa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowb
+	dw pd_dawn_rowb
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowb
+	dw pd_dawn_rowb
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowc
+	dw pd_dawn_rowc
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowe
+	dw pd_dawn_rowe
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowf
+	dw pd_dawn_rowf
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowf
+	dw pd_dawn_rowf
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_row10
+	dw pd_dawn_row10
 
 	dw 0x400
-	dw ./Data/pd_dawn_row10
+	dw pd_dawn_row10
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowd
+	dw pd_dawn_rowd
 
 	dw 0x400
-	dw ./Data/pd_dawn_row11
+	dw pd_dawn_row11
 
 	dw 0x400
-	dw ./Data/pd_dawn_row11
+	dw pd_dawn_row11
 
 	dw 0x400
-	dw ./Data/pd_dawn_row12
+	dw pd_dawn_row12
 
 	dw 0x400
-	dw ./Data/pd_dawn_row12
+	dw pd_dawn_row12
 
 	dw 0x400
-	dw ./Data/pd_dawn_row13
+	dw pd_dawn_row13
 
 	dw 0x400
-	dw ./Data/pd_dawn_row13
+	dw pd_dawn_row13
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row15
+	dw pd_dawn_row15
 
 	dw 0x400
-	dw ./Data/pd_dawn_row15
+	dw pd_dawn_row15
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row14
+	dw pd_dawn_row14
 
 	dw 0x400
-	dw ./Data/pd_dawn_row16
+	dw pd_dawn_row16
 
 	dw 0x400
-	dw ./Data/pd_dawn_row16
+	dw pd_dawn_row16
 
 	dw 0x400
-	dw ./Data/pd_dawn_row12
+	dw pd_dawn_row12
 
 	dw 0x400
-	dw ./Data/pd_dawn_row12
+	dw pd_dawn_row12
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/pd_dawn_ptn7 equ ./Data/pd_dawn + 0x783
+pd_dawn_ptn7 equ pd_dawn + 0x783
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row66
+	dw pd_dawn_row66
 
 	dw 0x400
-	dw ./Data/pd_dawn_row66
+	dw pd_dawn_row66
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row66
+	dw pd_dawn_row66
 
 	dw 0x400
-	dw ./Data/pd_dawn_row66
+	dw pd_dawn_row66
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row67
+	dw pd_dawn_row67
 
 	dw 0x400
-	dw ./Data/pd_dawn_row67
+	dw pd_dawn_row67
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x400
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x400
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x400
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x400
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row69
+	dw pd_dawn_row69
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6a
+	dw pd_dawn_row6a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6b
+	dw pd_dawn_row6b
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row69
+	dw pd_dawn_row69
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row6a
+	dw pd_dawn_row6a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x400
-	dw ./Data/pd_dawn_row68
+	dw pd_dawn_row68
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row6d
+	dw pd_dawn_row6d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6d
+	dw pd_dawn_row6d
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row6e
+	dw pd_dawn_row6e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6e
+	dw pd_dawn_row6e
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row6f
+	dw pd_dawn_row6f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6f
+	dw pd_dawn_row6f
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row70
+	dw pd_dawn_row70
 
 	dw 0x400
-	dw ./Data/pd_dawn_row70
+	dw pd_dawn_row70
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row71
+	dw pd_dawn_row71
 
 	dw 0x400
-	dw ./Data/pd_dawn_row71
+	dw pd_dawn_row71
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row71
+	dw pd_dawn_row71
 
 	dw 0x400
-	dw ./Data/pd_dawn_row71
+	dw pd_dawn_row71
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row71
+	dw pd_dawn_row71
 
 	dw 0x400
-	dw ./Data/pd_dawn_row71
+	dw pd_dawn_row71
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row71
+	dw pd_dawn_row71
 
 	dw 0x400
-	dw ./Data/pd_dawn_row71
+	dw pd_dawn_row71
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row72
+	dw pd_dawn_row72
 
 	dw 0x400
-	dw ./Data/pd_dawn_row72
+	dw pd_dawn_row72
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row74
+	dw pd_dawn_row74
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row74
+	dw pd_dawn_row74
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x400
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	db 0x40
 ; 0x145 bytes
 
-./Data/pd_dawn_ptn8 equ ./Data/pd_dawn + 0x8c8
+pd_dawn_ptn8 equ pd_dawn + 0x8c8
 	dw 0x400
-	dw ./Data/pd_dawn_row4a
+	dw pd_dawn_row4a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4a
+	dw pd_dawn_row4a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4c
+	dw pd_dawn_row4c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4c
+	dw pd_dawn_row4c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4d
+	dw pd_dawn_row4d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4d
+	dw pd_dawn_row4d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4e
+	dw pd_dawn_row4e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4e
+	dw pd_dawn_row4e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4f
+	dw pd_dawn_row4f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4f
+	dw pd_dawn_row4f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row51
+	dw pd_dawn_row51
 
 	dw 0x400
-	dw ./Data/pd_dawn_row51
+	dw pd_dawn_row51
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row52
+	dw pd_dawn_row52
 
 	dw 0x400
-	dw ./Data/pd_dawn_row52
+	dw pd_dawn_row52
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row53
+	dw pd_dawn_row53
 
 	dw 0x400
-	dw ./Data/pd_dawn_row53
+	dw pd_dawn_row53
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row50
+	dw pd_dawn_row50
 
 	dw 0x400
-	dw ./Data/pd_dawn_row54
+	dw pd_dawn_row54
 
 	dw 0x400
-	dw ./Data/pd_dawn_row54
+	dw pd_dawn_row54
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row56
+	dw pd_dawn_row56
 
 	dw 0x400
-	dw ./Data/pd_dawn_row56
+	dw pd_dawn_row56
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row57
+	dw pd_dawn_row57
 
 	dw 0x400
-	dw ./Data/pd_dawn_row57
+	dw pd_dawn_row57
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row58
+	dw pd_dawn_row58
 
 	dw 0x400
-	dw ./Data/pd_dawn_row58
+	dw pd_dawn_row58
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row55
+	dw pd_dawn_row55
 
 	dw 0x400
-	dw ./Data/pd_dawn_row59
+	dw pd_dawn_row59
 
 	dw 0x400
-	dw ./Data/pd_dawn_row59
+	dw pd_dawn_row59
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5b
+	dw pd_dawn_row5b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5b
+	dw pd_dawn_row5b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5c
+	dw pd_dawn_row5c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5c
+	dw pd_dawn_row5c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5d
+	dw pd_dawn_row5d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5d
+	dw pd_dawn_row5d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/pd_dawn_ptn9 equ ./Data/pd_dawn + 0x9c9
+pd_dawn_ptn9 equ pd_dawn + 0x9c9
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x400
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row78
+	dw pd_dawn_row78
 
 	dw 0x400
-	dw ./Data/pd_dawn_row78
+	dw pd_dawn_row78
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x400
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x400
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x400
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x400
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row7a
+	dw pd_dawn_row7a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7a
+	dw pd_dawn_row7a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row7b
+	dw pd_dawn_row7b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7b
+	dw pd_dawn_row7b
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row7a
+	dw pd_dawn_row7a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row7a
+	dw pd_dawn_row7a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x400
-	dw ./Data/pd_dawn_row79
+	dw pd_dawn_row79
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row7d
+	dw pd_dawn_row7d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7d
+	dw pd_dawn_row7d
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row7e
+	dw pd_dawn_row7e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7e
+	dw pd_dawn_row7e
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row7f
+	dw pd_dawn_row7f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7f
+	dw pd_dawn_row7f
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row7c
+	dw pd_dawn_row7c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x400
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x400
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x400
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x400
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row80
+	dw pd_dawn_row80
 
 	dw 0x400
-	dw ./Data/pd_dawn_row80
+	dw pd_dawn_row80
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x400
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row80
+	dw pd_dawn_row80
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row80
+	dw pd_dawn_row80
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row81
+	dw pd_dawn_row81
 
 	dw 0x400
-	dw ./Data/pd_dawn_row81
+	dw pd_dawn_row81
 
 	db 0x40
 ; 0x145 bytes
 
-./Data/pd_dawn_ptna equ ./Data/pd_dawn + 0xb0e
+pd_dawn_ptna equ pd_dawn + 0xb0e
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x400
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x400
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row82
+	dw pd_dawn_row82
 
 	dw 0x400
-	dw ./Data/pd_dawn_row82
+	dw pd_dawn_row82
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row84
+	dw pd_dawn_row84
 
 	dw 0x400
-	dw ./Data/pd_dawn_row84
+	dw pd_dawn_row84
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row84
+	dw pd_dawn_row84
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row84
+	dw pd_dawn_row84
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row6b
+	dw pd_dawn_row6b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6b
+	dw pd_dawn_row6b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row85
+	dw pd_dawn_row85
 
 	dw 0x400
-	dw ./Data/pd_dawn_row85
+	dw pd_dawn_row85
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row86
+	dw pd_dawn_row86
 
 	dw 0x400
-	dw ./Data/pd_dawn_row86
+	dw pd_dawn_row86
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row74
+	dw pd_dawn_row74
 
 	dw 0x400
-	dw ./Data/pd_dawn_row74
+	dw pd_dawn_row74
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x400
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row74
+	dw pd_dawn_row74
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row74
+	dw pd_dawn_row74
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	db 0x40
 ; 0x145 bytes
 
-./Data/pd_dawn_ptnb equ ./Data/pd_dawn + 0xc53
+pd_dawn_ptnb equ pd_dawn + 0xc53
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row87
+	dw pd_dawn_row87
 
 	dw 0x400
-	dw ./Data/pd_dawn_row87
+	dw pd_dawn_row87
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row88
+	dw pd_dawn_row88
 
 	dw 0x400
-	dw ./Data/pd_dawn_row88
+	dw pd_dawn_row88
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row89
+	dw pd_dawn_row89
 
 	dw 0x400
-	dw ./Data/pd_dawn_row89
+	dw pd_dawn_row89
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row88
+	dw pd_dawn_row88
 
 	dw 0x400
-	dw ./Data/pd_dawn_row88
+	dw pd_dawn_row88
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row8a
+	dw pd_dawn_row8a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8a
+	dw pd_dawn_row8a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row88
+	dw pd_dawn_row88
 
 	dw 0x400
-	dw ./Data/pd_dawn_row88
+	dw pd_dawn_row88
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row8b
+	dw pd_dawn_row8b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8b
+	dw pd_dawn_row8b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row88
+	dw pd_dawn_row88
 
 	dw 0x400
-	dw ./Data/pd_dawn_row88
+	dw pd_dawn_row88
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row59
+	dw pd_dawn_row59
 
 	dw 0x400
-	dw ./Data/pd_dawn_row59
+	dw pd_dawn_row59
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5b
+	dw pd_dawn_row5b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5b
+	dw pd_dawn_row5b
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row5c
+	dw pd_dawn_row5c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5c
+	dw pd_dawn_row5c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5d
+	dw pd_dawn_row5d
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5d
+	dw pd_dawn_row5d
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row5a
+	dw pd_dawn_row5a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row8c
+	dw pd_dawn_row8c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8c
+	dw pd_dawn_row8c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row8d
+	dw pd_dawn_row8d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8d
+	dw pd_dawn_row8d
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row8e
+	dw pd_dawn_row8e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8e
+	dw pd_dawn_row8e
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row8d
+	dw pd_dawn_row8d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8d
+	dw pd_dawn_row8d
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row8f
+	dw pd_dawn_row8f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8f
+	dw pd_dawn_row8f
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row8d
+	dw pd_dawn_row8d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8d
+	dw pd_dawn_row8d
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row90
+	dw pd_dawn_row90
 
 	dw 0x400
-	dw ./Data/pd_dawn_row90
+	dw pd_dawn_row90
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row8d
+	dw pd_dawn_row8d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row8d
+	dw pd_dawn_row8d
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row4a
+	dw pd_dawn_row4a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4a
+	dw pd_dawn_row4a
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row91
+	dw pd_dawn_row91
 
 	dw 0x400
-	dw ./Data/pd_dawn_row91
+	dw pd_dawn_row91
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row92
+	dw pd_dawn_row92
 
 	dw 0x400
-	dw ./Data/pd_dawn_row92
+	dw pd_dawn_row92
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row93
+	dw pd_dawn_row93
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row93
+	dw pd_dawn_row93
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row4b
+	dw pd_dawn_row4b
 
 	db 0x40
 ; 0x145 bytes
 
-./Data/pd_dawn_ptnc equ ./Data/pd_dawn + 0xd98
+pd_dawn_ptnc equ pd_dawn + 0xd98
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row94
+	dw pd_dawn_row94
 
 	dw 0x400
-	dw ./Data/pd_dawn_row94
+	dw pd_dawn_row94
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row95
+	dw pd_dawn_row95
 
 	dw 0x400
-	dw ./Data/pd_dawn_row95
+	dw pd_dawn_row95
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row97
+	dw pd_dawn_row97
 
 	dw 0x400
-	dw ./Data/pd_dawn_row97
+	dw pd_dawn_row97
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row97
+	dw pd_dawn_row97
 
 	dw 0x400
-	dw ./Data/pd_dawn_row97
+	dw pd_dawn_row97
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row98
+	dw pd_dawn_row98
 
 	dw 0x400
-	dw ./Data/pd_dawn_row98
+	dw pd_dawn_row98
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row98
+	dw pd_dawn_row98
 
 	dw 0x400
-	dw ./Data/pd_dawn_row98
+	dw pd_dawn_row98
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row75
+	dw pd_dawn_row75
 
 	dw 0x400
-	dw ./Data/pd_dawn_row99
+	dw pd_dawn_row99
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9b
+	dw pd_dawn_row9b
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9b
+	dw pd_dawn_row9b
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9c
+	dw pd_dawn_row9c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9c
+	dw pd_dawn_row9c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row9e
+	dw pd_dawn_row9e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9e
+	dw pd_dawn_row9e
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9e
+	dw pd_dawn_row9e
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9e
+	dw pd_dawn_row9e
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9d
+	dw pd_dawn_row9d
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row9f
+	dw pd_dawn_row9f
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9f
+	dw pd_dawn_row9f
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa0
+	dw pd_dawn_rowa0
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa0
+	dw pd_dawn_rowa0
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa1
+	dw pd_dawn_rowa1
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa1
+	dw pd_dawn_rowa1
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	db 0x40
 ; 0x145 bytes
 
-./Data/pd_dawn_ptnd equ ./Data/pd_dawn + 0xedd
+pd_dawn_ptnd equ pd_dawn + 0xedd
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa2
+	dw pd_dawn_rowa2
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa2
+	dw pd_dawn_rowa2
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa2
+	dw pd_dawn_rowa2
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa2
+	dw pd_dawn_rowa2
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa4
+	dw pd_dawn_rowa4
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa4
+	dw pd_dawn_rowa4
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa4
+	dw pd_dawn_rowa4
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa4
+	dw pd_dawn_rowa4
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa5
+	dw pd_dawn_rowa5
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa5
+	dw pd_dawn_rowa5
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa5
+	dw pd_dawn_rowa5
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa5
+	dw pd_dawn_rowa5
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	db 0x40
 ; 0x145 bytes
 
-./Data/pd_dawn_ptne equ ./Data/pd_dawn + 0x1022
+pd_dawn_ptne equ pd_dawn + 0x1022
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa7
+	dw pd_dawn_rowa7
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa7
+	dw pd_dawn_rowa7
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa7
+	dw pd_dawn_rowa7
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa7
+	dw pd_dawn_rowa7
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa6
+	dw pd_dawn_rowa6
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa9
+	dw pd_dawn_rowa9
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa9
+	dw pd_dawn_rowa9
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa9
+	dw pd_dawn_rowa9
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa9
+	dw pd_dawn_rowa9
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa8
+	dw pd_dawn_rowa8
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowab
+	dw pd_dawn_rowab
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowab
+	dw pd_dawn_rowab
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowab
+	dw pd_dawn_rowab
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowab
+	dw pd_dawn_rowab
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowaa
+	dw pd_dawn_rowaa
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowad
+	dw pd_dawn_rowad
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowad
+	dw pd_dawn_rowad
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowad
+	dw pd_dawn_rowad
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowad
+	dw pd_dawn_rowad
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowac
+	dw pd_dawn_rowac
 
 	db 0x40
 ; 0x145 bytes
 
-./Data/pd_dawn_ptnf equ ./Data/pd_dawn + 0x1167
+pd_dawn_ptnf equ pd_dawn + 0x1167
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa2
+	dw pd_dawn_rowa2
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa2
+	dw pd_dawn_rowa2
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa2
+	dw pd_dawn_rowa2
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa2
+	dw pd_dawn_rowa2
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x400
-	dw ./Data/pd_dawn_row96
+	dw pd_dawn_row96
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa4
+	dw pd_dawn_rowa4
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa4
+	dw pd_dawn_rowa4
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa4
+	dw pd_dawn_rowa4
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa4
+	dw pd_dawn_rowa4
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa3
+	dw pd_dawn_rowa3
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa5
+	dw pd_dawn_rowa5
 
 	dw 0x400
-	dw ./Data/pd_dawn_rowa5
+	dw pd_dawn_rowa5
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa5
+	dw pd_dawn_rowa5
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_rowa5
+	dw pd_dawn_rowa5
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	dw 0x400
-	dw ./Data/pd_dawn_row65
+	dw pd_dawn_row65
 
 	db 0x40
 ; 0x145 bytes
 
-./Data/pd_dawn_ptn10 equ ./Data/pd_dawn + 0x12ac
+pd_dawn_ptn10 equ pd_dawn + 0x12ac
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x400
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x400
-	dw ./Data/pd_dawn_row76
+	dw pd_dawn_row76
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x400
-	dw ./Data/pd_dawn_row77
+	dw pd_dawn_row77
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row82
+	dw pd_dawn_row82
 
 	dw 0x400
-	dw ./Data/pd_dawn_row82
+	dw pd_dawn_row82
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row84
+	dw pd_dawn_row84
 
 	dw 0x400
-	dw ./Data/pd_dawn_row84
+	dw pd_dawn_row84
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x400
-	dw ./Data/pd_dawn_row83
+	dw pd_dawn_row83
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row84
+	dw pd_dawn_row84
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row84
+	dw pd_dawn_row84
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row6b
+	dw pd_dawn_row6b
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6b
+	dw pd_dawn_row6b
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row85
+	dw pd_dawn_row85
 
 	dw 0x400
-	dw ./Data/pd_dawn_row85
+	dw pd_dawn_row85
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row86
+	dw pd_dawn_row86
 
 	dw 0x400
-	dw ./Data/pd_dawn_row86
+	dw pd_dawn_row86
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x400
-	dw ./Data/pd_dawn_row6c
+	dw pd_dawn_row6c
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x480
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x400
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x404
 	dw 0x0080
-	dw ./Data/pd_dawn_row9a
+	dw pd_dawn_row9a
 
 	dw 0x401
 	dw 0x0080
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	dw 0x400
-	dw ./Data/pd_dawn_row73
+	dw pd_dawn_row73
 
 	db 0x40
 ; 0x145 bytes
@@ -3720,8 +3720,8 @@
 
 
 ;row buffers
-./Data/pd_dawn_rows equ ./Data/pd_dawn + 0x13f1
-./Data/pd_dawn_row0 equ ./Data/pd_dawn_rows + 0x0
+pd_dawn_rows equ pd_dawn + 0x13f1
+pd_dawn_row0 equ pd_dawn_rows + 0x0
 	dw 0x1000
 	dw 0x800
 	dw 0x1c82
@@ -3731,7 +3731,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row1 equ ./Data/pd_dawn_rows + 0x10
+pd_dawn_row1 equ pd_dawn_rows + 0x10
 	dw 0x1000
 	dw 0x800
 	dw 0x1c82
@@ -3741,7 +3741,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row2 equ ./Data/pd_dawn_rows + 0x20
+pd_dawn_row2 equ pd_dawn_rows + 0x20
 	dw 0x1000
 	dw 0x800
 	dw 0x1c82
@@ -3751,7 +3751,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row3 equ ./Data/pd_dawn_rows + 0x30
+pd_dawn_row3 equ pd_dawn_rows + 0x30
 	dw 0x1000
 	dw 0x800
 	dw 0x1c82
@@ -3761,7 +3761,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row4 equ ./Data/pd_dawn_rows + 0x40
+pd_dawn_row4 equ pd_dawn_rows + 0x40
 	dw 0x1307
 	dw 0x800
 	dw 0x1c82
@@ -3771,7 +3771,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row5 equ ./Data/pd_dawn_rows + 0x50
+pd_dawn_row5 equ pd_dawn_rows + 0x50
 	dw 0x1307
 	dw 0x800
 	dw 0x1c82
@@ -3781,7 +3781,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row6 equ ./Data/pd_dawn_rows + 0x60
+pd_dawn_row6 equ pd_dawn_rows + 0x60
 	dw 0xcb3
 	dw 0x65a
 	dw 0x2000
@@ -3791,7 +3791,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row7 equ ./Data/pd_dawn_rows + 0x70
+pd_dawn_row7 equ pd_dawn_rows + 0x70
 	dw 0xcb3
 	dw 0x65a
 	dw 0x2000
@@ -3801,7 +3801,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row8 equ ./Data/pd_dawn_rows + 0x80
+pd_dawn_row8 equ pd_dawn_rows + 0x80
 	dw 0xcb3
 	dw 0x65a
 	dw 0x2000
@@ -3811,7 +3811,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row9 equ ./Data/pd_dawn_rows + 0x90
+pd_dawn_row9 equ pd_dawn_rows + 0x90
 	dw 0x1307
 	dw 0x65a
 	dw 0x2000
@@ -3821,7 +3821,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa equ ./Data/pd_dawn_rows + 0xa0
+pd_dawn_rowa equ pd_dawn_rows + 0xa0
 	dw 0x1307
 	dw 0x65a
 	dw 0x23eb
@@ -3831,7 +3831,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowb equ ./Data/pd_dawn_rows + 0xb0
+pd_dawn_rowb equ pd_dawn_rows + 0xb0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x23eb
@@ -3841,7 +3841,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowc equ ./Data/pd_dawn_rows + 0xc0
+pd_dawn_rowc equ pd_dawn_rows + 0xc0
 	dw 0x984
 	dw 0x4c2
 	dw 0x260e
@@ -3851,7 +3851,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowd equ ./Data/pd_dawn_rows + 0xd0
+pd_dawn_rowd equ pd_dawn_rows + 0xd0
 	dw 0x984
 	dw 0x4c2
 	dw 0x260e
@@ -3861,7 +3861,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowe equ ./Data/pd_dawn_rows + 0xe0
+pd_dawn_rowe equ pd_dawn_rows + 0xe0
 	dw 0x984
 	dw 0x4c2
 	dw 0x260e
@@ -3871,7 +3871,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowf equ ./Data/pd_dawn_rows + 0xf0
+pd_dawn_rowf equ pd_dawn_rows + 0xf0
 	dw 0xe41
 	dw 0x4c2
 	dw 0x260e
@@ -3881,7 +3881,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row10 equ ./Data/pd_dawn_rows + 0x100
+pd_dawn_row10 equ pd_dawn_rows + 0x100
 	dw 0xe41
 	dw 0x4c2
 	dw 0x260e
@@ -3891,7 +3891,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row11 equ ./Data/pd_dawn_rows + 0x110
+pd_dawn_row11 equ pd_dawn_rows + 0x110
 	dw 0xe41
 	dw 0x721
 	dw 0x2ab7
@@ -3901,7 +3901,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row12 equ ./Data/pd_dawn_rows + 0x120
+pd_dawn_row12 equ pd_dawn_rows + 0x120
 	dw 0xe41
 	dw 0x721
 	dw 0x260e
@@ -3911,7 +3911,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row13 equ ./Data/pd_dawn_rows + 0x130
+pd_dawn_row13 equ pd_dawn_rows + 0x130
 	dw 0xe41
 	dw 0x721
 	dw 0x2ab7
@@ -3921,7 +3921,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row14 equ ./Data/pd_dawn_rows + 0x140
+pd_dawn_row14 equ pd_dawn_rows + 0x140
 	dw 0xe41
 	dw 0x721
 	dw 0x2ab7
@@ -3931,7 +3931,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row15 equ ./Data/pd_dawn_rows + 0x150
+pd_dawn_row15 equ pd_dawn_rows + 0x150
 	dw 0x155c
 	dw 0x721
 	dw 0x2ab7
@@ -3941,7 +3941,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row16 equ ./Data/pd_dawn_rows + 0x160
+pd_dawn_row16 equ pd_dawn_rows + 0x160
 	dw 0x155c
 	dw 0x721
 	dw 0x2ab7
@@ -3951,7 +3951,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row17 equ ./Data/pd_dawn_rows + 0x170
+pd_dawn_row17 equ pd_dawn_rows + 0x170
 	dw 0x1000
 	dw 0x800
 	dw 0x2ff2
@@ -3961,7 +3961,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row18 equ ./Data/pd_dawn_rows + 0x180
+pd_dawn_row18 equ pd_dawn_rows + 0x180
 	dw 0x1000
 	dw 0x800
 	dw 0x2ff2
@@ -3971,7 +3971,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row19 equ ./Data/pd_dawn_rows + 0x190
+pd_dawn_row19 equ pd_dawn_rows + 0x190
 	dw 0x1000
 	dw 0x800
 	dw 0x2ff2
@@ -3981,7 +3981,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row1a equ ./Data/pd_dawn_rows + 0x1a0
+pd_dawn_row1a equ pd_dawn_rows + 0x1a0
 	dw 0x1307
 	dw 0x800
 	dw 0x2ff2
@@ -3991,7 +3991,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row1b equ ./Data/pd_dawn_rows + 0x1b0
+pd_dawn_row1b equ pd_dawn_rows + 0x1b0
 	dw 0x1307
 	dw 0x800
 	dw 0x3905
@@ -4001,7 +4001,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row1c equ ./Data/pd_dawn_rows + 0x1c0
+pd_dawn_row1c equ pd_dawn_rows + 0x1c0
 	dw 0x1000
 	dw 0x800
 	dw 0x32cc
@@ -4011,7 +4011,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row1d equ ./Data/pd_dawn_rows + 0x1d0
+pd_dawn_row1d equ pd_dawn_rows + 0x1d0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x32cc
@@ -4021,7 +4021,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row1e equ ./Data/pd_dawn_rows + 0x1e0
+pd_dawn_row1e equ pd_dawn_rows + 0x1e0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x32cc
@@ -4031,7 +4031,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row1f equ ./Data/pd_dawn_rows + 0x1f0
+pd_dawn_row1f equ pd_dawn_rows + 0x1f0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x32cc
@@ -4041,7 +4041,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row20 equ ./Data/pd_dawn_rows + 0x200
+pd_dawn_row20 equ pd_dawn_rows + 0x200
 	dw 0x1307
 	dw 0x65a
 	dw 0x2ff2
@@ -4051,7 +4051,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row21 equ ./Data/pd_dawn_rows + 0x210
+pd_dawn_row21 equ pd_dawn_rows + 0x210
 	dw 0x1307
 	dw 0x65a
 	dw 0x2ff2
@@ -4061,7 +4061,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row22 equ ./Data/pd_dawn_rows + 0x220
+pd_dawn_row22 equ pd_dawn_rows + 0x220
 	dw 0xcb3
 	dw 0x65a
 	dw 0x2ab7
@@ -4071,7 +4071,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row23 equ ./Data/pd_dawn_rows + 0x230
+pd_dawn_row23 equ pd_dawn_rows + 0x230
 	dw 0x984
 	dw 0x4c2
 	dw 0x2ab7
@@ -4081,7 +4081,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row24 equ ./Data/pd_dawn_rows + 0x240
+pd_dawn_row24 equ pd_dawn_rows + 0x240
 	dw 0xe41
 	dw 0x4c2
 	dw 0x2ff2
@@ -4091,7 +4091,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row25 equ ./Data/pd_dawn_rows + 0x250
+pd_dawn_row25 equ pd_dawn_rows + 0x250
 	dw 0xe41
 	dw 0x4c2
 	dw 0x2ff2
@@ -4101,7 +4101,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row26 equ ./Data/pd_dawn_rows + 0x260
+pd_dawn_row26 equ pd_dawn_rows + 0x260
 	dw 0xe41
 	dw 0x721
 	dw 0x1c82
@@ -4111,7 +4111,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row27 equ ./Data/pd_dawn_rows + 0x270
+pd_dawn_row27 equ pd_dawn_rows + 0x270
 	dw 0xe41
 	dw 0x721
 	dw 0x1c82
@@ -4121,7 +4121,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row28 equ ./Data/pd_dawn_rows + 0x280
+pd_dawn_row28 equ pd_dawn_rows + 0x280
 	dw 0xe41
 	dw 0x721
 	dw 0x1c82
@@ -4131,7 +4131,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row29 equ ./Data/pd_dawn_rows + 0x290
+pd_dawn_row29 equ pd_dawn_rows + 0x290
 	dw 0x155c
 	dw 0x721
 	dw 0x2000
@@ -4141,7 +4141,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row2a equ ./Data/pd_dawn_rows + 0x2a0
+pd_dawn_row2a equ pd_dawn_rows + 0x2a0
 	dw 0xe41
 	dw 0x721
 	dw 0x23eb
@@ -4151,7 +4151,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row2b equ ./Data/pd_dawn_rows + 0x2b0
+pd_dawn_row2b equ pd_dawn_rows + 0x2b0
 	dw 0x155c
 	dw 0x721
 	dw 0x260e
@@ -4161,7 +4161,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row2c equ ./Data/pd_dawn_rows + 0x2c0
+pd_dawn_row2c equ pd_dawn_rows + 0x2c0
 	dw 0x1000
 	dw 0x800
 	dw 0x260e
@@ -4171,7 +4171,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row2d equ ./Data/pd_dawn_rows + 0x2d0
+pd_dawn_row2d equ pd_dawn_rows + 0x2d0
 	dw 0x1000
 	dw 0x800
 	dw 0x260e
@@ -4181,7 +4181,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row2e equ ./Data/pd_dawn_rows + 0x2e0
+pd_dawn_row2e equ pd_dawn_rows + 0x2e0
 	dw 0x1000
 	dw 0x800
 	dw 0x260e
@@ -4191,7 +4191,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row2f equ ./Data/pd_dawn_rows + 0x2f0
+pd_dawn_row2f equ pd_dawn_rows + 0x2f0
 	dw 0x1307
 	dw 0x800
 	dw 0x2ab7
@@ -4201,7 +4201,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row30 equ ./Data/pd_dawn_rows + 0x300
+pd_dawn_row30 equ pd_dawn_rows + 0x300
 	dw 0x1307
 	dw 0x800
 	dw 0x2ab7
@@ -4211,7 +4211,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row31 equ ./Data/pd_dawn_rows + 0x310
+pd_dawn_row31 equ pd_dawn_rows + 0x310
 	dw 0x1000
 	dw 0x800
 	dw 0x2ab7
@@ -4221,7 +4221,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row32 equ ./Data/pd_dawn_rows + 0x320
+pd_dawn_row32 equ pd_dawn_rows + 0x320
 	dw 0xcb3
 	dw 0x65a
 	dw 0x1966
@@ -4231,7 +4231,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row33 equ ./Data/pd_dawn_rows + 0x330
+pd_dawn_row33 equ pd_dawn_rows + 0x330
 	dw 0xcb3
 	dw 0x65a
 	dw 0x1966
@@ -4241,7 +4241,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row34 equ ./Data/pd_dawn_rows + 0x340
+pd_dawn_row34 equ pd_dawn_rows + 0x340
 	dw 0xcb3
 	dw 0x65a
 	dw 0x1966
@@ -4251,7 +4251,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row35 equ ./Data/pd_dawn_rows + 0x350
+pd_dawn_row35 equ pd_dawn_rows + 0x350
 	dw 0x1307
 	dw 0x65a
 	dw 0x17f9
@@ -4261,7 +4261,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row36 equ ./Data/pd_dawn_rows + 0x360
+pd_dawn_row36 equ pd_dawn_rows + 0x360
 	dw 0x1307
 	dw 0x65a
 	dw 0x1c82
@@ -4271,7 +4271,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row37 equ ./Data/pd_dawn_rows + 0x370
+pd_dawn_row37 equ pd_dawn_rows + 0x370
 	dw 0xcb3
 	dw 0x65a
 	dw 0x1c82
@@ -4281,7 +4281,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row38 equ ./Data/pd_dawn_rows + 0x380
+pd_dawn_row38 equ pd_dawn_rows + 0x380
 	dw 0x984
 	dw 0x4c2
 	dw 0x23eb
@@ -4291,7 +4291,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row39 equ ./Data/pd_dawn_rows + 0x390
+pd_dawn_row39 equ pd_dawn_rows + 0x390
 	dw 0x155c
 	dw 0x721
 	dw 0x2000
@@ -4301,7 +4301,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row3a equ ./Data/pd_dawn_rows + 0x3a0
+pd_dawn_row3a equ pd_dawn_rows + 0x3a0
 	dw 0x0
 	dw 0x800
 	dw 0x0
@@ -4311,7 +4311,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row3b equ ./Data/pd_dawn_rows + 0x3b0
+pd_dawn_row3b equ pd_dawn_rows + 0x3b0
 	dw 0x0
 	dw 0x800
 	dw 0x0
@@ -4321,7 +4321,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row3c equ ./Data/pd_dawn_rows + 0x3c0
+pd_dawn_row3c equ pd_dawn_rows + 0x3c0
 	dw 0x0
 	dw 0x800
 	dw 0x0
@@ -4331,7 +4331,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row3d equ ./Data/pd_dawn_rows + 0x3d0
+pd_dawn_row3d equ pd_dawn_rows + 0x3d0
 	dw 0x0
 	dw 0x800
 	dw 0x0
@@ -4341,7 +4341,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row3e equ ./Data/pd_dawn_rows + 0x3e0
+pd_dawn_row3e equ pd_dawn_rows + 0x3e0
 	dw 0x0
 	dw 0x65a
 	dw 0x0
@@ -4351,7 +4351,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row3f equ ./Data/pd_dawn_rows + 0x3f0
+pd_dawn_row3f equ pd_dawn_rows + 0x3f0
 	dw 0x0
 	dw 0x65a
 	dw 0x0
@@ -4361,7 +4361,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row40 equ ./Data/pd_dawn_rows + 0x400
+pd_dawn_row40 equ pd_dawn_rows + 0x400
 	dw 0x0
 	dw 0x65a
 	dw 0x0
@@ -4371,7 +4371,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row41 equ ./Data/pd_dawn_rows + 0x410
+pd_dawn_row41 equ pd_dawn_rows + 0x410
 	dw 0x0
 	dw 0x65a
 	dw 0x0
@@ -4381,7 +4381,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row42 equ ./Data/pd_dawn_rows + 0x420
+pd_dawn_row42 equ pd_dawn_rows + 0x420
 	dw 0x0
 	dw 0x4c2
 	dw 0x0
@@ -4391,7 +4391,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row43 equ ./Data/pd_dawn_rows + 0x430
+pd_dawn_row43 equ pd_dawn_rows + 0x430
 	dw 0x0
 	dw 0x4c2
 	dw 0x0
@@ -4401,7 +4401,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row44 equ ./Data/pd_dawn_rows + 0x440
+pd_dawn_row44 equ pd_dawn_rows + 0x440
 	dw 0x0
 	dw 0x4c2
 	dw 0x0
@@ -4411,7 +4411,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row45 equ ./Data/pd_dawn_rows + 0x450
+pd_dawn_row45 equ pd_dawn_rows + 0x450
 	dw 0x0
 	dw 0x4c2
 	dw 0x0
@@ -4421,7 +4421,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row46 equ ./Data/pd_dawn_rows + 0x460
+pd_dawn_row46 equ pd_dawn_rows + 0x460
 	dw 0x0
 	dw 0x721
 	dw 0x0
@@ -4431,7 +4431,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row47 equ ./Data/pd_dawn_rows + 0x470
+pd_dawn_row47 equ pd_dawn_rows + 0x470
 	dw 0x0
 	dw 0x721
 	dw 0x0
@@ -4441,7 +4441,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row48 equ ./Data/pd_dawn_rows + 0x480
+pd_dawn_row48 equ pd_dawn_rows + 0x480
 	dw 0x0
 	dw 0x721
 	dw 0x0
@@ -4451,7 +4451,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row49 equ ./Data/pd_dawn_rows + 0x490
+pd_dawn_row49 equ pd_dawn_rows + 0x490
 	dw 0x0
 	dw 0x721
 	dw 0x0
@@ -4461,7 +4461,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row4a equ ./Data/pd_dawn_rows + 0x4a0
+pd_dawn_row4a equ pd_dawn_rows + 0x4a0
 	dw 0x1000
 	dw 0x800
 	dw 0x0
@@ -4471,7 +4471,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row4b equ ./Data/pd_dawn_rows + 0x4b0
+pd_dawn_row4b equ pd_dawn_rows + 0x4b0
 	dw 0x1000
 	dw 0x800
 	dw 0x0
@@ -4481,7 +4481,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row4c equ ./Data/pd_dawn_rows + 0x4c0
+pd_dawn_row4c equ pd_dawn_rows + 0x4c0
 	dw 0x1000
 	dw 0x800
 	dw 0x0
@@ -4491,7 +4491,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row4d equ ./Data/pd_dawn_rows + 0x4d0
+pd_dawn_row4d equ pd_dawn_rows + 0x4d0
 	dw 0x1307
 	dw 0x800
 	dw 0x0
@@ -4501,7 +4501,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row4e equ ./Data/pd_dawn_rows + 0x4e0
+pd_dawn_row4e equ pd_dawn_rows + 0x4e0
 	dw 0x1307
 	dw 0x800
 	dw 0x0
@@ -4511,7 +4511,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row4f equ ./Data/pd_dawn_rows + 0x4f0
+pd_dawn_row4f equ pd_dawn_rows + 0x4f0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x0
@@ -4521,7 +4521,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row50 equ ./Data/pd_dawn_rows + 0x500
+pd_dawn_row50 equ pd_dawn_rows + 0x500
 	dw 0xcb3
 	dw 0x65a
 	dw 0x0
@@ -4531,7 +4531,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row51 equ ./Data/pd_dawn_rows + 0x510
+pd_dawn_row51 equ pd_dawn_rows + 0x510
 	dw 0xcb3
 	dw 0x65a
 	dw 0x0
@@ -4541,7 +4541,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row52 equ ./Data/pd_dawn_rows + 0x520
+pd_dawn_row52 equ pd_dawn_rows + 0x520
 	dw 0x1307
 	dw 0x65a
 	dw 0x0
@@ -4551,7 +4551,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row53 equ ./Data/pd_dawn_rows + 0x530
+pd_dawn_row53 equ pd_dawn_rows + 0x530
 	dw 0x1307
 	dw 0x65a
 	dw 0x0
@@ -4561,7 +4561,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row54 equ ./Data/pd_dawn_rows + 0x540
+pd_dawn_row54 equ pd_dawn_rows + 0x540
 	dw 0x984
 	dw 0x4c2
 	dw 0x0
@@ -4571,7 +4571,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row55 equ ./Data/pd_dawn_rows + 0x550
+pd_dawn_row55 equ pd_dawn_rows + 0x550
 	dw 0x984
 	dw 0x4c2
 	dw 0x0
@@ -4581,7 +4581,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row56 equ ./Data/pd_dawn_rows + 0x560
+pd_dawn_row56 equ pd_dawn_rows + 0x560
 	dw 0x984
 	dw 0x4c2
 	dw 0x0
@@ -4591,7 +4591,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row57 equ ./Data/pd_dawn_rows + 0x570
+pd_dawn_row57 equ pd_dawn_rows + 0x570
 	dw 0xe41
 	dw 0x4c2
 	dw 0x0
@@ -4601,7 +4601,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row58 equ ./Data/pd_dawn_rows + 0x580
+pd_dawn_row58 equ pd_dawn_rows + 0x580
 	dw 0xe41
 	dw 0x4c2
 	dw 0x0
@@ -4611,7 +4611,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row59 equ ./Data/pd_dawn_rows + 0x590
+pd_dawn_row59 equ pd_dawn_rows + 0x590
 	dw 0xe41
 	dw 0x721
 	dw 0x0
@@ -4621,7 +4621,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row5a equ ./Data/pd_dawn_rows + 0x5a0
+pd_dawn_row5a equ pd_dawn_rows + 0x5a0
 	dw 0xe41
 	dw 0x721
 	dw 0x0
@@ -4631,7 +4631,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row5b equ ./Data/pd_dawn_rows + 0x5b0
+pd_dawn_row5b equ pd_dawn_rows + 0x5b0
 	dw 0xe41
 	dw 0x721
 	dw 0x0
@@ -4641,7 +4641,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row5c equ ./Data/pd_dawn_rows + 0x5c0
+pd_dawn_row5c equ pd_dawn_rows + 0x5c0
 	dw 0x155c
 	dw 0x721
 	dw 0x0
@@ -4651,7 +4651,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row5d equ ./Data/pd_dawn_rows + 0x5d0
+pd_dawn_row5d equ pd_dawn_rows + 0x5d0
 	dw 0x155c
 	dw 0x721
 	dw 0x0
@@ -4661,7 +4661,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row5e equ ./Data/pd_dawn_rows + 0x5e0
+pd_dawn_row5e equ pd_dawn_rows + 0x5e0
 	dw 0x1307
 	dw 0x800
 	dw 0x260e
@@ -4671,7 +4671,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row5f equ ./Data/pd_dawn_rows + 0x5f0
+pd_dawn_row5f equ pd_dawn_rows + 0x5f0
 	dw 0x1307
 	dw 0x800
 	dw 0x260e
@@ -4681,7 +4681,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row60 equ ./Data/pd_dawn_rows + 0x600
+pd_dawn_row60 equ pd_dawn_rows + 0x600
 	dw 0xcb3
 	dw 0x65a
 	dw 0x260e
@@ -4691,7 +4691,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row61 equ ./Data/pd_dawn_rows + 0x610
+pd_dawn_row61 equ pd_dawn_rows + 0x610
 	dw 0xcb3
 	dw 0x65a
 	dw 0x260e
@@ -4701,7 +4701,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row62 equ ./Data/pd_dawn_rows + 0x620
+pd_dawn_row62 equ pd_dawn_rows + 0x620
 	dw 0xcb3
 	dw 0x65a
 	dw 0x260e
@@ -4711,7 +4711,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row63 equ ./Data/pd_dawn_rows + 0x630
+pd_dawn_row63 equ pd_dawn_rows + 0x630
 	dw 0x1307
 	dw 0x65a
 	dw 0x260e
@@ -4721,7 +4721,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row64 equ ./Data/pd_dawn_rows + 0x640
+pd_dawn_row64 equ pd_dawn_rows + 0x640
 	dw 0x1307
 	dw 0x65a
 	dw 0x260e
@@ -4731,7 +4731,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row65 equ ./Data/pd_dawn_rows + 0x650
+pd_dawn_row65 equ pd_dawn_rows + 0x650
 	dw 0x1000
 	dw 0x800
 	dw 0x2000
@@ -4741,7 +4741,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row66 equ ./Data/pd_dawn_rows + 0x660
+pd_dawn_row66 equ pd_dawn_rows + 0x660
 	dw 0x1307
 	dw 0x800
 	dw 0x2000
@@ -4751,7 +4751,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row67 equ ./Data/pd_dawn_rows + 0x670
+pd_dawn_row67 equ pd_dawn_rows + 0x670
 	dw 0x1000
 	dw 0x800
 	dw 0x23eb
@@ -4761,7 +4761,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row68 equ ./Data/pd_dawn_rows + 0x680
+pd_dawn_row68 equ pd_dawn_rows + 0x680
 	dw 0xcb3
 	dw 0x65a
 	dw 0x260e
@@ -4771,7 +4771,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row69 equ ./Data/pd_dawn_rows + 0x690
+pd_dawn_row69 equ pd_dawn_rows + 0x690
 	dw 0x1307
 	dw 0x65a
 	dw 0x2ab7
@@ -4781,7 +4781,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row6a equ ./Data/pd_dawn_rows + 0x6a0
+pd_dawn_row6a equ pd_dawn_rows + 0x6a0
 	dw 0x1307
 	dw 0x65a
 	dw 0x260e
@@ -4791,7 +4791,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row6b equ ./Data/pd_dawn_rows + 0x6b0
+pd_dawn_row6b equ pd_dawn_rows + 0x6b0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x2ab7
@@ -4801,7 +4801,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row6c equ ./Data/pd_dawn_rows + 0x6c0
+pd_dawn_row6c equ pd_dawn_rows + 0x6c0
 	dw 0x984
 	dw 0x4c2
 	dw 0x260e
@@ -4811,7 +4811,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row6d equ ./Data/pd_dawn_rows + 0x6d0
+pd_dawn_row6d equ pd_dawn_rows + 0x6d0
 	dw 0xe41
 	dw 0x4c2
 	dw 0x23eb
@@ -4821,7 +4821,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row6e equ ./Data/pd_dawn_rows + 0x6e0
+pd_dawn_row6e equ pd_dawn_rows + 0x6e0
 	dw 0x984
 	dw 0x4c2
 	dw 0x23eb
@@ -4831,7 +4831,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row6f equ ./Data/pd_dawn_rows + 0x6f0
+pd_dawn_row6f equ pd_dawn_rows + 0x6f0
 	dw 0xe41
 	dw 0x4c2
 	dw 0x2000
@@ -4841,7 +4841,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row70 equ ./Data/pd_dawn_rows + 0x700
+pd_dawn_row70 equ pd_dawn_rows + 0x700
 	dw 0x984
 	dw 0x4c2
 	dw 0x2000
@@ -4851,7 +4851,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row71 equ ./Data/pd_dawn_rows + 0x710
+pd_dawn_row71 equ pd_dawn_rows + 0x710
 	dw 0xe41
 	dw 0x721
 	dw 0x155c
@@ -4861,7 +4861,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row72 equ ./Data/pd_dawn_rows + 0x720
+pd_dawn_row72 equ pd_dawn_rows + 0x720
 	dw 0x155c
 	dw 0x721
 	dw 0x2000
@@ -4871,7 +4871,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row73 equ ./Data/pd_dawn_rows + 0x730
+pd_dawn_row73 equ pd_dawn_rows + 0x730
 	dw 0xe41
 	dw 0x721
 	dw 0x23eb
@@ -4881,7 +4881,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row74 equ ./Data/pd_dawn_rows + 0x740
+pd_dawn_row74 equ pd_dawn_rows + 0x740
 	dw 0x155c
 	dw 0x721
 	dw 0x260e
@@ -4891,7 +4891,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row75 equ ./Data/pd_dawn_rows + 0x750
+pd_dawn_row75 equ pd_dawn_rows + 0x750
 	dw 0xe41
 	dw 0x721
 	dw 0x2ab7
@@ -4901,7 +4901,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row76 equ ./Data/pd_dawn_rows + 0x760
+pd_dawn_row76 equ pd_dawn_rows + 0x760
 	dw 0x1000
 	dw 0x800
 	dw 0x2ff2
@@ -4911,7 +4911,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row77 equ ./Data/pd_dawn_rows + 0x770
+pd_dawn_row77 equ pd_dawn_rows + 0x770
 	dw 0x1307
 	dw 0x800
 	dw 0x2ff2
@@ -4921,7 +4921,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row78 equ ./Data/pd_dawn_rows + 0x780
+pd_dawn_row78 equ pd_dawn_rows + 0x780
 	dw 0x1307
 	dw 0x800
 	dw 0x32cc
@@ -4931,7 +4931,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row79 equ ./Data/pd_dawn_rows + 0x790
+pd_dawn_row79 equ pd_dawn_rows + 0x790
 	dw 0xcb3
 	dw 0x65a
 	dw 0x32cc
@@ -4941,7 +4941,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row7a equ ./Data/pd_dawn_rows + 0x7a0
+pd_dawn_row7a equ pd_dawn_rows + 0x7a0
 	dw 0x1307
 	dw 0x65a
 	dw 0x32cc
@@ -4951,7 +4951,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row7b equ ./Data/pd_dawn_rows + 0x7b0
+pd_dawn_row7b equ pd_dawn_rows + 0x7b0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x2000
@@ -4961,7 +4961,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row7c equ ./Data/pd_dawn_rows + 0x7c0
+pd_dawn_row7c equ pd_dawn_rows + 0x7c0
 	dw 0x984
 	dw 0x4c2
 	dw 0x1c82
@@ -4971,7 +4971,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row7d equ ./Data/pd_dawn_rows + 0x7d0
+pd_dawn_row7d equ pd_dawn_rows + 0x7d0
 	dw 0xe41
 	dw 0x4c2
 	dw 0x17f9
@@ -4981,7 +4981,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row7e equ ./Data/pd_dawn_rows + 0x7e0
+pd_dawn_row7e equ pd_dawn_rows + 0x7e0
 	dw 0x984
 	dw 0x4c2
 	dw 0x17f9
@@ -4991,7 +4991,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row7f equ ./Data/pd_dawn_rows + 0x7f0
+pd_dawn_row7f equ pd_dawn_rows + 0x7f0
 	dw 0xe41
 	dw 0x4c2
 	dw 0x1c82
@@ -5001,7 +5001,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row80 equ ./Data/pd_dawn_rows + 0x800
+pd_dawn_row80 equ pd_dawn_rows + 0x800
 	dw 0x155c
 	dw 0x721
 	dw 0x2ff2
@@ -5011,7 +5011,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row81 equ ./Data/pd_dawn_rows + 0x810
+pd_dawn_row81 equ pd_dawn_rows + 0x810
 	dw 0xe41
 	dw 0x721
 	dw 0x2ff2
@@ -5021,7 +5021,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row82 equ ./Data/pd_dawn_rows + 0x820
+pd_dawn_row82 equ pd_dawn_rows + 0x820
 	dw 0x1000
 	dw 0x800
 	dw 0x2ab7
@@ -5031,7 +5031,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row83 equ ./Data/pd_dawn_rows + 0x830
+pd_dawn_row83 equ pd_dawn_rows + 0x830
 	dw 0xcb3
 	dw 0x65a
 	dw 0x2ff2
@@ -5041,7 +5041,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row84 equ ./Data/pd_dawn_rows + 0x840
+pd_dawn_row84 equ pd_dawn_rows + 0x840
 	dw 0x1307
 	dw 0x65a
 	dw 0x2ff2
@@ -5051,7 +5051,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row85 equ ./Data/pd_dawn_rows + 0x850
+pd_dawn_row85 equ pd_dawn_rows + 0x850
 	dw 0xe41
 	dw 0x4c2
 	dw 0x260e
@@ -5061,7 +5061,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row86 equ ./Data/pd_dawn_rows + 0x860
+pd_dawn_row86 equ pd_dawn_rows + 0x860
 	dw 0xe41
 	dw 0x4c2
 	dw 0x2ab7
@@ -5071,7 +5071,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row87 equ ./Data/pd_dawn_rows + 0x870
+pd_dawn_row87 equ pd_dawn_rows + 0x870
 	dw 0x11f6
 	dw 0x8fb
 	dw 0x0
@@ -5081,7 +5081,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row88 equ ./Data/pd_dawn_rows + 0x880
+pd_dawn_row88 equ pd_dawn_rows + 0x880
 	dw 0x11f6
 	dw 0x8fb
 	dw 0x0
@@ -5091,7 +5091,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row89 equ ./Data/pd_dawn_rows + 0x890
+pd_dawn_row89 equ pd_dawn_rows + 0x890
 	dw 0x11f6
 	dw 0x8fb
 	dw 0x0
@@ -5101,7 +5101,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row8a equ ./Data/pd_dawn_rows + 0x8a0
+pd_dawn_row8a equ pd_dawn_rows + 0x8a0
 	dw 0x155c
 	dw 0x8fb
 	dw 0x0
@@ -5111,7 +5111,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row8b equ ./Data/pd_dawn_rows + 0x8b0
+pd_dawn_row8b equ pd_dawn_rows + 0x8b0
 	dw 0x155c
 	dw 0x8fb
 	dw 0x0
@@ -5121,7 +5121,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row8c equ ./Data/pd_dawn_rows + 0x8c0
+pd_dawn_row8c equ pd_dawn_rows + 0x8c0
 	dw 0xaae
 	dw 0x557
 	dw 0x0
@@ -5131,7 +5131,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row8d equ ./Data/pd_dawn_rows + 0x8d0
+pd_dawn_row8d equ pd_dawn_rows + 0x8d0
 	dw 0xaae
 	dw 0x557
 	dw 0x0
@@ -5141,7 +5141,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row8e equ ./Data/pd_dawn_rows + 0x8e0
+pd_dawn_row8e equ pd_dawn_rows + 0x8e0
 	dw 0xaae
 	dw 0x557
 	dw 0x0
@@ -5151,7 +5151,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row8f equ ./Data/pd_dawn_rows + 0x8f0
+pd_dawn_row8f equ pd_dawn_rows + 0x8f0
 	dw 0x1000
 	dw 0x557
 	dw 0x0
@@ -5161,7 +5161,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row90 equ ./Data/pd_dawn_rows + 0x900
+pd_dawn_row90 equ pd_dawn_rows + 0x900
 	dw 0x1000
 	dw 0x557
 	dw 0x0
@@ -5171,7 +5171,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row91 equ ./Data/pd_dawn_rows + 0x910
+pd_dawn_row91 equ pd_dawn_rows + 0x910
 	dw 0x1000
 	dw 0x800
 	dw 0x0
@@ -5181,7 +5181,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row92 equ ./Data/pd_dawn_rows + 0x920
+pd_dawn_row92 equ pd_dawn_rows + 0x920
 	dw 0x17f9
 	dw 0x800
 	dw 0x0
@@ -5191,7 +5191,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row93 equ ./Data/pd_dawn_rows + 0x930
+pd_dawn_row93 equ pd_dawn_rows + 0x930
 	dw 0x17f9
 	dw 0x800
 	dw 0x0
@@ -5201,7 +5201,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row94 equ ./Data/pd_dawn_rows + 0x940
+pd_dawn_row94 equ pd_dawn_rows + 0x940
 	dw 0x11f6
 	dw 0x8fb
 	dw 0x23eb
@@ -5211,7 +5211,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row95 equ ./Data/pd_dawn_rows + 0x950
+pd_dawn_row95 equ pd_dawn_rows + 0x950
 	dw 0x11f6
 	dw 0x8fb
 	dw 0x2851
@@ -5221,7 +5221,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row96 equ ./Data/pd_dawn_rows + 0x960
+pd_dawn_row96 equ pd_dawn_rows + 0x960
 	dw 0x11f6
 	dw 0x8fb
 	dw 0x2ab7
@@ -5231,7 +5231,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row97 equ ./Data/pd_dawn_rows + 0x970
+pd_dawn_row97 equ pd_dawn_rows + 0x970
 	dw 0x155c
 	dw 0x8fb
 	dw 0x35d1
@@ -5241,7 +5241,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row98 equ ./Data/pd_dawn_rows + 0x980
+pd_dawn_row98 equ pd_dawn_rows + 0x980
 	dw 0xe41
 	dw 0x721
 	dw 0x3905
@@ -5251,7 +5251,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row99 equ ./Data/pd_dawn_rows + 0x990
+pd_dawn_row99 equ pd_dawn_rows + 0x990
 	dw 0xe41
 	dw 0x721
 	dw 0x2851
@@ -5261,7 +5261,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row9a equ ./Data/pd_dawn_rows + 0x9a0
+pd_dawn_row9a equ pd_dawn_rows + 0x9a0
 	dw 0x155c
 	dw 0x721
 	dw 0x23eb
@@ -5271,7 +5271,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row9b equ ./Data/pd_dawn_rows + 0x9b0
+pd_dawn_row9b equ pd_dawn_rows + 0x9b0
 	dw 0x155c
 	dw 0x721
 	dw 0x1c82
@@ -5281,7 +5281,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row9c equ ./Data/pd_dawn_rows + 0x9c0
+pd_dawn_row9c equ pd_dawn_rows + 0x9c0
 	dw 0xe41
 	dw 0x721
 	dw 0x2000
@@ -5291,7 +5291,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row9d equ ./Data/pd_dawn_rows + 0x9d0
+pd_dawn_row9d equ pd_dawn_rows + 0x9d0
 	dw 0xaae
 	dw 0x557
 	dw 0x2ab7
@@ -5301,7 +5301,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row9e equ ./Data/pd_dawn_rows + 0x9e0
+pd_dawn_row9e equ pd_dawn_rows + 0x9e0
 	dw 0x1000
 	dw 0x557
 	dw 0x2ff2
@@ -5311,7 +5311,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_row9f equ ./Data/pd_dawn_rows + 0x9f0
+pd_dawn_row9f equ pd_dawn_rows + 0x9f0
 	dw 0x17f9
 	dw 0x800
 	dw 0x23eb
@@ -5321,7 +5321,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa0 equ ./Data/pd_dawn_rows + 0xa00
+pd_dawn_rowa0 equ pd_dawn_rows + 0xa00
 	dw 0x1000
 	dw 0x800
 	dw 0x2851
@@ -5331,7 +5331,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa1 equ ./Data/pd_dawn_rows + 0xa10
+pd_dawn_rowa1 equ pd_dawn_rows + 0xa10
 	dw 0x17f9
 	dw 0x800
 	dw 0x2ab7
@@ -5341,7 +5341,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa2 equ ./Data/pd_dawn_rows + 0xa20
+pd_dawn_rowa2 equ pd_dawn_rows + 0xa20
 	dw 0x155c
 	dw 0x8fb
 	dw 0x2ab7
@@ -5351,7 +5351,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa3 equ ./Data/pd_dawn_rows + 0xa30
+pd_dawn_rowa3 equ pd_dawn_rows + 0xa30
 	dw 0xaae
 	dw 0x557
 	dw 0x155c
@@ -5361,7 +5361,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa4 equ ./Data/pd_dawn_rows + 0xa40
+pd_dawn_rowa4 equ pd_dawn_rows + 0xa40
 	dw 0x1000
 	dw 0x557
 	dw 0x155c
@@ -5371,7 +5371,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa5 equ ./Data/pd_dawn_rows + 0xa50
+pd_dawn_rowa5 equ pd_dawn_rows + 0xa50
 	dw 0x17f9
 	dw 0x800
 	dw 0x2000
@@ -5381,7 +5381,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa6 equ ./Data/pd_dawn_rows + 0xa60
+pd_dawn_rowa6 equ pd_dawn_rows + 0xa60
 	dw 0x1000
 	dw 0x800
 	dw 0x0
@@ -5391,7 +5391,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa7 equ ./Data/pd_dawn_rows + 0xa70
+pd_dawn_rowa7 equ pd_dawn_rows + 0xa70
 	dw 0x1307
 	dw 0x800
 	dw 0x0
@@ -5401,7 +5401,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa8 equ ./Data/pd_dawn_rows + 0xa80
+pd_dawn_rowa8 equ pd_dawn_rows + 0xa80
 	dw 0xcb3
 	dw 0x65a
 	dw 0x0
@@ -5411,7 +5411,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowa9 equ ./Data/pd_dawn_rows + 0xa90
+pd_dawn_rowa9 equ pd_dawn_rows + 0xa90
 	dw 0x1307
 	dw 0x65a
 	dw 0x0
@@ -5421,7 +5421,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowaa equ ./Data/pd_dawn_rows + 0xaa0
+pd_dawn_rowaa equ pd_dawn_rows + 0xaa0
 	dw 0x984
 	dw 0x4c2
 	dw 0x0
@@ -5431,7 +5431,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowab equ ./Data/pd_dawn_rows + 0xab0
+pd_dawn_rowab equ pd_dawn_rows + 0xab0
 	dw 0xe41
 	dw 0x4c2
 	dw 0x0
@@ -5441,7 +5441,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowac equ ./Data/pd_dawn_rows + 0xac0
+pd_dawn_rowac equ pd_dawn_rows + 0xac0
 	dw 0xe41
 	dw 0x721
 	dw 0x0
@@ -5451,7 +5451,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/pd_dawn_rowad equ ./Data/pd_dawn_rows + 0xad0
+pd_dawn_rowad equ pd_dawn_rows + 0xad0
 	dw 0x155c
 	dw 0x721
 	dw 0x0
@@ -5464,4 +5464,4 @@
 
 ; 0xae0 bytes
 ; file_size = 0x1ed1 bytes
-; define({./Data/pd_dawn_size}, 0x1ed1)
+; define({pd_dawn_size}, 0x1ed1)

@@ -1,2560 +1,2560 @@
 ; relocatable file:
-;   the base address is ./Data/octode2k16
-;   the loop address is ./Data/octode2k16_loop
+;   the base address is octode2k16
+;   the loop address is octode2k16_loop
 ; M4 support:
 ;   no one comma
 ;   macro file_size defined
 
-  ifndef ./Data/octode2k16
-./Data/octode2k16 equ $
+  ifndef octode2k16
+octode2k16 equ $
   endif
 
 ;loop
-	dw ./Data/octode2k16_loop
+	dw octode2k16_loop
 
-./Data/octode2k16_start equ ./Data/octode2k16 + 0x2
+octode2k16_start equ octode2k16 + 0x2
 ;sequence
-	dw ./Data/octode2k16_ptn8
-	dw ./Data/octode2k16_ptn8
-	dw ./Data/octode2k16_ptn9
-	dw ./Data/octode2k16_ptna
-./Data/octode2k16_loop equ ./Data/octode2k16 + 0xa
-	dw ./Data/octode2k16_ptn1
-	dw ./Data/octode2k16_ptn1
-	dw ./Data/octode2k16_ptn2
-	dw ./Data/octode2k16_ptn2
-	dw ./Data/octode2k16_ptn1
-	dw ./Data/octode2k16_ptn3
-	dw ./Data/octode2k16_ptn4
-	dw ./Data/octode2k16_ptn4
-	dw ./Data/octode2k16_ptn5
-	dw ./Data/octode2k16_ptn5
-	dw ./Data/octode2k16_ptn6
-	dw ./Data/octode2k16_ptn6
-	dw ./Data/octode2k16_ptnd
-	dw ./Data/octode2k16_ptnd
-	dw ./Data/octode2k16_ptnb
-	dw ./Data/octode2k16_ptne
-	db 2	; lo = repeat times
+	dw octode2k16_ptn8
+	dw octode2k16_ptn8
+	dw octode2k16_ptn9
+	dw octode2k16_ptna
+octode2k16_loop equ octode2k16 + 0xa
+	dw octode2k16_ptn1
+	dw octode2k16_ptn1
+	dw octode2k16_ptn2
+	dw octode2k16_ptn2
+	dw octode2k16_ptn1
+	dw octode2k16_ptn3
+	dw octode2k16_ptn4
+	dw octode2k16_ptn4
+	dw octode2k16_ptn5
+	dw octode2k16_ptn5
+	dw octode2k16_ptn6
+	dw octode2k16_ptn6
+	dw octode2k16_ptnd
+	dw octode2k16_ptnd
+	dw octode2k16_ptnb
+	dw octode2k16_ptne
+	db 0	; lo = repeat times
 	db 0	; hi = end mark
 ; 0x2c bytes
 
-./Data/octode2k16_ptn1 equ ./Data/octode2k16 + 0x2c
+octode2k16_ptn1 equ octode2k16 + 0x2c
 	dw 0x300
-	dw ./Data/octode2k16_row0
+	dw octode2k16_row0
 
 	dw 0x300
-	dw ./Data/octode2k16_row1
+	dw octode2k16_row1
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row3
+	dw octode2k16_row3
 
 	dw 0x300
-	dw ./Data/octode2k16_row4
+	dw octode2k16_row4
 
 	dw 0x300
-	dw ./Data/octode2k16_row5
+	dw octode2k16_row5
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row7
+	dw octode2k16_row7
 
 	dw 0x300
-	dw ./Data/octode2k16_row8
+	dw octode2k16_row8
 
 	dw 0x300
-	dw ./Data/octode2k16_row9
+	dw octode2k16_row9
 
 	dw 0x300
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x300
-	dw ./Data/octode2k16_rowb
+	dw octode2k16_rowb
 
 	dw 0x300
-	dw ./Data/octode2k16_rowc
+	dw octode2k16_rowc
 
 	dw 0x300
-	dw ./Data/octode2k16_rowd
+	dw octode2k16_rowd
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_rowf
+	dw octode2k16_rowf
 
 	dw 0x300
-	dw ./Data/octode2k16_row10
+	dw octode2k16_row10
 
 	dw 0x300
-	dw ./Data/octode2k16_row1
+	dw octode2k16_row1
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row3
+	dw octode2k16_row3
 
 	dw 0x300
-	dw ./Data/octode2k16_row11
+	dw octode2k16_row11
 
 	dw 0x300
-	dw ./Data/octode2k16_row12
+	dw octode2k16_row12
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row13
+	dw octode2k16_row13
 
 	dw 0x300
-	dw ./Data/octode2k16_row8
+	dw octode2k16_row8
 
 	dw 0x300
-	dw ./Data/octode2k16_row9
+	dw octode2k16_row9
 
 	dw 0x300
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x300
-	dw ./Data/octode2k16_rowb
+	dw octode2k16_rowb
 
 	dw 0x300
-	dw ./Data/octode2k16_rowc
+	dw octode2k16_rowc
 
 	dw 0x300
-	dw ./Data/octode2k16_rowd
+	dw octode2k16_rowd
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_rowf
+	dw octode2k16_rowf
 
 	dw 0x300
-	dw ./Data/octode2k16_row10
+	dw octode2k16_row10
 
 	dw 0x300
-	dw ./Data/octode2k16_row1
+	dw octode2k16_row1
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row3
+	dw octode2k16_row3
 
 	dw 0x300
-	dw ./Data/octode2k16_row4
+	dw octode2k16_row4
 
 	dw 0x300
-	dw ./Data/octode2k16_row5
+	dw octode2k16_row5
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row7
+	dw octode2k16_row7
 
 	dw 0x300
-	dw ./Data/octode2k16_row8
+	dw octode2k16_row8
 
 	dw 0x300
-	dw ./Data/octode2k16_row9
+	dw octode2k16_row9
 
 	dw 0x300
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x300
-	dw ./Data/octode2k16_rowb
+	dw octode2k16_rowb
 
 	dw 0x300
-	dw ./Data/octode2k16_rowc
+	dw octode2k16_rowc
 
 	dw 0x300
-	dw ./Data/octode2k16_rowd
+	dw octode2k16_rowd
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_rowf
+	dw octode2k16_rowf
 
 	dw 0x300
-	dw ./Data/octode2k16_row10
+	dw octode2k16_row10
 
 	dw 0x300
-	dw ./Data/octode2k16_row1
+	dw octode2k16_row1
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row3
+	dw octode2k16_row3
 
 	dw 0x300
-	dw ./Data/octode2k16_row11
+	dw octode2k16_row11
 
 	dw 0x300
-	dw ./Data/octode2k16_row12
+	dw octode2k16_row12
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row13
+	dw octode2k16_row13
 
 	dw 0x300
-	dw ./Data/octode2k16_row8
+	dw octode2k16_row8
 
 	dw 0x300
-	dw ./Data/octode2k16_row9
+	dw octode2k16_row9
 
 	dw 0x300
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x300
-	dw ./Data/octode2k16_rowb
+	dw octode2k16_rowb
 
 	dw 0x300
-	dw ./Data/octode2k16_rowc
+	dw octode2k16_rowc
 
 	dw 0x300
-	dw ./Data/octode2k16_rowd
+	dw octode2k16_rowd
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_rowf
+	dw octode2k16_rowf
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/octode2k16_ptn2 equ ./Data/octode2k16 + 0x12d
+octode2k16_ptn2 equ octode2k16 + 0x12d
 	dw 0x300
-	dw ./Data/octode2k16_row15
+	dw octode2k16_row15
 
 	dw 0x300
-	dw ./Data/octode2k16_row16
+	dw octode2k16_row16
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row18
+	dw octode2k16_row18
 
 	dw 0x300
-	dw ./Data/octode2k16_row19
+	dw octode2k16_row19
 
 	dw 0x300
-	dw ./Data/octode2k16_row1a
+	dw octode2k16_row1a
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row1c
+	dw octode2k16_row1c
 
 	dw 0x300
-	dw ./Data/octode2k16_row1d
+	dw octode2k16_row1d
 
 	dw 0x300
-	dw ./Data/octode2k16_row1e
+	dw octode2k16_row1e
 
 	dw 0x300
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x300
-	dw ./Data/octode2k16_row20
+	dw octode2k16_row20
 
 	dw 0x300
-	dw ./Data/octode2k16_row21
+	dw octode2k16_row21
 
 	dw 0x300
-	dw ./Data/octode2k16_row22
+	dw octode2k16_row22
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row24
+	dw octode2k16_row24
 
 	dw 0x300
-	dw ./Data/octode2k16_row15
+	dw octode2k16_row15
 
 	dw 0x300
-	dw ./Data/octode2k16_row16
+	dw octode2k16_row16
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row18
+	dw octode2k16_row18
 
 	dw 0x300
-	dw ./Data/octode2k16_row25
+	dw octode2k16_row25
 
 	dw 0x300
-	dw ./Data/octode2k16_row26
+	dw octode2k16_row26
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row27
+	dw octode2k16_row27
 
 	dw 0x300
-	dw ./Data/octode2k16_row1d
+	dw octode2k16_row1d
 
 	dw 0x300
-	dw ./Data/octode2k16_row1e
+	dw octode2k16_row1e
 
 	dw 0x300
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x300
-	dw ./Data/octode2k16_row20
+	dw octode2k16_row20
 
 	dw 0x300
-	dw ./Data/octode2k16_row21
+	dw octode2k16_row21
 
 	dw 0x300
-	dw ./Data/octode2k16_row22
+	dw octode2k16_row22
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row24
+	dw octode2k16_row24
 
 	dw 0x300
-	dw ./Data/octode2k16_row15
+	dw octode2k16_row15
 
 	dw 0x300
-	dw ./Data/octode2k16_row16
+	dw octode2k16_row16
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row18
+	dw octode2k16_row18
 
 	dw 0x300
-	dw ./Data/octode2k16_row19
+	dw octode2k16_row19
 
 	dw 0x300
-	dw ./Data/octode2k16_row1a
+	dw octode2k16_row1a
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row1c
+	dw octode2k16_row1c
 
 	dw 0x300
-	dw ./Data/octode2k16_row1d
+	dw octode2k16_row1d
 
 	dw 0x300
-	dw ./Data/octode2k16_row1e
+	dw octode2k16_row1e
 
 	dw 0x300
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x300
-	dw ./Data/octode2k16_row20
+	dw octode2k16_row20
 
 	dw 0x300
-	dw ./Data/octode2k16_row21
+	dw octode2k16_row21
 
 	dw 0x300
-	dw ./Data/octode2k16_row22
+	dw octode2k16_row22
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row24
+	dw octode2k16_row24
 
 	dw 0x300
-	dw ./Data/octode2k16_row15
+	dw octode2k16_row15
 
 	dw 0x300
-	dw ./Data/octode2k16_row16
+	dw octode2k16_row16
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row18
+	dw octode2k16_row18
 
 	dw 0x300
-	dw ./Data/octode2k16_row25
+	dw octode2k16_row25
 
 	dw 0x300
-	dw ./Data/octode2k16_row26
+	dw octode2k16_row26
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row27
+	dw octode2k16_row27
 
 	dw 0x300
-	dw ./Data/octode2k16_row1d
+	dw octode2k16_row1d
 
 	dw 0x300
-	dw ./Data/octode2k16_row1e
+	dw octode2k16_row1e
 
 	dw 0x300
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x300
-	dw ./Data/octode2k16_row20
+	dw octode2k16_row20
 
 	dw 0x300
-	dw ./Data/octode2k16_row21
+	dw octode2k16_row21
 
 	dw 0x300
-	dw ./Data/octode2k16_row22
+	dw octode2k16_row22
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row24
+	dw octode2k16_row24
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/octode2k16_ptn3 equ ./Data/octode2k16 + 0x22e
+octode2k16_ptn3 equ octode2k16 + 0x22e
 	dw 0x300
-	dw ./Data/octode2k16_row10
+	dw octode2k16_row10
 
 	dw 0x300
-	dw ./Data/octode2k16_row1
+	dw octode2k16_row1
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row3
+	dw octode2k16_row3
 
 	dw 0x300
-	dw ./Data/octode2k16_row4
+	dw octode2k16_row4
 
 	dw 0x300
-	dw ./Data/octode2k16_row5
+	dw octode2k16_row5
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row7
+	dw octode2k16_row7
 
 	dw 0x300
-	dw ./Data/octode2k16_row8
+	dw octode2k16_row8
 
 	dw 0x300
-	dw ./Data/octode2k16_row9
+	dw octode2k16_row9
 
 	dw 0x300
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x300
-	dw ./Data/octode2k16_rowb
+	dw octode2k16_rowb
 
 	dw 0x300
-	dw ./Data/octode2k16_rowc
+	dw octode2k16_rowc
 
 	dw 0x300
-	dw ./Data/octode2k16_rowd
+	dw octode2k16_rowd
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_rowf
+	dw octode2k16_rowf
 
 	dw 0x300
-	dw ./Data/octode2k16_row10
+	dw octode2k16_row10
 
 	dw 0x300
-	dw ./Data/octode2k16_row1
+	dw octode2k16_row1
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row3
+	dw octode2k16_row3
 
 	dw 0x300
-	dw ./Data/octode2k16_row11
+	dw octode2k16_row11
 
 	dw 0x300
-	dw ./Data/octode2k16_row12
+	dw octode2k16_row12
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row13
+	dw octode2k16_row13
 
 	dw 0x300
-	dw ./Data/octode2k16_row8
+	dw octode2k16_row8
 
 	dw 0x300
-	dw ./Data/octode2k16_row9
+	dw octode2k16_row9
 
 	dw 0x300
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x300
-	dw ./Data/octode2k16_rowb
+	dw octode2k16_rowb
 
 	dw 0x300
-	dw ./Data/octode2k16_rowc
+	dw octode2k16_rowc
 
 	dw 0x300
-	dw ./Data/octode2k16_rowd
+	dw octode2k16_rowd
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_rowf
+	dw octode2k16_rowf
 
 	dw 0x300
-	dw ./Data/octode2k16_row10
+	dw octode2k16_row10
 
 	dw 0x300
-	dw ./Data/octode2k16_row1
+	dw octode2k16_row1
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row3
+	dw octode2k16_row3
 
 	dw 0x300
-	dw ./Data/octode2k16_row4
+	dw octode2k16_row4
 
 	dw 0x300
-	dw ./Data/octode2k16_row5
+	dw octode2k16_row5
 
 	dw 0x300
-	dw ./Data/octode2k16_row29
+	dw octode2k16_row29
 
 	dw 0x300
-	dw ./Data/octode2k16_row2a
+	dw octode2k16_row2a
 
 	dw 0x300
-	dw ./Data/octode2k16_row2b
+	dw octode2k16_row2b
 
 	dw 0x300
-	dw ./Data/octode2k16_row2c
+	dw octode2k16_row2c
 
 	dw 0x300
-	dw ./Data/octode2k16_row2d
+	dw octode2k16_row2d
 
 	dw 0x300
-	dw ./Data/octode2k16_row2e
+	dw octode2k16_row2e
 
 	dw 0x300
-	dw ./Data/octode2k16_row2f
+	dw octode2k16_row2f
 
 	dw 0x300
-	dw ./Data/octode2k16_row30
+	dw octode2k16_row30
 
 	dw 0x300
-	dw ./Data/octode2k16_row31
+	dw octode2k16_row31
 
 	dw 0x300
-	dw ./Data/octode2k16_row32
+	dw octode2k16_row32
 
 	dw 0x300
-	dw ./Data/octode2k16_row33
+	dw octode2k16_row33
 
 	dw 0x300
-	dw ./Data/octode2k16_row34
+	dw octode2k16_row34
 
 	dw 0x300
-	dw ./Data/octode2k16_row35
+	dw octode2k16_row35
 
 	dw 0x300
-	dw ./Data/octode2k16_row36
+	dw octode2k16_row36
 
 	dw 0x300
-	dw ./Data/octode2k16_row37
+	dw octode2k16_row37
 
 	dw 0x300
-	dw ./Data/octode2k16_row38
+	dw octode2k16_row38
 
 	dw 0x300
-	dw ./Data/octode2k16_row39
+	dw octode2k16_row39
 
 	dw 0x300
-	dw ./Data/octode2k16_row3a
+	dw octode2k16_row3a
 
 	dw 0x300
-	dw ./Data/octode2k16_row3b
+	dw octode2k16_row3b
 
 	dw 0x300
-	dw ./Data/octode2k16_row3c
+	dw octode2k16_row3c
 
 	dw 0x300
-	dw ./Data/octode2k16_row3d
+	dw octode2k16_row3d
 
 	dw 0x300
-	dw ./Data/octode2k16_row3e
+	dw octode2k16_row3e
 
 	dw 0x300
-	dw ./Data/octode2k16_row3f
+	dw octode2k16_row3f
 
 	dw 0x300
-	dw ./Data/octode2k16_row40
+	dw octode2k16_row40
 
 	dw 0x300
-	dw ./Data/octode2k16_row41
+	dw octode2k16_row41
 
 	dw 0x300
-	dw ./Data/octode2k16_row42
+	dw octode2k16_row42
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/octode2k16_ptn4 equ ./Data/octode2k16 + 0x32f
+octode2k16_ptn4 equ octode2k16 + 0x32f
 	dw 0x300
-	dw ./Data/octode2k16_row43
+	dw octode2k16_row43
 
 	dw 0x300
-	dw ./Data/octode2k16_row44
+	dw octode2k16_row44
 
 	dw 0x300
-	dw ./Data/octode2k16_row45
+	dw octode2k16_row45
 
 	dw 0x300
-	dw ./Data/octode2k16_row46
+	dw octode2k16_row46
 
 	dw 0x300
-	dw ./Data/octode2k16_row47
+	dw octode2k16_row47
 
 	dw 0x300
-	dw ./Data/octode2k16_row48
+	dw octode2k16_row48
 
 	dw 0x300
-	dw ./Data/octode2k16_row49
+	dw octode2k16_row49
 
 	dw 0x300
-	dw ./Data/octode2k16_row4a
+	dw octode2k16_row4a
 
 	dw 0x300
-	dw ./Data/octode2k16_row4b
+	dw octode2k16_row4b
 
 	dw 0x300
-	dw ./Data/octode2k16_row4c
+	dw octode2k16_row4c
 
 	dw 0x300
-	dw ./Data/octode2k16_row4d
+	dw octode2k16_row4d
 
 	dw 0x300
-	dw ./Data/octode2k16_row4e
+	dw octode2k16_row4e
 
 	dw 0x300
-	dw ./Data/octode2k16_row4f
+	dw octode2k16_row4f
 
 	dw 0x300
-	dw ./Data/octode2k16_row50
+	dw octode2k16_row50
 
 	dw 0x300
-	dw ./Data/octode2k16_row51
+	dw octode2k16_row51
 
 	dw 0x300
-	dw ./Data/octode2k16_row52
+	dw octode2k16_row52
 
 	dw 0x300
-	dw ./Data/octode2k16_row43
+	dw octode2k16_row43
 
 	dw 0x300
-	dw ./Data/octode2k16_row44
+	dw octode2k16_row44
 
 	dw 0x300
-	dw ./Data/octode2k16_row45
+	dw octode2k16_row45
 
 	dw 0x300
-	dw ./Data/octode2k16_row46
+	dw octode2k16_row46
 
 	dw 0x300
-	dw ./Data/octode2k16_row53
+	dw octode2k16_row53
 
 	dw 0x300
-	dw ./Data/octode2k16_row54
+	dw octode2k16_row54
 
 	dw 0x300
-	dw ./Data/octode2k16_row49
+	dw octode2k16_row49
 
 	dw 0x300
-	dw ./Data/octode2k16_row55
+	dw octode2k16_row55
 
 	dw 0x300
-	dw ./Data/octode2k16_row4b
+	dw octode2k16_row4b
 
 	dw 0x300
-	dw ./Data/octode2k16_row4c
+	dw octode2k16_row4c
 
 	dw 0x300
-	dw ./Data/octode2k16_row56
+	dw octode2k16_row56
 
 	dw 0x300
-	dw ./Data/octode2k16_row4e
+	dw octode2k16_row4e
 
 	dw 0x300
-	dw ./Data/octode2k16_row4f
+	dw octode2k16_row4f
 
 	dw 0x300
-	dw ./Data/octode2k16_row50
+	dw octode2k16_row50
 
 	dw 0x300
-	dw ./Data/octode2k16_row51
+	dw octode2k16_row51
 
 	dw 0x300
-	dw ./Data/octode2k16_row52
+	dw octode2k16_row52
 
 	dw 0x300
-	dw ./Data/octode2k16_row43
+	dw octode2k16_row43
 
 	dw 0x300
-	dw ./Data/octode2k16_row44
+	dw octode2k16_row44
 
 	dw 0x300
-	dw ./Data/octode2k16_row45
+	dw octode2k16_row45
 
 	dw 0x300
-	dw ./Data/octode2k16_row46
+	dw octode2k16_row46
 
 	dw 0x300
-	dw ./Data/octode2k16_row47
+	dw octode2k16_row47
 
 	dw 0x300
-	dw ./Data/octode2k16_row48
+	dw octode2k16_row48
 
 	dw 0x300
-	dw ./Data/octode2k16_row49
+	dw octode2k16_row49
 
 	dw 0x300
-	dw ./Data/octode2k16_row4a
+	dw octode2k16_row4a
 
 	dw 0x300
-	dw ./Data/octode2k16_row4b
+	dw octode2k16_row4b
 
 	dw 0x300
-	dw ./Data/octode2k16_row4c
+	dw octode2k16_row4c
 
 	dw 0x300
-	dw ./Data/octode2k16_row4d
+	dw octode2k16_row4d
 
 	dw 0x300
-	dw ./Data/octode2k16_row4e
+	dw octode2k16_row4e
 
 	dw 0x300
-	dw ./Data/octode2k16_row4f
+	dw octode2k16_row4f
 
 	dw 0x300
-	dw ./Data/octode2k16_row50
+	dw octode2k16_row50
 
 	dw 0x300
-	dw ./Data/octode2k16_row51
+	dw octode2k16_row51
 
 	dw 0x300
-	dw ./Data/octode2k16_row52
+	dw octode2k16_row52
 
 	dw 0x300
-	dw ./Data/octode2k16_row43
+	dw octode2k16_row43
 
 	dw 0x300
-	dw ./Data/octode2k16_row44
+	dw octode2k16_row44
 
 	dw 0x300
-	dw ./Data/octode2k16_row45
+	dw octode2k16_row45
 
 	dw 0x300
-	dw ./Data/octode2k16_row46
+	dw octode2k16_row46
 
 	dw 0x300
-	dw ./Data/octode2k16_row53
+	dw octode2k16_row53
 
 	dw 0x300
-	dw ./Data/octode2k16_row54
+	dw octode2k16_row54
 
 	dw 0x300
-	dw ./Data/octode2k16_row49
+	dw octode2k16_row49
 
 	dw 0x300
-	dw ./Data/octode2k16_row55
+	dw octode2k16_row55
 
 	dw 0x300
-	dw ./Data/octode2k16_row4b
+	dw octode2k16_row4b
 
 	dw 0x300
-	dw ./Data/octode2k16_row4c
+	dw octode2k16_row4c
 
 	dw 0x300
-	dw ./Data/octode2k16_row56
+	dw octode2k16_row56
 
 	dw 0x300
-	dw ./Data/octode2k16_row4e
+	dw octode2k16_row4e
 
 	dw 0x300
-	dw ./Data/octode2k16_row4f
+	dw octode2k16_row4f
 
 	dw 0x300
-	dw ./Data/octode2k16_row50
+	dw octode2k16_row50
 
 	dw 0x300
-	dw ./Data/octode2k16_row51
+	dw octode2k16_row51
 
 	dw 0x300
-	dw ./Data/octode2k16_row52
+	dw octode2k16_row52
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/octode2k16_ptn5 equ ./Data/octode2k16 + 0x430
+octode2k16_ptn5 equ octode2k16 + 0x430
 	dw 0x301
 	dw 0x0080
-	dw ./Data/octode2k16_row57
+	dw octode2k16_row57
 
 	dw 0x300
-	dw ./Data/octode2k16_row58
+	dw octode2k16_row58
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row59
+	dw octode2k16_row59
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row5a
+	dw octode2k16_row5a
 
 	dw 0x300
-	dw ./Data/octode2k16_row5b
+	dw octode2k16_row5b
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row5c
+	dw octode2k16_row5c
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row5d
+	dw octode2k16_row5d
 
 	dw 0x300
-	dw ./Data/octode2k16_row5e
+	dw octode2k16_row5e
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x300
-	dw ./Data/octode2k16_row5f
+	dw octode2k16_row5f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row60
+	dw octode2k16_row60
 
 	dw 0x300
-	dw ./Data/octode2k16_row61
+	dw octode2k16_row61
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_row62
+	dw octode2k16_row62
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row57
+	dw octode2k16_row57
 
 	dw 0x300
-	dw ./Data/octode2k16_row58
+	dw octode2k16_row58
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row59
+	dw octode2k16_row59
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row63
+	dw octode2k16_row63
 
 	dw 0x300
-	dw ./Data/octode2k16_row64
+	dw octode2k16_row64
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row65
+	dw octode2k16_row65
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row5d
+	dw octode2k16_row5d
 
 	dw 0x300
-	dw ./Data/octode2k16_row5e
+	dw octode2k16_row5e
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x300
-	dw ./Data/octode2k16_row5f
+	dw octode2k16_row5f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row60
+	dw octode2k16_row60
 
 	dw 0x300
-	dw ./Data/octode2k16_row61
+	dw octode2k16_row61
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_row62
+	dw octode2k16_row62
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row57
+	dw octode2k16_row57
 
 	dw 0x300
-	dw ./Data/octode2k16_row58
+	dw octode2k16_row58
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row59
+	dw octode2k16_row59
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row5a
+	dw octode2k16_row5a
 
 	dw 0x300
-	dw ./Data/octode2k16_row5b
+	dw octode2k16_row5b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row5c
+	dw octode2k16_row5c
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row5d
+	dw octode2k16_row5d
 
 	dw 0x300
-	dw ./Data/octode2k16_row5e
+	dw octode2k16_row5e
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x300
-	dw ./Data/octode2k16_row5f
+	dw octode2k16_row5f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row60
+	dw octode2k16_row60
 
 	dw 0x300
-	dw ./Data/octode2k16_row61
+	dw octode2k16_row61
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_row62
+	dw octode2k16_row62
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row57
+	dw octode2k16_row57
 
 	dw 0x300
-	dw ./Data/octode2k16_row58
+	dw octode2k16_row58
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row59
+	dw octode2k16_row59
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row63
+	dw octode2k16_row63
 
 	dw 0x300
-	dw ./Data/octode2k16_row64
+	dw octode2k16_row64
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row65
+	dw octode2k16_row65
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row5d
+	dw octode2k16_row5d
 
 	dw 0x300
-	dw ./Data/octode2k16_row5e
+	dw octode2k16_row5e
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x300
-	dw ./Data/octode2k16_row5f
+	dw octode2k16_row5f
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row60
+	dw octode2k16_row60
 
 	dw 0x300
-	dw ./Data/octode2k16_row61
+	dw octode2k16_row61
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_row62
+	dw octode2k16_row62
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/octode2k16_ptn6 equ ./Data/octode2k16 + 0x571
+octode2k16_ptn6 equ octode2k16 + 0x571
 	dw 0x301
 	dw 0x0080
-	dw ./Data/octode2k16_row66
+	dw octode2k16_row66
 
 	dw 0x300
-	dw ./Data/octode2k16_row67
+	dw octode2k16_row67
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row45
+	dw octode2k16_row45
 
 	dw 0x300
-	dw ./Data/octode2k16_row68
+	dw octode2k16_row68
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row69
+	dw octode2k16_row69
 
 	dw 0x300
-	dw ./Data/octode2k16_row6a
+	dw octode2k16_row6a
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row49
+	dw octode2k16_row49
 
 	dw 0x300
-	dw ./Data/octode2k16_row6b
+	dw octode2k16_row6b
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row6c
+	dw octode2k16_row6c
 
 	dw 0x300
-	dw ./Data/octode2k16_row6d
+	dw octode2k16_row6d
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row4d
+	dw octode2k16_row4d
 
 	dw 0x300
-	dw ./Data/octode2k16_row6e
+	dw octode2k16_row6e
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6f
+	dw octode2k16_row6f
 
 	dw 0x300
-	dw ./Data/octode2k16_row70
+	dw octode2k16_row70
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row51
+	dw octode2k16_row51
 
 	dw 0x300
-	dw ./Data/octode2k16_row71
+	dw octode2k16_row71
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row66
+	dw octode2k16_row66
 
 	dw 0x300
-	dw ./Data/octode2k16_row67
+	dw octode2k16_row67
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row45
+	dw octode2k16_row45
 
 	dw 0x300
-	dw ./Data/octode2k16_row68
+	dw octode2k16_row68
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row72
+	dw octode2k16_row72
 
 	dw 0x300
-	dw ./Data/octode2k16_row73
+	dw octode2k16_row73
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row49
+	dw octode2k16_row49
 
 	dw 0x300
-	dw ./Data/octode2k16_row74
+	dw octode2k16_row74
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6c
+	dw octode2k16_row6c
 
 	dw 0x300
-	dw ./Data/octode2k16_row6d
+	dw octode2k16_row6d
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row56
+	dw octode2k16_row56
 
 	dw 0x300
-	dw ./Data/octode2k16_row6e
+	dw octode2k16_row6e
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6f
+	dw octode2k16_row6f
 
 	dw 0x300
-	dw ./Data/octode2k16_row70
+	dw octode2k16_row70
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row51
+	dw octode2k16_row51
 
 	dw 0x300
-	dw ./Data/octode2k16_row71
+	dw octode2k16_row71
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row66
+	dw octode2k16_row66
 
 	dw 0x300
-	dw ./Data/octode2k16_row67
+	dw octode2k16_row67
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row45
+	dw octode2k16_row45
 
 	dw 0x300
-	dw ./Data/octode2k16_row68
+	dw octode2k16_row68
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row69
+	dw octode2k16_row69
 
 	dw 0x300
-	dw ./Data/octode2k16_row6a
+	dw octode2k16_row6a
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row49
+	dw octode2k16_row49
 
 	dw 0x300
-	dw ./Data/octode2k16_row6b
+	dw octode2k16_row6b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6c
+	dw octode2k16_row6c
 
 	dw 0x300
-	dw ./Data/octode2k16_row6d
+	dw octode2k16_row6d
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row4d
+	dw octode2k16_row4d
 
 	dw 0x300
-	dw ./Data/octode2k16_row6e
+	dw octode2k16_row6e
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6f
+	dw octode2k16_row6f
 
 	dw 0x300
-	dw ./Data/octode2k16_row70
+	dw octode2k16_row70
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row51
+	dw octode2k16_row51
 
 	dw 0x300
-	dw ./Data/octode2k16_row71
+	dw octode2k16_row71
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row66
+	dw octode2k16_row66
 
 	dw 0x300
-	dw ./Data/octode2k16_row67
+	dw octode2k16_row67
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row45
+	dw octode2k16_row45
 
 	dw 0x300
-	dw ./Data/octode2k16_row68
+	dw octode2k16_row68
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row72
+	dw octode2k16_row72
 
 	dw 0x300
-	dw ./Data/octode2k16_row73
+	dw octode2k16_row73
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row49
+	dw octode2k16_row49
 
 	dw 0x300
-	dw ./Data/octode2k16_row74
+	dw octode2k16_row74
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row6c
+	dw octode2k16_row6c
 
 	dw 0x300
-	dw ./Data/octode2k16_row6d
+	dw octode2k16_row6d
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row56
+	dw octode2k16_row56
 
 	dw 0x300
-	dw ./Data/octode2k16_row6e
+	dw octode2k16_row6e
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row6f
+	dw octode2k16_row6f
 
 	dw 0x300
-	dw ./Data/octode2k16_row70
+	dw octode2k16_row70
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row51
+	dw octode2k16_row51
 
 	dw 0x300
-	dw ./Data/octode2k16_row71
+	dw octode2k16_row71
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/octode2k16_ptn8 equ ./Data/octode2k16 + 0x6b2
+octode2k16_ptn8 equ octode2k16 + 0x6b2
 	dw 0x300
-	dw ./Data/octode2k16_row75
+	dw octode2k16_row75
 
 	dw 0x300
-	dw ./Data/octode2k16_row76
+	dw octode2k16_row76
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row79
+	dw octode2k16_row79
 
 	dw 0x300
-	dw ./Data/octode2k16_row7a
+	dw octode2k16_row7a
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7c
+	dw octode2k16_row7c
 
 	dw 0x300
-	dw ./Data/octode2k16_row7d
+	dw octode2k16_row7d
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row7f
+	dw octode2k16_row7f
 
 	dw 0x300
-	dw ./Data/octode2k16_row80
+	dw octode2k16_row80
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row75
+	dw octode2k16_row75
 
 	dw 0x300
-	dw ./Data/octode2k16_row76
+	dw octode2k16_row76
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row81
+	dw octode2k16_row81
 
 	dw 0x300
-	dw ./Data/octode2k16_row82
+	dw octode2k16_row82
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row7c
+	dw octode2k16_row7c
 
 	dw 0x300
-	dw ./Data/octode2k16_row7d
+	dw octode2k16_row7d
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row7f
+	dw octode2k16_row7f
 
 	dw 0x300
-	dw ./Data/octode2k16_row80
+	dw octode2k16_row80
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row75
+	dw octode2k16_row75
 
 	dw 0x300
-	dw ./Data/octode2k16_row76
+	dw octode2k16_row76
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row79
+	dw octode2k16_row79
 
 	dw 0x300
-	dw ./Data/octode2k16_row7a
+	dw octode2k16_row7a
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7c
+	dw octode2k16_row7c
 
 	dw 0x300
-	dw ./Data/octode2k16_row7d
+	dw octode2k16_row7d
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row7f
+	dw octode2k16_row7f
 
 	dw 0x300
-	dw ./Data/octode2k16_row80
+	dw octode2k16_row80
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row75
+	dw octode2k16_row75
 
 	dw 0x300
-	dw ./Data/octode2k16_row76
+	dw octode2k16_row76
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row81
+	dw octode2k16_row81
 
 	dw 0x300
-	dw ./Data/octode2k16_row82
+	dw octode2k16_row82
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row7c
+	dw octode2k16_row7c
 
 	dw 0x300
-	dw ./Data/octode2k16_row7d
+	dw octode2k16_row7d
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row7f
+	dw octode2k16_row7f
 
 	dw 0x300
-	dw ./Data/octode2k16_row80
+	dw octode2k16_row80
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/octode2k16_ptn9 equ ./Data/octode2k16 + 0x7b3
+octode2k16_ptn9 equ octode2k16 + 0x7b3
 	dw 0x300
-	dw ./Data/octode2k16_row84
+	dw octode2k16_row84
 
 	dw 0x300
-	dw ./Data/octode2k16_row85
+	dw octode2k16_row85
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row86
+	dw octode2k16_row86
 
 	dw 0x300
-	dw ./Data/octode2k16_row87
+	dw octode2k16_row87
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row88
+	dw octode2k16_row88
 
 	dw 0x300
-	dw ./Data/octode2k16_row89
+	dw octode2k16_row89
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8a
+	dw octode2k16_row8a
 
 	dw 0x300
-	dw ./Data/octode2k16_row8b
+	dw octode2k16_row8b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row84
+	dw octode2k16_row84
 
 	dw 0x300
-	dw ./Data/octode2k16_row85
+	dw octode2k16_row85
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row8c
+	dw octode2k16_row8c
 
 	dw 0x300
-	dw ./Data/octode2k16_row8d
+	dw octode2k16_row8d
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row88
+	dw octode2k16_row88
 
 	dw 0x300
-	dw ./Data/octode2k16_row89
+	dw octode2k16_row89
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8a
+	dw octode2k16_row8a
 
 	dw 0x300
-	dw ./Data/octode2k16_row8b
+	dw octode2k16_row8b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row84
+	dw octode2k16_row84
 
 	dw 0x300
-	dw ./Data/octode2k16_row85
+	dw octode2k16_row85
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row86
+	dw octode2k16_row86
 
 	dw 0x300
-	dw ./Data/octode2k16_row87
+	dw octode2k16_row87
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row88
+	dw octode2k16_row88
 
 	dw 0x300
-	dw ./Data/octode2k16_row89
+	dw octode2k16_row89
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8a
+	dw octode2k16_row8a
 
 	dw 0x300
-	dw ./Data/octode2k16_row8b
+	dw octode2k16_row8b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row84
+	dw octode2k16_row84
 
 	dw 0x300
-	dw ./Data/octode2k16_row85
+	dw octode2k16_row85
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row8c
+	dw octode2k16_row8c
 
 	dw 0x300
-	dw ./Data/octode2k16_row8d
+	dw octode2k16_row8d
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row88
+	dw octode2k16_row88
 
 	dw 0x300
-	dw ./Data/octode2k16_row89
+	dw octode2k16_row89
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8a
+	dw octode2k16_row8a
 
 	dw 0x300
-	dw ./Data/octode2k16_row8b
+	dw octode2k16_row8b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/octode2k16_ptna equ ./Data/octode2k16 + 0x8b4
+octode2k16_ptna equ octode2k16 + 0x8b4
 	dw 0x300
-	dw ./Data/octode2k16_row84
+	dw octode2k16_row84
 
 	dw 0x300
-	dw ./Data/octode2k16_row85
+	dw octode2k16_row85
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row86
+	dw octode2k16_row86
 
 	dw 0x300
-	dw ./Data/octode2k16_row87
+	dw octode2k16_row87
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row88
+	dw octode2k16_row88
 
 	dw 0x300
-	dw ./Data/octode2k16_row89
+	dw octode2k16_row89
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8a
+	dw octode2k16_row8a
 
 	dw 0x300
-	dw ./Data/octode2k16_row8b
+	dw octode2k16_row8b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row84
+	dw octode2k16_row84
 
 	dw 0x300
-	dw ./Data/octode2k16_row85
+	dw octode2k16_row85
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row8c
+	dw octode2k16_row8c
 
 	dw 0x300
-	dw ./Data/octode2k16_row8d
+	dw octode2k16_row8d
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row88
+	dw octode2k16_row88
 
 	dw 0x300
-	dw ./Data/octode2k16_row89
+	dw octode2k16_row89
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8a
+	dw octode2k16_row8a
 
 	dw 0x300
-	dw ./Data/octode2k16_row8b
+	dw octode2k16_row8b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row84
+	dw octode2k16_row84
 
 	dw 0x300
-	dw ./Data/octode2k16_row85
+	dw octode2k16_row85
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row86
+	dw octode2k16_row86
 
 	dw 0x300
-	dw ./Data/octode2k16_row87
+	dw octode2k16_row87
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row88
+	dw octode2k16_row88
 
 	dw 0x300
-	dw ./Data/octode2k16_row89
+	dw octode2k16_row89
 
 	dw 0x300
-	dw ./Data/octode2k16_row7b
+	dw octode2k16_row7b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8a
+	dw octode2k16_row8a
 
 	dw 0x300
-	dw ./Data/octode2k16_row8b
+	dw octode2k16_row8b
 
 	dw 0x300
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row84
+	dw octode2k16_row84
 
 	dw 0x300
-	dw ./Data/octode2k16_row85
+	dw octode2k16_row85
 
 	dw 0x300
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row8c
+	dw octode2k16_row8c
 
 	dw 0x300
-	dw ./Data/octode2k16_row8d
+	dw octode2k16_row8d
 
 	dw 0x300
-	dw ./Data/octode2k16_row78
+	dw octode2k16_row78
 
 	dw 0x300
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x301
 	dw 0x002
-	dw ./Data/octode2k16_row88
+	dw octode2k16_row88
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row89
+	dw octode2k16_row89
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row83
+	dw octode2k16_row83
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row8a
+	dw octode2k16_row8a
 
 	dw 0x301
 	dw 0x0030
-	dw ./Data/octode2k16_row8b
+	dw octode2k16_row8b
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row7e
+	dw octode2k16_row7e
 
 	dw 0x301
 	dw 0x0050
-	dw ./Data/octode2k16_row77
+	dw octode2k16_row77
 
 	db 0x40
 ; 0x111 bytes
 
-./Data/octode2k16_ptnb equ ./Data/octode2k16 + 0x9c5
+octode2k16_ptnb equ octode2k16 + 0x9c5
 	dw 0x301
 	dw 0x0080
-	dw ./Data/octode2k16_row8e
+	dw octode2k16_row8e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8f
+	dw octode2k16_row8f
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row90
+	dw octode2k16_row90
 
 	dw 0x300
-	dw ./Data/octode2k16_row91
+	dw octode2k16_row91
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row92
+	dw octode2k16_row92
 
 	dw 0x300
-	dw ./Data/octode2k16_row93
+	dw octode2k16_row93
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row94
+	dw octode2k16_row94
 
 	dw 0x300
-	dw ./Data/octode2k16_row95
+	dw octode2k16_row95
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row8e
+	dw octode2k16_row8e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8f
+	dw octode2k16_row8f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row96
+	dw octode2k16_row96
 
 	dw 0x300
-	dw ./Data/octode2k16_row97
+	dw octode2k16_row97
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row92
+	dw octode2k16_row92
 
 	dw 0x300
-	dw ./Data/octode2k16_row93
+	dw octode2k16_row93
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row94
+	dw octode2k16_row94
 
 	dw 0x300
-	dw ./Data/octode2k16_row95
+	dw octode2k16_row95
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row8e
+	dw octode2k16_row8e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8f
+	dw octode2k16_row8f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row90
+	dw octode2k16_row90
 
 	dw 0x300
-	dw ./Data/octode2k16_row91
+	dw octode2k16_row91
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row92
+	dw octode2k16_row92
 
 	dw 0x300
-	dw ./Data/octode2k16_row93
+	dw octode2k16_row93
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row94
+	dw octode2k16_row94
 
 	dw 0x300
-	dw ./Data/octode2k16_row95
+	dw octode2k16_row95
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row8e
+	dw octode2k16_row8e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8f
+	dw octode2k16_row8f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row96
+	dw octode2k16_row96
 
 	dw 0x300
-	dw ./Data/octode2k16_row97
+	dw octode2k16_row97
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row92
+	dw octode2k16_row92
 
 	dw 0x300
-	dw ./Data/octode2k16_row93
+	dw octode2k16_row93
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row94
+	dw octode2k16_row94
 
 	dw 0x300
-	dw ./Data/octode2k16_row95
+	dw octode2k16_row95
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/octode2k16_ptnd equ ./Data/octode2k16 + 0xb06
+octode2k16_ptnd equ octode2k16 + 0xb06
 	dw 0x301
 	dw 0x0080
-	dw ./Data/octode2k16_row98
+	dw octode2k16_row98
 
 	dw 0x300
-	dw ./Data/octode2k16_row99
+	dw octode2k16_row99
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row9a
+	dw octode2k16_row9a
 
 	dw 0x300
-	dw ./Data/octode2k16_row9b
+	dw octode2k16_row9b
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row9c
+	dw octode2k16_row9c
 
 	dw 0x300
-	dw ./Data/octode2k16_row9d
+	dw octode2k16_row9d
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row9e
+	dw octode2k16_row9e
 
 	dw 0x300
-	dw ./Data/octode2k16_row9f
+	dw octode2k16_row9f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row98
+	dw octode2k16_row98
 
 	dw 0x300
-	dw ./Data/octode2k16_row99
+	dw octode2k16_row99
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowa0
+	dw octode2k16_rowa0
 
 	dw 0x300
-	dw ./Data/octode2k16_rowa1
+	dw octode2k16_rowa1
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row9c
+	dw octode2k16_row9c
 
 	dw 0x300
-	dw ./Data/octode2k16_row9d
+	dw octode2k16_row9d
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row9e
+	dw octode2k16_row9e
 
 	dw 0x300
-	dw ./Data/octode2k16_row9f
+	dw octode2k16_row9f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row98
+	dw octode2k16_row98
 
 	dw 0x300
-	dw ./Data/octode2k16_row99
+	dw octode2k16_row99
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row9a
+	dw octode2k16_row9a
 
 	dw 0x300
-	dw ./Data/octode2k16_row9b
+	dw octode2k16_row9b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row9c
+	dw octode2k16_row9c
 
 	dw 0x300
-	dw ./Data/octode2k16_row9d
+	dw octode2k16_row9d
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowa
+	dw octode2k16_rowa
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row9e
+	dw octode2k16_row9e
 
 	dw 0x300
-	dw ./Data/octode2k16_row9f
+	dw octode2k16_row9f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row98
+	dw octode2k16_row98
 
 	dw 0x300
-	dw ./Data/octode2k16_row99
+	dw octode2k16_row99
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	dw 0x300
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_rowa0
+	dw octode2k16_rowa0
 
 	dw 0x300
-	dw ./Data/octode2k16_rowa1
+	dw octode2k16_rowa1
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row6
+	dw octode2k16_row6
 
 	dw 0x300
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row9c
+	dw octode2k16_row9c
 
 	dw 0x300
-	dw ./Data/octode2k16_row9d
+	dw octode2k16_row9d
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row14
+	dw octode2k16_row14
 
 	dw 0x300
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row9e
+	dw octode2k16_row9e
 
 	dw 0x300
-	dw ./Data/octode2k16_row9f
+	dw octode2k16_row9f
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_rowe
+	dw octode2k16_rowe
 
 	dw 0x300
-	dw ./Data/octode2k16_row2
+	dw octode2k16_row2
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/octode2k16_ptne equ ./Data/octode2k16 + 0xc47
+octode2k16_ptne equ octode2k16 + 0xc47
 	dw 0x301
 	dw 0x0080
-	dw ./Data/octode2k16_row8e
+	dw octode2k16_row8e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8f
+	dw octode2k16_row8f
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row90
+	dw octode2k16_row90
 
 	dw 0x300
-	dw ./Data/octode2k16_row91
+	dw octode2k16_row91
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row92
+	dw octode2k16_row92
 
 	dw 0x300
-	dw ./Data/octode2k16_row93
+	dw octode2k16_row93
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row94
+	dw octode2k16_row94
 
 	dw 0x300
-	dw ./Data/octode2k16_row95
+	dw octode2k16_row95
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row8e
+	dw octode2k16_row8e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8f
+	dw octode2k16_row8f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row96
+	dw octode2k16_row96
 
 	dw 0x300
-	dw ./Data/octode2k16_row97
+	dw octode2k16_row97
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row92
+	dw octode2k16_row92
 
 	dw 0x300
-	dw ./Data/octode2k16_row93
+	dw octode2k16_row93
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row94
+	dw octode2k16_row94
 
 	dw 0x300
-	dw ./Data/octode2k16_row95
+	dw octode2k16_row95
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row8e
+	dw octode2k16_row8e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8f
+	dw octode2k16_row8f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row90
+	dw octode2k16_row90
 
 	dw 0x300
-	dw ./Data/octode2k16_row91
+	dw octode2k16_row91
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row92
+	dw octode2k16_row92
 
 	dw 0x300
-	dw ./Data/octode2k16_row93
+	dw octode2k16_row93
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1f
+	dw octode2k16_row1f
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row94
+	dw octode2k16_row94
 
 	dw 0x300
-	dw ./Data/octode2k16_row95
+	dw octode2k16_row95
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row8e
+	dw octode2k16_row8e
 
 	dw 0x300
-	dw ./Data/octode2k16_row8f
+	dw octode2k16_row8f
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	dw 0x300
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row96
+	dw octode2k16_row96
 
 	dw 0x300
-	dw ./Data/octode2k16_row97
+	dw octode2k16_row97
 
 	dw 0x301
 	dw 0x004
-	dw ./Data/octode2k16_row1b
+	dw octode2k16_row1b
 
 	dw 0x300
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x301
 	dw 0x008
-	dw ./Data/octode2k16_row92
+	dw octode2k16_row92
 
 	dw 0x300
-	dw ./Data/octode2k16_row93
+	dw octode2k16_row93
 
 	dw 0x301
 	dw 0x0010
-	dw ./Data/octode2k16_row28
+	dw octode2k16_row28
 
 	dw 0x300
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x301
 	dw 0x0020
-	dw ./Data/octode2k16_row94
+	dw octode2k16_row94
 
 	dw 0x300
-	dw ./Data/octode2k16_row95
+	dw octode2k16_row95
 
 	dw 0x301
 	dw 0x0040
-	dw ./Data/octode2k16_row23
+	dw octode2k16_row23
 
 	dw 0x300
-	dw ./Data/octode2k16_row17
+	dw octode2k16_row17
 
 	db 0x40
 ; 0x141 bytes
@@ -2562,8 +2562,8 @@
 
 
 ;row buffers
-./Data/octode2k16_rows equ ./Data/octode2k16 + 0xd88
-./Data/octode2k16_row0 equ ./Data/octode2k16_rows + 0x0
+octode2k16_rows equ octode2k16 + 0xd88
+octode2k16_row0 equ octode2k16_rows + 0x0
 	dw 0x400
 	dw 0x400
 	dw 0x800
@@ -2573,7 +2573,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row1 equ ./Data/octode2k16_rows + 0x10
+octode2k16_row1 equ octode2k16_rows + 0x10
 	dw 0x400
 	dw 0x0
 	dw 0x800
@@ -2583,7 +2583,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row2 equ ./Data/octode2k16_rows + 0x20
+octode2k16_row2 equ octode2k16_rows + 0x20
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2593,7 +2593,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row3 equ ./Data/octode2k16_rows + 0x30
+octode2k16_row3 equ octode2k16_rows + 0x30
 	dw 0x400
 	dw 0x0
 	dw 0x0
@@ -2603,7 +2603,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row4 equ ./Data/octode2k16_rows + 0x40
+octode2k16_row4 equ octode2k16_rows + 0x40
 	dw 0x800
 	dw 0x800
 	dw 0x1000
@@ -2613,7 +2613,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row5 equ ./Data/octode2k16_rows + 0x50
+octode2k16_row5 equ octode2k16_rows + 0x50
 	dw 0x800
 	dw 0x0
 	dw 0x1000
@@ -2623,7 +2623,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row6 equ ./Data/octode2k16_rows + 0x60
+octode2k16_row6 equ octode2k16_rows + 0x60
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2633,7 +2633,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row7 equ ./Data/octode2k16_rows + 0x70
+octode2k16_row7 equ octode2k16_rows + 0x70
 	dw 0x800
 	dw 0x0
 	dw 0x0
@@ -2643,7 +2643,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row8 equ ./Data/octode2k16_rows + 0x80
+octode2k16_row8 equ octode2k16_rows + 0x80
 	dw 0x557
 	dw 0x557
 	dw 0xaae
@@ -2653,7 +2653,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row9 equ ./Data/octode2k16_rows + 0x90
+octode2k16_row9 equ octode2k16_rows + 0x90
 	dw 0x557
 	dw 0x0
 	dw 0xaae
@@ -2663,7 +2663,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_rowa equ ./Data/octode2k16_rows + 0xa0
+octode2k16_rowa equ octode2k16_rows + 0xa0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2673,7 +2673,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_rowb equ ./Data/octode2k16_rows + 0xb0
+octode2k16_rowb equ octode2k16_rows + 0xb0
 	dw 0x557
 	dw 0x0
 	dw 0x0
@@ -2683,7 +2683,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_rowc equ ./Data/octode2k16_rows + 0xc0
+octode2k16_rowc equ octode2k16_rows + 0xc0
 	dw 0x5fe
 	dw 0x5fe
 	dw 0xbfd
@@ -2693,7 +2693,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_rowd equ ./Data/octode2k16_rows + 0xd0
+octode2k16_rowd equ octode2k16_rows + 0xd0
 	dw 0x5fe
 	dw 0x0
 	dw 0xbfd
@@ -2703,7 +2703,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_rowe equ ./Data/octode2k16_rows + 0xe0
+octode2k16_rowe equ octode2k16_rows + 0xe0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2713,7 +2713,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_rowf equ ./Data/octode2k16_rows + 0xf0
+octode2k16_rowf equ octode2k16_rows + 0xf0
 	dw 0x5fe
 	dw 0x0
 	dw 0x0
@@ -2723,7 +2723,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row10 equ ./Data/octode2k16_rows + 0x100
+octode2k16_row10 equ octode2k16_rows + 0x100
 	dw 0x400
 	dw 0x400
 	dw 0x800
@@ -2733,7 +2733,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row11 equ ./Data/octode2k16_rows + 0x110
+octode2k16_row11 equ octode2k16_rows + 0x110
 	dw 0x4c2
 	dw 0x4c2
 	dw 0x984
@@ -2743,7 +2743,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row12 equ ./Data/octode2k16_rows + 0x120
+octode2k16_row12 equ octode2k16_rows + 0x120
 	dw 0x4c2
 	dw 0x0
 	dw 0x984
@@ -2753,7 +2753,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row13 equ ./Data/octode2k16_rows + 0x130
+octode2k16_row13 equ octode2k16_rows + 0x130
 	dw 0x4c2
 	dw 0x0
 	dw 0x0
@@ -2763,7 +2763,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row14 equ ./Data/octode2k16_rows + 0x140
+octode2k16_row14 equ octode2k16_rows + 0x140
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2773,7 +2773,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row15 equ ./Data/octode2k16_rows + 0x150
+octode2k16_row15 equ octode2k16_rows + 0x150
 	dw 0x400
 	dw 0x400
 	dw 0x800
@@ -2783,7 +2783,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row16 equ ./Data/octode2k16_rows + 0x160
+octode2k16_row16 equ octode2k16_rows + 0x160
 	dw 0x400
 	dw 0x0
 	dw 0x800
@@ -2793,7 +2793,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row17 equ ./Data/octode2k16_rows + 0x170
+octode2k16_row17 equ octode2k16_rows + 0x170
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2803,7 +2803,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row18 equ ./Data/octode2k16_rows + 0x180
+octode2k16_row18 equ octode2k16_rows + 0x180
 	dw 0x400
 	dw 0x0
 	dw 0x0
@@ -2813,7 +2813,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row19 equ ./Data/octode2k16_rows + 0x190
+octode2k16_row19 equ octode2k16_rows + 0x190
 	dw 0x800
 	dw 0x800
 	dw 0x1000
@@ -2823,7 +2823,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row1a equ ./Data/octode2k16_rows + 0x1a0
+octode2k16_row1a equ octode2k16_rows + 0x1a0
 	dw 0x800
 	dw 0x0
 	dw 0x1000
@@ -2833,7 +2833,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row1b equ ./Data/octode2k16_rows + 0x1b0
+octode2k16_row1b equ octode2k16_rows + 0x1b0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2843,7 +2843,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row1c equ ./Data/octode2k16_rows + 0x1c0
+octode2k16_row1c equ octode2k16_rows + 0x1c0
 	dw 0x800
 	dw 0x0
 	dw 0x0
@@ -2853,7 +2853,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row1d equ ./Data/octode2k16_rows + 0x1d0
+octode2k16_row1d equ octode2k16_rows + 0x1d0
 	dw 0x557
 	dw 0x557
 	dw 0xaae
@@ -2863,7 +2863,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row1e equ ./Data/octode2k16_rows + 0x1e0
+octode2k16_row1e equ octode2k16_rows + 0x1e0
 	dw 0x557
 	dw 0x0
 	dw 0xaae
@@ -2873,7 +2873,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row1f equ ./Data/octode2k16_rows + 0x1f0
+octode2k16_row1f equ octode2k16_rows + 0x1f0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2883,7 +2883,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row20 equ ./Data/octode2k16_rows + 0x200
+octode2k16_row20 equ octode2k16_rows + 0x200
 	dw 0x557
 	dw 0x0
 	dw 0x0
@@ -2893,7 +2893,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row21 equ ./Data/octode2k16_rows + 0x210
+octode2k16_row21 equ octode2k16_rows + 0x210
 	dw 0x5fe
 	dw 0x5fe
 	dw 0xbfd
@@ -2903,7 +2903,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row22 equ ./Data/octode2k16_rows + 0x220
+octode2k16_row22 equ octode2k16_rows + 0x220
 	dw 0x5fe
 	dw 0x0
 	dw 0xbfd
@@ -2913,7 +2913,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row23 equ ./Data/octode2k16_rows + 0x230
+octode2k16_row23 equ octode2k16_rows + 0x230
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2923,7 +2923,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row24 equ ./Data/octode2k16_rows + 0x240
+octode2k16_row24 equ octode2k16_rows + 0x240
 	dw 0x5fe
 	dw 0x0
 	dw 0x0
@@ -2933,7 +2933,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row25 equ ./Data/octode2k16_rows + 0x250
+octode2k16_row25 equ octode2k16_rows + 0x250
 	dw 0x4c2
 	dw 0x4c2
 	dw 0x984
@@ -2943,7 +2943,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row26 equ ./Data/octode2k16_rows + 0x260
+octode2k16_row26 equ octode2k16_rows + 0x260
 	dw 0x4c2
 	dw 0x0
 	dw 0x984
@@ -2953,7 +2953,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row27 equ ./Data/octode2k16_rows + 0x270
+octode2k16_row27 equ octode2k16_rows + 0x270
 	dw 0x4c2
 	dw 0x0
 	dw 0x0
@@ -2963,7 +2963,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row28 equ ./Data/octode2k16_rows + 0x280
+octode2k16_row28 equ octode2k16_rows + 0x280
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2973,7 +2973,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row29 equ ./Data/octode2k16_rows + 0x290
+octode2k16_row29 equ octode2k16_rows + 0x290
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -2983,7 +2983,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row2a equ ./Data/octode2k16_rows + 0x2a0
+octode2k16_row2a equ octode2k16_rows + 0x2a0
 	dw 0x800
 	dw 0x0
 	dw 0x0
@@ -2993,7 +2993,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row2b equ ./Data/octode2k16_rows + 0x2b0
+octode2k16_row2b equ octode2k16_rows + 0x2b0
 	dw 0x557
 	dw 0x557
 	dw 0xaae
@@ -3003,7 +3003,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row2c equ ./Data/octode2k16_rows + 0x2c0
+octode2k16_row2c equ octode2k16_rows + 0x2c0
 	dw 0x557
 	dw 0x0
 	dw 0xaae
@@ -3013,7 +3013,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row2d equ ./Data/octode2k16_rows + 0x2d0
+octode2k16_row2d equ octode2k16_rows + 0x2d0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3023,7 +3023,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row2e equ ./Data/octode2k16_rows + 0x2e0
+octode2k16_row2e equ octode2k16_rows + 0x2e0
 	dw 0x557
 	dw 0x0
 	dw 0x0
@@ -3033,7 +3033,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row2f equ ./Data/octode2k16_rows + 0x2f0
+octode2k16_row2f equ octode2k16_rows + 0x2f0
 	dw 0x5fe
 	dw 0x5fe
 	dw 0xbfd
@@ -3043,7 +3043,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row30 equ ./Data/octode2k16_rows + 0x300
+octode2k16_row30 equ octode2k16_rows + 0x300
 	dw 0x5fe
 	dw 0x0
 	dw 0xbfd
@@ -3053,7 +3053,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row31 equ ./Data/octode2k16_rows + 0x310
+octode2k16_row31 equ octode2k16_rows + 0x310
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3063,7 +3063,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row32 equ ./Data/octode2k16_rows + 0x320
+octode2k16_row32 equ octode2k16_rows + 0x320
 	dw 0x5fe
 	dw 0x0
 	dw 0x0
@@ -3073,7 +3073,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row33 equ ./Data/octode2k16_rows + 0x330
+octode2k16_row33 equ octode2k16_rows + 0x330
 	dw 0x400
 	dw 0x400
 	dw 0x800
@@ -3083,7 +3083,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row34 equ ./Data/octode2k16_rows + 0x340
+octode2k16_row34 equ octode2k16_rows + 0x340
 	dw 0x400
 	dw 0x0
 	dw 0x800
@@ -3093,7 +3093,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row35 equ ./Data/octode2k16_rows + 0x350
+octode2k16_row35 equ octode2k16_rows + 0x350
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3103,7 +3103,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row36 equ ./Data/octode2k16_rows + 0x360
+octode2k16_row36 equ octode2k16_rows + 0x360
 	dw 0x400
 	dw 0x0
 	dw 0x0
@@ -3113,7 +3113,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row37 equ ./Data/octode2k16_rows + 0x370
+octode2k16_row37 equ octode2k16_rows + 0x370
 	dw 0x4c2
 	dw 0x4c2
 	dw 0x984
@@ -3123,7 +3123,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row38 equ ./Data/octode2k16_rows + 0x380
+octode2k16_row38 equ octode2k16_rows + 0x380
 	dw 0x4c2
 	dw 0x0
 	dw 0x984
@@ -3133,7 +3133,7 @@
 	dw 0xbfd
 	dw 0x17f9
 
-./Data/octode2k16_row39 equ ./Data/octode2k16_rows + 0x390
+octode2k16_row39 equ octode2k16_rows + 0x390
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3143,7 +3143,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row3a equ ./Data/octode2k16_rows + 0x3a0
+octode2k16_row3a equ octode2k16_rows + 0x3a0
 	dw 0x4c2
 	dw 0x0
 	dw 0x0
@@ -3153,7 +3153,7 @@
 	dw 0xbfd
 	dw 0x1307
 
-./Data/octode2k16_row3b equ ./Data/octode2k16_rows + 0x3b0
+octode2k16_row3b equ octode2k16_rows + 0x3b0
 	dw 0x557
 	dw 0x557
 	dw 0xaae
@@ -3163,7 +3163,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row3c equ ./Data/octode2k16_rows + 0x3c0
+octode2k16_row3c equ octode2k16_rows + 0x3c0
 	dw 0x557
 	dw 0x0
 	dw 0xaae
@@ -3173,7 +3173,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row3d equ ./Data/octode2k16_rows + 0x3d0
+octode2k16_row3d equ octode2k16_rows + 0x3d0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3183,7 +3183,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row3e equ ./Data/octode2k16_rows + 0x3e0
+octode2k16_row3e equ octode2k16_rows + 0x3e0
 	dw 0x557
 	dw 0x0
 	dw 0x0
@@ -3193,7 +3193,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row3f equ ./Data/octode2k16_rows + 0x3f0
+octode2k16_row3f equ octode2k16_rows + 0x3f0
 	dw 0x5fe
 	dw 0x5fe
 	dw 0xbfd
@@ -3203,7 +3203,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row40 equ ./Data/octode2k16_rows + 0x400
+octode2k16_row40 equ octode2k16_rows + 0x400
 	dw 0x5fe
 	dw 0x0
 	dw 0xbfd
@@ -3213,7 +3213,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row41 equ ./Data/octode2k16_rows + 0x410
+octode2k16_row41 equ octode2k16_rows + 0x410
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3223,7 +3223,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row42 equ ./Data/octode2k16_rows + 0x420
+octode2k16_row42 equ octode2k16_rows + 0x420
 	dw 0x5fe
 	dw 0x0
 	dw 0x0
@@ -3233,7 +3233,7 @@
 	dw 0xbfd
 	dw 0x155c
 
-./Data/octode2k16_row43 equ ./Data/octode2k16_rows + 0x430
+octode2k16_row43 equ octode2k16_rows + 0x430
 	dw 0x390
 	dw 0x390
 	dw 0x721
@@ -3243,7 +3243,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row44 equ ./Data/octode2k16_rows + 0x440
+octode2k16_row44 equ octode2k16_rows + 0x440
 	dw 0x390
 	dw 0x0
 	dw 0x721
@@ -3253,7 +3253,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row45 equ ./Data/octode2k16_rows + 0x450
+octode2k16_row45 equ octode2k16_rows + 0x450
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3263,7 +3263,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row46 equ ./Data/octode2k16_rows + 0x460
+octode2k16_row46 equ octode2k16_rows + 0x460
 	dw 0x390
 	dw 0x0
 	dw 0x0
@@ -3273,7 +3273,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row47 equ ./Data/octode2k16_rows + 0x470
+octode2k16_row47 equ octode2k16_rows + 0x470
 	dw 0x721
 	dw 0x721
 	dw 0xe41
@@ -3283,7 +3283,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row48 equ ./Data/octode2k16_rows + 0x480
+octode2k16_row48 equ octode2k16_rows + 0x480
 	dw 0x721
 	dw 0x0
 	dw 0xe41
@@ -3293,7 +3293,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row49 equ ./Data/octode2k16_rows + 0x490
+octode2k16_row49 equ octode2k16_rows + 0x490
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3303,7 +3303,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row4a equ ./Data/octode2k16_rows + 0x4a0
+octode2k16_row4a equ octode2k16_rows + 0x4a0
 	dw 0x721
 	dw 0x0
 	dw 0x0
@@ -3313,7 +3313,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row4b equ ./Data/octode2k16_rows + 0x4b0
+octode2k16_row4b equ octode2k16_rows + 0x4b0
 	dw 0x4c2
 	dw 0x4c2
 	dw 0x984
@@ -3323,7 +3323,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row4c equ ./Data/octode2k16_rows + 0x4c0
+octode2k16_row4c equ octode2k16_rows + 0x4c0
 	dw 0x4c2
 	dw 0x0
 	dw 0x984
@@ -3333,7 +3333,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row4d equ ./Data/octode2k16_rows + 0x4d0
+octode2k16_row4d equ octode2k16_rows + 0x4d0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3343,7 +3343,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row4e equ ./Data/octode2k16_rows + 0x4e0
+octode2k16_row4e equ octode2k16_rows + 0x4e0
 	dw 0x4c2
 	dw 0x0
 	dw 0x0
@@ -3353,7 +3353,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row4f equ ./Data/octode2k16_rows + 0x4f0
+octode2k16_row4f equ octode2k16_rows + 0x4f0
 	dw 0x557
 	dw 0x557
 	dw 0xaae
@@ -3363,7 +3363,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row50 equ ./Data/octode2k16_rows + 0x500
+octode2k16_row50 equ octode2k16_rows + 0x500
 	dw 0x557
 	dw 0x0
 	dw 0xaae
@@ -3373,7 +3373,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row51 equ ./Data/octode2k16_rows + 0x510
+octode2k16_row51 equ octode2k16_rows + 0x510
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3383,7 +3383,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row52 equ ./Data/octode2k16_rows + 0x520
+octode2k16_row52 equ octode2k16_rows + 0x520
 	dw 0x557
 	dw 0x0
 	dw 0x0
@@ -3393,7 +3393,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row53 equ ./Data/octode2k16_rows + 0x530
+octode2k16_row53 equ octode2k16_rows + 0x530
 	dw 0x43d
 	dw 0x43d
 	dw 0x87a
@@ -3403,7 +3403,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row54 equ ./Data/octode2k16_rows + 0x540
+octode2k16_row54 equ octode2k16_rows + 0x540
 	dw 0x43d
 	dw 0x0
 	dw 0x87a
@@ -3413,7 +3413,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row55 equ ./Data/octode2k16_rows + 0x550
+octode2k16_row55 equ octode2k16_rows + 0x550
 	dw 0x43d
 	dw 0x0
 	dw 0x0
@@ -3423,7 +3423,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row56 equ ./Data/octode2k16_rows + 0x560
+octode2k16_row56 equ octode2k16_rows + 0x560
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3433,7 +3433,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row57 equ ./Data/octode2k16_rows + 0x570
+octode2k16_row57 equ octode2k16_rows + 0x570
 	dw 0x200
 	dw 0x200
 	dw 0x800
@@ -3443,7 +3443,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row58 equ ./Data/octode2k16_rows + 0x580
+octode2k16_row58 equ octode2k16_rows + 0x580
 	dw 0x200
 	dw 0x0
 	dw 0x800
@@ -3453,7 +3453,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row59 equ ./Data/octode2k16_rows + 0x590
+octode2k16_row59 equ octode2k16_rows + 0x590
 	dw 0x200
 	dw 0x0
 	dw 0x0
@@ -3463,7 +3463,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row5a equ ./Data/octode2k16_rows + 0x5a0
+octode2k16_row5a equ octode2k16_rows + 0x5a0
 	dw 0x400
 	dw 0x400
 	dw 0x1000
@@ -3473,7 +3473,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row5b equ ./Data/octode2k16_rows + 0x5b0
+octode2k16_row5b equ octode2k16_rows + 0x5b0
 	dw 0x400
 	dw 0x0
 	dw 0x1000
@@ -3483,7 +3483,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row5c equ ./Data/octode2k16_rows + 0x5c0
+octode2k16_row5c equ octode2k16_rows + 0x5c0
 	dw 0x400
 	dw 0x0
 	dw 0x0
@@ -3493,7 +3493,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row5d equ ./Data/octode2k16_rows + 0x5d0
+octode2k16_row5d equ octode2k16_rows + 0x5d0
 	dw 0x2ab
 	dw 0x2ab
 	dw 0xaae
@@ -3503,7 +3503,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row5e equ ./Data/octode2k16_rows + 0x5e0
+octode2k16_row5e equ octode2k16_rows + 0x5e0
 	dw 0x2ab
 	dw 0x0
 	dw 0xaae
@@ -3513,7 +3513,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row5f equ ./Data/octode2k16_rows + 0x5f0
+octode2k16_row5f equ octode2k16_rows + 0x5f0
 	dw 0x2ab
 	dw 0x0
 	dw 0x0
@@ -3523,7 +3523,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row60 equ ./Data/octode2k16_rows + 0x600
+octode2k16_row60 equ octode2k16_rows + 0x600
 	dw 0x2ff
 	dw 0x2ff
 	dw 0xbfd
@@ -3533,7 +3533,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row61 equ ./Data/octode2k16_rows + 0x610
+octode2k16_row61 equ octode2k16_rows + 0x610
 	dw 0x2ff
 	dw 0x0
 	dw 0xbfd
@@ -3543,7 +3543,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row62 equ ./Data/octode2k16_rows + 0x620
+octode2k16_row62 equ octode2k16_rows + 0x620
 	dw 0x2ff
 	dw 0x0
 	dw 0x0
@@ -3553,7 +3553,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row63 equ ./Data/octode2k16_rows + 0x630
+octode2k16_row63 equ octode2k16_rows + 0x630
 	dw 0x261
 	dw 0x261
 	dw 0x984
@@ -3563,7 +3563,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row64 equ ./Data/octode2k16_rows + 0x640
+octode2k16_row64 equ octode2k16_rows + 0x640
 	dw 0x261
 	dw 0x0
 	dw 0x984
@@ -3573,7 +3573,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row65 equ ./Data/octode2k16_rows + 0x650
+octode2k16_row65 equ octode2k16_rows + 0x650
 	dw 0x261
 	dw 0x0
 	dw 0x0
@@ -3583,7 +3583,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row66 equ ./Data/octode2k16_rows + 0x660
+octode2k16_row66 equ octode2k16_rows + 0x660
 	dw 0x1c8
 	dw 0x390
 	dw 0x721
@@ -3593,7 +3593,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row67 equ ./Data/octode2k16_rows + 0x670
+octode2k16_row67 equ octode2k16_rows + 0x670
 	dw 0x1c8
 	dw 0x0
 	dw 0x721
@@ -3603,7 +3603,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row68 equ ./Data/octode2k16_rows + 0x680
+octode2k16_row68 equ octode2k16_rows + 0x680
 	dw 0x1c8
 	dw 0x0
 	dw 0x0
@@ -3613,7 +3613,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row69 equ ./Data/octode2k16_rows + 0x690
+octode2k16_row69 equ octode2k16_rows + 0x690
 	dw 0x390
 	dw 0x721
 	dw 0xe41
@@ -3623,7 +3623,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row6a equ ./Data/octode2k16_rows + 0x6a0
+octode2k16_row6a equ octode2k16_rows + 0x6a0
 	dw 0x390
 	dw 0x0
 	dw 0xe41
@@ -3633,7 +3633,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row6b equ ./Data/octode2k16_rows + 0x6b0
+octode2k16_row6b equ octode2k16_rows + 0x6b0
 	dw 0x390
 	dw 0x0
 	dw 0x0
@@ -3643,7 +3643,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row6c equ ./Data/octode2k16_rows + 0x6c0
+octode2k16_row6c equ octode2k16_rows + 0x6c0
 	dw 0x261
 	dw 0x4c2
 	dw 0x984
@@ -3653,7 +3653,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row6d equ ./Data/octode2k16_rows + 0x6d0
+octode2k16_row6d equ octode2k16_rows + 0x6d0
 	dw 0x261
 	dw 0x0
 	dw 0x984
@@ -3663,7 +3663,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row6e equ ./Data/octode2k16_rows + 0x6e0
+octode2k16_row6e equ octode2k16_rows + 0x6e0
 	dw 0x261
 	dw 0x0
 	dw 0x0
@@ -3673,7 +3673,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row6f equ ./Data/octode2k16_rows + 0x6f0
+octode2k16_row6f equ octode2k16_rows + 0x6f0
 	dw 0x2ab
 	dw 0x557
 	dw 0xaae
@@ -3683,7 +3683,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row70 equ ./Data/octode2k16_rows + 0x700
+octode2k16_row70 equ octode2k16_rows + 0x700
 	dw 0x2ab
 	dw 0x0
 	dw 0xaae
@@ -3693,7 +3693,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row71 equ ./Data/octode2k16_rows + 0x710
+octode2k16_row71 equ octode2k16_rows + 0x710
 	dw 0x2ab
 	dw 0x0
 	dw 0x0
@@ -3703,7 +3703,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row72 equ ./Data/octode2k16_rows + 0x720
+octode2k16_row72 equ octode2k16_rows + 0x720
 	dw 0x21e
 	dw 0x43d
 	dw 0x87a
@@ -3713,7 +3713,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row73 equ ./Data/octode2k16_rows + 0x730
+octode2k16_row73 equ octode2k16_rows + 0x730
 	dw 0x21e
 	dw 0x0
 	dw 0x87a
@@ -3723,7 +3723,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row74 equ ./Data/octode2k16_rows + 0x740
+octode2k16_row74 equ octode2k16_rows + 0x740
 	dw 0x21e
 	dw 0x0
 	dw 0x0
@@ -3733,7 +3733,7 @@
 	dw 0xaae
 	dw 0xe41
 
-./Data/octode2k16_row75 equ ./Data/octode2k16_rows + 0x750
+octode2k16_row75 equ octode2k16_rows + 0x750
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3743,7 +3743,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row76 equ ./Data/octode2k16_rows + 0x760
+octode2k16_row76 equ octode2k16_rows + 0x760
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3753,7 +3753,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row77 equ ./Data/octode2k16_rows + 0x770
+octode2k16_row77 equ octode2k16_rows + 0x770
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3763,7 +3763,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row78 equ ./Data/octode2k16_rows + 0x780
+octode2k16_row78 equ octode2k16_rows + 0x780
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3773,7 +3773,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row79 equ ./Data/octode2k16_rows + 0x790
+octode2k16_row79 equ octode2k16_rows + 0x790
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3783,7 +3783,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row7a equ ./Data/octode2k16_rows + 0x7a0
+octode2k16_row7a equ octode2k16_rows + 0x7a0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3793,7 +3793,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row7b equ ./Data/octode2k16_rows + 0x7b0
+octode2k16_row7b equ octode2k16_rows + 0x7b0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3803,7 +3803,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row7c equ ./Data/octode2k16_rows + 0x7c0
+octode2k16_row7c equ octode2k16_rows + 0x7c0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3813,7 +3813,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row7d equ ./Data/octode2k16_rows + 0x7d0
+octode2k16_row7d equ octode2k16_rows + 0x7d0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3823,7 +3823,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row7e equ ./Data/octode2k16_rows + 0x7e0
+octode2k16_row7e equ octode2k16_rows + 0x7e0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3833,7 +3833,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row7f equ ./Data/octode2k16_rows + 0x7f0
+octode2k16_row7f equ octode2k16_rows + 0x7f0
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3843,7 +3843,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row80 equ ./Data/octode2k16_rows + 0x800
+octode2k16_row80 equ octode2k16_rows + 0x800
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3853,7 +3853,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row81 equ ./Data/octode2k16_rows + 0x810
+octode2k16_row81 equ octode2k16_rows + 0x810
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3863,7 +3863,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row82 equ ./Data/octode2k16_rows + 0x820
+octode2k16_row82 equ octode2k16_rows + 0x820
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3873,7 +3873,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row83 equ ./Data/octode2k16_rows + 0x830
+octode2k16_row83 equ octode2k16_rows + 0x830
 	dw 0x0
 	dw 0x0
 	dw 0x0
@@ -3883,7 +3883,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row84 equ ./Data/octode2k16_rows + 0x840
+octode2k16_row84 equ octode2k16_rows + 0x840
 	dw 0x0
 	dw 0x0
 	dw 0x800
@@ -3893,7 +3893,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row85 equ ./Data/octode2k16_rows + 0x850
+octode2k16_row85 equ octode2k16_rows + 0x850
 	dw 0x0
 	dw 0x0
 	dw 0x800
@@ -3903,7 +3903,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row86 equ ./Data/octode2k16_rows + 0x860
+octode2k16_row86 equ octode2k16_rows + 0x860
 	dw 0x0
 	dw 0x0
 	dw 0x1000
@@ -3913,7 +3913,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row87 equ ./Data/octode2k16_rows + 0x870
+octode2k16_row87 equ octode2k16_rows + 0x870
 	dw 0x0
 	dw 0x0
 	dw 0x1000
@@ -3923,7 +3923,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row88 equ ./Data/octode2k16_rows + 0x880
+octode2k16_row88 equ octode2k16_rows + 0x880
 	dw 0x0
 	dw 0x0
 	dw 0xaae
@@ -3933,7 +3933,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row89 equ ./Data/octode2k16_rows + 0x890
+octode2k16_row89 equ octode2k16_rows + 0x890
 	dw 0x0
 	dw 0x0
 	dw 0xaae
@@ -3943,7 +3943,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row8a equ ./Data/octode2k16_rows + 0x8a0
+octode2k16_row8a equ octode2k16_rows + 0x8a0
 	dw 0x0
 	dw 0x0
 	dw 0xbfd
@@ -3953,7 +3953,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row8b equ ./Data/octode2k16_rows + 0x8b0
+octode2k16_row8b equ octode2k16_rows + 0x8b0
 	dw 0x0
 	dw 0x0
 	dw 0xbfd
@@ -3963,7 +3963,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row8c equ ./Data/octode2k16_rows + 0x8c0
+octode2k16_row8c equ octode2k16_rows + 0x8c0
 	dw 0x0
 	dw 0x0
 	dw 0x984
@@ -3973,7 +3973,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row8d equ ./Data/octode2k16_rows + 0x8d0
+octode2k16_row8d equ octode2k16_rows + 0x8d0
 	dw 0x0
 	dw 0x0
 	dw 0x984
@@ -3983,7 +3983,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/octode2k16_row8e equ ./Data/octode2k16_rows + 0x8e0
+octode2k16_row8e equ octode2k16_rows + 0x8e0
 	dw 0x0
 	dw 0x0
 	dw 0x800
@@ -3993,7 +3993,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row8f equ ./Data/octode2k16_rows + 0x8f0
+octode2k16_row8f equ octode2k16_rows + 0x8f0
 	dw 0x0
 	dw 0x0
 	dw 0x800
@@ -4003,7 +4003,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row90 equ ./Data/octode2k16_rows + 0x900
+octode2k16_row90 equ octode2k16_rows + 0x900
 	dw 0x0
 	dw 0x0
 	dw 0x1000
@@ -4013,7 +4013,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row91 equ ./Data/octode2k16_rows + 0x910
+octode2k16_row91 equ octode2k16_rows + 0x910
 	dw 0x0
 	dw 0x0
 	dw 0x1000
@@ -4023,7 +4023,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row92 equ ./Data/octode2k16_rows + 0x920
+octode2k16_row92 equ octode2k16_rows + 0x920
 	dw 0x0
 	dw 0x0
 	dw 0xaae
@@ -4033,7 +4033,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row93 equ ./Data/octode2k16_rows + 0x930
+octode2k16_row93 equ octode2k16_rows + 0x930
 	dw 0x0
 	dw 0x0
 	dw 0xaae
@@ -4043,7 +4043,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row94 equ ./Data/octode2k16_rows + 0x940
+octode2k16_row94 equ octode2k16_rows + 0x940
 	dw 0x0
 	dw 0x0
 	dw 0xbfd
@@ -4053,7 +4053,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row95 equ ./Data/octode2k16_rows + 0x950
+octode2k16_row95 equ octode2k16_rows + 0x950
 	dw 0x0
 	dw 0x0
 	dw 0xbfd
@@ -4063,7 +4063,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row96 equ ./Data/octode2k16_rows + 0x960
+octode2k16_row96 equ octode2k16_rows + 0x960
 	dw 0x0
 	dw 0x0
 	dw 0x984
@@ -4073,7 +4073,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row97 equ ./Data/octode2k16_rows + 0x970
+octode2k16_row97 equ octode2k16_rows + 0x970
 	dw 0x0
 	dw 0x0
 	dw 0x984
@@ -4083,7 +4083,7 @@
 	dw 0xbfd
 	dw 0xe41
 
-./Data/octode2k16_row98 equ ./Data/octode2k16_rows + 0x980
+octode2k16_row98 equ octode2k16_rows + 0x980
 	dw 0x0
 	dw 0x0
 	dw 0x800
@@ -4093,7 +4093,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row99 equ ./Data/octode2k16_rows + 0x990
+octode2k16_row99 equ octode2k16_rows + 0x990
 	dw 0x0
 	dw 0x0
 	dw 0x800
@@ -4103,7 +4103,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row9a equ ./Data/octode2k16_rows + 0x9a0
+octode2k16_row9a equ octode2k16_rows + 0x9a0
 	dw 0x0
 	dw 0x0
 	dw 0x1000
@@ -4113,7 +4113,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row9b equ ./Data/octode2k16_rows + 0x9b0
+octode2k16_row9b equ octode2k16_rows + 0x9b0
 	dw 0x0
 	dw 0x0
 	dw 0x1000
@@ -4123,7 +4123,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row9c equ ./Data/octode2k16_rows + 0x9c0
+octode2k16_row9c equ octode2k16_rows + 0x9c0
 	dw 0x0
 	dw 0x0
 	dw 0xaae
@@ -4133,7 +4133,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row9d equ ./Data/octode2k16_rows + 0x9d0
+octode2k16_row9d equ octode2k16_rows + 0x9d0
 	dw 0x0
 	dw 0x0
 	dw 0xaae
@@ -4143,7 +4143,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row9e equ ./Data/octode2k16_rows + 0x9e0
+octode2k16_row9e equ octode2k16_rows + 0x9e0
 	dw 0x0
 	dw 0x0
 	dw 0xbfd
@@ -4153,7 +4153,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_row9f equ ./Data/octode2k16_rows + 0x9f0
+octode2k16_row9f equ octode2k16_rows + 0x9f0
 	dw 0x0
 	dw 0x0
 	dw 0xbfd
@@ -4163,7 +4163,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_rowa0 equ ./Data/octode2k16_rows + 0xa00
+octode2k16_rowa0 equ octode2k16_rows + 0xa00
 	dw 0x0
 	dw 0x0
 	dw 0x984
@@ -4173,7 +4173,7 @@
 	dw 0xbfd
 	dw 0x1000
 
-./Data/octode2k16_rowa1 equ ./Data/octode2k16_rows + 0xa10
+octode2k16_rowa1 equ octode2k16_rows + 0xa10
 	dw 0x0
 	dw 0x0
 	dw 0x984
@@ -4186,4 +4186,4 @@
 
 ; 0xa20 bytes
 ; file_size = 0x17a8 bytes
-; define({./Data/octode2k16_size}, 0x17a8)
+; define({octode2k16_size}, 0x17a8)

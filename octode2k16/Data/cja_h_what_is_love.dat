@@ -1,3395 +1,3395 @@
 ; relocatable file:
-;   the base address is ./Data/cja_h_what_is_love
-;   the loop address is ./Data/cja_h_what_is_love_loop
+;   the base address is cja_h_what_is_love
+;   the loop address is cja_h_what_is_love_loop
 ; M4 support:
 ;   no one comma
 ;   macro file_size defined
 
-  ifndef ./Data/cja_h_what_is_love
-./Data/cja_h_what_is_love equ $
+  ifndef cja_h_what_is_love
+cja_h_what_is_love equ $
   endif
 
 ;loop
-	dw ./Data/cja_h_what_is_love_loop
+	dw cja_h_what_is_love_loop
 
-./Data/cja_h_what_is_love_start equ ./Data/cja_h_what_is_love + 0x2
+cja_h_what_is_love_start equ cja_h_what_is_love + 0x2
 ;sequence
-	dw ./Data/cja_h_what_is_love_ptn0
-	dw ./Data/cja_h_what_is_love_ptn1
-	dw ./Data/cja_h_what_is_love_ptn2
-	dw ./Data/cja_h_what_is_love_ptn3
-	dw ./Data/cja_h_what_is_love_ptn4
-	dw ./Data/cja_h_what_is_love_ptn5
-	dw ./Data/cja_h_what_is_love_ptn6
-	dw ./Data/cja_h_what_is_love_ptn7
-	dw ./Data/cja_h_what_is_love_ptn8
-./Data/cja_h_what_is_love_loop equ ./Data/cja_h_what_is_love + 0x14
-	dw ./Data/cja_h_what_is_love_ptn9
-	dw ./Data/cja_h_what_is_love_ptne
-	dw ./Data/cja_h_what_is_love_ptna
-	dw ./Data/cja_h_what_is_love_ptna
-	dw ./Data/cja_h_what_is_love_ptnb
-	dw ./Data/cja_h_what_is_love_ptnb
-	dw ./Data/cja_h_what_is_love_ptnc
-	dw ./Data/cja_h_what_is_love_ptnd
-	db 2	; lo = repeat times
+	dw cja_h_what_is_love_ptn0
+	dw cja_h_what_is_love_ptn1
+	dw cja_h_what_is_love_ptn2
+	dw cja_h_what_is_love_ptn3
+	dw cja_h_what_is_love_ptn4
+	dw cja_h_what_is_love_ptn5
+	dw cja_h_what_is_love_ptn6
+	dw cja_h_what_is_love_ptn7
+	dw cja_h_what_is_love_ptn8
+cja_h_what_is_love_loop equ cja_h_what_is_love + 0x14
+	dw cja_h_what_is_love_ptn9
+	dw cja_h_what_is_love_ptne
+	dw cja_h_what_is_love_ptna
+	dw cja_h_what_is_love_ptna
+	dw cja_h_what_is_love_ptnb
+	dw cja_h_what_is_love_ptnb
+	dw cja_h_what_is_love_ptnc
+	dw cja_h_what_is_love_ptnd
+	db 0	; lo = repeat times
 	db 0	; hi = end mark
 ; 0x26 bytes
 
-./Data/cja_h_what_is_love_ptn0 equ ./Data/cja_h_what_is_love + 0x26
+cja_h_what_is_love_ptn0 equ cja_h_what_is_love + 0x26
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row0
+	dw cja_h_what_is_love_row0
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1
+	dw cja_h_what_is_love_row1
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row2
+	dw cja_h_what_is_love_row2
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row2
+	dw cja_h_what_is_love_row2
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row3
+	dw cja_h_what_is_love_row3
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row3
+	dw cja_h_what_is_love_row3
 
 	db 0x40
 ; 0x19 bytes
 
-./Data/cja_h_what_is_love_ptn1 equ ./Data/cja_h_what_is_love + 0x3f
+cja_h_what_is_love_ptn1 equ cja_h_what_is_love + 0x3f
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4
+	dw cja_h_what_is_love_row4
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4
+	dw cja_h_what_is_love_row4
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row5
+	dw cja_h_what_is_love_row5
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row5
+	dw cja_h_what_is_love_row5
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4
+	dw cja_h_what_is_love_row4
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4
+	dw cja_h_what_is_love_row4
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row6
+	dw cja_h_what_is_love_row6
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row6
+	dw cja_h_what_is_love_row6
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8
+	dw cja_h_what_is_love_row8
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8
+	dw cja_h_what_is_love_row8
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row9
+	dw cja_h_what_is_love_row9
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row9
+	dw cja_h_what_is_love_row9
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa
+	dw cja_h_what_is_love_rowa
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa
+	dw cja_h_what_is_love_rowa
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb
+	dw cja_h_what_is_love_rowb
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb
+	dw cja_h_what_is_love_rowb
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc
+	dw cja_h_what_is_love_rowc
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc
+	dw cja_h_what_is_love_rowc
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb
+	dw cja_h_what_is_love_rowb
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb
+	dw cja_h_what_is_love_rowb
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowd
+	dw cja_h_what_is_love_rowd
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowd
+	dw cja_h_what_is_love_rowd
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowe
+	dw cja_h_what_is_love_rowe
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowe
+	dw cja_h_what_is_love_rowe
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowf
+	dw cja_h_what_is_love_rowf
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowf
+	dw cja_h_what_is_love_rowf
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row11
+	dw cja_h_what_is_love_row11
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row11
+	dw cja_h_what_is_love_row11
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowf
+	dw cja_h_what_is_love_rowf
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowf
+	dw cja_h_what_is_love_rowf
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row12
+	dw cja_h_what_is_love_row12
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row12
+	dw cja_h_what_is_love_row12
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row14
+	dw cja_h_what_is_love_row14
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row14
+	dw cja_h_what_is_love_row14
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row12
+	dw cja_h_what_is_love_row12
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row12
+	dw cja_h_what_is_love_row12
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row14
+	dw cja_h_what_is_love_row14
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row14
+	dw cja_h_what_is_love_row14
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row12
+	dw cja_h_what_is_love_row12
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row12
+	dw cja_h_what_is_love_row12
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/cja_h_what_is_love_ptn2 equ ./Data/cja_h_what_is_love + 0x140
+cja_h_what_is_love_ptn2 equ cja_h_what_is_love + 0x140
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row15
+	dw cja_h_what_is_love_row15
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row15
+	dw cja_h_what_is_love_row15
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5
+	dw cja_h_what_is_love_row5
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row5
+	dw cja_h_what_is_love_row5
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row15
+	dw cja_h_what_is_love_row15
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row15
+	dw cja_h_what_is_love_row15
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6
+	dw cja_h_what_is_love_row6
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row16
+	dw cja_h_what_is_love_row16
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row17
+	dw cja_h_what_is_love_row17
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row18
+	dw cja_h_what_is_love_row18
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row18
+	dw cja_h_what_is_love_row18
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row19
+	dw cja_h_what_is_love_row19
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row19
+	dw cja_h_what_is_love_row19
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1a
+	dw cja_h_what_is_love_row1a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1a
+	dw cja_h_what_is_love_row1a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb
+	dw cja_h_what_is_love_rowb
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb
+	dw cja_h_what_is_love_rowb
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1b
+	dw cja_h_what_is_love_row1b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1b
+	dw cja_h_what_is_love_row1b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc
+	dw cja_h_what_is_love_rowc
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1c
+	dw cja_h_what_is_love_row1c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1b
+	dw cja_h_what_is_love_row1b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row1d
+	dw cja_h_what_is_love_row1d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1d
+	dw cja_h_what_is_love_row1d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7
+	dw cja_h_what_is_love_row7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row1e
+	dw cja_h_what_is_love_row1e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1e
+	dw cja_h_what_is_love_row1e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1f
+	dw cja_h_what_is_love_row1f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row1f
+	dw cja_h_what_is_love_row1f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowf
+	dw cja_h_what_is_love_rowf
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowf
+	dw cja_h_what_is_love_rowf
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row20
+	dw cja_h_what_is_love_row20
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row20
+	dw cja_h_what_is_love_row20
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row11
+	dw cja_h_what_is_love_row11
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row21
+	dw cja_h_what_is_love_row21
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row20
+	dw cja_h_what_is_love_row20
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row22
+	dw cja_h_what_is_love_row22
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row22
+	dw cja_h_what_is_love_row22
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row10
+	dw cja_h_what_is_love_row10
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row23
+	dw cja_h_what_is_love_row23
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row23
+	dw cja_h_what_is_love_row23
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row24
+	dw cja_h_what_is_love_row24
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row24
+	dw cja_h_what_is_love_row24
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row14
+	dw cja_h_what_is_love_row14
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row14
+	dw cja_h_what_is_love_row14
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row24
+	dw cja_h_what_is_love_row24
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row24
+	dw cja_h_what_is_love_row24
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row12
+	dw cja_h_what_is_love_row12
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row25
+	dw cja_h_what_is_love_row25
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row24
+	dw cja_h_what_is_love_row24
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row26
+	dw cja_h_what_is_love_row26
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row26
+	dw cja_h_what_is_love_row26
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row13
+	dw cja_h_what_is_love_row13
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row25
+	dw cja_h_what_is_love_row25
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row25
+	dw cja_h_what_is_love_row25
 
 	db 0x40
 ; 0x121 bytes
 
-./Data/cja_h_what_is_love_ptn3 equ ./Data/cja_h_what_is_love + 0x261
+cja_h_what_is_love_ptn3 equ cja_h_what_is_love + 0x261
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row27
+	dw cja_h_what_is_love_row27
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row27
+	dw cja_h_what_is_love_row27
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row28
+	dw cja_h_what_is_love_row28
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row28
+	dw cja_h_what_is_love_row28
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row27
+	dw cja_h_what_is_love_row27
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row27
+	dw cja_h_what_is_love_row27
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row29
+	dw cja_h_what_is_love_row29
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row2a
+	dw cja_h_what_is_love_row2a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row27
+	dw cja_h_what_is_love_row27
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row2b
+	dw cja_h_what_is_love_row2b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row2c
+	dw cja_h_what_is_love_row2c
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row2d
+	dw cja_h_what_is_love_row2d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row2b
+	dw cja_h_what_is_love_row2b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row2b
+	dw cja_h_what_is_love_row2b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row2e
+	dw cja_h_what_is_love_row2e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row2f
+	dw cja_h_what_is_love_row2f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row30
+	dw cja_h_what_is_love_row30
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row30
+	dw cja_h_what_is_love_row30
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row28
+	dw cja_h_what_is_love_row28
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row28
+	dw cja_h_what_is_love_row28
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row30
+	dw cja_h_what_is_love_row30
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row30
+	dw cja_h_what_is_love_row30
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row31
+	dw cja_h_what_is_love_row31
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row32
+	dw cja_h_what_is_love_row32
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row30
+	dw cja_h_what_is_love_row30
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row2b
+	dw cja_h_what_is_love_row2b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row33
+	dw cja_h_what_is_love_row33
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row34
+	dw cja_h_what_is_love_row34
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row2b
+	dw cja_h_what_is_love_row2b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row2b
+	dw cja_h_what_is_love_row2b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row35
+	dw cja_h_what_is_love_row35
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row36
+	dw cja_h_what_is_love_row36
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row37
+	dw cja_h_what_is_love_row37
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row37
+	dw cja_h_what_is_love_row37
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row38
+	dw cja_h_what_is_love_row38
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row38
+	dw cja_h_what_is_love_row38
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row37
+	dw cja_h_what_is_love_row37
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row37
+	dw cja_h_what_is_love_row37
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row39
+	dw cja_h_what_is_love_row39
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3a
+	dw cja_h_what_is_love_row3a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row37
+	dw cja_h_what_is_love_row37
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row3b
+	dw cja_h_what_is_love_row3b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3c
+	dw cja_h_what_is_love_row3c
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3d
+	dw cja_h_what_is_love_row3d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3b
+	dw cja_h_what_is_love_row3b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row3b
+	dw cja_h_what_is_love_row3b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3e
+	dw cja_h_what_is_love_row3e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3a
+	dw cja_h_what_is_love_row3a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3f
+	dw cja_h_what_is_love_row3f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row3f
+	dw cja_h_what_is_love_row3f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row38
+	dw cja_h_what_is_love_row38
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row38
+	dw cja_h_what_is_love_row38
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3f
+	dw cja_h_what_is_love_row3f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row3f
+	dw cja_h_what_is_love_row3f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row39
+	dw cja_h_what_is_love_row39
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row40
+	dw cja_h_what_is_love_row40
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3f
+	dw cja_h_what_is_love_row3f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row3b
+	dw cja_h_what_is_love_row3b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3c
+	dw cja_h_what_is_love_row3c
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3d
+	dw cja_h_what_is_love_row3d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row3b
+	dw cja_h_what_is_love_row3b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row3b
+	dw cja_h_what_is_love_row3b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row41
+	dw cja_h_what_is_love_row41
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row40
+	dw cja_h_what_is_love_row40
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptn4 equ ./Data/cja_h_what_is_love + 0x3c2
+cja_h_what_is_love_ptn4 equ cja_h_what_is_love + 0x3c2
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row44
+	dw cja_h_what_is_love_row44
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row44
+	dw cja_h_what_is_love_row44
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row45
+	dw cja_h_what_is_love_row45
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row46
+	dw cja_h_what_is_love_row46
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row49
+	dw cja_h_what_is_love_row49
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4a
+	dw cja_h_what_is_love_row4a
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4b
+	dw cja_h_what_is_love_row4b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4c
+	dw cja_h_what_is_love_row4c
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4d
+	dw cja_h_what_is_love_row4d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row52
+	dw cja_h_what_is_love_row52
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row52
+	dw cja_h_what_is_love_row52
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row52
+	dw cja_h_what_is_love_row52
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row53
+	dw cja_h_what_is_love_row53
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row52
+	dw cja_h_what_is_love_row52
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row54
+	dw cja_h_what_is_love_row54
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row55
+	dw cja_h_what_is_love_row55
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row56
+	dw cja_h_what_is_love_row56
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row56
+	dw cja_h_what_is_love_row56
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row57
+	dw cja_h_what_is_love_row57
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row58
+	dw cja_h_what_is_love_row58
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptn5 equ ./Data/cja_h_what_is_love + 0x523
+cja_h_what_is_love_ptn5 equ cja_h_what_is_love + 0x523
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row59
+	dw cja_h_what_is_love_row59
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row5a
+	dw cja_h_what_is_love_row5a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5b
+	dw cja_h_what_is_love_row5b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row44
+	dw cja_h_what_is_love_row44
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5c
+	dw cja_h_what_is_love_row5c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row44
+	dw cja_h_what_is_love_row44
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row43
+	dw cja_h_what_is_love_row43
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row45
+	dw cja_h_what_is_love_row45
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row46
+	dw cja_h_what_is_love_row46
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5d
+	dw cja_h_what_is_love_row5d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row49
+	dw cja_h_what_is_love_row49
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5d
+	dw cja_h_what_is_love_row5d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4a
+	dw cja_h_what_is_love_row4a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4b
+	dw cja_h_what_is_love_row4b
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row48
+	dw cja_h_what_is_love_row48
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4c
+	dw cja_h_what_is_love_row4c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4d
+	dw cja_h_what_is_love_row4d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5e
+	dw cja_h_what_is_love_row5e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5e
+	dw cja_h_what_is_love_row5e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4f
+	dw cja_h_what_is_love_row4f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5f
+	dw cja_h_what_is_love_row5f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row52
+	dw cja_h_what_is_love_row52
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row52
+	dw cja_h_what_is_love_row52
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row52
+	dw cja_h_what_is_love_row52
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row53
+	dw cja_h_what_is_love_row53
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5f
+	dw cja_h_what_is_love_row5f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row52
+	dw cja_h_what_is_love_row52
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row60
+	dw cja_h_what_is_love_row60
 
 	dw 0x501
 	dw 0x000
-	dw ./Data/cja_h_what_is_love_row61
+	dw cja_h_what_is_love_row61
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row62
+	dw cja_h_what_is_love_row62
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row62
+	dw cja_h_what_is_love_row62
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row63
+	dw cja_h_what_is_love_row63
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row63
+	dw cja_h_what_is_love_row63
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptn6 equ ./Data/cja_h_what_is_love + 0x684
+cja_h_what_is_love_ptn6 equ cja_h_what_is_love + 0x684
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row64
+	dw cja_h_what_is_love_row64
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row65
+	dw cja_h_what_is_love_row65
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row66
+	dw cja_h_what_is_love_row66
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row66
+	dw cja_h_what_is_love_row66
 
 	dw 0x504
 	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x501
 	dw 0x0060
-	dw ./Data/cja_h_what_is_love_row67
+	dw cja_h_what_is_love_row67
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row68
+	dw cja_h_what_is_love_row68
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5c
+	dw cja_h_what_is_love_row5c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row69
+	dw cja_h_what_is_love_row69
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6a
+	dw cja_h_what_is_love_row6a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6a
+	dw cja_h_what_is_love_row6a
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row69
+	dw cja_h_what_is_love_row69
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row69
+	dw cja_h_what_is_love_row69
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6b
+	dw cja_h_what_is_love_row6b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6b
+	dw cja_h_what_is_love_row6b
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5d
+	dw cja_h_what_is_love_row5d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6c
+	dw cja_h_what_is_love_row6c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6c
+	dw cja_h_what_is_love_row6c
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6d
+	dw cja_h_what_is_love_row6d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6e
+	dw cja_h_what_is_love_row6e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5d
+	dw cja_h_what_is_love_row5d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row6f
+	dw cja_h_what_is_love_row6f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row70
+	dw cja_h_what_is_love_row70
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row70
+	dw cja_h_what_is_love_row70
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row6f
+	dw cja_h_what_is_love_row6f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row6f
+	dw cja_h_what_is_love_row6f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row71
+	dw cja_h_what_is_love_row71
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row71
+	dw cja_h_what_is_love_row71
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5e
+	dw cja_h_what_is_love_row5e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row72
+	dw cja_h_what_is_love_row72
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row72
+	dw cja_h_what_is_love_row72
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row73
+	dw cja_h_what_is_love_row73
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row74
+	dw cja_h_what_is_love_row74
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5e
+	dw cja_h_what_is_love_row5e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row75
+	dw cja_h_what_is_love_row75
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row76
+	dw cja_h_what_is_love_row76
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row76
+	dw cja_h_what_is_love_row76
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row75
+	dw cja_h_what_is_love_row75
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row75
+	dw cja_h_what_is_love_row75
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row74
+	dw cja_h_what_is_love_row74
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row74
+	dw cja_h_what_is_love_row74
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5f
+	dw cja_h_what_is_love_row5f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row77
+	dw cja_h_what_is_love_row77
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row77
+	dw cja_h_what_is_love_row77
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row78
+	dw cja_h_what_is_love_row78
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row79
+	dw cja_h_what_is_love_row79
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5f
+	dw cja_h_what_is_love_row5f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7a
+	dw cja_h_what_is_love_row7a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7b
+	dw cja_h_what_is_love_row7b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7b
+	dw cja_h_what_is_love_row7b
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7a
+	dw cja_h_what_is_love_row7a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7a
+	dw cja_h_what_is_love_row7a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row79
+	dw cja_h_what_is_love_row79
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row79
+	dw cja_h_what_is_love_row79
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptn7 equ ./Data/cja_h_what_is_love + 0x7e5
+cja_h_what_is_love_ptn7 equ cja_h_what_is_love + 0x7e5
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7c
+	dw cja_h_what_is_love_row7c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7f
+	dw cja_h_what_is_love_row7f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row80
+	dw cja_h_what_is_love_row80
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row81
+	dw cja_h_what_is_love_row81
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row81
+	dw cja_h_what_is_love_row81
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row82
+	dw cja_h_what_is_love_row82
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row82
+	dw cja_h_what_is_love_row82
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row83
+	dw cja_h_what_is_love_row83
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row83
+	dw cja_h_what_is_love_row83
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row87
+	dw cja_h_what_is_love_row87
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row87
+	dw cja_h_what_is_love_row87
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row88
+	dw cja_h_what_is_love_row88
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row88
+	dw cja_h_what_is_love_row88
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row89
+	dw cja_h_what_is_love_row89
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row89
+	dw cja_h_what_is_love_row89
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row8a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row8d
+	dw cja_h_what_is_love_row8d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row8a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8f
+	dw cja_h_what_is_love_row8f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8f
+	dw cja_h_what_is_love_row8f
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x580
 	dw 0x0060
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0020
-	dw ./Data/cja_h_what_is_love_row93
+	dw cja_h_what_is_love_row93
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row93
+	dw cja_h_what_is_love_row93
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row94
+	dw cja_h_what_is_love_row94
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row94
+	dw cja_h_what_is_love_row94
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row95
+	dw cja_h_what_is_love_row95
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row95
+	dw cja_h_what_is_love_row95
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptn8 equ ./Data/cja_h_what_is_love + 0x946
+cja_h_what_is_love_ptn8 equ cja_h_what_is_love + 0x946
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7c
+	dw cja_h_what_is_love_row7c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7f
+	dw cja_h_what_is_love_row7f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row80
+	dw cja_h_what_is_love_row80
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row81
+	dw cja_h_what_is_love_row81
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row81
+	dw cja_h_what_is_love_row81
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row82
+	dw cja_h_what_is_love_row82
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row82
+	dw cja_h_what_is_love_row82
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row83
+	dw cja_h_what_is_love_row83
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row83
+	dw cja_h_what_is_love_row83
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0020
-	dw ./Data/cja_h_what_is_love_row88
+	dw cja_h_what_is_love_row88
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row96
+	dw cja_h_what_is_love_row96
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row87
+	dw cja_h_what_is_love_row87
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row87
+	dw cja_h_what_is_love_row87
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row88
+	dw cja_h_what_is_love_row88
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row88
+	dw cja_h_what_is_love_row88
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row89
+	dw cja_h_what_is_love_row89
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row89
+	dw cja_h_what_is_love_row89
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row8a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row8a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8f
+	dw cja_h_what_is_love_row8f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8f
+	dw cja_h_what_is_love_row8f
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row61
+	dw cja_h_what_is_love_row61
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row61
+	dw cja_h_what_is_love_row61
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row97
+	dw cja_h_what_is_love_row97
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row97
+	dw cja_h_what_is_love_row97
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row63
+	dw cja_h_what_is_love_row63
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row63
+	dw cja_h_what_is_love_row63
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptn9 equ ./Data/cja_h_what_is_love + 0xaa7
+cja_h_what_is_love_ptn9 equ cja_h_what_is_love + 0xaa7
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7c
+	dw cja_h_what_is_love_row7c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row98
+	dw cja_h_what_is_love_row98
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row98
+	dw cja_h_what_is_love_row98
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row98
+	dw cja_h_what_is_love_row98
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7f
+	dw cja_h_what_is_love_row7f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row99
+	dw cja_h_what_is_love_row99
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9a
+	dw cja_h_what_is_love_row9a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9a
+	dw cja_h_what_is_love_row9a
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row99
+	dw cja_h_what_is_love_row99
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row99
+	dw cja_h_what_is_love_row99
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9b
+	dw cja_h_what_is_love_row9b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9b
+	dw cja_h_what_is_love_row9b
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9c
+	dw cja_h_what_is_love_row9c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row9d
+	dw cja_h_what_is_love_row9d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9f
+	dw cja_h_what_is_love_row9f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9f
+	dw cja_h_what_is_love_row9f
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa0
+	dw cja_h_what_is_love_rowa0
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa0
+	dw cja_h_what_is_love_rowa0
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa1
+	dw cja_h_what_is_love_rowa1
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa2
+	dw cja_h_what_is_love_rowa2
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row8a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row61
+	dw cja_h_what_is_love_row61
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row61
+	dw cja_h_what_is_love_row61
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa5
+	dw cja_h_what_is_love_rowa5
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa5
+	dw cja_h_what_is_love_rowa5
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row63
+	dw cja_h_what_is_love_row63
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row63
+	dw cja_h_what_is_love_row63
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptna equ ./Data/cja_h_what_is_love + 0xc08
+cja_h_what_is_love_ptna equ cja_h_what_is_love + 0xc08
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa6
+	dw cja_h_what_is_love_rowa6
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa7
+	dw cja_h_what_is_love_rowa7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa8
+	dw cja_h_what_is_love_rowa8
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa8
+	dw cja_h_what_is_love_rowa8
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa7
+	dw cja_h_what_is_love_rowa7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa7
+	dw cja_h_what_is_love_rowa7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa8
+	dw cja_h_what_is_love_rowa8
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa9
+	dw cja_h_what_is_love_rowa9
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7f
+	dw cja_h_what_is_love_row7f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row99
+	dw cja_h_what_is_love_row99
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row65
+	dw cja_h_what_is_love_row65
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row65
+	dw cja_h_what_is_love_row65
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowaa
+	dw cja_h_what_is_love_rowaa
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowaa
+	dw cja_h_what_is_love_rowaa
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowab
+	dw cja_h_what_is_love_rowab
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowab
+	dw cja_h_what_is_love_rowab
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowac
+	dw cja_h_what_is_love_rowac
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowad
+	dw cja_h_what_is_love_rowad
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowae
+	dw cja_h_what_is_love_rowae
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowae
+	dw cja_h_what_is_love_rowae
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowad
+	dw cja_h_what_is_love_rowad
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowad
+	dw cja_h_what_is_love_rowad
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowaf
+	dw cja_h_what_is_love_rowaf
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb0
+	dw cja_h_what_is_love_rowb0
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb1
+	dw cja_h_what_is_love_rowb1
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowaf
+	dw cja_h_what_is_love_rowaf
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb2
+	dw cja_h_what_is_love_rowb2
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb2
+	dw cja_h_what_is_love_rowb2
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb3
+	dw cja_h_what_is_love_rowb3
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb3
+	dw cja_h_what_is_love_rowb3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb4
+	dw cja_h_what_is_love_rowb4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb4
+	dw cja_h_what_is_love_rowb4
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb5
+	dw cja_h_what_is_love_rowb5
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb6
+	dw cja_h_what_is_love_rowb6
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb7
+	dw cja_h_what_is_love_rowb7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb7
+	dw cja_h_what_is_love_rowb7
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb6
+	dw cja_h_what_is_love_rowb6
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb6
+	dw cja_h_what_is_love_rowb6
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb8
+	dw cja_h_what_is_love_rowb8
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowb9
+	dw cja_h_what_is_love_rowb9
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowba
+	dw cja_h_what_is_love_rowba
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowb8
+	dw cja_h_what_is_love_rowb8
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowbb
+	dw cja_h_what_is_love_rowbb
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowbb
+	dw cja_h_what_is_love_rowbb
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowbc
+	dw cja_h_what_is_love_rowbc
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowbc
+	dw cja_h_what_is_love_rowbc
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowbb
+	dw cja_h_what_is_love_rowbb
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowbb
+	dw cja_h_what_is_love_rowbb
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowbd
+	dw cja_h_what_is_love_rowbd
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowbe
+	dw cja_h_what_is_love_rowbe
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowbf
+	dw cja_h_what_is_love_rowbf
 
 	dw 0x501
 	dw 0x0060
-	dw ./Data/cja_h_what_is_love_rowc0
+	dw cja_h_what_is_love_rowc0
 
 	dw 0x504
 	dw 0x0060
-	dw ./Data/cja_h_what_is_love_rowbe
+	dw cja_h_what_is_love_rowbe
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowbe
+	dw cja_h_what_is_love_rowbe
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc1
+	dw cja_h_what_is_love_rowc1
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc2
+	dw cja_h_what_is_love_rowc2
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc3
+	dw cja_h_what_is_love_rowc3
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc1
+	dw cja_h_what_is_love_rowc1
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc4
+	dw cja_h_what_is_love_rowc4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc4
+	dw cja_h_what_is_love_rowc4
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc1
+	dw cja_h_what_is_love_rowc1
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc1
+	dw cja_h_what_is_love_rowc1
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc2
+	dw cja_h_what_is_love_rowc2
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc2
+	dw cja_h_what_is_love_rowc2
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptnb equ ./Data/cja_h_what_is_love + 0xd69
+cja_h_what_is_love_ptnb equ cja_h_what_is_love + 0xd69
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5c
+	dw cja_h_what_is_love_row5c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc5
+	dw cja_h_what_is_love_rowc5
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc5
+	dw cja_h_what_is_love_rowc5
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc5
+	dw cja_h_what_is_love_rowc5
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row44
+	dw cja_h_what_is_love_row44
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5c
+	dw cja_h_what_is_love_row5c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc5
+	dw cja_h_what_is_love_rowc5
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row44
+	dw cja_h_what_is_love_row44
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row42
+	dw cja_h_what_is_love_row42
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc5
+	dw cja_h_what_is_love_rowc5
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc5
+	dw cja_h_what_is_love_rowc5
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row45
+	dw cja_h_what_is_love_row45
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row46
+	dw cja_h_what_is_love_row46
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5d
+	dw cja_h_what_is_love_row5d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc6
+	dw cja_h_what_is_love_rowc6
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc6
+	dw cja_h_what_is_love_rowc6
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row47
+	dw cja_h_what_is_love_row47
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc6
+	dw cja_h_what_is_love_rowc6
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row49
+	dw cja_h_what_is_love_row49
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5d
+	dw cja_h_what_is_love_row5d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc6
+	dw cja_h_what_is_love_rowc6
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4a
+	dw cja_h_what_is_love_row4a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4b
+	dw cja_h_what_is_love_row4b
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc6
+	dw cja_h_what_is_love_rowc6
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc6
+	dw cja_h_what_is_love_rowc6
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4c
+	dw cja_h_what_is_love_row4c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4d
+	dw cja_h_what_is_love_row4d
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5e
+	dw cja_h_what_is_love_row5e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc7
+	dw cja_h_what_is_love_rowc7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc7
+	dw cja_h_what_is_love_rowc7
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc7
+	dw cja_h_what_is_love_rowc7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5e
+	dw cja_h_what_is_love_row5e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc7
+	dw cja_h_what_is_love_rowc7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc7
+	dw cja_h_what_is_love_rowc7
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc7
+	dw cja_h_what_is_love_rowc7
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row4e
+	dw cja_h_what_is_love_row4e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row50
+	dw cja_h_what_is_love_row50
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5f
+	dw cja_h_what_is_love_row5f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc8
+	dw cja_h_what_is_love_rowc8
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc8
+	dw cja_h_what_is_love_rowc8
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc8
+	dw cja_h_what_is_love_rowc8
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row53
+	dw cja_h_what_is_love_row53
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row5f
+	dw cja_h_what_is_love_row5f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc8
+	dw cja_h_what_is_love_rowc8
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row60
+	dw cja_h_what_is_love_row60
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc9
+	dw cja_h_what_is_love_rowc9
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowc8
+	dw cja_h_what_is_love_rowc8
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowc8
+	dw cja_h_what_is_love_rowc8
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row51
+	dw cja_h_what_is_love_row51
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row53
+	dw cja_h_what_is_love_row53
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptnc equ ./Data/cja_h_what_is_love + 0xeca
+cja_h_what_is_love_ptnc equ cja_h_what_is_love + 0xeca
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7c
+	dw cja_h_what_is_love_row7c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7f
+	dw cja_h_what_is_love_row7f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row80
+	dw cja_h_what_is_love_row80
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row81
+	dw cja_h_what_is_love_row81
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row81
-
-	dw 0x504
-	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row82
-
-	dw 0x500
-	dw ./Data/cja_h_what_is_love_row82
-
-	dw 0x501
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row83
-
-	dw 0x501
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row83
-
-	dw 0x580
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
-
-	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
-
-	dw 0x501
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
-
-	dw 0x501
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
-
-	dw 0x504
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
-
-	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
-
-	dw 0x501
-	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row88
-
-	dw 0x501
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row96
-
-	dw 0x580
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
-
-	dw 0x500
-	dw ./Data/cja_h_what_is_love_row86
-
-	dw 0x501
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row87
-
-	dw 0x501
-	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row87
+	dw cja_h_what_is_love_row81
 
 	dw 0x504
 	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row88
+	dw cja_h_what_is_love_row82
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row88
+	dw cja_h_what_is_love_row82
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row89
+	dw cja_h_what_is_love_row83
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row89
+	dw cja_h_what_is_love_row83
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row86
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row85
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row8d
+	dw cja_h_what_is_love_row88
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row96
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8f
+	dw cja_h_what_is_love_row87
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8f
+	dw cja_h_what_is_love_row87
+
+	dw 0x504
+	dw 0x0040
+	dw cja_h_what_is_love_row88
+
+	dw 0x500
+	dw cja_h_what_is_love_row88
+
+	dw 0x501
+	dw 0x0080
+	dw cja_h_what_is_love_row89
+
+	dw 0x501
+	dw 0x0080
+	dw cja_h_what_is_love_row89
+
+	dw 0x580
+	dw 0x0080
+	dw cja_h_what_is_love_row8a
+
+	dw 0x500
+	dw cja_h_what_is_love_row8b
+
+	dw 0x501
+	dw 0x0080
+	dw cja_h_what_is_love_row8c
+
+	dw 0x501
+	dw 0x0080
+	dw cja_h_what_is_love_row8c
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8b
+
+	dw 0x501
+	dw 0x0040
+	dw cja_h_what_is_love_row8d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8e
+
+	dw 0x580
+	dw 0x0080
+	dw cja_h_what_is_love_row8a
+
+	dw 0x500
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8f
+
+	dw 0x501
+	dw 0x0080
+	dw cja_h_what_is_love_row8f
+
+	dw 0x504
+	dw 0x0080
+	dw cja_h_what_is_love_row8c
+
+	dw 0x500
+	dw cja_h_what_is_love_row8c
+
+	dw 0x501
+	dw 0x0080
+	dw cja_h_what_is_love_row8b
+
+	dw 0x501
+	dw 0x0080
+	dw cja_h_what_is_love_row8b
 
 	dw 0x580
 	dw 0x0060
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row92
+	dw cja_h_what_is_love_row92
 
 	dw 0x501
 	dw 0x0054
-	dw ./Data/cja_h_what_is_love_row93
+	dw cja_h_what_is_love_row93
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row93
+	dw cja_h_what_is_love_row93
 
 	dw 0x504
 	dw 0x0020
-	dw ./Data/cja_h_what_is_love_row94
+	dw cja_h_what_is_love_row94
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row94
+	dw cja_h_what_is_love_row94
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row95
+	dw cja_h_what_is_love_row95
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row95
+	dw cja_h_what_is_love_row95
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptnd equ ./Data/cja_h_what_is_love + 0x102b
+cja_h_what_is_love_ptnd equ cja_h_what_is_love + 0x102b
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7c
+	dw cja_h_what_is_love_row7c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7e
+	dw cja_h_what_is_love_row7e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7f
+	dw cja_h_what_is_love_row7f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row80
+	dw cja_h_what_is_love_row80
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row81
+	dw cja_h_what_is_love_row81
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row81
+	dw cja_h_what_is_love_row81
 
 	dw 0x504
 	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row69
+	dw cja_h_what_is_love_row69
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row69
+	dw cja_h_what_is_love_row69
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row83
+	dw cja_h_what_is_love_row83
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row83
+	dw cja_h_what_is_love_row83
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0054
-	dw ./Data/cja_h_what_is_love_row88
+	dw cja_h_what_is_love_row88
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row96
+	dw cja_h_what_is_love_row96
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row86
+	dw cja_h_what_is_love_row86
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row87
+	dw cja_h_what_is_love_row87
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row87
+	dw cja_h_what_is_love_row87
 
 	dw 0x504
 	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row6f
+	dw cja_h_what_is_love_row6f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row6f
+	dw cja_h_what_is_love_row6f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row89
+	dw cja_h_what_is_love_row89
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row89
+	dw cja_h_what_is_love_row89
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row8a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row8d
+	dw cja_h_what_is_love_row8d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row8a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8f
+	dw cja_h_what_is_love_row8f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8f
+	dw cja_h_what_is_love_row8f
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8c
+	dw cja_h_what_is_love_row8c
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x580
 	dw 0x0040
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0030
-	dw ./Data/cja_h_what_is_love_row94
+	dw cja_h_what_is_love_row94
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row94
+	dw cja_h_what_is_love_row94
 
 	dw 0x501
 	dw 0x0028
-	dw ./Data/cja_h_what_is_love_row95
+	dw cja_h_what_is_love_row95
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row95
+	dw cja_h_what_is_love_row95
 
 	dw 0x501
 	dw 0x0020
-	dw ./Data/cja_h_what_is_love_row94
+	dw cja_h_what_is_love_row94
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row95
+	dw cja_h_what_is_love_row95
 
 	dw 0x501
 	dw 0x0018
-	dw ./Data/cja_h_what_is_love_row95
+	dw cja_h_what_is_love_row95
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row94
+	dw cja_h_what_is_love_row94
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row61
+	dw cja_h_what_is_love_row61
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row61
+	dw cja_h_what_is_love_row61
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row97
+	dw cja_h_what_is_love_row97
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row97
+	dw cja_h_what_is_love_row97
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row63
+	dw cja_h_what_is_love_row63
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row63
+	dw cja_h_what_is_love_row63
 
 	db 0x40
 ; 0x161 bytes
 
-./Data/cja_h_what_is_love_ptne equ ./Data/cja_h_what_is_love + 0x118c
+cja_h_what_is_love_ptne equ cja_h_what_is_love + 0x118c
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7c
+	dw cja_h_what_is_love_row7c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row98
+	dw cja_h_what_is_love_row98
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row98
+	dw cja_h_what_is_love_row98
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row98
+	dw cja_h_what_is_love_row98
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7d
+	dw cja_h_what_is_love_row7d
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row7f
+	dw cja_h_what_is_love_row7f
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row99
+	dw cja_h_what_is_love_row99
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9a
+	dw cja_h_what_is_love_row9a
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9a
+	dw cja_h_what_is_love_row9a
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row99
+	dw cja_h_what_is_love_row99
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row99
+	dw cja_h_what_is_love_row99
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9b
+	dw cja_h_what_is_love_row9b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9b
+	dw cja_h_what_is_love_row9b
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9c
+	dw cja_h_what_is_love_row9c
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row9d
+	dw cja_h_what_is_love_row9d
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row85
+	dw cja_h_what_is_love_row85
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row84
+	dw cja_h_what_is_love_row84
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9f
+	dw cja_h_what_is_love_row9f
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9f
+	dw cja_h_what_is_love_row9f
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row9e
+	dw cja_h_what_is_love_row9e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa0
+	dw cja_h_what_is_love_rowa0
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa0
+	dw cja_h_what_is_love_rowa0
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa1
+	dw cja_h_what_is_love_rowa1
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa2
+	dw cja_h_what_is_love_rowa2
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8a
+	dw cja_h_what_is_love_row8a
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8b
+	dw cja_h_what_is_love_row8b
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa3
+	dw cja_h_what_is_love_rowa3
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row8e
+	dw cja_h_what_is_love_row8e
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x580
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row90
+	dw cja_h_what_is_love_row90
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowca
+	dw cja_h_what_is_love_rowca
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowca
+	dw cja_h_what_is_love_rowca
 
 	dw 0x504
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x500
-	dw ./Data/cja_h_what_is_love_rowa4
+	dw cja_h_what_is_love_rowa4
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	dw 0x501
 	dw 0x0080
-	dw ./Data/cja_h_what_is_love_row91
+	dw cja_h_what_is_love_row91
 
 	db 0x40
 ; 0x161 bytes
@@ -3397,8 +3397,8 @@
 
 
 ;row buffers
-./Data/cja_h_what_is_love_rows equ ./Data/cja_h_what_is_love + 0x12ed
-./Data/cja_h_what_is_love_row0 equ ./Data/cja_h_what_is_love_rows + 0x0
+cja_h_what_is_love_rows equ cja_h_what_is_love + 0x12ed
+cja_h_what_is_love_row0 equ cja_h_what_is_love_rows + 0x0
 	dw 0x1307
 	dw 0x0
 	dw 0x0
@@ -3408,7 +3408,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row1 equ ./Data/cja_h_what_is_love_rows + 0x10
+cja_h_what_is_love_row1 equ cja_h_what_is_love_rows + 0x10
 	dw 0x1307
 	dw 0x0
 	dw 0x0
@@ -3418,7 +3418,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row2 equ ./Data/cja_h_what_is_love_rows + 0x20
+cja_h_what_is_love_row2 equ cja_h_what_is_love_rows + 0x20
 	dw 0x16a1
 	dw 0x0
 	dw 0x0
@@ -3428,7 +3428,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row3 equ ./Data/cja_h_what_is_love_rows + 0x30
+cja_h_what_is_love_row3 equ cja_h_what_is_love_rows + 0x30
 	dw 0x1966
 	dw 0x0
 	dw 0x0
@@ -3438,7 +3438,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row4 equ ./Data/cja_h_what_is_love_rows + 0x40
+cja_h_what_is_love_row4 equ cja_h_what_is_love_rows + 0x40
 	dw 0x0
 	dw 0xf1a
 	dw 0xf1a
@@ -3448,7 +3448,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row5 equ ./Data/cja_h_what_is_love_rows + 0x50
+cja_h_what_is_love_row5 equ cja_h_what_is_love_rows + 0x50
 	dw 0x0
 	dw 0xf1a
 	dw 0xe41
@@ -3458,7 +3458,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row6 equ ./Data/cja_h_what_is_love_rows + 0x60
+cja_h_what_is_love_row6 equ cja_h_what_is_love_rows + 0x60
 	dw 0x0
 	dw 0xf1a
 	dw 0xcb3
@@ -3468,7 +3468,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row7 equ ./Data/cja_h_what_is_love_rows + 0x70
+cja_h_what_is_love_row7 equ cja_h_what_is_love_rows + 0x70
 	dw 0x1307
 	dw 0xf1a
 	dw 0xf1a
@@ -3478,7 +3478,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row8 equ ./Data/cja_h_what_is_love_rows + 0x80
+cja_h_what_is_love_row8 equ cja_h_what_is_love_rows + 0x80
 	dw 0x1429
 	dw 0xf1a
 	dw 0xe41
@@ -3488,7 +3488,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row9 equ ./Data/cja_h_what_is_love_rows + 0x90
+cja_h_what_is_love_row9 equ cja_h_what_is_love_rows + 0x90
 	dw 0x16a1
 	dw 0xf1a
 	dw 0xcb3
@@ -3498,7 +3498,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa equ ./Data/cja_h_what_is_love_rows + 0xa0
+cja_h_what_is_love_rowa equ cja_h_what_is_love_rows + 0xa0
 	dw 0x16a1
 	dw 0xf1a
 	dw 0xf1a
@@ -3508,7 +3508,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb equ ./Data/cja_h_what_is_love_rows + 0xb0
+cja_h_what_is_love_rowb equ cja_h_what_is_love_rows + 0xb0
 	dw 0x1307
 	dw 0xf1a
 	dw 0xe41
@@ -3518,7 +3518,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc equ ./Data/cja_h_what_is_love_rows + 0xc0
+cja_h_what_is_love_rowc equ cja_h_what_is_love_rows + 0xc0
 	dw 0x1307
 	dw 0xf1a
 	dw 0xb50
@@ -3528,7 +3528,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowd equ ./Data/cja_h_what_is_love_rows + 0xd0
+cja_h_what_is_love_rowd equ cja_h_what_is_love_rows + 0xd0
 	dw 0x16a1
 	dw 0xf1a
 	dw 0xb50
@@ -3538,7 +3538,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowe equ ./Data/cja_h_what_is_love_rows + 0xe0
+cja_h_what_is_love_rowe equ cja_h_what_is_love_rows + 0xe0
 	dw 0x16a1
 	dw 0xe41
 	dw 0xe41
@@ -3548,7 +3548,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowf equ ./Data/cja_h_what_is_love_rows + 0xf0
+cja_h_what_is_love_rowf equ cja_h_what_is_love_rows + 0xf0
 	dw 0x1307
 	dw 0xe41
 	dw 0xcb3
@@ -3558,7 +3558,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row10 equ ./Data/cja_h_what_is_love_rows + 0x100
+cja_h_what_is_love_row10 equ cja_h_what_is_love_rows + 0x100
 	dw 0x1307
 	dw 0xe41
 	dw 0xe41
@@ -3568,7 +3568,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row11 equ ./Data/cja_h_what_is_love_rows + 0x110
+cja_h_what_is_love_row11 equ cja_h_what_is_love_rows + 0x110
 	dw 0x1307
 	dw 0xe41
 	dw 0xb50
@@ -3578,7 +3578,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row12 equ ./Data/cja_h_what_is_love_rows + 0x120
+cja_h_what_is_love_row12 equ cja_h_what_is_love_rows + 0x120
 	dw 0x10f4
 	dw 0xe41
 	dw 0xb50
@@ -3588,7 +3588,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row13 equ ./Data/cja_h_what_is_love_rows + 0x130
+cja_h_what_is_love_row13 equ cja_h_what_is_love_rows + 0x130
 	dw 0x10f4
 	dw 0xe41
 	dw 0xe41
@@ -3598,7 +3598,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row14 equ ./Data/cja_h_what_is_love_rows + 0x140
+cja_h_what_is_love_row14 equ cja_h_what_is_love_rows + 0x140
 	dw 0x10f4
 	dw 0xe41
 	dw 0xcb3
@@ -3608,7 +3608,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row15 equ ./Data/cja_h_what_is_love_rows + 0x150
+cja_h_what_is_love_row15 equ cja_h_what_is_love_rows + 0x150
 	dw 0x0
 	dw 0x32d
 	dw 0xf1a
@@ -3618,7 +3618,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row16 equ ./Data/cja_h_what_is_love_rows + 0x160
+cja_h_what_is_love_row16 equ cja_h_what_is_love_rows + 0x160
 	dw 0x0
 	dw 0x32d
 	dw 0xcb3
@@ -3628,7 +3628,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row17 equ ./Data/cja_h_what_is_love_rows + 0x170
+cja_h_what_is_love_row17 equ cja_h_what_is_love_rows + 0x170
 	dw 0x1307
 	dw 0x32d
 	dw 0xf1a
@@ -3638,7 +3638,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row18 equ ./Data/cja_h_what_is_love_rows + 0x180
+cja_h_what_is_love_row18 equ cja_h_what_is_love_rows + 0x180
 	dw 0x1429
 	dw 0x32d
 	dw 0xe41
@@ -3648,7 +3648,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row19 equ ./Data/cja_h_what_is_love_rows + 0x190
+cja_h_what_is_love_row19 equ cja_h_what_is_love_rows + 0x190
 	dw 0x16a1
 	dw 0x2d4
 	dw 0xcb3
@@ -3658,7 +3658,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row1a equ ./Data/cja_h_what_is_love_rows + 0x1a0
+cja_h_what_is_love_row1a equ cja_h_what_is_love_rows + 0x1a0
 	dw 0x16a1
 	dw 0x3c7
 	dw 0xf1a
@@ -3668,7 +3668,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row1b equ ./Data/cja_h_what_is_love_rows + 0x1b0
+cja_h_what_is_love_row1b equ cja_h_what_is_love_rows + 0x1b0
 	dw 0x1307
 	dw 0x3c7
 	dw 0xf1a
@@ -3678,7 +3678,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row1c equ ./Data/cja_h_what_is_love_rows + 0x1c0
+cja_h_what_is_love_row1c equ cja_h_what_is_love_rows + 0x1c0
 	dw 0x1307
 	dw 0x3c7
 	dw 0xb50
@@ -3688,7 +3688,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row1d equ ./Data/cja_h_what_is_love_rows + 0x1d0
+cja_h_what_is_love_row1d equ cja_h_what_is_love_rows + 0x1d0
 	dw 0x1307
 	dw 0x43d
 	dw 0xe41
@@ -3698,7 +3698,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row1e equ ./Data/cja_h_what_is_love_rows + 0x1e0
+cja_h_what_is_love_row1e equ cja_h_what_is_love_rows + 0x1e0
 	dw 0x16a1
 	dw 0x4c2
 	dw 0xb50
@@ -3708,7 +3708,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row1f equ ./Data/cja_h_what_is_love_rows + 0x1f0
+cja_h_what_is_love_row1f equ cja_h_what_is_love_rows + 0x1f0
 	dw 0x16a1
 	dw 0x4c2
 	dw 0xe41
@@ -3718,7 +3718,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row20 equ ./Data/cja_h_what_is_love_rows + 0x200
+cja_h_what_is_love_row20 equ cja_h_what_is_love_rows + 0x200
 	dw 0x1307
 	dw 0x4c2
 	dw 0xe41
@@ -3728,7 +3728,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row21 equ ./Data/cja_h_what_is_love_rows + 0x210
+cja_h_what_is_love_row21 equ cja_h_what_is_love_rows + 0x210
 	dw 0x1307
 	dw 0x4c2
 	dw 0xb50
@@ -3738,7 +3738,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row22 equ ./Data/cja_h_what_is_love_rows + 0x220
+cja_h_what_is_love_row22 equ cja_h_what_is_love_rows + 0x220
 	dw 0x1307
 	dw 0x4c2
 	dw 0xcb3
@@ -3748,7 +3748,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row23 equ ./Data/cja_h_what_is_love_rows + 0x230
+cja_h_what_is_love_row23 equ cja_h_what_is_love_rows + 0x230
 	dw 0x10f4
 	dw 0x4c2
 	dw 0xb50
@@ -3758,7 +3758,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row24 equ ./Data/cja_h_what_is_love_rows + 0x240
+cja_h_what_is_love_row24 equ cja_h_what_is_love_rows + 0x240
 	dw 0x10f4
 	dw 0x5a8
 	dw 0xe41
@@ -3768,7 +3768,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row25 equ ./Data/cja_h_what_is_love_rows + 0x250
+cja_h_what_is_love_row25 equ cja_h_what_is_love_rows + 0x250
 	dw 0x10f4
 	dw 0x5a8
 	dw 0xb50
@@ -3778,7 +3778,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row26 equ ./Data/cja_h_what_is_love_rows + 0x260
+cja_h_what_is_love_row26 equ cja_h_what_is_love_rows + 0x260
 	dw 0x10f4
 	dw 0x4c2
 	dw 0xcb3
@@ -3788,7 +3788,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row27 equ ./Data/cja_h_what_is_love_rows + 0x270
+cja_h_what_is_love_row27 equ cja_h_what_is_love_rows + 0x270
 	dw 0xf1a
 	dw 0x32d
 	dw 0xf1a
@@ -3798,7 +3798,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row28 equ ./Data/cja_h_what_is_love_rows + 0x280
+cja_h_what_is_love_row28 equ cja_h_what_is_love_rows + 0x280
 	dw 0xf1a
 	dw 0xf1a
 	dw 0xe41
@@ -3808,7 +3808,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row29 equ ./Data/cja_h_what_is_love_rows + 0x290
+cja_h_what_is_love_row29 equ cja_h_what_is_love_rows + 0x290
 	dw 0xf1a
 	dw 0xf1a
 	dw 0xcb3
@@ -3818,7 +3818,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row2a equ ./Data/cja_h_what_is_love_rows + 0x2a0
+cja_h_what_is_love_row2a equ cja_h_what_is_love_rows + 0x2a0
 	dw 0xf1a
 	dw 0x32d
 	dw 0xcb3
@@ -3828,7 +3828,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row2b equ ./Data/cja_h_what_is_love_rows + 0x2b0
+cja_h_what_is_love_row2b equ cja_h_what_is_love_rows + 0x2b0
 	dw 0xf1a
 	dw 0xf1a
 	dw 0xf1a
@@ -3838,7 +3838,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row2c equ ./Data/cja_h_what_is_love_rows + 0x2c0
+cja_h_what_is_love_row2c equ cja_h_what_is_love_rows + 0x2c0
 	dw 0xf1a
 	dw 0x32d
 	dw 0xe41
@@ -3848,7 +3848,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row2d equ ./Data/cja_h_what_is_love_rows + 0x2d0
+cja_h_what_is_love_row2d equ cja_h_what_is_love_rows + 0x2d0
 	dw 0xf1a
 	dw 0x32d
 	dw 0xe41
@@ -3858,7 +3858,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row2e equ ./Data/cja_h_what_is_love_rows + 0x2e0
+cja_h_what_is_love_row2e equ cja_h_what_is_love_rows + 0x2e0
 	dw 0xf1a
 	dw 0x2d4
 	dw 0xcb3
@@ -3868,7 +3868,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row2f equ ./Data/cja_h_what_is_love_rows + 0x2f0
+cja_h_what_is_love_row2f equ cja_h_what_is_love_rows + 0x2f0
 	dw 0xf1a
 	dw 0x2d4
 	dw 0xcb3
@@ -3878,7 +3878,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row30 equ ./Data/cja_h_what_is_love_rows + 0x300
+cja_h_what_is_love_row30 equ cja_h_what_is_love_rows + 0x300
 	dw 0xf1a
 	dw 0x3c7
 	dw 0xf1a
@@ -3888,7 +3888,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row31 equ ./Data/cja_h_what_is_love_rows + 0x310
+cja_h_what_is_love_row31 equ cja_h_what_is_love_rows + 0x310
 	dw 0xf1a
 	dw 0xf1a
 	dw 0xb50
@@ -3898,7 +3898,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row32 equ ./Data/cja_h_what_is_love_rows + 0x320
+cja_h_what_is_love_row32 equ cja_h_what_is_love_rows + 0x320
 	dw 0xf1a
 	dw 0x3c7
 	dw 0xb50
@@ -3908,7 +3908,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row33 equ ./Data/cja_h_what_is_love_rows + 0x330
+cja_h_what_is_love_row33 equ cja_h_what_is_love_rows + 0x330
 	dw 0xf1a
 	dw 0x43d
 	dw 0xe41
@@ -3918,7 +3918,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row34 equ ./Data/cja_h_what_is_love_rows + 0x340
+cja_h_what_is_love_row34 equ cja_h_what_is_love_rows + 0x340
 	dw 0xf1a
 	dw 0x43d
 	dw 0xe41
@@ -3928,7 +3928,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row35 equ ./Data/cja_h_what_is_love_rows + 0x350
+cja_h_what_is_love_row35 equ cja_h_what_is_love_rows + 0x350
 	dw 0xf1a
 	dw 0x4c2
 	dw 0xb50
@@ -3938,7 +3938,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row36 equ ./Data/cja_h_what_is_love_rows + 0x360
+cja_h_what_is_love_row36 equ cja_h_what_is_love_rows + 0x360
 	dw 0xf1a
 	dw 0x4c2
 	dw 0xb50
@@ -3948,7 +3948,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row37 equ ./Data/cja_h_what_is_love_rows + 0x370
+cja_h_what_is_love_row37 equ cja_h_what_is_love_rows + 0x370
 	dw 0xe41
 	dw 0x4c2
 	dw 0xe41
@@ -3958,7 +3958,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row38 equ ./Data/cja_h_what_is_love_rows + 0x380
+cja_h_what_is_love_row38 equ cja_h_what_is_love_rows + 0x380
 	dw 0xe41
 	dw 0xe41
 	dw 0xcb3
@@ -3968,7 +3968,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row39 equ ./Data/cja_h_what_is_love_rows + 0x390
+cja_h_what_is_love_row39 equ cja_h_what_is_love_rows + 0x390
 	dw 0xe41
 	dw 0xe41
 	dw 0xb50
@@ -3978,7 +3978,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row3a equ ./Data/cja_h_what_is_love_rows + 0x3a0
+cja_h_what_is_love_row3a equ cja_h_what_is_love_rows + 0x3a0
 	dw 0xe41
 	dw 0x4c2
 	dw 0xb50
@@ -3988,7 +3988,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row3b equ ./Data/cja_h_what_is_love_rows + 0x3b0
+cja_h_what_is_love_row3b equ cja_h_what_is_love_rows + 0x3b0
 	dw 0xe41
 	dw 0xe41
 	dw 0xe41
@@ -3998,27 +3998,27 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row3c equ ./Data/cja_h_what_is_love_rows + 0x3c0
-	dw 0xe41
-	dw 0x4c2
-	dw 0xcb3
-	dw 0x0
-	dw 0x0
-	dw 0x0
-	dw 0x0
-	dw 0x0
-
-./Data/cja_h_what_is_love_row3d equ ./Data/cja_h_what_is_love_rows + 0x3d0
+cja_h_what_is_love_row3c equ cja_h_what_is_love_rows + 0x3c0
 	dw 0xe41
 	dw 0x4c2
 	dw 0xcb3
 	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+cja_h_what_is_love_row3d equ cja_h_what_is_love_rows + 0x3d0
+	dw 0xe41
+	dw 0x4c2
+	dw 0xcb3
+	dw 0x0
 	dw 0xe41
 	dw 0x0
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row3e equ ./Data/cja_h_what_is_love_rows + 0x3e0
+cja_h_what_is_love_row3e equ cja_h_what_is_love_rows + 0x3e0
 	dw 0xe41
 	dw 0x4c2
 	dw 0xb50
@@ -4028,7 +4028,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row3f equ ./Data/cja_h_what_is_love_rows + 0x3f0
+cja_h_what_is_love_row3f equ cja_h_what_is_love_rows + 0x3f0
 	dw 0xe41
 	dw 0x5a8
 	dw 0xe41
@@ -4038,27 +4038,27 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row40 equ ./Data/cja_h_what_is_love_rows + 0x400
-	dw 0xe41
-	dw 0x5a8
-	dw 0xb50
-	dw 0x0
-	dw 0x0
-	dw 0x0
-	dw 0x0
-	dw 0x0
-
-./Data/cja_h_what_is_love_row41 equ ./Data/cja_h_what_is_love_rows + 0x410
+cja_h_what_is_love_row40 equ cja_h_what_is_love_rows + 0x400
 	dw 0xe41
 	dw 0x5a8
 	dw 0xb50
 	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+	dw 0x0
+
+cja_h_what_is_love_row41 equ cja_h_what_is_love_rows + 0x410
+	dw 0xe41
+	dw 0x5a8
+	dw 0xb50
+	dw 0x0
 	dw 0xe41
 	dw 0x0
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row42 equ ./Data/cja_h_what_is_love_rows + 0x420
+cja_h_what_is_love_row42 equ cja_h_what_is_love_rows + 0x420
 	dw 0xf1a
 	dw 0x32d
 	dw 0x65a
@@ -4068,7 +4068,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row43 equ ./Data/cja_h_what_is_love_rows + 0x430
+cja_h_what_is_love_row43 equ cja_h_what_is_love_rows + 0x430
 	dw 0xf1a
 	dw 0xf1a
 	dw 0x65a
@@ -4078,7 +4078,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row44 equ ./Data/cja_h_what_is_love_rows + 0x440
+cja_h_what_is_love_row44 equ cja_h_what_is_love_rows + 0x440
 	dw 0xf1a
 	dw 0x32d
 	dw 0x65a
@@ -4088,7 +4088,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row45 equ ./Data/cja_h_what_is_love_rows + 0x450
+cja_h_what_is_love_row45 equ cja_h_what_is_love_rows + 0x450
 	dw 0xf1a
 	dw 0x2d4
 	dw 0x65a
@@ -4098,7 +4098,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row46 equ ./Data/cja_h_what_is_love_rows + 0x460
+cja_h_what_is_love_row46 equ cja_h_what_is_love_rows + 0x460
 	dw 0xf1a
 	dw 0x2d4
 	dw 0x65a
@@ -4108,7 +4108,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row47 equ ./Data/cja_h_what_is_love_rows + 0x470
+cja_h_what_is_love_row47 equ cja_h_what_is_love_rows + 0x470
 	dw 0xf1a
 	dw 0x3c7
 	dw 0x3c7
@@ -4118,7 +4118,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row48 equ ./Data/cja_h_what_is_love_rows + 0x480
+cja_h_what_is_love_row48 equ cja_h_what_is_love_rows + 0x480
 	dw 0xf1a
 	dw 0xf1a
 	dw 0x3c7
@@ -4128,7 +4128,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row49 equ ./Data/cja_h_what_is_love_rows + 0x490
+cja_h_what_is_love_row49 equ cja_h_what_is_love_rows + 0x490
 	dw 0xf1a
 	dw 0x3c7
 	dw 0x3c7
@@ -4138,7 +4138,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row4a equ ./Data/cja_h_what_is_love_rows + 0x4a0
+cja_h_what_is_love_row4a equ cja_h_what_is_love_rows + 0x4a0
 	dw 0xf1a
 	dw 0x43d
 	dw 0x3c7
@@ -4148,7 +4148,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row4b equ ./Data/cja_h_what_is_love_rows + 0x4b0
+cja_h_what_is_love_row4b equ cja_h_what_is_love_rows + 0x4b0
 	dw 0xf1a
 	dw 0x43d
 	dw 0x3c7
@@ -4158,7 +4158,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row4c equ ./Data/cja_h_what_is_love_rows + 0x4c0
+cja_h_what_is_love_row4c equ cja_h_what_is_love_rows + 0x4c0
 	dw 0xf1a
 	dw 0x4c2
 	dw 0x3c7
@@ -4168,7 +4168,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row4d equ ./Data/cja_h_what_is_love_rows + 0x4d0
+cja_h_what_is_love_row4d equ cja_h_what_is_love_rows + 0x4d0
 	dw 0xf1a
 	dw 0x4c2
 	dw 0x3c7
@@ -4178,7 +4178,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row4e equ ./Data/cja_h_what_is_love_rows + 0x4e0
+cja_h_what_is_love_row4e equ cja_h_what_is_love_rows + 0x4e0
 	dw 0xe41
 	dw 0x4c2
 	dw 0x4c2
@@ -4188,7 +4188,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row4f equ ./Data/cja_h_what_is_love_rows + 0x4f0
+cja_h_what_is_love_row4f equ cja_h_what_is_love_rows + 0x4f0
 	dw 0xe41
 	dw 0xe41
 	dw 0x4c2
@@ -4198,7 +4198,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row50 equ ./Data/cja_h_what_is_love_rows + 0x500
+cja_h_what_is_love_row50 equ cja_h_what_is_love_rows + 0x500
 	dw 0xe41
 	dw 0x4c2
 	dw 0x4c2
@@ -4208,7 +4208,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row51 equ ./Data/cja_h_what_is_love_rows + 0x510
+cja_h_what_is_love_row51 equ cja_h_what_is_love_rows + 0x510
 	dw 0xe41
 	dw 0x5a8
 	dw 0x5a8
@@ -4218,7 +4218,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row52 equ ./Data/cja_h_what_is_love_rows + 0x520
+cja_h_what_is_love_row52 equ cja_h_what_is_love_rows + 0x520
 	dw 0xe41
 	dw 0xe41
 	dw 0x5a8
@@ -4228,7 +4228,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row53 equ ./Data/cja_h_what_is_love_rows + 0x530
+cja_h_what_is_love_row53 equ cja_h_what_is_love_rows + 0x530
 	dw 0xe41
 	dw 0x5a8
 	dw 0x5a8
@@ -4238,7 +4238,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row54 equ ./Data/cja_h_what_is_love_rows + 0x540
+cja_h_what_is_love_row54 equ cja_h_what_is_love_rows + 0x540
 	dw 0xe41
 	dw 0x1307
 	dw 0x5a8
@@ -4248,7 +4248,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row55 equ ./Data/cja_h_what_is_love_rows + 0x550
+cja_h_what_is_love_row55 equ cja_h_what_is_love_rows + 0x550
 	dw 0xe41
 	dw 0x1307
 	dw 0x5a8
@@ -4258,7 +4258,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row56 equ ./Data/cja_h_what_is_love_rows + 0x560
+cja_h_what_is_love_row56 equ cja_h_what_is_love_rows + 0x560
 	dw 0xe41
 	dw 0x16a1
 	dw 0x5a8
@@ -4268,7 +4268,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row57 equ ./Data/cja_h_what_is_love_rows + 0x570
+cja_h_what_is_love_row57 equ cja_h_what_is_love_rows + 0x570
 	dw 0xe41
 	dw 0x1966
 	dw 0x5a8
@@ -4278,7 +4278,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row58 equ ./Data/cja_h_what_is_love_rows + 0x580
+cja_h_what_is_love_row58 equ cja_h_what_is_love_rows + 0x580
 	dw 0xe41
 	dw 0x1966
 	dw 0x5a8
@@ -4288,7 +4288,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row59 equ ./Data/cja_h_what_is_love_rows + 0x590
+cja_h_what_is_love_row59 equ cja_h_what_is_love_rows + 0x590
 	dw 0xf1a
 	dw 0x0
 	dw 0x5fe
@@ -4298,7 +4298,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row5a equ ./Data/cja_h_what_is_love_rows + 0x5a0
+cja_h_what_is_love_row5a equ cja_h_what_is_love_rows + 0x5a0
 	dw 0xf1a
 	dw 0x0
 	dw 0x65a
@@ -4308,7 +4308,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row5b equ ./Data/cja_h_what_is_love_rows + 0x5b0
+cja_h_what_is_love_row5b equ cja_h_what_is_love_rows + 0x5b0
 	dw 0xf1a
 	dw 0x0
 	dw 0x65a
@@ -4318,7 +4318,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row5c equ ./Data/cja_h_what_is_love_rows + 0x5c0
+cja_h_what_is_love_row5c equ cja_h_what_is_love_rows + 0x5c0
 	dw 0xf1a
 	dw 0x32d
 	dw 0x5fe
@@ -4328,7 +4328,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row5d equ ./Data/cja_h_what_is_love_rows + 0x5d0
+cja_h_what_is_love_row5d equ cja_h_what_is_love_rows + 0x5d0
 	dw 0xf1a
 	dw 0x3c7
 	dw 0x5fe
@@ -4338,7 +4338,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row5e equ ./Data/cja_h_what_is_love_rows + 0x5e0
+cja_h_what_is_love_row5e equ cja_h_what_is_love_rows + 0x5e0
 	dw 0xe41
 	dw 0x4c2
 	dw 0x5fe
@@ -4348,7 +4348,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row5f equ ./Data/cja_h_what_is_love_rows + 0x5f0
+cja_h_what_is_love_row5f equ cja_h_what_is_love_rows + 0x5f0
 	dw 0xe41
 	dw 0x5a8
 	dw 0x5fe
@@ -4358,7 +4358,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row60 equ ./Data/cja_h_what_is_love_rows + 0x600
+cja_h_what_is_love_row60 equ cja_h_what_is_love_rows + 0x600
 	dw 0xe41
 	dw 0x4c2
 	dw 0x5a8
@@ -4368,7 +4368,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row61 equ ./Data/cja_h_what_is_love_rows + 0x610
+cja_h_what_is_love_row61 equ cja_h_what_is_love_rows + 0x610
 	dw 0x1307
 	dw 0x4c2
 	dw 0x5a8
@@ -4378,7 +4378,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row62 equ ./Data/cja_h_what_is_love_rows + 0x620
+cja_h_what_is_love_row62 equ cja_h_what_is_love_rows + 0x620
 	dw 0x1966
 	dw 0xe41
 	dw 0x5a8
@@ -4388,7 +4388,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row63 equ ./Data/cja_h_what_is_love_rows + 0x630
+cja_h_what_is_love_row63 equ cja_h_what_is_love_rows + 0x630
 	dw 0x1966
 	dw 0x5a8
 	dw 0x5a8
@@ -4398,7 +4398,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row64 equ ./Data/cja_h_what_is_love_rows + 0x640
+cja_h_what_is_love_row64 equ cja_h_what_is_love_rows + 0x640
 	dw 0x16a1
 	dw 0x32d
 	dw 0x5fe
@@ -4408,7 +4408,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row65 equ ./Data/cja_h_what_is_love_rows + 0x650
+cja_h_what_is_love_row65 equ cja_h_what_is_love_rows + 0x650
 	dw 0x16a1
 	dw 0x32d
 	dw 0x65a
@@ -4418,7 +4418,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row66 equ ./Data/cja_h_what_is_love_rows + 0x660
+cja_h_what_is_love_row66 equ cja_h_what_is_love_rows + 0x660
 	dw 0x16a1
 	dw 0xf1a
 	dw 0x65a
@@ -4428,7 +4428,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row67 equ ./Data/cja_h_what_is_love_rows + 0x670
+cja_h_what_is_love_row67 equ cja_h_what_is_love_rows + 0x670
 	dw 0xcb3
 	dw 0xf1a
 	dw 0x65a
@@ -4438,7 +4438,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row68 equ ./Data/cja_h_what_is_love_rows + 0x680
+cja_h_what_is_love_row68 equ cja_h_what_is_love_rows + 0x680
 	dw 0xcb3
 	dw 0x32d
 	dw 0x65a
@@ -4448,7 +4448,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row69 equ ./Data/cja_h_what_is_love_rows + 0x690
+cja_h_what_is_love_row69 equ cja_h_what_is_love_rows + 0x690
 	dw 0xf1a
 	dw 0xf1a
 	dw 0x65a
@@ -4458,7 +4458,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row6a equ ./Data/cja_h_what_is_love_rows + 0x6a0
+cja_h_what_is_love_row6a equ cja_h_what_is_love_rows + 0x6a0
 	dw 0xe41
 	dw 0x32d
 	dw 0x65a
@@ -4468,7 +4468,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row6b equ ./Data/cja_h_what_is_love_rows + 0x6b0
+cja_h_what_is_love_row6b equ cja_h_what_is_love_rows + 0x6b0
 	dw 0xcb3
 	dw 0x2d4
 	dw 0x65a
@@ -4478,7 +4478,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row6c equ ./Data/cja_h_what_is_love_rows + 0x6c0
+cja_h_what_is_love_row6c equ cja_h_what_is_love_rows + 0x6c0
 	dw 0xe41
 	dw 0xf1a
 	dw 0x3c7
@@ -4488,7 +4488,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row6d equ ./Data/cja_h_what_is_love_rows + 0x6d0
+cja_h_what_is_love_row6d equ cja_h_what_is_love_rows + 0x6d0
 	dw 0xb50
 	dw 0xf1a
 	dw 0x3c7
@@ -4498,7 +4498,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row6e equ ./Data/cja_h_what_is_love_rows + 0x6e0
+cja_h_what_is_love_row6e equ cja_h_what_is_love_rows + 0x6e0
 	dw 0xb50
 	dw 0x3c7
 	dw 0x3c7
@@ -4508,7 +4508,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row6f equ ./Data/cja_h_what_is_love_rows + 0x6f0
+cja_h_what_is_love_row6f equ cja_h_what_is_love_rows + 0x6f0
 	dw 0xf1a
 	dw 0xf1a
 	dw 0x3c7
@@ -4518,7 +4518,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row70 equ ./Data/cja_h_what_is_love_rows + 0x700
+cja_h_what_is_love_row70 equ cja_h_what_is_love_rows + 0x700
 	dw 0xe41
 	dw 0x43d
 	dw 0x3c7
@@ -4528,7 +4528,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row71 equ ./Data/cja_h_what_is_love_rows + 0x710
+cja_h_what_is_love_row71 equ cja_h_what_is_love_rows + 0x710
 	dw 0xb50
 	dw 0x4c2
 	dw 0x3c7
@@ -4538,7 +4538,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row72 equ ./Data/cja_h_what_is_love_rows + 0x720
+cja_h_what_is_love_row72 equ cja_h_what_is_love_rows + 0x720
 	dw 0xcb3
 	dw 0xe41
 	dw 0x4c2
@@ -4548,7 +4548,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row73 equ ./Data/cja_h_what_is_love_rows + 0x730
+cja_h_what_is_love_row73 equ cja_h_what_is_love_rows + 0x730
 	dw 0xb50
 	dw 0xe41
 	dw 0x4c2
@@ -4558,7 +4558,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row74 equ ./Data/cja_h_what_is_love_rows + 0x740
+cja_h_what_is_love_row74 equ cja_h_what_is_love_rows + 0x740
 	dw 0xb50
 	dw 0x4c2
 	dw 0x4c2
@@ -4568,7 +4568,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row75 equ ./Data/cja_h_what_is_love_rows + 0x750
+cja_h_what_is_love_row75 equ cja_h_what_is_love_rows + 0x750
 	dw 0xe41
 	dw 0xe41
 	dw 0x4c2
@@ -4578,7 +4578,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row76 equ ./Data/cja_h_what_is_love_rows + 0x760
+cja_h_what_is_love_row76 equ cja_h_what_is_love_rows + 0x760
 	dw 0xcb3
 	dw 0x4c2
 	dw 0x4c2
@@ -4588,7 +4588,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row77 equ ./Data/cja_h_what_is_love_rows + 0x770
+cja_h_what_is_love_row77 equ cja_h_what_is_love_rows + 0x770
 	dw 0xcb3
 	dw 0xe41
 	dw 0x5a8
@@ -4598,7 +4598,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row78 equ ./Data/cja_h_what_is_love_rows + 0x780
+cja_h_what_is_love_row78 equ cja_h_what_is_love_rows + 0x780
 	dw 0xb50
 	dw 0xe41
 	dw 0x5a8
@@ -4608,7 +4608,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row79 equ ./Data/cja_h_what_is_love_rows + 0x790
+cja_h_what_is_love_row79 equ cja_h_what_is_love_rows + 0x790
 	dw 0xb50
 	dw 0x5a8
 	dw 0x5a8
@@ -4618,7 +4618,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row7a equ ./Data/cja_h_what_is_love_rows + 0x7a0
+cja_h_what_is_love_row7a equ cja_h_what_is_love_rows + 0x7a0
 	dw 0xe41
 	dw 0xe41
 	dw 0x5a8
@@ -4628,7 +4628,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row7b equ ./Data/cja_h_what_is_love_rows + 0x7b0
+cja_h_what_is_love_row7b equ cja_h_what_is_love_rows + 0x7b0
 	dw 0xcb3
 	dw 0x4c2
 	dw 0x5a8
@@ -4638,7 +4638,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row7c equ ./Data/cja_h_what_is_love_rows + 0x7c0
+cja_h_what_is_love_row7c equ cja_h_what_is_love_rows + 0x7c0
 	dw 0x0
 	dw 0x32d
 	dw 0x5fe
@@ -4648,7 +4648,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row7d equ ./Data/cja_h_what_is_love_rows + 0x7d0
+cja_h_what_is_love_row7d equ cja_h_what_is_love_rows + 0x7d0
 	dw 0x0
 	dw 0x32d
 	dw 0x65a
@@ -4658,7 +4658,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row7e equ ./Data/cja_h_what_is_love_rows + 0x7e0
+cja_h_what_is_love_row7e equ cja_h_what_is_love_rows + 0x7e0
 	dw 0x0
 	dw 0xf1a
 	dw 0x65a
@@ -4668,7 +4668,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row7f equ ./Data/cja_h_what_is_love_rows + 0x7f0
+cja_h_what_is_love_row7f equ cja_h_what_is_love_rows + 0x7f0
 	dw 0x1307
 	dw 0x32d
 	dw 0x5fe
@@ -4678,7 +4678,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row80 equ ./Data/cja_h_what_is_love_rows + 0x800
+cja_h_what_is_love_row80 equ cja_h_what_is_love_rows + 0x800
 	dw 0x1307
 	dw 0xf1a
 	dw 0x65a
@@ -4688,7 +4688,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row81 equ ./Data/cja_h_what_is_love_rows + 0x810
+cja_h_what_is_love_row81 equ cja_h_what_is_love_rows + 0x810
 	dw 0x10f4
 	dw 0x32d
 	dw 0x65a
@@ -4698,7 +4698,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row82 equ ./Data/cja_h_what_is_love_rows + 0x820
+cja_h_what_is_love_row82 equ cja_h_what_is_love_rows + 0x820
 	dw 0x10f4
 	dw 0xf1a
 	dw 0x65a
@@ -4708,7 +4708,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row83 equ ./Data/cja_h_what_is_love_rows + 0x830
+cja_h_what_is_love_row83 equ cja_h_what_is_love_rows + 0x830
 	dw 0x1307
 	dw 0x2d4
 	dw 0x65a
@@ -4718,7 +4718,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row84 equ ./Data/cja_h_what_is_love_rows + 0x840
+cja_h_what_is_love_row84 equ cja_h_what_is_love_rows + 0x840
 	dw 0x1307
 	dw 0x3c7
 	dw 0x5fe
@@ -4728,7 +4728,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row85 equ ./Data/cja_h_what_is_love_rows + 0x850
+cja_h_what_is_love_row85 equ cja_h_what_is_love_rows + 0x850
 	dw 0x1307
 	dw 0x3c7
 	dw 0x3c7
@@ -4738,7 +4738,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row86 equ ./Data/cja_h_what_is_love_rows + 0x860
+cja_h_what_is_love_row86 equ cja_h_what_is_love_rows + 0x860
 	dw 0x1307
 	dw 0xf1a
 	dw 0x3c7
@@ -4748,7 +4748,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row87 equ ./Data/cja_h_what_is_love_rows + 0x870
+cja_h_what_is_love_row87 equ cja_h_what_is_love_rows + 0x870
 	dw 0x10f4
 	dw 0x43d
 	dw 0x3c7
@@ -4758,7 +4758,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row88 equ ./Data/cja_h_what_is_love_rows + 0x880
+cja_h_what_is_love_row88 equ cja_h_what_is_love_rows + 0x880
 	dw 0x10f4
 	dw 0xf1a
 	dw 0x3c7
@@ -4768,7 +4768,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row89 equ ./Data/cja_h_what_is_love_rows + 0x890
+cja_h_what_is_love_row89 equ cja_h_what_is_love_rows + 0x890
 	dw 0x1307
 	dw 0x4c2
 	dw 0x3c7
@@ -4778,7 +4778,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row8a equ ./Data/cja_h_what_is_love_rows + 0x8a0
+cja_h_what_is_love_row8a equ cja_h_what_is_love_rows + 0x8a0
 	dw 0x1307
 	dw 0x4c2
 	dw 0x5fe
@@ -4788,7 +4788,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row8b equ ./Data/cja_h_what_is_love_rows + 0x8b0
+cja_h_what_is_love_row8b equ cja_h_what_is_love_rows + 0x8b0
 	dw 0x1307
 	dw 0x4c2
 	dw 0x4c2
@@ -4798,7 +4798,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row8c equ ./Data/cja_h_what_is_love_rows + 0x8c0
+cja_h_what_is_love_row8c equ cja_h_what_is_love_rows + 0x8c0
 	dw 0x1307
 	dw 0xe41
 	dw 0x4c2
@@ -4808,7 +4808,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row8d equ ./Data/cja_h_what_is_love_rows + 0x8d0
+cja_h_what_is_love_row8d equ cja_h_what_is_love_rows + 0x8d0
 	dw 0x10f4
 	dw 0xe41
 	dw 0x4c2
@@ -4818,7 +4818,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row8e equ ./Data/cja_h_what_is_love_rows + 0x8e0
+cja_h_what_is_love_row8e equ cja_h_what_is_love_rows + 0x8e0
 	dw 0x10f4
 	dw 0x4c2
 	dw 0x4c2
@@ -4828,7 +4828,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row8f equ ./Data/cja_h_what_is_love_rows + 0x8f0
+cja_h_what_is_love_row8f equ cja_h_what_is_love_rows + 0x8f0
 	dw 0x1429
 	dw 0x4c2
 	dw 0x4c2
@@ -4838,7 +4838,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row90 equ ./Data/cja_h_what_is_love_rows + 0x900
+cja_h_what_is_love_row90 equ cja_h_what_is_love_rows + 0x900
 	dw 0x10f4
 	dw 0x5a8
 	dw 0x5fe
@@ -4848,7 +4848,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row91 equ ./Data/cja_h_what_is_love_rows + 0x910
+cja_h_what_is_love_row91 equ cja_h_what_is_love_rows + 0x910
 	dw 0x10f4
 	dw 0x5a8
 	dw 0x5a8
@@ -4858,7 +4858,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row92 equ ./Data/cja_h_what_is_love_rows + 0x920
+cja_h_what_is_love_row92 equ cja_h_what_is_love_rows + 0x920
 	dw 0x10f4
 	dw 0xe41
 	dw 0x5a8
@@ -4868,7 +4868,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row93 equ ./Data/cja_h_what_is_love_rows + 0x930
+cja_h_what_is_love_row93 equ cja_h_what_is_love_rows + 0x930
 	dw 0xf1a
 	dw 0x4c2
 	dw 0x5a8
@@ -4878,7 +4878,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row94 equ ./Data/cja_h_what_is_love_rows + 0x940
+cja_h_what_is_love_row94 equ cja_h_what_is_love_rows + 0x940
 	dw 0xf1a
 	dw 0xe41
 	dw 0x5a8
@@ -4888,7 +4888,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row95 equ ./Data/cja_h_what_is_love_rows + 0x950
+cja_h_what_is_love_row95 equ cja_h_what_is_love_rows + 0x950
 	dw 0xf1a
 	dw 0x5a8
 	dw 0x5a8
@@ -4898,7 +4898,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row96 equ ./Data/cja_h_what_is_love_rows + 0x960
+cja_h_what_is_love_row96 equ cja_h_what_is_love_rows + 0x960
 	dw 0x10f4
 	dw 0x3c7
 	dw 0x3c7
@@ -4908,7 +4908,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row97 equ ./Data/cja_h_what_is_love_rows + 0x970
+cja_h_what_is_love_row97 equ cja_h_what_is_love_rows + 0x970
 	dw 0x16a1
 	dw 0xe41
 	dw 0x5a8
@@ -4918,7 +4918,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row98 equ ./Data/cja_h_what_is_love_rows + 0x980
+cja_h_what_is_love_row98 equ cja_h_what_is_love_rows + 0x980
 	dw 0x0
 	dw 0x1e34
 	dw 0x65a
@@ -4928,7 +4928,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row99 equ ./Data/cja_h_what_is_love_rows + 0x990
+cja_h_what_is_love_row99 equ cja_h_what_is_love_rows + 0x990
 	dw 0x1307
 	dw 0x1e34
 	dw 0x65a
@@ -4938,7 +4938,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row9a equ ./Data/cja_h_what_is_love_rows + 0x9a0
+cja_h_what_is_love_row9a equ cja_h_what_is_love_rows + 0x9a0
 	dw 0x1429
 	dw 0x32d
 	dw 0x65a
@@ -4948,7 +4948,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row9b equ ./Data/cja_h_what_is_love_rows + 0x9b0
+cja_h_what_is_love_row9b equ cja_h_what_is_love_rows + 0x9b0
 	dw 0x16a1
 	dw 0x2d4
 	dw 0x65a
@@ -4958,7 +4958,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row9c equ ./Data/cja_h_what_is_love_rows + 0x9c0
+cja_h_what_is_love_row9c equ cja_h_what_is_love_rows + 0x9c0
 	dw 0x16a1
 	dw 0x3c7
 	dw 0x5fe
@@ -4968,7 +4968,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row9d equ ./Data/cja_h_what_is_love_rows + 0x9d0
+cja_h_what_is_love_row9d equ cja_h_what_is_love_rows + 0x9d0
 	dw 0x16a1
 	dw 0x3c7
 	dw 0x3c7
@@ -4978,7 +4978,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row9e equ ./Data/cja_h_what_is_love_rows + 0x9e0
+cja_h_what_is_love_row9e equ cja_h_what_is_love_rows + 0x9e0
 	dw 0x1307
 	dw 0x1e34
 	dw 0x3c7
@@ -4988,7 +4988,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_row9f equ ./Data/cja_h_what_is_love_rows + 0x9f0
+cja_h_what_is_love_row9f equ cja_h_what_is_love_rows + 0x9f0
 	dw 0x1307
 	dw 0x43d
 	dw 0x3c7
@@ -4998,7 +4998,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa0 equ ./Data/cja_h_what_is_love_rows + 0xa00
+cja_h_what_is_love_rowa0 equ cja_h_what_is_love_rows + 0xa00
 	dw 0x16a1
 	dw 0x4c2
 	dw 0x3c7
@@ -5008,7 +5008,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa1 equ ./Data/cja_h_what_is_love_rows + 0xa10
+cja_h_what_is_love_rowa1 equ cja_h_what_is_love_rows + 0xa10
 	dw 0x16a1
 	dw 0x4c2
 	dw 0x5fe
@@ -5018,7 +5018,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa2 equ ./Data/cja_h_what_is_love_rows + 0xa20
+cja_h_what_is_love_rowa2 equ cja_h_what_is_love_rows + 0xa20
 	dw 0x16a1
 	dw 0x4c2
 	dw 0x4c2
@@ -5028,7 +5028,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa3 equ ./Data/cja_h_what_is_love_rows + 0xa30
+cja_h_what_is_love_rowa3 equ cja_h_what_is_love_rows + 0xa30
 	dw 0x1307
 	dw 0x1c82
 	dw 0x4c2
@@ -5038,7 +5038,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa4 equ ./Data/cja_h_what_is_love_rows + 0xa40
+cja_h_what_is_love_rowa4 equ cja_h_what_is_love_rows + 0xa40
 	dw 0x10f4
 	dw 0x1c82
 	dw 0x5a8
@@ -5048,7 +5048,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa5 equ ./Data/cja_h_what_is_love_rows + 0xa50
+cja_h_what_is_love_rowa5 equ cja_h_what_is_love_rows + 0xa50
 	dw 0x16a1
 	dw 0x1c82
 	dw 0x5a8
@@ -5058,7 +5058,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa6 equ ./Data/cja_h_what_is_love_rows + 0xa60
+cja_h_what_is_love_rowa6 equ cja_h_what_is_love_rows + 0xa60
 	dw 0x65a
 	dw 0x32d
 	dw 0x5fe
@@ -5068,7 +5068,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa7 equ ./Data/cja_h_what_is_love_rows + 0xa70
+cja_h_what_is_love_rowa7 equ cja_h_what_is_love_rows + 0xa70
 	dw 0x65a
 	dw 0x32d
 	dw 0x65a
@@ -5078,7 +5078,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa8 equ ./Data/cja_h_what_is_love_rows + 0xa80
+cja_h_what_is_love_rowa8 equ cja_h_what_is_love_rows + 0xa80
 	dw 0x65a
 	dw 0x1e34
 	dw 0x65a
@@ -5088,7 +5088,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowa9 equ ./Data/cja_h_what_is_love_rows + 0xa90
+cja_h_what_is_love_rowa9 equ cja_h_what_is_love_rows + 0xa90
 	dw 0x65a
 	dw 0x32d
 	dw 0x65a
@@ -5098,7 +5098,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowaa equ ./Data/cja_h_what_is_love_rows + 0xaa0
+cja_h_what_is_love_rowaa equ cja_h_what_is_love_rows + 0xaa0
 	dw 0x1966
 	dw 0x1e34
 	dw 0x65a
@@ -5108,7 +5108,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowab equ ./Data/cja_h_what_is_love_rows + 0xab0
+cja_h_what_is_love_rowab equ cja_h_what_is_love_rows + 0xab0
 	dw 0x1e34
 	dw 0x2d4
 	dw 0x65a
@@ -5118,7 +5118,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowac equ ./Data/cja_h_what_is_love_rows + 0xac0
+cja_h_what_is_love_rowac equ cja_h_what_is_love_rows + 0xac0
 	dw 0x21e7
 	dw 0x3c7
 	dw 0x5fe
@@ -5128,7 +5128,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowad equ ./Data/cja_h_what_is_love_rows + 0xad0
+cja_h_what_is_love_rowad equ cja_h_what_is_love_rows + 0xad0
 	dw 0x21e7
 	dw 0x3c7
 	dw 0x3c7
@@ -5138,7 +5138,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowae equ ./Data/cja_h_what_is_love_rows + 0xae0
+cja_h_what_is_love_rowae equ cja_h_what_is_love_rows + 0xae0
 	dw 0x260e
 	dw 0x1e34
 	dw 0x3c7
@@ -5148,7 +5148,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowaf equ ./Data/cja_h_what_is_love_rows + 0xaf0
+cja_h_what_is_love_rowaf equ cja_h_what_is_love_rows + 0xaf0
 	dw 0x1e34
 	dw 0x1e34
 	dw 0x3c7
@@ -5158,7 +5158,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb0 equ ./Data/cja_h_what_is_love_rows + 0xb00
+cja_h_what_is_love_rowb0 equ cja_h_what_is_love_rows + 0xb00
 	dw 0x1e34
 	dw 0x3c7
 	dw 0x3c7
@@ -5168,7 +5168,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb1 equ ./Data/cja_h_what_is_love_rows + 0xb10
+cja_h_what_is_love_rowb1 equ cja_h_what_is_love_rows + 0xb10
 	dw 0x1e34
 	dw 0x3c7
 	dw 0x5fe
@@ -5178,7 +5178,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb2 equ ./Data/cja_h_what_is_love_rows + 0xb20
+cja_h_what_is_love_rowb2 equ cja_h_what_is_love_rows + 0xb20
 	dw 0x1966
 	dw 0x43d
 	dw 0x3c7
@@ -5188,7 +5188,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb3 equ ./Data/cja_h_what_is_love_rows + 0xb30
+cja_h_what_is_love_rowb3 equ cja_h_what_is_love_rows + 0xb30
 	dw 0x1966
 	dw 0x1e34
 	dw 0x3c7
@@ -5198,7 +5198,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb4 equ ./Data/cja_h_what_is_love_rows + 0xb40
+cja_h_what_is_love_rowb4 equ cja_h_what_is_love_rows + 0xb40
 	dw 0x1e34
 	dw 0x4c2
 	dw 0x3c7
@@ -5208,7 +5208,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb5 equ ./Data/cja_h_what_is_love_rows + 0xb50
+cja_h_what_is_love_rowb5 equ cja_h_what_is_love_rows + 0xb50
 	dw 0x21e7
 	dw 0x4c2
 	dw 0x5fe
@@ -5218,7 +5218,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb6 equ ./Data/cja_h_what_is_love_rows + 0xb60
+cja_h_what_is_love_rowb6 equ cja_h_what_is_love_rows + 0xb60
 	dw 0x21e7
 	dw 0x4c2
 	dw 0x4c2
@@ -5228,7 +5228,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb7 equ ./Data/cja_h_what_is_love_rows + 0xb70
+cja_h_what_is_love_rowb7 equ cja_h_what_is_love_rows + 0xb70
 	dw 0x260e
 	dw 0x1c82
 	dw 0x4c2
@@ -5238,7 +5238,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb8 equ ./Data/cja_h_what_is_love_rows + 0xb80
+cja_h_what_is_love_rowb8 equ cja_h_what_is_love_rows + 0xb80
 	dw 0x1e34
 	dw 0x1c82
 	dw 0x4c2
@@ -5248,7 +5248,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowb9 equ ./Data/cja_h_what_is_love_rows + 0xb90
+cja_h_what_is_love_rowb9 equ cja_h_what_is_love_rows + 0xb90
 	dw 0x1e34
 	dw 0x4c2
 	dw 0x4c2
@@ -5258,7 +5258,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowba equ ./Data/cja_h_what_is_love_rows + 0xba0
+cja_h_what_is_love_rowba equ cja_h_what_is_love_rows + 0xba0
 	dw 0x1e34
 	dw 0x4c2
 	dw 0x5fe
@@ -5268,7 +5268,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowbb equ ./Data/cja_h_what_is_love_rows + 0xbb0
+cja_h_what_is_love_rowbb equ cja_h_what_is_love_rows + 0xbb0
 	dw 0x1966
 	dw 0x4c2
 	dw 0x4c2
@@ -5278,7 +5278,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowbc equ ./Data/cja_h_what_is_love_rows + 0xbc0
+cja_h_what_is_love_rowbc equ cja_h_what_is_love_rows + 0xbc0
 	dw 0x1966
 	dw 0x1c82
 	dw 0x4c2
@@ -5288,7 +5288,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowbd equ ./Data/cja_h_what_is_love_rows + 0xbd0
+cja_h_what_is_love_rowbd equ cja_h_what_is_love_rows + 0xbd0
 	dw 0x21e7
 	dw 0x5a8
 	dw 0x5fe
@@ -5298,7 +5298,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowbe equ ./Data/cja_h_what_is_love_rows + 0xbe0
+cja_h_what_is_love_rowbe equ cja_h_what_is_love_rows + 0xbe0
 	dw 0x21e7
 	dw 0x5a8
 	dw 0x5a8
@@ -5308,7 +5308,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowbf equ ./Data/cja_h_what_is_love_rows + 0xbf0
+cja_h_what_is_love_rowbf equ cja_h_what_is_love_rows + 0xbf0
 	dw 0x21e7
 	dw 0x1c82
 	dw 0x5a8
@@ -5318,7 +5318,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc0 equ ./Data/cja_h_what_is_love_rows + 0xc00
+cja_h_what_is_love_rowc0 equ cja_h_what_is_love_rows + 0xc00
 	dw 0x260e
 	dw 0x1c82
 	dw 0x5a8
@@ -5328,7 +5328,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc1 equ ./Data/cja_h_what_is_love_rows + 0xc10
+cja_h_what_is_love_rowc1 equ cja_h_what_is_love_rows + 0xc10
 	dw 0x1e34
 	dw 0x1c82
 	dw 0x5a8
@@ -5338,7 +5338,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc2 equ ./Data/cja_h_what_is_love_rows + 0xc20
+cja_h_what_is_love_rowc2 equ cja_h_what_is_love_rows + 0xc20
 	dw 0x1e34
 	dw 0x5a8
 	dw 0x5a8
@@ -5348,7 +5348,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc3 equ ./Data/cja_h_what_is_love_rows + 0xc30
+cja_h_what_is_love_rowc3 equ cja_h_what_is_love_rows + 0xc30
 	dw 0x1e34
 	dw 0x5a8
 	dw 0x5fe
@@ -5358,7 +5358,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc4 equ ./Data/cja_h_what_is_love_rows + 0xc40
+cja_h_what_is_love_rowc4 equ cja_h_what_is_love_rows + 0xc40
 	dw 0x1e34
 	dw 0x4c2
 	dw 0x5a8
@@ -5368,7 +5368,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc5 equ ./Data/cja_h_what_is_love_rows + 0xc50
+cja_h_what_is_love_rowc5 equ cja_h_what_is_love_rows + 0xc50
 	dw 0xf1a
 	dw 0x1e34
 	dw 0x65a
@@ -5378,7 +5378,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc6 equ ./Data/cja_h_what_is_love_rows + 0xc60
+cja_h_what_is_love_rowc6 equ cja_h_what_is_love_rows + 0xc60
 	dw 0xf1a
 	dw 0x1e34
 	dw 0x3c7
@@ -5388,7 +5388,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc7 equ ./Data/cja_h_what_is_love_rows + 0xc70
+cja_h_what_is_love_rowc7 equ cja_h_what_is_love_rows + 0xc70
 	dw 0xe41
 	dw 0x1c82
 	dw 0x4c2
@@ -5398,7 +5398,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc8 equ ./Data/cja_h_what_is_love_rows + 0xc80
+cja_h_what_is_love_rowc8 equ cja_h_what_is_love_rows + 0xc80
 	dw 0xe41
 	dw 0x1c82
 	dw 0x5a8
@@ -5408,7 +5408,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowc9 equ ./Data/cja_h_what_is_love_rows + 0xc90
+cja_h_what_is_love_rowc9 equ cja_h_what_is_love_rows + 0xc90
 	dw 0xe41
 	dw 0x4c2
 	dw 0x5a8
@@ -5418,7 +5418,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/cja_h_what_is_love_rowca equ ./Data/cja_h_what_is_love_rows + 0xca0
+cja_h_what_is_love_rowca equ cja_h_what_is_love_rows + 0xca0
 	dw 0x10f4
 	dw 0x4c2
 	dw 0x5a8
@@ -5431,4 +5431,4 @@
 
 ; 0xcb0 bytes
 ; file_size = 0x1f9d bytes
-; define({./Data/cja_h_what_is_love_size}, 0x1f9d)
+; define({cja_h_what_is_love_size}, 0x1f9d)

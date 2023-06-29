@@ -1,3574 +1,3574 @@
 ; relocatable file:
-;   the base address is ./Data/bacon_sandwich
-;   the loop address is ./Data/bacon_sandwich_loop
+;   the base address is bacon_sandwich
+;   the loop address is bacon_sandwich_loop
 ; M4 support:
 ;   no one comma
 ;   macro file_size defined
 
-  ifndef ./Data/bacon_sandwich
-./Data/bacon_sandwich equ $
+  ifndef bacon_sandwich
+bacon_sandwich equ $
   endif
 
 ;loop
-	dw ./Data/bacon_sandwich_loop
+	dw bacon_sandwich_loop
 
-./Data/bacon_sandwich_start equ ./Data/bacon_sandwich + 0x2
+bacon_sandwich_start equ bacon_sandwich + 0x2
 ;sequence
-./Data/bacon_sandwich_loop equ ./Data/bacon_sandwich + 0x2
-	dw ./Data/bacon_sandwich_ptn2
-	dw ./Data/bacon_sandwich_ptn5
-	dw ./Data/bacon_sandwich_ptn4
-	dw ./Data/bacon_sandwich_ptn3
-	dw ./Data/bacon_sandwich_ptn0
-	dw ./Data/bacon_sandwich_ptn1
-	dw ./Data/bacon_sandwich_ptn6
-	dw ./Data/bacon_sandwich_ptn7
-	dw ./Data/bacon_sandwich_ptn8
-	dw ./Data/bacon_sandwich_ptn9
-	dw ./Data/bacon_sandwich_ptna
-	dw ./Data/bacon_sandwich_ptnb
-	dw ./Data/bacon_sandwich_ptnc
-	dw ./Data/bacon_sandwich_ptnd
-	dw ./Data/bacon_sandwich_ptne
-	dw ./Data/bacon_sandwich_ptnf
-	dw ./Data/bacon_sandwich_ptn0
-	dw ./Data/bacon_sandwich_ptn1
-	db 2	; lo = repeat times
+bacon_sandwich_loop equ bacon_sandwich + 0x2
+	dw bacon_sandwich_ptn2
+	dw bacon_sandwich_ptn5
+	dw bacon_sandwich_ptn4
+	dw bacon_sandwich_ptn3
+	dw bacon_sandwich_ptn0
+	dw bacon_sandwich_ptn1
+	dw bacon_sandwich_ptn6
+	dw bacon_sandwich_ptn7
+	dw bacon_sandwich_ptn8
+	dw bacon_sandwich_ptn9
+	dw bacon_sandwich_ptna
+	dw bacon_sandwich_ptnb
+	dw bacon_sandwich_ptnc
+	dw bacon_sandwich_ptnd
+	dw bacon_sandwich_ptne
+	dw bacon_sandwich_ptnf
+	dw bacon_sandwich_ptn0
+	dw bacon_sandwich_ptn1
+	db 0	; lo = repeat times
 	db 0	; hi = end mark
 ; 0x28 bytes
 
-./Data/bacon_sandwich_ptn0 equ ./Data/bacon_sandwich + 0x28
+bacon_sandwich_ptn0 equ bacon_sandwich + 0x28
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row0
+	dw bacon_sandwich_row0
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7
+	dw bacon_sandwich_row7
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa
+	dw bacon_sandwich_rowa
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb
+	dw bacon_sandwich_rowb
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc
+	dw bacon_sandwich_rowc
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowd
+	dw bacon_sandwich_rowd
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7
+	dw bacon_sandwich_row7
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowf
+	dw bacon_sandwich_rowf
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row13
+	dw bacon_sandwich_row13
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row13
+	dw bacon_sandwich_row13
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row13
+	dw bacon_sandwich_row13
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row15
+	dw bacon_sandwich_row15
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row16
+	dw bacon_sandwich_row16
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/bacon_sandwich_ptn1 equ ./Data/bacon_sandwich + 0x169
+bacon_sandwich_ptn1 equ bacon_sandwich + 0x169
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1b
+	dw bacon_sandwich_row1b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1c
+	dw bacon_sandwich_row1c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1b
+	dw bacon_sandwich_row1b
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1c
+	dw bacon_sandwich_row1c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1b
+	dw bacon_sandwich_row1b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1d
+	dw bacon_sandwich_row1d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1e
+	dw bacon_sandwich_row1e
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1f
+	dw bacon_sandwich_row1f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row20
+	dw bacon_sandwich_row20
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row21
+	dw bacon_sandwich_row21
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row16
+	dw bacon_sandwich_row16
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row23
+	dw bacon_sandwich_row23
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row23
+	dw bacon_sandwich_row23
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row27
+	dw bacon_sandwich_row27
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row27
+	dw bacon_sandwich_row27
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row23
+	dw bacon_sandwich_row23
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row28
+	dw bacon_sandwich_row28
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row29
+	dw bacon_sandwich_row29
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row23
+	dw bacon_sandwich_row23
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row27
+	dw bacon_sandwich_row27
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/bacon_sandwich_ptn2 equ ./Data/bacon_sandwich + 0x2aa
+bacon_sandwich_ptn2 equ bacon_sandwich + 0x2aa
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2a
+	dw bacon_sandwich_row2a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2a
+	dw bacon_sandwich_row2a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2b
+	dw bacon_sandwich_row2b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2a
+	dw bacon_sandwich_row2a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2c
+	dw bacon_sandwich_row2c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2b
+	dw bacon_sandwich_row2b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2a
+	dw bacon_sandwich_row2a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2c
+	dw bacon_sandwich_row2c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2d
+	dw bacon_sandwich_row2d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2e
+	dw bacon_sandwich_row2e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2f
+	dw bacon_sandwich_row2f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2d
+	dw bacon_sandwich_row2d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2a
+	dw bacon_sandwich_row2a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2c
+	dw bacon_sandwich_row2c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2d
+	dw bacon_sandwich_row2d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2e
+	dw bacon_sandwich_row2e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2f
+	dw bacon_sandwich_row2f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2d
+	dw bacon_sandwich_row2d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2a
+	dw bacon_sandwich_row2a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2c
+	dw bacon_sandwich_row2c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2d
+	dw bacon_sandwich_row2d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2e
+	dw bacon_sandwich_row2e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2c
+	dw bacon_sandwich_row2c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2b
+	dw bacon_sandwich_row2b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row30
+	dw bacon_sandwich_row30
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row31
+	dw bacon_sandwich_row31
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2b
+	dw bacon_sandwich_row2b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2a
+	dw bacon_sandwich_row2a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2f
+	dw bacon_sandwich_row2f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2d
+	dw bacon_sandwich_row2d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2a
+	dw bacon_sandwich_row2a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2c
+	dw bacon_sandwich_row2c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row32
+	dw bacon_sandwich_row32
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row33
+	dw bacon_sandwich_row33
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row34
+	dw bacon_sandwich_row34
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row32
+	dw bacon_sandwich_row32
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row35
+	dw bacon_sandwich_row35
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row34
+	dw bacon_sandwich_row34
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row32
+	dw bacon_sandwich_row32
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row35
+	dw bacon_sandwich_row35
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row36
+	dw bacon_sandwich_row36
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row37
+	dw bacon_sandwich_row37
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row38
+	dw bacon_sandwich_row38
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row36
+	dw bacon_sandwich_row36
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row32
+	dw bacon_sandwich_row32
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row35
+	dw bacon_sandwich_row35
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row36
+	dw bacon_sandwich_row36
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row37
+	dw bacon_sandwich_row37
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row38
+	dw bacon_sandwich_row38
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row36
+	dw bacon_sandwich_row36
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row32
+	dw bacon_sandwich_row32
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row35
+	dw bacon_sandwich_row35
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row36
+	dw bacon_sandwich_row36
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row37
+	dw bacon_sandwich_row37
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row35
+	dw bacon_sandwich_row35
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row34
+	dw bacon_sandwich_row34
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row39
+	dw bacon_sandwich_row39
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3a
+	dw bacon_sandwich_row3a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row34
+	dw bacon_sandwich_row34
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row32
+	dw bacon_sandwich_row32
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row38
+	dw bacon_sandwich_row38
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row36
+	dw bacon_sandwich_row36
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row32
+	dw bacon_sandwich_row32
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row35
+	dw bacon_sandwich_row35
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/bacon_sandwich_ptn3 equ ./Data/bacon_sandwich + 0x3ab
+bacon_sandwich_ptn3 equ bacon_sandwich + 0x3ab
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3b
+	dw bacon_sandwich_row3b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3b
+	dw bacon_sandwich_row3b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3c
+	dw bacon_sandwich_row3c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3b
+	dw bacon_sandwich_row3b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3d
+	dw bacon_sandwich_row3d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3c
+	dw bacon_sandwich_row3c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3b
+	dw bacon_sandwich_row3b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3d
+	dw bacon_sandwich_row3d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3e
+	dw bacon_sandwich_row3e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3f
+	dw bacon_sandwich_row3f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row40
+	dw bacon_sandwich_row40
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3e
+	dw bacon_sandwich_row3e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3b
+	dw bacon_sandwich_row3b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3d
+	dw bacon_sandwich_row3d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3e
+	dw bacon_sandwich_row3e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3f
+	dw bacon_sandwich_row3f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row40
+	dw bacon_sandwich_row40
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3e
+	dw bacon_sandwich_row3e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3b
+	dw bacon_sandwich_row3b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3d
+	dw bacon_sandwich_row3d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3e
+	dw bacon_sandwich_row3e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3f
+	dw bacon_sandwich_row3f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3d
+	dw bacon_sandwich_row3d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3c
+	dw bacon_sandwich_row3c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row41
+	dw bacon_sandwich_row41
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row42
+	dw bacon_sandwich_row42
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3c
+	dw bacon_sandwich_row3c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3b
+	dw bacon_sandwich_row3b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row40
+	dw bacon_sandwich_row40
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3e
+	dw bacon_sandwich_row3e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3b
+	dw bacon_sandwich_row3b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3d
+	dw bacon_sandwich_row3d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row43
+	dw bacon_sandwich_row43
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row43
+	dw bacon_sandwich_row43
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row44
+	dw bacon_sandwich_row44
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row43
+	dw bacon_sandwich_row43
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row45
+	dw bacon_sandwich_row45
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row44
+	dw bacon_sandwich_row44
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row43
+	dw bacon_sandwich_row43
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row45
+	dw bacon_sandwich_row45
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row46
+	dw bacon_sandwich_row46
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row47
+	dw bacon_sandwich_row47
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row48
+	dw bacon_sandwich_row48
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row46
+	dw bacon_sandwich_row46
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row43
+	dw bacon_sandwich_row43
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row45
+	dw bacon_sandwich_row45
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row46
+	dw bacon_sandwich_row46
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row47
+	dw bacon_sandwich_row47
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row48
+	dw bacon_sandwich_row48
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row46
+	dw bacon_sandwich_row46
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row43
+	dw bacon_sandwich_row43
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row45
+	dw bacon_sandwich_row45
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row46
+	dw bacon_sandwich_row46
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row47
+	dw bacon_sandwich_row47
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row45
+	dw bacon_sandwich_row45
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row44
+	dw bacon_sandwich_row44
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row49
+	dw bacon_sandwich_row49
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4a
+	dw bacon_sandwich_row4a
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row44
+	dw bacon_sandwich_row44
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row43
+	dw bacon_sandwich_row43
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row48
+	dw bacon_sandwich_row48
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row46
+	dw bacon_sandwich_row46
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row43
+	dw bacon_sandwich_row43
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row45
+	dw bacon_sandwich_row45
 
 	db 0x40
 ; 0x111 bytes
 
-./Data/bacon_sandwich_ptn4 equ ./Data/bacon_sandwich + 0x4bc
+bacon_sandwich_ptn4 equ bacon_sandwich + 0x4bc
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4b
+	dw bacon_sandwich_row4b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4b
+	dw bacon_sandwich_row4b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4c
+	dw bacon_sandwich_row4c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4b
+	dw bacon_sandwich_row4b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4d
+	dw bacon_sandwich_row4d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4c
+	dw bacon_sandwich_row4c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4b
+	dw bacon_sandwich_row4b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4d
+	dw bacon_sandwich_row4d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4e
+	dw bacon_sandwich_row4e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4f
+	dw bacon_sandwich_row4f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row50
+	dw bacon_sandwich_row50
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4e
+	dw bacon_sandwich_row4e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4b
+	dw bacon_sandwich_row4b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4d
+	dw bacon_sandwich_row4d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4e
+	dw bacon_sandwich_row4e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4f
+	dw bacon_sandwich_row4f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row50
+	dw bacon_sandwich_row50
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4e
+	dw bacon_sandwich_row4e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4b
+	dw bacon_sandwich_row4b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4d
+	dw bacon_sandwich_row4d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4e
+	dw bacon_sandwich_row4e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4f
+	dw bacon_sandwich_row4f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4d
+	dw bacon_sandwich_row4d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4c
+	dw bacon_sandwich_row4c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row51
+	dw bacon_sandwich_row51
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row52
+	dw bacon_sandwich_row52
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4c
+	dw bacon_sandwich_row4c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4b
+	dw bacon_sandwich_row4b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row50
+	dw bacon_sandwich_row50
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4e
+	dw bacon_sandwich_row4e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4b
+	dw bacon_sandwich_row4b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4d
+	dw bacon_sandwich_row4d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row53
+	dw bacon_sandwich_row53
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row54
+	dw bacon_sandwich_row54
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row55
+	dw bacon_sandwich_row55
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row53
+	dw bacon_sandwich_row53
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row56
+	dw bacon_sandwich_row56
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row55
+	dw bacon_sandwich_row55
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row53
+	dw bacon_sandwich_row53
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row56
+	dw bacon_sandwich_row56
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row57
+	dw bacon_sandwich_row57
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row58
+	dw bacon_sandwich_row58
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row59
+	dw bacon_sandwich_row59
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row57
+	dw bacon_sandwich_row57
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row53
+	dw bacon_sandwich_row53
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row56
+	dw bacon_sandwich_row56
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row57
+	dw bacon_sandwich_row57
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row58
+	dw bacon_sandwich_row58
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row59
+	dw bacon_sandwich_row59
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row57
+	dw bacon_sandwich_row57
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row53
+	dw bacon_sandwich_row53
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row56
+	dw bacon_sandwich_row56
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row57
+	dw bacon_sandwich_row57
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row58
+	dw bacon_sandwich_row58
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row56
+	dw bacon_sandwich_row56
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row55
+	dw bacon_sandwich_row55
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5a
+	dw bacon_sandwich_row5a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5b
+	dw bacon_sandwich_row5b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row55
+	dw bacon_sandwich_row55
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row53
+	dw bacon_sandwich_row53
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row59
+	dw bacon_sandwich_row59
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row57
+	dw bacon_sandwich_row57
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row53
+	dw bacon_sandwich_row53
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row56
+	dw bacon_sandwich_row56
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/bacon_sandwich_ptn5 equ ./Data/bacon_sandwich + 0x5bd
+bacon_sandwich_ptn5 equ bacon_sandwich + 0x5bd
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5c
+	dw bacon_sandwich_row5c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5c
+	dw bacon_sandwich_row5c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5d
+	dw bacon_sandwich_row5d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5c
+	dw bacon_sandwich_row5c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3a
+	dw bacon_sandwich_row3a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5d
+	dw bacon_sandwich_row5d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5c
+	dw bacon_sandwich_row5c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3a
+	dw bacon_sandwich_row3a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5e
+	dw bacon_sandwich_row5e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5f
+	dw bacon_sandwich_row5f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row60
+	dw bacon_sandwich_row60
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5e
+	dw bacon_sandwich_row5e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5c
+	dw bacon_sandwich_row5c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3a
+	dw bacon_sandwich_row3a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5e
+	dw bacon_sandwich_row5e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5f
+	dw bacon_sandwich_row5f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row60
+	dw bacon_sandwich_row60
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5e
+	dw bacon_sandwich_row5e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5c
+	dw bacon_sandwich_row5c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3a
+	dw bacon_sandwich_row3a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5e
+	dw bacon_sandwich_row5e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5f
+	dw bacon_sandwich_row5f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3a
+	dw bacon_sandwich_row3a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5d
+	dw bacon_sandwich_row5d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row61
+	dw bacon_sandwich_row61
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row62
+	dw bacon_sandwich_row62
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5d
+	dw bacon_sandwich_row5d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5c
+	dw bacon_sandwich_row5c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row60
+	dw bacon_sandwich_row60
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5e
+	dw bacon_sandwich_row5e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5c
+	dw bacon_sandwich_row5c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3a
+	dw bacon_sandwich_row3a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row63
+	dw bacon_sandwich_row63
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row63
+	dw bacon_sandwich_row63
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row64
+	dw bacon_sandwich_row64
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row63
+	dw bacon_sandwich_row63
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row65
+	dw bacon_sandwich_row65
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row64
+	dw bacon_sandwich_row64
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row63
+	dw bacon_sandwich_row63
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row65
+	dw bacon_sandwich_row65
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row66
+	dw bacon_sandwich_row66
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row67
+	dw bacon_sandwich_row67
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row68
+	dw bacon_sandwich_row68
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row66
+	dw bacon_sandwich_row66
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row63
+	dw bacon_sandwich_row63
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row65
+	dw bacon_sandwich_row65
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row66
+	dw bacon_sandwich_row66
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row67
+	dw bacon_sandwich_row67
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row68
+	dw bacon_sandwich_row68
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row66
+	dw bacon_sandwich_row66
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row63
+	dw bacon_sandwich_row63
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row65
+	dw bacon_sandwich_row65
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row66
+	dw bacon_sandwich_row66
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row67
+	dw bacon_sandwich_row67
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row65
+	dw bacon_sandwich_row65
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row64
+	dw bacon_sandwich_row64
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row69
+	dw bacon_sandwich_row69
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6a
+	dw bacon_sandwich_row6a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row64
+	dw bacon_sandwich_row64
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row63
+	dw bacon_sandwich_row63
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row68
+	dw bacon_sandwich_row68
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row66
+	dw bacon_sandwich_row66
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row63
+	dw bacon_sandwich_row63
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row65
+	dw bacon_sandwich_row65
 
 	db 0x40
 ; 0x101 bytes
 
-./Data/bacon_sandwich_ptn6 equ ./Data/bacon_sandwich + 0x6be
+bacon_sandwich_ptn6 equ bacon_sandwich + 0x6be
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7
+	dw bacon_sandwich_row7
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa
+	dw bacon_sandwich_rowa
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb
+	dw bacon_sandwich_rowb
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc
+	dw bacon_sandwich_rowc
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowd
+	dw bacon_sandwich_rowd
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7
+	dw bacon_sandwich_row7
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowf
+	dw bacon_sandwich_rowf
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row13
+	dw bacon_sandwich_row13
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row13
+	dw bacon_sandwich_row13
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row13
+	dw bacon_sandwich_row13
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row15
+	dw bacon_sandwich_row15
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row16
+	dw bacon_sandwich_row16
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowe
+	dw bacon_sandwich_rowe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/bacon_sandwich_ptn7 equ ./Data/bacon_sandwich + 0x7ff
+bacon_sandwich_ptn7 equ bacon_sandwich + 0x7ff
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1b
+	dw bacon_sandwich_row1b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1c
+	dw bacon_sandwich_row1c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1b
+	dw bacon_sandwich_row1b
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1c
+	dw bacon_sandwich_row1c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1b
+	dw bacon_sandwich_row1b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1d
+	dw bacon_sandwich_row1d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1e
+	dw bacon_sandwich_row1e
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row17
+	dw bacon_sandwich_row17
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1f
+	dw bacon_sandwich_row1f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row20
+	dw bacon_sandwich_row20
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row21
+	dw bacon_sandwich_row21
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row16
+	dw bacon_sandwich_row16
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row23
+	dw bacon_sandwich_row23
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row23
+	dw bacon_sandwich_row23
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row27
+	dw bacon_sandwich_row27
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row27
+	dw bacon_sandwich_row27
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row23
+	dw bacon_sandwich_row23
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row28
+	dw bacon_sandwich_row28
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row29
+	dw bacon_sandwich_row29
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row23
+	dw bacon_sandwich_row23
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row27
+	dw bacon_sandwich_row27
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row25
+	dw bacon_sandwich_row25
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row24
+	dw bacon_sandwich_row24
 
 	db 0x40
 ; 0x143 bytes
 
-./Data/bacon_sandwich_ptn8 equ ./Data/bacon_sandwich + 0x942
+bacon_sandwich_ptn8 equ bacon_sandwich + 0x942
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6b
+	dw bacon_sandwich_row6b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6b
+	dw bacon_sandwich_row6b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6c
+	dw bacon_sandwich_row6c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6c
+	dw bacon_sandwich_row6c
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6d
+	dw bacon_sandwich_row6d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6d
+	dw bacon_sandwich_row6d
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6e
+	dw bacon_sandwich_row6e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6e
+	dw bacon_sandwich_row6e
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6f
+	dw bacon_sandwich_row6f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6f
+	dw bacon_sandwich_row6f
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6f
+	dw bacon_sandwich_row6f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6f
+	dw bacon_sandwich_row6f
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row70
+	dw bacon_sandwich_row70
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row70
+	dw bacon_sandwich_row70
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row71
+	dw bacon_sandwich_row71
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row71
+	dw bacon_sandwich_row71
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row71
+	dw bacon_sandwich_row71
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row71
+	dw bacon_sandwich_row71
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row70
+	dw bacon_sandwich_row70
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row70
+	dw bacon_sandwich_row70
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row71
+	dw bacon_sandwich_row71
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row71
+	dw bacon_sandwich_row71
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row70
+	dw bacon_sandwich_row70
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row70
+	dw bacon_sandwich_row70
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row72
+	dw bacon_sandwich_row72
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row72
+	dw bacon_sandwich_row72
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/bacon_sandwich_ptn9 equ ./Data/bacon_sandwich + 0xa83
+bacon_sandwich_ptn9 equ bacon_sandwich + 0xa83
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row73
+	dw bacon_sandwich_row73
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row73
+	dw bacon_sandwich_row73
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row73
+	dw bacon_sandwich_row73
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row73
+	dw bacon_sandwich_row73
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row76
+	dw bacon_sandwich_row76
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row77
+	dw bacon_sandwich_row77
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row78
+	dw bacon_sandwich_row78
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row78
+	dw bacon_sandwich_row78
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row78
+	dw bacon_sandwich_row78
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row78
+	dw bacon_sandwich_row78
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row79
+	dw bacon_sandwich_row79
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7c
+	dw bacon_sandwich_row7c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7c
+	dw bacon_sandwich_row7c
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row79
+	dw bacon_sandwich_row79
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row79
+	dw bacon_sandwich_row79
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7d
+	dw bacon_sandwich_row7d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7d
+	dw bacon_sandwich_row7d
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7e
+	dw bacon_sandwich_row7e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7e
+	dw bacon_sandwich_row7e
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row82
+	dw bacon_sandwich_row82
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row83
+	dw bacon_sandwich_row83
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row84
+	dw bacon_sandwich_row84
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row84
+	dw bacon_sandwich_row84
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row83
+	dw bacon_sandwich_row83
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row83
+	dw bacon_sandwich_row83
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row84
+	dw bacon_sandwich_row84
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row84
+	dw bacon_sandwich_row84
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row85
+	dw bacon_sandwich_row85
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row85
+	dw bacon_sandwich_row85
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row86
+	dw bacon_sandwich_row86
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row86
+	dw bacon_sandwich_row86
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	db 0x40
 ; 0x143 bytes
 
-./Data/bacon_sandwich_ptna equ ./Data/bacon_sandwich + 0xbc6
+bacon_sandwich_ptna equ bacon_sandwich + 0xbc6
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row87
+	dw bacon_sandwich_row87
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row87
+	dw bacon_sandwich_row87
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowd
+	dw bacon_sandwich_rowd
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowd
+	dw bacon_sandwich_rowd
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row72
+	dw bacon_sandwich_row72
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row72
+	dw bacon_sandwich_row72
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/bacon_sandwich_ptnb equ ./Data/bacon_sandwich + 0xd07
+bacon_sandwich_ptnb equ bacon_sandwich + 0xd07
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row88
+	dw bacon_sandwich_row88
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row88
+	dw bacon_sandwich_row88
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row73
+	dw bacon_sandwich_row73
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row73
+	dw bacon_sandwich_row73
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row89
+	dw bacon_sandwich_row89
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row89
+	dw bacon_sandwich_row89
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row8a
+	dw bacon_sandwich_row8a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8a
+	dw bacon_sandwich_row8a
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row8b
+	dw bacon_sandwich_row8b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8b
+	dw bacon_sandwich_row8b
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	db 0x40
 ; 0x143 bytes
 
-./Data/bacon_sandwich_ptnc equ ./Data/bacon_sandwich + 0xe4a
+bacon_sandwich_ptnc equ bacon_sandwich + 0xe4a
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row8c
+	dw bacon_sandwich_row8c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8c
+	dw bacon_sandwich_row8c
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8c
+	dw bacon_sandwich_row8c
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row8d
+	dw bacon_sandwich_row8d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row8e
+	dw bacon_sandwich_row8e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8d
+	dw bacon_sandwich_row8d
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8f
+	dw bacon_sandwich_row8f
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row90
+	dw bacon_sandwich_row90
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8
+	dw bacon_sandwich_row8
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row91
+	dw bacon_sandwich_row91
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row92
+	dw bacon_sandwich_row92
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row93
+	dw bacon_sandwich_row93
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row91
+	dw bacon_sandwich_row91
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1
+	dw bacon_sandwich_row1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row8c
+	dw bacon_sandwich_row8c
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row94
+	dw bacon_sandwich_row94
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row5
+	dw bacon_sandwich_row5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row95
+	dw bacon_sandwich_row95
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row96
+	dw bacon_sandwich_row96
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row87
+	dw bacon_sandwich_row87
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row97
+	dw bacon_sandwich_row97
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row98
+	dw bacon_sandwich_row98
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc
+	dw bacon_sandwich_rowc
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row99
+	dw bacon_sandwich_row99
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row90
+	dw bacon_sandwich_row90
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9a
+	dw bacon_sandwich_row9a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9b
+	dw bacon_sandwich_row9b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowf
+	dw bacon_sandwich_rowf
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9a
+	dw bacon_sandwich_row9a
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9c
+	dw bacon_sandwich_row9c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowf
+	dw bacon_sandwich_rowf
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row70
+	dw bacon_sandwich_row70
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9c
+	dw bacon_sandwich_row9c
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row71
+	dw bacon_sandwich_row71
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9d
+	dw bacon_sandwich_row9d
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9e
+	dw bacon_sandwich_row9e
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9f
+	dw bacon_sandwich_row9f
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa0
+	dw bacon_sandwich_rowa0
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9e
+	dw bacon_sandwich_row9e
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowf
+	dw bacon_sandwich_rowf
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9a
+	dw bacon_sandwich_row9a
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa1
+	dw bacon_sandwich_rowa1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6f
+	dw bacon_sandwich_row6f
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row70
+	dw bacon_sandwich_row70
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9c
+	dw bacon_sandwich_row9c
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row72
+	dw bacon_sandwich_row72
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa2
+	dw bacon_sandwich_rowa2
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9f
+	dw bacon_sandwich_row9f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9b
+	dw bacon_sandwich_row9b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9d
+	dw bacon_sandwich_row9d
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/bacon_sandwich_ptnd equ ./Data/bacon_sandwich + 0xf8b
+bacon_sandwich_ptnd equ bacon_sandwich + 0xf8b
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa3
+	dw bacon_sandwich_rowa3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa3
+	dw bacon_sandwich_rowa3
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa4
+	dw bacon_sandwich_rowa4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa3
+	dw bacon_sandwich_rowa3
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa4
+	dw bacon_sandwich_rowa4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa4
+	dw bacon_sandwich_rowa4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa4
+	dw bacon_sandwich_rowa4
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7b
+	dw bacon_sandwich_row7b
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa5
+	dw bacon_sandwich_rowa5
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row75
+	dw bacon_sandwich_row75
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa6
+	dw bacon_sandwich_rowa6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa5
+	dw bacon_sandwich_rowa5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa4
+	dw bacon_sandwich_rowa4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa3
+	dw bacon_sandwich_rowa3
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa7
+	dw bacon_sandwich_rowa7
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa7
+	dw bacon_sandwich_rowa7
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa4
+	dw bacon_sandwich_rowa4
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa8
+	dw bacon_sandwich_rowa8
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa8
+	dw bacon_sandwich_rowa8
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row74
+	dw bacon_sandwich_row74
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7a
+	dw bacon_sandwich_row7a
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowa9
+	dw bacon_sandwich_rowa9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowa9
+	dw bacon_sandwich_rowa9
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowaa
+	dw bacon_sandwich_rowaa
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowab
+	dw bacon_sandwich_rowab
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowac
+	dw bacon_sandwich_rowac
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowad
+	dw bacon_sandwich_rowad
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowae
+	dw bacon_sandwich_rowae
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowae
+	dw bacon_sandwich_rowae
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowaf
+	dw bacon_sandwich_rowaf
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowae
+	dw bacon_sandwich_rowae
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowac
+	dw bacon_sandwich_rowac
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowac
+	dw bacon_sandwich_rowac
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb0
+	dw bacon_sandwich_rowb0
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowaf
+	dw bacon_sandwich_rowaf
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row86
+	dw bacon_sandwich_row86
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowaf
+	dw bacon_sandwich_rowaf
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row7f
+	dw bacon_sandwich_row7f
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row80
+	dw bacon_sandwich_row80
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowad
+	dw bacon_sandwich_rowad
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row81
+	dw bacon_sandwich_row81
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb1
+	dw bacon_sandwich_rowb1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb1
+	dw bacon_sandwich_rowb1
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowac
+	dw bacon_sandwich_rowac
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowad
+	dw bacon_sandwich_rowad
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowaf
+	dw bacon_sandwich_rowaf
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowaf
+	dw bacon_sandwich_rowaf
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb2
+	dw bacon_sandwich_rowb2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowac
+	dw bacon_sandwich_rowac
 
 	db 0x40
 ; 0x143 bytes
 
-./Data/bacon_sandwich_ptne equ ./Data/bacon_sandwich + 0x10ce
+bacon_sandwich_ptne equ bacon_sandwich + 0x10ce
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb3
+	dw bacon_sandwich_rowb3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb3
+	dw bacon_sandwich_rowb3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb3
+	dw bacon_sandwich_rowb3
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row2
+	dw bacon_sandwich_row2
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb4
+	dw bacon_sandwich_rowb4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row6
+	dw bacon_sandwich_row6
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb5
+	dw bacon_sandwich_rowb5
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb5
+	dw bacon_sandwich_rowb5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row4
+	dw bacon_sandwich_row4
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb4
+	dw bacon_sandwich_rowb4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb4
+	dw bacon_sandwich_rowb4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb4
+	dw bacon_sandwich_rowb4
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb4
+	dw bacon_sandwich_rowb4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb6
+	dw bacon_sandwich_rowb6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb
+	dw bacon_sandwich_rowb
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row3
+	dw bacon_sandwich_row3
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb7
+	dw bacon_sandwich_rowb7
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb7
+	dw bacon_sandwich_rowb7
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row9
+	dw bacon_sandwich_row9
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb8
+	dw bacon_sandwich_rowb8
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb8
+	dw bacon_sandwich_rowb8
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb8
+	dw bacon_sandwich_rowb8
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb9
+	dw bacon_sandwich_rowb9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row14
+	dw bacon_sandwich_row14
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb8
+	dw bacon_sandwich_rowb8
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb8
+	dw bacon_sandwich_rowb8
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row12
+	dw bacon_sandwich_row12
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb9
+	dw bacon_sandwich_rowb9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb9
+	dw bacon_sandwich_rowb9
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb9
+	dw bacon_sandwich_rowb9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb9
+	dw bacon_sandwich_rowb9
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowba
+	dw bacon_sandwich_rowba
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row16
+	dw bacon_sandwich_row16
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row11
+	dw bacon_sandwich_row11
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowb9
+	dw bacon_sandwich_rowb9
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowb9
+	dw bacon_sandwich_rowb9
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row10
+	dw bacon_sandwich_row10
 
 	db 0x40
 ; 0x141 bytes
 
-./Data/bacon_sandwich_ptnf equ ./Data/bacon_sandwich + 0x120f
+bacon_sandwich_ptnf equ bacon_sandwich + 0x120f
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowbb
+	dw bacon_sandwich_rowbb
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowbc
+	dw bacon_sandwich_rowbc
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowbc
+	dw bacon_sandwich_rowbc
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowbd
+	dw bacon_sandwich_rowbd
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1a
+	dw bacon_sandwich_row1a
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row19
+	dw bacon_sandwich_row19
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowbe
+	dw bacon_sandwich_rowbe
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowbe
+	dw bacon_sandwich_rowbe
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1c
+	dw bacon_sandwich_row1c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1c
+	dw bacon_sandwich_row1c
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row18
+	dw bacon_sandwich_row18
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row1c
+	dw bacon_sandwich_row1c
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row1c
+	dw bacon_sandwich_row1c
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowbc
+	dw bacon_sandwich_rowbc
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowbc
+	dw bacon_sandwich_rowbc
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowbf
+	dw bacon_sandwich_rowbf
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc0
+	dw bacon_sandwich_rowc0
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc1
+	dw bacon_sandwich_rowc1
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc1
+	dw bacon_sandwich_rowc1
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc2
+	dw bacon_sandwich_rowc2
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc2
+	dw bacon_sandwich_rowc2
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc3
+	dw bacon_sandwich_rowc3
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc3
+	dw bacon_sandwich_rowc3
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row22
+	dw bacon_sandwich_row22
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_row26
+	dw bacon_sandwich_row26
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc4
+	dw bacon_sandwich_rowc4
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc5
+	dw bacon_sandwich_rowc5
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc5
+	dw bacon_sandwich_rowc5
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc4
+	dw bacon_sandwich_rowc4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc4
+	dw bacon_sandwich_rowc4
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc5
+	dw bacon_sandwich_rowc5
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc5
+	dw bacon_sandwich_rowc5
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc6
+	dw bacon_sandwich_rowc6
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc6
+	dw bacon_sandwich_rowc6
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc5
+	dw bacon_sandwich_rowc5
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc5
+	dw bacon_sandwich_rowc5
 
 	dw 0x300
-	dw ./Data/bacon_sandwich_rowc4
+	dw bacon_sandwich_rowc4
 
 	dw 0x380
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc4
+	dw bacon_sandwich_rowc4
 
 	dw 0x304
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc5
+	dw bacon_sandwich_rowc5
 
 	dw 0x301
 	dw 0x0080
-	dw ./Data/bacon_sandwich_rowc5
+	dw bacon_sandwich_rowc5
 
 	db 0x40
 ; 0x149 bytes
@@ -3576,8 +3576,8 @@
 
 
 ;row buffers
-./Data/bacon_sandwich_rows equ ./Data/bacon_sandwich + 0x1358
-./Data/bacon_sandwich_row0 equ ./Data/bacon_sandwich_rows + 0x0
+bacon_sandwich_rows equ bacon_sandwich + 0x1358
+bacon_sandwich_row0 equ bacon_sandwich_rows + 0x0
 	dw 0x0
 	dw 0x557
 	dw 0x1000
@@ -3587,7 +3587,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row1 equ ./Data/bacon_sandwich_rows + 0x10
+bacon_sandwich_row1 equ bacon_sandwich_rows + 0x10
 	dw 0x0
 	dw 0x557
 	dw 0x1000
@@ -3597,7 +3597,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row2 equ ./Data/bacon_sandwich_rows + 0x20
+bacon_sandwich_row2 equ bacon_sandwich_rows + 0x20
 	dw 0x0
 	dw 0x557
 	dw 0x155c
@@ -3607,7 +3607,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row3 equ ./Data/bacon_sandwich_rows + 0x30
+bacon_sandwich_row3 equ bacon_sandwich_rows + 0x30
 	dw 0x0
 	dw 0x557
 	dw 0x1966
@@ -3617,7 +3617,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row4 equ ./Data/bacon_sandwich_rows + 0x40
+bacon_sandwich_row4 equ bacon_sandwich_rows + 0x40
 	dw 0x0
 	dw 0xaae
 	dw 0x155c
@@ -3627,7 +3627,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row5 equ ./Data/bacon_sandwich_rows + 0x50
+bacon_sandwich_row5 equ bacon_sandwich_rows + 0x50
 	dw 0x0
 	dw 0xaae
 	dw 0x1000
@@ -3637,7 +3637,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row6 equ ./Data/bacon_sandwich_rows + 0x60
+bacon_sandwich_row6 equ bacon_sandwich_rows + 0x60
 	dw 0x0
 	dw 0xaae
 	dw 0x1966
@@ -3647,7 +3647,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row7 equ ./Data/bacon_sandwich_rows + 0x70
+bacon_sandwich_row7 equ bacon_sandwich_rows + 0x70
 	dw 0x0
 	dw 0x557
 	dw 0x1000
@@ -3657,7 +3657,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row8 equ ./Data/bacon_sandwich_rows + 0x80
+bacon_sandwich_row8 equ bacon_sandwich_rows + 0x80
 	dw 0x0
 	dw 0x557
 	dw 0x1966
@@ -3667,7 +3667,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row9 equ ./Data/bacon_sandwich_rows + 0x90
+bacon_sandwich_row9 equ bacon_sandwich_rows + 0x90
 	dw 0x0
 	dw 0x557
 	dw 0x155c
@@ -3677,7 +3677,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa equ ./Data/bacon_sandwich_rows + 0xa0
+bacon_sandwich_rowa equ bacon_sandwich_rows + 0xa0
 	dw 0x0
 	dw 0x800
 	dw 0x1000
@@ -3687,7 +3687,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb equ ./Data/bacon_sandwich_rows + 0xb0
+bacon_sandwich_rowb equ bacon_sandwich_rows + 0xb0
 	dw 0x0
 	dw 0x800
 	dw 0x1966
@@ -3697,7 +3697,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowc equ ./Data/bacon_sandwich_rows + 0xc0
+bacon_sandwich_rowc equ bacon_sandwich_rows + 0xc0
 	dw 0x0
 	dw 0xaae
 	dw 0x1966
@@ -3707,7 +3707,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowd equ ./Data/bacon_sandwich_rows + 0xd0
+bacon_sandwich_rowd equ bacon_sandwich_rows + 0xd0
 	dw 0x0
 	dw 0xaae
 	dw 0x155c
@@ -3717,7 +3717,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowe equ ./Data/bacon_sandwich_rows + 0xe0
+bacon_sandwich_rowe equ bacon_sandwich_rows + 0xe0
 	dw 0x0
 	dw 0x43d
 	dw 0x10f4
@@ -3727,7 +3727,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowf equ ./Data/bacon_sandwich_rows + 0xf0
+bacon_sandwich_rowf equ bacon_sandwich_rows + 0xf0
 	dw 0x0
 	dw 0x43d
 	dw 0x1000
@@ -3737,7 +3737,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row10 equ ./Data/bacon_sandwich_rows + 0x100
+bacon_sandwich_row10 equ bacon_sandwich_rows + 0x100
 	dw 0x0
 	dw 0x43d
 	dw 0x155c
@@ -3747,7 +3747,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row11 equ ./Data/bacon_sandwich_rows + 0x110
+bacon_sandwich_row11 equ bacon_sandwich_rows + 0x110
 	dw 0x0
 	dw 0x43d
 	dw 0x1966
@@ -3757,7 +3757,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row12 equ ./Data/bacon_sandwich_rows + 0x120
+bacon_sandwich_row12 equ bacon_sandwich_rows + 0x120
 	dw 0x0
 	dw 0x87a
 	dw 0x155c
@@ -3767,7 +3767,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row13 equ ./Data/bacon_sandwich_rows + 0x130
+bacon_sandwich_row13 equ bacon_sandwich_rows + 0x130
 	dw 0x0
 	dw 0x87a
 	dw 0x10f4
@@ -3777,7 +3777,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row14 equ ./Data/bacon_sandwich_rows + 0x140
+bacon_sandwich_row14 equ bacon_sandwich_rows + 0x140
 	dw 0x0
 	dw 0x87a
 	dw 0x1966
@@ -3787,7 +3787,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row15 equ ./Data/bacon_sandwich_rows + 0x150
+bacon_sandwich_row15 equ bacon_sandwich_rows + 0x150
 	dw 0x0
 	dw 0x65a
 	dw 0x10f4
@@ -3797,7 +3797,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row16 equ ./Data/bacon_sandwich_rows + 0x160
+bacon_sandwich_row16 equ bacon_sandwich_rows + 0x160
 	dw 0x0
 	dw 0x65a
 	dw 0x1966
@@ -3807,7 +3807,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row17 equ ./Data/bacon_sandwich_rows + 0x170
+bacon_sandwich_row17 equ bacon_sandwich_rows + 0x170
 	dw 0x0
 	dw 0x65a
 	dw 0x1000
@@ -3817,7 +3817,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row18 equ ./Data/bacon_sandwich_rows + 0x180
+bacon_sandwich_row18 equ bacon_sandwich_rows + 0x180
 	dw 0x0
 	dw 0x65a
 	dw 0x1307
@@ -3827,7 +3827,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row19 equ ./Data/bacon_sandwich_rows + 0x190
+bacon_sandwich_row19 equ bacon_sandwich_rows + 0x190
 	dw 0x0
 	dw 0x65a
 	dw 0x1966
@@ -3837,7 +3837,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row1a equ ./Data/bacon_sandwich_rows + 0x1a0
+bacon_sandwich_row1a equ bacon_sandwich_rows + 0x1a0
 	dw 0x0
 	dw 0xcb3
 	dw 0x1307
@@ -3847,7 +3847,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row1b equ ./Data/bacon_sandwich_rows + 0x1b0
+bacon_sandwich_row1b equ bacon_sandwich_rows + 0x1b0
 	dw 0x0
 	dw 0xcb3
 	dw 0x1000
@@ -3857,7 +3857,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row1c equ ./Data/bacon_sandwich_rows + 0x1c0
+bacon_sandwich_row1c equ bacon_sandwich_rows + 0x1c0
 	dw 0x0
 	dw 0xcb3
 	dw 0x1966
@@ -3867,7 +3867,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row1d equ ./Data/bacon_sandwich_rows + 0x1d0
+bacon_sandwich_row1d equ bacon_sandwich_rows + 0x1d0
 	dw 0x0
 	dw 0x984
 	dw 0x1000
@@ -3877,7 +3877,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row1e equ ./Data/bacon_sandwich_rows + 0x1e0
+bacon_sandwich_row1e equ bacon_sandwich_rows + 0x1e0
 	dw 0x0
 	dw 0x984
 	dw 0x1966
@@ -3887,7 +3887,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row1f equ ./Data/bacon_sandwich_rows + 0x1f0
+bacon_sandwich_row1f equ bacon_sandwich_rows + 0x1f0
 	dw 0x0
 	dw 0xcb3
 	dw 0x1966
@@ -3897,7 +3897,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row20 equ ./Data/bacon_sandwich_rows + 0x200
+bacon_sandwich_row20 equ bacon_sandwich_rows + 0x200
 	dw 0x0
 	dw 0xcb3
 	dw 0x1307
@@ -3907,7 +3907,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row21 equ ./Data/bacon_sandwich_rows + 0x210
+bacon_sandwich_row21 equ bacon_sandwich_rows + 0x210
 	dw 0x0
 	dw 0x65a
 	dw 0x1000
@@ -3917,7 +3917,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row22 equ ./Data/bacon_sandwich_rows + 0x220
+bacon_sandwich_row22 equ bacon_sandwich_rows + 0x220
 	dw 0x0
 	dw 0x4c2
 	dw 0x1307
@@ -3927,7 +3927,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row23 equ ./Data/bacon_sandwich_rows + 0x230
+bacon_sandwich_row23 equ bacon_sandwich_rows + 0x230
 	dw 0x0
 	dw 0x4c2
 	dw 0x17f9
@@ -3937,7 +3937,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row24 equ ./Data/bacon_sandwich_rows + 0x240
+bacon_sandwich_row24 equ bacon_sandwich_rows + 0x240
 	dw 0x0
 	dw 0x4c2
 	dw 0x1c82
@@ -3947,7 +3947,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row25 equ ./Data/bacon_sandwich_rows + 0x250
+bacon_sandwich_row25 equ bacon_sandwich_rows + 0x250
 	dw 0x0
 	dw 0x984
 	dw 0x17f9
@@ -3957,7 +3957,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row26 equ ./Data/bacon_sandwich_rows + 0x260
+bacon_sandwich_row26 equ bacon_sandwich_rows + 0x260
 	dw 0x0
 	dw 0x984
 	dw 0x1307
@@ -3967,7 +3967,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row27 equ ./Data/bacon_sandwich_rows + 0x270
+bacon_sandwich_row27 equ bacon_sandwich_rows + 0x270
 	dw 0x0
 	dw 0x984
 	dw 0x1c82
@@ -3977,7 +3977,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row28 equ ./Data/bacon_sandwich_rows + 0x280
+bacon_sandwich_row28 equ bacon_sandwich_rows + 0x280
 	dw 0x0
 	dw 0x721
 	dw 0x1307
@@ -3987,7 +3987,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row29 equ ./Data/bacon_sandwich_rows + 0x290
+bacon_sandwich_row29 equ bacon_sandwich_rows + 0x290
 	dw 0x0
 	dw 0x721
 	dw 0x1c82
@@ -3997,7 +3997,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row2a equ ./Data/bacon_sandwich_rows + 0x2a0
+bacon_sandwich_row2a equ bacon_sandwich_rows + 0x2a0
 	dw 0x0
 	dw 0x557
 	dw 0x1000
@@ -4007,7 +4007,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row2b equ ./Data/bacon_sandwich_rows + 0x2b0
+bacon_sandwich_row2b equ bacon_sandwich_rows + 0x2b0
 	dw 0x0
 	dw 0x557
 	dw 0x155c
@@ -4017,7 +4017,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row2c equ ./Data/bacon_sandwich_rows + 0x2c0
+bacon_sandwich_row2c equ bacon_sandwich_rows + 0x2c0
 	dw 0x0
 	dw 0x557
 	dw 0x1966
@@ -4027,7 +4027,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row2d equ ./Data/bacon_sandwich_rows + 0x2d0
+bacon_sandwich_row2d equ bacon_sandwich_rows + 0x2d0
 	dw 0x0
 	dw 0xaae
 	dw 0x155c
@@ -4037,7 +4037,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row2e equ ./Data/bacon_sandwich_rows + 0x2e0
+bacon_sandwich_row2e equ bacon_sandwich_rows + 0x2e0
 	dw 0x0
 	dw 0xaae
 	dw 0x1000
@@ -4047,7 +4047,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row2f equ ./Data/bacon_sandwich_rows + 0x2f0
+bacon_sandwich_row2f equ bacon_sandwich_rows + 0x2f0
 	dw 0x0
 	dw 0xaae
 	dw 0x1966
@@ -4057,7 +4057,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row30 equ ./Data/bacon_sandwich_rows + 0x300
+bacon_sandwich_row30 equ bacon_sandwich_rows + 0x300
 	dw 0x0
 	dw 0x800
 	dw 0x1000
@@ -4067,7 +4067,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row31 equ ./Data/bacon_sandwich_rows + 0x310
+bacon_sandwich_row31 equ bacon_sandwich_rows + 0x310
 	dw 0x0
 	dw 0x800
 	dw 0x1966
@@ -4077,7 +4077,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row32 equ ./Data/bacon_sandwich_rows + 0x320
+bacon_sandwich_row32 equ bacon_sandwich_rows + 0x320
 	dw 0x0
 	dw 0x43d
 	dw 0x10f4
@@ -4087,7 +4087,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row33 equ ./Data/bacon_sandwich_rows + 0x330
+bacon_sandwich_row33 equ bacon_sandwich_rows + 0x330
 	dw 0x0
 	dw 0x43d
 	dw 0x1000
@@ -4097,7 +4097,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row34 equ ./Data/bacon_sandwich_rows + 0x340
+bacon_sandwich_row34 equ bacon_sandwich_rows + 0x340
 	dw 0x0
 	dw 0x43d
 	dw 0x155c
@@ -4107,7 +4107,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row35 equ ./Data/bacon_sandwich_rows + 0x350
+bacon_sandwich_row35 equ bacon_sandwich_rows + 0x350
 	dw 0x0
 	dw 0x43d
 	dw 0x1966
@@ -4117,7 +4117,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row36 equ ./Data/bacon_sandwich_rows + 0x360
+bacon_sandwich_row36 equ bacon_sandwich_rows + 0x360
 	dw 0x0
 	dw 0x87a
 	dw 0x155c
@@ -4127,7 +4127,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row37 equ ./Data/bacon_sandwich_rows + 0x370
+bacon_sandwich_row37 equ bacon_sandwich_rows + 0x370
 	dw 0x0
 	dw 0x87a
 	dw 0x10f4
@@ -4137,7 +4137,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row38 equ ./Data/bacon_sandwich_rows + 0x380
+bacon_sandwich_row38 equ bacon_sandwich_rows + 0x380
 	dw 0x0
 	dw 0x87a
 	dw 0x1966
@@ -4147,7 +4147,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row39 equ ./Data/bacon_sandwich_rows + 0x390
+bacon_sandwich_row39 equ bacon_sandwich_rows + 0x390
 	dw 0x0
 	dw 0x65a
 	dw 0x10f4
@@ -4157,7 +4157,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row3a equ ./Data/bacon_sandwich_rows + 0x3a0
+bacon_sandwich_row3a equ bacon_sandwich_rows + 0x3a0
 	dw 0x0
 	dw 0x65a
 	dw 0x1966
@@ -4167,7 +4167,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row3b equ ./Data/bacon_sandwich_rows + 0x3b0
+bacon_sandwich_row3b equ bacon_sandwich_rows + 0x3b0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x1000
@@ -4177,7 +4177,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row3c equ ./Data/bacon_sandwich_rows + 0x3c0
+bacon_sandwich_row3c equ bacon_sandwich_rows + 0x3c0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x1307
@@ -4187,7 +4187,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row3d equ ./Data/bacon_sandwich_rows + 0x3d0
+bacon_sandwich_row3d equ bacon_sandwich_rows + 0x3d0
 	dw 0xcb3
 	dw 0x65a
 	dw 0x1966
@@ -4197,7 +4197,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row3e equ ./Data/bacon_sandwich_rows + 0x3e0
+bacon_sandwich_row3e equ bacon_sandwich_rows + 0x3e0
 	dw 0xcb3
 	dw 0xcb3
 	dw 0x1307
@@ -4207,7 +4207,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row3f equ ./Data/bacon_sandwich_rows + 0x3f0
+bacon_sandwich_row3f equ bacon_sandwich_rows + 0x3f0
 	dw 0xcb3
 	dw 0xcb3
 	dw 0x1000
@@ -4217,7 +4217,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row40 equ ./Data/bacon_sandwich_rows + 0x400
+bacon_sandwich_row40 equ bacon_sandwich_rows + 0x400
 	dw 0xcb3
 	dw 0xcb3
 	dw 0x1966
@@ -4227,7 +4227,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row41 equ ./Data/bacon_sandwich_rows + 0x410
+bacon_sandwich_row41 equ bacon_sandwich_rows + 0x410
 	dw 0xcb3
 	dw 0x984
 	dw 0x1000
@@ -4237,7 +4237,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row42 equ ./Data/bacon_sandwich_rows + 0x420
+bacon_sandwich_row42 equ bacon_sandwich_rows + 0x420
 	dw 0xcb3
 	dw 0x984
 	dw 0x1966
@@ -4247,7 +4247,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row43 equ ./Data/bacon_sandwich_rows + 0x430
+bacon_sandwich_row43 equ bacon_sandwich_rows + 0x430
 	dw 0x0
 	dw 0x4c2
 	dw 0x1307
@@ -4257,7 +4257,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row44 equ ./Data/bacon_sandwich_rows + 0x440
+bacon_sandwich_row44 equ bacon_sandwich_rows + 0x440
 	dw 0x0
 	dw 0x4c2
 	dw 0x17f9
@@ -4267,7 +4267,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row45 equ ./Data/bacon_sandwich_rows + 0x450
+bacon_sandwich_row45 equ bacon_sandwich_rows + 0x450
 	dw 0x0
 	dw 0x4c2
 	dw 0x1c82
@@ -4277,7 +4277,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row46 equ ./Data/bacon_sandwich_rows + 0x460
+bacon_sandwich_row46 equ bacon_sandwich_rows + 0x460
 	dw 0x0
 	dw 0x984
 	dw 0x17f9
@@ -4287,7 +4287,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row47 equ ./Data/bacon_sandwich_rows + 0x470
+bacon_sandwich_row47 equ bacon_sandwich_rows + 0x470
 	dw 0x0
 	dw 0x984
 	dw 0x1307
@@ -4297,7 +4297,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row48 equ ./Data/bacon_sandwich_rows + 0x480
+bacon_sandwich_row48 equ bacon_sandwich_rows + 0x480
 	dw 0x0
 	dw 0x984
 	dw 0x1c82
@@ -4307,7 +4307,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row49 equ ./Data/bacon_sandwich_rows + 0x490
+bacon_sandwich_row49 equ bacon_sandwich_rows + 0x490
 	dw 0x0
 	dw 0x721
 	dw 0x1307
@@ -4317,7 +4317,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row4a equ ./Data/bacon_sandwich_rows + 0x4a0
+bacon_sandwich_row4a equ bacon_sandwich_rows + 0x4a0
 	dw 0x0
 	dw 0x721
 	dw 0x1c82
@@ -4327,7 +4327,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row4b equ ./Data/bacon_sandwich_rows + 0x4b0
+bacon_sandwich_row4b equ bacon_sandwich_rows + 0x4b0
 	dw 0xaae
 	dw 0x557
 	dw 0x1000
@@ -4337,7 +4337,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row4c equ ./Data/bacon_sandwich_rows + 0x4c0
+bacon_sandwich_row4c equ bacon_sandwich_rows + 0x4c0
 	dw 0xaae
 	dw 0x557
 	dw 0x155c
@@ -4347,7 +4347,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row4d equ ./Data/bacon_sandwich_rows + 0x4d0
+bacon_sandwich_row4d equ bacon_sandwich_rows + 0x4d0
 	dw 0xaae
 	dw 0x557
 	dw 0x1966
@@ -4357,7 +4357,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row4e equ ./Data/bacon_sandwich_rows + 0x4e0
+bacon_sandwich_row4e equ bacon_sandwich_rows + 0x4e0
 	dw 0xaae
 	dw 0xaae
 	dw 0x155c
@@ -4367,7 +4367,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row4f equ ./Data/bacon_sandwich_rows + 0x4f0
+bacon_sandwich_row4f equ bacon_sandwich_rows + 0x4f0
 	dw 0xaae
 	dw 0xaae
 	dw 0x1000
@@ -4377,7 +4377,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row50 equ ./Data/bacon_sandwich_rows + 0x500
+bacon_sandwich_row50 equ bacon_sandwich_rows + 0x500
 	dw 0xaae
 	dw 0xaae
 	dw 0x1966
@@ -4387,7 +4387,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row51 equ ./Data/bacon_sandwich_rows + 0x510
+bacon_sandwich_row51 equ bacon_sandwich_rows + 0x510
 	dw 0xaae
 	dw 0x800
 	dw 0x1000
@@ -4397,7 +4397,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row52 equ ./Data/bacon_sandwich_rows + 0x520
+bacon_sandwich_row52 equ bacon_sandwich_rows + 0x520
 	dw 0xaae
 	dw 0x800
 	dw 0x1966
@@ -4407,7 +4407,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row53 equ ./Data/bacon_sandwich_rows + 0x530
+bacon_sandwich_row53 equ bacon_sandwich_rows + 0x530
 	dw 0x0
 	dw 0x43d
 	dw 0x10f4
@@ -4417,7 +4417,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row54 equ ./Data/bacon_sandwich_rows + 0x540
+bacon_sandwich_row54 equ bacon_sandwich_rows + 0x540
 	dw 0x0
 	dw 0x43d
 	dw 0x1000
@@ -4427,7 +4427,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row55 equ ./Data/bacon_sandwich_rows + 0x550
+bacon_sandwich_row55 equ bacon_sandwich_rows + 0x550
 	dw 0x0
 	dw 0x43d
 	dw 0x155c
@@ -4437,7 +4437,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row56 equ ./Data/bacon_sandwich_rows + 0x560
+bacon_sandwich_row56 equ bacon_sandwich_rows + 0x560
 	dw 0x0
 	dw 0x43d
 	dw 0x1966
@@ -4447,7 +4447,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row57 equ ./Data/bacon_sandwich_rows + 0x570
+bacon_sandwich_row57 equ bacon_sandwich_rows + 0x570
 	dw 0x0
 	dw 0x87a
 	dw 0x155c
@@ -4457,7 +4457,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row58 equ ./Data/bacon_sandwich_rows + 0x580
+bacon_sandwich_row58 equ bacon_sandwich_rows + 0x580
 	dw 0x0
 	dw 0x87a
 	dw 0x10f4
@@ -4467,7 +4467,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row59 equ ./Data/bacon_sandwich_rows + 0x590
+bacon_sandwich_row59 equ bacon_sandwich_rows + 0x590
 	dw 0x0
 	dw 0x87a
 	dw 0x1966
@@ -4477,7 +4477,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row5a equ ./Data/bacon_sandwich_rows + 0x5a0
+bacon_sandwich_row5a equ bacon_sandwich_rows + 0x5a0
 	dw 0x0
 	dw 0x65a
 	dw 0x10f4
@@ -4487,7 +4487,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row5b equ ./Data/bacon_sandwich_rows + 0x5b0
+bacon_sandwich_row5b equ bacon_sandwich_rows + 0x5b0
 	dw 0x0
 	dw 0x65a
 	dw 0x1966
@@ -4497,7 +4497,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row5c equ ./Data/bacon_sandwich_rows + 0x5c0
+bacon_sandwich_row5c equ bacon_sandwich_rows + 0x5c0
 	dw 0x0
 	dw 0x65a
 	dw 0x1000
@@ -4507,7 +4507,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row5d equ ./Data/bacon_sandwich_rows + 0x5d0
+bacon_sandwich_row5d equ bacon_sandwich_rows + 0x5d0
 	dw 0x0
 	dw 0x65a
 	dw 0x1307
@@ -4517,7 +4517,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row5e equ ./Data/bacon_sandwich_rows + 0x5e0
+bacon_sandwich_row5e equ bacon_sandwich_rows + 0x5e0
 	dw 0x0
 	dw 0xcb3
 	dw 0x1307
@@ -4527,7 +4527,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row5f equ ./Data/bacon_sandwich_rows + 0x5f0
+bacon_sandwich_row5f equ bacon_sandwich_rows + 0x5f0
 	dw 0x0
 	dw 0xcb3
 	dw 0x1000
@@ -4537,7 +4537,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row60 equ ./Data/bacon_sandwich_rows + 0x600
+bacon_sandwich_row60 equ bacon_sandwich_rows + 0x600
 	dw 0x0
 	dw 0xcb3
 	dw 0x1966
@@ -4547,7 +4547,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row61 equ ./Data/bacon_sandwich_rows + 0x610
+bacon_sandwich_row61 equ bacon_sandwich_rows + 0x610
 	dw 0x0
 	dw 0x984
 	dw 0x1000
@@ -4557,7 +4557,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row62 equ ./Data/bacon_sandwich_rows + 0x620
+bacon_sandwich_row62 equ bacon_sandwich_rows + 0x620
 	dw 0x0
 	dw 0x984
 	dw 0x1966
@@ -4567,7 +4567,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row63 equ ./Data/bacon_sandwich_rows + 0x630
+bacon_sandwich_row63 equ bacon_sandwich_rows + 0x630
 	dw 0x0
 	dw 0x4c2
 	dw 0x1307
@@ -4577,7 +4577,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row64 equ ./Data/bacon_sandwich_rows + 0x640
+bacon_sandwich_row64 equ bacon_sandwich_rows + 0x640
 	dw 0x0
 	dw 0x4c2
 	dw 0x17f9
@@ -4587,7 +4587,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row65 equ ./Data/bacon_sandwich_rows + 0x650
+bacon_sandwich_row65 equ bacon_sandwich_rows + 0x650
 	dw 0x0
 	dw 0x4c2
 	dw 0x1c82
@@ -4597,7 +4597,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row66 equ ./Data/bacon_sandwich_rows + 0x660
+bacon_sandwich_row66 equ bacon_sandwich_rows + 0x660
 	dw 0x0
 	dw 0x984
 	dw 0x17f9
@@ -4607,7 +4607,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row67 equ ./Data/bacon_sandwich_rows + 0x670
+bacon_sandwich_row67 equ bacon_sandwich_rows + 0x670
 	dw 0x0
 	dw 0x984
 	dw 0x1307
@@ -4617,7 +4617,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row68 equ ./Data/bacon_sandwich_rows + 0x680
+bacon_sandwich_row68 equ bacon_sandwich_rows + 0x680
 	dw 0x0
 	dw 0x984
 	dw 0x1c82
@@ -4627,7 +4627,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row69 equ ./Data/bacon_sandwich_rows + 0x690
+bacon_sandwich_row69 equ bacon_sandwich_rows + 0x690
 	dw 0x0
 	dw 0x721
 	dw 0x1307
@@ -4637,7 +4637,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row6a equ ./Data/bacon_sandwich_rows + 0x6a0
+bacon_sandwich_row6a equ bacon_sandwich_rows + 0x6a0
 	dw 0x0
 	dw 0x721
 	dw 0x1c82
@@ -4647,7 +4647,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row6b equ ./Data/bacon_sandwich_rows + 0x6b0
+bacon_sandwich_row6b equ bacon_sandwich_rows + 0x6b0
 	dw 0x0
 	dw 0x800
 	dw 0x2000
@@ -4657,7 +4657,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row6c equ ./Data/bacon_sandwich_rows + 0x6c0
+bacon_sandwich_row6c equ bacon_sandwich_rows + 0x6c0
 	dw 0x0
 	dw 0x557
 	dw 0x2000
@@ -4667,7 +4667,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row6d equ ./Data/bacon_sandwich_rows + 0x6d0
+bacon_sandwich_row6d equ bacon_sandwich_rows + 0x6d0
 	dw 0x0
 	dw 0xaae
 	dw 0x21e7
@@ -4677,7 +4677,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row6e equ ./Data/bacon_sandwich_rows + 0x6e0
+bacon_sandwich_row6e equ bacon_sandwich_rows + 0x6e0
 	dw 0x0
 	dw 0x557
 	dw 0x21e7
@@ -4687,7 +4687,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row6f equ ./Data/bacon_sandwich_rows + 0x6f0
+bacon_sandwich_row6f equ bacon_sandwich_rows + 0x6f0
 	dw 0x0
 	dw 0x87a
 	dw 0x1000
@@ -4697,7 +4697,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row70 equ ./Data/bacon_sandwich_rows + 0x700
+bacon_sandwich_row70 equ bacon_sandwich_rows + 0x700
 	dw 0x0
 	dw 0x43d
 	dw 0x1307
@@ -4707,7 +4707,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row71 equ ./Data/bacon_sandwich_rows + 0x710
+bacon_sandwich_row71 equ bacon_sandwich_rows + 0x710
 	dw 0x0
 	dw 0x87a
 	dw 0x1307
@@ -4717,7 +4717,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row72 equ ./Data/bacon_sandwich_rows + 0x720
+bacon_sandwich_row72 equ bacon_sandwich_rows + 0x720
 	dw 0x0
 	dw 0x65a
 	dw 0x155c
@@ -4727,7 +4727,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row73 equ ./Data/bacon_sandwich_rows + 0x730
+bacon_sandwich_row73 equ bacon_sandwich_rows + 0x730
 	dw 0x0
 	dw 0x65a
 	dw 0x17f9
@@ -4737,7 +4737,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row74 equ ./Data/bacon_sandwich_rows + 0x740
+bacon_sandwich_row74 equ bacon_sandwich_rows + 0x740
 	dw 0x0
 	dw 0x65a
 	dw 0x1966
@@ -4747,7 +4747,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row75 equ ./Data/bacon_sandwich_rows + 0x750
+bacon_sandwich_row75 equ bacon_sandwich_rows + 0x750
 	dw 0x0
 	dw 0xcb3
 	dw 0x1966
@@ -4757,7 +4757,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row76 equ ./Data/bacon_sandwich_rows + 0x760
+bacon_sandwich_row76 equ bacon_sandwich_rows + 0x760
 	dw 0x0
 	dw 0x65a
 	dw 0x1c82
@@ -4767,7 +4767,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row77 equ ./Data/bacon_sandwich_rows + 0x770
+bacon_sandwich_row77 equ bacon_sandwich_rows + 0x770
 	dw 0x0
 	dw 0x65a
 	dw 0x2000
@@ -4777,7 +4777,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row78 equ ./Data/bacon_sandwich_rows + 0x780
+bacon_sandwich_row78 equ bacon_sandwich_rows + 0x780
 	dw 0x0
 	dw 0xcb3
 	dw 0x2000
@@ -4787,7 +4787,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row79 equ ./Data/bacon_sandwich_rows + 0x790
+bacon_sandwich_row79 equ bacon_sandwich_rows + 0x790
 	dw 0x0
 	dw 0x65a
 	dw 0x10f4
@@ -4797,7 +4797,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row7a equ ./Data/bacon_sandwich_rows + 0x7a0
+bacon_sandwich_row7a equ bacon_sandwich_rows + 0x7a0
 	dw 0x0
 	dw 0x65a
 	dw 0x1307
@@ -4807,7 +4807,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row7b equ ./Data/bacon_sandwich_rows + 0x7b0
+bacon_sandwich_row7b equ bacon_sandwich_rows + 0x7b0
 	dw 0x0
 	dw 0xcb3
 	dw 0x1307
@@ -4817,7 +4817,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row7c equ ./Data/bacon_sandwich_rows + 0x7c0
+bacon_sandwich_row7c equ bacon_sandwich_rows + 0x7c0
 	dw 0x0
 	dw 0x984
 	dw 0x10f4
@@ -4827,7 +4827,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row7d equ ./Data/bacon_sandwich_rows + 0x7d0
+bacon_sandwich_row7d equ bacon_sandwich_rows + 0x7d0
 	dw 0x0
 	dw 0xcb3
 	dw 0x1000
@@ -4837,7 +4837,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row7e equ ./Data/bacon_sandwich_rows + 0x7e0
+bacon_sandwich_row7e equ bacon_sandwich_rows + 0x7e0
 	dw 0x0
 	dw 0x65a
 	dw 0x1000
@@ -4847,7 +4847,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row7f equ ./Data/bacon_sandwich_rows + 0x7f0
+bacon_sandwich_row7f equ bacon_sandwich_rows + 0x7f0
 	dw 0x0
 	dw 0x4c2
 	dw 0xe41
@@ -4857,7 +4857,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row80 equ ./Data/bacon_sandwich_rows + 0x800
+bacon_sandwich_row80 equ bacon_sandwich_rows + 0x800
 	dw 0x0
 	dw 0x984
 	dw 0x1307
@@ -4867,7 +4867,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row81 equ ./Data/bacon_sandwich_rows + 0x810
+bacon_sandwich_row81 equ bacon_sandwich_rows + 0x810
 	dw 0x0
 	dw 0x4c2
 	dw 0x1307
@@ -4877,7 +4877,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row82 equ ./Data/bacon_sandwich_rows + 0x820
+bacon_sandwich_row82 equ bacon_sandwich_rows + 0x820
 	dw 0x0
 	dw 0x984
 	dw 0xbfd
@@ -4887,7 +4887,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row83 equ ./Data/bacon_sandwich_rows + 0x830
+bacon_sandwich_row83 equ bacon_sandwich_rows + 0x830
 	dw 0x0
 	dw 0x984
 	dw 0xcb3
@@ -4897,7 +4897,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row84 equ ./Data/bacon_sandwich_rows + 0x840
+bacon_sandwich_row84 equ bacon_sandwich_rows + 0x840
 	dw 0x0
 	dw 0x4c2
 	dw 0xcb3
@@ -4907,7 +4907,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row85 equ ./Data/bacon_sandwich_rows + 0x850
+bacon_sandwich_row85 equ bacon_sandwich_rows + 0x850
 	dw 0x0
 	dw 0x721
 	dw 0xe41
@@ -4917,7 +4917,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row86 equ ./Data/bacon_sandwich_rows + 0x860
+bacon_sandwich_row86 equ bacon_sandwich_rows + 0x860
 	dw 0x0
 	dw 0x984
 	dw 0xe41
@@ -4927,7 +4927,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row87 equ ./Data/bacon_sandwich_rows + 0x870
+bacon_sandwich_row87 equ bacon_sandwich_rows + 0x870
 	dw 0x0
 	dw 0x800
 	dw 0x155c
@@ -4937,7 +4937,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row88 equ ./Data/bacon_sandwich_rows + 0x880
+bacon_sandwich_row88 equ bacon_sandwich_rows + 0x880
 	dw 0x0
 	dw 0x984
 	dw 0x17f9
@@ -4947,7 +4947,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row89 equ ./Data/bacon_sandwich_rows + 0x890
+bacon_sandwich_row89 equ bacon_sandwich_rows + 0x890
 	dw 0x0
 	dw 0xcb3
 	dw 0x1307
@@ -4957,7 +4957,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row8a equ ./Data/bacon_sandwich_rows + 0x8a0
+bacon_sandwich_row8a equ bacon_sandwich_rows + 0x8a0
 	dw 0x0
 	dw 0x65a
 	dw 0x1307
@@ -4967,7 +4967,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row8b equ ./Data/bacon_sandwich_rows + 0x8b0
+bacon_sandwich_row8b equ bacon_sandwich_rows + 0x8b0
 	dw 0x0
 	dw 0x721
 	dw 0x1307
@@ -4977,7 +4977,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row8c equ ./Data/bacon_sandwich_rows + 0x8c0
+bacon_sandwich_row8c equ bacon_sandwich_rows + 0x8c0
 	dw 0x0
 	dw 0x557
 	dw 0xaae
@@ -4987,7 +4987,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row8d equ ./Data/bacon_sandwich_rows + 0x8d0
+bacon_sandwich_row8d equ bacon_sandwich_rows + 0x8d0
 	dw 0x0
 	dw 0x557
 	dw 0xe41
@@ -4997,7 +4997,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row8e equ ./Data/bacon_sandwich_rows + 0x8e0
+bacon_sandwich_row8e equ bacon_sandwich_rows + 0x8e0
 	dw 0x0
 	dw 0x557
 	dw 0x1307
@@ -5007,7 +5007,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row8f equ ./Data/bacon_sandwich_rows + 0x8f0
+bacon_sandwich_row8f equ bacon_sandwich_rows + 0x8f0
 	dw 0x0
 	dw 0xaae
 	dw 0x1307
@@ -5017,7 +5017,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row90 equ ./Data/bacon_sandwich_rows + 0x900
+bacon_sandwich_row90 equ bacon_sandwich_rows + 0x900
 	dw 0x0
 	dw 0x557
 	dw 0x260e
@@ -5027,7 +5027,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row91 equ ./Data/bacon_sandwich_rows + 0x910
+bacon_sandwich_row91 equ bacon_sandwich_rows + 0x910
 	dw 0x0
 	dw 0xaae
 	dw 0x2ab7
@@ -5037,7 +5037,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row92 equ ./Data/bacon_sandwich_rows + 0x920
+bacon_sandwich_row92 equ bacon_sandwich_rows + 0x920
 	dw 0x0
 	dw 0xaae
 	dw 0x260e
@@ -5047,7 +5047,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row93 equ ./Data/bacon_sandwich_rows + 0x930
+bacon_sandwich_row93 equ bacon_sandwich_rows + 0x930
 	dw 0x0
 	dw 0xaae
 	dw 0xaae
@@ -5057,7 +5057,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row94 equ ./Data/bacon_sandwich_rows + 0x940
+bacon_sandwich_row94 equ bacon_sandwich_rows + 0x940
 	dw 0x0
 	dw 0xaae
 	dw 0xe41
@@ -5067,7 +5067,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row95 equ ./Data/bacon_sandwich_rows + 0x950
+bacon_sandwich_row95 equ bacon_sandwich_rows + 0x950
 	dw 0x0
 	dw 0x557
 	dw 0x1307
@@ -5077,7 +5077,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row96 equ ./Data/bacon_sandwich_rows + 0x960
+bacon_sandwich_row96 equ bacon_sandwich_rows + 0x960
 	dw 0x0
 	dw 0x557
 	dw 0xe41
@@ -5087,7 +5087,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row97 equ ./Data/bacon_sandwich_rows + 0x970
+bacon_sandwich_row97 equ bacon_sandwich_rows + 0x970
 	dw 0x0
 	dw 0x800
 	dw 0x1307
@@ -5097,7 +5097,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row98 equ ./Data/bacon_sandwich_rows + 0x980
+bacon_sandwich_row98 equ bacon_sandwich_rows + 0x980
 	dw 0x0
 	dw 0xaae
 	dw 0x260e
@@ -5107,7 +5107,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row99 equ ./Data/bacon_sandwich_rows + 0x990
+bacon_sandwich_row99 equ bacon_sandwich_rows + 0x990
 	dw 0x0
 	dw 0x557
 	dw 0x2ab7
@@ -5117,7 +5117,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row9a equ ./Data/bacon_sandwich_rows + 0x9a0
+bacon_sandwich_row9a equ bacon_sandwich_rows + 0x9a0
 	dw 0x0
 	dw 0x43d
 	dw 0xaae
@@ -5127,7 +5127,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row9b equ ./Data/bacon_sandwich_rows + 0x9b0
+bacon_sandwich_row9b equ bacon_sandwich_rows + 0x9b0
 	dw 0x0
 	dw 0x43d
 	dw 0x2ab7
@@ -5137,7 +5137,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row9c equ ./Data/bacon_sandwich_rows + 0x9c0
+bacon_sandwich_row9c equ bacon_sandwich_rows + 0x9c0
 	dw 0x0
 	dw 0x43d
 	dw 0xe41
@@ -5147,7 +5147,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row9d equ ./Data/bacon_sandwich_rows + 0x9d0
+bacon_sandwich_row9d equ bacon_sandwich_rows + 0x9d0
 	dw 0x0
 	dw 0x43d
 	dw 0x260e
@@ -5157,7 +5157,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row9e equ ./Data/bacon_sandwich_rows + 0x9e0
+bacon_sandwich_row9e equ bacon_sandwich_rows + 0x9e0
 	dw 0x0
 	dw 0x87a
 	dw 0x2ab7
@@ -5167,7 +5167,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_row9f equ ./Data/bacon_sandwich_rows + 0x9f0
+bacon_sandwich_row9f equ bacon_sandwich_rows + 0x9f0
 	dw 0x0
 	dw 0x87a
 	dw 0x260e
@@ -5177,7 +5177,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa0 equ ./Data/bacon_sandwich_rows + 0xa00
+bacon_sandwich_rowa0 equ bacon_sandwich_rows + 0xa00
 	dw 0x0
 	dw 0x87a
 	dw 0xaae
@@ -5187,7 +5187,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa1 equ ./Data/bacon_sandwich_rows + 0xa10
+bacon_sandwich_rowa1 equ bacon_sandwich_rows + 0xa10
 	dw 0x0
 	dw 0x87a
 	dw 0xe41
@@ -5197,7 +5197,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa2 equ ./Data/bacon_sandwich_rows + 0xa20
+bacon_sandwich_rowa2 equ bacon_sandwich_rows + 0xa20
 	dw 0x0
 	dw 0x65a
 	dw 0x1307
@@ -5207,7 +5207,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa3 equ ./Data/bacon_sandwich_rows + 0xa30
+bacon_sandwich_rowa3 equ bacon_sandwich_rows + 0xa30
 	dw 0x0
 	dw 0x65a
 	dw 0x984
@@ -5217,7 +5217,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa4 equ ./Data/bacon_sandwich_rows + 0xa40
+bacon_sandwich_rowa4 equ bacon_sandwich_rows + 0xa40
 	dw 0x0
 	dw 0x65a
 	dw 0xcb3
@@ -5227,7 +5227,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa5 equ ./Data/bacon_sandwich_rows + 0xa50
+bacon_sandwich_rowa5 equ bacon_sandwich_rows + 0xa50
 	dw 0x0
 	dw 0xcb3
 	dw 0x260e
@@ -5237,7 +5237,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa6 equ ./Data/bacon_sandwich_rows + 0xa60
+bacon_sandwich_rowa6 equ bacon_sandwich_rows + 0xa60
 	dw 0x0
 	dw 0xcb3
 	dw 0x984
@@ -5247,7 +5247,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa7 equ ./Data/bacon_sandwich_rows + 0xa70
+bacon_sandwich_rowa7 equ bacon_sandwich_rows + 0xa70
 	dw 0x0
 	dw 0xcb3
 	dw 0xcb3
@@ -5257,7 +5257,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa8 equ ./Data/bacon_sandwich_rows + 0xa80
+bacon_sandwich_rowa8 equ bacon_sandwich_rows + 0xa80
 	dw 0x0
 	dw 0x984
 	dw 0x1307
@@ -5267,7 +5267,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowa9 equ ./Data/bacon_sandwich_rows + 0xa90
+bacon_sandwich_rowa9 equ bacon_sandwich_rows + 0xa90
 	dw 0x0
 	dw 0xcb3
 	dw 0x1966
@@ -5277,7 +5277,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowaa equ ./Data/bacon_sandwich_rows + 0xaa0
+bacon_sandwich_rowaa equ bacon_sandwich_rows + 0xaa0
 	dw 0x0
 	dw 0x65a
 	dw 0x260e
@@ -5287,7 +5287,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowab equ ./Data/bacon_sandwich_rows + 0xab0
+bacon_sandwich_rowab equ bacon_sandwich_rows + 0xab0
 	dw 0x0
 	dw 0x65a
 	dw 0x1966
@@ -5297,7 +5297,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowac equ ./Data/bacon_sandwich_rows + 0xac0
+bacon_sandwich_rowac equ bacon_sandwich_rows + 0xac0
 	dw 0x0
 	dw 0x4c2
 	dw 0x260e
@@ -5307,7 +5307,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowad equ ./Data/bacon_sandwich_rows + 0xad0
+bacon_sandwich_rowad equ bacon_sandwich_rows + 0xad0
 	dw 0x0
 	dw 0x4c2
 	dw 0x1c82
@@ -5317,7 +5317,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowae equ ./Data/bacon_sandwich_rows + 0xae0
+bacon_sandwich_rowae equ bacon_sandwich_rows + 0xae0
 	dw 0x0
 	dw 0x984
 	dw 0x1c82
@@ -5327,7 +5327,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowaf equ ./Data/bacon_sandwich_rows + 0xaf0
+bacon_sandwich_rowaf equ bacon_sandwich_rows + 0xaf0
 	dw 0x0
 	dw 0x984
 	dw 0x260e
@@ -5337,7 +5337,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb0 equ ./Data/bacon_sandwich_rows + 0xb00
+bacon_sandwich_rowb0 equ bacon_sandwich_rows + 0xb00
 	dw 0x0
 	dw 0x984
 	dw 0x3905
@@ -5347,7 +5347,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb1 equ ./Data/bacon_sandwich_rows + 0xb10
+bacon_sandwich_rowb1 equ bacon_sandwich_rows + 0xb10
 	dw 0x0
 	dw 0x721
 	dw 0x1c82
@@ -5357,7 +5357,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb2 equ ./Data/bacon_sandwich_rows + 0xb20
+bacon_sandwich_rowb2 equ bacon_sandwich_rows + 0xb20
 	dw 0x0
 	dw 0x4c2
 	dw 0x3905
@@ -5367,7 +5367,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb3 equ ./Data/bacon_sandwich_rows + 0xb30
+bacon_sandwich_rowb3 equ bacon_sandwich_rows + 0xb30
 	dw 0x0
 	dw 0x557
 	dw 0x17f9
@@ -5377,7 +5377,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb4 equ ./Data/bacon_sandwich_rows + 0xb40
+bacon_sandwich_rowb4 equ bacon_sandwich_rows + 0xb40
 	dw 0x0
 	dw 0xaae
 	dw 0x17f9
@@ -5387,7 +5387,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb5 equ ./Data/bacon_sandwich_rows + 0xb50
+bacon_sandwich_rowb5 equ bacon_sandwich_rows + 0xb50
 	dw 0x0
 	dw 0x557
 	dw 0x17f9
@@ -5397,7 +5397,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb6 equ ./Data/bacon_sandwich_rows + 0xb60
+bacon_sandwich_rowb6 equ bacon_sandwich_rows + 0xb60
 	dw 0x0
 	dw 0x800
 	dw 0x17f9
@@ -5407,7 +5407,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb7 equ ./Data/bacon_sandwich_rows + 0xb70
+bacon_sandwich_rowb7 equ bacon_sandwich_rows + 0xb70
 	dw 0x0
 	dw 0xaae
 	dw 0x17f9
@@ -5417,7 +5417,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb8 equ ./Data/bacon_sandwich_rows + 0xb80
+bacon_sandwich_rowb8 equ bacon_sandwich_rows + 0xb80
 	dw 0x0
 	dw 0x43d
 	dw 0x17f9
@@ -5427,7 +5427,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowb9 equ ./Data/bacon_sandwich_rows + 0xb90
+bacon_sandwich_rowb9 equ bacon_sandwich_rows + 0xb90
 	dw 0x0
 	dw 0x87a
 	dw 0x17f9
@@ -5437,7 +5437,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowba equ ./Data/bacon_sandwich_rows + 0xba0
+bacon_sandwich_rowba equ bacon_sandwich_rows + 0xba0
 	dw 0x0
 	dw 0x65a
 	dw 0x17f9
@@ -5447,7 +5447,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowbb equ ./Data/bacon_sandwich_rows + 0xbb0
+bacon_sandwich_rowbb equ bacon_sandwich_rows + 0xbb0
 	dw 0x0
 	dw 0x65a
 	dw 0x11f6
@@ -5457,7 +5457,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowbc equ ./Data/bacon_sandwich_rows + 0xbc0
+bacon_sandwich_rowbc equ bacon_sandwich_rows + 0xbc0
 	dw 0x0
 	dw 0x65a
 	dw 0x2000
@@ -5467,7 +5467,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowbd equ ./Data/bacon_sandwich_rows + 0xbd0
+bacon_sandwich_rowbd equ bacon_sandwich_rows + 0xbd0
 	dw 0x0
 	dw 0xcb3
 	dw 0x11f6
@@ -5477,7 +5477,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowbe equ ./Data/bacon_sandwich_rows + 0xbe0
+bacon_sandwich_rowbe equ bacon_sandwich_rows + 0xbe0
 	dw 0x0
 	dw 0xcb3
 	dw 0x2000
@@ -5487,7 +5487,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowbf equ ./Data/bacon_sandwich_rows + 0xbf0
+bacon_sandwich_rowbf equ bacon_sandwich_rows + 0xbf0
 	dw 0x0
 	dw 0x984
 	dw 0x2000
@@ -5497,7 +5497,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowc0 equ ./Data/bacon_sandwich_rows + 0xc00
+bacon_sandwich_rowc0 equ bacon_sandwich_rows + 0xc00
 	dw 0x0
 	dw 0x984
 	dw 0x260e
@@ -5507,7 +5507,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowc1 equ ./Data/bacon_sandwich_rows + 0xc10
+bacon_sandwich_rowc1 equ bacon_sandwich_rows + 0xc10
 	dw 0x0
 	dw 0x65a
 	dw 0x260e
@@ -5517,7 +5517,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowc2 equ ./Data/bacon_sandwich_rows + 0xc20
+bacon_sandwich_rowc2 equ bacon_sandwich_rows + 0xc20
 	dw 0x0
 	dw 0xcb3
 	dw 0x21e7
@@ -5527,7 +5527,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowc3 equ ./Data/bacon_sandwich_rows + 0xc30
+bacon_sandwich_rowc3 equ bacon_sandwich_rows + 0xc30
 	dw 0x0
 	dw 0x65a
 	dw 0x2000
@@ -5537,7 +5537,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowc4 equ ./Data/bacon_sandwich_rows + 0xc40
+bacon_sandwich_rowc4 equ bacon_sandwich_rows + 0xc40
 	dw 0x0
 	dw 0x984
 	dw 0x0
@@ -5547,7 +5547,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowc5 equ ./Data/bacon_sandwich_rows + 0xc50
+bacon_sandwich_rowc5 equ bacon_sandwich_rows + 0xc50
 	dw 0x0
 	dw 0x4c2
 	dw 0x0
@@ -5557,7 +5557,7 @@
 	dw 0x0
 	dw 0x0
 
-./Data/bacon_sandwich_rowc6 equ ./Data/bacon_sandwich_rows + 0xc60
+bacon_sandwich_rowc6 equ bacon_sandwich_rows + 0xc60
 	dw 0x0
 	dw 0x721
 	dw 0x0
@@ -5570,4 +5570,4 @@
 
 ; 0xc70 bytes
 ; file_size = 0x1fc8 bytes
-; define({./Data/bacon_sandwich_size}, 0x1fc8)
+; define({bacon_sandwich_size}, 0x1fc8)
