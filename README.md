@@ -721,13 +721,13 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>                     |<sub>      PORTSTORE      |<sub>                        |<sub>( char port -- )          |<sub> out (port),char       |
 |<sub>                     |<sub>       ZX_CLS        |<sub>                        |<sub>          ( -- )          |<sub> ZX48:clear screen     |
 |<sub>                     |<sub>      ZX_BORDER      |<sub>                        |<sub>    ( color -- )          |<sub> ZX48:set border color |
-|<sub>                     |<sub>        PLAY         |<sub>                        |<sub>     ( addr -- )          |<sub> (addr) = octode2k16 data |
+|<sub>                     |<sub>        PLAY         |<sub>                        |<sub>( data_addr -- )          |<sub> need octode2k16 data  |
 
-|<sub>      Original       |<sub>      M4 FORTH                                      |<sub>  Data stack         |<sub> Comment               |
-| :----------------------: | :-----------------------------------------------------: | :----------------------- | :------------------------- |
-|<sub>                     |<sub>VARIABLEFILE_PLAY(path,name,.suffix)                |<sub>     ( -- )          |<sub> play                  |
-|<sub>                     |<sub>VARIABLEFILE_BUFFERPLAY(path,name,.suffix)          |<sub>     ( -- )          |<sub> copy2buff & play      |
-|<sub>                     |<sub>VARIABLEBINFILE_UNPACK_BUFFERPLAY(path,name,.suffix)|<sub>     ( -- )          |<sub> unpack2buff & play    |
+|<sub>      Original       |<sub>      M4 FORTH                                        |<sub>  Data stack         |<sub> Comment               |
+| :----------------------: | :-------------------------------------------------------: | :----------------------- | :------------------------- |
+|<sub>                     |<sub>FILE(path,name,.suffix) PLAY                          |<sub>     ( -- )          |<sub> play                  |
+|<sub>                     |<sub>VARIABLEFILE_BUFFERPLAY(path,name,.suffix)            |<sub>     ( -- )          |<sub> copy2buff & play      |
+|<sub>                     |<sub>BINFILE(path,name,.suffix) PUSH(buff_addr) UNPACK PLAY|<sub>     ( -- )          |<sub> unpack2buff & play    |
 
 
 Infinite loop until "Q" is pressed:
@@ -1413,11 +1413,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>    `12345` to _B     |<sub>                                  |<sub>       PUSHDOT_TO(_B)        |<sub>          ( -- )          |<sub> _B: dw 0x3039, 0x0000    |
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _B: dw 0x3039, 0x0000    |
 
-|<sub>       Original       |<sub>             M4 FORTH             |<sub>   Data stack   |<sub> Comment                  |
-| :-----------------------: | :-----------------------------------: | :------------------ | :---------------------------- |
-|<sub>                      |<sub>  VARIABLEFILE(path,name,.suffix) |<sub>        ( -- )  |<sub> __file_name: include path/name.suffix |
-|<sub>                      |<sub>VARIABLEBINFILE(path,name,.suffix)|<sub>        ( -- )  |<sub> __file_name: incbin path/name.suffix |
-|<sub>                      |<sub>              UNPACK              |<sub>( from to -- )  |<sub>set depacker: define({USE_ZX0})    |
+|<sub>       Original       |<sub>             M4 FORTH             |<sub>        Data stack        |<sub> Comment                               |
+| :-----------------------: | :-----------------------------------: | :---------------------------- | :----------------------------------------- |
+|<sub>                      |<sub>    FILE(path,name,.suffix)       |<sub>        ( -- __file_name )|<sub> __file_name: include path/name.suffix |
+|<sub>                      |<sub> BINFILE(path,name,.suffix)       |<sub>        ( -- __file_name )|<sub> __file_name: incbin path/name.suffix  |
+|<sub>                      |<sub>              UNPACK              |<sub>( from to -- to )         |<sub>set depacker: define({USE_ZX0})        |
 
 #### Pointer to 1..256 bytes number
 
