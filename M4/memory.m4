@@ -211,6 +211,49 @@ dnl
 dnl
 dnl
 dnl # Include file to variable
+dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
+dnl # FILE(path,name,suffix)    --> ( -- __file_name ) __file_name: dw 0,1,2,3,...
+define({FILE_PUSH2_CMOVE},{dnl
+__{}define({$0_TMP},__TEST_TXTFILE_SIZE({$1},{$2},{$3})){}dnl
+__{}ifelse(eval($#<5),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_addr,name_size)},
+__{}eval($#>5),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,0,{
+__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}dnl
+__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}__CR)},
+__{}{dnl
+__{}__{}define({__PSIZE_$2},__SIZE){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_FILE_PUSH2_CMOVE},{file({{$1,$2,$3}}) $4 $5 cmove},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}},$4,$5){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FILE_PUSH2_CMOVE},{dnl
+__{}define({$0_TMP},__TEST_TXTFILE_SIZE(__UNESCAPING($1),__UNESCAPING($2),__UNESCAPING($3))){}dnl
+__{}ifelse(eval($#<5),1,{
+__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix,buffer_addr,name_size)},
+__{}eval($#>5),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__SIZE,0,{
+__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}dnl
+__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: $2_size{}__CR)},
+__{}{dnl
+__{}__{}__ADD_SPEC_VARIABLE(__CR  ifndef }$2{__CR{}format({%-20s},$2) EQU $4{}__CR  endif){}dnl
+__{}__{}__ASM_TOKEN_FILE_DROP({$1},{$2},{$3})
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL, format({%-11s},__file_$2); 3:10      __INFO   from_addr
+__{}__{}    ld   DE, format({%-11s},$4); 3:10      __INFO    to_addr
+__{}__{}    ld   BC, format({%-11s},$5); 3:10      __INFO   __SIZE times
+__{}__{}    ldir                ; 2:u*21/16 __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # Include file to variable
 dnl #   The file must be without commas
 dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
 dnl # VARIABLEFILE(path,name,suffix)    --> __file_name: dw 0,1,2,3,...
