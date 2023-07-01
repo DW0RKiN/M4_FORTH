@@ -445,7 +445,7 @@ d...,,,
 
             __T_NAME(0):$1,{__TOKEN_FILE:__TOKEN_DROP},         {__SET_TOKEN({__TOKEN_FILE_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):$1,{__TOKEN_BINFILE:__TOKEN_DROP},      {__SET_TOKEN({__TOKEN_BINFILE_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
-            
+
             __T_NAME(0)-$1,{__TOKEN_DROP-__TOKEN_DROP},         {__SET_TOKEN({__TOKEN_2DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_DROP-__TOKEN_2DROP},        {__SET_TOKEN({__TOKEN_3DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
@@ -663,7 +663,7 @@ __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_BINFILE:__TOKEN_PUSHS:1
             __T_NAME(0):$1,                      __TOKEN_BINFILE_PUSH_UNPACK:__TOKEN_PLAY,                    {__SET_TOKEN({__TOKEN_BINFILE_PUSH_UNPACK_PLAY},__CONCATENATE_WITH({ },__T_INFO(0),$2),__ESCAPING(__ESCAPING(__T_ARRAY_1(0))),__ESCAPING(__ESCAPING(__T_ARRAY_2(0))),__ESCAPING(__ESCAPING(__T_ARRAY_3(0))),__T_ARRAY_4(0))},
 __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1=__T_HEX_4(1),         __TOKEN_FILE_PUSH2_CMOVE:__TOKEN_PUSHS:1:__TOKEN_PLAY=__T_HEX_1(0),   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_FILEBUFFERPLAY},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2),__ESCAPING(__ESCAPING(__T_ARRAY_1(1))),__ESCAPING(__ESCAPING(__T_ARRAY_2(1))),__ESCAPING(__ESCAPING(__T_ARRAY_3(1))),__T_ARRAY_4(1)){}__DELETE_LAST_TOKEN},
 
-            
+
 dnl # PUSHDOT
 pushdot,,,
             __T_NAME(0):$1:__IS_NUM($3),                 __TOKEN_PUSHS:__TOKEN_PUSHDOT:1,                      {__SET_TOKEN({__TOKEN_PUSHS},__T_INFO(0){ }$2,__T_ARRAY(0),__HEX_DE($3),__HEX_HL($3))},
