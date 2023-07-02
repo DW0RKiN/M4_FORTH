@@ -1,5 +1,3 @@
-⚠️WARNING⚠️Right now the loops are being rewritten to a tokenized version.
-
 # M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
 
 A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the `dup number condition if`.
@@ -723,11 +721,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>                     |<sub>      ZX_BORDER      |<sub>                        |<sub>    ( color -- )          |<sub> ZX48:set border color |
 |<sub>                     |<sub>        PLAY         |<sub>                        |<sub>( data_addr -- )          |<sub> need octode2k16 data  |
 
-|<sub>      Original       |<sub>      M4 FORTH                                        |<sub>  Data stack         |<sub> Comment               |
-| :----------------------: | :-------------------------------------------------------: | :----------------------- | :------------------------- |
-|<sub>                     |<sub>FILE(path,name,.suffix) PLAY                          |<sub>     ( -- )          |<sub> play                  |
-|<sub>                     |<sub>VARIABLEFILE_BUFFERPLAY(path,name,.suffix)            |<sub>     ( -- )          |<sub> copy2buff & play      |
-|<sub>                     |<sub>BINFILE(path,name,.suffix) PUSH(buff_addr) UNPACK PLAY|<sub>     ( -- )          |<sub> unpack2buff & play    |
+|<sub>      Original       |<sub>      M4 FORTH                                                    |<sub> Data stack |<sub> Comment               |
+| :----------------------: | :-------------------------------------------------------------------: | :-------------- | :------------------------- |
+|<sub>                     |<sub>FILE(path,name,.suffix) PLAY                                      |<sub>   ( -- )   |<sub> play                  |
+|<sub>                     |<sub>FILE(path,name,.suffix) PUSH(buff,name_size) CMOVE PUSH(buff) PLAY|<sub>   ( -- )   |<sub> copy2buff & play      |
+|<sub>                     |<sub>FILEBUFFERPLAY(path,name,.suffix,buffer_addr)                     |<sub>   ( -- )   |<sub> copy2buff & play      |
+|<sub>                     |<sub>BINFILE(path,name,.suffix) PUSH(buff_addr) UNPACK PLAY            |<sub>   ( -- )   |<sub> unpack2buff & play    |
 
 
 Infinite loop until "Q" is pressed:
@@ -1413,11 +1412,12 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>    `12345` to _B     |<sub>                                  |<sub>       PUSHDOT_TO(_B)        |<sub>          ( -- )          |<sub> _B: dw 0x3039, 0x0000    |
 |<sub>          _B          |<sub>            PUSH((_B))            |<sub>                             |<sub>          ( -- `12345.` ) |<sub> _B: dw 0x3039, 0x0000    |
 
-|<sub>       Original       |<sub>             M4 FORTH             |<sub>        Data stack        |<sub> Comment                               |
-| :-----------------------: | :-----------------------------------: | :---------------------------- | :----------------------------------------- |
-|<sub>                      |<sub>    FILE(path,name,.suffix)       |<sub>        ( -- __file_name )|<sub> __file_name: include path/name.suffix |
-|<sub>                      |<sub> BINFILE(path,name,.suffix)       |<sub>        ( -- __file_name )|<sub> __file_name: incbin path/name.suffix  |
-|<sub>                      |<sub>              UNPACK              |<sub>( from to -- to )         |<sub>set depacker: define({USE_ZX0})        |
+|<sub>   Original   |<sub>                    M4 FORTH                     |<sub>        Data stack        |<sub> Comment                                        |
+| :---------------: | :--------------------------------------------------: | :---------------------------- | :-------------------------------------------------- |
+|<sub>              |<sub>    FILE(path,name,.suffix)                      |<sub>        ( -- __file_name )|<sub> __file_name: include path/name.suffix          |
+|<sub>              |<sub> BINFILE(path,name,.suffix)                      |<sub>        ( -- __file_name )|<sub> __file_name: incbin path/name.suffix           |
+|<sub>              |<sub>              UNPACK                             |<sub>( from to -- to )         |<sub>set depacker: define({USE_ZX0/USE_LZ_/USE_LZM}) |
+|<sub>              |<sub>BINFILE(path,name,.suffix) PUSH(buff_addr) UNPACK|<sub>        ( -- __file_name )|<sub> suffix sets the depacker type                  |
 
 #### Pointer to 1..256 bytes number
 
