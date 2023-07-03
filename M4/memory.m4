@@ -254,31 +254,6 @@ dnl
 dnl
 dnl
 dnl # Include file to variable
-dnl #   The file must be without commas
-dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
-dnl # VARIABLEFILE(path,name,suffix)    --> __file_name: dw 0,1,2,3,...
-define({VARIABLEFILE},{dnl
-__{}define({$0_TMP},__TEST_TXTFILE_SIZE({$1},{$2},{$3})){}dnl
-__{}ifelse(eval($#<3),1,{
-__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
-__{}eval($#>3),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__SIZE,0,{
-__{}__{}  .error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}dnl
-__{}__{}errprint(error {$0}($@): Not found "{$1$2$3}" file with definition: {$2_size}__CR)},
-__{}{dnl
-__{}__{}define({__PSIZE_$2},__SIZE){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_VARIABLEFILE},{variablefile({{$1,$2,$3}})},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}}){}dnl
-__{}}){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_VARIABLEFILE},{dnl
-__{}__TOKEN_FILE_DROP($@){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # Include file to variable
 dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
 dnl # BINFILE(path,name,suffix)    --> __file_name: incbin "path/name.suffix"
 define({BINFILE_DROP},{dnl
@@ -413,47 +388,6 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl
-dnl # Include file to variable
-dnl #   The file must be without commas
-dnl #   Must contain "define({name_size},number)" where "number" is the file size in bytes after compilation
-dnl # VARIABLEBINFILE(path,name,suffix)    --> __file_name: incbin "path/name.suffix"
-define({VARIABLEBINFILE},{dnl
-__{}define({__PSIZE_$2},{__FILE_SIZE({$1$2$3})}){}dnl
-__{}ifelse(eval($#<3),1,{
-__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
-__{}eval($#>3),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__PSIZE_$2,{},{
-__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
-__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{}__CR)},
-__{}{dnl
-__{}__{}__ADD_TOKEN({__TOKEN_VARIABLEBINFILE},{variablebinfile({{$1,$2,$3}})},{{{{$1}}}},{{{{$2}}}},{{{{$3}}}}){}dnl
-__{}}){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_VARIABLEBINFILE},{dnl
-__{}define({__SIZE},__FILE_SIZE(__UNESCAPING($1$2$3))){}dnl
-__{}define({__PSIZE_}$2,__SIZE){}dnl
-__{}ifelse(eval($#<3),1,{
-__{}__{}  .error {$0}($@): Missing parameter! Need variablefile(path,name,.suffix)},
-__{}eval($#>3),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__SIZE,{},{
-__{}__{}  .error {$0}($@): Binary file "{$1$2$3}" not found!{}dnl
-__{}__{}errprint(error {$0}($@): Binary file "{$1$2$3}" not found!"{}__CR)},
-__{}{dnl
-__{}__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__{}__ASM_TOKEN_CREATE(__UNESCAPING(__file_$2)){}dnl
-__{}__{}pushdef({LAST_HERE_ADD},__SIZE)dnl
-__{}__{}define({ALL_VARIABLE},__ESCAPING(ALL_VARIABLE)
-__{}__{}__{}    incbin {$1$2$3}
-__{}__{}__{}                        ;format({%-11s}, __SIZE:0)__ESCAPING(__COMPILE_INFO)){}dnl
-__{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
 dnl # VALUE(name)    --> (name) = TOS
 define({VALUE},{dnl
 __{}define({__PSIZE_}$1,2)dnl
@@ -506,7 +440,7 @@ __{}pushdef({LAST_HERE_NAME},$2)dnl
 __{}pushdef({LAST_HERE_ADD},2)dnl
 __{}ifelse(__IS_NUM($1),{0},{
 __{}  .warning {$0}($@): M4 does not know $1 parameter value!}){}dnl
-__{}__ADD_VARIABLE({$2},{$1},__INFO)
+__{}__ADD_DW_VARIABLE({$2},{$1},__INFO)
 __{}    ld   BC, format({%-11s},{$1}); 3:10      $1 value {$2}
 __{}    ld  format({%-16s},{($2), BC}); 4:20      $1 value {$2}})}){}dnl
 dnl

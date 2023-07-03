@@ -20,16 +20,21 @@ define({__BYTE_PRICE},4){}dnl
 dnl
 dnl
 dnl
-dnl # __FILE_SIZE(../M4/xxx/filename.abc) --> 123 (bytes or empty)
+dnl # __FILE_SIZE(../dir/filename.abc) --> 123 (bytes or empty)
 dnl # problem s posix?
-define({__FILE_SIZE_VER4},{esyscmd({stat -c%s "$1" 2>/dev/null| tr -d '\n\t\r'})}){}dnl
+define({__FILE_SIZE_VER1},{esyscmd({stat -c%s "$1" 2>/dev/null| tr -d '\n\t\r'})}){}dnl
 dnl # problem s posix?
-define({__FILE_SIZE_VER3},{esyscmd({find "$1" -printf "%s" 2>/dev/null})}){}dnl
+define({__FILE_SIZE_VER2},{esyscmd({find "$1" -printf "%s" 2>/dev/null})}){}dnl
 dnl # problem s posix?
-define({__FILE_SIZE},{esyscmd({wc -c $1 2>/dev/null | cut -f 1 -d " "| tr -d '\n\t\r'})}){}dnl
+define({__FILE_SIZE_VER3},{esyscmd({wc -c $1 2>/dev/null | cut -f 1 -d " "| tr -d '\n\t\r'})}){}dnl
 dnl # problem s posix?
-define({__FILE_SIZE},{esyscmd({wc -c $1 2>/dev/null | a=$(cut -f 1 -d " "); printf "$a"})}){}dnl
+define({__FILE_SIZE_VER4},{esyscmd({wc -c $1 2>/dev/null | a=$(cut -f 1 -d " "); printf "$a"})}){}dnl
+dnl # problem s posix?
+define({__FILE_SIZE_VER5},{esyscmd({a=$(wc -c $1 2>/dev/null); a=${a%% }; printf ""$a})}){}dnl
+dnl # problem s posix?
+define({__FILE_SIZE_VER6},{esyscmd({a=$(wc -c $1 2>/dev/null); printf ""${a%% }})}){}dnl
 dnl
+define({__FILE_SIZE},{__FILE_SIZE_VER6({$1})}){}dnl
 dnl
 dnl
 define({__TEST_TXTFILE_SIZE},{dnl
