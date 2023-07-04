@@ -534,11 +534,11 @@ define({FP254},0x47fc)dnl #   ; 2.540000e+02 sign(0=0x0000) exp(  7=0x4700) mant
 define({FP255},0x47fe)dnl #   ; 2.550000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(254=0xFE)
 define({FP256},0x4800)dnl #   ; 2.560000e+02 sign(0=0x0000) exp(  8=0x4800) mantisa(  0=0x00)
 dnl
-define({ROOT2F},0x406a)dnl #  ; 1.414062e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(106=0x6A) Square root of 2 (1.41421356)
-define({FPMIN},0x0000)dnl #   ; 5.421011e-20 sign(0=0x0000) exp(-64=0x0000) mantisa(  0=0x00)
-define({FMMIN},0x8000)dnl #   ;-5.421011e-20 sign(1=0x8000) exp(-64=0x0000) mantisa(  0=0x00)
-define({FM0},FPMIN )dnl
-define({FP0},FPMIN )dnl
+define({ROOT2F},0x406a)dnl #     ; 1.414062e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(106=0x6A) Square root of 2 (1.41421356)
+define({FPMIN},0x0000)dnl #      ; 5.421011e-20 sign(0=0x0000) exp(-64=0x0000) mantisa(  0=0x00)
+define({FM0},FPMIN )dnl #        ; dtto  
+define({FMMIN},0x8000)dnl #      ;-5.421011e-20 sign(1=0x8000) exp(-64=0x0000) mantisa(  0=0x00)
+define({FP0},FPMIN )dnl #        ; dtto 
 define({FMMAX},0xffff)dnl #      ;-1.841072e+19 sign(1=0x8000) exp( 63=0x7F00) mantisa(255=0xFF)
 define({FPMAX},0x7fff)dnl #      ; 1.841072e+19 sign(0=0x0000) exp( 63=0x7F00) mantisa(255=0xFF)
 define({FM0_01875},0xba33)dnl #  ;-1.873779e-02 sign(1=0x8000) exp( -6=0x3A00) mantisa( 51=0x33)
