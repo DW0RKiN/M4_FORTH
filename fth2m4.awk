@@ -307,11 +307,11 @@ BEGIN {
   function_name=""
   in_string=0
   
-  count=1  
+  fce_count=1  
   word=""
   upword=""
   last_upword=""
-  spaces=""
+  leading_spaces=""
   in_comment=0
   use_fasin=0
   
@@ -337,10 +337,14 @@ BEGIN {
 
         if (in_string) {
         
-            if (substr(word,2,1) == "\"" && char == "\"" )
+            if (substr(word,2,1) == "\"" && char == "\"" ) {
+                char = ""
                 process_word()
-            else if (substr(word,2,1) == "(" && char == ")" )
+            }
+            else if (substr(word,2,1) == "(" && char == ")" ) {
+                char = ""
                 process_word()
+            }
             else
             {
                 word = word char
@@ -353,8 +357,10 @@ BEGIN {
             word = word char
             upword = upword upchar
 
-            if (char == ")")
+            if (char == ")") {
+                char = ""
                 process_word()
+            }
                 
             continue
         }
@@ -394,7 +400,7 @@ BEGIN {
             else if ( word != "" )
                 process_word()
             else
-                spaces= spaces char
+                leading_spaces= leading_spaces char
 
             continue
         }
@@ -430,14 +436,11 @@ function process_word()
         }
     }
     
-    
-    if ( char == ")" ) char = ""
-    if ( char == "\"" ) char = ""
-    
+
 # printf "\n>%s<\n", upword
 
     if (in_comment) {
-        new_word = spaces ";# " word "\n"
+        new_word = ";# " word "\n"
         in_comment--
     }
     else if (in_string) {
@@ -445,9 +448,9 @@ function process_word()
 # print ">>" substr(upword,1,1)
 
         if ( substr(upword, 1, 3) == "S\" " )
-            new_word = spaces "STRING({\"" substr(word, 4) "\"})"
+            new_word = "STRING({\"" substr(word, 4) "\"})"
         else if ( substr(upword, 1, 1) == "." )
-            new_word = spaces "PRINT({\"" substr(word, 4) "\"})"
+            new_word = "PRINT({\"" substr(word, 4) "\"})"
         else
         {
             print "Error! " word > "/etc/stderr"
@@ -459,91 +462,100 @@ function process_word()
         reserved_functions[word] = new_name
         function_name = new_name
         recurse_functions[function_name] = 0
-        new_word = "(" new_name ")"         # no use spaces
+        new_word = "(" new_name ")"
+        leading_spaces = "" # no use leading_spaces
     }
     else if (last_upword == "VALUE" ) { 
         reserved_name[word] = new_name
         new_word = "(" new_name ")"
+        leading_spaces = "" # no use leading_spaces
     }
     else if (last_upword == "DVALUE" || last_upword == "2VALUE") { 
         reserved_dname[word] = new_name
         new_word = "(" new_name ")"
+        leading_spaces = "" # no use leading_spaces
     }
     else if ( last_upword == "TO" ) { 
-        if ( word in reserved_name ) 
+        if ( word in reserved_name ) { 
             new_word = "(" reserved_name[word] ")"
-        else if ( word in reserved_dname )
+            leading_spaces = "" # no use leading_spaces
+        }
+        else if ( word in reserved_dname ) {
             new_word = "(" reserved_dname[word] ")"
+            leading_spaces = "" # no use leading_spaces
+        }
         else
             print "Error " word " is not value name!" >> "/etc/stderr"
     }
     else if ( last_upword == "CREATE" ) { 
         reserved_name[word] = new_name
         new_word = "(" new_name ")"
+        leading_spaces = "" # no use leading_spaces
     }
     else if (word in reserved_name) {
-        new_word = spaces "PUSH((" reserved_name[word] "))"
+        new_word = "PUSH((" reserved_name[word] "))"
     }
     else if (word in reserved_dname) {
-        new_word = spaces "PUSHDOT((" reserved_dname[word] "))"
+        new_word = "PUSHDOT((" reserved_dname[word] "))"
     }
     else if (word in reserved_functions) {
         new_word = reserved_functions[word]
         if ( recurse_functions[new_word] )
-            new_word = spaces "RCALL(" new_word ")"
+            new_word = "RCALL(" new_word ")"
         else
-            new_word = spaces  "CALL(" new_word ")"
+            new_word = "CALL(" new_word ")"
     }
     else if (word == ":" ) { 
         inside_word_definition++
         new_word = reserved_words[word]
+        leading_spaces = "\n\n"
     }
     else if (upword in reserved_words) {   
-        new_word = spaces reserved_words[upword]
+        new_word = reserved_words[upword]
     }
     else if (word ~ /^" [^"].*$"/) {
-        new_word = spaces "PRINT({\"" word "\"})"
+        new_word = "PRINT({\"" word "\"})"
     }
     else if (word ~ /^-?[0-9]+$/) {
-        new_word = spaces "PUSH(" word ")"
+        new_word = "PUSH(" word ")"
     } 
     else if (word ~ /^-?[0-9]+\.$/) {
-        new_word = spaces "PUSHDOT(" substr(word,1,length(word)-1) ")"
+        new_word = "PUSHDOT(" substr(word,1,length(word)-1) ")"
     } 
     else if (word ~ /^([+-]?[0-9]+([.][0-9]*)?|[+-]?[.][0-9]+)([Ee][+-]?[0-9]+)?$/ ) { 
-        new_word = spaces "PUSH_Z(" word ")"
+        new_word = "PUSH_Z(" word ")"
     }
     else if ( last_upword == "[CHAR]" ) {
         new_word = "PUSH(\47" substr(word,1,1) "\47)"
+        leading_spaces = "" # no use leading_spaces
     }
     else {
-        new_word = spaces "PUSH(" word ")"
+        new_word = "PUSH(" word ")"
     }
 
     if (inside_word_definition) {
         if ( upword == "RECURSE" ) {
             recurse_functions[function_name] = 1
-            new_word = spaces "RCALL(" function_name ")"
+            new_word = "RCALL(" function_name ")"
         }
         if ( word == ";") {
             inside_word_definition--
             function_name = ""
-            new_word = new_word "\n\n";
+            char = "\n"
         }
-        temp_fce[count] = new_word;
-        count++;
+        fce_leading_spaces[fce_count] = leading_spaces
+        fce_words[fce_count] = new_word
+        fce_count++;
     }
     else {
-        printf new_word
+        printf leading_spaces new_word
     }
 
-    if ( new_word ~ /^[[:space:]]*CALL\(__FASIN,\( rad --\)\)[[:space:]]*$/ ) 
+    if ( new_word ~ /^CALL\(__FASIN,\( rad --\)\)$/ ) 
         use_fasin++
 
-    
-    
     last_upword = upword
-    spaces = char
+    leading_spaces = char
     word = ""
     upword = ""
 }
@@ -571,18 +583,18 @@ function file_exists(file) {
 
 END {
     if ( word != "" ) process_word()
-    printf "\n  STOP\n"
-    print "\n" 
+    printf "\n  STOP"
     
     recurse=0
     function_name = ""
 
-    for (i=1; i<count; i++) {
+    for (i=1; i<fce_count; i++) {
     
-        word = temp_fce[i]
+        leading_spaces = fce_leading_spaces[i]
+        word = fce_words[i]
 
-        if ( word ~ /^[[:space:]]*COLON[[:space:]]*$/ ) {
-            function_name = temp_fce[i+1]
+        if ( word == "COLON" ) {
+            function_name = fce_words[i+1]
             function_name = substr(function_name,2,length(function_name)-2)
             recurse = recurse_functions[function_name]
         }
@@ -591,37 +603,23 @@ END {
         
 # Asi by to chtelo dodelat prochazeni zanorenyma smyckama a kontrola zda je uvnitr volano RECURSE, protoze pokud ne, tak staci obycejne smycky...
 
-            # Získání počátečních bílých znaků
-            match(word, /^[[:space:]]*/)
-            leading_spaces = substr(word, RSTART, RLENGTH)
-
-            # Získání samotného textu
-            match(word, /[^[:space:]].*[^[:space:]]/)
-            new_word = substr(word, RSTART, RLENGTH)
-
-            # Získání koncových bílých znaků
-            trailing_spaces = substr(word, RSTART+RLENGTH)
-
-# printf ">>>(" word "):(" leading_spaces "):(" new_word "):(" trailing_spaces ")" recurse_reserved_words[new_word] "<<<\n"
-
             if ( new_word in recurse_reserved_words )
-                word = leading_spaces recurse_reserved_words[new_word] trailing_spaces
+                word = recurse_reserved_words[new_word]
         }
 
-        printf word
+        printf leading_spaces word
 
-        if ( word ~ /^[[:space:]]*SEMICOLON[[:space:]]*$/ ) {
+        if ( word == "SEMICOLON" || word == "RSEMICOLON" ) {
             function_name = ""
             recurse = 0
         }
         
-        if ( word ~ /^[[:space:]]*CALL\(__FASIN,\( rad --\)\)[[:space:]]*$/ ) 
+        if ( word == "CALL(__FASIN,( rad --))" ) 
             use_fasin++        
     }
     
-    
     if ( use_fasin ) {
-        printf "COLON(__FASIN) ;# ( rad -- )\n"
+        printf "\n\nCOLON(__FASIN) ;# ( rad -- )\n"
         printf ";# pi/2 =  1.5707963 = 0x4092\n"
         printf ";# a0   =  1.5707288 = 0x4092\n"
         printf ";# a1   = -0.2121144 = 0xBDB2\n"
@@ -640,8 +638,8 @@ END {
         printf "    PUSH(0x4092) FADD FMUL\n"
         printf "    PUSH(0x4092) SWAP FSUB\n"
         printf "    XOR\n"
-        printf "SEMICOLON\n\n"
+        printf "SEMICOLON"
     }
-    
-    printf "\n "
+
+    printf "\n"
 }
