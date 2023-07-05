@@ -354,18 +354,19 @@ BEGIN {
         }
         
         if (in_comment) {
-            word = word char
-            upword = upword upchar
-
-            if (char == ")") {
-                char = ""
+            if ( in_comment == 2 && i > length($0) ) 
                 process_word()
+            else {
+                word = word char
+                upword = upword upchar
+                if ( in_comment == 1 && char == ")" ) {
+                    char = ""
+                    process_word()
+                }
             }
-                
             continue
         }
 
-    
         if ( char ~ /[[:space:]]/ ) {
             if ( upword == "S\"" )
             {
@@ -387,13 +388,13 @@ BEGIN {
             }
             else if ( upword == "(" )
             {
-                in_comment++
+                in_comment=1
                 word = word char
                 upword = upword upchar
             }
             else if ( upword == "\\" )
             {
-                in_comment++
+                in_comment=2
                 word = word char
                 upword = upword upchar
             }
@@ -416,6 +417,7 @@ BEGIN {
 function process_word()
 {
     new_word=""
+    
     new_name=""
     if ( in_comment == 0 && in_string == 0 ) {
         for (j=1; j<=length(word); j++) {
@@ -435,13 +437,35 @@ function process_word()
                 new_name = new_name "_X_"
         }
     }
-    
+    # Asi by to chtelo jeste vyresit kolizi jmen jako napr. n* a n+, oboje bude n_x_.   
 
 # printf "\n>%s<\n", upword
 
+    if (in_comment == 0 && inside_word_definition && fce_count > 2 && fce_words[fce_count-2] == "COLON" ) {
+        fce_leading_spaces[fce_count] = ""
+        fce_words[fce_count] = ")"
+        fce_count++;
+    }
+
     if (in_comment) {
-        new_word = ";# " word "\n"
-        in_comment--
+        if (in_comment==1 && inside_word_definition && fce_count > 2 && fce_words[fce_count-2] == "COLON" ) {
+            if ( in_comment == 1 ) {
+                new_word = ",{{{{" word "}}}})"
+                leading_spaces = "" # no use leading_spaces
+            }
+            else {
+                fce_leading_spaces[fce_count] = ""
+                fce_words[fce_count] = ")"
+                fce_count++;
+                new_word = ";# " word
+                char = "\n"
+            }
+        }
+        else {
+            new_word = ";# " word
+            char = "\n"
+        }
+        in_comment=0
     }
     else if (in_string) {
     
@@ -462,7 +486,7 @@ function process_word()
         reserved_functions[word] = new_name
         function_name = new_name
         recurse_functions[function_name] = 0
-        new_word = "(" new_name ")"
+        new_word = new_name
         leading_spaces = "" # no use leading_spaces
     }
     else if (last_upword == "VALUE" ) { 
@@ -522,8 +546,11 @@ function process_word()
     else if (word ~ /^-?[0-9]+\.$/) {
         new_word = "PUSHDOT(" substr(word,1,length(word)-1) ")"
     } 
-    else if (word ~ /^([+-]?[0-9]+([.][0-9]*)?|[+-]?[.][0-9]+)([Ee][+-]?[0-9]+)?$/ ) { 
-        new_word = "PUSH_Z(" word ")"
+    else if (word ~ /^([+-]?[0-9]+([.][0-9]*)?|[+-]?[.][0-9]+)([Ee][+-]?[0-9]+)?$/ ) {
+        if ( arg == "-zfloat" )
+            new_word = "PUSH_Z(" word ")"
+        else
+            new_word = "PUSH(" floatToHex(word) ")"
     }
     else if ( last_upword == "[CHAR]" ) {
         new_word = "PUSH(\47" substr(word,1,1) "\47)"
@@ -536,7 +563,6 @@ function process_word()
     if (inside_word_definition) {
         if ( upword == "RECURSE" ) {
             recurse_functions[function_name] = 1
-            new_word = "RCALL(" function_name ")"
         }
         if ( word == ";") {
             inside_word_definition--
@@ -581,6 +607,76 @@ function file_exists(file) {
     return (system("[ -f \"" file "\" ]") == 0)
 }
 
+
+function floatToHex(value) {
+    # Získání znaménka
+    sign = (value < 0) ? 0x8000 : 0
+
+    # Absolutní hodnota
+    absValue = (value < 0) ? -value : value
+
+    hexreal = sprintf( "%a", absValue )
+    
+    if ( hexreal == "0x0p+0" )
+        return "FPMIN"
+
+    if ( hexreal == "-0x0p+0" )
+        return "FMMIN"
+
+    if ( hexreal == "0xinf" )
+        return "FPMAX"
+
+    if ( hexreal == "-0xinf" )
+        return "FMMAX"
+
+    if ( hexreal == "NaN" )
+        return "FPMIN"              # lol
+
+    # Výpočet exponentu
+    exponent = substr(hexreal, index(hexreal, "p") + 1) + 0x40
+    # Výpočet mantisy
+    mantissa = substr(hexreal, index(hexreal, "x") + 1, index(hexreal, "p") - index(hexreal, "x") - 1)
+    if ( mantissa ~ /^1\./ )
+        mantissa = "1" substr(mantissa,3)
+
+    mantissa = mantissa "000"
+    round_nibble=substr(mantissa,4,1)
+    mantissa = "0x" substr(mantissa,1,3)
+    mantissa = strtonum(mantissa)
+
+    if ( round_nibble ~ /[^0-7]/ )
+        mantissa = mantissa + 1
+    
+    if ( mantissa == 0x200 ) {
+        exponent++
+        mantissa=0x00
+    }
+    else
+        mantissa = mantissa - 0x100
+        
+    if ( exponent < 0 && sign ) {
+        hexValue = "FMMIN"
+    }
+    else if ( exponent < 0 )
+    {
+        hexValue = "FPMIN"
+    }   
+    else if ( exponent > 0x7F && sign )
+    {
+        hexValue = "FMMAX"
+    }   
+    else if ( exponent > 0x7F)
+    {
+        hexValue = "FPMAX"
+    }   
+    else {
+        # Sestavení hexadecimální hodnoty
+        hexValue = sprintf("0x%04X", sign + exponent * 0x100 + mantissa)
+    }
+    return hexValue
+}
+
+
 END {
     if ( word != "" ) process_word()
     printf "\n  STOP"
@@ -595,17 +691,52 @@ END {
 
         if ( word == "COLON" ) {
             function_name = fce_words[i+1]
-            function_name = substr(function_name,2,length(function_name)-2)
             recurse = recurse_functions[function_name]
         }
 
         if ( recurse ) {
         
-# Asi by to chtelo dodelat prochazeni zanorenyma smyckama a kontrola zda je uvnitr volano RECURSE, protoze pokud ne, tak staci obycejne smycky...
+            
+            if ( word == "DO" || word == "QUESTIONDO" ){
+                # kontrola zda je uvnitr volano RECURSE, protoze pokud ne, tak staci obycejne smycky...
+                k = 1
+                no_recurse_inside = 1
+                for (j=i+1; no_recurse_inside && k && j<fce_count; j++)
+                {
+                    new_word = fce_words[j]
 
-            if ( word in recurse_reserved_words )
+                    if ( new_word == "LOOP" || new_word == "ADDLOOP" ) k--
+                    if ( new_word == "DO" || new_word == "QUESTIONDO" ) k++        
+                    if ( new_word == "RECURSE" ) no_recurse_inside=0                        
+                }
+                if ( no_recurse_inside == 0)
+                    word = recurse_reserved_words[word]               
+            }
+            else if ( word == "FOR" ) {
+                # kontrola zda je uvnitr volano RECURSE, protoze pokud ne, tak staci obycejne smycky...
+                k = 1
+                no_recurse_inside = 1
+                for (j=i+1; no_recurse_inside && k && j<fce_count; j++)
+                {
+                    new_word = fce_words[j]
+
+                    if ( new_word == "NEXT" ) k--
+                    if ( new_word == "FOR" ) k++        
+                    if ( new_word == "RECURSE" ) no_recurse_inside=0                        
+                }
+                if ( no_recurse_inside == 0)
+                    word = recurse_reserved_words[word]               
+            }
+            else if ( word in recurse_reserved_words )
                 word = recurse_reserved_words[word]
+                
+            if ( word == "RECURSE" ) {
+                word = "RCALL(" function_name ")"
+            }
         }
+        
+        if ( word == "COLON" || word == "RCOLON" )
+            word = word "("
 
         printf leading_spaces word
 
@@ -630,7 +761,7 @@ END {
         printf ";# asin(x) = pi/2 - sqrt(1-x)*(((a3*x + a2)*x + a1)*x + a0)\n"
         printf "\n"
         printf "    DUP PUSH(0x8000) AND SWAP\n"
-        printf "    PUSH(0x7FFF) AND\n"
+        printf "    FABS\n"
         printf "    DUP PUSH(0x4000) SWAP FSUB FSQRT\n" 
         printf "    SWAP DUP DUP PUSH(0xBA33) FMUL\n"
         printf "    PUSH(0x3C30) FADD FMUL\n"
