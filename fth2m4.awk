@@ -603,8 +603,8 @@ END {
         
 # Asi by to chtelo dodelat prochazeni zanorenyma smyckama a kontrola zda je uvnitr volano RECURSE, protoze pokud ne, tak staci obycejne smycky...
 
-            if ( new_word in recurse_reserved_words )
-                word = recurse_reserved_words[new_word]
+            if ( word in recurse_reserved_words )
+                word = recurse_reserved_words[word]
         }
 
         printf leading_spaces word
