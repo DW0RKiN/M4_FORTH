@@ -123,7 +123,9 @@ BEGIN {
   reserved_words["LEAVE"]       = "LEAVE"
   reserved_words["RECURSE"]     = "RECURSE"  
   reserved_words[";"]           = "SEMICOLON"
-  reserved_words["."]           = "DOT"
+  reserved_words["U."]          = "UDOT SPACE"      # for compatibility with the standard
+  reserved_words["D."]          = "DDOT SPACE"      # for compatibility with the standard
+  reserved_words["."]           = "DOT SPACE"       # for compatibility with the standard
   reserved_words[".S"]          = "DOTS"
 
   reserved_words["="]           = "EQ"
@@ -427,7 +429,7 @@ function Name2Readable(name,readable_name)
         name_char = substr(name, j, 1);
         if ( j == 1 && name_char ~ /^[a-zA-Z_]$/ )
             readable_name = name_char
-        else if ( name_char ~ /^[0-9a-zA-Z_]$/ )
+        else if ( j > 1 && name_char ~ /^[0-9a-zA-Z_]$/ )
             readable_name = readable_name name_char
         else if ( name_char == "\000" ) readable_name = readable_name "_NUL"    #00 Null character
         else if ( name_char == "\001" ) readable_name = readable_name "_SOH"    #01 Start of Heading
@@ -479,16 +481,16 @@ function Name2Readable(name,readable_name)
         else if ( name_char == "."    ) readable_name = readable_name "_DOT"    #2E Period, dot or full stop
         else if ( name_char == "/"    ) readable_name = readable_name "_DIV"    #2F Slash or divide
             
-        else if ( name_char == "0"    ) readable_name = readable_name "0"       #30 Zero
-        else if ( name_char == "1"    ) readable_name = readable_name "1"       #31 One
-        else if ( name_char == "2"    ) readable_name = readable_name "2"       #32 Two
-        else if ( name_char == "3"    ) readable_name = readable_name "3"       #33 Three
-        else if ( name_char == "4"    ) readable_name = readable_name "4"       #34 Four
-        else if ( name_char == "5"    ) readable_name = readable_name "5"       #35 Five
-        else if ( name_char == "6"    ) readable_name = readable_name "6"       #36 Six
-        else if ( name_char == "7"    ) readable_name = readable_name "7"       #37 Seven
-        else if ( name_char == "8"    ) readable_name = readable_name "8"       #38 Eight
-        else if ( name_char == "9"    ) readable_name = readable_name "9"       #39 Nine
+        else if ( name_char == "0"    ) readable_name = readable_name "_0"       #30 Zero
+        else if ( name_char == "1"    ) readable_name = readable_name "_1"       #31 One
+        else if ( name_char == "2"    ) readable_name = readable_name "_2"       #32 Two
+        else if ( name_char == "3"    ) readable_name = readable_name "_3"       #33 Three
+        else if ( name_char == "4"    ) readable_name = readable_name "_4"       #34 Four
+        else if ( name_char == "5"    ) readable_name = readable_name "_5"       #35 Five
+        else if ( name_char == "6"    ) readable_name = readable_name "_6"       #36 Six
+        else if ( name_char == "7"    ) readable_name = readable_name "_7"       #37 Seven
+        else if ( name_char == "8"    ) readable_name = readable_name "_8"       #38 Eight
+        else if ( name_char == "9"    ) readable_name = readable_name "_9"       #39 Nine
 
         else if ( name_char == ":"    ) readable_name = readable_name "_CLN"    #3A Colon
         else if ( name_char == ";"    ) readable_name = readable_name "_SCLN"   #3B Semicolon
@@ -514,7 +516,6 @@ function Name2Readable(name,readable_name)
             readable_name = readable_name "_X" name_char
         }
     }
-    
     return readable_name
 }
 
@@ -572,87 +573,90 @@ function process_word()
         in_string--
     }
     else if (last_upword == ":" ) {
-        reserved_functions[word] = readable_name
+        if ( readable_name in collision_check )
+            print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+        else
+            collision_check[readable_name] = word       # add new word to collision_check
+
+        reserved_functions[readable_name] = "CALL("
         function_name = readable_name
-        recurse_functions[function_name] = 0
         new_word = readable_name
         leading_spaces = "" # no use leading_spaces
     }
-    else if (last_upword == "VALUE" ) { 
-        reserved_name[word] = readable_name
-        new_word = "(" readable_name ")"
-        leading_spaces = "" # no use leading_spaces
-    }
-    else if (last_upword == "DVALUE" || last_upword == "2VALUE") { 
-        reserved_dname[word] = readable_name
+    else if ( last_upword == "VALUE" || last_upword == "DVALUE" || last_upword == "2VALUE" || last_upword == "CREATE" ) {
+        if ( readable_name in collision_check )
+            print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+        else
+            collision_check[readable_name] = word       # add new word to collision_check   
+
+        if ( last_upword == "VALUE" )
+            reserved_value[readable_name] = "PUSH(("
+        else if ( last_upword == "DVALUE" || last_upword == "2VALUE" )
+            reserved_value[readable_name] = "PUSHDOT(("
+        else
+            reserved_value[readable_name] = "PUSH("
+            
         new_word = "(" readable_name ")"
         leading_spaces = "" # no use leading_spaces
     }
     else if ( last_upword == "TO" ) { 
-        if ( word in reserved_name ) { 
-            new_word = "(" reserved_name[word] ")"
-            leading_spaces = "" # no use leading_spaces
-        }
-        else if ( word in reserved_dname ) {
-            new_word = "(" reserved_dname[word] ")"
-            leading_spaces = "" # no use leading_spaces
-        }
-        else
-            print "Error " word " is not value name!" >> "/dev/stderr"
-    }
-    else if ( last_upword == "CREATE" ) { 
-        reserved_name[word] = readable_name
+        if ( ! (readable_name in reserved_value) ) 
+            print "\nError: You are trying to change the value of a non-existent variable: \"" word "\"!" > "/dev/stderr"
+        else if ( collision_check[readable_name] != word )
+            print "\nError: Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+
         new_word = "(" readable_name ")"
         leading_spaces = "" # no use leading_spaces
     }
-    else if (word in reserved_name) {
-        new_word = "PUSH((" reserved_name[word] "))"
-    }
-    else if (word in reserved_dname) {
-        new_word = "PUSHDOT((" reserved_dname[word] "))"
-    }
-    else if (word in reserved_functions) {
-        new_word = reserved_functions[word]
-        if ( recurse_functions[new_word] )
-            new_word = "RCALL(" new_word ")"
+    else if ( readable_name in reserved_value ) {
+        if ( collision_check[readable_name] != word )
+            print "\nError: Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"   
+
+        if ( substr(reserved_value[readable_name], length(reserved_value[readable_name])-1) == "((" )
+            new_word = reserved_value[readable_name] readable_name "))"     # PUSHDOT((addr_name)) or PUSH((addr_name))
         else
-            new_word = "CALL(" new_word ")"
+            new_word = reserved_value[readable_name] readable_name ")"      # PUSH(create_label)
+    }
+    else if ( readable_name in reserved_functions ) {
+        if ( collision_check[readable_name] != word )
+            print "\nError: Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+
+            new_word = reserved_functions[readable_name] readable_name ")"
     }
     else if (word == ":" ) { 
-        inside_word_definition++
+        inside_word_definition++                    # define new word
         new_word = reserved_words[word]
         leading_spaces = "\n\n"
     }
-    else if ( upword in reserved_words ) {   
+    else if ( upword in reserved_words ) {          # standard forh word
         new_word = reserved_words[upword]
         if ( upword in use_reserved_words ) use_reserved_words[upword] = 1
     }
-    else if (word ~ /^" [^"].*$"/) {
-        new_word = "PRINT({\"" word "\"})"
-    }
     else if (word ~ /^-?[0-9]+$/) {
-        new_word = "PUSH(" word ")"
+        new_word = "PUSH(" word ")"                 # integer
     } 
     else if (word ~ /^-?[0-9]+\.$/) {
-        new_word = "PUSHDOT(" substr(word,1,length(word)-1) ")"
+        new_word = substr(word,1,length(word)-1)    # delete last dot
+        new_word = "PUSHDOT(" new_word ")"          # double integer
     } 
     else if (word ~ /^([+-]?[0-9]+([.][0-9]*)?|[+-]?[.][0-9]+)([Ee][+-]?[0-9]+)?$/ ) {
         if ( arg == "-zfloat" )
-            new_word = "PUSH_Z(" word ")"
+            new_word = "PUSH_Z(" word ")"           # floating point "string"
         else
-            new_word = "PUSH(" floatToHex(word) ")"
+            new_word = "PUSH(" floatToHex(word) ")" # hexadecimal number representing the value of a floating-point number in Danagy 16-bit format
     }
     else if ( last_upword == "[CHAR]" ) {
         new_word = "PUSH(\47" substr(word,1,1) "\47)"
         leading_spaces = "" # no use leading_spaces
     }
     else {
-        new_word = "PUSH(" word ")"
+        print "\nError in " FILENAME " at line " NR ": Undefined word \"" word "\" found." > "/dev/stderr"        
+        new_word = word
     }
 
     if (inside_word_definition) {
         if ( upword == "RECURSE" ) {
-            recurse_functions[function_name] = 1
+            reserved_functions[function_name] = "RCALL("
         }
         if ( word == ";") {
             inside_word_definition--
@@ -705,27 +709,27 @@ function floatToHex(value) {
     hexreal = sprintf( "%a", absValue )
     
     if ( hexreal == "0x0p+0" ) {
-        print "Warning: You are trying to convert \"positive zero\" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero." >> "/dev/stderr"        
+        print "\nWarning: You are trying to convert \"positive zero\" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero." > "/dev/stderr"        
         return "FPMIN"
     }
 
     if ( hexreal == "-0x0p+0" ) {
-        print "Warning: You are trying to convert \"negative zero\" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero." >> "/dev/stderr"                
+        print "\nWarning: You are trying to convert \"negative zero\" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero." > "/dev/stderr"                
         return "FMMIN"
     }
     
     if ( hexreal == "0xinf" ) {
-        print "Warning: You are trying to convert \"+inf\" to Danagy 16 bit floating point format. It will be converted as a largest possible value." >> "/dev/stderr"
+        print "\nWarning: You are trying to convert \"+inf\" to Danagy 16 bit floating point format. It will be converted as a largest possible value." > "/dev/stderr"
         return "FPMAX"
     }
     
     if ( hexreal == "-0xinf" ) {
-        print "Warning: You are trying to convert \"-inf\" to Danagy 16 bit floating point format. It will be converted as a smallest possible value." >> "/dev/stderr"
+        print "\nWarning: You are trying to convert \"-inf\" to Danagy 16 bit floating point format. It will be converted as a smallest possible value." > "/dev/stderr"
         return "FMMAX"
     }
     
     if ( hexreal == "NaN" ) {
-        print "Warning: You are trying to convert \"Not a Number\" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero." >> "/dev/stderr"
+        print "\nWarning: You are trying to convert \"Not a Number\" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero." > "/dev/stderr"
         return "FPMIN"              # lol
     }
 
@@ -752,22 +756,22 @@ function floatToHex(value) {
         mantissa = mantissa - 0x100
         
     if ( exponent < 0 && sign ) {
-        print "Warning: The value " value " is too close to zero, so it will be changed to a negative value closest to zero." >> "/dev/stderr"        
+        print "\nWarning: The value " value " is too close to zero, so it will be changed to a negative value closest to zero." > "/dev/stderr"        
         hexValue = "FMMIN"
     }
     else if ( exponent < 0 )
     {
-        print "Warning: The value " value " is too close to zero, so it will be changed to a positive value closest to zero." >> "/dev/stderr"        
+        print "\nWarning: The value " value " is too close to zero, so it will be changed to a positive value closest to zero." > "/dev/stderr"        
         hexValue = "FPMIN"
     }
     else if ( exponent > 0x7F && sign )
     {
-        print "Warning: The value " value " is less than the smallest possible value, so it will be changed to the smallest possible value." >> "/dev/stderr"
+        print "\nWarning: The value " value " is less than the smallest possible value, so it will be changed to the smallest possible value." > "/dev/stderr"
         hexValue = "FMMAX"
     }   
     else if ( exponent > 0x7F)
     {
-        print "Warning: The value " value "is greater than the largest possible value, so it will be changed to the largest possible value." >> "/dev/stderr"
+        print "\nWarning: The value " value "is greater than the largest possible value, so it will be changed to the largest possible value." > "/dev/stderr"
         hexValue = "FPMAX"
     }   
     else {
@@ -793,7 +797,8 @@ END {
 
         if ( word == "COLON" ) {
             function_name = fce_words[i+1]
-            recurse = recurse_functions[function_name]
+            recurse = 0
+            if ( reserved_functions[function_name] == "RCALL(" ) recurse = 1
         }
 
         if ( recurse ) {
