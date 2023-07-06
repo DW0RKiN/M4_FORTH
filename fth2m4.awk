@@ -36,7 +36,6 @@ BEGIN {
   reserved_words["DMIN"]        = "DMIN"
   reserved_words["DMAX"]        = "DMAX"
   
-  reserved_words["NEGATE"]      = "NEGATE"
   reserved_words["EXIT"]        = "EXIT"
   reserved_words["FILL"]        = "FILL"
   reserved_words["MOVE"]        = "MOVE"
@@ -261,9 +260,15 @@ BEGIN {
     reserved_words["F>U"]       = "F2U"             # not standard
     
     reserved_words["FABS"]      = "FABS"
-#     reserved_words["FACOS"]     = ""
+    reserved_words["FACOS"]     = "CALL(__FACOS,( rad -- ))"    # for compatibility with the standard
+    
+    use_reserved_words["FACOS"] = 0
+
     reserved_words["F+"]        = "FADD"    
-    reserved_words["FASIN"]     = "CALL(__FASIN,( rad --))"   # for compatibility with the standard
+    reserved_words["FASIN"]     = "CALL(__FASIN,( rad -- ))"    # for compatibility with the standard
+    
+    use_reserved_words["FASIN"] = 0
+
 #     reserved_words["FATAN"]     = ""    # for compatibility with the standard
     reserved_words["FCOS"]      = "PUSH(0x4092) SWAP FSUB FSIN ;# ( cos  0..π only)\n"   # for compatibility with the standard
     reserved_words["F/"]        = "FDIV"
@@ -313,7 +318,7 @@ BEGIN {
   last_upword=""
   leading_spaces=""
   in_comment=0
-  use_fasin=0
+
   
   printf "include(`" find_relative_path("FIRST.M4") "\47)dnl\n"
   printf "  ORG 0x8000\n"
@@ -414,28 +419,112 @@ BEGIN {
 }
 
 
+function Name2Readable(name,readable_name) 
+{
+    readable_name=""
+
+    for (j=1; j<=length(name); j++) {
+        name_char = substr(name, j, 1);
+        if ( j == 1 && name_char ~ /^[a-zA-Z_]$/ )
+            readable_name = name_char
+        else if ( name_char ~ /^[0-9a-zA-Z_]$/ )
+            readable_name = readable_name name_char
+        else if ( name_char == "\000" ) readable_name = readable_name "_NUL"    #00 Null character
+        else if ( name_char == "\001" ) readable_name = readable_name "_SOH"    #01 Start of Heading
+        else if ( name_char == "\002" ) readable_name = readable_name "_STX"    #02 Start of Text
+        else if ( name_char == "\003" ) readable_name = readable_name "_ETX"    #03 End of Text
+        else if ( name_char == "\004" ) readable_name = readable_name "_EOT"    #04 End of Transmission
+        else if ( name_char == "\005" ) readable_name = readable_name "_ENQ"    #05 Enquiry
+        else if ( name_char == "\006" ) readable_name = readable_name "_ACK"    #06 Acknowledge
+        else if ( name_char == "\007" ) readable_name = readable_name "_BEL"    #07 Bell, Alert
+        else if ( name_char == "\010" ) readable_name = readable_name "_BS"     #08 Backspace
+        else if ( name_char == "\011" ) readable_name = readable_name "_HT"     #09 Horizontal Tab
+        else if ( name_char == "\012" ) readable_name = readable_name "_LF"     #0A Line Feed
+        else if ( name_char == "\013" ) readable_name = readable_name "_VT"     #0B Vertical Tabulation
+        else if ( name_char == "\014" ) readable_name = readable_name "_FF"     #0C Form Feed
+        else if ( name_char == "\015" ) readable_name = readable_name "_CR"     #0D Carriage Return
+        else if ( name_char == "\016" ) readable_name = readable_name "_SO"     #0E Shift Out
+        else if ( name_char == "\017" ) readable_name = readable_name "_SI"     #0F Shift In
+        else if ( name_char == "\020" ) readable_name = readable_name "_DLE"    #10 Data Link Escape
+        else if ( name_char == "\021" ) readable_name = readable_name "_DC1"    #11 Device Control One (XON)
+        else if ( name_char == "\022" ) readable_name = readable_name "_DC2"    #12 Device Control Two
+        else if ( name_char == "\023" ) readable_name = readable_name "_DC3"    #13 Device Control Three (XOFF)
+        else if ( name_char == "\024" ) readable_name = readable_name "_DC4"    #14 Device Control Four
+        else if ( name_char == "\025" ) readable_name = readable_name "_NAK"    #15 Negative Acknowledge
+        else if ( name_char == "\026" ) readable_name = readable_name "_SYN"    #16 Synchronous Idle
+        else if ( name_char == "\027" ) readable_name = readable_name "_ETB"    #17 End of Transmission Block
+        else if ( name_char == "\030" ) readable_name = readable_name "_CAN"    #18 Cancel
+        else if ( name_char == "\031" ) readable_name = readable_name "_EM"     #19 End of medium
+        else if ( name_char == "\032" ) readable_name = readable_name "_SUB"    #1A Substitute
+        else if ( name_char == "\033" ) readable_name = readable_name "_ESC"    #1B Escape
+        else if ( name_char == "\034" ) readable_name = readable_name "_FS"     #1C File Separator
+        else if ( name_char == "\035" ) readable_name = readable_name "_GS"     #1D Group Separator
+        else if ( name_char == "\036" ) readable_name = readable_name "_RS"     #1E Record Separator
+        else if ( name_char == "\037" ) readable_name = readable_name "_US"     #1F Unit Separator
+
+        else if ( name_char == " "    ) readable_name = readable_name "_SP"     #20 Space
+        else if ( name_char == "!"    ) readable_name = readable_name "_EM"     #21 Exclamation mark
+        else if ( name_char == "\042" ) readable_name = readable_name "_DQ"     #22 Double quotes (or speech marks)
+        else if ( name_char == "#"    ) readable_name = readable_name "_HASH"   #23 Number sign
+        else if ( name_char == "$"    ) readable_name = readable_name "_DOL"    #24 Dollar
+        else if ( name_char == "%"    ) readable_name = readable_name "_PER"    #25 Per cent sign
+        else if ( name_char == "&"    ) readable_name = readable_name "_AMP"    #26 Ampersand
+        else if ( name_char == "\047" ) readable_name = readable_name "_SQ"     #27 Single quote
+        else if ( name_char == "("    ) readable_name = readable_name "_LP"     #28 Open parenthesis (or open bracket)
+        else if ( name_char == ")"    ) readable_name = readable_name "_RP"     #29 Close parenthesis (or close bracket)
+        else if ( name_char == "*"    ) readable_name = readable_name "_AST"    #2A Asterisk
+        else if ( name_char == "+"    ) readable_name = readable_name "_PLS"    #2B Plus
+        else if ( name_char == ","    ) readable_name = readable_name "_CM"     #2C Comma
+        else if ( name_char == "-"    ) readable_name = readable_name "_MNS"    #2D Hyphen-minus
+        else if ( name_char == "."    ) readable_name = readable_name "_DOT"    #2E Period, dot or full stop
+        else if ( name_char == "/"    ) readable_name = readable_name "_DIV"    #2F Slash or divide
+            
+        else if ( name_char == "0"    ) readable_name = readable_name "0"       #30 Zero
+        else if ( name_char == "1"    ) readable_name = readable_name "1"       #31 One
+        else if ( name_char == "2"    ) readable_name = readable_name "2"       #32 Two
+        else if ( name_char == "3"    ) readable_name = readable_name "3"       #33 Three
+        else if ( name_char == "4"    ) readable_name = readable_name "4"       #34 Four
+        else if ( name_char == "5"    ) readable_name = readable_name "5"       #35 Five
+        else if ( name_char == "6"    ) readable_name = readable_name "6"       #36 Six
+        else if ( name_char == "7"    ) readable_name = readable_name "7"       #37 Seven
+        else if ( name_char == "8"    ) readable_name = readable_name "8"       #38 Eight
+        else if ( name_char == "9"    ) readable_name = readable_name "9"       #39 Nine
+
+        else if ( name_char == ":"    ) readable_name = readable_name "_CLN"    #3A Colon
+        else if ( name_char == ";"    ) readable_name = readable_name "_SCLN"   #3B Semicolon
+        else if ( name_char == "<"    ) readable_name = readable_name "_LT"     #3C Less than (or open angled bracket)
+        else if ( name_char == "="    ) readable_name = readable_name "_EQ"     #3D Equals
+        else if ( name_char == ">"    ) readable_name = readable_name "_GT"     #3E Greater than (or close angled bracket)
+        else if ( name_char == "?"    ) readable_name = readable_name "_QM"     #3F Question mark
+        else if ( name_char == "@"    ) readable_name = readable_name "_AT"     #40 At sign
+        else if ( name_char == "["    ) readable_name = readable_name "_LS"     #5B Opening bracket
+        else if ( name_char == "\\"   ) readable_name = readable_name "_BSL"    #5C Backslash
+        else if ( name_char == "]"    ) readable_name = readable_name "_RS"     #5D Closing bracket
+        else if ( name_char == "^"    ) readable_name = readable_name "_HAT"    #5E Caret - circumflex
+        else if ( name_char == "`"    ) readable_name = readable_name "_GRV"    #60 Grave accent
+        else if ( name_char == "{"    ) readable_name = readable_name "_LC"     #7B Opening brace
+        else if ( name_char == "|"    ) readable_name = readable_name "_VBAR"   #7C Vertical bar
+        else if ( name_char == "}"    ) readable_name = readable_name "_RC"     #7D Closing () brace
+        else if ( name_char == "~"    ) readable_name = readable_name "_TIL"    #7E Equivalency sign - tilde
+        else if ( name_char == "\177" ) readable_name = readable_name "_DEL"    #7F Delete
+        else {
+            cmd = "printf \"%d\" \"'" name_char "\""
+            cmd | getline name_char
+            close(cmd)    
+            readable_name = readable_name "_X" name_char
+        }
+    }
+    
+    return readable_name
+}
+
+
 function process_word()
 {
     new_word=""
     
-    new_name=""
     if ( in_comment == 0 && in_string == 0 ) {
-        for (j=1; j<=length(word); j++) {
-            name_char = substr(word, j, 1);
-            if ( j == 1 && name_char ~ /^[a-zA-Z_]$/ )
-                new_name = new_name name_char
-            else if ( name_char ~ /^[0-9a-zA-Z_]$/ )
-                new_name = new_name name_char
-            else if ( name_char == "?" ) new_name = new_name "_Q_"
-            else if ( name_char == "!" ) new_name = new_name "_E_"
-            else if ( name_char == "." ) new_name = new_name "_D_"
-            else if ( name_char == "\47" ) new_name = new_name "_A_"
-            else if ( name_char == "," ) new_name = new_name "_C_"
-            else if ( name_char == "[" ) new_name = new_name "_L_"
-            else if ( name_char == "]" ) new_name = new_name "_R_"
-            else
-                new_name = new_name "_X_"
-        }
+        readable_name = Name2Readable(word)
     }
     # Asi by to chtelo jeste vyresit kolizi jmen jako napr. n* a n+, oboje bude n_x_.   
 
@@ -477,26 +566,26 @@ function process_word()
             new_word = "PRINT({\"" substr(word, 4) "\"})"
         else
         {
-            print "Error! " word > "/etc/stderr"
+            print "Error! " word > "/dev/stderr"
         }
         
         in_string--
     }
     else if (last_upword == ":" ) {
-        reserved_functions[word] = new_name
-        function_name = new_name
+        reserved_functions[word] = readable_name
+        function_name = readable_name
         recurse_functions[function_name] = 0
-        new_word = new_name
+        new_word = readable_name
         leading_spaces = "" # no use leading_spaces
     }
     else if (last_upword == "VALUE" ) { 
-        reserved_name[word] = new_name
-        new_word = "(" new_name ")"
+        reserved_name[word] = readable_name
+        new_word = "(" readable_name ")"
         leading_spaces = "" # no use leading_spaces
     }
     else if (last_upword == "DVALUE" || last_upword == "2VALUE") { 
-        reserved_dname[word] = new_name
-        new_word = "(" new_name ")"
+        reserved_dname[word] = readable_name
+        new_word = "(" readable_name ")"
         leading_spaces = "" # no use leading_spaces
     }
     else if ( last_upword == "TO" ) { 
@@ -509,11 +598,11 @@ function process_word()
             leading_spaces = "" # no use leading_spaces
         }
         else
-            print "Error " word " is not value name!" >> "/etc/stderr"
+            print "Error " word " is not value name!" >> "/dev/stderr"
     }
     else if ( last_upword == "CREATE" ) { 
-        reserved_name[word] = new_name
-        new_word = "(" new_name ")"
+        reserved_name[word] = readable_name
+        new_word = "(" readable_name ")"
         leading_spaces = "" # no use leading_spaces
     }
     else if (word in reserved_name) {
@@ -534,8 +623,9 @@ function process_word()
         new_word = reserved_words[word]
         leading_spaces = "\n\n"
     }
-    else if (upword in reserved_words) {   
+    else if ( upword in reserved_words ) {   
         new_word = reserved_words[upword]
+        if ( upword in use_reserved_words ) use_reserved_words[upword] = 1
     }
     else if (word ~ /^" [^"].*$"/) {
         new_word = "PRINT({\"" word "\"})"
@@ -576,10 +666,7 @@ function process_word()
     else {
         printf leading_spaces new_word
     }
-
-    if ( new_word ~ /^CALL\(__FASIN,\( rad --\)\)$/ ) 
-        use_fasin++
-
+        
     last_upword = upword
     leading_spaces = char
     word = ""
@@ -617,20 +704,30 @@ function floatToHex(value) {
 
     hexreal = sprintf( "%a", absValue )
     
-    if ( hexreal == "0x0p+0" )
+    if ( hexreal == "0x0p+0" ) {
+        print "Warning: You are trying to convert \"positive zero\" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero." >> "/dev/stderr"        
         return "FPMIN"
+    }
 
-    if ( hexreal == "-0x0p+0" )
+    if ( hexreal == "-0x0p+0" ) {
+        print "Warning: You are trying to convert \"negative zero\" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero." >> "/dev/stderr"                
         return "FMMIN"
-
-    if ( hexreal == "0xinf" )
+    }
+    
+    if ( hexreal == "0xinf" ) {
+        print "Warning: You are trying to convert \"+inf\" to Danagy 16 bit floating point format. It will be converted as a largest possible value." >> "/dev/stderr"
         return "FPMAX"
-
-    if ( hexreal == "-0xinf" )
+    }
+    
+    if ( hexreal == "-0xinf" ) {
+        print "Warning: You are trying to convert \"-inf\" to Danagy 16 bit floating point format. It will be converted as a smallest possible value." >> "/dev/stderr"
         return "FMMAX"
-
-    if ( hexreal == "NaN" )
+    }
+    
+    if ( hexreal == "NaN" ) {
+        print "Warning: You are trying to convert \"Not a Number\" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero." >> "/dev/stderr"
         return "FPMIN"              # lol
+    }
 
     # Výpočet exponentu
     exponent = substr(hexreal, index(hexreal, "p") + 1) + 0x40
@@ -655,18 +752,22 @@ function floatToHex(value) {
         mantissa = mantissa - 0x100
         
     if ( exponent < 0 && sign ) {
+        print "Warning: The value " value " is too close to zero, so it will be changed to a negative value closest to zero." >> "/dev/stderr"        
         hexValue = "FMMIN"
     }
     else if ( exponent < 0 )
     {
+        print "Warning: The value " value " is too close to zero, so it will be changed to a positive value closest to zero." >> "/dev/stderr"        
         hexValue = "FPMIN"
-    }   
+    }
     else if ( exponent > 0x7F && sign )
     {
+        print "Warning: The value " value " is less than the smallest possible value, so it will be changed to the smallest possible value." >> "/dev/stderr"
         hexValue = "FMMAX"
     }   
     else if ( exponent > 0x7F)
     {
+        print "Warning: The value " value "is greater than the largest possible value, so it will be changed to the largest possible value." >> "/dev/stderr"
         hexValue = "FPMAX"
     }   
     else {
@@ -684,6 +785,7 @@ END {
     recurse=0
     function_name = ""
 
+    # vypsani funkci na konci s tim ze se resi zmena nekterych slov pokud je funkce rekurzivni     
     for (i=1; i<fce_count; i++) {
     
         leading_spaces = fce_leading_spaces[i]
@@ -696,7 +798,6 @@ END {
 
         if ( recurse ) {
         
-            
             if ( word == "DO" || word == "QUESTIONDO" ){
                 # kontrola zda je uvnitr volano RECURSE, protoze pokud ne, tak staci obycejne smycky...
                 k = 1
@@ -744,13 +845,11 @@ END {
             function_name = ""
             recurse = 0
         }
-        
-        if ( word == "CALL(__FASIN,( rad --))" ) 
-            use_fasin++        
+
     }
     
-    if ( use_fasin ) {
-        printf "\n\nCOLON(__FASIN) ;# ( rad -- )\n"
+    if ( "FASIN" in use_reserved_words && use_reserved_words["FASIN"] ) {
+        printf "\n\nCOLON(__FASIN,( rad -- ))\n"
         printf ";# pi/2 =  1.5707963 = 0x4092\n"
         printf ";# a0   =  1.5707288 = 0x4092\n"
         printf ";# a1   = -0.2121144 = 0xBDB2\n"
@@ -769,6 +868,23 @@ END {
         printf "    PUSH(0x4092) FADD FMUL\n"
         printf "    PUSH(0x4092) SWAP FSUB\n"
         printf "    XOR\n"
+        printf "SEMICOLON"
+    }
+
+    if ( "FACOS" in use_reserved_words && use_reserved_words["FACOS"] ) {
+        printf "\n\nCOLON(__FACOS,( rad -- ))\n"
+        printf "  ;# x\n"
+        printf "  DUP FABS DUP\n"   
+        printf "  ;# x u u\n"
+        printf "  PUSH(0x4000) SWAP FSUB FSQRT SWAP\n"
+        printf "  ;# x sqrt(1.0-u) u\n"
+        printf "  DUP DUP\n"
+        printf "  PUSH(0xBA33) FMUL\n"
+        printf "  PUSH(0x3C30) FADD FMUL\n"
+        printf "  PUSH(0xBDB2) FADD FMUL\n"
+        printf "  PUSH(0x4092) FADD\n"
+        printf "  FMUL SWAP\n"
+        printf "  _0LT IF PUSH(0x4192) SWAP FSUB THEN\n"
         printf "SEMICOLON"
     }
 
