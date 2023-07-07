@@ -1580,7 +1580,8 @@ __{}__ADD_TOKEN({__TOKEN_MULDIVMOD},{*/mod},$@){}dnl
 dnl
 define({__ASM_TOKEN_MULDIVMOD},{dnl
 __{}define({__INFO},{*/mod}){}dnl
-define({USE_U16MUL},{})
+__{}__def({USE_S32DIV16}){}dnl
+__{}__def({USE_S16MUL},{})
     ex  (SP),HL         ; 1:19      {*/MOD}   ( n1 n2 n3 -- n1*n2%n3 n1*n2/n3 )
     call S16MUL         ; 3:17      {*/MOD}
     ex   DE, HL         ; 1:4       {*/MOD}
@@ -1596,7 +1597,8 @@ __{}__ADD_TOKEN({__TOKEN_MULDIV},{*/},$@){}dnl
 dnl
 define({__ASM_TOKEN_MULDIV},{dnl
 __{}define({__INFO},{*/}){}dnl
-define({USE_U16MUL},{})
+__{}__def({USE_S32DIV16}){}dnl
+__{}__def({USE_S16MUL},{})
     ex  (SP),HL         ; 1:19      {*/}   ( n1 n2 n3 -- n1*n2/n3 )
     call S16MUL         ; 3:17      {*/}
     ex   DE, HL         ; 1:4       {*/}
