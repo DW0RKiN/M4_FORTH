@@ -1319,7 +1319,7 @@ include(M4PATH{}divmul/udiv.m4){}dnl
 dnl
 dnl
 dnl
-ifdef({USE_S16MUL},{define({USE_U16MUL},{})
+ifdef({USE_S16MUL},{__def({USE_U16MUL})
 ;==============================================================================
 S16MUL:
 ; ( x1 x2 -- d )
@@ -1400,7 +1400,7 @@ U16MUL_L:               ;           u16mul
 dnl
 dnl
 dnl
-ifdef({USE_F32DIV16},{define({USE_S32DIV16},{})
+ifdef({USE_F32DIV16},{__def({USE_S32DIV16})
 ;==============================================================================
 F32DIV16:
 ; ( lo n -- floored_remainder floored_quotient ), BC = hi
@@ -1423,7 +1423,7 @@ F32DIV16:
 dnl
 dnl
 dnl
-ifdef({USE_S32DIV16},{define({USE_U31DIV15},{})
+ifdef({USE_S32DIV16},{__def({USE_U31DIV15})
 ;==============================================================================
 S32DIV16:
 ; ( lo n -- symmetric_remainder symmetric_quotient ), BC = hi
