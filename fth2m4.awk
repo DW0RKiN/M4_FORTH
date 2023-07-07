@@ -1,4 +1,7 @@
 BEGIN {
+  reserved_words["ABORT"]       = "BYE ;# Originally ABORT\n"  # After compilation, there is no difference between ABORT and BYE.  
+#   reserved_words["ABORT\""]     = It's complicated, it has to be read as a string --> "IF PRINT({"..."}) BYE THEN ;# Originally ABORTq\n"  # After compilation, there is no difference between ABORT and BYE.  
+  reserved_words["ALIGN"]       = "ALIGN"           # + integer --> ALIGN(integer)
   reserved_words["IF"]          = "IF"
   reserved_words["ELSE"]        = "ELSE"
   reserved_words["THEN"]        = "THEN"
@@ -59,6 +62,10 @@ BEGIN {
   reserved_words["TYPE"]        = "TYPE"
 
   reserved_words["SPACE"]       = "SPACE"
+  reserved_words["SPACES"]      = "CALL(__SPACES,( n -- ))"     # for compatibility with the standard
+    
+  use_reserved_words["SPACES"]  = 0
+
   reserved_words["CR"]          = "CR"
   reserved_words["FOR"]         = "FOR"
   reserved_words["NEXT"]        = "NEXT"
@@ -66,12 +73,14 @@ BEGIN {
   reserved_words["FALSE"]       = "FALSE"
   reserved_words["VARIABLE"]    = "VARIABLE"
   reserved_words["2VARIABLE"]   = "DVARIABLE"
+  reserved_words["DVARIABLE"]   = "DVARIABLE"       # not standard
 
   reserved_words["VALUE"]       = "VALUE"
   reserved_words["2VALUE"]      = "DVALUE"
   reserved_words["DVALUE"]      = "DVALUE"          # not standard
   reserved_words["TO"]          = "TO"
   reserved_words["[CHAR]"]      = ""
+  reserved_words["CHAR"]        = ""
   reserved_words["BOUNDS"]      = "OVER ADD SWAP"   # not standard
   
   reserved_words["INVERT"]      = "INVERT" 
@@ -101,6 +110,9 @@ BEGIN {
   reserved_words["D-"]          = "DSUB"
   reserved_words["/"]           = "DIV"
   reserved_words["*"]           = "MUL"
+  reserved_words["*/"]          = "MULDIV ;# Warning: Truncated division, not Floor division\n"
+  reserved_words["*/MOD"]       = "MULDIVMOD ;# Warning: Truncated division, not Floor division\n"
+
   reserved_words["2/"]          = "_2DIV"
   reserved_words["2*"]          = "_2MUL"
 
@@ -161,8 +173,8 @@ BEGIN {
   reserved_words["0>"]          = "_0GT"
   reserved_words["0<="]         = "_0LE"            # not standard
   reserved_words["0>="]         = "_0GE"            # not standard
+  reserved_words["0<>"]         = "_0NE"            # core ext
 
-  
   reserved_words["+!"]          = "ADDSTORE"
   reserved_words["+LOOP"]       = "ADDLOOP"
   
@@ -200,7 +212,13 @@ BEGIN {
 
   reserved_words["D>S"]         = "D_TO_S"
   reserved_words["S>D"]         = "S_TO_D"
+  
+  reserved_words["EXECUTE"]     = "EXECUTE"
+  reserved_words["CELL"]        = "PUSH(2) ;# cell\n"   # not standard
+  reserved_words["CELL+"]       = "_2ADD ;# cell+\n"    # for compatibility with the standard
+  reserved_words["CELLS"]       = "_2MUL ;# cells\n"    # for compatibility with the standard
 
+# potential change in the recursive word 
   recurse_reserved_words["DO"]          = "DO(R)"
   recurse_reserved_words["QUESTIONDO"]  = "QUESTIONDO(R)"
   recurse_reserved_words["FOR"]         = "FOR(R)"
@@ -208,7 +226,7 @@ BEGIN {
   recurse_reserved_words["COLON"]       = "RCOLON"
   recurse_reserved_words["EXIT"]        = "REXIT"
   recurse_reserved_words["SEMICOLON"]   = "RSEMICOLON"
-  
+
   if ( arg == "-zfloat" ) {
 
     reserved_words["D>F"]       = "D_TO_Z"
@@ -312,7 +330,7 @@ BEGIN {
   
   inside_word_definition=0
   function_name=""
-  in_string=0
+  in_string=""
   
   fce_count=1  
   word=""
@@ -320,6 +338,7 @@ BEGIN {
   last_upword=""
   leading_spaces=""
   in_comment=0
+  noname_count=0
 
   
   printf "include(`" find_relative_path("FIRST.M4") "\47)dnl\n"
@@ -342,14 +361,11 @@ BEGIN {
 
 #         printf " i = %i, char = %c, >>%s<<\n", i, char, word;
 
-        if (in_string) {
-        
-            if (substr(word,2,1) == "\"" && char == "\"" ) {
-                char = ""
+        if ( in_string != "" ) {
+            if ( char == "\"" && ( in_string ~ /"$/ ) ) {
                 process_word()
             }
-            else if (substr(word,2,1) == "(" && char == ")" ) {
-                char = ""
+            else if ( char == ")" && ( in_string ~ /\($/ ) ) {
                 process_word()
             }
             else
@@ -375,25 +391,7 @@ BEGIN {
         }
 
         if ( char ~ /[[:space:]]/ ) {
-            if ( upword == "S\"" )
-            {
-                in_string++
-                word = word char
-                upword = upword upchar
-            }
-            else if ( upword == ".(" )
-            {
-                in_string++
-                word = word char
-                upword = upword upchar
-            }
-            else if ( upword == ".\"" )
-            {
-                in_string++
-                word = word char
-                upword = upword upchar
-            }
-            else if ( upword == "(" )
+            if ( upword == "(" )
             {
                 in_comment=1
                 word = word char
@@ -404,6 +402,16 @@ BEGIN {
                 in_comment=2
                 word = word char
                 upword = upword upchar
+            }
+            else if ( substr(upword,length(upword)) == "\"" || substr(upword,length(upword)) == "(" )
+            {
+                # S" ..."
+                # ." ..."
+                # .( ...)
+                # ABORT" ..."
+                in_string = upword
+                word = ""
+                upword = ""
             }
             else if ( word != "" )
                 process_word()
@@ -524,7 +532,7 @@ function process_word()
 {
     new_word=""
     
-    if ( in_comment == 0 && in_string == 0 ) {
+    if ( in_comment == 0 && in_string == "" ) {
         readable_name = Name2Readable(word)
     }
     # Asi by to chtelo jeste vyresit kolizi jmen jako napr. n* a n+, oboje bude n_x_.   
@@ -557,20 +565,24 @@ function process_word()
         }
         in_comment=0
     }
-    else if (in_string) {
+    else if ( in_string != "" ) {
     
 # print ">>" substr(upword,1,1)
 
-        if ( substr(upword, 1, 3) == "S\" " )
-            new_word = "STRING({\"" substr(word, 4) "\"})"
-        else if ( substr(upword, 1, 1) == "." )
-            new_word = "PRINT({\"" substr(word, 4) "\"})"
+        if ( in_string == "S\"" )
+            new_word = "STRING({\"" word "\"})"
+        else if ( in_string == ".(" || in_string == ".\"" )
+            new_word = "PRINT({\"" word "\"})"
+        else if ( in_string == "ABORT\"" ) {
+            new_word = "IF PRINT({\"" word "\"}) BYE THEN ;# Originally ABORTq"
+            char = "\n"
+        }
         else
         {
-            print "Error! " word > "/dev/stderr"
+            print "\nError in " FILENAME " at line " NR ": Unknown word with string: " in_string " " word char > "/dev/stderr"
         }
-        
-        in_string--
+        char = ""
+        in_string = ""
     }
     else if (last_upword == ":" ) {
         if ( readable_name in collision_check )
@@ -583,11 +595,11 @@ function process_word()
         new_word = readable_name
         leading_spaces = "" # no use leading_spaces
     }
-    else if ( last_upword == "[CHAR]" ) {
+    else if ( last_upword == "[CHAR]" || last_upword == "CHAR" ) {
         new_word = "PUSH(\47" substr(word,1,1) "\47)"
         leading_spaces = "" # no use leading_spaces
     }
-    else if ( last_upword == "VALUE" || last_upword == "DVALUE" || last_upword == "2VALUE" || last_upword == "CREATE" ) {
+    else if ( last_upword == "VALUE" || last_upword == "DVALUE" || last_upword == "2VALUE" ) {
         if ( readable_name in collision_check )
             print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
         else
@@ -595,11 +607,26 @@ function process_word()
 
         if ( last_upword == "VALUE" )
             reserved_value[readable_name] = "PUSH(("
-        else if ( last_upword == "DVALUE" || last_upword == "2VALUE" )
+        else 
             reserved_value[readable_name] = "PUSHDOT(("
-        else
-            reserved_value[readable_name] = "PUSH("
             
+        # 30000 value name = 30000 create name ,
+        #             name = name @
+        # 1000000. 2value dname = 1000000. create dname , ,   ( or maybe "swap , , "?)
+        #                 dname = dname 2@         
+        new_word = "(" readable_name ")"
+        leading_spaces = "" # no use leading_spaces
+    }
+    else if ( last_upword == "VARIABLE" || last_upword == "DVARIABLE" || last_upword == "2VARIABLE" || last_upword == "CREATE" ) {
+        if ( readable_name in collision_check )
+            print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+        else
+            collision_check[readable_name] = word       # add new word to collision_check   
+
+        #  variable name = create name 2 allot
+        # 2variable name = create name 4 allot
+        # name ( -- addr_name )         
+        reserved_value[readable_name] = "PUSH("
         new_word = "(" readable_name ")"
         leading_spaces = "" # no use leading_spaces
     }
@@ -632,12 +659,37 @@ function process_word()
         new_word = reserved_words[word]
         leading_spaces = "\n\n"
     }
+    else if ( upword == ":NONAME" ) {
+        inside_word_definition++                    # define new word
+        fce_leading_spaces[fce_count] = "\n\n"
+        fce_words[fce_count] = "COLON"
+        fce_count++;
+        
+        noname_count+=1
+        word = "__noname" noname_count
+        readable_name = Name2Readable(word)
+        
+        if ( readable_name in collision_check )
+            print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+        else
+            collision_check[readable_name] = word       # add new word to collision_check
+
+        reserved_functions[readable_name] = "PUSH("
+        function_name = readable_name
+        new_word = readable_name
+        leading_spaces = "" # no use leading_spaces
+    }
     else if ( upword in reserved_words ) {          # standard forh word
         new_word = reserved_words[upword]
         if ( upword in use_reserved_words ) use_reserved_words[upword] = 1
     }
     else if (word ~ /^-?[0-9]+$/) {
-        new_word = "PUSH(" word ")"                 # integer
+        if ( last_upword == "ALIGN" ) {
+            new_word = "(" word ")"                 # integer
+            leading_spaces = ""                     # no use leading_spaces
+        }
+        else
+            new_word = "PUSH(" word ")"             # integer
     } 
     else if (word ~ /^-?[0-9]+\.$/) {
         new_word = substr(word,1,length(word)-1)    # delete last dot
@@ -655,14 +707,21 @@ function process_word()
     }
 
     if (inside_word_definition) {
-        if ( upword == "RECURSE" ) {
-            reserved_functions[function_name] = "RCALL("
-        }
         if ( word == ";") {
+            if ( reserved_functions[function_name] == "PUSH(" )
+            {
+                printf "\nPUSH(" function_name ")"
+            }            
+            
             inside_word_definition--
             function_name = ""
             char = "\n"
         }
+
+        if ( upword == "RECURSE" ) {
+            reserved_functions[function_name] = "RCALL("
+        }
+
         fce_leading_spaces[fce_count] = leading_spaces
         fce_words[fce_count] = new_word
         fce_count++;
@@ -851,6 +910,15 @@ END {
             recurse = 0
         }
 
+    }
+
+    if ( use_reserved_words["SPACES"] ) {
+        printf "\n\nCOLON(__SPACES,( n -- ))\n"
+#         printf "    PUSH(0) MAX PUSH(0) QUESTIONDO SPACE LOOP\n"
+#         printf "    DUP _0GT IF PUSH(0) DO SPACE LOOP ELSE DROP THEN\n"
+#         printf "    DUP _0GT IF _1SUB FOR SPACE NEXT ELSE DROP THEN\n"
+        printf "    BEGIN DUP _0GT WHILE _1SUB SPACE AGAIN DROP\n"
+        printf "SEMICOLON"
     }
     
     if ( "FASIN" in use_reserved_words && use_reserved_words["FASIN"] ) {
