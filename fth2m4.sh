@@ -11,4 +11,4 @@ AWK_SCRIPT="$(dirname "$(readlink -f "$0")")/fth2m4.awk"
 [ ! -s "$AWK_SCRIPT" ] && printf "Error: \"$AWK_SCRIPT\" not found!\n" >&2 && exit 2
 
 
-cat "$1" | awk -v arg="$2" -f "$AWK_SCRIPT"
+awk -v arg="$2" -f "$AWK_SCRIPT" -- "$1"
