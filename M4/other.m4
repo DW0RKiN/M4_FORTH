@@ -205,4 +205,23 @@ __{}$0_TMP}){}dnl
 dnl
 dnl
 dnl
+dnl # ( -- size_of(cell) )
+define({CELL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH},{cell},2)}){}dnl
+dnl
+dnl
+dnl
+dnl # ( adr -- adr+size_of(cell) )
+define({CELLADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_2ADD},{cell+})}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u -- u*size_of(cell) )
+define({CELLS},{dnl
+__{}__ADD_TOKEN({__TOKEN_2MUL},{cells})}){}dnl
+dnl
+dnl
+dnl
+dnl
 dnl
