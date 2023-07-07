@@ -263,6 +263,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>   negate   |<sub>     NEGATE   |<sub>                 |<sub>      ( x1 -- -x1 )        |
 |<sub>    abs     |<sub>      ABS     |<sub>                 |<sub>       ( n -- u )          |
 |<sub>     *      |<sub>      MUL     |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>     */     |<sub>    MULDIV    |<sub>                 |<sub>   ( x2 x1 -- x )          |
+|<sub>   */mod    |<sub>  MULDIVMOD   |<sub>                 |<sub>   ( x2 x1 -- x_mod x_div )|
 |<sub>     /      |<sub>      DIV     |<sub>                 |<sub>   ( x2 x1 -- x )          |
 |<sub>    mod     |<sub>      MOD     |<sub>                 |<sub>   ( x2 x1 -- x )          |
 |<sub>    /mod    |<sub>    DIVMOD    |<sub>                 |<sub>   ( x2 x1 -- x )          |
@@ -366,7 +368,7 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 
 ### Floating-point
 
-https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/floating.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/float.m4
 
 Danagy format `S EEE EEEE MMMM MMMM`
 
