@@ -463,7 +463,6 @@ function Name2Readable(name,readable_name)
         else if ( name_char == "\035" ) readable_name = readable_name "_GS"     #1D Group Separator
         else if ( name_char == "\036" ) readable_name = readable_name "_RS"     #1E Record Separator
         else if ( name_char == "\037" ) readable_name = readable_name "_US"     #1F Unit Separator
-
         else if ( name_char == " "    ) readable_name = readable_name "_SP"     #20 Space
         else if ( name_char == "!"    ) readable_name = readable_name "_EM"     #21 Exclamation mark
         else if ( name_char == "\042" ) readable_name = readable_name "_DQ"     #22 Double quotes (or speech marks)
@@ -479,19 +478,18 @@ function Name2Readable(name,readable_name)
         else if ( name_char == ","    ) readable_name = readable_name "_CM"     #2C Comma
         else if ( name_char == "-"    ) readable_name = readable_name "_MNS"    #2D Hyphen-minus
         else if ( name_char == "."    ) readable_name = readable_name "_DOT"    #2E Period, dot or full stop
-        else if ( name_char == "/"    ) readable_name = readable_name "_DIV"    #2F Slash or divide
-            
-        else if ( name_char == "0"    ) readable_name = readable_name "_0"       #30 Zero
-        else if ( name_char == "1"    ) readable_name = readable_name "_1"       #31 One
-        else if ( name_char == "2"    ) readable_name = readable_name "_2"       #32 Two
-        else if ( name_char == "3"    ) readable_name = readable_name "_3"       #33 Three
-        else if ( name_char == "4"    ) readable_name = readable_name "_4"       #34 Four
-        else if ( name_char == "5"    ) readable_name = readable_name "_5"       #35 Five
-        else if ( name_char == "6"    ) readable_name = readable_name "_6"       #36 Six
-        else if ( name_char == "7"    ) readable_name = readable_name "_7"       #37 Seven
-        else if ( name_char == "8"    ) readable_name = readable_name "_8"       #38 Eight
-        else if ( name_char == "9"    ) readable_name = readable_name "_9"       #39 Nine
-
+        else if ( name_char == "/"    ) readable_name = readable_name "_DIV"    #2F Slash or divide            
+        else if ( name_char == "0"    ) readable_name = readable_name "_0"      #30 Zero
+        else if ( name_char == "1"    ) readable_name = readable_name "_1"      #31 One
+        else if ( name_char == "2"    ) readable_name = readable_name "_2"      #32 Two
+        else if ( name_char == "3"    ) readable_name = readable_name "_3"      #33 Three
+        else if ( name_char == "4"    ) readable_name = readable_name "_4"      #34 Four
+        else if ( name_char == "5"    ) readable_name = readable_name "_5"      #35 Five
+        else if ( name_char == "6"    ) readable_name = readable_name "_6"      #36 Six
+        else if ( name_char == "7"    ) readable_name = readable_name "_7"      #37 Seven
+        else if ( name_char == "8"    ) readable_name = readable_name "_8"      #38 Eight
+        else if ( name_char == "9"    ) readable_name = readable_name "_9"      #39 Nine
+        # A..Z 
         else if ( name_char == ":"    ) readable_name = readable_name "_CLN"    #3A Colon
         else if ( name_char == ";"    ) readable_name = readable_name "_SCLN"   #3B Semicolon
         else if ( name_char == "<"    ) readable_name = readable_name "_LT"     #3C Less than (or open angled bracket)
@@ -499,10 +497,12 @@ function Name2Readable(name,readable_name)
         else if ( name_char == ">"    ) readable_name = readable_name "_GT"     #3E Greater than (or close angled bracket)
         else if ( name_char == "?"    ) readable_name = readable_name "_QM"     #3F Question mark
         else if ( name_char == "@"    ) readable_name = readable_name "_AT"     #40 At sign
+        # a..z 
         else if ( name_char == "["    ) readable_name = readable_name "_LS"     #5B Opening bracket
         else if ( name_char == "\\"   ) readable_name = readable_name "_BSL"    #5C Backslash
         else if ( name_char == "]"    ) readable_name = readable_name "_RS"     #5D Closing bracket
         else if ( name_char == "^"    ) readable_name = readable_name "_HAT"    #5E Caret - circumflex
+        # _             
         else if ( name_char == "`"    ) readable_name = readable_name "_GRV"    #60 Grave accent
         else if ( name_char == "{"    ) readable_name = readable_name "_LC"     #7B Opening brace
         else if ( name_char == "|"    ) readable_name = readable_name "_VBAR"   #7C Vertical bar
@@ -583,6 +583,10 @@ function process_word()
         new_word = readable_name
         leading_spaces = "" # no use leading_spaces
     }
+    else if ( last_upword == "[CHAR]" ) {
+        new_word = "PUSH(\47" substr(word,1,1) "\47)"
+        leading_spaces = "" # no use leading_spaces
+    }
     else if ( last_upword == "VALUE" || last_upword == "DVALUE" || last_upword == "2VALUE" || last_upword == "CREATE" ) {
         if ( readable_name in collision_check )
             print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
@@ -644,10 +648,6 @@ function process_word()
             new_word = "PUSH_Z(" word ")"           # floating point "string"
         else
             new_word = "PUSH(" floatToHex(word) ")" # hexadecimal number representing the value of a floating-point number in Danagy 16-bit format
-    }
-    else if ( last_upword == "[CHAR]" ) {
-        new_word = "PUSH(\47" substr(word,1,1) "\47)"
-        leading_spaces = "" # no use leading_spaces
     }
     else {
         print "\nError in " FILENAME " at line " NR ": Undefined word \"" word "\" found." > "/dev/stderr"        
