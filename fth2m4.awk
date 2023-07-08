@@ -79,6 +79,7 @@ BEGIN {
   reserved_words["2VALUE"]      = "DVALUE"
   reserved_words["DVALUE"]      = "DVALUE"          # not standard
   reserved_words["TO"]          = "TO"
+  reserved_words["CONSTANT"]    = "CONSTANT"
   reserved_words["[CHAR]"]      = ""
   reserved_words["CHAR"]        = ""
   reserved_words["BOUNDS"]      = "OVER ADD SWAP"   # not standard
@@ -217,7 +218,11 @@ BEGIN {
   reserved_words["CELL"]        = "PUSH(2) ;# cell\n"   # not standard
   reserved_words["CELL+"]       = "_2ADD ;# cell+\n"    # for compatibility with the standard
   reserved_words["CELLS"]       = "_2MUL ;# cells\n"    # for compatibility with the standard
+  
+  reserved_words["HEX"]         = "HEX"                 # limited support for combination "hex (u)(d)." not as a permanent output setting parameter
+  reserved_words["BL"]          = "PUSH(' ')"         # for compatibility with the standard
 
+  
 # potential change in the recursive word 
   recurse_reserved_words["DO"]          = "DO(R)"
   recurse_reserved_words["QUESTIONDO"]  = "QUESTIONDO(R)"
@@ -333,6 +338,8 @@ BEGIN {
   in_string=""
   
   fce_count=1  
+  main_count=1
+  
   word=""
   upword=""
   last_upword=""
@@ -341,9 +348,7 @@ BEGIN {
   noname_count=0
 
   
-  printf "include(`" find_relative_path("FIRST.M4") "\47)dnl\n"
-  printf "  ORG 0x8000\n"
-  printf "  INIT(60000)\n"
+
     
 }
 
@@ -531,7 +536,7 @@ function Name2Readable(name,readable_name)
 function process_word()
 {
     new_word=""
-    
+
     if ( in_comment == 0 && in_string == "" ) {
         readable_name = Name2Readable(word)
     }
@@ -630,14 +635,35 @@ function process_word()
         new_word = "(" readable_name ")"
         leading_spaces = "" # no use leading_spaces
     }
-    else if ( last_upword == "TO" ) { 
+    else if ( last_upword == "TO" || last_upword == "CONSTANT" ) { 
         if ( ! (readable_name in reserved_value) ) 
             print "\nError: You are trying to change the value of a non-existent variable: \"" word "\"!" > "/dev/stderr"
         else if ( collision_check[readable_name] != word )
             print "\nError: Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
 
-        new_word = "(" readable_name ")"
-        leading_spaces = "" # no use leading_spaces
+        if ( last_upword == "CONSTANT" && main_count > 2 && ( main_words[main_count-2] ~ /^PUSH\(/ ) ) {
+            
+            # main_words[main_count-2] = PUSH(10)
+            # main_words[main_count-1] = CONSTANT
+            # readable_name = Ten
+
+            main_words[main_count-1] = substr(main_words[main_count-2],6)
+            main_words[main_count-2] = "CONSTANT"
+            
+            new_word = "(" readable_name "," main_words[main_count-1]
+            leading_spaces = "" # no use leading_spaces
+
+            main_count--
+            
+            # main_words[main_count-1] = CONSTANT
+            # new_word = "(Ten,10)
+            # readable_name = Ten
+        }
+        else
+        {
+            new_word = "(" readable_name ")"
+            leading_spaces = "" # no use leading_spaces
+        }
     }
     else if ( readable_name in reserved_value ) {
         if ( collision_check[readable_name] != word )
@@ -710,9 +736,10 @@ function process_word()
         if ( word == ";") {
             if ( reserved_functions[function_name] == "PUSH(" )
             {
-                printf "\nPUSH(" function_name ")"
+                main_leading_spaces[main_count] = "\n"
+                main_words[main_count] = "PUSH(" function_name ")"
+                main_count++;
             }            
-            
             inside_word_definition--
             function_name = ""
             char = "\n"
@@ -727,7 +754,9 @@ function process_word()
         fce_count++;
     }
     else {
-        printf leading_spaces new_word
+        main_leading_spaces[main_count] = leading_spaces
+        main_words[main_count] = new_word
+        main_count++;
     }
         
     last_upword = upword
@@ -843,6 +872,16 @@ function floatToHex(value) {
 
 END {
     if ( word != "" ) process_word()
+
+    printf "include(`" find_relative_path("FIRST.M4") "\47)dnl\n"
+    printf "  ORG 0x8000\n"
+    printf "  INIT(60000)\n"
+        
+    # vypsani main slov
+    for (i=1; i<main_count; i++) {
+        printf main_leading_spaces[i] main_words[i]
+    }
+
     printf "\n  STOP"
     
     recurse=0
