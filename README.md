@@ -152,6 +152,8 @@ Some words that are not recognized by M4 FORTH will be attempted to be interpret
 
 For the remaining unknown words, an error will be displayed, and they will be ignored.
 
+To execute the script, you can use either of the following methods: `./fth2m4.sh filename.fth > filename.m4` or `./fth2m4.sh filename.fth -zfloat > filename.m4`.
+
 ## Implemented words FORTH
 
 ### Stack manipulation
