@@ -148,8 +148,8 @@ Similarly, words ending with `(` will be treated as the beginning of a character
 M4 Forth supports two number formats: one for a 16-bit size, where numbers are stored on a data stack, and another format for a 5-byte floating point number, which is stored on a separate stack and used by the ZX Spectrum ROM. To accommodate this, I have added an optional parameter `-zfloat` to the script. 
 Enabling this parameter activates the conversion to the alternative number format.
 
-Some words that are not recognized by M4 FORTH will be attempted to be interpreted as functions based on known words. Words that do not conform to the M4 FORTH standard (such as CASE) will be attempted to be transformed from standard Forth to the M4 FORTH variant.
-
+Some words that M4 FORTH is not familiar with will be attempted to be interpreted as functions based on known words.
+Words that do not conform to the M4 FORTH standard (such as CASE) will be attempted to be transformed from standard Forth to the M4 FORTH variant.
 For the remaining unknown words, an error will be displayed, and they will be ignored.
 
 To execute the script, you can use either of the following methods: `./fth2m4.sh filename.fth > filename.m4` or `./fth2m4.sh filename.fth -zfloat > filename.m4`.
