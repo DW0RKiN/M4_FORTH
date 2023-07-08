@@ -256,9 +256,9 @@ define({FM5},0xc240)dnl #     ;-5.000000e+00 sign(1=0x8000) exp(  2=0x4200) mant
 define({FM4},0xc200)dnl #     ;-4.000000e+00 sign(1=0x8000) exp(  2=0x4200) mantisa(  0=0x00)
 define({FM3},0xc180)dnl #     ;-3.000000e+00 sign(1=0x8000) exp(  1=0x4100) mantisa(128=0x80)
 define({FM2},0xc100)dnl #     ;-2.000000e+00 sign(1=0x8000) exp(  1=0x4100) mantisa(  0=0x00)
-
+dnl
 define({FM1_5},0xc080)dnl #   ;-1.500000e+00 sign(1=0x8000) exp(  0=0x4000) mantisa(  0=0x80)
-
+dnl
 define({FM1},0xc000)dnl #     ;-1.000000e+00 sign(1=0x8000) exp(  0=0x4000) mantisa(  0=0x00)
 define({FM0_9},0xbfcd)dnl #   ;-9.003906e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa(205=0xCD)
 define({FM0_8},0xbf9a)dnl #   ;-8.007812e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa(154=0x9A)
@@ -269,10 +269,10 @@ define({FM0_4},0xbe9a)dnl #   ;-4.003906e-01 sign(1=0x8000) exp( -2=0x3E00) mant
 define({FM0_3},0xbe33)dnl #   ;-2.998047e-01 sign(1=0x8000) exp( -2=0x3E00) mantisa( 51=0x33)
 define({FM0_2},0xbd9a)dnl #   ;-2.001953e-01 sign(1=0x8000) exp( -3=0x3D00) mantisa(154=0x9A)
 define({FM0_1},0xbc9a)dnl #   ;-1.000977e-01 sign(1=0x8000) exp( -4=0x3C00) mantisa(154=0x9A)
-
+dnl
 define({FM0},0x0000)dnl #     ; 5.421011e-20 sign(0=0x0000) exp(-64=0x0000) mantisa(  0=0x00)
 define({FP0},0x8000)dnl #     ;-5.421011e-20 sign(1=0x8000) exp(-64=0x0000) mantisa(  0=0x00)
-
+dnl
 define({FP0_1},0x3c9a)dnl #   ; 1.000977e-01 sign(0=0x0000) exp( -4=0x3C00) mantisa(154=0x9A)
 define({FP0_2},0x3d9a)dnl #   ; 2.001953e-01 sign(0=0x0000) exp( -3=0x3D00) mantisa(154=0x9A)
 define({FP0_3},0x3e33)dnl #   ; 2.998047e-01 sign(0=0x0000) exp( -2=0x3E00) mantisa( 51=0x33)
@@ -283,9 +283,9 @@ define({FP0_7},0x3f66)dnl #   ; 6.992188e-01 sign(0=0x0000) exp( -1=0x3F00) mant
 define({FP0_8},0x3f9a)dnl #   ; 8.007812e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(154=0x9A)
 define({FP0_9},0x3fcd)dnl #   ; 9.003906e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(205=0xCD)
 define({FP1},0x4000)dnl #     ; 1.000000e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(  0=0x00)
-
+dnl
 define({FP1_5},0x4080)dnl #   ; 1.500000e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(  0=0x80)
-
+dnl
 define({FP2},0x4100)dnl #     ; 2.000000e+00 sign(0=0x0000) exp(  1=0x4100) mantisa(  0=0x00)
 define({FP3},0x4180)dnl #     ; 3.000000e+00 sign(0=0x0000) exp(  1=0x4100) mantisa(128=0x80)
 define({FP4},0x4200)dnl #     ; 4.000000e+00 sign(0=0x0000) exp(  2=0x4200) mantisa(  0=0x00)

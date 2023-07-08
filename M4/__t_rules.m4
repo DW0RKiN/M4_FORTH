@@ -904,7 +904,7 @@ __{}__{}__{}__{}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_I,__T_INFO(1){ drop}
             __T_NAME(0):$1,                                   __TOKEN_0GT:__TOKEN_UNTIL,               {__SET_TOKEN({__TOKEN_PUSH_GT_UNTIL},__T_INFO(0){ }$2,0)},
             __T_NAME(0):$1,                                   __TOKEN_0LE:__TOKEN_UNTIL,               {__SET_TOKEN({__TOKEN_PUSH_LE_UNTIL},__T_INFO(0){ }$2,0)},
             __T_NAME(0):$1,                                   __TOKEN_0GE:__TOKEN_UNTIL,               {__SET_TOKEN({__TOKEN_PUSH_GE_UNTIL},__T_INFO(0){ }$2,0)},
-            
+
             __T_NAME(0):$1,                                   __TOKEN_PUSH_EQ:__TOKEN_WHILE,           {__SET_TOKEN({__TOKEN_PUSH_EQ_WHILE},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):$1,                                   __TOKEN_PUSH_EQ:__TOKEN_UNTIL,           {__SET_TOKEN({__TOKEN_PUSH_EQ_UNTIL},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
