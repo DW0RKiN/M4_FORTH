@@ -121,11 +121,25 @@ dnl
 define({CONSTANT},{dnl
 __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing parameters!},
+__{}$#,{1},{dnl
+__{}__{}__ADD_TOKEN({__TOKEN_CONSTANT},{constant $1},$@)},
+__{}eval($#>2),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}format({%-20s},$1) EQU $2{}dnl
+__{}__{}define({$1},{$2}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+define({__ASM_TOKEN_CONSTANT},{dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}  .error {$0}($@): The second parameter is missing!},
 __{}eval($#>2),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}{dnl
+__{}{
 __{}__{}format({%-20s},$1) EQU $2{}dnl
 __{}__{}define({$1},{$2}){}dnl
 __{}}){}dnl
