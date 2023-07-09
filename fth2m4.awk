@@ -338,7 +338,9 @@ BEGIN {
   
   inside_word_definition=0
   function_name=""
-  in_string=""
+  
+  string_type=""
+  string_end=""
   
   fce_count=1  
   main_count=1
@@ -356,8 +358,6 @@ BEGIN {
 }
 
 {
-    if (in_comment) process_word()
-
     for (i=1; i-1<=length($0); i++) {
     
         if ( i > length($0) ) 
@@ -368,22 +368,23 @@ BEGIN {
         upchar = toupper(char)
 
 #         printf " i = %i, char = %c, >>%s<<\n", i, char, word;
-
-        if ( in_string != "" ) {
-            if ( char == RS ) {
-                process_word()
-            }
-            else if ( char == "\"" && ( in_string ~ /"$/ ) ) {
-                process_word()
-            }
-            else if ( char == ")" && ( in_string ~ /\($/ ) ) {
+        
+        if ( string_end != "" )
+        {
+            if ( word != "" ) string_read = 1
+        }
+        else
+            string_read = 0
+        
+        if ( string_read ) {
+            if ( char == RS || char == string_end ) {
                 process_word()
             }
             else
             {
                 word = word char
                 upword = upword upchar
-            }   
+            }
             continue
         }
         
@@ -415,15 +416,59 @@ BEGIN {
                 word = word char
                 upword = upword upchar
             }
-            else if ( substr(upword,length(upword)) == "\"" || substr(upword,length(upword)) == "(" )
+            else if ( upword == ".(" )
             {
-                # S" ..."
-                # ." ..."
                 # .( ...)
-                # ABORT" ..."
-                in_string = upword
+                string_type = "PRINT"
                 word = ""
                 upword = ""
+                string_end = ")"
+                string_read = 1
+            }
+            else if ( upword == ".\"" )
+            {
+                # S" ..."
+                string_type = "PRINT"
+                word = ""
+                upword = ""
+                string_end = "\""
+                string_read = 1
+            }
+            else if ( upword == "S\"" )
+            {
+                # S" ..."
+                string_type = "STRING"
+                word = ""
+                upword = ""
+                string_end = "\""
+                string_read = 1
+            }
+            else if ( upword == "ABORT\"" )
+            {
+                # ABORT" ..."
+                string_type = "ABORT"
+                word = ""
+                upword = ""
+                string_end = "\""
+                string_read = 1
+            }
+            else if ( substr(upword,length(upword)) == "(" )
+            {
+                # ???( ... )
+                string_type = upword
+                word = ""
+                upword = ""
+                string_end = ")"
+                string_read = 1
+            }
+            else if ( substr(upword,length(upword)) == "\"" )
+            {
+                # ???" ..."
+                string_type = upword
+                word = ""
+                upword = ""
+                string_end = "\""
+                string_read = 1
             }
             else if ( word != "" )
                 process_word()
@@ -544,12 +589,12 @@ function process_word()
 {
     new_word=""
 
-    if ( in_comment == 0 && in_string == "" ) {
+    if ( in_comment == 0 && string_type == "" ) {
         readable_name = Name2Readable(word)
     }
     # Asi by to chtelo jeste vyresit kolizi jmen jako napr. n* a n+, oboje bude n_x_.   
 
-# printf "\n>%s<\n", upword
+# printf "\n(" string_type ")>%s<\n", upword
 
     if (in_comment == 0 && inside_word_definition && fce_count > 2 && fce_words[fce_count-2] == "COLON" ) {
         fce_leading_spaces[fce_count] = ""
@@ -577,24 +622,28 @@ function process_word()
         }
         in_comment=0
     }
-    else if ( in_string != "" ) {
+    else if ( string_type != "" ) {
     
-# print ">>" substr(upword,1,1)
-
-        if ( in_string == "S\"" )
-            new_word = "STRING({\"" word "\"})"
-        else if ( in_string == ".(" || in_string == ".\"" )
-            new_word = "PRINT({\"" word "\"})"
-        else if ( in_string == "ABORT\"" ) {
+        if ( string_type == "STRING" || string_type == "PRINT" || string_type == "WORD" )
+            new_word = string_type "({\"" word "\"})"
+        else if ( string_type == "CHAR" ) {
+            if ( substr(word,1,1) == "\"" )
+                new_word = "PUSH(\47\"\47)"
+            else
+                new_word = "PUSH(\47" substr(word,1,1) "\47)"
+        }
+        else if ( string_type == "ABORT\"" ) {
             new_word = "IF PRINT({\"" word "\"}) BYE THEN ;# Originally ABORTq"
             char = "\n"
         }
         else
         {
-            print "\nError in " FILENAME " at line " NR ": Unknown word with string: " in_string " " word char > "/dev/stderr"
+            print "\nError in " FILENAME " at line " NR ": Unknown word with string: " string_type " " word char > "/dev/stderr"
         }
-        char = ""
-        in_string = ""
+        if ( char != RS ) char = ""
+        string_end = ""
+        string_type = ""
+        
     }
     else if (last_upword == ":" ) {
         if ( readable_name in collision_check )
@@ -605,10 +654,6 @@ function process_word()
         reserved_functions[readable_name] = "CALL("
         function_name = readable_name
         new_word = readable_name
-        leading_spaces = "" # no use leading_spaces
-    }
-    else if ( last_upword == "[CHAR]" || last_upword == "CHAR" ) {
-        new_word = "PUSH(\47" substr(word,1,1) "\47)"
         leading_spaces = "" # no use leading_spaces
     }
     else if ( last_upword == "VALUE" || last_upword == "DVALUE" || last_upword == "2VALUE" ) {
@@ -725,6 +770,46 @@ function process_word()
         function_name = readable_name
         new_word = readable_name
         leading_spaces = "" # no use leading_spaces
+    }
+    else if ( upword == "[CHAR]" || upword == "CHAR" ) {
+        string_type = "CHAR"
+        string_end = " "
+        word = ""
+        upword = ""
+        return
+    }
+    else if ( upword == "WORD" ) {
+
+        string_end = ""
+        if ( inside_word_definition ) {
+            if ( fce_count > 1 ) string_end = fce_words[fce_count-1]
+        }
+        else if ( main_count > 1 )
+            string_end = main_words[main_count-1]
+
+        if ( string_end == "BL" )
+            string_end = " "
+        else if ( string_end ~ /^PUSH\('.'\)$/ ) 
+            string_end = substr(string_end,7,1)
+        
+        if ( string_end == "" )
+            print "\nError in " FILENAME " at line " NR ": Unknown terminating character for the word WORD." > "/dev/stderr"        
+        else if (inside_word_definition)
+        {
+            fce_count--
+            leading_spaces = fce_leading_spaces[fce_count]
+        }
+        else
+        {
+            main_count--
+            leading_spaces = main_leading_spaces[main_count]            
+        }
+   
+        string_type = "WORD"
+        word = ""
+        upword = ""
+            
+        return
     }
     else if ( upword in reserved_words ) {          # standard forh word
         new_word = reserved_words[upword]
