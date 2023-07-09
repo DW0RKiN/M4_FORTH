@@ -220,9 +220,12 @@ BEGIN {
   reserved_words["CELLS"]       = "_2MUL ;# cells\n"    # for compatibility with the standard
   
   reserved_words["HEX"]         = "HEX"                 # limited support for combination "hex (u)(d)." not as a permanent output setting parameter
-  reserved_words["BL"]          = "PUSH(' ')"         # for compatibility with the standard
+  reserved_words["BL"]          = "PUSH(' ')"           # for compatibility with the standard
 
-  
+  reserved_words["T{"]          = "TEST_START"          # not standard
+  reserved_words["->"]          = "TEST_EQ"             # not standard
+  reserved_words["}T"]          = "TEST_END"            # not standard
+
 # potential change in the recursive word 
   recurse_reserved_words["DO"]          = "DO(R)"
   recurse_reserved_words["QUESTIONDO"]  = "QUESTIONDO(R)"
@@ -367,7 +370,10 @@ BEGIN {
 #         printf " i = %i, char = %c, >>%s<<\n", i, char, word;
 
         if ( in_string != "" ) {
-            if ( char == "\"" && ( in_string ~ /"$/ ) ) {
+            if ( char == RS ) {
+                process_word()
+            }
+            else if ( char == "\"" && ( in_string ~ /"$/ ) ) {
                 process_word()
             }
             else if ( char == ")" && ( in_string ~ /\($/ ) ) {
@@ -382,10 +388,11 @@ BEGIN {
         }
         
         if (in_comment) {
-            if ( in_comment == 2 && i > length($0) ) 
+            if ( char == RS ) {     # "\ " comment or "( " comment without ")"
                 process_word()
+            }
             else {
-                word = word char
+                word = word char    # char = terminating character
                 upword = upword upchar
                 if ( in_comment == 1 && char == ")" ) {
                     char = ""
@@ -591,7 +598,7 @@ function process_word()
     }
     else if (last_upword == ":" ) {
         if ( readable_name in collision_check )
-            print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+            print "\nError in " FILENAME " at line " NR ": Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
         else
             collision_check[readable_name] = word       # add new word to collision_check
 
@@ -606,7 +613,7 @@ function process_word()
     }
     else if ( last_upword == "VALUE" || last_upword == "DVALUE" || last_upword == "2VALUE" ) {
         if ( readable_name in collision_check )
-            print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+            print "\nError in " FILENAME " at line " NR ": Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
         else
             collision_check[readable_name] = word       # add new word to collision_check   
 
@@ -624,7 +631,7 @@ function process_word()
     }
     else if ( last_upword == "VARIABLE" || last_upword == "DVARIABLE" || last_upword == "2VARIABLE" || last_upword == "CREATE" ) {
         if ( readable_name in collision_check )
-            print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+            print "\nError in " FILENAME " at line " NR ": Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
         else
             collision_check[readable_name] = word       # add new word to collision_check   
 
@@ -635,13 +642,28 @@ function process_word()
         new_word = "(" readable_name ")"
         leading_spaces = "" # no use leading_spaces
     }
-    else if ( last_upword == "TO" || last_upword == "CONSTANT" ) { 
+    else if ( last_upword == "TO" ) { 
         if ( ! (readable_name in reserved_value) ) 
-            print "\nError: You are trying to change the value of a non-existent variable: \"" word "\"!" > "/dev/stderr"
+            print "\n\nError in " FILENAME " at line " NR ": You are trying to change the value of a non-existent variable: \"" word "\"!" > "/dev/stderr"
         else if ( collision_check[readable_name] != word )
-            print "\nError: Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+            print "\n\nError in " FILENAME " at line " NR ": Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
 
-        if ( last_upword == "CONSTANT" && main_count > 2 && ( main_words[main_count-2] ~ /^PUSH\(/ ) ) {
+        new_word = "(" readable_name ")"
+        leading_spaces = "" # no use leading_spaces
+    }
+    else if ( last_upword == "CONSTANT" ) { 
+        if ( readable_name in reserved_value ) {
+            print "\n\nError in " FILENAME " at line " NR ": Constant A constant with this name already exists.: \"" word "\"!" > "/dev/stderr"
+            if ( collision_check[readable_name] != word )
+                print "\n\nError in " FILENAME " at line " NR ": Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+        }
+        else
+            collision_check[readable_name] = word       # add new word to collision_check
+            
+        reserved_value[readable_name] = "PUSH("
+
+
+        if ( main_count > 2 && ( main_words[main_count-2] ~ /^PUSH\(/ ) ) {
             
             # main_words[main_count-2] = PUSH(10)
             # main_words[main_count-1] = CONSTANT
@@ -666,7 +688,7 @@ function process_word()
     }
     else if ( readable_name in reserved_value ) {
         if ( collision_check[readable_name] != word )
-            print "\nError: Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"   
+            print "\n\nError in " FILENAME " at line " NR ": Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"   
 
         if ( substr(reserved_value[readable_name], length(reserved_value[readable_name])-1) == "((" )
             new_word = reserved_value[readable_name] readable_name "))"     # PUSHDOT((addr_name)) or PUSH((addr_name))
@@ -675,7 +697,7 @@ function process_word()
     }
     else if ( readable_name in reserved_functions ) {
         if ( collision_check[readable_name] != word )
-            print "\nError: Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+            print "\n\nError in " FILENAME " at line " NR ": Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
 
             new_word = reserved_functions[readable_name] readable_name ")"
     }
@@ -695,7 +717,7 @@ function process_word()
         readable_name = Name2Readable(word)
         
         if ( readable_name in collision_check )
-            print "\nError: Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
+            print "\nError in " FILENAME " at line " NR ": Duplicate definition or accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
         else
             collision_check[readable_name] = word       # add new word to collision_check
 
