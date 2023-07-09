@@ -1234,7 +1234,7 @@ __{}__ADD_TOKEN({__TOKEN_STRING},{string},{{{$@}}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_STRING},{dnl
-__{}define({__INFO},{string}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse($#,0,{
 __{}  .error {$0}: Missing parameter!},
 eval($#!=1),{1},{
@@ -1243,11 +1243,37 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
 __{}__ALLOCATE_STRING(__CONVERSION_TO_STRING($*))
-__{}    push DE             ; 1:11      string    ( -- addr size )
-__{}    push HL             ; 1:11      string    ifelse(eval(len({$*})<60),{1},{$*})
-__{}    ld   DE, string{}__STRING_MATCH  ; 3:10      string    Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
-__{}    ld   HL, size{}__STRING_MATCH    ; 3:10      string    Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
-})})dnl
+__{}    push DE             ; 1:11      __INFO    ( -- addr size )
+__{}    push HL             ; 1:11      __INFO    ifelse(eval(len({$*})<60),{1},{$*})
+__{}    ld   DE, string{}__STRING_MATCH  ; 3:10      __INFO    Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
+__{}    ld   HL, size{}__STRING_MATCH    ; 3:10      __INFO    Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
+__{}}){}dnl
+})dnl
+dnl
+dnl
+dnl
+dnl # s" string"
+dnl # ( -- addr n )
+dnl # addr = address string, n = lenght(string)
+define({WORD},{dnl
+__{}__ADD_TOKEN({__TOKEN_WORD},{word},{{{$@}}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_WORD},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+ifelse($#,0,{
+__{}  .error {$0}: Missing parameter!},
+eval($#!=1),{1},{
+__{}  .error {$0}(...): Received $# instead of one parameter! Text containing a comma and not closed in {{}}. Use it {$0}({{"A","B,C",0x0D}})},
+{$1},{},{
+__{}  .error {$0}(): An empty parameter was received!},
+{dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING($*))
+__{}    push DE             ; 1:11      __INFO    ( -- addr size )
+__{}    ex   DE, HL         ; 1:4       __INFO    ifelse(eval(len({$*})<60),{1},{$*})
+__{}    ld   HL, string{}__STRING_MATCH  ; 3:10      __INFO    Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
+__{}}){}dnl
+})dnl
 dnl
 dnl
 dnl
