@@ -657,7 +657,6 @@ function process_word()
             
             # main_words[main_count-1] = CONSTANT
             # new_word = "(Ten,10)
-            # readable_name = Ten
         }
         else
         {
