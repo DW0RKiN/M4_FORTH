@@ -215,9 +215,9 @@ BEGIN {
   reserved_words["S>D"]         = "S_TO_D"
   
   reserved_words["EXECUTE"]     = "EXECUTE"
-  reserved_words["CELL"]        = "PUSH(2) ;# cell\n"   # not standard
-  reserved_words["CELL+"]       = "_2ADD ;# cell+\n"    # for compatibility with the standard
-  reserved_words["CELLS"]       = "_2MUL ;# cells\n"    # for compatibility with the standard
+  reserved_words["CELL"]        = "CELL"                # not standard
+  reserved_words["CELL+"]       = "CELLADD"
+  reserved_words["CELLS"]       = "CELLS"               # for compatibility with the standard
   
   reserved_words["HEX"]         = "HEX"                 # limited support for combination "hex (u)(d)." not as a permanent output setting parameter
   reserved_words["BL"]          = "PUSH(' ')"           # for compatibility with the standard
@@ -352,9 +352,13 @@ BEGIN {
   in_comment=0
   noname_count=0
 
+  parenthesized_strings[".("] = "PRINT"         # .( ...)
+                
+  double_quoted_strings[".\""] = "PRINT"        # ." ..."
+  double_quoted_strings["S\""] = "STRING"       # s" ..."
+  double_quoted_strings["Z\""] = "STRING_Z"     # z" ..."   not standard
+  double_quoted_strings["ABORT\""] = "ABORT_DQ" # abort" ..."
   
-
-    
 }
 
 {
@@ -389,16 +393,17 @@ BEGIN {
         }
         
         if (in_comment) {
-            if ( char == RS ) {     # "\ " comment or "( " comment without ")"
-                process_word()
+            if ( in_comment == 1 && char == ")" )
+                process_word() # ( ...comment... )
+            else if ( in_comment == 2 && char == RS )
+                process_word() # \ ...comment...
+            else if ( char == RS ) {     
+                word = word char ";# "
+                upword = upword upchar";# "
             }
             else {
-                word = word char    # char = terminating character
+                word = word char
                 upword = upword upchar
-                if ( in_comment == 1 && char == ")" ) {
-                    char = ""
-                    process_word()
-                }
             }
             continue
         }
@@ -407,46 +412,31 @@ BEGIN {
             if ( upword == "(" )
             {
                 in_comment=1
-                word = word char
-                upword = upword upchar
+                word = ""
+                upword = "" 
             }
             else if ( upword == "\\" )
             {
                 in_comment=2
-                word = word char
-                upword = upword upchar
+                word = ""
+                upword = ""
             }
-            else if ( upword == ".(" )
+            else if ( upword in parenthesized_strings )
             {
                 # .( ...)
-                string_type = "PRINT"
+                string_type = parenthesized_strings[upword]
                 word = ""
                 upword = ""
                 string_end = ")"
                 string_read = 1
             }
-            else if ( upword == ".\"" )
+            else if ( upword in double_quoted_strings )
             {
-                # S" ..."
-                string_type = "PRINT"
-                word = ""
-                upword = ""
-                string_end = "\""
-                string_read = 1
-            }
-            else if ( upword == "S\"" )
-            {
-                # S" ..."
-                string_type = "STRING"
-                word = ""
-                upword = ""
-                string_end = "\""
-                string_read = 1
-            }
-            else if ( upword == "ABORT\"" )
-            {
+                # ." ..."
+                # s" ..."
+                # z" ..."
                 # ABORT" ..."
-                string_type = "ABORT"
+                string_type = double_quoted_strings[upword]
                 word = ""
                 upword = ""
                 string_end = "\""
@@ -472,7 +462,7 @@ BEGIN {
             }
             else if ( word != "" )
                 process_word()
-            else
+            else if ( string_type == "" )
                 leading_spaces= leading_spaces char
 
             continue
@@ -605,7 +595,7 @@ function process_word()
     if (in_comment) {
         if (in_comment==1 && inside_word_definition && fce_count > 2 && fce_words[fce_count-2] == "COLON" ) {
             if ( in_comment == 1 ) {
-                new_word = ",{{{{" word "}}}})"
+                new_word = ",({{{{" word "}}}})"
                 leading_spaces = "" # no use leading_spaces
             }
             else {
@@ -624,7 +614,7 @@ function process_word()
     }
     else if ( string_type != "" ) {
     
-        if ( string_type == "STRING" || string_type == "PRINT" || string_type == "WORD" )
+        if ( string_type == "STRING" || string_type == "STRING_Z" || string_type == "PRINT" || string_type == "WORD" )
             new_word = string_type "({\"" word "\"})"
         else if ( string_type == "CHAR" ) {
             if ( substr(word,1,1) == "\"" )
@@ -632,7 +622,7 @@ function process_word()
             else
                 new_word = "PUSH(\47" substr(word,1,1) "\47)"
         }
-        else if ( string_type == "ABORT\"" ) {
+        else if ( string_type == "ABORT_DQ" ) {
             new_word = "IF PRINT({\"" word "\"}) BYE THEN ;# Originally ABORTq"
             char = "\n"
         }
@@ -778,7 +768,7 @@ function process_word()
         upword = ""
         return
     }
-    else if ( upword == "WORD" ) {
+    else if ( upword == "WORD" || upword == "PARSE" ) {
 
         string_end = ""
         if ( inside_word_definition ) {
@@ -793,7 +783,7 @@ function process_word()
             string_end = substr(string_end,7,1)
         
         if ( string_end == "" )
-            print "\nError in " FILENAME " at line " NR ": Unknown terminating character for the word WORD." > "/dev/stderr"        
+            print "\nError in " FILENAME " at line " NR ": Unknown terminating character for the word " upword "." > "/dev/stderr"        
         else if (inside_word_definition)
         {
             fce_count--
@@ -805,7 +795,15 @@ function process_word()
             leading_spaces = main_leading_spaces[main_count]            
         }
    
-        string_type = "WORD"
+   
+        if ( upword == "PARSE" ) 
+        {
+            string_type = "STRING"
+            string_read = 1
+        }
+        else
+            string_type = upword
+
         word = ""
         upword = ""
             
