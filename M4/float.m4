@@ -174,6 +174,20 @@ __{}__def({USE_fTrunc_abs})
 dnl
 dnl
 dnl # ( f1 -- f2 )
+dnl # "round towards negative infinity"
+define({FLOOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_FLOOR},{floor},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FLOOR},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_fFloor}){}dnl
+__{}__def({USE_fTrunc_abs}){}dnl
+__{}__def({USE_fAdd})
+    call fFloor         ; 3:17      __INFO}){}dnl
+dnl
+dnl
+dnl # ( f1 -- f2 )
 dnl # f2 = f1 % 1.0
 define({FFRAC},{dnl
 __{}__ADD_TOKEN({__TOKEN_FFRAC},{ffrac},$@){}dnl
