@@ -324,7 +324,11 @@ BEGIN {
     reserved_words["FDUP"]      = "DUP"             # for compatibility with the standard
     reserved_words["FEXP"]      = "FEXP"
     reserved_words["F@"]        = "FETCH"           # for compatibility with the standard
-#     reserved_words["FLOOR"]     = "ZFLOOR"
+    
+#     reserved_words["FLOOR"]     = "CALL(__FLOOR,( f -- round_towards_negative_infinity(f)))"    
+#     use_reserved_words["FLOOR"] = 0
+    
+    reserved_words["FLOOR"]     = "FLOOR"
     reserved_words["FTRUNC"]    = "FTRUNC"   
     reserved_words["FLN"]       = "FLN"
     reserved_words["F*"]        = "FMUL"
@@ -915,33 +919,37 @@ function file_exists(file) {
 
 function floatToHex(value) {
     # Získání znaménka
-    sign = (value < 0) ? 0x8000 : 0
-
-    # Absolutní hodnota
-    absValue = (value < 0) ? -value : value
-
-    hexreal = sprintf( "%a", absValue )
+    sign = 0
     
+    if ( substr(value,1,1) == "-" ) {
+        sign = 0x8000
+        hexreal = sprintf( "%a", substr(value,2) )
+    }
+    else if ( substr(value,1,1) == "+" )
+        hexreal = sprintf( "%a", substr(value,2) )
+    else
+        hexreal = sprintf( "%a", value )
+
+    if ( hexreal == "0x0p+0" && sign ) {
+        print "\nWarning: You are trying to convert \"negative zero\" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero." > "/dev/stderr"                
+        return "FMMIN"
+    }
+
     if ( hexreal == "0x0p+0" ) {
         print "\nWarning: You are trying to convert \"positive zero\" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero." > "/dev/stderr"        
         return "FPMIN"
     }
 
-    if ( hexreal == "-0x0p+0" ) {
-        print "\nWarning: You are trying to convert \"negative zero\" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero." > "/dev/stderr"                
-        return "FMMIN"
+    if ( hexreal == "0xinf" && sign ) {
+        print "\nWarning: You are trying to convert \"-inf\" to Danagy 16 bit floating point format. It will be converted as a smallest possible value." > "/dev/stderr"
+        return "FMMAX"
     }
     
     if ( hexreal == "0xinf" ) {
         print "\nWarning: You are trying to convert \"+inf\" to Danagy 16 bit floating point format. It will be converted as a largest possible value." > "/dev/stderr"
         return "FPMAX"
     }
-    
-    if ( hexreal == "-0xinf" ) {
-        print "\nWarning: You are trying to convert \"-inf\" to Danagy 16 bit floating point format. It will be converted as a smallest possible value." > "/dev/stderr"
-        return "FMMAX"
-    }
-    
+
     if ( hexreal == "NaN" ) {
         print "\nWarning: You are trying to convert \"Not a Number\" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero." > "/dev/stderr"
         return "FPMIN"              # lol
@@ -1140,6 +1148,26 @@ END {
         printf "SEMICOLON"
     }
     
+#     if ( "FLOOR" in use_reserved_words && use_reserved_words["FLOOR"] ) {
+#         printf "\n\nCOLON(__FLOOR,( f -- round_towards_negative_infinity(f)))\n"    
+#         printf "  DUP _0LT IF\n"
+#         printf "    FNEGATE DUP FTRUNC_ABS TUCK NE IF PUSH(0x4000) ;# = 1e\n"
+#         printf "FADD THEN FNEGATE\n"
+#         printf "  ELSE\n"
+#         printf "    FTRUNC_ABS\n"
+#         printf "  THEN\n"
+#         printf "SEMICOLON"
+#     
+# #         printf "COLON(floor,({{{{f -- n }}}}))
+# #         printf "  DUP _0LT IF\n"
+# #         printf "    FNEGATE PUSH(0x3FFF) ;# = 0.999E\n"
+# #         printf "FADD FTRUNC_ABS FNEGATE\n"
+# #         printf "  ELSE\n"
+# #         printf "    FTRUNC_ABS\n"
+# #         printf "  THEN\n"
+# #         printf "SEMICOLON"
+#     }
+    
     if ( "FMOD" in use_reserved_words && use_reserved_words["FMOD"] ) {
         printf "\n\nCOLON(__ZMOD,( za zb  -- zmod(a%b)))\n"
         printf "ZSWAP     ;# ( a b -- b a )\n"
@@ -1159,22 +1187,7 @@ END {
         printf "ZMUL      ;# ( b (a/b)-ftrunc(a/b) -- fmod(a/b) )\n"
         printf "SEMICOLON"
     }
-
-ZSWAP 
-ZOVER 
-ZDIV 
-ZDUP 
-ZDUP 
-Z0LT 
-IF 
-ZNEGATE 
-ZFLOOR 
-ZNEGATE 
-ELSE 
-ZFLOOR 
-THEN 
-ZSUB 
-ZMUL
+        
 
     printf "\n"
 }
