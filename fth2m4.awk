@@ -255,7 +255,11 @@ BEGIN {
     reserved_words["FDUP"]      = "ZDUP"
     reserved_words["FEXP"]      = "ZEXP"
     reserved_words["F@"]        = "ZFETCH"
-    reserved_words["FTRUNC"]    = "ZINT"            # not standard
+    reserved_words["FLOOR"]     = "ZFLOOR"    
+    reserved_words["FTRUNC"]    = "CALL(__ZTRUNC,( z -- round_towards_zero(z)))"    # floating ext
+    
+    use_reserved_words["FTRUNC"] = 0
+    
     reserved_words["FLN"]       = "ZLN"
     reserved_words["F*"]        = "ZMUL"
     reserved_words["F**"]       = "ZMULMUL"
@@ -279,6 +283,21 @@ BEGIN {
     reserved_words["F0="]       = "Z0EQ"
     reserved_words["FLOAT+"]    = "ZFLOATADD"
     reserved_words["ZDEPTH"]    = "ZDEPTH"          # not standard
+    
+#     reserved_words["FFRAC"]     = "FFRAC"           # not standard
+        
+    reserved_words["FMOD"]      = "CALL(__ZMOD,( za zb  -- zmod(a%b)))"    # not standard
+    
+    use_reserved_words["FMOD"] = 0
+
+    reserved_words["F2*"]       = "PUSH_Z(2E) ZMUL" # not standard
+    reserved_words["F2/"]       = "PUSH_Z(2E) ZDIV" # not standard
+    
+    reserved_words["F0<"]       = "Z0LT"            # not standard
+    reserved_words["F0="]       = "Z0EQ"            # not standard
+
+    
+    
   } else {
     reserved_words["D>F"]       = "D_TO_S S2F"      # for compatibility with the standard
     reserved_words["F>D"]       = "F2S S_TO_D"      # for compatibility with the standard
@@ -300,11 +319,12 @@ BEGIN {
 #     reserved_words["FATAN"]     = ""    # for compatibility with the standard
     reserved_words["FCOS"]      = "PUSH(0x4092) SWAP FSUB FSIN ;# ( cos  0..π only)\n"   # for compatibility with the standard
     reserved_words["F/"]        = "FDIV"
-    reserved_words["F."]        = "FDOT"
+    reserved_words["F."]        = "FDOT SPACE"
     reserved_words["FDROP"]     = "DROP"            # for compatibility with the standard
     reserved_words["FDUP"]      = "DUP"             # for compatibility with the standard
     reserved_words["FEXP"]      = "FEXP"
     reserved_words["F@"]        = "FETCH"           # for compatibility with the standard
+#     reserved_words["FLOOR"]     = "ZFLOOR"
     reserved_words["FTRUNC"]    = "FTRUNC"   
     reserved_words["FLN"]       = "FLN"
     reserved_words["F*"]        = "FMUL"
@@ -825,11 +845,13 @@ function process_word()
         new_word = substr(word,1,length(word)-1)    # delete last dot
         new_word = "PUSHDOT(" new_word ")"          # double integer
     } 
-    else if (word ~ /^([+-]?[0-9]+([.][0-9]*)?|[+-]?[.][0-9]+)([Ee][+-]?[0-9]+)?$/ ) {
+    else if (word ~ /^[+-]?[0-9][0-9]*[.]?[0-9]*[Ee][+-]?[0-9]*$/ ) {
         if ( arg == "-zfloat" )
             new_word = "PUSH_Z(" word ")"           # floating point "string"
-        else
-            new_word = "PUSH(" floatToHex(word) ")" # hexadecimal number representing the value of a floating-point number in Danagy 16-bit format
+        else {
+            new_word = "PUSH(" floatToHex(word) ") ;# = " word      # hexadecimal number representing the value of a floating-point number in Danagy 16-bit format
+            char = "\n"
+        }
     }
     else {
         print "\nError in " FILENAME " at line " NR ": Undefined word \"" word "\" found." > "/dev/stderr"        
@@ -1103,6 +1125,56 @@ END {
         printf "  _0LT IF PUSH(0x4192) SWAP FSUB THEN\n"
         printf "SEMICOLON"
     }
+
+    if ( "FTRUNC" in use_reserved_words && use_reserved_words["FTRUNC"] ) {
+        printf "\n\nCOLON(__ZTRUNC,( z -- round_towards_zero(z)))\n"
+        printf "ZDUP      ;# ( z -- z z )\n"
+        printf "Z0LT      ;# ( z z -- flag(z<0) )\n"
+        printf "IF        ;# ( z flag -- z )\n"
+        printf "  ZNEGATE ;# ( z -- abs(z) )\n"
+        printf "  ZFLOOR  ;# ( z -- floor(fabs(z)) )\n"
+        printf "  ZNEGATE ;# ftrunc(z)\n"
+        printf "ELSE\n"
+        printf "  ZFLOOR  ;# ftrunc(z)\n"
+        printf "THEN\n"
+        printf "SEMICOLON"
+    }
+    
+    if ( "FMOD" in use_reserved_words && use_reserved_words["FMOD"] ) {
+        printf "\n\nCOLON(__ZMOD,( za zb  -- zmod(a%b)))\n"
+        printf "ZSWAP     ;# ( a b -- b a )\n"
+        printf "ZOVER     ;# ( b a -- b a b )\n"
+        printf "ZDIV      ;# ( b a b -- b (a/b) )\n"
+        printf "ZDUP      ;# ( b (a/b) -- b (a/b) (a/b) )\n"
+        printf "ZDUP      ;# ( b (a/b) (a/b) -- b (a/b) (a/b) (a/b) )\n"
+        printf "Z0LT      ;# ( b (a/b) (a/b) (a/b) -- b (a/b) (a/b) flag )\n"
+        printf "IF        ;# ( b (a/b) (a/b) flag -- b (a/b) (a/b) )\n"
+        printf "  ZNEGATE ;#    ( b (a/b) (a/b) -- b (a/b) fabs(a/b) )\n"
+        printf "  ZFLOOR  ;#    ( b (a/b) (-a/b) -- b (a/b) floor(fabs(a/b)) )\n"
+        printf "  ZNEGATE ;#    ( b (a/b) ftrunc(-a/b) -- b (a/b) ftrunc(a/b)) )\n"
+        printf "ELSE      ;# ( b (a/b) (a/b) flag -- b (a/b) (a/b) )\n"
+        printf "  ZFLOOR  ;# ( b (a/b) (a/b) -- b (a/b) ftrunc(a/b) )\n"
+        printf "THEN      ;# ( b (a/b) (a/b) -- b (a/b) ftrunc(a/b) )\n"
+        printf "ZSUB      ;# ( b ftrunc(a/b) -- b (a/b)-ftrunc(a/b) )\n"
+        printf "ZMUL      ;# ( b (a/b)-ftrunc(a/b) -- fmod(a/b) )\n"
+        printf "SEMICOLON"
+    }
+
+ZSWAP 
+ZOVER 
+ZDIV 
+ZDUP 
+ZDUP 
+Z0LT 
+IF 
+ZNEGATE 
+ZFLOOR 
+ZNEGATE 
+ELSE 
+ZFLOOR 
+THEN 
+ZSUB 
+ZMUL
 
     printf "\n"
 }
