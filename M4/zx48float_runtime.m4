@@ -741,15 +741,15 @@ _ZNEGATE:               ;           _znegate
 }){}dnl
 dnl
 dnl
-dnl # zint
-ifdef({USE_ZINT},{
-_ZINT:                  ;           _zint
-    push DE             ; 1:11      _zint
-    push HL             ; 1:11      _zint
-    call 0x36AF         ; 3:17      _zint   {call ZX ROM int}
-    pop  HL             ; 1:10      _zint
-    pop  DE             ; 1:10      _zint
-    ret                 ; 1:10      _zint
+dnl # zfloor
+ifdef({USE_ZFLOOR},{
+_ZFLOOR:                ;           _zfloor
+    push DE             ; 1:11      _zfloor
+    push HL             ; 1:11      _zfloor
+    call 0x36AF         ; 3:17      _zfloor   {call ZX ROM int}
+    pop  HL             ; 1:10      _zfloor
+    pop  DE             ; 1:10      _zfloor
+    ret                 ; 1:10      _zfloor
 }){}dnl
 dnl
 dnl
