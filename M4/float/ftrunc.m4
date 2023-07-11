@@ -9,33 +9,26 @@ __def({USE_fAdd})
                    fFloor                 ; *
 ; *****************************************
         
-    ld    A, H          ; 1:4
-    add   A, A          ; 1:4
-    jr   nc, fTrunc_abs ; 2:7/12    floor(0+) = ftrunc
-    
-    or    L             ; 1:4
-    ret   z             ; 1:5/11    floor(-0.0) = -0.0
-    
-    push DE             ; 1:11
-    ld    D, H          ; 1:4
-    ld    E, L          ; 1:4
-    
-    res   7, H          ; 2:8
-    call  fTrunc_abs    ; 3:17
-    set   7, H          ; 2:8
-    
-    ex   DE, HL         ; 1:4
-    or    A             ; 1:4
-    sbc  HL, DE         ; 2:15 
-    ex   DE, HL         ; 1:4
-
-    jr    z, $+8        ; 2:7/12    ftrunc(f) == f?
-
-    ld   DE, 0xC000     ; 3:10      -1.0
-    call fAddP          ; 3:17      f+
-        
-    pop  DE             ; 1:10      f+
-    ret                 ; 1:10
+    ld    A, H          ; 1:4       floor       dup 0>= if
+    add   A, A          ; 1:4       floor       dup 0>= if
+    jr   nc, fTrunc_abs ; 2:7/12    floor       ftrunc      floor(0+) = ftrunc
+                        ;           floor       else
+    push DE             ; 1:11      floor       fdup
+    ld    D, H          ; 1:4       floor       fdup
+    ld    E, L          ; 1:4       floor       fdup
+    res   7, H          ; 2:8       floor       fnegate
+    call  fTrunc_abs    ; 3:17      floor       ftrunc
+    set   7, H          ; 2:8       floor       fnegate
+    ex   DE, HL         ; 1:4       floor       tuck <> if
+    or    A             ; 1:4       floor       tuck <> if
+    sbc  HL, DE         ; 2:15      floor       tuck <> if
+    ex   DE, HL         ; 1:4       floor       tuck <> if
+    jr    z, $+8        ; 2:7/12    floor       tuck <> if
+    ld   DE, 0xC000     ; 3:10      floor       -1.0
+    call fAddP          ; 3:17      floor       f+
+                        ;           floor       then
+    pop  DE             ; 1:10      floor       nip/f+
+    ret                 ; 1:10      floor
 })dnl
 dnl
 dnl
