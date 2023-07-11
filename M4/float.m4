@@ -161,6 +161,18 @@ __{}__def({USE_fTrunc})
     call fTrunc         ; 3:17      __INFO}){}dnl
 dnl
 dnl
+dnl # ( uf1 -- uf2 )
+dnl # "round down to zero"
+define({FTRUNC_ABS},{dnl
+__{}__ADD_TOKEN({__TOKEN_FTRUNC_ABS},{ftrunc_abs},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FTRUNC_ABS},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_fTrunc_abs})
+    call fTrunc_abs     ; 3:17      __INFO}){}dnl
+dnl
+dnl
 dnl # ( f1 -- f2 )
 dnl # f2 = f1 % 1.0
 define({FFRAC},{dnl
