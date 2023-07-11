@@ -392,6 +392,10 @@ c...,,,
             __T_NAME(0):$1,                              __TOKEN_CFETCH:__TOKEN_0CNE,               {__SET_TOKEN({__TOKEN_CFETCH_0CNE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                              __TOKEN_CFETCH:__TOKEN_0CEQ,               {__SET_TOKEN({__TOKEN_CFETCH_0CEQ},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
+            __T_NAME(0):__T_ITEMS(0):$1:$#,             __TOKEN_PUSHS:1:__TOKEN_CONSTANT:3,         {__SET_TOKEN({__TOKEN_CONSTANT},                   __CONCATENATE_WITH({ },__T_INFO(0),$2),$3,__T_ARRAY(0))},
+            __T_NAME(0):eval(__T_ITEMS(0)>1):$1:$#,     __TOKEN_PUSHS:1:__TOKEN_CONSTANT:3,         {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_CONSTANT},__CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),$3,__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
+            
+            
 dnl # DUP
 dup,,,
 
@@ -673,7 +677,6 @@ pushdot,,,
 
 dnl # PUSH
 push,,,
-
             __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_TESTKEY,                             {__SET_TOKEN({__TOKEN_PUSH_TESTKEY},   __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_TESTKEY_ZF,                          {__SET_TOKEN({__TOKEN_PUSH_TESTKEY_ZF},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_TESTKEY,                             {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_TESTKEY},    __CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
