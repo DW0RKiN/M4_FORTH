@@ -44,6 +44,13 @@ __{}define({ZXTEMP_MANTISSA_1},format({%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>
 __{}define({ZXTEMP_MANTISSA_2},substr(__HEX_E(ZXTEMP_MANTISSA),2)){}dnl
 __{}define({ZXTEMP_MANTISSA_3},substr(__HEX_H(ZXTEMP_MANTISSA),2)){}dnl
 __{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L(ZXTEMP_MANTISSA),2)){}dnl
+__{}ifelse(format({%a},$1),{-0x0p+0},{dnl
+__{}__{}define({ZXTEMP_EXP},{00}){}dnl
+__{}__{}define({ZXTEMP_MANTISSA_1},{00}){}dnl
+__{}__{}define({ZXTEMP_MANTISSA_2},{00}){}dnl
+__{}__{}define({ZXTEMP_MANTISSA_3},{00}){}dnl
+__{}__{}define({ZXTEMP_MANTISSA_4},{00}){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl # ---------------------
@@ -352,15 +359,15 @@ __{}__def({USE_ZHEXDOT})
     call _ZHEXDOT       ; 3:17      __INFO   ( Z: z -- z )}){}dnl
 dnl
 dnl
-dnl # zint
-define({ZINT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZINT},{zint},$@){}dnl
+dnl # zfloor
+define({ZFLOOR},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZFLOOR},{zfloor},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_ZINT},{dnl
+define({__ASM_TOKEN_ZFLOOR},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZINT})
-    call _ZINT          ; 3:17      __INFO   ( Z: z -- x )}){}dnl
+__{}__def({USE_ZFLOOR})
+    call _ZFLOOR        ; 3:17      __INFO   ( Z: z -- x )}){}dnl
 dnl
 dnl
 dnl # zswap
