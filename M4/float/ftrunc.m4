@@ -1,4 +1,44 @@
-ifdef({USE_fTrunc},{
+ifdef({USE_fFlood},{__def({USE_fTrunc_abs})
+; Round towards negative infinity
+; In: HL any floating-point number
+; Out: HL same number rounded towards negative infinity
+; Pollutes: AF,B
+; *****************************************
+                   fFlood                 ; *
+; *****************************************
+        
+    ld    A, H          ; 1:4
+    add   A, A          ; 1:4
+    jr   nc, fTrunc_abs ; 2:7/12    flood(0+) = ftrunc
+    
+    or    L             ; 1:4
+    ret   z             ; 1:5/11    flood(-0.0) = -0.0
+    
+    push DE             ; 1:11
+    ld    D, H          ; 1:4
+    ld    E, L          ; 1:4
+    
+    res   7, H          ; 2:8
+    call  fTrunc_abs    ; 3:17
+    set   7, H          ; 2:8
+    
+    ex   DE, HL         ; 1:4
+    or    A             ; 1:4
+    sbc  HL, DE         ; 2:15 
+    ex   DE, HL         ; 1:4
+
+    jr    z, $+8        ; 2:7/12    ftrunc(f) == f?
+
+    ld   DE, 0xC000     ; 3:10      -1.0
+    call fAdd           ; 3:17      f+
+        
+    pop  DE             ; 1:10      f+
+    ret                 ; 1:10
+})dnl
+dnl
+dnl
+dnl
+ifdef({USE_fTrunc},{__def({USE_fTrunc_abs})
 ; Round towards zero
 ; In: HL any floating-point number
 ; Out: HL same number rounded towards zero
@@ -6,6 +46,27 @@ ifdef({USE_fTrunc},{
 ; *****************************************
                     fTrunc                ; *
 ; *****************************************
+    
+    bit   7, H          ; 2:8
+    jr    z, fTrunc_abs ; 2:7/12
+
+    res   7, H          ; 2:8
+    call  fTrunc_abs    ; 3:17
+    set   7, H          ; 2:8
+    ret                 ; 1:10
+})dnl
+dnl
+dnl
+dnl
+ifdef({USE_fTrunc_abs},{
+; Round towards zero
+; In: HL any positive floating-point number
+; Out: HL same number rounded towards zero
+; Pollutes: AF,B
+; *****************************************
+                  fTrunc_abs              ; *
+; *****************************************
+
     ld    A, H          ; 1:4
     sub  0x40           ; 2:7       bias
     jr    c, fTrunc_ZERO; 2:12/7    Completely fractional
@@ -23,7 +84,7 @@ fTrunc_Loop:            ;           odmazani mantisy za plovouci radovou carkou
     ld    L, A          ; 1:4
     ret                 ; 1:10
 fTrunc_ZERO:
-    ld   HL, FPMIN     ; 3:10      fpmin
+    ld   HL, FPMIN      ; 3:10      fpmin
     ret                 ; 1:10
 })dnl
 dnl
