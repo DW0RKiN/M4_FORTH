@@ -1,18 +1,20 @@
-ifdef({USE_fFlood},{__def({USE_fTrunc_abs})
+ifdef({USE_fFloor},{dnl
+__def({USE_fTrunc_abs}){}dnl
+__def({USE_fAdd})
 ; Round towards negative infinity
 ; In: HL any floating-point number
 ; Out: HL same number rounded towards negative infinity
 ; Pollutes: AF,B
 ; *****************************************
-                   fFlood                 ; *
+                   fFloor                 ; *
 ; *****************************************
         
     ld    A, H          ; 1:4
     add   A, A          ; 1:4
-    jr   nc, fTrunc_abs ; 2:7/12    flood(0+) = ftrunc
+    jr   nc, fTrunc_abs ; 2:7/12    floor(0+) = ftrunc
     
     or    L             ; 1:4
-    ret   z             ; 1:5/11    flood(-0.0) = -0.0
+    ret   z             ; 1:5/11    floor(-0.0) = -0.0
     
     push DE             ; 1:11
     ld    D, H          ; 1:4
@@ -30,7 +32,7 @@ ifdef({USE_fFlood},{__def({USE_fTrunc_abs})
     jr    z, $+8        ; 2:7/12    ftrunc(f) == f?
 
     ld   DE, 0xC000     ; 3:10      -1.0
-    call fAdd           ; 3:17      f+
+    call fAddP          ; 3:17      f+
         
     pop  DE             ; 1:10      f+
     ret                 ; 1:10
