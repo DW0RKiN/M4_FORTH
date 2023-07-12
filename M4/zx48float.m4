@@ -22,7 +22,9 @@ __{}__{}ZX_READ_MANT}){}dnl
 dnl
 dnl
 define({ZX48FSTRING_TO_FHEX},{dnl
-__{}define({ZXTEMP_STRING},format({%a},$1)){}dnl
+__{}ifelse(ifelse(substr($1,eval(len($1)-1)),{e},1,substr($1,eval(len($1)-1)),{E},1,0),1,{define({$0_TEMP},$1{0})},{define({$0_TEMP},$1)}){}dnl
+__{}define({$0_TEMP},format({%a},$0_TEMP)){}dnl
+__{}define({ZXTEMP_STRING},$0_TEMP){}dnl
 __{}ZX_READCHAR{}dnl                               # 0 or -+
 __{}define({ZXTEMP_SIGN},0){}dnl
 __{}define({ZXTEMP_EXP},{}){}dnl
@@ -39,12 +41,12 @@ __{}__{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
 __{}})dnl
 __{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
 __{}define({ZXTEMP_EXP},substr(__HEX_L(ZXTEMP_EXP+129),2)){}dnl
-__{}ifelse(format({%a},$1),{0x0p+0},{define({ZXTEMP_EXP},{00})}){}dnl
+__{}ifelse($0_TEMP,{0x0p+0},{define({ZXTEMP_EXP},{00})}){}dnl
 __{}define({ZXTEMP_MANTISSA_1},format({%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F)))){}dnl
 __{}define({ZXTEMP_MANTISSA_2},substr(__HEX_E(ZXTEMP_MANTISSA),2)){}dnl
 __{}define({ZXTEMP_MANTISSA_3},substr(__HEX_H(ZXTEMP_MANTISSA),2)){}dnl
 __{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L(ZXTEMP_MANTISSA),2)){}dnl
-__{}ifelse(format({%a},$1),{-0x0p+0},{dnl
+__{}ifelse($0_TEMP,{-0x0p+0},{dnl
 __{}__{}define({ZXTEMP_EXP},{00}){}dnl
 __{}__{}define({ZXTEMP_MANTISSA_1},{00}){}dnl
 __{}__{}define({ZXTEMP_MANTISSA_2},{00}){}dnl
@@ -439,6 +441,18 @@ __{}__def({USE_ZCOMPARE2FLAG})
     call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
+dnl # f<= negate s>f
+define({ZLE_NEGATE_S_TO_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZLE_NEGATE_S_TO_Z},{z<= negate s>z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZLE_NEGATE_S_TO_Z},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZCOMPARE})
+    ld    B, 0x09       ; 2:7       __INFO   ( Z: z1 z2 -- zbool ) z<= if 1e else 0e then
+    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+dnl
+dnl
 dnl # Z>=
 define({ZGE},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZGE},{z>=},$@){}dnl
@@ -449,6 +463,18 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE2FLAG})
     ld    B, 0x0A       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
     call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+dnl
+dnl
+dnl # f>= negate s>f
+define({ZGE_NEGATE_S_TO_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZGE_NEGATE_S_TO_Z},{z>= negate s>z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZGE_NEGATE_S_TO_Z},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZCOMPARE})
+    ld    B, 0x0A       ; 2:7       __INFO   ( Z: z1 z2 -- zbool ) z>= if 1e else 0e then
+    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # Z<>
@@ -463,6 +489,18 @@ __{}__def({USE_ZCOMPARE2FLAG})
     call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
+dnl # f<> negate s>f
+define({ZNE_NEGATE_S_TO_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZNE_NEGATE_S_TO_Z},{z<> negate s>z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZNE_NEGATE_S_TO_Z},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZCOMPARE})
+    ld    B, 0x0B       ; 2:7       __INFO   ( Z: z1 z2 -- zbool ) z<> if 1e else 0e then
+    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+dnl
+dnl
 dnl # Z>
 define({ZGT},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZGT},{z>},$@){}dnl
@@ -473,6 +511,18 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE2FLAG})
     ld    B, 0x0C       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
     call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+dnl
+dnl
+dnl # f> negate s>f
+define({ZGT_NEGATE_S_TO_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZGT_NEGATE_S_TO_Z},{z> negate s>z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZGT_NEGATE_S_TO_Z},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZCOMPARE})
+    ld    B, 0x0C       ; 2:7       __INFO   ( Z: z1 z2 -- zbool ) z> if 1e else 0e then
+    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # Z<
@@ -487,6 +537,18 @@ __{}__def({USE_ZCOMPARE2FLAG})
     call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
+dnl # f< negate s>f
+define({ZLT_NEGATE_S_TO_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZLT_NEGATE_S_TO_Z},{z< negate s>z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZLT_NEGATE_S_TO_Z},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZCOMPARE})
+    ld    B, 0x0D       ; 2:7       __INFO   ( Z: z1 z2 -- zbool ) z< if 1e else 0e then
+    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+dnl
+dnl
 dnl # Z=
 define({ZEQ},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZEQ},{z=},$@){}dnl
@@ -497,6 +559,18 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZCOMPARE2FLAG})
     ld    B, 0x0E       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
     call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+dnl
+dnl
+dnl # f= negate s>f
+define({ZEQ_NEGATE_S_TO_Z},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZEQ_NEGATE_S_TO_Z},{z= negate s>z},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZEQ_NEGATE_S_TO_Z},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZCOMPARE})
+    ld    B, 0x0E       ; 2:7       __INFO   ( Z: z1 z2 -- zbool ) z= if 1e else 0e then
+    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # U>Z
@@ -606,7 +680,7 @@ dnl
 dnl
 define({__ZPUSH_REC},{dnl
 __{}ifelse($1,,,{ZX48FSTRING_TO_FHEX($1)
-__{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = format({%a},$1)
+__{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = ZX48FSTRING_TO_FHEX_TEMP
 __{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1
 __{}    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      $1
 __{}    call 0x2ABB         ; 3:124     $1   new float = a,e,d,c,b{}dnl
