@@ -518,7 +518,7 @@ ifdef({USE_ZCOMPARE},{
 ; compare 0x14: > (strings)
 ; compare 0x15: < (strings)
 ; compare 0x16: = (strings)
-_ZCOMPARE:              ;           _zcompare
+_ZCOMPARE:              ;           _zcompare   ( Z: z1 z2 -- zflag )  zflag = 1 or 0
     push DE             ; 1:11      _zcompare
     push HL             ; 1:11      _zcompare
 if 1
@@ -534,6 +534,53 @@ endif
     pop  DE             ; 1:10      _zcompare
     ret                 ; 1:10      _zcompare
 }){}dnl
+dnl
+dnl
+dnl
+dnl # zcompare
+ifdef({USE_ZCOMPARE2FLAG},{
+; Input: B
+; compare 0x09: <= (numbers)
+; compare 0x0A: >= (numbers)
+; compare 0x0B: <> (numbers)
+; compare 0x0C: > (numbers)
+; compare 0x0D: < (numbers)
+; compare 0x0E: = (numbers)
+; compare 0x11: <= (strings)
+; compare 0x12: >= (strings)
+; compare 0x13: <> (strings)
+; compare 0x14: > (strings)
+; compare 0x15: < (strings)
+; compare 0x16: = (strings)
+_ZCOMPARE2FLAG:         ;           _zcompare2flag   ( -- flag ) ( Z: z1 z2 -- )
+    pop  AF             ; 1:10      _zcompare2flag
+    push DE             ; 1:11      _zcompare2flag
+    push AF             ; 1:11      _zcompare2flag
+    push HL             ; 1:11      _zcompare2flag
+if 1
+    rst 0x28            ; 1:11      Use the calculator
+    db  0x0D            ; 1:        calc-less   Important is what the register B contains
+    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
+else
+    rst 0x28            ; 1:11      Use the calculator
+    db  0x3B            ; 1:        fp_calc_2: (perform the actual operation)
+    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
+endif
+    ld   HL,(0x5C65)    ; 3:16      _zcompare2flag   {load STKEND}
+    dec  HL             ; 1:6       _zcompare2flag
+    dec  HL             ; 1:6       _zcompare2flag
+    dec  HL             ; 1:6       _zcompare2flag
+    xor   A             ; 1:4       _zcompare2flag
+    sub (HL)            ; 1:7       _zcompare2flag
+    dec  HL             ; 1:6       _zcompare2flag
+    dec  HL             ; 1:6       _zcompare2flag
+    ld  (0x5C65), HL    ; 3:16      _zcompare2flag   {save STKEND-5}
+    ld    L, A          ; 1:4       _zcompare2flag
+    ld    H, A          ; 1:4       _zcompare2flag    
+    pop  DE             ; 1:10      _zcompare2flag
+    ret                 ; 1:10      _zcompare2flag
+}){}dnl
+dnl
 dnl
 dnl
 dnl # z0=
