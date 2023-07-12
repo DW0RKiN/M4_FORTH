@@ -478,6 +478,12 @@ It can also be a real number represented with a decimal point (`.51`) or by usin
 |<sub>     f>       |<sub>       ZGT       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1> z2                 |
 |<sub>     f<       |<sub>       ZLT       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1< z2                 |
 |<sub>     f=       |<sub>       ZEQ       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1= z2                 |
+|<sub>f<= negate s>f|<sub>ZLE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e              |
+|<sub>f>= negate s>f|<sub>ZGE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e              |
+|<sub>f<> negate s>f|<sub>ZNE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e              |
+|<sub>f>  negate s>f|<sub>ZGT NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e              |
+|<sub>f<  negate s>f|<sub>ZLT NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e              |
+|<sub>f=  negate s>f|<sub>ZEQ NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e              |
 |<sub>    f0<       |<sub>      Z0LT       |<sub>   ( -- flag ) ( Z: z -- )    |<sub> flag = z < 0                |
 |<sub>    f0=       |<sub>      Z0EQ       |<sub>   ( -- flag ) ( Z: z -- )    |<sub> flag = z == 0               |
 |<sub>   float+     |<sub>    ZFLOATADD    |<sub>( a1 -- a2 ) ( Z: -- )        |<sub> a2 = a1 + 5                 |
