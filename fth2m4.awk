@@ -237,6 +237,8 @@ BEGIN {
 
   if ( arg == "-zfloat" ) {
 
+    reserved_words["FDEPTH"]    = "ZDEPTH"
+
     reserved_words["D>F"]       = "D_TO_Z"
     reserved_words["F>D"]       = "Z_TO_D"
     reserved_words["S>F"]       = "S_TO_Z"
@@ -290,8 +292,8 @@ BEGIN {
     
     use_reserved_words["FMOD"] = 0
 
-    reserved_words["F2*"]       = "PUSH_Z(2E) ZMUL" # not standard
-    reserved_words["F2/"]       = "PUSH_Z(2E) ZDIV" # not standard
+    reserved_words["F2*"]       = "ZPUSH(2E) ZMUL" # not standard
+    reserved_words["F2/"]       = "ZPUSH(2E) ZDIV" # not standard
     
     reserved_words["F0<"]       = "Z0LT"            # not standard
     reserved_words["F0="]       = "Z0EQ"            # not standard
@@ -299,6 +301,9 @@ BEGIN {
     
     
   } else {
+      
+    reserved_words["FDEPTH"]    = "DEPTH"
+      
     reserved_words["D>F"]       = "D_TO_S S2F"      # for compatibility with the standard
     reserved_words["F>D"]       = "F2S S_TO_D"      # for compatibility with the standard
     reserved_words["S>F"]       = "S2F"
@@ -350,8 +355,10 @@ BEGIN {
 #     reserved_words["F>"]        = "GT"
 #     reserved_words["F<"]        = "LT"
     reserved_words["F="]        = "EQ"              # for compatibility with the standard
-    reserved_words["F0<"]       = "_0LT"            # for compatibility with the standard
-    reserved_words["F0="]       = "_2MUL _0EQ"      # for compatibility with the standard
+    reserved_words["F<"]        = "FLT"
+    
+    reserved_words["F0<"]       = "F0LT"
+    reserved_words["F0="]       = "F0EQ"
     reserved_words["FLOAT+"]    = "_2ADD"           # for compatibility with the standard
 
     reserved_words["FFRAC"]     = "FFRAC"           # not standard
@@ -851,7 +858,7 @@ function process_word()
     } 
     else if (word ~ /^[+-]?[0-9][0-9]*[.]?[0-9]*[Ee][+-]?[0-9]*$/ ) {
         if ( arg == "-zfloat" )
-            new_word = "PUSH_Z(" word ")"           # floating point "string"
+            new_word = "ZPUSH(" word ")"            # floating point "string"
         else {
             new_word = "PUSH(" floatToHex(word) ") ;# = " word      # hexadecimal number representing the value of a floating-point number in Danagy 16-bit format
             char = "\n"
