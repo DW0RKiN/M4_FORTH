@@ -554,6 +554,7 @@ h....,,,
 dnl # I...
 i....,,,
 
+            __T_NAME(0):$1,               __TOKEN_2DUP:__TOKEN_FLT,                           {__SET_TOKEN({__TOKEN_2DUP_FLT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_DUP:__TOKEN_F0EQ,                           {__SET_TOKEN({__TOKEN_DUP_F0EQ},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_DUP:__TOKEN_F0LT,                           {__SET_TOKEN({__TOKEN_DUP_F0LT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             
@@ -561,7 +562,9 @@ i....,,,
             __T_NAME(0):$1,                   __TOKEN_F0EQ:__TOKEN_IF,                            {__SET_TOKEN({__TOKEN_F0EQ_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_DUP_F0LT:__TOKEN_IF,                        {__SET_TOKEN({__TOKEN_DUP_F0LT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                   __TOKEN_F0LT:__TOKEN_IF,                            {__SET_TOKEN({__TOKEN_F0LT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
-
+            __T_NAME(0):$1,               __TOKEN_2DUP_FLT:__TOKEN_IF,                        {__SET_TOKEN({__TOKEN_2DUP_FLT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,                    __TOKEN_FLT:__TOKEN_IF,                             {__SET_TOKEN({__TOKEN_FLT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            
             __T_NAME(0):$1,               __TOKEN_DUP_F0EQ:__TOKEN_UNTIL,                     {__SET_TOKEN({__TOKEN_DUP_F0EQ_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                   __TOKEN_F0EQ:__TOKEN_UNTIL,                         {__SET_TOKEN({__TOKEN_F0EQ_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_DUP_F0LT:__TOKEN_UNTIL,                     {__SET_TOKEN({__TOKEN_DUP_F0LT_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
@@ -1628,6 +1631,8 @@ dnl # X...
 dnl # Y...
 dnl # Z...
 z,,,
+
+            __T_NAME(0):$1,              __TOKEN_ZPUSH:__TOKEN_ZPUSH,               {__SET_TOKEN({__TOKEN_ZPUSH},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0),shift(shift($@)))},
 
             __T_NAME(0):$1,              __TOKEN_DUP:__TOKEN_ZX_BORDER,             {__SET_TOKEN({__TOKEN_DUP_ZX_BORDER},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:1:__TOKEN_ZX_BORDER,         {__SET_TOKEN({__TOKEN_PUSH_ZX_BORDER},__T_INFO(0){ }$2,__T_ARRAY(0))},
