@@ -324,6 +324,11 @@ __{}    dec  HL             ; 1:6       __INFO
 __{}    and   H             ; 1:4       __INFO   negative without +-0e
 __{}    add   A, A          ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+__{}TYP_FLOAT,{no_A},{
+__{}                        ;[6:36]     __INFO   ( f -- flag )  flag: f < +-0e  # version: TYP_FLOAT = small; other: default
+__{}    ld   BC, 0x7FFF     ; 3:10      __INFO
+__{}    add  HL, BC         ; 1:11      __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
 __{}{
 __{}                        ;[7:30]     __INFO   ( f -- flag )  flag: f < +-0e  # version: TYP_FLOAT = default; other: small
 __{}    ld    A, H          ; 1:4       __INFO
@@ -367,14 +372,11 @@ __{}__ADD_TOKEN({__TOKEN_DUP_F0LT},{dup f0<},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_F0LT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[9:54]     __INFO   ( f -- f flag )  flag: f < +-0e
-    ld    A, H          ; 1:4       __INFO
-    dec  HL             ; 1:6       __INFO
-    and   H             ; 1:4       __INFO   negative without +-0e
-    inc  HL             ; 1:6       __INFO
-    add   A, A          ; 1:4       __INFO
+                        ;[8:51]     __INFO   ( f -- f flag )  flag: f < +-0e
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
+    ld   HL, 0x7FFF     ; 3:10      __INFO
+    add  HL, DE         ; 1:11      __INFO
     sbc  HL, HL         ; 2:15      __INFO   HL = flag{}dnl
 }){}dnl
 dnl
