@@ -103,22 +103,49 @@ __{}.error {$0}($@) for non-existent {BEGIN}},
 __{}break{}BEGIN_STACK:               ;           __INFO{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
-dnl # ( flag -- )
+dnl # ( x -- )  flag: x == 0
 define({_0EQ_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_0EQ_UNTIL},{0= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_0EQ_UNTIL},{dnl
 __{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    ld    A, H          ; 1:4       0= until BEGIN_STACK   ( flag -- )
-    or    L             ; 1:4       0= until BEGIN_STACK
-    ex   DE, HL         ; 1:4       0= until BEGIN_STACK
-    pop  DE             ; 1:10      0= until BEGIN_STACK
-    jp   nz, begin{}BEGIN_STACK   ; 3:10      0= until BEGIN_STACK
-__{}break{}BEGIN_STACK:               ;           0= until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( x -- )  flag: x == 0
+__{}    or    L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO
+__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( f -- )  flag: f == +-0e
+define({F0EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_F0EQ_UNTIL},{f0= until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_F0EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( f -- )  flag: f == +-0e
+__{}    add   A, A          ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nz, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
+__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}popdef({BEGIN_STACK}){}dnl
+__{}})
+}){}dnl
+dnl
 dnl
 dnl
 dnl # ( n -- )
@@ -908,20 +935,45 @@ __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      2dup eq until BEGIN_STACK
 __{}break{}BEGIN_STACK:               ;           2dup eq until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
 dnl
 dnl
-dnl # ( x -- x )
+dnl
+dnl # ( x -- x )  flag: x == 0
 define({DUP_0EQ_UNTIL},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_0EQ_UNTIL},{dup 0= until},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_0EQ_UNTIL},{dnl
-__{}define({__INFO},{dup_0eq until}){}dnl
-ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}.error {$0}($@) for non-existent {BEGIN}},
-{
-    ld    A, H          ; 1:4       dup 0= until BEGIN_STACK   ( x -- x )
-    or    L             ; 1:4       dup 0= until BEGIN_STACK
-    jp   nz, begin{}BEGIN_STACK   ; 3:10      dup 0= until BEGIN_STACK
-__{}break{}BEGIN_STACK:               ;           dup 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( x -- x )  flag: x == 0
+__{}    or    L             ; 1:4       __INFO
+__{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO
+__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( f -- f )  flag: f == +-0e
+define({DUP_F0EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_F0EQ_UNTIL},{dup f0= until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_F0EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( f -- f )  flag: f == +-0e
+__{}    add   A, A          ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    jp   nz, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
+__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}popdef({BEGIN_STACK}){}dnl
+__{}})
+}){}dnl
 dnl
 dnl
 dnl
