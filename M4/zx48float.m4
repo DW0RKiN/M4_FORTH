@@ -434,9 +434,9 @@ __{}__ADD_TOKEN({__TOKEN_ZLE},{z<=},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZLE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE})
-    ld    B, 0x09       ; 2:7       __INFO   ( Z: z1 z2 -- 1 or 0 )
-    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+__{}__def({USE_ZCOMPARE2FLAG})
+    ld    B, 0x09       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # Z>=
@@ -446,9 +446,9 @@ __{}__ADD_TOKEN({__TOKEN_ZGE},{z>=},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZGE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE})
-    ld    B, 0x0A       ; 2:7       __INFO   ( Z: z1 z2 -- 1 or 0 )
-    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+__{}__def({USE_ZCOMPARE2FLAG})
+    ld    B, 0x0A       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # Z<>
@@ -458,9 +458,9 @@ __{}__ADD_TOKEN({__TOKEN_ZNE},{z<>},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZNE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE})
-    ld    B, 0x0B       ; 2:7       __INFO   ( Z: z1 z2 -- 1 or 0 )
-    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+__{}__def({USE_ZCOMPARE2FLAG})
+    ld    B, 0x0B       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # Z>
@@ -470,9 +470,9 @@ __{}__ADD_TOKEN({__TOKEN_ZGT},{z>},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZGT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE})
-    ld    B, 0x0C       ; 2:7       __INFO   ( Z: z1 z2 -- 1 or 0 )
-    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+__{}__def({USE_ZCOMPARE2FLAG})
+    ld    B, 0x0C       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # Z<
@@ -482,9 +482,9 @@ __{}__ADD_TOKEN({__TOKEN_ZLT},{z<},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZLT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE})
-    ld    B, 0x0D       ; 2:7       __INFO   ( Z: z1 z2 -- 1 or 0 )
-    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+__{}__def({USE_ZCOMPARE2FLAG})
+    ld    B, 0x0D       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # Z=
@@ -494,9 +494,9 @@ __{}__ADD_TOKEN({__TOKEN_ZEQ},{z=},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZEQ},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE})
-    ld    B, 0x0E       ; 2:7       __INFO   ( Z: z1 z2 -- 1 or 0 )
-    call _ZCOMPARE      ; 3:17      __INFO}){}dnl
+__{}__def({USE_ZCOMPARE2FLAG})
+    ld    B, 0x0E       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # U>Z
@@ -585,27 +585,32 @@ __{}__{}    call _SIGN_BC_TO_Z  ; 3:17      __INFO   $1 == 1 1??????? ????????})
 })dnl
 dnl
 dnl
-define({PUSH_Z},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_Z},{push_z($1)},$@){}dnl
+dnl # 1E -2.3E-5 etc.
+define({ZPUSH},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZPUSH},{$1},$@){}dnl
 }){}dnl
 dnl
-define({__ASM_TOKEN_PUSH_Z},{dnl
+define({__ASM_TOKEN_ZPUSH},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($#<1),1,{
 __{}  .error {$0}($@): Missing parameter!},
-__{}eval($#>1),1,{
-__{}  .error {$0}($@): Unexpected parameter!},
-__{}{ZX48FSTRING_TO_FHEX($1)
-                       ;[15:195]    __INFO   = format({%a},$1)
+__{}{
     push DE             ; 1:11      __INFO
-    push HL             ; 1:11      __INFO
-    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       __INFO
-    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      __INFO
-    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      __INFO
-    call 0x2ABB         ; 3:124     __INFO   new float = a,e,d,c,b
+    push HL             ; 1:11      __INFO{}dnl
+    __ZPUSH_REC($@)
     pop  HL             ; 1:11      __INFO
-    pop  DE             ; 1:11      __INFO
+    pop  DE             ; 1:11      __INFO}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+define({__ZPUSH_REC},{dnl
+__{}ifelse($1,,,{ZX48FSTRING_TO_FHEX($1)
+__{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = format({%a},$1)
+__{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1
+__{}    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      $1
+__{}    call 0x2ABB         ; 3:124     $1   new float = a,e,d,c,b{}dnl
+__{}$0(shift($@))}){}dnl
 }){}dnl
 dnl
 dnl
