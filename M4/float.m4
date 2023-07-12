@@ -281,3 +281,51 @@ __{}define({__INFO},__COMPILE_INFO)
 dnl
 dnl
 dnl
+dnl # f0=
+dnl # ( f -- flag )
+dnl # if ( f == +-0e ) flag = -1; else flag = 0;
+dnl # 0 if 16-bit floating point number not equal to +-zero, -1 if equal
+define({F0EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_F0EQ},{f0=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_F0EQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:34]     __INFO   ( f -- flag )  flag: f == +-0e
+    ld    A, H          ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    sub  0x01           ; 2:7       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # f0<
+dnl # ( f -- flag )
+define({F0LT},{dnl
+__{}__ADD_TOKEN({__TOKEN_F0LT},{f0<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_F0LT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(TYP_FLOAT,{small},{
+__{}                        ;[6:33]     __INFO   ( f -- flag )  flag: f < +-0e  # version: TYP_FLOAT = small; other: default
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    dec  HL             ; 1:6       __INFO
+__{}    and   H             ; 1:4       __INFO   negative without +-0e
+__{}    add   A, A          ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+__{}{
+__{}                        ;[7:30]     __INFO   ( f -- flag )  flag: f < +-0e  # version: TYP_FLOAT = default; other: small
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    dec  HL             ; 1:6       __INFO
+__{}    and   H             ; 1:4       __INFO   negative without +-0e
+__{}    add   A, A          ; 1:4       __INFO
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
