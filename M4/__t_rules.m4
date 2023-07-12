@@ -553,6 +553,14 @@ h....,,,
 
 dnl # I...
 i....,,,
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_F0EQ:__TOKEN_IF,                {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_F0EQ_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                           __TOKEN_F0EQ:__TOKEN_IF,                {__SET_TOKEN({__TOKEN_F0EQ_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_F0EQ:__TOKEN_UNTIL,             {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_F0EQ_UNTIL},           __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                           __TOKEN_F0EQ:__TOKEN_UNTIL,             {__SET_TOKEN({__TOKEN_F0EQ_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            __T_NAME(1):__T_NAME(0):$1,   __TOKEN_DUP:__TOKEN_F0LT:__TOKEN_IF,                {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_DUP_F0LT_IF},              __CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1,                           __TOKEN_F0LT:__TOKEN_IF,                {__SET_TOKEN({__TOKEN_F0LT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
             __T_NAME(1):__T_NAME(0):$1,   __TOKEN_2OVER_NIP_CFETCH:__TOKEN_0CEQ:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_NIP_CFETCH_0CEQ_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
             __T_NAME(1):__T_NAME(0):$1,   __TOKEN_2OVER_NIP_CFETCH:__TOKEN_0CNE:__TOKEN_IF,   {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_NIP_CFETCH_0CNE_IF},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
