@@ -290,13 +290,21 @@ __{}__ADD_TOKEN({__TOKEN_F0EQ},{f0=},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_F0EQ},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[7:34]     __INFO   ( f -- flag )  flag: f == +-0e
-    ld    A, H          ; 1:4       __INFO
-    add   A, A          ; 1:4       __INFO
-    or    L             ; 1:4       __INFO
-    sub  0x01           ; 2:7       __INFO
-    sbc  HL, HL         ; 2:15      __INFO   HL = flag{}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(TYP_FLOAT,{small},{
+__{}                        ;[6:40]     __INFO   ( f -- flag )  flag: f == +-0e  # version: TYP_FLOAT = small; other: default
+__{}    add  HL, HL         ; 1:11      __INFO   sign out
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    dec  HL             ; 1:6       __INFO
+__{}    sub   H             ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+__{}{
+__{}                        ;[7:34]     __INFO   ( f -- flag )  flag: f == +-0e  # version: TYP_FLOAT = default; other: small
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    sub  0x01           ; 2:7       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
 }){}dnl
 dnl
 dnl
@@ -325,6 +333,49 @@ __{}    add   A, A          ; 1:4       __INFO
 __{}    sbc   A, A          ; 1:4       __INFO
 __{}    ld    H, A          ; 1:4       __INFO
 __{}    ld    L, A          ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # dup f0=
+dnl # ( f -- f flag )
+dnl # if ( f == +-0e ) flag = -1; else flag = 0;
+dnl # 0 if 16-bit floating point number not equal to +-zero, -1 if equal
+define({DUP_F0EQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_F0EQ},{dup f0=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_F0EQ},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[9:49]     __INFO   ( f -- f flag )  flag: f == +-0e
+    ld    A, H          ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    sub  0x01           ; 2:7       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # dup f0<
+dnl # ( f -- flag )
+define({DUP_F0LT},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_F0LT},{dup f0<},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_F0LT},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[9:54]     __INFO   ( f -- f flag )  flag: f < +-0e
+    ld    A, H          ; 1:4       __INFO
+    dec  HL             ; 1:6       __INFO
+    and   H             ; 1:4       __INFO   negative without +-0e
+    inc  HL             ; 1:6       __INFO
+    add   A, A          ; 1:4       __INFO
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag{}dnl
 }){}dnl
 dnl
 dnl

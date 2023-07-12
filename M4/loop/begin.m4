@@ -125,29 +125,6 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # ( f -- )  flag: f == +-0e
-define({F0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_F0EQ_UNTIL},{f0= until},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_F0EQ_UNTIL},{dnl
-__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
-__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
-__{}{
-__{}    ld    A, H          ; 1:4       __INFO   ( f -- )  flag: f == +-0e
-__{}    add   A, A          ; 1:4       __INFO
-__{}    or    L             ; 1:4       __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    jp   nz, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
-__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
-__{}popdef({BEGIN_STACK}){}dnl
-__{}})
-}){}dnl
-dnl
-dnl
-dnl
 dnl # ( n -- )
 dnl # $1 $2 within until
 define({PUSH2_WITHIN_UNTIL},{dnl
@@ -952,27 +929,6 @@ __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      __INFO
 __{}break{}BEGIN_STACK:               ;           __INFO{}dnl
 __{}popdef({BEGIN_STACK}){}dnl
 __{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # ( f -- f )  flag: f == +-0e
-define({DUP_F0EQ_UNTIL},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_F0EQ_UNTIL},{dup f0= until},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DUP_F0EQ_UNTIL},{dnl
-__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
-__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
-__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
-__{}{
-__{}    ld    A, H          ; 1:4       __INFO   ( f -- f )  flag: f == +-0e
-__{}    add   A, A          ; 1:4       __INFO
-__{}    or    L             ; 1:4       __INFO
-__{}    jp   nz, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
-__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
-__{}popdef({BEGIN_STACK}){}dnl
-__{}})
 }){}dnl
 dnl
 dnl
@@ -4177,6 +4133,98 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- d )  flag: d > $1<<16+$2},3,10,3,0,break{}BEGIN_STACK,0)
 __{}    jp   nc, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO}){}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl # ---------------------------------------------------------------------------
+dnl # 16 bit float
+dnl # ---------------------------------------------------------------------------
+dnl
+dnl
+dnl
+dnl # ( f -- )  flag: f == +-0e
+define({F0EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_F0EQ_UNTIL},{f0= until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_F0EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( f -- )  flag: f == +-0e
+__{}    add   A, A          ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nz, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
+__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}popdef({BEGIN_STACK}){}dnl
+__{}})
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( f -- )  flag: f == +-0e
+define({F0EQ_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_F0EQ_WHILE},{f0= while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_F0EQ_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( f -- )  flag: f == +-0e
+__{}    add   A, A          ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nz, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO
+__{}})
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( f -- f )  flag: f == +-0e
+define({DUP_F0EQ_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_F0EQ_UNTIL},{dup f0= until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_F0EQ_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( f -- f )  flag: f == +-0e
+__{}    add   A, A          ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    jp   nz, format({%-11s},begin{}BEGIN_STACK); 3:10      __INFO
+__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}popdef({BEGIN_STACK}){}dnl
+__{}})
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( f -- f )  flag: f == +-0e
+define({DUP_F0EQ_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_F0EQ_WHILE},{dup f0= while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_F0EQ_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
+__{}__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}{
+__{}    ld    A, H          ; 1:4       __INFO   ( f -- f )  flag: f == +-0e
+__{}    add   A, A          ; 1:4       __INFO
+__{}    or    L             ; 1:4       __INFO
+__{}    jp   nz, format({%-11s},break{}BEGIN_STACK); 3:10      __INFO
+__{}})
+}){}dnl
+dnl
+dnl
 dnl
 dnl
 dnl

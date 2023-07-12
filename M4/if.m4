@@ -1494,6 +1494,47 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
+dnl # f0= if
+dnl # ( f -- )
+define({F0EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_F0EQ_IF},{f0= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_F0EQ_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[8:36]     __INFO   ( f -- )  flag: f == +-0e
+    ld    A, H          ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO{}dnl
+}){}dnl
+dnl
+dnl
+dnl # ( f -- f )
+dnl # dup f0= if
+define({DUP_F0EQ_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_F0EQ_IF},{fdup f0= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_F0EQ_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+                        ;[6:22]     __INFO   ( f -- f )  flag: f == +-0e
+    ld    A, H          ; 1:4       __INFO
+    add   A, A          ; 1:4       __INFO
+    or    L             ; 1:4       __INFO
+    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO{}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl
 dnl # ---------------------------------------------------------------------------
 dnl # Device
