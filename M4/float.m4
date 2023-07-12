@@ -360,7 +360,7 @@ dnl
 dnl
 dnl
 dnl # dup f0<
-dnl # ( f -- flag )
+dnl # ( f -- f flag )
 define({DUP_F0LT},{dnl
 __{}__ADD_TOKEN({__TOKEN_DUP_F0LT},{dup f0<},$@){}dnl
 }){}dnl
