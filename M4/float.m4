@@ -4,6 +4,83 @@ define({carry_flow_warning},1){}dnl
 include(M4PATH{}float_const.m4){}dnl
 dnl
 dnl
+dnl
+define({FPUSH},{dnl
+__{}define({$0_SIGN},0){}dnl
+__{}ifelse(substr($1,0,1),{-},{dnl
+__{}__{}define({$0_SIGN},0x8000){}dnl
+__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT(substr($1,1))})},
+__{}substr($1,0,1),{+},{dnl
+__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT(substr($1,1))})},
+__{}{dnl
+__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT($1)})}){}dnl
+__{}dnl
+__{}ifelse($0_SIGN:$0_HEX_REAL,{0x8000:0x0p+0},{
+__{}__{}  .WARNING You are trying to convert "negative zero" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero."  
+__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FMMIN)},
+__{}$0_HEX_REAL,{0x0p+0},{
+__{}__{}  .WARNING You are trying to convert "positive zero" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero."
+__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMIN)},
+__{}$0_SIGN:$0_HEX_REAL,{0x8000:inf},{
+__{}__{}  .WARNING You are trying to convert "-inf" to Danagy 16 bit floating point format. It will be converted as a smallest possible value."
+__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FMMAX)},
+__{}$0_HEX_REAL,{inf},{
+__{}__{}  .WARNING You are trying to convert "+inf" to Danagy 16 bit floating point format. It will be converted as a largest possible value."
+__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMAX)},
+__{}$0_HEX_REAL,{NaN},{
+__{}__{}  .WARNING You are trying to convert "Not a Number" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero."
+__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMIN)},
+__{}{dnl
+__{}__{}dnl    # Výpočet exponentu
+__{}__{}define({$0_EXP},{eval(substr($0_HEX_REAL,incr(index($0_HEX_REAL,{p}))) + 0x40)}){}dnl
+__{}__{}dnl    # Výpočet mantisy    
+__{}__{}define({$0_MAN},{substr($0_HEX_REAL,incr(index($0_HEX_REAL,{x})),eval(index($0_HEX_REAL,{p})-index($0_HEX_REAL,{x})-1))}){}dnl
+__{}__{}ifelse(substr($0_MAN,0,2),{1.},{define({$0_MAN},{1}substr($0_MAN,2))}){}dnl
+__{}__{}define({$0_MAN},$0_MAN{000}){}dnl
+__{}__{}define({$0_ROUND_NIBBLE},substr($0_MAN,3,1)){}dnl
+__{}__{}define({$0_MAN},{0x}substr($0_MAN,0,3)){}dnl
+__{}__{}ifelse(eval({0x}$0_ROUND_NIBBLE>7),1,{define({$0_MAN},eval($0_MAN+1))}){}dnl
+__{}__{}ifelse(__HEX_HL($0_MAN),0x0200,{dnl
+__{}__{}__{}define({$0_EXP},incr($0_EXP)){}dnl
+__{}__{}__{}define({$0_MAN},0)},
+__{}__{}{dnl
+__{}__{}__{}define({$0_MAN},eval($0_MAN-0x100))}){}dnl
+__{}__{}dnl
+__{}__{}ifelse(eval(($0_EXP-0x48)>=0),1,{dnl
+__{}__{}__{}define({$0_REAL},eval(($0_MAN+256)*__POW(2,eval($0_EXP-0x48))))},
+__{}__{}{dnl
+__{}__{}__{}define({$0_REAL},eval($0_MAN+256)/__POW(2,eval(0x48-$0_EXP)))}){}dnl
+__{}__{}dnl
+
+format({%f},$0_REAL)
+
+__{}__{}ifelse(1,0,{
+__{}__{}__{}$0_HEX_REAL
+__{}__{}__{}s:$0_SIGN
+__{}__{}__{}e:$0_EXP = __HEX_L($0_EXP) = eval($0_EXP-0x48)
+__{}__{}__{}m:__HEX_HL($0_MAN)
+__{}__{}__{}i:$0_REAL}){}dnl
+__{}__{}dnl
+__{}__{}ifelse(eval(($0_EXP < 0) && $0_SIGN),1,{
+__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a negative value closest to zero."        
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FMMIN)},
+__{}__{}eval($0_EXP < 0 ),1,{
+__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a positive value closest to zero."        
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMIN)},
+__{}__{}eval(($0_EXP > 0x7F) && $0_SIGN ),1,{
+__{}__{}__{}  .WARNING The value "$1" is less than the smallest possible value, so it will be changed to the smallest possible value."
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FMMAX)},  
+__{}__{}eval($0_EXP > 0x7F),1,{
+__{}__{}__{}  .WARNING The value "$1" is greater than the largest possible value, so it will be changed to the largest possible value."
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMAX)},  
+__{}__{}{dnl   # Sestavení hexadecimální hodnoty
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1 -> }$0_REAL,__HEX_HL($0_SIGN + $0_EXP * 0x100 + $0_MAN)){}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+})dnl
+dnl
+dnl
+dnl
 dnl # ( s1 -- f1 )
 define({S2F},{dnl
 __{}__ADD_TOKEN({__TOKEN_S2F},{s>f},$@){}dnl
