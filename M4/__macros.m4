@@ -99,6 +99,16 @@ define({__HEX_DE_HL},{ifelse(__IS_NUM($1):__IS_NUM($2),{1:1},{format({0x%04X},ev
 dnl
 dnl
 dnl
+dnl
+dnl # __HEX_FLOAT(-1)     -> -0x1p+0
+dnl # __HEX_FLOAT(0e)     -> 0x0p+0
+dnl # __HEX_FLOAT(1e)     -> 0x1p+0
+dnl # __HEX_FLOAT(2e)     -> 0x1p+1
+dnl # __HEX_FLOAT(3.1415) -> 0x1.921cac083126fp+1
+define({__HEX_FLOAT},{ifelse(ifelse(substr($1,decr(len($1))),{e},1,substr($1,decr(len($1))),{E},1,0),1,{format({%a},$1{0})},{format({%a},$1)})}){}dnl
+dnl
+dnl
+dnl
 dnl # if number __HEX_HL($1) or $1
 define({__SAVE_VALUE_HL},   {ifelse(__IS_MEM_REF($1),{1},$1,__IS_NUM($1),{0},$1,{format({0x%04X},eval(0xFFFF &  ($1)     ))})}){}dnl
 dnl
@@ -363,6 +373,15 @@ __{}eval($#>1),{1},{NO_ONE_NUMBERS},
 __{}__IS_NUM($1),{1},{eval($1)},
 __{}{NO_NUMBER})}){}dnl
 dnl
+dnl
+dnl
+dnl # __POW(2,0) = 1
+dnl # __POW(2,1) = 2
+dnl # __POW(2,2) = 4
+dnl # __POW(2,3) = 8
+dnl # __POW(3,7) = 2187
+dnl # __POW(x,y) = x**y
+define({__POW},{ifelse(eval($2<=0),1,1,{eval( $1 * $0($1,decr($2)) )})}){}dnl
 dnl
 dnl
 dnl
