@@ -522,13 +522,13 @@ _ZCOMPARE:              ;           _zcompare   ( Z: z1 z2 -- zflag )  zflag = 1
     push DE             ; 1:11      _zcompare
     push HL             ; 1:11      _zcompare
 if 1
-    rst 0x28            ; 1:11      Use the calculator
+    rst 0x28            ; 1:11      Use the calculator    {Save only: AF', HL'}
     db  0x0D            ; 1:        calc-less   Important is what the register B contains
-    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
+    db  0x38            ; 1:        calc-end
 else
-    rst 0x28            ; 1:11      Use the calculator
+    rst 0x28            ; 1:11      Use the calculator    {Save only: AF', HL'}
     db  0x3B            ; 1:        fp_calc_2: (perform the actual operation)
-    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
+    db  0x38            ; 1:        calc-end
 endif
     pop  HL             ; 1:10      _zcompare
     pop  DE             ; 1:10      _zcompare
@@ -556,16 +556,16 @@ _ZCOMPARE2FLAG:         ;           _zcompare2flag   ( -- flag ) ( Z: z1 z2 -- )
     pop  AF             ; 1:10      _zcompare2flag
     push DE             ; 1:11      _zcompare2flag
     push AF             ; 1:11      _zcompare2flag
+    push HL             ; 1:11      _zcompare2flag
 if 1
-    rst 0x28            ; 1:11      Use the calculator
+    rst 0x28            ; 1:11      Use the calculator    {Save only: AF', HL'}
     db  0x0D            ; 1:        calc-less   Important is what the register B contains
-    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
+    db  0x38            ; 1:        calc-end
 else
-    rst 0x28            ; 1:11      Use the calculator
+    rst 0x28            ; 1:11      Use the calculator    {Save only: AF', HL'}
     db  0x3B            ; 1:        fp_calc_2: (perform the actual operation)
-    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
+    db  0x38            ; 1:        calc-end
 endif
-    ex   DE, HL         ; 1:4       _zcompare2flag
     ld   HL,(0x5C65)    ; 3:16      _zcompare2flag   {load STKEND}
     dec  HL             ; 1:6       _zcompare2flag
     dec  HL             ; 1:6       _zcompare2flag
@@ -576,7 +576,8 @@ endif
     dec  HL             ; 1:6       _zcompare2flag
     ld  (0x5C65), HL    ; 3:16      _zcompare2flag   {save STKEND-5}
     ld    L, A          ; 1:4       _zcompare2flag
-    ld    H, A          ; 1:4       _zcompare2flag
+    ld    H, A          ; 1:4       _zcompare2flag    
+    pop  DE             ; 1:10      _zcompare2flag
     ret                 ; 1:10      _zcompare2flag
 }){}dnl
 dnl
