@@ -22,8 +22,7 @@ __{}__{}ZX_READ_MANT}){}dnl
 dnl
 dnl
 define({ZX48FSTRING_TO_FHEX},{dnl
-__{}ifelse(ifelse(substr($1,eval(len($1)-1)),{e},1,substr($1,eval(len($1)-1)),{E},1,0),1,{define({$0_TEMP},$1{0})},{define({$0_TEMP},$1)}){}dnl
-__{}define({$0_TEMP},format({%a},$0_TEMP)){}dnl
+__{}define({$0_TEMP},__HEX_FLOAT($1)){}dnl
 __{}define({ZXTEMP_STRING},$0_TEMP){}dnl
 __{}ZX_READCHAR{}dnl                               # 0 or -+
 __{}define({ZXTEMP_SIGN},0){}dnl
@@ -87,7 +86,7 @@ define({__ASM_TOKEN_ZFLOAT2ARRAY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
 __{}ZX48FSTRING_TO_FHEX($1){}dnl
-__{}DB 0x{}ZXTEMP_EXP,0x{}ZXTEMP_MANTISSA_1,0x{}ZXTEMP_MANTISSA_2,0x{}ZXTEMP_MANTISSA_3,0x{}ZXTEMP_MANTISSA_4 ; = $1 = format({%a},$1){}dnl
+__{}DB 0x{}ZXTEMP_EXP,0x{}ZXTEMP_MANTISSA_1,0x{}ZXTEMP_MANTISSA_2,0x{}ZXTEMP_MANTISSA_3,0x{}ZXTEMP_MANTISSA_4 ; = $1 = __HEX_FLOAT($1){}dnl
 }){}dnl
 dnl
 dnl
@@ -680,7 +679,7 @@ dnl
 dnl
 define({__ZPUSH_REC},{dnl
 __{}ifelse($1,,,{ZX48FSTRING_TO_FHEX($1)
-__{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = ZX48FSTRING_TO_FHEX_TEMP
+__{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = __HEX_FLOAT($1)
 __{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1
 __{}    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      $1
 __{}    call 0x2ABB         ; 3:124     $1   new float = a,e,d,c,b{}dnl
@@ -785,7 +784,7 @@ __{}__{}pushdef({LAST_HERE_NAME},$1){}dnl
 __{}__{}pushdef({LAST_HERE_ADD},5){}dnl
 __{}__{}ZX48FSTRING_TO_FHEX($2){}dnl
 __{}__{}__ADD_SPEC_VARIABLE({
-}format({%-24s},$1:){;           }__INFO{   = $2 = }format({%a},$2){
+}format({%-24s},$1:){;           }__INFO{   = $2 = }__HEX_FLOAT($2){
 }    db 0x{}ZXTEMP_EXP{             ;           }__INFO{   = exp
 }    db 0x{}ZXTEMP_MANTISSA_1{             ;           }__INFO{   = sign + high 7 bits mantissa (big-endien)
 }    db 0x{}ZXTEMP_MANTISSA_2{,0x}ZXTEMP_MANTISSA_3{,0x}ZXTEMP_MANTISSA_4{   ;           }__INFO{   = low mantissa (big-endien)}){}dnl
