@@ -2,57 +2,77 @@ dnl ## ZX Spectrum 48 ROM Floating point Arithmetic
 dnl
 dnl
 dnl
-define({ZX_READCHAR},{dnl
-__{}define({ZXTEMP_CHAR},substr(ZXTEMP_STRING,0,1)){}dnl
-__{}define({ZXTEMP_STRING},substr(ZXTEMP_STRING,1)){}dnl
-})dnl
-dnl
-dnl
-define({ZX_READ_MANT},{dnl
-__{}define({ZX_READ_TEMP},ZXTEMP_CHAR){}dnl
-__{}ifelse(ZX_READ_TEMP,{p},{define({ZX_READ_TEMP},{0})}){}dnl
-__{}ifelse(len(ZXTEMP_MANTISSA),{10},{define({ZX_READ_TEMP},{})}){}dnl
-__{}define({ZXTEMP_MANTISSA},ZXTEMP_MANTISSA{}ZX_READ_TEMP){}dnl
-__{}ifelse(ZXTEMP_CHAR,{p},{dnl
-__{}__{}ifelse(eval(len(ZXTEMP_MANTISSA)<10),{1},{ZX_READ_MANT})},
-__{}{dnl
-__{}__{}ZX_READCHAR{}dnl
-__{}__{}ZX_READ_MANT}){}dnl
+dnl # $1 = sign (1 bit)
+dnl # $2 = exponent (8 bit)
+dnl # $3 = mantissa (64 bit)
+define({__SET_ZXFLOAT},{dnl
+__{}define({ZXTEMP_EXP},substr(__HEX_L($2),2)){}dnl
+__{}define({ZXTEMP_MANTISSA_1},format({%02X},eval(256*$1+(($3>>24) & 0x7F)))){}dnl
+__{}define({ZXTEMP_MANTISSA_2},substr(__HEX_E($3),2)){}dnl
+__{}define({ZXTEMP_MANTISSA_3},substr(__HEX_H($3),2)){}dnl
+__{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L($3),2)){}dnl
 }){}dnl
+dnl
 dnl
 dnl
 define({ZX48FSTRING_TO_FHEX},{dnl
-__{}define({$0_TEMP},__HEX_FLOAT($1)){}dnl
-__{}define({ZXTEMP_STRING},$0_TEMP){}dnl
-__{}ZX_READCHAR{}dnl                               # 0 or -+
-__{}define({ZXTEMP_SIGN},0){}dnl
-__{}define({ZXTEMP_EXP},{}){}dnl
-__{}define({ZXTEMP_MANTISSA},{0x}){}dnl
-__{}ifelse(ZXTEMP_CHAR,{+},{ZX_READCHAR}){}dnl
-__{}ifelse(ZXTEMP_CHAR,{-},{ZX_READCHAR{}define({ZXTEMP_SIGN},0x80)}){}dnl
-__{}ZX_READCHAR{}dnl                               # x
-__{}ZX_READCHAR{}dnl                               # 1
-__{}ifelse(ZXTEMP_CHAR,{1},{ZX_READCHAR}){}dnl     # .
-__{}ifelse(ZXTEMP_CHAR,{.},{ZX_READCHAR}){}dnl     # ?
-__{}ZX_READ_MANT{}dnl
-__{}ifelse(ZXTEMP_CHAR,{p},{dnl
-__{}__{}define({ZXTEMP_EXP},ZXTEMP_STRING){}dnl
-__{}})dnl
-__{}define({ZXTEMP_MANTISSA},format({0x%08x},eval((ZXTEMP_MANTISSA>>1) & 0x7FFFFFFF))){}dnl
-__{}define({ZXTEMP_EXP},substr(__HEX_L(ZXTEMP_EXP+129),2)){}dnl
-__{}ifelse($0_TEMP,{0x0p+0},{define({ZXTEMP_EXP},{00})}){}dnl
-__{}define({ZXTEMP_MANTISSA_1},format({%02x},eval(ZXTEMP_SIGN+((ZXTEMP_MANTISSA>>24) & 0x7F)))){}dnl
-__{}define({ZXTEMP_MANTISSA_2},substr(__HEX_E(ZXTEMP_MANTISSA),2)){}dnl
-__{}define({ZXTEMP_MANTISSA_3},substr(__HEX_H(ZXTEMP_MANTISSA),2)){}dnl
-__{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L(ZXTEMP_MANTISSA),2)){}dnl
-__{}ifelse($0_TEMP,{-0x0p+0},{dnl
-__{}__{}define({ZXTEMP_EXP},{00}){}dnl
-__{}__{}define({ZXTEMP_MANTISSA_1},{00}){}dnl
-__{}__{}define({ZXTEMP_MANTISSA_2},{00}){}dnl
-__{}__{}define({ZXTEMP_MANTISSA_3},{00}){}dnl
-__{}__{}define({ZXTEMP_MANTISSA_4},{00}){}dnl
+__{}define({$0_SIGN},0){}dnl
+__{}ifelse(substr($1,0,1),{-},{dnl
+__{}__{}define({$0_SIGN},1){}dnl
+__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT(substr($1,1))})},
+__{}substr($1,0,1),{+},{dnl
+__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT(substr($1,1))})},
+__{}{dnl
+__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT($1)})}){}dnl
+__{}dnl
+__{}ifelse($0_HEX_REAL,{0x0p+0},{dnl
+__{}__{}__SET_ZXFLOAT(0,0,0)},
+__{}$0_SIGN:$0_HEX_REAL,{1:inf},{
+__{}__{}  .WARNING You are trying to convert "-inf" to ZX floating point format. It will be converted as a smallest possible value.{}dnl
+__{}__{}__SET_ZXFLOAT(1,0xFF,0x7FFFFFFF)},
+__{}$0_HEX_REAL,{inf},{
+__{}__{}  .WARNING You are trying to convert "+inf" to ZX floating point format. It will be converted as a largest possible value.{}dnl
+__{}__{}__SET_ZXFLOAT(0,0xFF,0x7FFFFFFF)},
+__{}$0_HEX_REAL,{nan},{
+__{}__{}  .WARNING You are trying to convert "Not a Number" to ZX floating point format. It will be converted as a zero.{}dnl
+__{}__{}__SET_ZXFLOAT(0,0,0)},
+__{}{dnl
+__{}__{}dnl    # Výpočet exponentu
+__{}__{}define({$0_EXP},{eval(substr($0_HEX_REAL,incr(index($0_HEX_REAL,{p}))) + 0x81)}){}dnl
+__{}__{}dnl    # Výpočet mantisy    
+__{}__{}define({$0_MAN},{substr($0_HEX_REAL,incr(index($0_HEX_REAL,{x})),eval(index($0_HEX_REAL,{p})-index($0_HEX_REAL,{x})-1))}){}dnl
+__{}__{}ifelse(substr($0_MAN,0,2),{1.},{dnl
+__{}__{}__{}define({$0_MAN},substr($0_MAN,2))},
+__{}__{}{dnl
+__{}__{}__{}errprint({
+Error: }$0_HEX_REAL{ has an unexpected format, it does not start as "1."})}){}dnl
+__{}__{}define({$0_MAN},{0x}substr($0_MAN{00000000},0,8)){}dnl
+__{}__{}define({$0_ROUND_BIT},eval($0_MAN & 1)){}dnl
+__{}__{}define({$0_MAN},eval((($0_MAN>>1) & 0x7FFFFFFF)+$0_ROUND_BIT)){}dnl
+__{}__{}ifelse(__HEX_D($0_MAN),0x80,{dnl
+__{}__{}__{}define({$0_EXP},incr($0_EXP)){}dnl
+__{}__{}__{}define({$0_MAN},0)}){}dnl
+__{}__{}dnl
+__{}__{}ifelse(1,0,{
+__{}__{}__{}$0_HEX_REAL
+__{}__{}__{}s:$0_SIGN
+__{}__{}__{}e:$0_EXP = __HEX_L($0_EXP) = eval($0_EXP-0x48)
+__{}__{}__{}m:__HEX_DEHL($0_MAN)}){}dnl
+__{}__{}dnl
+__{}__{}ifelse(eval($0_EXP <= 0),1,{
+__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a zero.{}dnl   
+__{}__{}__{}__SET_ZXFLOAT(0,0,0)},
+__{}__{}eval(($0_EXP > 0xFF) && $0_SIGN ),1,{
+__{}__{}__{}  .WARNING The value "$1" is less than the smallest possible value, so it will be changed to the smallest possible value.{}dnl
+__{}__{}__{}__SET_ZXFLOAT(1,0xFF,0x7FFFFFFF)},
+__{}__{}eval($0_EXP > 0xFF),1,{
+__{}__{}__{}  .WARNING The value "$1" is greater than the largest possible value, so it will be changed to the largest possible value.{}dnl
+__{}__{}__{}__SET_ZXFLOAT(0,0xFF,0x7FFFFFFF)},
+__{}__{}{dnl   # Sestavení hexadecimální hodnoty
+__{}__{}__{}__SET_ZXFLOAT($0_SIGN,$0_EXP,$0_MAN){}dnl
+__{}__{}}){}dnl
 __{}}){}dnl
-}){}dnl
+})dnl
 dnl
 dnl # ---------------------
 dnl
@@ -660,27 +680,19 @@ dnl
 dnl
 dnl # 1E -2.3E-5 etc.
 define({ZPUSH},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZPUSH},{$1},$@){}dnl
+__{}ifelse(eval($#<1),1,{
+__{}  .error {$0}($@): Missing parameter!},
+__{}{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP},{$1},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ZPUSH},{__dtto},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{__dtto},$@){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZPUSH},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(eval($#<1),1,{
-__{}  .error {$0}($@): Missing parameter!},
-__{}{
-    push DE             ; 1:11      __INFO
-    push HL             ; 1:11      __INFO{}dnl
-    __ZPUSH_REC($@)
-    pop  HL             ; 1:11      __INFO
-    pop  DE             ; 1:11      __INFO}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-define({__ZPUSH_REC},{dnl
 __{}ifelse($1,,,{ZX48FSTRING_TO_FHEX($1)
 __{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = __HEX_FLOAT($1)
-__{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1
+__{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1   = 0x{}ZXTEMP_EXP{}ZXTEMP_MANTISSA_1{}{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_3{}ZXTEMP_MANTISSA_4
 __{}    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      $1
 __{}    call 0x2ABB         ; 3:124     $1   new float = a,e,d,c,b{}dnl
 __{}$0(shift($@))}){}dnl
