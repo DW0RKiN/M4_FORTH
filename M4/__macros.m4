@@ -100,11 +100,20 @@ dnl
 dnl
 dnl
 dnl
-dnl # __HEX_FLOAT(-1)     -> -0x1p+0
-dnl # __HEX_FLOAT(0e)     -> 0x0p+0
-dnl # __HEX_FLOAT(1e)     -> 0x1p+0
-dnl # __HEX_FLOAT(2e)     -> 0x1p+1
-dnl # __HEX_FLOAT(3.1415) -> 0x1.921cac083126fp+1
+dnl # __HEX_FLOAT(-1)        -> -0x1p+0
+dnl # __HEX_FLOAT(0e)        -> 0x0p+0
+dnl # __HEX_FLOAT(1e)        -> 0x1p+0
+dnl # __HEX_FLOAT(2e)        -> 0x1p+1
+dnl # __HEX_FLOAT(3.1415)    -> 0x1.921cac083126fp+1
+dnl # __HEX_FLOAT(infinity)  -> inf
+dnl # __HEX_FLOAT(inFIniTY)  -> inf
+dnl # __HEX_FLOAT(+infinity) -> inf
+dnl # __HEX_FLOAT(inf)       -> inf
+dnl # __HEX_FLOAT(+inf)      -> inf
+dnl # __HEX_FLOAT(-infinity) -> -inf
+dnl # __HEX_FLOAT(-inf)      -> -inf
+dnl # __HEX_FLOAT(nan)       -> nan
+dnl # __HEX_FLOAT(NaN)       -> nan
 define({__HEX_FLOAT},{ifelse(ifelse(substr($1,decr(len($1))),{e},1,substr($1,decr(len($1))),{E},1,0),1,{format({%a},$1{0})},{format({%a},$1)})}){}dnl
 dnl
 dnl
