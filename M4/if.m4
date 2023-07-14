@@ -1535,6 +1535,52 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
+dnl # f1 f2 < if
+dnl # ( f1 f2 -- ) flag: f1 < f2
+define({FLT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_FLT_IF},{f< if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FLT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+                       ;[13:67]     __INFO   ( f1 f2 -- )  flag: f1 < f2
+    ld    A, H          ; 1:4       __INFO
+    or    D             ; 1:4       __INFO
+    jp    m, $+4        ; 3:10      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> not carry if false
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO
+    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+dnl
+dnl
+dnl # ( f1 f2 -- f1 f2 )  flag: f1 < f2
+dnl # 2dup f< if
+define({_2DUP_FLT_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_FLT_IF},{2dup f< if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_FLT_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+                       ;[12:59]     __INFO   ( f1 f2 -- f1 f2 )  flag: f1 < f2
+
+    ld    A, H          ; 1:4       __INFO
+    or    D             ; 1:4       __INFO   i... ....
+    push DE             ; 1:11      __INFO
+    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> not carry if false
+    push DE             ; 1:11      __INFO
+    rra                 ; 1:4       __INFO   ci.. ....
+    sub  0x40           ; 2:7       __INFO   f... ....
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+dnl
+dnl
+dnl
 dnl
 dnl # ---------------------------------------------------------------------------
 dnl # Device
