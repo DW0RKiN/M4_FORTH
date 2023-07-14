@@ -1102,6 +1102,29 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
     push HL             ; 1:11      __INFO   ( b a -- a b a )}){}dnl
 dnl
 dnl
+dnl
+dnl # $1 -rot
+dnl # ( b a -- $1 b a )
+define({PUSH_NROT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_NROT},{$1 -rot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_NROT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected type parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO   ( x1 x0 -- $1 x1 x0 )
+__{}__{}    push BC             ; 1:11      __INFO},
+__{}{
+__{}__{}    ld   BC, __FORM({%-11s},$1); 3:10      __INFO   ( x1 x0 -- $1 x1 x0 )
+__{}__{}    push BC             ; 1:11      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # swap 3
 dnl # ( b a -- a b 3 )
 define({SWAP_PUSH},{dnl
