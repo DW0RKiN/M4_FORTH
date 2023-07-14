@@ -9295,3 +9295,89 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # ------------------------ flt ------------------------
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false jump
+dnl # Out:
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
+define({__MAKE_CODE_FLT_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}1,0,{
+__{}__{}define({__BYTES}, 14){}dnl
+__{}__{}define({__CLOCKS},71){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+ __BYTES*__BYTE_PRICE)){}dnl
+__{}    ld    A{,} H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO   i... ....
+__{}    sbc  HL{,} DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
+__{}    jr    z{,} $+5        ; 2:7/12    __INFO
+__{}    rra                 ; 1:4       __INFO   ci.. ....
+__{}    sub  0x40           ; 2:7       __INFO   f... ....
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO},
+__{}{
+__{}__{}define({__BYTES}, 13){}dnl
+__{}__{}define({__CLOCKS},67){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+ __BYTES*__BYTE_PRICE)){}dnl
+__{}    ld    A{,} H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO
+__{}    jp    m{,} $+4        ; 3:10      __INFO
+__{}    ex   DE{,} HL         ; 1:4       __INFO
+__{}    sbc  HL{,} DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> not carry if false
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nc{,} format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false jump
+dnl # Out:
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
+define({__MAKE_CODE_2DUP_FLT_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}1,0,{
+__{}__{}define({__BYTES}, 14){}dnl
+__{}__{}define({__CLOCKS},71){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+ __BYTES*__BYTE_PRICE)){}dnl
+__{}    ld    A{,} H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO   i... ....
+__{}    sbc  HL{,} DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
+__{}    jr    z{,} $+5        ; 2:7/12    __INFO
+__{}    rra                 ; 1:4       __INFO   ci.. ....
+__{}    sub  0x40           ; 2:7       __INFO   f... ....
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO},
+__{}{
+__{}__{}define({__BYTES}, 13){}dnl
+__{}__{}define({__CLOCKS},67){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+ __BYTES*__BYTE_PRICE)){}dnl
+__{}    ld    A{,} H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO
+__{}    jp    m{,} $+4        ; 3:10      __INFO
+__{}    ex   DE{,} HL         ; 1:4       __INFO
+__{}    sbc  HL{,} DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> not carry if false
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp   nc{,} format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
