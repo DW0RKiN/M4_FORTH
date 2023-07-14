@@ -464,10 +464,30 @@ __{}__ADD_TOKEN({__TOKEN_FLT},{f<},$@){}dnl
 dnl
 define({__ASM_TOKEN_FLT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(TYP_FLOAT,TYP_FLOAT{no_match},{
-__{}                        ;[6:40]     __INFO   ( f1 f2 -- flag )  flag: f1 < f2  # version: TYP_FLOAT = small; other: default
-__{} .error Dodelat!!!
+__{}ifelse(1,1,{
+__{}                       ;[12:67]     __INFO   ( f1 f2 -- flag )  flag: f1 < f2
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO
+__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
+__{}    adc   A, 0x00       ; 2:7       __INFO   invert carry?
+__{}    rra                 ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+
+1,0,{
+__{}                       ;[13:70]     __INFO   ( f1 f2 -- flag )  flag: f1 < f2
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO   i... ....
+__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
+__{}    jr    z, $+6        ; 2:7/12    __INFO
+__{}    rra                 ; 1:4       __INFO   ci.. ....
+__{}    sub  0x40           ; 2:7       __INFO   f... ....
+__{}    add   A, A          ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+
 __{}{
 __{}                       ;[11:62]     __INFO   ( f1 f2 -- flag )  flag: f1 < f2
 __{}    ld    A, H          ; 1:4       __INFO
@@ -489,7 +509,7 @@ __{}__ADD_TOKEN({__TOKEN_2DUP_FLT},{2dup f<},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_FLT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(1,1,{
+__{}ifelse(1,0,{
 __{}                       ;[13:84]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 < f2
 __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
@@ -500,27 +520,32 @@ __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag
 __{}    pop  DE             ; 1:10      __INFO},
-1,0,{fail with 2 same negative number... doplnit jr z
-__{}                       ;[12:68]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 < f2
+1,0,{
+__{}                       ;[15:74]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 < f2
 __{}    push DE             ; 1:11      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
 __{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO   i... ....
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    adc   A, A          ; 1:4       __INFO   i .... ...c
-__{}    sbc   A, 0x00       ; 2:7       __INFO     .... ...?
-__{}    rra                 ; 1:4       __INFO     .... .... ?
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-__{}{fail with 2 same negative number... doplnit jr z
-__{}                       ;[12:68]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 < f2
-__{}    push DE             ; 1:11      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO   i... ....
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    rra                 ; 1:4       __INFO   ci.. ....
-__{}    add   A, 0x40       ; 2:7       __INFO   f... ....
+__{}    or    D             ; 1:4       __INFO
+__{}    ld    C, A          ; 1:4       __INFO
+__{}    add   A, A          ; 1:4       __INFO   set carry
+__{}    ld    A, E          ; 1:4       __INFO
+__{}    sbc   A, L          ; 1:4       __INFO
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    sbc   A, H          ; 1:4       __INFO   f1<f2 --> f1-f2<0 --> carry if true
+__{}    rra                 ; 1:4       __INFO
+__{}    xor   C             ; 1:4       __INFO
 __{}    add   A, A          ; 1:4       __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+{
+__{}                       ;[12:68]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 < f2
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO
+__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
+__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
+__{}    adc   A, 0x00       ; 2:7       __INFO   invert carry?
+__{}    rra                 ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
 }){}dnl
 dnl
@@ -534,10 +559,17 @@ __{}__ADD_TOKEN({__TOKEN_FGT},{f>},$@){}dnl
 dnl
 define({__ASM_TOKEN_FGT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(TYP_FLOAT,TYP_FLOAT{no_match},{
-__{}                        ;[6:40]     __INFO   ( f1 f2 -- flag )  flag: f1 > f2  # version: TYP_FLOAT = small; other: default
-__{} .error Dodelat!!!
+__{}ifelse(1,1,{
+__{}                       ;[11:63]     __INFO   ( f1 f2 -- flag )  flag: f1 > f2
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO
+__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
+__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
+__{}    adc   A, 0x00       ; 2:7       __INFO   invert carry?
+__{}    rra                 ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+
 __{}{
 __{}                       ;[11:62]     __INFO   ( f1 f2 -- flag )  flag: f1 > f2
 __{}    ld    A, H          ; 1:4       __INFO
@@ -559,7 +591,7 @@ __{}__ADD_TOKEN({__TOKEN_2DUP_FGT},{2dup f>},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_FGT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(1,1,{
+__{}ifelse(1,0,{
 __{}                       ;[13:84]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 > f2
 __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
@@ -570,35 +602,116 @@ __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag
 __{}    pop  DE             ; 1:10      __INFO},
-1,0,{fail with 2 same negative number... doplnit jr z
-__{}                       ;[12:68]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 > f2
+
+1,1,{
+__{}                       ;[13:72]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 > f2
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO
+__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
+__{}    ccf                 ; 1:4       __INFO
+__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
+__{}    adc   A, 0x01       ; 2:7       __INFO   invert carry?
+__{}    rra                 ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
+
+1,1,{
+__{}                       ;[14:75]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 > f2
 __{}    push DE             ; 1:11      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    ld    A, H          ; 1:4       __INFO
 __{}    or    D             ; 1:4       __INFO   i... ....
 __{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
+__{}    jr    z, $+6        ; 2:7/12    __INFO   remove fail with -x -x
 __{}    adc   A, A          ; 1:4       __INFO   i .... ...c
 __{}    sbc   A, 0x00       ; 2:7       __INFO     .... ...?
 __{}    rra                 ; 1:4       __INFO     .... .... ?
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-__{}{fail with 2 same negative number... jr z
-__{}                       ;[12:68]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 > f2
-__{}    push DE             ; 1:11      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO   i... ....
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    rra                 ; 1:4       __INFO   ci.. ....
-__{}    add   A, 0x40       ; 2:7       __INFO   f... ....
-__{}    add   A, A          ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
+dnl # f>=
+dnl # ( f1 f2 -- flag )
+define({FGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_FGE},{f>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FGE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[11:63]     __INFO   ( f1 f2 -- flag )  flag: f1 >= f2
+    ld    A, H          ; 1:4       __INFO
+    or    D             ; 1:4       __INFO
+    rlca                ; 1:4       __INFO   set carry and 0 bit
+    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
+    adc   A, 0x00       ; 2:7       __INFO   invert carry?
+    rra                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
 dnl
 dnl
 dnl
+dnl # 2dup f>=
+dnl # ( f1 f2 -- f1 f2 flag )
+define({_2DUP_FGE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_FGE},{2dup f>=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_FGE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[12:68]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 >= f2
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A, H          ; 1:4       __INFO
+    or    D             ; 1:4       __INFO
+    rlca                ; 1:4       __INFO   set carry and 0 bit
+    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
+    adc   A, 0x01       ; 2:7       __INFO   invert carry?
+    rra                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
+dnl
+dnl
+dnl
+dnl # f<=
+dnl # ( f1 f2 -- flag )
+define({FLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_FLE},{f<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FLE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[11:63]     __INFO   ( f1 f2 -- flag )  flag: f1 <= f2
+    ld    A, H          ; 1:4       __INFO
+    or    D             ; 1:4       __INFO
+    rlca                ; 1:4       __INFO   set carry and 0 bit
+    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
+    adc   A, 0x01       ; 2:7       __INFO   invert carry?
+    rra                 ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
+dnl
+dnl
+dnl
+dnl # 2dup f<=
+dnl # ( f1 f2 -- f1 f2 flag )
+define({_2DUP_FLE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_FLE},{2dup f<=},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_FLE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[13:72]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 <= f2
+    push DE             ; 1:11      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    ld    A, H          ; 1:4       __INFO
+    or    D             ; 1:4       __INFO
+    rlca                ; 1:4       __INFO   set carry and 0 bit
+    ccf                 ; 1:4       __INFO
+    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
+    adc   A, 0x00       ; 2:7       __INFO   invert carry?
+    rra                 ; 1:4       __INFO
+    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
 dnl
 dnl
 dnl
