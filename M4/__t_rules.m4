@@ -564,6 +564,11 @@ dnl # I...
 i....,,,
 
             __T_NAME(0):$1,               __TOKEN_2DUP:__TOKEN_FLT,                           {__SET_TOKEN({__TOKEN_2DUP_FLT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,               __TOKEN_2DUP:__TOKEN_FGT,                           {__SET_TOKEN({__TOKEN_2DUP_FGT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,               __TOKEN_2DUP:__TOKEN_FLE,                           {__SET_TOKEN({__TOKEN_2DUP_FLE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,               __TOKEN_2DUP:__TOKEN_FGE,                           {__SET_TOKEN({__TOKEN_2DUP_FGE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            
             __T_NAME(0):$1,               __TOKEN_DUP:__TOKEN_F0EQ,                           {__SET_TOKEN({__TOKEN_DUP_F0EQ},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_DUP:__TOKEN_F0LT,                           {__SET_TOKEN({__TOKEN_DUP_F0LT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             
@@ -571,8 +576,11 @@ i....,,,
             __T_NAME(0):$1,                   __TOKEN_F0EQ:__TOKEN_IF,                            {__SET_TOKEN({__TOKEN_F0EQ_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_DUP_F0LT:__TOKEN_IF,                        {__SET_TOKEN({__TOKEN_DUP_F0LT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                   __TOKEN_F0LT:__TOKEN_IF,                            {__SET_TOKEN({__TOKEN_F0LT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            
             __T_NAME(0):$1,               __TOKEN_2DUP_FLT:__TOKEN_IF,                        {__SET_TOKEN({__TOKEN_2DUP_FLT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                    __TOKEN_FLT:__TOKEN_IF,                             {__SET_TOKEN({__TOKEN_FLT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,               __TOKEN_2DUP_FGT:__TOKEN_IF,                        {__SET_TOKEN({__TOKEN_2DUP_FGT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,                    __TOKEN_FGT:__TOKEN_IF,                             {__SET_TOKEN({__TOKEN_FGT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             
             __T_NAME(0):$1,               __TOKEN_DUP_F0EQ:__TOKEN_UNTIL,                     {__SET_TOKEN({__TOKEN_DUP_F0EQ_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                   __TOKEN_F0EQ:__TOKEN_UNTIL,                         {__SET_TOKEN({__TOKEN_F0EQ_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
@@ -1398,6 +1406,8 @@ o...,,,
 
 dnl # R...
 r...,,,
+            __T_NAME(0):__T_ITEMS(0):$1,   __TOKEN_PUSHS:1:__TOKEN_NROT,   {__SET_TOKEN({__TOKEN_PUSH_NROT},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+
             __T_NAME(0)-$1,{__TOKEN_ROT-__TOKEN_DROP},{__SET_TOKEN({__TOKEN_ROT_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_ROT-__TOKEN_ROT},{__SET_TOKEN({__TOKEN_NROT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0)-$1,{__TOKEN_ROT_DROP-__TOKEN_SWAP},{__SET_TOKEN({__TOKEN_NROT_NIP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
