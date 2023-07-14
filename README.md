@@ -405,6 +405,7 @@ For a logical comparison of two numbers as f1> f2, exactly the same result appli
 
 |<sub> Original   |<sub>    M4 FORTH    |<sub>  Data stack          |<sub>  Comment                     |
 | :-------------: | :-----------------: | :------------------------ | :-------------------------------- |
+|<sub> `3.1415e`  |<sub> FPUSH(`3.1415`)|<sub>       ( -- `0x4192` )|<sub> like PUSH with number conversion |
 |<sub>    s>f     |<sub>       S2F      |<sub>       ( s1 -- f1 )   |<sub>                              |
 |<sub>    u>f     |<sub>       U2F      |<sub>       ( u1 -- f1 )   |<sub>                              |
 |<sub>    f>s     |<sub>       F2S      |<sub>       ( f1 -- s1 )   |<sub>                              |
