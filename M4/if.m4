@@ -1567,17 +1567,27 @@ define({__ASM_TOKEN_2DUP_FLT_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-                       ;[12:59]     __INFO   ( f1 f2 -- f1 f2 )  flag: f1 < f2
-
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(1,0,{false with 2 same positive number
+                       ;[11:55]     __INFO   ( f1 f2 -- f1 f2 )  flag: f1 < f2
     ld    A, H          ; 1:4       __INFO
     or    D             ; 1:4       __INFO   i... ....
-    push DE             ; 1:11      __INFO
     sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> not carry if false
-    push DE             ; 1:11      __INFO
+    add  HL, DE         ; 1:11      __INFO
+    rra                 ; 1:4       __INFO   ci.. ....
+    sub  0x40           ; 2:7       __INFO   f... ....
+    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+{
+                       ;[14:65]     __INFO   ( f1 f2 -- f1 f2 )  flag: f1 < f2
+    ld    A, H          ; 1:4       __INFO
+    or    D             ; 1:4       __INFO   i... ....
+    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> not carry if false
+    add  HL, DE         ; 1:11      __INFO
+    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO
     rra                 ; 1:4       __INFO   ci.. ....
     sub  0x40           ; 2:7       __INFO   f... ....
     jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
