@@ -1464,14 +1464,11 @@ define({__ASM_TOKEN_F0LT_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-                        ;[8:38]     __INFO   ( f -- )  flag: f < +-0e
-    ld    A, H          ; 1:4       __INFO
-    dec  HL             ; 1:6       __INFO
-    and   H             ; 1:4       __INFO   negative without +-0e
-    ex   DE, HL         ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}define({$0_CODE},__MAKE_CODE_F0LT_JP_FALSE(else{}IF_COUNT))
+__{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f -- )  flag: f < +-0e{}dnl
+__{}$0_CODE{}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( f -- f )
@@ -1484,13 +1481,11 @@ define({__ASM_TOKEN_DUP_F0LT_IF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
-__{}pushdef({THEN_STACK}, IF_COUNT)
-                        ;[7:30]     __INFO   ( f -- f )  flag: f < +-0
-    ld    A, H          ; 1:4       __INFO
-    dec  HL             ; 1:6       __INFO
-    and   H             ; 1:4       __INFO   negative without +-0e
-    inc  HL             ; 1:6       __INFO
-    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}define({$0_CODE},__MAKE_CODE_FDUP_F0LT_JP_FALSE(else{}IF_COUNT))
+__{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f -- f )  flag: f < +-0e{}dnl
+__{}$0_CODE{}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1522,7 +1517,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({$0_CODE},__MAKE_CODE_DUP_F0EQ_JP_FALSE(else{}IF_COUNT))
+__{}define({$0_CODE},__MAKE_CODE_FDUP_F0EQ_JP_FALSE(else{}IF_COUNT))
 __{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f -- f )  flag: f == +-0e{}dnl
 __{}$0_CODE{}dnl
 }){}dnl
@@ -1558,7 +1553,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({$0_CODE},__MAKE_CODE_2DUP_FLT_JP_FALSE(else{}IF_COUNT))
+__{}define({$0_CODE},__MAKE_CODE_2FDUP_FLT_JP_FALSE(else{}IF_COUNT))
 __{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- f1 f2 )  flag: f1 < f2{}dnl
 __{}$0_CODE{}dnl
 }){}dnl
