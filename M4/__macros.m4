@@ -9277,7 +9277,7 @@ dnl # Out:
 dnl #   __PRICE       price = 16*(clocks + 4*bytes)
 dnl #   __BYTES       bytes
 dnl #   __CLOCKS      clocks
-define({__MAKE_CODE_DUP_F0EQ_JP_FALSE},{dnl
+define({__MAKE_CODE_FDUP_F0EQ_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
@@ -9290,6 +9290,59 @@ __{}    ld    A{,} H          ; 1:4       __INFO
 __{}    add   A{,} A          ; 1:4       __INFO
 __{}    or    L             ; 1:4       __INFO
 __{}    jp   nz{,} format({%-11s},$1); 3:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false jump
+dnl # Out:
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
+define({__MAKE_CODE_F0LT_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}define({__BYTES}, 8){}dnl
+__{}__{}define({__CLOCKS},38){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+ __BYTES*__BYTE_PRICE)){}dnl
+__{}    ld    A{,} H          ; 1:4       __INFO
+__{}    dec  HL             ; 1:6       __INFO
+__{}    and   H             ; 1:4       __INFO   negative without +-0e
+__{}    ex   DE{,} HL         ; 1:4       __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false jump
+dnl # Out:
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
+define({__MAKE_CODE_FDUP_F0LT_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}define({__BYTES}, 7){}dnl
+__{}__{}define({__CLOCKS},30){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+ __BYTES*__BYTE_PRICE)){}dnl
+__{}    ld    A{,} H          ; 1:4       __INFO
+__{}    dec  HL             ; 1:6       __INFO
+__{}    and   H             ; 1:4       __INFO   negative without +-0e
+__{}    inc  HL             ; 1:6       __INFO
+__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -9347,7 +9400,7 @@ dnl # Out:
 dnl #   __PRICE       price = 16*(clocks + 4*bytes)
 dnl #   __BYTES       bytes
 dnl #   __CLOCKS      clocks
-define({__MAKE_CODE_2DUP_FLT_JP_FALSE},{dnl
+define({__MAKE_CODE_2FDUP_FLT_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
@@ -9363,7 +9416,7 @@ __{}__{}    add  HL{,} DE         ; 1:11      __INFO
 __{}__{}    jr    z{,} $+5        ; 2:7/12    __INFO
 __{}__{}    rra                 ; 1:4       __INFO   ci.. ....
 __{}__{}    sub  0x40           ; 2:7       __INFO   f... ....
-__{}__{}    jp    p{,} format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO},
 __{}1,1,{
 __{}__{}define({__BYTES}, 13){}dnl
 __{}__{}define({__CLOCKS},50){}dnl
@@ -9378,7 +9431,7 @@ __{}__{}    ld    A{,} D          ; 1:4       __INFO
 __{}__{}    sbc   A{,} H          ; 1:4       __INFO   f1<f2 --> f1-f2<0 --> not carry if false
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    xor   C             ; 1:4       __INFO
-__{}__{}    jp    p{,} format({%-11s},else{}IF_COUNT); 3:10      __INFO},
+__{}__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO},
 __{}{
 __{}__{}define({__BYTES}, 14){}dnl
 __{}__{}define({__CLOCKS},65){}dnl
@@ -9390,7 +9443,7 @@ __{}__{}    add  HL{,} DE         ; 1:11      __INFO
 __{}__{}    jp    z{,} format({%-11s},else{}IF_COUNT); 3:10      __INFO
 __{}__{}    rra                 ; 1:4       __INFO   ci.. ....
 __{}__{}    sub  0x40           ; 2:7       __INFO   f... ....
-__{}__{}    jp    p{,} format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
 dnl
