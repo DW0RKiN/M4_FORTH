@@ -5,31 +5,33 @@ include(M4PATH{}float_const.m4){}dnl
 dnl
 dnl
 dnl
-define({FPUSH},{dnl
+define({FSTRING_TO_FHEX},{dnl
 __{}define({$0_SIGN},0){}dnl
+__{}define({$0_ORIG_FHEX},__HEX_FLOAT($1)){}dnl
+__{}define({$0_INFO},$1 (=$0_ORIG_FHEX)){}dnl
 __{}ifelse(substr($1,0,1),{-},{dnl
 __{}__{}define({$0_SIGN},0x8000){}dnl
-__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT(substr($1,1))})},
+__{}__{}define({$0_HEX_REAL},substr($0_ORIG_FHEX,1))},
 __{}substr($1,0,1),{+},{dnl
-__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT(substr($1,1))})},
+__{}__{}define({$0_HEX_REAL},substr($0_ORIG_FHEX,1))},
 __{}{dnl
-__{}__{}define({$0_HEX_REAL},{__HEX_FLOAT($1)})}){}dnl
+__{}__{}define({$0_HEX_REAL},$0_ORIG_FHEX)}){}dnl
 __{}dnl
 __{}ifelse($0_SIGN:$0_HEX_REAL,{0x8000:0x0p+0},{
 __{}__{}  .WARNING You are trying to convert "negative zero" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero.{}dnl  
-__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FMMIN)},
+__{}__{}define({$0_RES},FMMIN)},
 __{}$0_HEX_REAL,{0x0p+0},{
 __{}__{}  .WARNING You are trying to convert "positive zero" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero.{}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMIN)},
+__{}__{}define({$0_RES},FPMIN)},
 __{}$0_SIGN:$0_HEX_REAL,{0x8000:inf},{
 __{}__{}  .WARNING You are trying to convert "-inf" to Danagy 16 bit floating point format. It will be converted as a smallest possible value.{}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FMMAX)},
+__{}__{}define({$0_RES},FMMAX)},
 __{}$0_HEX_REAL,{inf},{
 __{}__{}  .WARNING You are trying to convert "+inf" to Danagy 16 bit floating point format. It will be converted as a largest possible value.{}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMAX)},
+__{}__{}define({$0_RES},FPMAX)},
 __{}$0_HEX_REAL,{nan},{
 __{}__{}  .WARNING You are trying to convert "Not a Number" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero.{}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMIN)},
+__{}__{}define({$0_RES},FPMIN)},
 __{}{dnl
 __{}__{}dnl    # Výpočet exponentu
 __{}__{}define({$0_EXP},{eval(substr($0_HEX_REAL,incr(index($0_HEX_REAL,{p}))) + 0x40)}){}dnl
@@ -46,36 +48,106 @@ __{}__{}__{}define({$0_MAN},0)},
 __{}__{}{dnl
 __{}__{}__{}define({$0_MAN},eval($0_MAN-0x100))}){}dnl
 __{}__{}dnl
-__{}__{}ifelse(eval(($0_EXP-0x48)>=0),1,{dnl
-__{}__{}__{}define({$0_REAL},eval(($0_MAN+256)*__POW(2,eval($0_EXP-0x48))))},
+__{}__{}ifelse($0_MAN:eval(($0_EXP>=0x40)&&($0_EXP<0x50)),0:1,{dnl
+__{}__{}__{}define({$0_REAL},eval(2**eval($0_EXP-0x40)))},
+__{}__{}$0_MAN,0,{dnl
+__{}__{}__{}define({$0_REAL},2**eval($0_EXP-0x40))},
+__{}__{}eval(($0_EXP-0x48)>=0),1,{dnl
+__{}__{}__{}define({$0_POW2},__POW(2,eval($0_EXP-0x48))){}dnl
+__{}__{}__{}ifelse($0_POW2,0,{dnl
+__{}__{}__{}__{}define({$0_REAL},eval($0_MAN+256)*(2**eval($0_EXP-0x48)))},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_REAL},eval(($0_MAN+256)*__POW(2,eval($0_EXP-0x48))))})},
 __{}__{}{dnl
-__{}__{}__{}define({$0_REAL},eval($0_MAN+256)/__POW(2,eval(0x48-$0_EXP)))}){}dnl
+__{}__{}__{}define({$0_POW2},__POW(2,eval(0x48-$0_EXP))){}dnl
+__{}__{}__{}ifelse($0_POW2,0,{dnl
+__{}__{}__{}__{}define({$0_REAL},eval($0_MAN+256)/(2**eval(0x48-$0_EXP)))},
+__{}__{}__{}{dnl
+__{}__{}__{}__{}define({$0_REAL},eval($0_MAN+256)/__POW(2,eval(0x48-$0_EXP)))})
+__{}__{}}){}dnl
 __{}__{}dnl
-__{}__{}ifelse(1,0,{
-__{}__{}__{}$0_HEX_REAL
-__{}__{}__{}s:$0_SIGN
-__{}__{}__{}e:$0_EXP = __HEX_L($0_EXP) = eval($0_EXP-0x48)
-__{}__{}__{}m:__HEX_HL($0_MAN)
-__{}__{}__{}i:$0_REAL}){}dnl
+__{}__{}ifelse($0_SIGN,0x8000,{define({$0_REAL},{-}$0_REAL)}){}dnl
+__{}__{}dnl
+__{}__{}ifelse($0_MAN,0,{dnl
+__{}__{}__{}define({$0_NEW_FHEX},ifelse($0_SIGN,0x8000,{-}){0x1p}format({%+i},eval($0_EXP-0x40)))},
+__{}__{}eval($0_MAN & 15),0,{dnl
+__{}__{}__{}define({$0_NEW_FHEX},ifelse($0_SIGN,0x8000,{-}){0x1.}format({%x},eval($0_MAN>>4)){p}format({%+i},eval($0_EXP-0x40)))},
+__{}__{}{dnl
+__{}__{}__{}define({$0_NEW_FHEX},ifelse($0_SIGN,0x8000,{-}){0x1.}format({%x},eval($0_MAN)){p}format({%+i},eval($0_EXP-0x40)))}){}dnl
+__{}__{}dnl
+__{}__{}ifelse(1,0,{errprint({
+;---------
+;    orig:$1
+;orig_hex: }$0_ORIG_FHEX{
+;       s: }$0_SIGN{
+;       e: }$0_EXP = __HEX_L($0_EXP) = eval($0_EXP-0x48){
+;       m: }__HEX_HL($0_MAN){
+;    info: }$0_REAL{
+; new_hex: }$0_NEW_FHEX)}){}dnl
 __{}__{}dnl
 __{}__{}ifelse(eval(($0_EXP < 0) && $0_SIGN),1,{
 __{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a negative value closest to zero.{}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FMMIN)},
+__{}__{}__{}define({$0_RES},FMMIN)},
 __{}__{}eval($0_EXP < 0 ),1,{
 __{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a positive value closest to zero.{}dnl    
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMIN)},
+__{}__{}__{}define({$0_RES},FPMIN)},
 __{}__{}eval(($0_EXP > 0x7F) && $0_SIGN ),1,{
 __{}__{}__{}  .WARNING The value "$1" is less than the smallest possible value, so it will be changed to the smallest possible value.{}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FMMAX)},  
+__{}__{}__{}define({$0_RES},FMMAX)},  
 __{}__{}eval($0_EXP > 0x7F),1,{
 __{}__{}__{}  .WARNING The value "$1" is greater than the largest possible value, so it will be changed to the largest possible value.{}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMAX)},  
+__{}__{}__{}define({$0_RES},FPMAX)},  
 __{}__{}{dnl   # Sestavení hexadecimální hodnoty
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1 -> }$0_REAL,__HEX_HL($0_SIGN + $0_EXP * 0x100 + $0_MAN)){}dnl
+__{}__{}__{}ifelse($0_NEW_FHEX,$0_ORIG_FHEX,,{define({$0_INFO},{$1 (=}$0_ORIG_FHEX{ ≈ }$0_NEW_FHEX{=}$0_REAL{)})}){}dnl
+__{}__{}__{}define({$0_RES},__HEX_HL($0_SIGN + $0_EXP * 0x100 + $0_MAN)){}dnl
 __{}__{}}){}dnl
 __{}}){}dnl
 })dnl
 dnl
+dnl
+dnl
+define({FPUSH},{dnl
+__{}FSTRING_TO_FHEX($1){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},FSTRING_TO_FHEX_INFO,FSTRING_TO_FHEX_RES){}dnl
+})dnl
+dnl
+dnl
+dnl
+dnl # FVARIABLE(name)       --> (name) = 0
+dnl # FVARIABLE(name,1)     --> (name) = 0x4000
+dnl # FVARIABLE(name,1e)    --> (name) = 0x4000
+dnl # FVARIABLE(name,-1e)   --> (name) = 0xC000
+dnl # FVARIABLE(name,inf)   --> (name) = 0x7FFF
+dnl # FVARIABLE(name,-inf)  --> (name) = 0xFFFF
+define({FVARIABLE},{dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing  parameter with variable name!},
+__{}__IS_NUM($1),1,{
+__{}__{}  .error {$0}($@): First parameter is number! Need variable name!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}$#,1,{dnl
+__{}__{}define({__PSIZE_}$1,2)dnl
+__{}__{}__ADD_TOKEN({__TOKEN_VARIABLE},{fvariable $1},$@)},
+__{}{dnl
+__{}__{}define({__PSIZE_}$1,2)dnl
+__{}__{}FSTRING_TO_FHEX($2){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_VARIABLE},{fvariable $1 }FSTRING_TO_FHEX_INFO,$1,FSTRING_TO_FHEX_RES){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # ( pf -- f )
+define({FFETCH},{dnl
+__{}__ADD_TOKEN({__TOKEN_FETCH},{f@},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # ( f pf -- )
+define({FSTORE},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_STORE_1ADD},{f!},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{__dtto},$@){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( s1 -- f1 )
@@ -120,6 +192,12 @@ define({__ASM_TOKEN_F2U},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_fWst})
     call fWst           ; 3:17      __INFO}){}dnl
+dnl
+dnl
+dnl # ( adr -- adr+2 )
+define({FLOATADD},{dnl
+__{}__ADD_TOKEN({__TOKEN_2ADD},{float+},$@){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( f2 f1 -- f )
@@ -211,6 +289,55 @@ __{}__def({USE_fDiv})
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
+dnl # fdrop
+dnl # ( f1 -- )
+define({FDROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROP},{fdrop},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # f2drop
+dnl # ( f2 f1 -- )
+define({F2DROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},{f2drop},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # fdup
+dnl # ( f1 -- f1 f1 )
+define({FDUP},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP},{fdup},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # f2dup
+dnl # ( f2 f1 -- f2 f1 f2 f1 )
+define({F2DUP},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP},{f2dup},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # fover
+dnl # ( f2 f1 -- f2 f1 f2 )
+define({FOVER},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER},{fover},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # frot
+dnl # ( f3 f2 f1 -- f2 f1 f3 )
+define({FROT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROT},{frot},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # f-rot
+dnl # ( f3 f2 f1 -- f2 f1 f3 )
+define({FNROT},{dnl
+__{}__ADD_TOKEN({__TOKEN_NROT},{f-rot},$@){}dnl
+}){}dnl
+dnl
+dnl
 dnl # ( f2 f1 -- f )
 dnl # f = f2 / f1
 define({FSQRT},{dnl
@@ -221,6 +348,13 @@ define({__ASM_TOKEN_FSQRT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_fSqrt})
     call fSqrt          ; 3:17      __INFO}){}dnl
+dnl
+dnl
+dnl # fswap
+dnl # ( f2 f1 -- f1 f2 )
+define({FSWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP},{fswap},$@){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( f1 -- f2 )
@@ -452,6 +586,22 @@ __{}define({__INFO},__COMPILE_INFO)
     ld   HL, 0x7FFF     ; 3:10      __INFO
     add  HL, DE         ; 1:11      __INFO
     sbc  HL, HL         ; 2:15      __INFO   HL = flag{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # f=
+dnl # ( f1 f2 -- flag )
+define({FEQ},{dnl
+__{}__ADD_TOKEN({__TOKEN_EQ},{f=},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # f<>
+dnl # ( f1 f2 -- flag )
+define({FNE},{dnl
+__{}__ADD_TOKEN({__TOKEN_NE},{f<>},$@){}dnl
 }){}dnl
 dnl
 dnl
