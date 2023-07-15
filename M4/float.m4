@@ -17,19 +17,19 @@ __{}__{}define({$0_HEX_REAL},{__HEX_FLOAT($1)})}){}dnl
 __{}dnl
 __{}ifelse($0_SIGN:$0_HEX_REAL,{0x8000:0x0p+0},{
 __{}__{}  .WARNING You are trying to convert "negative zero" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero.{}dnl  
-__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FMMIN)},
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FMMIN)},
 __{}$0_HEX_REAL,{0x0p+0},{
 __{}__{}  .WARNING You are trying to convert "positive zero" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero.{}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMIN)},
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMIN)},
 __{}$0_SIGN:$0_HEX_REAL,{0x8000:inf},{
 __{}__{}  .WARNING You are trying to convert "-inf" to Danagy 16 bit floating point format. It will be converted as a smallest possible value.{}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FMMAX)},
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FMMAX)},
 __{}$0_HEX_REAL,{inf},{
 __{}__{}  .WARNING You are trying to convert "+inf" to Danagy 16 bit floating point format. It will be converted as a largest possible value.{}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMAX)},
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMAX)},
 __{}$0_HEX_REAL,{nan},{
 __{}__{}  .WARNING You are trying to convert "Not a Number" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero.{}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMIN)},
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMIN)},
 __{}{dnl
 __{}__{}dnl    # Výpočet exponentu
 __{}__{}define({$0_EXP},{eval(substr($0_HEX_REAL,incr(index($0_HEX_REAL,{p}))) + 0x40)}){}dnl
@@ -60,18 +60,18 @@ __{}__{}__{}i:$0_REAL}){}dnl
 __{}__{}dnl
 __{}__{}ifelse(eval(($0_EXP < 0) && $0_SIGN),1,{
 __{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a negative value closest to zero.{}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FMMIN)},
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FMMIN)},
 __{}__{}eval($0_EXP < 0 ),1,{
 __{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a positive value closest to zero.{}dnl    
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMIN)},
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMIN)},
 __{}__{}eval(($0_EXP > 0x7F) && $0_SIGN ),1,{
 __{}__{}__{}  .WARNING The value "$1" is less than the smallest possible value, so it will be changed to the smallest possible value.{}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FMMAX)},  
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FMMAX)},  
 __{}__{}eval($0_EXP > 0x7F),1,{
 __{}__{}__{}  .WARNING The value "$1" is greater than the largest possible value, so it will be changed to the largest possible value.{}dnl
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1},FPMAX)},  
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},FPMAX)},  
 __{}__{}{dnl   # Sestavení hexadecimální hodnoty
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSH},{$1 -> }$0_REAL,__HEX_HL($0_SIGN + $0_EXP * 0x100 + $0_MAN)){}dnl
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1 -> }$0_REAL,__HEX_HL($0_SIGN + $0_EXP * 0x100 + $0_MAN)){}dnl
 __{}__{}}){}dnl
 __{}}){}dnl
 })dnl
