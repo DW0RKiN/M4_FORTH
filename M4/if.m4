@@ -1553,7 +1553,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({$0_CODE},__MAKE_CODE_2FDUP_FLT_JP_FALSE(else{}IF_COUNT))
+__{}define({$0_CODE},__MAKE_CODE_F2DUP_FLT_JP_FALSE(else{}IF_COUNT))
 __{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- f1 f2 )  flag: f1 < f2{}dnl
 __{}$0_CODE{}dnl
 }){}dnl
@@ -1589,7 +1589,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({$0_CODE},__MAKE_CODE_2FDUP_FGT_JP_FALSE(else{}IF_COUNT))
+__{}define({$0_CODE},__MAKE_CODE_F2DUP_FGT_JP_FALSE(else{}IF_COUNT))
 __{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- f1 f2 )  flag: f1 > f2{}dnl
 __{}$0_CODE{}dnl
 }){}dnl
@@ -1625,7 +1625,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({$0_CODE},__MAKE_CODE_2FDUP_FGE_JP_FALSE(else{}IF_COUNT))
+__{}define({$0_CODE},__MAKE_CODE_F2DUP_FGE_JP_FALSE(else{}IF_COUNT))
 __{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- f1 f2 )  flag: f1 >= f2{}dnl
 __{}$0_CODE{}dnl
 }){}dnl
@@ -1661,7 +1661,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}define({$0_CODE},__MAKE_CODE_2FDUP_FLE_JP_FALSE(else{}IF_COUNT))
+__{}define({$0_CODE},__MAKE_CODE_F2DUP_FLE_JP_FALSE(else{}IF_COUNT))
 __{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- f1 f2 )  flag: f1 <= f2{}dnl
 __{}$0_CODE{}dnl
 }){}dnl
