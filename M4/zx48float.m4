@@ -15,7 +15,7 @@ __{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L($3),2)){}dnl
 dnl
 dnl
 dnl
-define({ZX48FSTRING_TO_FHEX},{dnl
+define({FSTRING_TO_ZHEX},{dnl
 __{}define({$0_SIGN},0){}dnl
 __{}ifelse(substr($1,0,1),{-},{dnl
 __{}__{}define({$0_SIGN},1){}dnl
@@ -105,7 +105,7 @@ dnl
 define({__ASM_TOKEN_ZFLOAT2ARRAY},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 dnl
-__{}ZX48FSTRING_TO_FHEX($1){}dnl
+__{}FSTRING_TO_ZHEX($1){}dnl
 __{}DB 0x{}ZXTEMP_EXP,0x{}ZXTEMP_MANTISSA_1,0x{}ZXTEMP_MANTISSA_2,0x{}ZXTEMP_MANTISSA_3,0x{}ZXTEMP_MANTISSA_4 ; = $1 = __HEX_FLOAT($1){}dnl
 }){}dnl
 dnl
@@ -202,6 +202,18 @@ define({__ASM_TOKEN_ZDROP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZDROP})
     call _ZDROP         ; 3:17      __INFO   ( Z: z -- )}){}dnl
+dnl
+dnl
+dnl # z2drop
+dnl # zdrop zdrop
+define({Z2DROP},{dnl
+__{}__ADD_TOKEN({__TOKEN_Z2DROP},{z2drop},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_Z2DROP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_Z2DROP})
+    call _Z2DROP        ; 3:17      __INFO   ( Z: z2 z1 -- )}){}dnl
 dnl
 dnl
 dnl # zabs
@@ -356,6 +368,17 @@ define({__ASM_TOKEN_ZDUP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZDUP})
     call _ZDUP          ; 3:17      __INFO   ( Z: z -- z z )}){}dnl
+dnl
+dnl
+dnl # ( Z: z2 z1  -- z2 z1 z2 z1 )
+define({Z2DUP},{dnl
+__{}__ADD_TOKEN({__TOKEN_Z2DUP},{z2dup},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_Z2DUP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_Z2DUP})
+    call _Z2DUP         ; 3:17      __INFO   ( Z: z2 z1 -- z2 z1 z2 z1 )}){}dnl
 dnl
 dnl
 dnl # z.
@@ -690,7 +713,7 @@ __{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZPUSH},{dnl
-__{}ifelse($1,,,{ZX48FSTRING_TO_FHEX($1)
+__{}ifelse($1,,,{FSTRING_TO_ZHEX($1)
 __{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = __HEX_FLOAT($1)
 __{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1   = 0x{}ZXTEMP_EXP{}ZXTEMP_MANTISSA_1{}{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_3{}ZXTEMP_MANTISSA_4
 __{}    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      $1
@@ -794,7 +817,7 @@ __{}__{}format({%-24s},{});           __INFO{}dnl
 __{}__{}define({__PSIZE_$1},5){}dnl
 __{}__{}pushdef({LAST_HERE_NAME},$1){}dnl
 __{}__{}pushdef({LAST_HERE_ADD},5){}dnl
-__{}__{}ZX48FSTRING_TO_FHEX($2){}dnl
+__{}__{}FSTRING_TO_ZHEX($2){}dnl
 __{}__{}__ADD_SPEC_VARIABLE({
 }format({%-24s},$1:){;           }__INFO{   = $2 = }__HEX_FLOAT($2){
 }    db 0x{}ZXTEMP_EXP{             ;           }__INFO{   = exp
