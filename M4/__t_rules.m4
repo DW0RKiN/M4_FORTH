@@ -568,7 +568,6 @@ i....,,,
             __T_NAME(0):$1,               __TOKEN_2DUP:__TOKEN_FLE,                           {__SET_TOKEN({__TOKEN_2DUP_FLE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_2DUP:__TOKEN_FGE,                           {__SET_TOKEN({__TOKEN_2DUP_FGE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
-            
             __T_NAME(0):$1,               __TOKEN_DUP:__TOKEN_F0EQ,                           {__SET_TOKEN({__TOKEN_DUP_F0EQ},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_DUP:__TOKEN_F0LT,                           {__SET_TOKEN({__TOKEN_DUP_F0LT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             
@@ -581,6 +580,8 @@ i....,,,
             __T_NAME(0):$1,                    __TOKEN_FLT:__TOKEN_IF,                             {__SET_TOKEN({__TOKEN_FLT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,               __TOKEN_2DUP_FGT:__TOKEN_IF,                        {__SET_TOKEN({__TOKEN_2DUP_FGT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                    __TOKEN_FGT:__TOKEN_IF,                             {__SET_TOKEN({__TOKEN_FGT_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,               __TOKEN_2DUP_FGE:__TOKEN_IF,                        {__SET_TOKEN({__TOKEN_2DUP_FGE_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,                    __TOKEN_FGE:__TOKEN_IF,                             {__SET_TOKEN({__TOKEN_FGE_IF},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             
             __T_NAME(0):$1,               __TOKEN_DUP_F0EQ:__TOKEN_UNTIL,                     {__SET_TOKEN({__TOKEN_DUP_F0EQ_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                   __TOKEN_F0EQ:__TOKEN_UNTIL,                         {__SET_TOKEN({__TOKEN_F0EQ_UNTIL},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
