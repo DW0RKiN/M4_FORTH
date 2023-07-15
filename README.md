@@ -256,6 +256,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
     p  ... pointer
     pu ... pointer to unsigned number
     pd ... pointer to 32-bit number
+    pf ... pointer to 16-bit float
     R: ... return address stack
     Z: ... ZX Spectrum floating-point calculator stack
 
@@ -399,45 +400,78 @@ Danagy format `S EEE EEEE MMMM MMMM`
        value = 1 * 0x182 * 32
        value = 12352
        
+D.A.Nagy format does not support special values such as +-Inf or NaN. 
+It doesn't even support zero!
+Instead of zero, a positive or negative value is used, which has the smallest distance from zero.
+
+    +0e  ≈ FPMIN = 0x0000 =  2**-64    =  5.4210108624275221700×10⁻²⁰ =  0.000000000000000000054210108624275221700...
+    -0e  ≈ FMMIN = 0x8000 = -2**-64    = -5.4210108624275221700×10⁻²⁰ = -0.000000000000000000054210108624275221700...
+    +inf ≈ FPMAX = 0x7FFF =  511*2**55 =  1.8410715276690587648×10¹⁹  =  18410715276690587648
+    -inf ≈ FMMAX = 0xFFFF = -511*2**55 = -1.8410715276690587648×10¹⁹  = -18410715276690587648
+
 https://github.com/DW0RKiN/Floating-point-Library-for-Z80
 
 For a logical comparison of two numbers as f1> f2, exactly the same result applies as for a comparison of two integer numbers with a sign.
+It doesn't even have a pure zero. Only the +- maximum values and the +- value closest to zero.
 
-|<sub> Original   |<sub>    M4 FORTH    |<sub>  Data stack          |<sub>  Comment                     |
-| :-------------: | :-----------------: | :------------------------ | :-------------------------------- |
-|<sub> `3.1415e`  |<sub> FPUSH(`3.1415`)|<sub>       ( -- `0x4192` )|<sub> like PUSH with number conversion |
-|<sub>    s>f     |<sub>       S2F      |<sub>       ( s1 -- f1 )   |<sub>                              |
-|<sub>    u>f     |<sub>       U2F      |<sub>       ( u1 -- f1 )   |<sub>                              |
-|<sub>    f>s     |<sub>       F2S      |<sub>       ( f1 -- s1 )   |<sub>                              |
-|<sub>    f>u     |<sub>       F2U      |<sub>       ( f1 -- u1 )   |<sub>                              |
-|<sub>     f+     |<sub>      FADD      |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 + f1                 |
-|<sub>     f-     |<sub>      FSUB      |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 - f1                 |
-|<sub>  fnegate   |<sub>     FNEGATE    |<sub>       ( f1 -- f2 )   |<sub> f2 = -f1                     |
-|<sub>    fabs    |<sub>      FABS      |<sub>       ( f1 -- f2 )   |<sub> f2 = abs(f1)                 |
-|<sub>     f.     |<sub>      FDOT      |<sub>       ( f1 -- )      |<sub>                              |
-|<sub>     f*     |<sub>      FMUL      |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 * f1                 |
-|<sub>     f/     |<sub>      FDIV      |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 / f1                 |
-|<sub>   fsqrt    |<sub>     FSQRT      |<sub>       ( f1 -- f2 )   |<sub>                              |
-|<sub>   ftrunc   |<sub>     FTRUNC     |<sub>       ( f1 -- f2 )   |<sub> f2 = rounded towards zero    |
-|<sub>    floor   |<sub>      FLOOR     |<sub>       ( f1 -- f2 )   |<sub> f2 = rounded towards negative infinity  |
-|<sub>            |<sub>     FFRAC      |<sub>       ( f1 -- f2 )   |<sub> f2 = f1 % 1.0                |
-|<sub>    fexp    |<sub>      FEXP      |<sub>       ( f1 -- f2 )   |<sub> f2 = e^(f1)                  |
-|<sub>     fln    |<sub>       FLN      |<sub>       ( f1 -- f2 )   |<sub> f2 = ln(f1)                  |
-|<sub>    fmod    |<sub>      FMOD      |<sub>    ( f2 f1 -- f3 )   |<sub> f3 = f2 % f1                 |
-|<sub>     f2*    |<sub>      F2MUL     |<sub>       ( f1 -- f2 )   |<sub> f2 = f1 * 2.0                |
-|<sub>     f2/    |<sub>      F2DIV     |<sub>       ( f1 -- f2 )   |<sub> f2 = f1 / 2.0                |
-|<sub>    fsin    |<sub>      FSIN      |<sub>       ( f1 -- f2 )   |<sub> f2 = sin(f1), f1 <= ±π/2     |
-|<sub>     f<     |<sub>       FLT      |<sub>    ( f1 f2 -- flag ) |<sub> flag = f1 < f2               |
-|<sub>     f0<    |<sub>      F0LT      |<sub>       ( f1 -- flag ) |<sub> flag = f1 < +-0e             |
-|<sub> `-0e` f0<  |<sub>PUSH(`-0e`) F0LT|<sub>          ( -- false )|<sub> false: -0e 0e f<             |
-|<sub> `-0e`  0<  |<sub>PUSH(`-0e`) _0LT|<sub>          ( -- true ) |<sub>  true: -0e 0 <               |
-|<sub> `+0e` f0<  |<sub>PUSH(`+0e`) F0LT|<sub>          ( -- false )|<sub> false: +0e 0e f<             |
-|<sub> `+0e`  0<  |<sub>PUSH(`+0e`) _0LT|<sub>          ( -- false )|<sub> false: +0e 0 <               |
-|<sub>     f0=    |<sub>      F0EQ      |<sub>       ( f1 -- flag ) |<sub> flag = f1 == +-0             |
-|<sub> `-0e` f0=  |<sub>PUSH(`-0e`) F0EQ|<sub>          ( -- false )|<sub>  true: -0e 0e =              |
-|<sub> `-0e`  0=  |<sub>PUSH(`-0e`) _0EQ|<sub>          ( -- false )|<sub> false: -0e 0 =               |
-|<sub> `+0e` f0=  |<sub>PUSH(`+0e`) F0EQ|<sub>          ( -- false )|<sub>  true: +0e 0e =              |
-|<sub> `+0e`  0=  |<sub>PUSH(`+0e`) _0EQ|<sub>          ( -- false )|<sub>  true: +0e 0 =               |
+|<sub>  Original    |<sub>      M4 FORTH      |<sub>  Data stack            |<sub>  Comment                     |
+| :---------------: | :---------------------: | :-------------------------- | :-------------------------------- |
+|<sub>  `3.1415e`   |<sub>   FPUSH(`3.1415`)  |<sub>        ( -- `0x4192` ) |<sub> = PUSH with number conversion|
+|<sub>   fvariable  |<sub>      FVARIABLE     |<sub>           ( -- )       |<sub> = variable with number conversion |
+|<sub>      f@      |<sub>       FFETCH       |<sub>        ( pf -- f )     |<sub> = @                          |
+|<sub>      f!      |<sub>       FSTORE       |<sub>      ( f pf -- )       |<sub> = !                          |
+|<sub>     s>f      |<sub>         S2F        |<sub>        ( s1 -- f1 )    |<sub>                              |
+|<sub>     u>f      |<sub>         U2F        |<sub>        ( u1 -- f1 )    |<sub>                              |
+|<sub>     f>s      |<sub>         F2S        |<sub>        ( f1 -- s1 )    |<sub>                              |
+|<sub>     f>u      |<sub>         F2U        |<sub>        ( f1 -- u1 )    |<sub>                              |
+|<sub>    float+    |<sub>      FLAOTADD      |<sub>        ( pf -- pf+2 )  |<sub> = 2add                       |
+|<sub>      f+      |<sub>        FADD        |<sub>     ( f2 f1 -- f3 )    |<sub> f3 = f2 + f1                 |
+|<sub>      f-      |<sub>        FSUB        |<sub>     ( f2 f1 -- f3 )    |<sub> f3 = f2 - f1                 |
+|<sub>   fnegate    |<sub>       FNEGATE      |<sub>        ( f1 -- f2 )    |<sub> f2 = -f1                     |
+|<sub>     fabs     |<sub>        FABS        |<sub>        ( f1 -- f2 )    |<sub> f2 = abs(f1)                 |
+|<sub>      f.      |<sub>        FDOT        |<sub>        ( f1 -- )       |<sub>                              |
+|<sub>      f*      |<sub>        FMUL        |<sub>     ( f2 f1 -- f3 )    |<sub> f3 = f2 * f1                 |
+|<sub>      f/      |<sub>        FDIV        |<sub>     ( f2 f1 -- f3 )    |<sub> f3 = f2 / f1                 |
+|<sub>     fdrop    |<sub>        FDROP       |<sub>        ( f1 --  )      |<sub> = drop                       |
+|<sub>    f2drop    |<sub>       F2DROP       |<sub>     ( f2 f1 --  )      |<sub> = 2drop                      |
+|<sub>     fdup     |<sub>        FDUP        |<sub>        ( f1 -- f1 f1 ) |<sub> = dup                        |
+|<sub>     f2dup    |<sub>        F2DUP       |<sub>( f2 f1 -- f2 f1 f2 f1 )|<sub> = 2dup                       |
+|<sub>     fover    |<sub>        FOVER       |<sub>   ( f2 f1 -- f2 f1 f2 )|<sub> = over                       |
+|<sub>     frot     |<sub>        FROT        |<sub>( f3 f2 f1 -- f2 f1 f3 )|<sub> = rot                        |
+|<sub>     f-rot    |<sub>        FNROT       |<sub>( f3 f2 f1 -- f1 f3 f2 )|<sub> = -rot                       |
+|<sub>     fsqrt    |<sub>        FSQRT       |<sub>        ( f1 -- f2 )    |<sub>                              |
+|<sub>     fswap    |<sub>        FSWAP       |<sub>     ( f2 f1 -- f1 f2 ) |<sub> = swap                       |
+|<sub>    ftrunc    |<sub>       FTRUNC       |<sub>        ( f1 -- f2 )    |<sub> f2 = rounded towards zero    |
+|<sub>     floor    |<sub>        FLOOR       |<sub>        ( f1 -- f2 )    |<sub> f2 = rounded towards negative infinity  |
+|<sub>              |<sub>       FFRAC        |<sub>        ( f1 -- f2 )    |<sub> f2 = f1 % 1.0                |
+|<sub>     fexp     |<sub>        FEXP        |<sub>        ( f1 -- f2 )    |<sub> f2 = e^(f1)                  |
+|<sub>      fln     |<sub>         FLN        |<sub>        ( f1 -- f2 )    |<sub> f2 = ln(f1)                  |
+|<sub>     fmod     |<sub>        FMOD        |<sub>     ( f2 f1 -- f3 )    |<sub> f3 = f2 % f1                 |
+|<sub>      f2*     |<sub>        F2MUL       |<sub>        ( f1 -- f2 )    |<sub> f2 = f1 * 2.0                |
+|<sub>      f2/     |<sub>        F2DIV       |<sub>        ( f1 -- f2 )    |<sub> f2 = f1 / 2.0                |
+|<sub>     fsin     |<sub>        FSIN        |<sub>        ( f1 -- f2 )    |<sub> f2 = sin(f1), f1 <= ±π/2     |
+|<sub>      f<      |<sub>         FLT        |<sub>     ( f1 f2 -- flag )  |<sub> flag = f1 < f2               |
+|<sub>`-0e` `0e` f< |<sub>PUSH(`-0e`,`0e`) FLT|<sub>           ( -- true )  |<sub>  true: -0e 0e f<             |
+|<sub>`0e` `-0e` f< |<sub>PUSH(`0e`,`-0e`) FLT|<sub>           ( -- false ) |<sub> false: 0e -0e f<             |
+|<sub>      f<=     |<sub>         FLE        |<sub>     ( f1 f2 -- flag )  |<sub> flag = f1 <= f2              |
+|<sub>`-0e` `0e` f<=|<sub>PUSH(`-0e`,`0e`) FLE|<sub>           ( -- true )  |<sub>  true: -0e 0e f<=            |
+|<sub>`0e` `-0e` f<=|<sub>PUSH(`0e`,`-0e`) FLE|<sub>           ( -- false ) |<sub> false: 0e -0e f<=            |
+|<sub>      f>=     |<sub>         FGE        |<sub>     ( f1 f2 -- flag )  |<sub> flag = f1 >= f2              |
+|<sub>`-0e` `0e` f>=|<sub>PUSH(`-0e`,`0e`) FGE|<sub>           ( -- false ) |<sub> false: -0e 0e f<             |
+|<sub>`0e` `-0e` f>=|<sub>PUSH(`0e`,`-0e`) FGE|<sub>           ( -- true )  |<sub>  true: 0e -0e f<             |
+|<sub>      f>      |<sub>         FGT        |<sub>     ( f1 f2 -- flag )  |<sub> flag = f1 > f2               |
+|<sub>`-0e` `0e` f> |<sub>PUSH(`-0e`,`0e`) FGT|<sub>           ( -- false ) |<sub> false: -0e 0e f<             |
+|<sub>`0e` `-0e` f> |<sub>PUSH(`0e`,`-0e`) FGT|<sub>           ( -- true )  |<sub>  true: 0e -0e f<             |
+|<sub>      f0<     |<sub>        F0LT        |<sub>        ( f1 -- flag )  |<sub> flag = f1 < +-0e             |
+|<sub>  `-0e` f0<   |<sub>  PUSH(`-0e`) F0LT  |<sub>           ( -- false ) |<sub> false: -0e 0e f<             |
+|<sub>  `+0e` f0<   |<sub>  PUSH(`+0e`) F0LT  |<sub>           ( -- false ) |<sub> false: +0e 0e f<             |
+|<sub>  `-0e`  0<   |<sub>  PUSH(`-0e`) _0LT  |<sub>           ( -- true )  |<sub>  true: -0e 0 <               |
+|<sub>  `+0e`  0<   |<sub>  PUSH(`+0e`) _0LT  |<sub>           ( -- false ) |<sub> false: +0e 0 <               |
+|<sub>      f0=     |<sub>        F0EQ        |<sub>        ( f1 -- flag )  |<sub> flag = f1 == +-0             |
+|<sub>  `-0e` f0=   |<sub>  PUSH(`-0e`) F0EQ  |<sub>           ( -- true )  |<sub>  true: -0e 0e =              |
+|<sub>  `+0e` f0=   |<sub>  PUSH(`+0e`) F0EQ  |<sub>           ( -- true )  |<sub>  true: +0e 0e =              |
+|<sub>  `-0e`  0=   |<sub>  PUSH(`-0e`) _0EQ  |<sub>           ( -- false ) |<sub> false: -0e 0 =               |
+|<sub>  `+0e`  0=   |<sub>  PUSH(`+0e`) _0EQ  |<sub>           ( -- false ) |<sub>  true: +0e 0 =               |
 
 #### ZX48 ROM Floating-point
 
@@ -484,57 +518,59 @@ For the ZPUSH operator, any valid numerical representation is sufficient.
 It can be an integer expressed in decimal notation (`27`), octal notation (`033`), or hexadecimal notation (`0x1B`).
 It can also be a real number represented with a decimal point (`.51`) or by using scientific notation with the symbol E (`51E-2`), or a combination of both (`5.1E-1`).
 
-|<sub>   Original   |<sub>    M4 FORTH     |<sub>  Data stack                  |<sub>  Comment                     |
-| :---------------: | :------------------: | :-------------------------------- | :-------------------------------- |
-|<sub>   `1.23e7`   |<sub> ZPUSH(`1.23e7`) |<sub>   ( -- ) ( Z: -- `1.23e7` )  |<sub> inline 15 bytes              |
-|<sub>   `1e` `0e`  |<sub> ZPUSH(`1e`,`0e`)|<sub>   ( -- ) ( Z: -- `1e` `0e` ) |<sub> inline 15 + 11 bytes         |
-|<sub>     d>f      |<sub>      D_TO_Z     |<sub> ( d -- ) ( Z: -- d )         |<sub> -2147483648..2147483647      |
-|<sub>     s>f      |<sub>      S_TO_Z     |<sub> ( x -- ) ( Z: -- x )         |<sub> -32768..32767                |
-|<sub>   `4` s>f    |<sub> PUSH_S_TO_Z(`4`)|<sub>   ( -- ) ( Z: -- `4` )       |<sub> -65535..65535                |
-|<sub>     f>d      |<sub>      Z_TO_D     |<sub>   ( -- d ) ( Z: z -- )       |<sub>                              |
-|<sub>     f>s      |<sub>      Z_TO_S     |<sub>   ( -- x ) ( Z: z -- )       |<sub>                              |
-|<sub>     fabs     |<sub>      ZABS       |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = abs(z1)                 |
-|<sub>    facos     |<sub>      ZACOS      |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = arccos(z1)              |
-|<sub>      f+      |<sub>      ZADD       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )  |<sub> z3 = z1 + z2                 |
-|<sub>    fasin     |<sub>      ZASIN      |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = arcsin(z1)              |
-|<sub>    fatan     |<sub>      ZATAN      |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = arctan(z1)              |
-|<sub>     fcos     |<sub>      ZCOS       |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = cos(z1)                 |
-|<sub>      f/      |<sub>      ZDIV       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )  |<sub> z3 = z1 / z2                 |
-|<sub>      f.      |<sub>      ZDOT       |<sub>   ( -- ) ( Z: z -- )         |<sub> fprintf("%f", z);            |
-|<sub>    fdrop     |<sub>      ZDROP      |<sub>   ( -- ) ( Z: z -- )         |<sub>                              |
-|<sub>     fdup     |<sub>      ZDUP       |<sub>   ( -- ) ( Z: z -- z z )     |<sub>                              |
-|<sub>     fexp     |<sub>      ZEXP       |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = exp(z1)                 |
-|<sub>      f@      |<sub>     ZFETCH      |<sub> ( a -- ) ( Z: -- z )         |<sub>                              |
-|<sub>     fint     |<sub>      ZINT       |<sub>   ( -- ) ( Z: z -- i )       |<sub>                              |
-|<sub>     fln      |<sub>       ZLN       |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = ln(z1)                  |
-|<sub>      f*      |<sub>      ZMUL       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )  |<sub> z3 = z1 * z2                 |
-|<sub>     f**      |<sub>     ZMULMUL     |<sub>   ( -- ) ( Z: z1 z2 -- z3 )  |<sub> z3 = z1^z2                   |
-|<sub>   fnegate    |<sub>     ZNEGATE     |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = -z1                     |
-|<sub>    fover     |<sub>      ZOVER      |<sub>   ( Z: z1 z2 -- z1 z2 z1 )   |<sub>                              |
-|<sub>     frot     |<sub>      ZROT       |<sub>   ( Z: z1 z2 z3 -- z2 z3 z1 )|<sub>                              |
-|<sub>     fsin     |<sub>       ZSIN      |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = sin(z1)                 |
-|<sub>    fsqrt     |<sub>      ZSQRT      |<sub>   ( -- ) ( Z: z1 -- z2)      |<sub> z2 = z1^0.5                  |
-|<sub>      f!      |<sub>     ZSTORE      |<sub> ( a -- ) ( Z: z -- )         |<sub>                              |
-|<sub>      f-      |<sub>      ZSUB       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )  |<sub> z3 = z1 - z2                 |
-|<sub>    fswap     |<sub>      ZSWAP      |<sub>  ( -- ) ( Z: z1 z2 -- z2 z1 )|<sub>                              |
-|<sub>     ftan     |<sub>      ZTAN       |<sub>   ( -- ) ( Z: z1 -- z2 )     |<sub> z2 = tan(z1)                 |
-|<sub>name fvariable|<sub>  ZVARIABLE(name)|<sub>   ( -- ) ( Z: -- )           |<sub> name: db 0,0,0,0,0           |
-|<sub>              |<sub>ZVARIABLE(name,z)|<sub>   ( -- ) ( Z: -- )           |<sub> name: db exp,m1,m2,m3,m4 ;=z |
-|<sub>     f<=      |<sub>       ZLE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1<=z2, true: +0 -0 f<= |
-|<sub>     f>=      |<sub>       ZGE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1>=z2, true: -0 +0 f>= |
-|<sub>     f<>      |<sub>       ZNE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1<>z2, false: +0 -0 f<>|
-|<sub>     f>       |<sub>       ZGT       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1> z2, false: +0 -0 f> |
-|<sub>     f<       |<sub>       ZLT       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1< z2, false: -0 +0 f< |
-|<sub>     f=       |<sub>       ZEQ       |<sub>   ( -- flag ) ( Z: z1 z2 -- )|<sub>flag: z1= z2, true: -0 +0 f=  |
-|<sub>f<= negate s>f|<sub>ZLE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e               |
-|<sub>f>= negate s>f|<sub>ZGE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e               |
-|<sub>f<> negate s>f|<sub>ZNE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e               |
-|<sub>f>  negate s>f|<sub>ZGT NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e               |
-|<sub>f<  negate s>f|<sub>ZLT NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e               |
-|<sub>f=  negate s>f|<sub>ZEQ NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )|<sub>zbool: 1e or 0e               |
-|<sub>    f0<       |<sub>      Z0LT       |<sub>   ( -- flag ) ( Z: z -- )    |<sub> flag = z < 0                 |
-|<sub>    f0=       |<sub>      Z0EQ       |<sub>   ( -- flag ) ( Z: z -- )    |<sub> flag = z == 0                |
-|<sub>   float+     |<sub>    ZFLOATADD    |<sub>( a1 -- a2 ) ( Z: -- )        |<sub> a2 = a1 + 5                  |
+|<sub>   Original   |<sub>    M4 FORTH     |<sub>  Data stack                      |<sub>  Comment                     |
+| :---------------: | :------------------: | :------------------------------------ | :-------------------------------- |
+|<sub>   `1.23e7`   |<sub> ZPUSH(`1.23e7`) |<sub>   ( -- ) ( Z: -- `1.23e7` )      |<sub> inline 15 bytes              |
+|<sub>   `1e` `0e`  |<sub> ZPUSH(`1e`,`0e`)|<sub>   ( -- ) ( Z: -- `1e` `0e` )     |<sub> inline 15 + 11 bytes         |
+|<sub>     d>f      |<sub>      D_TO_Z     |<sub> ( d -- ) ( Z: -- d )             |<sub> -2147483648..2147483647      |
+|<sub>     s>f      |<sub>      S_TO_Z     |<sub> ( x -- ) ( Z: -- x )             |<sub> -32768..32767                |
+|<sub>   `4` s>f    |<sub> PUSH_S_TO_Z(`4`)|<sub>   ( -- ) ( Z: -- `4` )           |<sub> -65535..65535                |
+|<sub>     f>d      |<sub>      Z_TO_D     |<sub>   ( -- d ) ( Z: z -- )           |<sub>                              |
+|<sub>     f>s      |<sub>      Z_TO_S     |<sub>   ( -- x ) ( Z: z -- )           |<sub>                              |
+|<sub>     fabs     |<sub>      ZABS       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = abs(z1)                 |
+|<sub>    facos     |<sub>      ZACOS      |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = arccos(z1)              |
+|<sub>      f+      |<sub>      ZADD       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1 + z2                 |
+|<sub>    fasin     |<sub>      ZASIN      |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = arcsin(z1)              |
+|<sub>    fatan     |<sub>      ZATAN      |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = arctan(z1)              |
+|<sub>     fcos     |<sub>      ZCOS       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = cos(z1)                 |
+|<sub>      f/      |<sub>      ZDIV       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1 / z2                 |
+|<sub>      f.      |<sub>      ZDOT       |<sub>   ( -- ) ( Z: z -- )             |<sub> fprintf("%f", z);            |
+|<sub>    fdrop     |<sub>      ZDROP      |<sub>   ( -- ) ( Z: z -- )             |<sub>                              |
+|<sub>    f2drop    |<sub>     Z2DROP      |<sub>   ( -- ) ( Z: z2 z1 -- )         |<sub>                              |
+|<sub>     fdup     |<sub>      ZDUP       |<sub>   ( -- ) ( Z: z -- z z )         |<sub>                              |
+|<sub>    f2dup     |<sub>      Z2DUP      |<sub>( -- ) ( Z: z2 z1 -- z2 z1 z2 z1 )|<sub>                              |
+|<sub>     fexp     |<sub>      ZEXP       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = exp(z1)                 |
+|<sub>      f@      |<sub>     ZFETCH      |<sub> ( a -- ) ( Z: -- z )             |<sub>                              |
+|<sub>     fint     |<sub>      ZINT       |<sub>   ( -- ) ( Z: z -- i )           |<sub>                              |
+|<sub>     fln      |<sub>       ZLN       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = ln(z1)                  |
+|<sub>      f*      |<sub>      ZMUL       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1 * z2                 |
+|<sub>     f**      |<sub>     ZMULMUL     |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1^z2                   |
+|<sub>   fnegate    |<sub>     ZNEGATE     |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = -z1                     |
+|<sub>    fover     |<sub>      ZOVER      |<sub>( -- ) ( Z: z1 z2 -- z1 z2 z1 )   |<sub>                              |
+|<sub>     frot     |<sub>      ZROT       |<sub>( -- ) ( Z: z1 z2 z3 -- z2 z3 z1 )|<sub>                              |
+|<sub>     fsin     |<sub>       ZSIN      |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = sin(z1)                 |
+|<sub>    fsqrt     |<sub>      ZSQRT      |<sub>   ( -- ) ( Z: z1 -- z2)          |<sub> z2 = z1^0.5                  |
+|<sub>      f!      |<sub>     ZSTORE      |<sub> ( a -- ) ( Z: z -- )             |<sub>                              |
+|<sub>      f-      |<sub>      ZSUB       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1 - z2                 |
+|<sub>    fswap     |<sub>      ZSWAP      |<sub>   ( -- ) ( Z: z1 z2 -- z2 z1 )   |<sub>                              |
+|<sub>     ftan     |<sub>      ZTAN       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = tan(z1)                 |
+|<sub>name fvariable|<sub>  ZVARIABLE(name)|<sub>   ( -- ) ( Z: -- )               |<sub> name: db 0,0,0,0,0           |
+|<sub>              |<sub>ZVARIABLE(name,z)|<sub>   ( -- ) ( Z: -- )               |<sub> name: db exp,m1,m2,m3,m4 ;=z |
+|<sub>     f<=      |<sub>       ZLE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1<=z2, true: +0 -0 f<= |
+|<sub>     f>=      |<sub>       ZGE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1>=z2, true: -0 +0 f>= |
+|<sub>     f<>      |<sub>       ZNE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1<>z2, false: +0 -0 f<>|
+|<sub>     f>       |<sub>       ZGT       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1> z2, false: +0 -0 f> |
+|<sub>     f<       |<sub>       ZLT       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1< z2, false: -0 +0 f< |
+|<sub>     f=       |<sub>       ZEQ       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1= z2, true: -0 +0 f=  |
+|<sub>f<= negate s>f|<sub>ZLE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f>= negate s>f|<sub>ZGE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f<> negate s>f|<sub>ZNE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f>  negate s>f|<sub>ZGT NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f<  negate s>f|<sub>ZLT NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f=  negate s>f|<sub>ZEQ NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>    f0<       |<sub>      Z0LT       |<sub>   ( -- flag ) ( Z: z -- )        |<sub> flag = z < 0                 |
+|<sub>    f0=       |<sub>      Z0EQ       |<sub>   ( -- flag ) ( Z: z -- )        |<sub> flag = z == 0                |
+|<sub>   float+     |<sub>    ZFLOATADD    |<sub>( a1 -- a2 ) ( Z: -- )            |<sub> a2 = a1 + 5                  |
 
 
 |<sub> Original   |<sub>    M4 FORTH    |<sub>  Data stack                    |<sub>  Comment                    |
