@@ -464,7 +464,7 @@ __{}__ADD_TOKEN({__TOKEN_FLT},{f<},$@){}dnl
 dnl
 define({__ASM_TOKEN_FLT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(1,1,{
+__{}ifelse(1,0,{
 __{}                       ;[12:67]     __INFO   ( f1 f2 -- flag )  flag: f1 < f2
 __{}    ld    A, H          ; 1:4       __INFO
 __{}    or    D             ; 1:4       __INFO
@@ -640,15 +640,16 @@ __{}__ADD_TOKEN({__TOKEN_FGE},{f>=},$@){}dnl
 dnl
 define({__ASM_TOKEN_FGE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                       ;[11:63]     __INFO   ( f1 f2 -- flag )  flag: f1 >= f2
-    ld    A, H          ; 1:4       __INFO
-    or    D             ; 1:4       __INFO
-    rlca                ; 1:4       __INFO   set carry and 0 bit
-    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-    adc   A, 0x00       ; 2:7       __INFO   invert carry?
-    rra                 ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO
-    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
+__{}                       ;[12:66]     __INFO   ( f1 f2 -- flag )  flag: f1 >= f2
+__{}    ld    A, H          ; 1:4       __INFO
+__{}    or    D             ; 1:4       __INFO
+__{}    jp    m, $+4        ; 3:10      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    sbc  HL, DE         ; 2:15      __INFO   f1>=f2 --> f1-f2>=0 --> not carry if true
+__{}    ccf                 ; 1:4       __INFO
+__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag
+__{}    pop  DE             ; 1:10      __INFO{}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -666,7 +667,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    A, H          ; 1:4       __INFO
     or    D             ; 1:4       __INFO
     rlca                ; 1:4       __INFO   set carry and 0 bit
-    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
+    sbc  HL, DE         ; 2:15      __INFO   f1>=f2 --> f1-f2>=0 --> not carry if true
     adc   A, 0x01       ; 2:7       __INFO   invert carry?
     rra                 ; 1:4       __INFO
     sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
