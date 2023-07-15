@@ -433,6 +433,22 @@ _ZDROP:                 ;           _zdrop
 }){}dnl
 dnl
 dnl
+dnl # z2drop
+dnl # zdrop zdrop
+ifdef({USE_Z2DROP},{
+_Z2DROP:                ;           _z2drop
+    push DE             ; 1:11      _z2drop
+    push HL             ; 1:11      _z2drop
+    rst 0x28            ; 1:11      Use the calculator
+    db  0x02            ; 1:        calc-delete
+    db  0x02            ; 1:        calc-delete
+    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
+    pop  HL             ; 1:10      _z2drop
+    pop  DE             ; 1:10      _z2drop
+    ret                 ; 1:10      _z2drop
+}){}dnl
+dnl
+dnl
 dnl # z-
 ifdef({USE_ZSUB},{
 _ZSUB:                  ;           _z-
@@ -824,6 +840,24 @@ _ZDUP:                  ;           _zdup
     pop  HL             ; 1:10      _zdup
     pop  DE             ; 1:10      _zdup
     ret                 ; 1:10      _zdup
+}){}dnl
+dnl
+dnl
+dnl # z2dup
+ifdef({USE_Z2DUP},{
+_Z2DUP:                ;[22:144]    _z2dup
+    push DE             ; 1:11      _z2dup
+    push HL             ; 1:11      _z2dup
+    ld   HL,(0x5C65)    ; 3:16      _z2dup   {load STKEND}
+    ex   DE, HL         ; 1:4       _z2dup
+    ld   HL,0xFFF6      ; 3:10      _z2dup   -10
+    add  HL, DE         ; 1:11      _z2dup
+    ld   BC,0x000A      ; 3:10      _z2dup   10 bytes
+    ldir                ; 2:21/16   _z2dup
+    ld  (0x5C65),DE     ; 4:20      _z2dup   {save STKEND+10}
+    pop  HL             ; 1:10      _z2dup
+    pop  DE             ; 1:10      _z2dup
+    ret                 ; 1:10      _z2dup
 }){}dnl
 dnl
 dnl
