@@ -1682,8 +1682,9 @@ z,,,
 
             __T_NAME(2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_ZPUSH:__TOKEN_2DROP:__TOKEN_2DUP:__TOKEN_ZPUSH,  {__DELETE_LAST_TOKENS(2){}__SET_TOKEN({__TOKEN_ZPUSH},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0),shift(shift($@)))},
 
-            
-            
+            __T_NAME(0):$1,              __TOKEN_ZDROP:__TOKEN_ZDROP,               {__SET_TOKEN({__TOKEN_Z2DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,              __TOKEN_ZOVER:__TOKEN_ZOVER,               {__SET_TOKEN({__TOKEN_Z2DUP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
             __T_NAME(0):$1,              __TOKEN_DUP:__TOKEN_ZX_BORDER,             {__SET_TOKEN({__TOKEN_DUP_ZX_BORDER},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:1:__TOKEN_ZX_BORDER,         {__SET_TOKEN({__TOKEN_PUSH_ZX_BORDER},__T_INFO(0){ }$2,__T_ARRAY(0))},
             __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_ZX_BORDER, {dnl
