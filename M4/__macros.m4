@@ -9440,7 +9440,7 @@ __{}__{}    ld    A{,} H          ; 1:4       __INFO
 __{}__{}    or    D             ; 1:4       __INFO   i... ....
 __{}__{}    sbc  HL{,} DE         ; 2:15      __INFO   f1<=f2 --> 0<=f2-f1 --> carry if false
 __{}__{}    add  HL{,} DE         ; 1:11      __INFO
-__{}__{}    jp    z{,} format({%-11s},else{}IF_COUNT); 3:10      __INFO
+__{}__{}    jp    z{,} format({%-11s},$1); 3:10      __INFO
 __{}__{}    rra                 ; 1:4       __INFO   ci.. ....
 __{}__{}    sub  0x40           ; 2:7       __INFO   f... ....
 __{}__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO}){}dnl
@@ -9566,7 +9566,7 @@ __{}__{}    ld    A{,} H          ; 1:4       __INFO
 __{}__{}    or    D             ; 1:4       __INFO   i... ....
 __{}__{}    sbc  HL{,} DE         ; 2:15      __INFO   f1>=f2 --> 0>=f2-f1 --> carry if false
 __{}__{}    add  HL{,} DE         ; 1:11      __INFO
-__{}__{}    jp    z{,} format({%-11s},else{}IF_COUNT); 3:10      __INFO
+__{}__{}    jp    z{,} format({%-11s},$1); 3:10      __INFO
 __{}__{}    rra                 ; 1:4       __INFO   ci.. ....
 __{}__{}    add   A{,} 0x40       ; 2:7       __INFO   f... ....
 __{}__{}    jp    p{,} format({%-11s},$1); 3:10      __INFO{}dnl
@@ -9621,15 +9621,16 @@ __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}1,1,{
-__{}__{}define({__BYTES}, 12){}dnl
-__{}__{}define({__CLOCKS},52){}dnl
+__{}{
+__{}__{}define({__BYTES}, 13){}dnl
+__{}__{}define({__CLOCKS},69){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+ __BYTES*__BYTE_PRICE)){}dnl
 __{}__{}    ld    A{,} H          ; 1:4       __INFO
 __{}__{}    or    D             ; 1:4       __INFO
 __{}__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
-__{}__{}    ccf                 ; 1:4       __INFO
+__{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    sbc  HL{,} DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
+__{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    adc   A{,} 0x00       ; 2:7       __INFO   invert carry?
 __{}__{}    rra                 ; 1:4       __INFO
 __{}__{}    jp   nc{,} format({%-11s},$1); 3:10      __INFO{}dnl
