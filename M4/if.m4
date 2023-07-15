@@ -1571,40 +1571,9 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}ifelse(1,0,{
-__{}                       ;[13:68]     __INFO   ( f1 f2 -- )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-__{}    adc   A, 0x00       ; 2:7       __INFO   invert carry?
-__{}    rra                 ; 1:4       __INFO
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-
-1,0,{
-__{}                       ;[14:71]     __INFO   ( f1 f2 -- )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO   i... ....
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>=f2 --> 0>=f2-f1 --> carry if false
-__{}    jr    z, $+5        ; 2:7/12    __INFO
-__{}    rra                 ; 1:4       __INFO   ci.. ....
-__{}    add   A, 0x40       ; 2:7       __INFO   f... ....
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-
-__{}{
-__{}                       ;[13:67]     __INFO   ( f1 f2 -- )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    jp    p, $+4        ; 3:10      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> not carry if false
-__{}    pop  HL             ; 1:10      __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}define({$0_CODE},__MAKE_CODE_FGT_JP_FALSE(else{}IF_COUNT))
+__{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- )  flag: f1 > f2{}dnl
+__{}$0_CODE{}dnl
 }){}dnl
 dnl
 dnl
@@ -1619,52 +1588,9 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
-__{}ifelse(1,0,{
-__{}                       ;[13:50]     __INFO   ( f1 f2 -- f1 f2 )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    add   A, A          ; 1:4       __INFO   set carry
-__{}    ld    A, L          ; 1:4       __INFO
-__{}    sbc   A, E          ; 1:4       __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    sbc   A, D          ; 1:4       __INFO   f1>f2 --> 0>f2-f1 --> not carry if false
-__{}    rra                 ; 1:4       __INFO
-__{}    xor   C             ; 1:4       __INFO
-__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-
-__{}1,1,{
-__{}                       ;[13:68]     __INFO   ( f1 f2 -- f1 f2 )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-__{}    add  HL, DE         ; 1:11      __INFO
-__{}    adc   A, 0x00       ; 2:7       __INFO   invert carry?
-__{}    rra                 ; 1:4       __INFO
-__{}    jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-
-__{}1,1,{
-__{}                       ;[13:62]     __INFO   ( f1 f2 -- f1 f2 )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO   i... ....
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>=f2 --> 0>=f2-f1 --> carry if false
-__{}    add  HL, DE         ; 1:11      __INFO
-__{}    jr    z, $+5        ; 2:7/12    __INFO
-__{}    rra                 ; 1:4       __INFO   ci.. ....
-__{}    add   A, 0x40       ; 2:7       __INFO   f... ....
-__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-
-__{}{
-__{}                       ;[14:65]     __INFO   ( f1 f2 -- f1 f2 )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO   i... ....
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>=f2 --> 0>=f2-f1 --> carry if false
-__{}    add  HL, DE         ; 1:11      __INFO
-__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}    rra                 ; 1:4       __INFO   ci.. ....
-__{}    add   A, 0x40       ; 2:7       __INFO   f... ....
-__{}    jp    p, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
+__{}define({$0_CODE},__MAKE_CODE_2FDUP_FGT_JP_FALSE(else{}IF_COUNT))
+__{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- f1 f2 )  flag: f1 > f2{}dnl
+__{}$0_CODE{}dnl
 }){}dnl
 dnl
 dnl
