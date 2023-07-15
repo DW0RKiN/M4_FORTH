@@ -9400,7 +9400,7 @@ dnl # Out:
 dnl #   __PRICE       price = 16*(clocks + 4*bytes)
 dnl #   __BYTES       bytes
 dnl #   __CLOCKS      clocks
-define({__MAKE_CODE_2FDUP_FLT_JP_FALSE},{dnl
+define({__MAKE_CODE_F2DUP_FLT_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
@@ -9514,7 +9514,7 @@ dnl # Out:
 dnl #   __PRICE       price = 16*(clocks + 4*bytes)
 dnl #   __BYTES       bytes
 dnl #   __CLOCKS      clocks
-define({__MAKE_CODE_2FDUP_FGT_JP_FALSE},{dnl
+define({__MAKE_CODE_F2DUP_FGT_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
@@ -9615,7 +9615,7 @@ dnl # Out:
 dnl #   __PRICE       price = 16*(clocks + 4*bytes)
 dnl #   __BYTES       bytes
 dnl #   __CLOCKS      clocks
-define({__MAKE_CODE_2FDUP_FGE_JP_FALSE},{dnl
+define({__MAKE_CODE_F2DUP_FGE_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
@@ -9693,7 +9693,7 @@ dnl # Out:
 dnl #   __PRICE       price = 16*(clocks + 4*bytes)
 dnl #   __BYTES       bytes
 dnl #   __CLOCKS      clocks
-define({__MAKE_CODE_2FDUP_FLE_JP_FALSE},{dnl
+define({__MAKE_CODE_F2DUP_FLE_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
