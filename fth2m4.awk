@@ -217,7 +217,7 @@ BEGIN {
   reserved_words["EXECUTE"]     = "EXECUTE"
   reserved_words["CELL"]        = "CELL"                # not standard
   reserved_words["CELL+"]       = "CELLADD"
-  reserved_words["CELLS"]       = "CELLS"               # for compatibility with the standard
+  reserved_words["CELLS"]       = "CELLS"
   
   reserved_words["HEX"]         = "HEX"                 # limited support for combination "hex (u)(d)." not as a permanent output setting parameter
   reserved_words["BL"]          = "PUSH(' ')"           # for compatibility with the standard
@@ -254,7 +254,9 @@ BEGIN {
     reserved_words["F/"]        = "ZDIV"
     reserved_words["F."]        = "ZDOT"
     reserved_words["FDROP"]     = "ZDROP"
+    reserved_words["F2DROP"]    = "Z2DROP"          # not standard
     reserved_words["FDUP"]      = "ZDUP"
+    reserved_words["F2DUP"]     = "Z2DUP"           # not standard
     reserved_words["FEXP"]      = "ZEXP"
     reserved_words["F@"]        = "ZFETCH"
     reserved_words["FLOOR"]     = "ZFLOOR"    
@@ -268,6 +270,8 @@ BEGIN {
     reserved_words["FNEGATE"]   = "ZNEGATE"
     reserved_words["FOVER"]     = "ZOVER"
     reserved_words["FROT"]      = "ZROT"
+#     reserved_words["F-ROT"]     = "Z2DUP"           # not standard
+
     reserved_words["FSIN"]      = "ZSIN"
     reserved_words["FSQRT"]     = "ZSQRT"
     reserved_words["F!"]        = "ZSTORE"
@@ -325,10 +329,12 @@ BEGIN {
     reserved_words["FCOS"]      = "PUSH(0x4092) SWAP FSUB FSIN ;# ( cos  0..π only)\n"   # for compatibility with the standard
     reserved_words["F/"]        = "FDIV"
     reserved_words["F."]        = "FDOT SPACE"
-    reserved_words["FDROP"]     = "DROP"            # for compatibility with the standard
-    reserved_words["FDUP"]      = "DUP"             # for compatibility with the standard
+    reserved_words["FDROP"]     = "FDROP"
+    reserved_words["F2DROP"]    = "F2DROP"          # not standard
+    reserved_words["FDUP"]      = "FDUP"
+    reserved_words["F2DUP"]     = "F2DUP"           # not standard
     reserved_words["FEXP"]      = "FEXP"
-    reserved_words["F@"]        = "FETCH"           # for compatibility with the standard
+    reserved_words["F@"]        = "FFETCH"
     
 #     reserved_words["FLOOR"]     = "CALL(__FLOOR,( f -- round_towards_negative_infinity(f)))"    
 #     use_reserved_words["FLOOR"] = 0
@@ -339,27 +345,26 @@ BEGIN {
     reserved_words["F*"]        = "FMUL"
 #     reserved_words["F**"]       = ""
     reserved_words["FNEGATE"]   = "FNEGATE"
-    reserved_words["FOVER"]     = "OVER"            # for compatibility with the standard
-    reserved_words["FROT"]      = "ROT"             # for compatibility with the standard
+    reserved_words["FOVER"]     = "FOVER"
+    reserved_words["FROT"]      = "FROT"
+    reserved_words["F-ROT"]     = "FNROT"           # not standard
     reserved_words["FSIN"]      = "FSIN ;# ( sin -π/2..π/2 only)\n"
     reserved_words["FSQRT"]     = "FSQRT"
-    reserved_words["F!"]        = "STORE"           # for compatibility with the standard
+    reserved_words["F!"]        = "FSTORE"
     reserved_words["F-"]        = "FSUB"
 
-    reserved_words["FSWAP"]     = "SWAP"            # for compatibility with the standard
+    reserved_words["FSWAP"]     = "FSWAP"
     reserved_words["FTAN"]      = "DUP FSIN SWAP PUSH(0x4092) SWAP FSUB FSIN FDIV ;# ( tan  0..π/2 only)\n"   # for compatibility with the standard
-    reserved_words["FVARIABLE"] = "VARIABLE"        # for compatibility with the standard
-#     reserved_words["F<="]       = "LE"
-#     reserved_words["F>="]       = "GE"
-    reserved_words["F<>"]       = "NE"              # for compatibility with the standard
-#     reserved_words["F>"]        = "GT"
-#     reserved_words["F<"]        = "LT"
-    reserved_words["F="]        = "EQ"              # for compatibility with the standard
+    reserved_words["FVARIABLE"] = "FVARIABLE"
+    reserved_words["F<="]       = "FLE"
+    reserved_words["F>="]       = "FGE"   
+    reserved_words["F<>"]       = "FNE"
+    reserved_words["F>"]        = "FGT"
     reserved_words["F<"]        = "FLT"
-    
+    reserved_words["F="]        = "FEQ"    
     reserved_words["F0<"]       = "F0LT"
     reserved_words["F0="]       = "F0EQ"
-    reserved_words["FLOAT+"]    = "_2ADD"           # for compatibility with the standard
+    reserved_words["FLOAT+"]    = "FLOATADD"
 
     reserved_words["FFRAC"]     = "FFRAC"           # not standard
     reserved_words["FMOD"]      = "FMOD"            # not standard
@@ -856,12 +861,13 @@ function process_word()
         new_word = substr(word,1,length(word)-1)    # delete last dot
         new_word = "PUSHDOT(" new_word ")"          # double integer
     } 
-    else if (word ~ /^[+-]?[0-9][0-9]*[.]?[0-9]*[Ee][+-]?[0-9]*$/ ) {
+    else if ((word ~ /^[+-]?[0-9][0-9]*[.]?[0-9]*[Ee][+-]?[0-9]*$/) || upword == "INF" || upword == "-INF" || upword == "NAN" ) {
         if ( arg == "-zfloat" )
             new_word = "ZPUSH(" word ")"            # floating point "string"
         else {
-            new_word = "PUSH(" floatToHex(word) ") ;# = " word      # hexadecimal number representing the value of a floating-point number in Danagy 16-bit format
-            char = "\n"
+            new_word = "FPUSH(" word ")"            # floating point "string"           
+#             new_word = "PUSH(" floatToHex(word) ") ;# = " word      # hexadecimal number representing the value of a floating-point number in Danagy 16-bit format
+#             char = "\n"
         }
     }
     else {
@@ -1000,7 +1006,7 @@ function floatToHex(value) {
     }   
     else if ( exponent > 0x7F)
     {
-        print "\nWarning: The value " value "is greater than the largest possible value, so it will be changed to the largest possible value." > "/dev/stderr"
+        print "\nWarning: The value " value " is greater than the largest possible value, so it will be changed to the largest possible value." > "/dev/stderr"
         hexValue = "FPMAX"
     }   
     else {
