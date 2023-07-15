@@ -760,8 +760,19 @@ dnl # VARIABLE(name)        --> (name) = 0
 dnl # VARIABLE(name,100)    --> (name) = 100
 dnl # VARIABLE(name,0x2211) --> (name) = 0x2211
 define({VARIABLE},{dnl
-__{}define({__PSIZE_}$1,2)dnl
-__{}__ADD_TOKEN({__TOKEN_VARIABLE},{variable $1 $2},$@){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing  parameter with variable name!},
+__{}__IS_NUM($1),1,{
+__{}__{}  .error {$0}($@): First parameter is number! Need variable name!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}($@): $# parameters found in macro!},
+__{}$#,1,{dnl
+__{}__{}define({__PSIZE_}$1,2)dnl
+__{}__{}__ADD_TOKEN({__TOKEN_VARIABLE},{variable $1},$@)},
+__{}{dnl
+__{}__{}define({__PSIZE_}$1,2)dnl
+__{}__{}__ADD_TOKEN({__TOKEN_VARIABLE},{variable $1 $2},$@){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_VARIABLE},{dnl
