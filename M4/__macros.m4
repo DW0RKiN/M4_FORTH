@@ -9687,17 +9687,19 @@ __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{
 __{}__{}define({__BYTES}, 13){}dnl
-__{}__{}define({__CLOCKS},69){}dnl
+__{}__{}define({__CLOCKS},50){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+ __BYTES*__BYTE_PRICE)){}dnl
 __{}__{}    ld    A{,} H          ; 1:4       __INFO
 __{}__{}    or    D             ; 1:4       __INFO
-__{}__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
-__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}    sbc  HL{,} DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-__{}__{}    pop  HL             ; 1:10      __INFO
-__{}__{}    adc   A{,} 0x00       ; 2:7       __INFO   invert carry?
+__{}__{}    ld    C{,} A          ; 1:4       __INFO
+__{}__{}    add   A{,} A          ; 1:4       __INFO
+__{}__{}    ld    A{,} L          ; 1:4       __INFO
+__{}__{}    sbc   A{,} E          ; 1:4       __INFO
+__{}__{}    ld    A{,} H          ; 1:4       __INFO
+__{}__{}    sbc   A{,} D          ; 1:4       __INFO
 __{}__{}    rra                 ; 1:4       __INFO
-__{}__{}    jp   nc{,} format({%-11s},$1); 3:10      __INFO{}dnl
+__{}__{}    xor   C             ; 1:4       __INFO
+__{}__{}    jp    m{,} format({%-11s},$1); 3:10      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
