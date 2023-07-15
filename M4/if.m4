@@ -1577,6 +1577,7 @@ __{}$0_CODE{}dnl
 }){}dnl
 dnl
 dnl
+dnl
 dnl # ( f1 f2 -- f1 f2 )  flag: f1 > f2
 dnl # 2dup f> if
 define({_2DUP_FGT_IF},{dnl
@@ -1592,6 +1593,44 @@ __{}define({$0_CODE},__MAKE_CODE_2FDUP_FGT_JP_FALSE(else{}IF_COUNT))
 __{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- f1 f2 )  flag: f1 > f2{}dnl
 __{}$0_CODE{}dnl
 }){}dnl
+dnl
+dnl
+dnl
+dnl # f1 f2 >= if
+dnl # ( f1 f2 -- ) flag: f1 >= f2
+define({FGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_FGE_IF},{f>= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_FGE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}define({$0_CODE},__MAKE_CODE_FGE_JP_FALSE(else{}IF_COUNT))
+__{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- )  flag: f1 >= f2{}dnl
+__{}$0_CODE{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( f1 f2 -- f1 f2 )  flag: f1 >= f2
+dnl # 2dup f>= if
+define({_2DUP_FGE_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_FGE_IF},{2dup f>= if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_FGE_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}define({$0_CODE},__MAKE_CODE_2FDUP_FGE_JP_FALSE(else{}IF_COUNT))
+__{}format({%27s},;[__BYTES):format({%-8s},__CLOCKS])__INFO   ( f1 f2 -- f1 f2 )  flag: f1 >= f2{}dnl
+__{}$0_CODE{}dnl
+}){}dnl
+dnl
+dnl
 dnl
 dnl
 dnl
