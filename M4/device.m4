@@ -1,6 +1,10 @@
 dnl ## Device
 dnl
 dnl
+define({ZXFONT_5x8},{__def({USE_FONT_5x8})}){}dnl
+dnl
+dnl
+dnl
 define({ZX_CONSTANT},{dnl
 __{}ifdef({__USE_$0},,{define({__USE_$0})
 __{}__{}ZX_EOL               EQU 0x0D     ; zx_constant   end of line
