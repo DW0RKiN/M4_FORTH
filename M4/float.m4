@@ -317,6 +317,13 @@ __{}__ADD_TOKEN({__TOKEN_2DUP},{f2dup},$@){}dnl
 }){}dnl
 dnl
 dnl
+dnl # fnip
+dnl # ( f2 f1 -- f1 )
+define({FNIP},{dnl
+__{}__ADD_TOKEN({__TOKEN_NIP},{fnip},$@){}dnl
+}){}dnl
+dnl
+dnl
 dnl # fover
 dnl # ( f2 f1 -- f2 f1 f2 )
 define({FOVER},{dnl
