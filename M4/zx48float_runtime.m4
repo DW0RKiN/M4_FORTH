@@ -92,7 +92,7 @@ dnl
 dnl # z@
 ifdef({USE_ZFETCH},{
 _ZFETCH:                ;           _z@
-    push DE             ; 1:11      _z@   ( addr -- ) ( F: -- z )
+    push DE             ; 1:11      _z@   ( addr -- ) ( Z: -- z )
     ld   DE,(0x5C65)    ; 4:20      _z@   {STKEND}
     call 0x33C0         ; 3:17      _z@   {call ZX ROM move floating-point number routine HL->DE}
     ld  (0x5C65),DE     ; 4:20      _z@   {STKEND+5}
@@ -107,7 +107,7 @@ dnl
 dnl # z!
 ifdef({USE_ZSTORE},{
 _ZSTORE:                ;           _z!
-    push DE             ; 1:11      _z!   ( addr -- ) ( F: z -- )
+    push DE             ; 1:11      _z!   ( addr -- ) ( Z: z -- )
     push HL             ; 1:11      _z!   addr
     call 0x35bf         ; 3:17      _z!   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
     ld  (0x5C65),HL     ; 3:16      _z!   {save STKEND}
@@ -383,39 +383,6 @@ _ZXHEXDOT_FIRST:        ;           _zhex.
 __PUTCHAR_A(_zhex.)
     pop  HL             ; 1:10      _zhex.
     ret                 ; 1:10      _zhex.
-}){}dnl
-dnl
-dnl
-dnl # zswap
-ifdef({USE_ZSWAP},{
-_ZSWAP:                 ;           _zswap
-    push DE             ; 1:11      _zswap
-    push HL             ; 1:11      _zswap
-if 1
-if 1
-    rst 0x28            ; 1:11      Use the calculator
-    db  0x01            ; 1:        calc-exchange
-    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}
-else
-    call 0x35bf         ; 3:17      _zswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    call 0x35c2         ; 3:17      _zswap   {call ZX ROM            DE= HL    , HL = HL-5}
-    call 0x343C         ; 3:17      _zswap   {call ZX ROM exchange rutine}
-endif
-else
-    call 0x35bf         ; 3:17      _zswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld    B,0x05        ; 2:7       _zswap
-    dec  DE             ; 1:6       _zswap
-    dec  HL             ; 1:6       _zswap
-    ld    A,(DE)        ; 1:7       _zswap
-    ld    C,(HL)        ; 1:7       _zswap
-    ld  (HL),A          ; 1:7       _zswap
-    ld    A, C          ; 1:4       _zswap
-    ld  (DE),A          ; 1:7       _zswap
-    djnz $-7            ; 2:8/13    _zswap
-endif
-    pop  HL             ; 1:10      _zswap
-    pop  DE             ; 1:10      _zswap
-    ret                 ; 1:10      _zswap
 }){}dnl
 dnl
 dnl
@@ -861,6 +828,25 @@ _Z2DUP:                ;[22:144]    _z2dup
 }){}dnl
 dnl
 dnl
+dnl # znip
+ifdef({USE_ZNIP},{
+_ZNIP:                 ;[20:130]    _znip
+    push DE             ; 1:11      _znip   ( addr -- ) ( Z: z2 z1 -- z1 )
+    push HL             ; 1:11      _znip   addr
+    call 0x35bf         ; 3:17      _znip   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+    ld    B, 0x05       ; 2:7       _znip
+    dec  HL             ; 1:6       _znip
+    dec  DE             ; 1:6       _znip
+    ld    A,(DE)        ; 1:7       _znip
+    ld  (HL),A          ; 1:7       _znip
+    djnz $-4            ; 2:8/13    _znip
+    ld  (0x5C65),DE     ; 4:20      _znip   {save STKEND-5}
+    pop  HL             ; 1:10      _znip
+    pop  DE             ; 1:10      _znip
+    ret                 ; 1:10      _znip
+}){}dnl
+dnl
+dnl
 dnl # zover
 ifdef({USE_ZOVER},{
 if 1
@@ -918,21 +904,101 @@ dnl
 dnl
 dnl # zrot
 ifdef({USE_ZROT},{
-_ZROT:                  ;           _zrot   ( F: z1 z2 z3 -- z2 z3 z1 )
+_ZROT:                  ;           _zrot   ( Z: z3 z2 z1 -- z2 z1 z3 )
     push DE             ; 1:11      _zrot
     push HL             ; 1:11      _zrot
     ld   HL,(0x5C65)    ; 3:16      _zrot   {load STKEND}
-    ex   DE, HL         ; 1:4       _zrot   {DE = STKEND}
+    ex   DE, HL         ; 1:4       _zrot   {DE = STKEND = (z0)}
     ld   HL,0xFFF1      ; 3:10      _zrot   -15
-    add  HL, DE         ; 1:11      _zrot   {HL = STKEND - 15}
+    add  HL, DE         ; 1:11      _zrot   {HL = STKEND - 15 = (z3)}
     push HL             ; 1:11      _zrot   {STKEND-15}
-    call 0x33C0         ; 3:17      _zrot   (DE++) = (HL++), BC = 0   ( F: z1 z2 z3    -- z1 z2 z3 z1 )
+    call 0x33C0         ; 3:17      _zrot   5x (DE++) = (HL++), BC = 0  ( Z: z3 z2 z1 -- z3 z2 z1 z3 )
     pop  DE             ; 1:10      _zrot   {DE = STKEND - 15}
     ld   C,0x0F         ; 2:7       _zrot   {BC = 15}
-    ldir                ; 2:21/16   _zrot   (DE++) = (HL++)   ( F: z1 z2 z3 z1 -- z2 z3 z1 )
+    ldir                ; 2:21/16   _zrot   15x (DE++) = (HL++)  ( Z: z3 z2 z1 z3 -- z2 z1 z3 )
     pop  HL             ; 1:10      _zrot
     pop  DE             ; 1:10      _zrot
     ret                 ; 1:10      _zrot
+}){}dnl
+dnl
+dnl
+dnl # z-rot
+ifdef({USE_ZNROT},{__def({USE_DEC_SWAP_5x})
+_ZNROT:                ;[14:103]    _z-rot   ( Z: z3 z2 z1 -- z1 z3 z2 )
+    push DE             ; 1:11      _z-rot
+    push HL             ; 1:11      _z-rot
+    call 0x35bf         ; 3:17      _z-rot   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+    call DEC_SWAP_5x    ; 3:17      _z-rot   ( Z: z3 z2 z1 -- z3 z1 z2 )
+    call DEC_SWAP_5x    ; 3:17      _z-rot   ( Z: z3 z1 z2 -- z1 z3 z2 ) 
+    pop  HL             ; 1:10      _z-rot
+    pop  DE             ; 1:10      _z-rot
+    ret                 ; 1:10      _z-rot
+}){}dnl
+dnl
+dnl
+dnl
+dnl # zswap
+ifdef({USE_ZSWAP},{ifelse(dnl
+TYP_FLOAT,fast,{
+__{}_ZSWAP:                ;[19:128+]   _zswap   version: fast
+__{}    push DE             ; 1:11      _zswap
+__{}    push HL             ; 1:11      _zswap
+__{}    call 0x35bf         ; 3:17      _zswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+__{}    ld    B,0x05        ; 2:7       _zswap
+__{}    dec  DE             ; 1:6       _zswap
+__{}    dec  HL             ; 1:6       _zswap
+__{}    ld    A,(DE)        ; 1:7       _zswap
+__{}    ld    C,(HL)        ; 1:7       _zswap
+__{}    ld  (HL),A          ; 1:7       _zswap
+__{}    ld    A, C          ; 1:4       _zswap
+__{}    ld  (DE),A          ; 1:7       _zswap
+__{}    djnz $-7            ; 2:8/13    _zswap},
+
+ifelse(TYP_FLOAT,small,0,1):ifdef({USE_DEC_SWAP_5x},1,0),1:1,{
+__{}_ZSWAP:                ;[11:383+]   _zswap   version: use_dec_swap_5x
+__{}    push DE             ; 1:11      _zswap
+__{}    push HL             ; 1:11      _zswap
+__{}    call 0x35bf         ; 3:17      _zswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+__{}    call DEC_SWAP_5x    ; 3:17      _zswap},
+
+1,0,{
+__{}_ZSWAP:                ;[14:103+]   _zswap   version: ???
+__{}    push DE             ; 1:11      _zswap
+__{}    push HL             ; 1:11      _zswap
+__{}    call 0x35bf         ; 3:17      _zswap   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
+__{}    call 0x35c2         ; 3:17      _zswap   {call ZX ROM            DE= HL    , HL = HL-5}
+__{}    call 0x343C         ; 3:17      _zswap   {call ZX ROM exchange rutine}},
+
+{
+__{}_ZSWAP:                 ;[8:63+]    _zswap   version: default
+__{}    push DE             ; 1:11      _zswap
+__{}    push HL             ; 1:11      _zswap
+__{}    rst 0x28            ; 1:11      _zswap   Use the calculator
+__{}    db  0x01            ; 1:        _zswap   calc-exchange
+__{}    db  0x38            ; 1:        _zswap   calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}})
+    pop  HL             ; 1:10      _zswap
+    pop  DE             ; 1:10      _zswap
+    ret                 ; 1:10      _zswap
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_DEC_SWAP_5x},{__def({USE_DEC_SWAP_Bx})
+DEC_SWAP_5x:           ;[12:297]    -swap_5x
+    ld    B,0x05        ; 2:7       -swap_5x
+    ; fall to -swap_Bx}){}dnl
+dnl
+ifdef({USE_DEC_SWAP_Bx},{
+DEC_SWAP_Bx:           ;[10:5+B*57] -swap_Bx
+    dec  DE             ; 1:6       -swap_Bx
+    dec  HL             ; 1:6       -swap_Bx
+    ld    A,(DE)        ; 1:7       -swap_Bx
+    ld    C,(HL)        ; 1:7       -swap_Bx
+    ld  (HL),A          ; 1:7       -swap_Bx
+    ld    A, C          ; 1:4       -swap_Bx
+    ld  (DE),A          ; 1:7       -swap_Bx
+    djnz $-7            ; 2:8/13    -swap_Bx
+    ret                 ; 1:10      -swap_Bx
 }){}dnl
 dnl
 dnl
