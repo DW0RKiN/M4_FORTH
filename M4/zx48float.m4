@@ -7,10 +7,27 @@ dnl # $2 = exponent (8 bit)
 dnl # $3 = mantissa (64 bit)
 define({__SET_ZXFLOAT},{dnl
 __{}define({ZXTEMP_EXP},substr(__HEX_L($2),2)){}dnl
-__{}define({ZXTEMP_MANTISSA_1},format({%02X},eval(256*$1+(($3>>24) & 0x7F)))){}dnl
+__{}define({ZXTEMP_MANTISSA_1},format({%02X},eval(128*$1+(($3>>24) & 0x7F)))){}dnl
 __{}define({ZXTEMP_MANTISSA_2},substr(__HEX_E($3),2)){}dnl
 __{}define({ZXTEMP_MANTISSA_3},substr(__HEX_H($3),2)){}dnl
 __{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L($3),2)){}dnl
+__{}define({ZXTEMP_REDUCED_SIZE},0){}dnl
+__{}ifelse(eval(($2>=0x50) && ($2<=0x8F)),1,{dnl
+__{}__{}define({ZXTEMP_REDUCED_M_2},ZXTEMP_MANTISSA_2){}dnl
+__{}__{}define({ZXTEMP_REDUCED_M_3},ZXTEMP_MANTISSA_3){}dnl
+__{}__{}define({ZXTEMP_REDUCED_M_4},ZXTEMP_MANTISSA_4){}dnl
+__{}__{}define({ZXTEMP_REDUCED_SIZE},4){}dnl
+__{}__{}ifelse(ZXTEMP_MANTISSA_4,00,{dnl
+__{}__{}__{}define({ZXTEMP_REDUCED_SIZE},3){}dnl
+__{}__{}__{}define({ZXTEMP_REDUCED_M_4},{})}){}dnl
+__{}__{}ifelse(ZXTEMP_MANTISSA_4:ZXTEMP_MANTISSA_3,00:00,{dnl
+__{}__{}__{}define({ZXTEMP_REDUCED_SIZE},2){}dnl
+__{}__{}__{}define({ZXTEMP_REDUCED_M_3},{})}){}dnl
+__{}__{}ifelse(ZXTEMP_MANTISSA_4:ZXTEMP_MANTISSA_3:ZXTEMP_MANTISSA_2,00:00:00,{dnl
+__{}__{}__{}define({ZXTEMP_REDUCED_SIZE},1){}dnl
+__{}__{}__{}define({ZXTEMP_REDUCED_M_2},{})}){}dnl
+__{}__{}define({ZXTEMP_REDUCED_E},__HEX_L(($2-0x50)+(ZXTEMP_REDUCED_SIZE-1)*0x40)){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -44,8 +61,7 @@ __{}__{}define({$0_MAN},{substr($0_HEX_REAL,incr(index($0_HEX_REAL,{x})),eval(in
 __{}__{}ifelse(substr($0_MAN,0,2),{1.},{dnl
 __{}__{}__{}define({$0_MAN},substr($0_MAN,2))},
 __{}__{}{dnl
-__{}__{}__{}errprint({
-Error: }$0_HEX_REAL{ has an unexpected format, it does not start as "1."})}){}dnl
+__{}__{}__{}define({$0_MAN},substr($0_MAN,1))}){}dnl
 __{}__{}define({$0_MAN},{0x}substr($0_MAN{00000000},0,8)){}dnl
 __{}__{}define({$0_ROUND_BIT},eval($0_MAN & 1)){}dnl
 __{}__{}define({$0_MAN},eval((($0_MAN>>1) & 0x7FFFFFFF)+$0_ROUND_BIT)){}dnl
@@ -53,11 +69,14 @@ __{}__{}ifelse(__HEX_D($0_MAN),0x80,{dnl
 __{}__{}__{}define({$0_EXP},incr($0_EXP)){}dnl
 __{}__{}__{}define({$0_MAN},0)}){}dnl
 __{}__{}dnl
-__{}__{}ifelse(1,0,{
-__{}__{}__{}$0_HEX_REAL
-__{}__{}__{}s:$0_SIGN
-__{}__{}__{}e:$0_EXP = __HEX_L($0_EXP) = eval($0_EXP-0x48)
-__{}__{}__{}m:__HEX_DEHL($0_MAN)}){}dnl
+__{}__{}ifelse(1,0,{errprint({
+;---------
+;    orig:$1
+;orig_hex: }__HEX_FLOAT($1){
+;       s: }$0_SIGN{
+;       e: }$0_EXP = __HEX_L($0_EXP) = eval($0_EXP-0x81){
+;       m: }__HEX_DEHL($0_MAN){
+})}){}dnl
 __{}__{}dnl
 __{}__{}ifelse(eval($0_EXP <= 0),1,{
 __{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a zero.{}dnl   
@@ -190,7 +209,18 @@ dnl
 define({__ASM_TOKEN_ZROT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_ZROT})
-    call _ZROT          ; 3:17      __INFO   ( Z: z1 z2 z3 -- z2 z3 z1 )}){}dnl
+    call _ZROT          ; 3:17      __INFO   ( Z: z3 z2 z1 -- z2 z1 z3 )}){}dnl
+dnl
+dnl
+dnl # z-rot
+define({ZNROT},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZNROT},{z-rot},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZNROT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZNROT})
+    call _ZNROT         ; 3:17      __INFO   ( Z: z3 z2 z1 -- z1 z3 z2 )}){}dnl
 dnl
 dnl
 dnl # zdrop
@@ -380,6 +410,17 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_Z2DUP})
     call _Z2DUP         ; 3:17      __INFO   ( Z: z2 z1 -- z2 z1 z2 z1 )}){}dnl
 dnl
+dnl
+dnl # ( Z: z2 z1  -- z1 )
+define({ZNIP},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZNIP},{znip},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZNIP},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ZNIP})
+    call _ZNIP          ; 3:17      __INFO   ( Z: z2 z1 -- z1 )}){}dnl
+    dnl
 dnl
 dnl # z.
 define({ZDOT},{dnl
@@ -713,11 +754,26 @@ __{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZPUSH},{dnl
-__{}ifelse($1,,,{FSTRING_TO_ZHEX($1)
-__{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = __HEX_FLOAT($1)
-__{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1   = 0x{}ZXTEMP_EXP{}ZXTEMP_MANTISSA_1{}{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_3{}ZXTEMP_MANTISSA_4
-__{}    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      $1
-__{}    call 0x2ABB         ; 3:124     $1   new float = a,e,d,c,b{}dnl
+__{}ifelse($1,,,{FSTRING_TO_ZHEX($1){}dnl
+__{}__{}ifelse(dnl
+__{}__{}ifelse(TYP_FLOAT,fast,1,ZXTEMP_REDUCED_SIZE,0,1,0),1,{
+__{}__{}__{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = __HEX_FLOAT($1)
+__{}__{}__{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1   = 0x{}ZXTEMP_EXP{}ZXTEMP_MANTISSA_1{}{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_3{}ZXTEMP_MANTISSA_4
+__{}__{}__{}    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      $1
+__{}__{}__{}    call 0x2ABB         ; 3:124     $1   new float = a,e,d,c,b},
+__{}__{}{
+__{}__{}__{}    rst 0x28            ; 1:11      $1   Use the calculator
+__{}__{}__{}    db  0x34            ; 1:        $1   stk-data   push constant __HEX_FLOAT($1)
+__{}__{}__{}    db  ZXTEMP_REDUCED_E            ; 1:        $1   exp: 0x{}ZXTEMP_EXP, mantissa bytes: ZXTEMP_REDUCED_SIZE
+__{}__{}__{}    db  0x{}ZXTEMP_MANTISSA_1            ; 1:        $1{}dnl
+__{}__{}__{}ifelse(ZXTEMP_REDUCED_M_2,,,{
+__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_2            ; 1:        $1}){}dnl
+__{}__{}__{}ifelse(ZXTEMP_REDUCED_M_3,,,{
+__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_3            ; 1:        $1}){}dnl
+__{}__{}__{}ifelse(ZXTEMP_REDUCED_M_4,,,{
+__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_4            ; 1:        $1})
+__{}__{}__{}__{}    db  0x38            ; 1:        $1   calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}{}dnl
+__{}__{}}){}dnl
 __{}$0(shift($@))}){}dnl
 }){}dnl
 dnl
