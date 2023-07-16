@@ -436,6 +436,7 @@ It doesn't even have a pure zero. Only the +- maximum values and the +- value cl
 |<sub>    f2drop    |<sub>       F2DROP       |<sub>     ( f2 f1 --  )      |<sub> = 2drop                      |
 |<sub>     fdup     |<sub>        FDUP        |<sub>        ( f1 -- f1 f1 ) |<sub> = dup                        |
 |<sub>     f2dup    |<sub>        F2DUP       |<sub>( f2 f1 -- f2 f1 f2 f1 )|<sub> = 2dup                       |
+|<sub>     fnip     |<sub>        FNIP        |<sub>     ( f2 f1 -- f1 )    |<sub> = nip                        |
 |<sub>     fover    |<sub>        FOVER       |<sub>   ( f2 f1 -- f2 f1 f2 )|<sub> = over                       |
 |<sub>     frot     |<sub>        FROT        |<sub>( f3 f2 f1 -- f2 f1 f3 )|<sub> = rot                        |
 |<sub>     f-rot    |<sub>        FNROT       |<sub>( f3 f2 f1 -- f1 f3 f2 )|<sub> = -rot                       |
@@ -451,6 +452,12 @@ It doesn't even have a pure zero. Only the +- maximum values and the +- value cl
 |<sub>      f2/     |<sub>        F2DIV       |<sub>        ( f1 -- f2 )    |<sub> f2 = f1 / 2.0                |
 |<sub>     fsin     |<sub>        FSIN        |<sub>        ( f1 -- f2 )    |<sub> f2 = sin(f1), f1 <= ±π/2     |
 |<sub>      f<      |<sub>         FLT        |<sub>     ( f1 f2 -- flag )  |<sub> flag = f1 < f2               |
+|<sub>      f=      |<sub>         FEQ        |<sub>     ( f1 f2 -- flag )  |<sub> flag = f1 = f2               |
+|<sub>`-0e` `0e` f= |<sub>PUSH(`-0e`,`0e`) FEQ|<sub>           ( -- false ) |<sub> false: -0e 0e f=             |
+|<sub>`0e` `-0e` f= |<sub>PUSH(`0e`,`-0e`) FEQ|<sub>           ( -- false ) |<sub> false: 0e -0e f=             |
+|<sub>      f<>     |<sub>         FNE        |<sub>     ( f1 f2 -- flag )  |<sub> flag = f1 <> f2              |
+|<sub>`-0e` `0e` f<>|<sub>PUSH(`-0e`,`0e`) FNE|<sub>           ( -- true )  |<sub>  true: -0e 0e f<>            |
+|<sub>`0e` `-0e` f<>|<sub>PUSH(`0e`,`-0e`) FNE|<sub>           ( -- true )  |<sub>  true: 0e -0e f<>            |
 |<sub>`-0e` `0e` f< |<sub>PUSH(`-0e`,`0e`) FLT|<sub>           ( -- true )  |<sub>  true: -0e 0e f<             |
 |<sub>`0e` `-0e` f< |<sub>PUSH(`0e`,`-0e`) FLT|<sub>           ( -- false ) |<sub> false: 0e -0e f<             |
 |<sub>      f<=     |<sub>         FLE        |<sub>     ( f1 f2 -- flag )  |<sub> flag = f1 <= f2              |
@@ -529,45 +536,47 @@ It can also be a real number represented with a decimal point (`.51`) or by usin
 |<sub>     f>s      |<sub>      Z_TO_S     |<sub>   ( -- x ) ( Z: z -- )           |<sub>                              |
 |<sub>     fabs     |<sub>      ZABS       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = abs(z1)                 |
 |<sub>    facos     |<sub>      ZACOS      |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = arccos(z1)              |
-|<sub>      f+      |<sub>      ZADD       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1 + z2                 |
+|<sub>      f+      |<sub>      ZADD       |<sub>   ( -- ) ( Z: z2 z1 -- z3 )      |<sub> z3 = z2 + z1                 |
 |<sub>    fasin     |<sub>      ZASIN      |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = arcsin(z1)              |
 |<sub>    fatan     |<sub>      ZATAN      |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = arctan(z1)              |
 |<sub>     fcos     |<sub>      ZCOS       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = cos(z1)                 |
-|<sub>      f/      |<sub>      ZDIV       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1 / z2                 |
+|<sub>      f/      |<sub>      ZDIV       |<sub>   ( -- ) ( Z: z2 z1 -- z3 )      |<sub> z3 = z2 / z1                 |
 |<sub>      f.      |<sub>      ZDOT       |<sub>   ( -- ) ( Z: z -- )             |<sub> fprintf("%f", z);            |
 |<sub>    fdrop     |<sub>      ZDROP      |<sub>   ( -- ) ( Z: z -- )             |<sub>                              |
 |<sub>    f2drop    |<sub>     Z2DROP      |<sub>   ( -- ) ( Z: z2 z1 -- )         |<sub>                              |
 |<sub>     fdup     |<sub>      ZDUP       |<sub>   ( -- ) ( Z: z -- z z )         |<sub>                              |
 |<sub>    f2dup     |<sub>      Z2DUP      |<sub>( -- ) ( Z: z2 z1 -- z2 z1 z2 z1 )|<sub>                              |
+|<sub>     fnip     |<sub>      ZNIP       |<sub>   ( -- ) ( Z: z2 z1 -- z1 )      |<sub>                              |
 |<sub>     fexp     |<sub>      ZEXP       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = exp(z1)                 |
 |<sub>      f@      |<sub>     ZFETCH      |<sub> ( a -- ) ( Z: -- z )             |<sub>                              |
 |<sub>     fint     |<sub>      ZINT       |<sub>   ( -- ) ( Z: z -- i )           |<sub>                              |
 |<sub>     fln      |<sub>       ZLN       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = ln(z1)                  |
-|<sub>      f*      |<sub>      ZMUL       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1 * z2                 |
-|<sub>     f**      |<sub>     ZMULMUL     |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1^z2                   |
+|<sub>      f*      |<sub>      ZMUL       |<sub>   ( -- ) ( Z: z2 z1 -- z3 )      |<sub> z3 = z2 * z1                 |
+|<sub>     f**      |<sub>     ZMULMUL     |<sub>   ( -- ) ( Z: z2 z1 -- z3 )      |<sub> z3 = z2 **z1                 |
 |<sub>   fnegate    |<sub>     ZNEGATE     |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = -z1                     |
-|<sub>    fover     |<sub>      ZOVER      |<sub>( -- ) ( Z: z1 z2 -- z1 z2 z1 )   |<sub>                              |
-|<sub>     frot     |<sub>      ZROT       |<sub>( -- ) ( Z: z1 z2 z3 -- z2 z3 z1 )|<sub>                              |
+|<sub>    fover     |<sub>      ZOVER      |<sub>( -- ) ( Z: z2 z1 -- z2 z1 z2 )   |<sub>                              |
+|<sub>     frot     |<sub>      ZROT       |<sub>( -- ) ( Z: z3 z2 z1 -- z2 z1 z3 )|<sub>                              |
+|<sub>    f-rot     |<sub>      ZNROT      |<sub>( -- ) ( Z: z3 z2 z1 -- z1 z3 z2 )|<sub>                              |
 |<sub>     fsin     |<sub>       ZSIN      |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = sin(z1)                 |
 |<sub>    fsqrt     |<sub>      ZSQRT      |<sub>   ( -- ) ( Z: z1 -- z2)          |<sub> z2 = z1^0.5                  |
 |<sub>      f!      |<sub>     ZSTORE      |<sub> ( a -- ) ( Z: z -- )             |<sub>                              |
-|<sub>      f-      |<sub>      ZSUB       |<sub>   ( -- ) ( Z: z1 z2 -- z3 )      |<sub> z3 = z1 - z2                 |
-|<sub>    fswap     |<sub>      ZSWAP      |<sub>   ( -- ) ( Z: z1 z2 -- z2 z1 )   |<sub>                              |
+|<sub>      f-      |<sub>      ZSUB       |<sub>   ( -- ) ( Z: z2 z1 -- z3 )      |<sub> z3 = z2 - z1                 |
+|<sub>    fswap     |<sub>      ZSWAP      |<sub>   ( -- ) ( Z: z2 z1 -- z1 z2 )   |<sub>                              |
 |<sub>     ftan     |<sub>      ZTAN       |<sub>   ( -- ) ( Z: z1 -- z2 )         |<sub> z2 = tan(z1)                 |
 |<sub>name fvariable|<sub>  ZVARIABLE(name)|<sub>   ( -- ) ( Z: -- )               |<sub> name: db 0,0,0,0,0           |
 |<sub>              |<sub>ZVARIABLE(name,z)|<sub>   ( -- ) ( Z: -- )               |<sub> name: db exp,m1,m2,m3,m4 ;=z |
-|<sub>     f<=      |<sub>       ZLE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1<=z2, true: +0 -0 f<= |
-|<sub>     f>=      |<sub>       ZGE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1>=z2, true: -0 +0 f>= |
-|<sub>     f<>      |<sub>       ZNE       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1<>z2, false: +0 -0 f<>|
-|<sub>     f>       |<sub>       ZGT       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1> z2, false: +0 -0 f> |
-|<sub>     f<       |<sub>       ZLT       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1< z2, false: -0 +0 f< |
-|<sub>     f=       |<sub>       ZEQ       |<sub>   ( -- flag ) ( Z: z1 z2 -- )    |<sub>flag: z1= z2, true: -0 +0 f=  |
-|<sub>f<= negate s>f|<sub>ZLE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
-|<sub>f>= negate s>f|<sub>ZGE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
-|<sub>f<> negate s>f|<sub>ZNE NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
-|<sub>f>  negate s>f|<sub>ZGT NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
-|<sub>f<  negate s>f|<sub>ZLT NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
-|<sub>f=  negate s>f|<sub>ZEQ NEGATE S_TO_Z|<sub>         ( Z: z1 z2 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>     f<=      |<sub>       ZLE       |<sub>   ( -- flag ) ( Z: z2 z1 -- )    |<sub>flag: z2<=z1,  true: +0 -0 f<=|
+|<sub>     f>=      |<sub>       ZGE       |<sub>   ( -- flag ) ( Z: z2 z1 -- )    |<sub>flag: z2>=z1,  true: -0 +0 f>=|
+|<sub>     f<>      |<sub>       ZNE       |<sub>   ( -- flag ) ( Z: z2 z1 -- )    |<sub>flag: z2<>z1, false: +0 -0 f<>|
+|<sub>     f>       |<sub>       ZGT       |<sub>   ( -- flag ) ( Z: z2 z1 -- )    |<sub>flag: z2> z1, false: +0 -0 f> |
+|<sub>     f<       |<sub>       ZLT       |<sub>   ( -- flag ) ( Z: z2 z1 -- )    |<sub>flag: z2< z1, false: -0 +0 f< |
+|<sub>     f=       |<sub>       ZEQ       |<sub>   ( -- flag ) ( Z: z2 z1 -- )    |<sub>flag: z2= z1,  true: -0 +0 f= |
+|<sub>f<= negate s>f|<sub>ZLE NEGATE S_TO_Z|<sub>         ( Z: z2 z1 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f>= negate s>f|<sub>ZGE NEGATE S_TO_Z|<sub>         ( Z: z2 z1 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f<> negate s>f|<sub>ZNE NEGATE S_TO_Z|<sub>         ( Z: z2 z1 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f>  negate s>f|<sub>ZGT NEGATE S_TO_Z|<sub>         ( Z: z2 z1 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f<  negate s>f|<sub>ZLT NEGATE S_TO_Z|<sub>         ( Z: z2 z1 -- zbool )    |<sub>zbool: 1e or 0e               |
+|<sub>f=  negate s>f|<sub>ZEQ NEGATE S_TO_Z|<sub>         ( Z: z2 z1 -- zbool )    |<sub>zbool: 1e or 0e               |
 |<sub>    f0<       |<sub>      Z0LT       |<sub>   ( -- flag ) ( Z: z -- )        |<sub> flag = z < 0                 |
 |<sub>    f0=       |<sub>      Z0EQ       |<sub>   ( -- flag ) ( Z: z -- )        |<sub> flag = z == 0                |
 |<sub>   float+     |<sub>    ZFLOATADD    |<sub>( a1 -- a2 ) ( Z: -- )            |<sub> a2 = a1 + 5                  |
