@@ -257,6 +257,7 @@ BEGIN {
     reserved_words["F2DROP"]    = "Z2DROP"          # not standard
     reserved_words["FDUP"]      = "ZDUP"
     reserved_words["F2DUP"]     = "Z2DUP"           # not standard
+    reserved_words["FNIP"]      = "ZNIP"            # not standard
     reserved_words["FEXP"]      = "ZEXP"
     reserved_words["F@"]        = "ZFETCH"
     reserved_words["FLOOR"]     = "ZFLOOR"    
@@ -270,7 +271,7 @@ BEGIN {
     reserved_words["FNEGATE"]   = "ZNEGATE"
     reserved_words["FOVER"]     = "ZOVER"
     reserved_words["FROT"]      = "ZROT"
-#     reserved_words["F-ROT"]     = "Z2DUP"           # not standard
+    reserved_words["F-ROT"]     = "ZNROT"           # not standard
 
     reserved_words["FSIN"]      = "ZSIN"
     reserved_words["FSQRT"]     = "ZSQRT"
@@ -333,6 +334,7 @@ BEGIN {
     reserved_words["F2DROP"]    = "F2DROP"          # not standard
     reserved_words["FDUP"]      = "FDUP"
     reserved_words["F2DUP"]     = "F2DUP"           # not standard
+    reserved_words["FNIP"]      = "FNIP"            # not standard
     reserved_words["FEXP"]      = "FEXP"
     reserved_words["F@"]        = "FFETCH"
     
@@ -372,6 +374,8 @@ BEGIN {
     reserved_words["F2/"]       = "F2DIV"           # not standard
   }
   
+  reserved_words["ZXFONT_5X8"]  = "ZXFONT_5x8"      # not standard
+
   inside_word_definition=0
   function_name=""
   
