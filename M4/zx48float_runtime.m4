@@ -94,7 +94,7 @@ ifdef({USE_ZFETCH},{
 _ZFETCH:                ;           _z@
     push DE             ; 1:11      _z@   ( addr -- ) ( Z: -- z )
     ld   DE,(0x5C65)    ; 4:20      _z@   {STKEND}
-    call 0x33C0         ; 3:17      _z@   {call ZX ROM move floating-point number routine HL->DE}
+    call 0x33C0         ; 3:315     _z@   {call ZX ROM move floating-point number routine HL->DE}
     ld  (0x5C65),DE     ; 4:20      _z@   {STKEND+5}
     pop  HL             ; 1:10      _z@
     pop  BC             ; 1:10      _z@   ret
@@ -877,6 +877,102 @@ endif
 }){}dnl
 dnl
 dnl
+dnl # zpick ( u -- ) ( Z: zu .. z2 z1 z0 -- zu .. z2 z1 z0 zu )
+ifdef({xUSE_ZPICK},{
+_ZPICK:                ;[29:510]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )   
+    inc  HL             ; 1:6       _zpick 
+    ld    B, H          ; 1:4       _zpick
+    ld    C, L          ; 1:4       _zpick   x+1 
+    add  HL, HL         ; 1:11      _zpick   2(x+1) 
+    add  HL, HL         ; 1:11      _zpick   4(x+1) 
+    add  HL, BC         ; 1:11      _zpick   5(x+1)
+    ld    B, H          ; 1:4       _zpick
+    ld    C, L          ; 1:4       _zpick   5(x+1)
+    pop  HL             ; 1:10      _zpick   ( x2 x1 ret )
+    ex  (SP),HL         ; 1:19      _zpick
+    push HL             ; 1:11      _zpick   ( ret x2 x1 ret )
+    push DE             ; 1:11      _zpick   ( ret x2 x1 x1 ret )
+    ld   HL,(0x5C65)    ; 3:16      _zpick   ( .. 5*(u+1) stkend )
+    ld    D, H          ; 1:4       _zpick
+    ld    E, L          ; 1:4       _zpick   5(x+1)
+    sbc  HL, BC         ; 2:15      _zpick   ( .. stkend stkend-5*(u+1) )    
+  if 1
+    call 0x33C0         ; 3:315     _zpick   5x (DE++) = (HL++), BC = 0  ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
+  else
+    ld   BC,0x0005      ; 3:10      _zpick   5 bytes
+    ldir                ; 2:100     _zpick   (DE++) = (HL++)
+  endif
+    ld  (0x5C65),DE     ; 4:20      _zpick   {save STKEND}
+    pop  HL             ; 1:10      _zpick
+    pop  DE             ; 1:10      _zpick
+    ret                 ; 1:10      _zpick   ( ret x2 x1 -- x2 x1 )
+}){}dnl
+dnl
+dnl
+dnl # zpick ( u -- ) ( Z: zu .. z2 z1 z0 -- zu .. z2 z1 z0 zu )
+ifdef({xxUSE_ZPICK},{
+_ZPICK:                ;[31:514]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )   
+    ld    A, L          ; 1:4       _zpick
+    cpl                 ; 1:4       _zpick
+    ld    L, A          ; 1:4       _zpick
+    ld    A, H          ; 1:4       _zpick
+    cpl                 ; 1:4       _zpick
+    ld    H, A          ; 1:4       _zpick
+    
+    ld    B, H          ; 1:4       _zpick
+    ld    C, L          ; 1:4       _zpick
+    add  HL, HL         ; 1:11      _zpick 
+    add  HL, HL         ; 1:11      _zpick 
+    add  HL, BC         ; 1:11      _zpick   -5*(u+1)
+    
+    pop  BC             ; 1:10      _zpick   ret
+    pop  AF             ; 1:10      _zpick   x2
+    push BC             ; 1:11      _zpick   ret
+    push AF             ; 1:11      _zpick   x2
+    push DE             ; 1:11      _zpick   x1
+    
+    ld   DE,(0x5C65)    ; 4:20      _zpick   ( ret x2 x1 stkend -5*(u+1) )
+    add  HL, DE         ; 1:11      _zpick   ( .. stkend stkend-5*(u+1) )    
+  if 1
+    call 0x33C0         ; 3:315     _zpick   5x (DE++) = (HL++), BC = 0  ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
+  else
+    ld   BC,0x0005      ; 3x10      _zpick   5 bytes
+    ldir                ; 2x100     _zpick   (DE++) = (HL++)
+  endif
+    ld  (0x5C65),DE     ; 4:20      _zpick   {save STKEND}
+    pop  HL             ; 1:10      _zpick
+    pop  DE             ; 1:10      _zpick
+    ret                 ; 1:10      _zpick   ( ret x2 x1 -- x2 x1 )
+}){}dnl
+dnl
+dnl
+dnl # zpick ( u -- ) ( Z: zu .. z2 z1 z0 -- zu .. z2 z1 z0 zu )
+ifdef({USE_ZPICK},{__def({USE_ZPICK_BC})
+_ZPICK:                ;[31:514]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
+    inc  HL             ; 1:6       _zpick 
+    ld    B, H          ; 1:4       _zpick
+    ld    C, L          ; 1:4       _zpick
+    add  HL, HL         ; 1:11      _zpick 
+    add  HL, HL         ; 1:11      _zpick 
+    add  HL, BC         ; 1:11      _zpick   5*(u+1)
+    xor   A             ; 1:4       _zpick
+    sub   L             ; 1:4       _zpick
+    ld    C, A          ; 1:4       _zpick
+    sbc   A, H          ; 1:4       _zpick
+    sub   C             ; 1:4       _zpick
+    ld    B, A          ; 1:4       _zpick   BC = -5*(u+1)
+    pop  HL             ; 1:10      _zpick   ret
+    ex  (SP),HL         ; 1:19      _zpick   ( ret x1 x2 ){}dnl
+__{}ifdef({USE_ZPICK_C},{
+__{}    push HL             ; 1:11      _zpick
+__{}    push DE             ; 1:11      _zpick
+__{}    jr   __ZPICK_BC+2   ; 2:12      _zpick   ( ret x2 x1 x1 x2 )},
+__{}{
+__{}    ex   DE, HL         ; 1:4       _zpick   ( ret x2 x1 )
+__{}    ; fall to _zpick_bc}){}dnl
+}){}dnl
+dnl
+dnl
 ifdef({USE_ZPICK_C},{__def({USE_ZPICK_BC})
 ; Input: C
 _ZPICK_C:               ;           _zpick_c
@@ -912,7 +1008,7 @@ _ZROT:                  ;           _zrot   ( Z: z3 z2 z1 -- z2 z1 z3 )
     ld   HL,0xFFF1      ; 3:10      _zrot   -15
     add  HL, DE         ; 1:11      _zrot   {HL = STKEND - 15 = (z3)}
     push HL             ; 1:11      _zrot   {STKEND-15}
-    call 0x33C0         ; 3:17      _zrot   5x (DE++) = (HL++), BC = 0  ( Z: z3 z2 z1 -- z3 z2 z1 z3 )
+    call 0x33C0         ; 3:315     _zrot   5x (DE++) = (HL++), BC = 0  ( Z: z3 z2 z1 -- z3 z2 z1 z3 )
     pop  DE             ; 1:10      _zrot   {DE = STKEND - 15}
     ld   C,0x0F         ; 2:7       _zrot   {BC = 15}
     ldir                ; 2:21/16   _zrot   15x (DE++) = (HL++)  ( Z: z3 z2 z1 z3 -- z2 z1 z3 )
@@ -1000,6 +1096,63 @@ DEC_SWAP_Bx:           ;[10:5+B*57] -swap_Bx
     djnz $-7            ; 2:8/13    -swap_Bx
     ret                 ; 1:10      -swap_Bx
 }){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_ZTEST},{
+;==============================================================================
+; ( z2 z1 -- )
+; set carry if z2 > z1, A <> 0
+; set not carry if z2 < z1, A <> 0
+; set zero if z2 = z1, A = 0
+; Pollutes: AF, BC
+ZTEST:                 ;[49:185]    ztest   diff sign
+                       ;[49:220]    ztest   diff exp
+              ;[49:260/306/352/398] ztest   diff mantiss
+                       ;[49:427]    ztest   equal
+    push DE             ; 1:11      ztest
+    push HL             ; 1:11      ztest
+    ld   DE, 0xFFFB     ; 3:10      ztest   -5
+    ld   HL,(0x5C65)    ; 3:16      ztest   load stkend
+    add  HL, DE         ; 1:11      ztest   stkend-5
+    ld    B,(HL)        ; 1:7       ztest   load exp z1
+    ex   DE, HL         ; 1:4       ztest
+    add  HL, DE         ; 1:11      ztest   stkend-10
+    ld  (0x5C65), HL    ; 3:16      ztest   save stkend
+    ld    C,(HL)        ; 1:7       ztest   load exp z2
+    inc  HL             ; 1:6       ztest
+    inc  DE             ; 1:6       ztest
+    ld    A,(DE)        ; 1:7       ztest   man z1
+    xor (HL)            ; 1:7       ztest   xor sign
+    ld    A,(DE)        ; 1:7       ztest   sign z1
+    jp    m, ZTEST_DIF_S; 3:10      ztest   diff sign?
+    ld    A, B          ; 1:4       ztest
+    sub   C             ; 1:4       ztest   exp z1 - exp z2 -> carry: z2>z1
+    ld    C,(HL)        ; 1:7       ztest   sign z2 & z1
+    jr   nz, ZTEST_DIF  ; 2:7/12    ztest   continues with same exp
+    ld    B, 0x04       ; 2:7       ztest
+    ld    A,(DE)        ; 1:7       ztest
+    sub (HL)            ; 1:7       ztest   man z1 - man z2 -> carry: z2>z1
+    inc  HL             ; 1:6       ztest
+    inc  DE             ; 1:6       ztest
+    jr   nz, ZTEST_DIF  ; 2:7/12    ztest   continues with same mantiss
+    djnz $-6            ; 2:8/13    ztest
+    pop  HL             ; 1:10      ztest
+    pop  DE             ; 1:10      ztest
+    ret                 ; 1:10      ztest   equal
+ZTEST_DIF:              ;           ztest
+    rra                 ; 1:4       ztest
+    xor   C             ; 1:4       ztest   xor sign
+ZTEST_DIF_S:            ;           ztest
+    scf                 ; 1:4       ztest   nz output
+    adc   A, A          ; 1:4       ztest
+    pop  HL             ; 1:10      ztest
+    pop  DE             ; 1:10      ztest
+    ret                 ; 1:10      ztest   carry: z2>z1
+}){}dnl
+dnl
+dnl
+dnl
 dnl
 dnl
 dnl
