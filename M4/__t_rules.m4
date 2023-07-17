@@ -188,8 +188,9 @@ define({__INC_TOKEN_COUNT},{define({__COUNT_TOKEN},eval(__COUNT_TOKEN+1))}){}dnl
 dnl define({__INC_TOKEN_COUNT},ifdef({__COUNT_TOKEN},{define({__COUNT_TOKEN},eval(__COUNT_TOKEN+1))},{define({__COUNT_TOKEN},1)})){}dnl
 dnl
 dnl
-define({__ADD_TOKEN},
-    {ifdef({__COUNT_TOKEN},
+define({__ADD_TOKEN},{dnl
+__{}ifelse(VERBOSE,1,{errprint(__CR{   ...add token }$1)}){}dnl
+__{}ifdef({__COUNT_TOKEN},
         {ifelse(dnl
 a,,,
 
@@ -1680,6 +1681,9 @@ dnl # Y...
 dnl # Z...
 z,,,
 
+            __T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_PUSHS:1:__TOKEN_ZPICK,     {__SET_TOKEN({__TOKEN_PUSH_ZPICK},  __CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):eval(__T_ITEMS(0)>1):$1, __TOKEN_PUSHS:1:__TOKEN_ZPICK,     {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_ZPICK}, __CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
+
             __T_NAME(2):__T_NAME(1):__T_NAME(0):$1, __TOKEN_ZPUSH:__TOKEN_2DROP:__TOKEN_2DUP:__TOKEN_ZPUSH,  {__DELETE_LAST_TOKENS(2){}__SET_TOKEN({__TOKEN_ZPUSH},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0),shift(shift($@)))},
 
             __T_NAME(0):$1,              __TOKEN_ZDROP:__TOKEN_ZDROP,               {__SET_TOKEN({__TOKEN_Z2DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
@@ -2052,6 +2056,7 @@ dnl
 define({__COMPILE_REC},{ifelse(eval(__COUNT_TOKEN>__TOKEN_I),{1},{dnl
 __{}define({__TOKEN_I},eval(__TOKEN_I+1))dnl
 __{}ifelse(__GET_TOKEN_INFO(__TOKEN_I),{__dtto},,{define({__COMPILE_INFO},__GET_TOKEN_INFO(__TOKEN_I))}){}dnl
+__{}ifelse(VERBOSE,1,{errprint(__CR{   ...create }__GET_TOKEN_NAME(__TOKEN_I){ }__COMPILE_INFO)}){}dnl
 __{}ifelse(__GET_TOKEN_PARAM(__TOKEN_I),{()},{dnl
 __{}__{}__A({__ASM}substr(__GET_TOKEN_NAME(__TOKEN_I),1))},
 __{}{dnl
@@ -2062,10 +2067,13 @@ dnl
 dnl
 dnl
 define({__COMPILE},{ifdef({__COUNT_TOKEN},{dnl
+__{}ifelse(VERBOSE,1,{errprint(__CR{   ...check all tokens})}){}dnl
 __{}__CHECK_ALL_TOKENS{}dnl
+__{}ifelse(VERBOSE,1,{errprint(__CR{   ...check all tokens2})}){}dnl
 __{}__CHECK_ALL_TOKENS2{}dnl
 __{}define({__TOKEN_I},0)dnl
 __{}$0_REC{}dnl
+__{}ifelse(VERBOSE,1,{errprint(__CR)}){}dnl
 })}){}dnl
 dnl
 dnl
