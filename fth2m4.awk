@@ -270,6 +270,7 @@ BEGIN {
     reserved_words["F**"]       = "ZMULMUL"
     reserved_words["FNEGATE"]   = "ZNEGATE"
     reserved_words["FOVER"]     = "ZOVER"
+    reserved_words["FPICK"]     = "ZPICK"           # not standard
     reserved_words["FROT"]      = "ZROT"
     reserved_words["F-ROT"]     = "ZNROT"           # not standard
 
@@ -348,6 +349,7 @@ BEGIN {
 #     reserved_words["F**"]       = ""
     reserved_words["FNEGATE"]   = "FNEGATE"
     reserved_words["FOVER"]     = "FOVER"
+    reserved_words["FPICK"]     = "FPICK"           # not standard
     reserved_words["FROT"]      = "FROT"
     reserved_words["F-ROT"]     = "FNROT"           # not standard
     reserved_words["FSIN"]      = "FSIN ;# ( sin -π/2..π/2 only)\n"
