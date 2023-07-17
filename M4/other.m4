@@ -223,5 +223,8 @@ __{}__ADD_TOKEN({__TOKEN_2MUL},{cells})}){}dnl
 dnl
 dnl
 dnl
+define({VERBOSE},{dnl
+__{}define({VERBOSE},{$1})}){}dnl
+dnl
 dnl
 dnl
