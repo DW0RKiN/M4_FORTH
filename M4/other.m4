@@ -224,7 +224,7 @@ dnl
 dnl
 dnl
 define({VERBOSE},{dnl
-__{}define({VERBOSE},{$1})}){}dnl
+__{}define({__VERBOSE_LEVEL},{$1})}){}dnl
 dnl
 dnl
 dnl
