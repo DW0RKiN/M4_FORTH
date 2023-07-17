@@ -515,6 +515,11 @@ It doesn't even have a pure zero. Only the +- maximum values and the +- value cl
         0000 0000  SSSS SSSS  LLLL LLLL  HHHH HHHH  0000 0000
                 0,   255 x S,        lo,        hi,         0
 
+The maximum value is not safe for operations of the type: >,>=,<,<=,=,<>. 
+Because ZX ROM internally converts it to subtraction and comparison of the resulting sign, or an equality test. 
+So, when meeting maximum values with the opposite sign, it will fail.
+The safe value is half: `85070591710427575237277567459556065280`
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/zx48float_end.m4
 
@@ -582,21 +587,22 @@ It can also be a real number represented with a decimal point (`.51`) or by usin
 |<sub>   float+     |<sub>    ZFLOATADD    |<sub>( a1 -- a2 ) ( Z: -- )            |<sub> a2 = a1 + 5                  |
 
 
-|<sub> Original   |<sub>    M4 FORTH    |<sub>  Data stack                    |<sub>  Comment                    |
-| :-------------: | :-----------------: | :---------------------------------- | :------------------------------- |
-|<sub>    u>f     |<sub>     U_TO_Z     |<sub>     ( u -- ) ( Z: -- u )       |<sub> u = 0..65535                |
-|<sub>            |<sub> PUSH_U_TO_Z(i) |<sub>     ( -- ) ( Z: -- i )         |<sub> i = -65535..65535           |
-|<sub>            |<sub>    BC_TO_Z     |<sub>     ( -- ) ( Z: -- u )         |<sub> reg BC = u = 0..65535       |
-|<sub>            |<sub>  SIGN_BC_TO_Z  |<sub>     ( -- ) ( Z: -- i )         |<sub> reg BC = i = -32768..32767  |
-|<sub>            |<sub>   CF_BC_TO_Z   |<sub>     ( -- ) ( Z: -- 17bit_i )   |<sub> carry+BC = i = -65535..65535|
-|<sub>            |<sub>   ZXROM_UMUL   |<sub> ( b a -- c ) ( Z: -- )         |<sub> c = b * a                   |
-|<sub>            |<sub> ZFLOAT2ARRAY(z)|<sub>     ( -- ) ( Z: -- )           |<sub> z -> DB 1,2,3,4,5           |
-|<sub>            |<sub>    ZHEXDOT     |<sub>     ( -- ) ( Z: z -- z )       |<sub> ." 12,45,78,9A,CD "         |
-|<sub>            |<sub>     ZDEPTH     |<sub>( -- n ) ( Z: zn..z1 -- zn..z1 )|<sub> n = values on the calculator|
-|<sub> `3` fpick  |<sub> PUSH_ZPICK(`3`)|<sub>     ( -- ) ( Z: -- z )         |<sub> only zpick is not supported!|
+|<sub> Original   |<sub>    M4 FORTH    |<sub>  Data stack                         |<sub>  Comment                    |
+| :-------------: | :-----------------: | :--------------------------------------- | :------------------------------- |
+|<sub>    u>f     |<sub>     U_TO_Z     |<sub>     ( u -- ) ( Z: -- u )            |<sub> u = 0..65535                |
+|<sub>            |<sub> PUSH_U_TO_Z(i) |<sub>     ( -- ) ( Z: -- i )              |<sub> i = -65535..65535           |
+|<sub>            |<sub>    BC_TO_Z     |<sub>     ( -- ) ( Z: -- u )              |<sub> reg BC = u = 0..65535       |
+|<sub>            |<sub>  SIGN_BC_TO_Z  |<sub>     ( -- ) ( Z: -- i )              |<sub> reg BC = i = -32768..32767  |
+|<sub>            |<sub>   CF_BC_TO_Z   |<sub>     ( -- ) ( Z: -- 17bit_i )        |<sub> carry+BC = i = -65535..65535|
+|<sub>            |<sub>   ZXROM_UMUL   |<sub> ( b a -- c ) ( Z: -- )              |<sub> c = b * a                   |
+|<sub>            |<sub> ZFLOAT2ARRAY(z)|<sub>     ( -- ) ( Z: -- )                |<sub> z -> DB 1,2,3,4,5           |
+|<sub>            |<sub>    ZHEXDOT     |<sub>     ( -- ) ( Z: z -- z )            |<sub> ." 12,45,78,9A,CD "         |
+|<sub>            |<sub>     ZDEPTH     |<sub>( -- n ) ( Z: zn..z1 -- zn..z1 )     |<sub> n = values on the calculator|
+|<sub>   fpick    |<sub>      ZPICK     |<sub>( u -- ) ( Z: .. z0 -- .. z0 zu )    |<sub>                             |
+|<sub> `2` fpick  |<sub> PUSH(`2`) ZPICK|<sub>( -- ) ( Z: z2 z1 z0 -- z2 z1 z0 z3 )|<sub>                             |
 
-    `1` fpick --> fdup
-    `2` fpick --> fover
+    `0` zpick --> zdup
+    `1` zpick --> zover
     
 
 ### Logic
