@@ -12,21 +12,25 @@ __{}define({ZXTEMP_MANTISSA_2},substr(__HEX_E($3),2)){}dnl
 __{}define({ZXTEMP_MANTISSA_3},substr(__HEX_H($3),2)){}dnl
 __{}define({ZXTEMP_MANTISSA_4},substr(__HEX_L($3),2)){}dnl
 __{}define({ZXTEMP_REDUCED_SIZE},0){}dnl
-__{}ifelse(eval(($2>=0x50) && ($2<=0x8F)),1,{dnl
-__{}__{}define({ZXTEMP_REDUCED_M_2},ZXTEMP_MANTISSA_2){}dnl
-__{}__{}define({ZXTEMP_REDUCED_M_3},ZXTEMP_MANTISSA_3){}dnl
-__{}__{}define({ZXTEMP_REDUCED_M_4},ZXTEMP_MANTISSA_4){}dnl
-__{}__{}define({ZXTEMP_REDUCED_SIZE},4){}dnl
-__{}__{}ifelse(ZXTEMP_MANTISSA_4,00,{dnl
-__{}__{}__{}define({ZXTEMP_REDUCED_SIZE},3){}dnl
-__{}__{}__{}define({ZXTEMP_REDUCED_M_4},{})}){}dnl
-__{}__{}ifelse(ZXTEMP_MANTISSA_4:ZXTEMP_MANTISSA_3,00:00,{dnl
-__{}__{}__{}define({ZXTEMP_REDUCED_SIZE},2){}dnl
-__{}__{}__{}define({ZXTEMP_REDUCED_M_3},{})}){}dnl
-__{}__{}ifelse(ZXTEMP_MANTISSA_4:ZXTEMP_MANTISSA_3:ZXTEMP_MANTISSA_2,00:00:00,{dnl
-__{}__{}__{}define({ZXTEMP_REDUCED_SIZE},1){}dnl
-__{}__{}__{}define({ZXTEMP_REDUCED_M_2},{})}){}dnl
-__{}__{}define({ZXTEMP_REDUCED_E},__HEX_L(($2-0x50)+(ZXTEMP_REDUCED_SIZE-1)*0x40)){}dnl
+__{}define({ZXTEMP_REDUCED_M_2},ZXTEMP_MANTISSA_2){}dnl
+__{}define({ZXTEMP_REDUCED_M_3},ZXTEMP_MANTISSA_3){}dnl
+__{}define({ZXTEMP_REDUCED_M_4},ZXTEMP_MANTISSA_4){}dnl
+__{}define({ZXTEMP_REDUCED_SIZE},4){}dnl
+__{}ifelse(ZXTEMP_MANTISSA_4,00,{dnl
+__{}__{}define({ZXTEMP_REDUCED_SIZE},3){}dnl
+__{}__{}define({ZXTEMP_REDUCED_M_4},{})}){}dnl
+__{}ifelse(ZXTEMP_MANTISSA_4:ZXTEMP_MANTISSA_3,00:00,{dnl
+__{}__{}define({ZXTEMP_REDUCED_SIZE},2){}dnl
+__{}__{}define({ZXTEMP_REDUCED_M_3},{})}){}dnl
+__{}ifelse(ZXTEMP_MANTISSA_4:ZXTEMP_MANTISSA_3:ZXTEMP_MANTISSA_2,00:00:00,{dnl
+__{}__{}define({ZXTEMP_REDUCED_SIZE},1){}dnl
+__{}__{}define({ZXTEMP_REDUCED_M_2},{})}){}dnl
+__{}ifelse(eval(($2>0x50) && ($2<=0x8F)),1,{dnl
+__{}__{}define({ZXTEMP_REDUCED_E1},__HEX_L(($2-0x50)+(ZXTEMP_REDUCED_SIZE-1)*0x40)){}dnl
+__{}__{}define({ZXTEMP_REDUCED_E2},{})},
+__{}{dnl
+__{}__{}define({ZXTEMP_REDUCED_E1},__HEX_L((ZXTEMP_REDUCED_SIZE-1)*0x40)){}dnl
+__{}__{}define({ZXTEMP_REDUCED_E2},__HEX_L($2-0x50)){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -170,6 +174,22 @@ __{}__def({USE_ZOVER})
     call _ZOVER         ; 3:17      __INFO   ( Z: z1 z2 -- z1 z2 z1 )}){}dnl
 dnl
 dnl
+dnl # zpick
+define({ZPICK},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZPICK},{zpick},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZPICK},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__def({USE_ZPICK})
+__{}__{}    call _ZPICK         ; 3:17      __INFO   ( u -- ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # $1 zpick
 define({PUSH_ZPICK},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_ZPICK},{$1 zpick},$@){}dnl
 }){}dnl
@@ -180,22 +200,22 @@ __{}ifelse(eval($#<1),1,{
 __{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
-__{}  .error {$0}($@):  Parameter is memory reference!},
-__{}__IS_NUM($1),0,{
-__{}  .error {$0}($@):  Parameter is not number!},
+__{}__IS_MEM_REF($1),1,{dnl
+__{}__{}__ASM_TOKEN_PUSH($1){}dnl
+__{}__{}__ASM_TOKEN_ZPICK},
+__{}__IS_NUM($1),0,{dnl
+__{}__{}__ASM_TOKEN_PUSH($1){}dnl
+__{}__{}__ASM_TOKEN_ZPICK},
 __{}{dnl
-__{}__{}ifelse(eval($1),0,{
-__{}__{}__{}    .error {$0}($@): Parameter is zero! 1 and higher are supported.},
-__{}__{}eval(($1)<1),{1},{
+__{}__{}ifelse(eval(($1)<0),{1},{
 __{}__{}__{}    .error {$0}($@): Negative parameter! 1 and higher are supported.},
-__{}__{}eval(($1)>51),{1},{
+__{}__{}eval(($1)>50),{1},{
 __{}__{}__{}__def({USE_ZPICK_BC})
-__{}__{}__{}    ld   BC, __HEX_HL(-5*($1))     ; 3:10      __INFO   ( Z: -- z )
+__{}__{}__{}    ld   BC, __HEX_HL(-5*($1+1))     ; 3:10      __INFO   ( Z: z$1 .. z0 -- z$1 .. z0 z$1 )
 __{}__{}__{}    call _ZPICK_BC      ; 3:17      __INFO},
 __{}__{}{dnl
 __{}__{}__{}__def({USE_ZPICK_C})
-__{}__{}__{}    ld    C, __HEX_L(-5*($1))       ; 2:7       __INFO   ( Z: -- z )
+__{}__{}__{}    ld    C, __HEX_L(-5*($1+1))       ; 2:7       __INFO   ( Z: z$1 .. z0 -- z$1 .. z0 z$1 )
 __{}__{}__{}    call _ZPICK_C       ; 3:17      __INFO}){}dnl
 __{}}){}dnl
 })dnl
@@ -519,9 +539,17 @@ __{}__ADD_TOKEN({__TOKEN_ZLE},{z<=},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZLE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE2FLAG})
-    ld    B, 0x09       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
-    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+__{}ifelse(TYP_FLOAT,fast,{__def({USE_ZTEST})
+__{}__{}                        ;[8:51]     __INFO   ( -- flag ) ( Z: z2 z1 -- )
+__{}__{}    call ZTEST          ; 3:17      __INFO   carry if z2>z1
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ccf                 ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}{__def({USE_ZCOMPARE2FLAG})
+__{}__{}    ld    B, 0x09       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+__{}__{}    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # f<= negate s>f
@@ -543,9 +571,18 @@ __{}__ADD_TOKEN({__TOKEN_ZGE},{z>=},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZGE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE2FLAG})
-    ld    B, 0x0A       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
-    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+__{}ifelse(TYP_FLOAT,fast,{__def({USE_ZTEST})
+__{}__{}                       ;[10:58]     __INFO   ( -- flag ) ( Z: z2 z1 -- )
+__{}__{}    call ZTEST          ; 3:17      __INFO   carry if z2>z1
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    scf                 ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}{__def({USE_ZCOMPARE2FLAG})
+__{}__{}    ld    B, 0x0A       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+__{}__{}    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # f>= negate s>f
@@ -567,9 +604,18 @@ __{}__ADD_TOKEN({__TOKEN_ZNE},{z<>},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZNE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE2FLAG})
-    ld    B, 0x0B       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
-    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+__{}ifelse(TYP_FLOAT,fast,{__def({USE_ZTEST})
+__{}__{}                       ;[11:55]     __INFO   ( -- flag ) ( Z: z2 z1 -- )
+__{}__{}    call ZTEST          ; 3:17      __INFO   carry if z2>z1
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO
+__{}__{}    jr   nz, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO},
+__{}{__def({USE_ZCOMPARE2FLAG})
+__{}__{}    ld    B, 0x0B       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+__{}__{}    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # f<> negate s>f
@@ -591,9 +637,16 @@ __{}__ADD_TOKEN({__TOKEN_ZGT},{z>},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZGT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE2FLAG})
-    ld    B, 0x0C       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
-    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+__{}ifelse(TYP_FLOAT,fast,{__def({USE_ZTEST})
+__{}__{}                        ;[7:47]     __INFO   ( -- flag ) ( Z: z2 z1 -- )
+__{}__{}    call ZTEST          ; 3:17      __INFO   carry if z2>z1
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}{__def({USE_ZCOMPARE2FLAG})
+__{}__{}    ld    B, 0x0C       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+__{}__{}    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # f> negate s>f
@@ -615,9 +668,18 @@ __{}__ADD_TOKEN({__TOKEN_ZLT},{z<},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZLT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE2FLAG})
-    ld    B, 0x0D       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
-    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+__{}ifelse(TYP_FLOAT,fast,{__def({USE_ZTEST})
+__{}__{}                       ;[10:58]     __INFO   ( -- flag ) ( Z: z2 z1 -- )
+__{}__{}    call ZTEST          ; 3:17      __INFO   carry if z2>z1
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    jr    z, $+3        ; 2:7/12    __INFO
+__{}__{}    ccf                 ; 1:4       __INFO
+__{}__{}    sbc  HL, HL         ; 2:15      __INFO},
+__{}{__def({USE_ZCOMPARE2FLAG})
+__{}__{}    ld    B, 0x0D       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+__{}__{}    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # f< negate s>f
@@ -639,9 +701,18 @@ __{}__ADD_TOKEN({__TOKEN_ZEQ},{z=},$@){}dnl
 dnl
 define({__ASM_TOKEN_ZEQ},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_ZCOMPARE2FLAG})
-    ld    B, 0x0E       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
-    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+__{}ifelse(TYP_FLOAT,fast,{__def({USE_ZTEST})
+__{}__{}                       ;[11:55]     __INFO   ( -- flag ) ( Z: z2 z1 -- )
+__{}__{}    call ZTEST          ; 3:17      __INFO   carry if z2>z1
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld   HL, 0xFFFF     ; 3:10      __INFO
+__{}__{}    jr    z, $+3        ; 2:7/12    __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO},
+__{}{__def({USE_ZCOMPARE2FLAG})
+__{}__{}    ld    B, 0x0E       ; 2:7       __INFO   ( -- flag ) ( Z: z1 z2 -- )
+__{}__{}    call _ZCOMPARE2FLAG ; 3:17      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # f= negate s>f
@@ -754,25 +825,34 @@ __{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ZPUSH},{dnl
-__{}ifelse($1,,,{FSTRING_TO_ZHEX($1){}dnl
+__{}ifelse($1,,{dnl
+__{}__{}ifelse($0_CALC_ACTIVE,true,{define({$0_CALC_ACTIVE},false)
+__{}__{}__{}    db  0x38            ; 1:        calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}})},
+__{}{FSTRING_TO_ZHEX($1){}dnl
 __{}__{}ifelse(dnl
-__{}__{}ifelse(TYP_FLOAT,fast,1,ZXTEMP_REDUCED_SIZE,0,1,0),1,{
+__{}__{}ifelse(TYP_FLOAT,fast,1,ZXTEMP_REDUCED_SIZE,0,1,0),1,{dnl
+__{}__{}__{}ifelse($0_CALC_ACTIVE,true,{define({$0_CALC_ACTIVE},false)
+__{}__{}__{}__{}    db  0x38            ; 1:        $1   calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}})
 __{}__{}__{}    ld    A, 0x{}ZXTEMP_EXP       ; 2:7       $1   = __HEX_FLOAT($1)
 __{}__{}__{}    ld   DE, 0x{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_1     ; 3:10      $1   = 0x{}ZXTEMP_EXP{}ZXTEMP_MANTISSA_1{}{}ZXTEMP_MANTISSA_2{}ZXTEMP_MANTISSA_3{}ZXTEMP_MANTISSA_4
 __{}__{}__{}    ld   BC, 0x{}ZXTEMP_MANTISSA_4{}ZXTEMP_MANTISSA_3     ; 3:10      $1
 __{}__{}__{}    call 0x2ABB         ; 3:124     $1   new float = a,e,d,c,b},
-__{}__{}{
-__{}__{}__{}    rst 0x28            ; 1:11      $1   Use the calculator
-__{}__{}__{}    db  0x34            ; 1:        $1   stk-data   push constant __HEX_FLOAT($1)
-__{}__{}__{}    db  ZXTEMP_REDUCED_E            ; 1:        $1   exp: 0x{}ZXTEMP_EXP, mantissa bytes: ZXTEMP_REDUCED_SIZE
-__{}__{}__{}    db  0x{}ZXTEMP_MANTISSA_1            ; 1:        $1{}dnl
+__{}__{}{dnl
+__{}__{}__{}ifelse($0_CALC_ACTIVE,true,,{define({$0_CALC_ACTIVE},true)
+__{}__{}__{}__{}    rst 0x28            ; 1:11      $1   Use the calculator})
+__{}__{}__{}    db  0x34            ; 1:        $1   stk-data   push constant __HEX_FLOAT($1){}dnl
+__{}__{}__{}ifelse(ZXTEMP_REDUCED_E2,,{
+__{}__{}__{}__{}    db  ZXTEMP_REDUCED_E1            ; 1:        $1   exp: 0x{}ZXTEMP_EXP, mantissa bytes: ZXTEMP_REDUCED_SIZE},
+__{}__{}__{}{
+__{}__{}__{}__{}    db  ZXTEMP_REDUCED_E1            ; 1:        $1   mantissa bytes: ZXTEMP_REDUCED_SIZE
+__{}__{}__{}__{}    db  ZXTEMP_REDUCED_E2            ; 1:        $1   exp: 0x{}ZXTEMP_EXP})
+__{}__{}__{}    db  0x{}ZXTEMP_MANTISSA_1            ; 1:        $1   man 1: __HEX_L(0x{}ZXTEMP_MANTISSA_1 | 0x80)  sign: __HEX_L(0x{}ZXTEMP_MANTISSA_1 & 0x80){}dnl
 __{}__{}__{}ifelse(ZXTEMP_REDUCED_M_2,,,{
-__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_2            ; 1:        $1}){}dnl
+__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_2            ; 1:        $1   man 2: 0x{}ZXTEMP_REDUCED_M_2}){}dnl
 __{}__{}__{}ifelse(ZXTEMP_REDUCED_M_3,,,{
-__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_3            ; 1:        $1}){}dnl
+__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_3            ; 1:        $1   man 3: 0x{}ZXTEMP_REDUCED_M_3}){}dnl
 __{}__{}__{}ifelse(ZXTEMP_REDUCED_M_4,,,{
-__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_4            ; 1:        $1})
-__{}__{}__{}__{}    db  0x38            ; 1:        $1   calc-end    {Pollutes: AF, BC, BC', DE'(=DE)}{}dnl
+__{}__{}__{}__{}    db  0x{}ZXTEMP_REDUCED_M_4            ; 1:        $1   man 4: 0x{}ZXTEMP_REDUCED_M_4}){}dnl
 __{}__{}}){}dnl
 __{}$0(shift($@))}){}dnl
 }){}dnl
