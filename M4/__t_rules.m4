@@ -189,7 +189,7 @@ dnl define({__INC_TOKEN_COUNT},ifdef({__COUNT_TOKEN},{define({__COUNT_TOKEN},eva
 dnl
 dnl
 define({__ADD_TOKEN},{dnl
-__{}ifelse(VERBOSE,1,{errprint(__CR{   ...add token }$1)}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...add token }$1)}){}dnl
 __{}ifdef({__COUNT_TOKEN},
         {ifelse(dnl
 a,,,
@@ -2056,7 +2056,7 @@ dnl
 define({__COMPILE_REC},{ifelse(eval(__COUNT_TOKEN>__TOKEN_I),{1},{dnl
 __{}define({__TOKEN_I},eval(__TOKEN_I+1))dnl
 __{}ifelse(__GET_TOKEN_INFO(__TOKEN_I),{__dtto},,{define({__COMPILE_INFO},__GET_TOKEN_INFO(__TOKEN_I))}){}dnl
-__{}ifelse(VERBOSE,1,{errprint(__CR{   ...create }__GET_TOKEN_NAME(__TOKEN_I){ }__COMPILE_INFO)}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...create }__GET_TOKEN_NAME(__TOKEN_I){ }__COMPILE_INFO)}){}dnl
 __{}ifelse(__GET_TOKEN_PARAM(__TOKEN_I),{()},{dnl
 __{}__{}__A({__ASM}substr(__GET_TOKEN_NAME(__TOKEN_I),1))},
 __{}{dnl
@@ -2067,13 +2067,13 @@ dnl
 dnl
 dnl
 define({__COMPILE},{ifdef({__COUNT_TOKEN},{dnl
-__{}ifelse(VERBOSE,1,{errprint(__CR{   ...check all tokens})}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...check all tokens})}){}dnl
 __{}__CHECK_ALL_TOKENS{}dnl
-__{}ifelse(VERBOSE,1,{errprint(__CR{   ...check all tokens2})}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...check all tokens2})}){}dnl
 __{}__CHECK_ALL_TOKENS2{}dnl
 __{}define({__TOKEN_I},0)dnl
 __{}$0_REC{}dnl
-__{}ifelse(VERBOSE,1,{errprint(__CR)}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR)}){}dnl
 })}){}dnl
 dnl
 dnl
