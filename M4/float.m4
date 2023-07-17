@@ -331,6 +331,13 @@ __{}__ADD_TOKEN({__TOKEN_OVER},{fover},$@){}dnl
 }){}dnl
 dnl
 dnl
+dnl # fpick
+dnl # ( fu .. f1 f0 u -- fu .. f1 f0 fu )
+define({FPICK},{dnl
+__{}__ADD_TOKEN({__TOKEN_PICK},{fpick},$@){}dnl
+}){}dnl
+dnl
+dnl
 dnl # frot
 dnl # ( f3 f2 f1 -- f2 f1 f3 )
 define({FROT},{dnl
