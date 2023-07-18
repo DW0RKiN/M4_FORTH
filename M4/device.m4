@@ -2709,6 +2709,62 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+dnl # ZX_AT  EQU 0x16     ; zx_constant   Y,X
+dnl # at-xy
+dnl # ( column row -- )
+define({AT_XY},{dnl
+__{}__ADD_TOKEN({__TOKEN_2DUP_AT_XY},{at-xy},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_2DROP},__dtto){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2DUP_AT_XY},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}    ld    A, 0x16       ; 2:7       __INFO   ( x_column y_row -- )
+__{}__PUTCHAR_A(__INFO)
+__{}    ld    A, L          ; 1:4       __INFO
+__{}__PUTCHAR_A(__INFO)
+__{}    ld    A, E          ; 1:4       __INFO
+__{}__PUTCHAR_A(__INFO){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ZX_AT  EQU 0x16     ; zx_constant   Y,X
+dnl # at-xy
+dnl # ( column row -- )
+define({PUSH_AT_XY},{dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_PUSH_AT_XY},{$1 at-xy},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DROP},__dtto){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DUP_PUSH_AT_XY},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}    ld    A, 0x16       ; 2:7       __INFO
+__{}__PUTCHAR_A(__INFO){}dnl
+__{}__LD_R_NUM(__INFO{   y_row},{A},$1)
+__{}__PUTCHAR_A(__INFO)
+__{}    ld    A, L          ; 1:4       __INFO
+__{}__PUTCHAR_A(__INFO){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ZX_AT  EQU 0x16     ; zx_constant   Y,X
+dnl # at-xy
+dnl # ( column row -- )
+define({PUSH2_AT_XY},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_AT_XY},{$1 $2 at-xy},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_AT_XY},{
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}    ld    A, 0x16       ; 2:7       __INFO
+__{}__PUTCHAR_A(__INFO){}dnl
+__{}__LD_R_NUM(__INFO{   y_row},{A},$2)
+__{}__PUTCHAR_A(__INFO){}dnl
+__{}__LD_R_NUM(__INFO{   x_column},{A},$1)
+__{}__PUTCHAR_A(__INFO){}dnl
+}){}dnl
 dnl
 dnl
 dnl
