@@ -416,6 +416,23 @@ _Z2DROP:                ;           _z2drop
 }){}dnl
 dnl
 dnl
+dnl
+ifdef({USE_ZDROP_C},{__def({USE_ZDROP_BC})
+_ZDROP_C:              ;[12:81]     _zdrop_c
+    ld    B,0xFF        ; 2:7       _zdrop_c
+    ; fall to _zdrop_bc}){}dnl
+dnl
+ifdef({USE_ZDROP_BC},{
+_ZDROP_BC:             ;[10:74]     _zdrop_bc
+    push HL             ; 1:11      _zdrop_bc
+    ld   HL,(0x5C65)    ; 3:16      _zdrop_bc   load stkend
+    add  HL, BC         ; 1:11      _zdrop_bc
+    ld  (0x5C65),HL     ; 3:16      _zdrop_bc   save stkend
+    pop  HL             ; 1:10      _zdrop_bc
+    ret                 ; 1:10      _zdrop_bc
+}){}dnl
+dnl
+dnl
 dnl # z-
 ifdef({USE_ZSUB},{
 _ZSUB:                  ;           _z-
