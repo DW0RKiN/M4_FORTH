@@ -1946,6 +1946,58 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
+dnl # drop drop drop
+dnl # 2drop drop
+dnl # ( c b a -- )
+dnl # odstrani 3x vrchol zasobniku
+define({DROPS},{dnl
+__{}__ADD_TOKEN({__TOKEN_DROPS},{drops($1)},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_DROPS},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+
+__{}__IS_NUM($1),0,{
+__{}__{}  .error {$0}($@): Parameter is not number!},
+
+__{}{dnl
+__{}__{}ifelse(__HEX_HL($1),0x0000,{
+__{}__{}__{}                        ;           __INFO   ( -- )},
+
+__{}__{}eval(($1<0) || ($1 & 0x8000)),1,{
+__{}__{}__{}  .error {$0}($@): Parameter is negative!},
+
+__{}__{}__HEX_HL($1),0x0001,{__ASM_TOKEN_DROP},
+
+__{}__{}__HEX_HL($1),0x0002,{__ASM_TOKEN_2DROP},
+
+__{}__{}__HEX_HL($1),0x0003,{__ASM_TOKEN_3DROP},
+
+__{}__{}__HEX_HL($1),0x0004,{__ASM_TOKEN_2DROP{}__ASM_TOKEN_2DROP},
+
+__{}__{}__HEX_HL($1),0x0005,{__ASM_TOKEN_3DROP{}__ASM_TOKEN_2DROP},
+
+__{}__{}__HEX_HL($1):__TYP_SINGLE,0x0006:{small},{__ASM_TOKEN_2DROP{}__ASM_TOKEN_2DROP{}__ASM_TOKEN_2DROP},
+
+__{}__{}{
+__{}__{}__{}                        ;[7:47]     __INFO   ( $1*x -- )
+__{}__{}__{}    ld   HL, format({%-11s},__HEX_HL(2*($1-2))); 3:10      __INFO
+__{}__{}__{}    add  HL, SP         ; 1:11      __INFO
+__{}__{}__{}    ld   SP, HL         ; 1:6       __INFO
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # ( b a -- a )
 dnl # : nip swap drop ;
 dnl # drop_second
