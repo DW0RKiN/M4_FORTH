@@ -2282,7 +2282,7 @@ dnl
 dnl # ( u -- u )
 dnl # shifs u right $1 places
 define({PUSH_RSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_RSHIFT},{push_rshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_RSHIFT},{$1 rshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_RSHIFT},{dnl
@@ -2325,7 +2325,7 @@ dnl
 dnl # ( u -- u )
 dnl # shifs u left $1 places
 define({PUSH_LSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_LSHIFT},{push_lshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_LSHIFT},{$1 lshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_LSHIFT},{dnl
