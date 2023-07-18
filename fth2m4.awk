@@ -1,4 +1,8 @@
 BEGIN {
+
+  reserved_words["AT-XY"]       = "AT_XY"           # facility       
+  reserved_words["ERASE"]       = "PUSH(0) FILL"    # for compatibility with the core-ext   
+
   reserved_words["ABORT"]       = "BYE ;# Originally ABORT\n"  # After compilation, there is no difference between ABORT and BYE.  
 #   reserved_words["ABORT\""]     = It's complicated, it has to be read as a string --> "IF PRINT({"..."}) BYE THEN ;# Originally ABORTq\n"  # After compilation, there is no difference between ABORT and BYE.  
   reserved_words["ALIGN"]       = "ALIGN"           # + integer --> ALIGN(integer)
