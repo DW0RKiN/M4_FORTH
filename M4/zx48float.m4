@@ -266,6 +266,50 @@ __{}__def({USE_Z2DROP})
     call _Z2DROP        ; 3:17      __INFO   ( Z: z2 z1 -- )}){}dnl
 dnl
 dnl
+dnl # zdrops
+define({ZDROPS},{dnl
+__{}__ADD_TOKEN({__TOKEN_ZDROPS},{zdrops($1)},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ZDROPS},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+
+__{}__IS_MEM_REF($1),1,{
+__{}__{}  .error {$0}($@): Parameter is pointer!},
+
+__{}__IS_NUM($1),0,{
+__{}__{}  .error {$0}($@): Parameter is not number!},
+
+__{}{dnl
+__{}__{}ifelse(__HEX_HL($1),0x0000,{
+__{}__{}__{}                        ;           __INFO   ( -- )},
+
+__{}__{}eval(($1<0) || ($1 & 0x8000)),1,{
+__{}__{}__{}  .error {$0}($@): Parameter is negative!},
+
+__{}__{}__HEX_HL($1),0x0001,{__ASM_TOKEN_ZDROP},
+
+__{}__{}__HEX_HL($1),0x0002,{__ASM_TOKEN_Z2DROP},
+
+__{}__{}eval(($1) < 52),1,{dnl
+__{}__{}__{}__def({USE_ZDROP_C})
+__{}__{}__{}    ld    C, format({%-11s},__HEX_L(-5*($1))); 2:7       __INFO   ( Z: $1*z -- )
+__{}__{}__{}    call _ZDROP_C       ; 3:17      __INFO},
+
+__{}__{}{dnl
+__{}__{}__{}__def({USE_ZDROP_BC})
+__{}__{}__{}    ld   BC, format({%-11s},__HEX_HL(-5*($1))); 3:10      __INFO   ( Z: $1*z -- )
+__{}__{}__{}    call _ZDROP_BC      ; 3:17      __INFO{}dnl
+__{}__{}}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # zabs
 define({ZABS},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZABS},{zabs},$@){}dnl
