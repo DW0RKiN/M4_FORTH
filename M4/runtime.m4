@@ -2456,6 +2456,22 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+ifdef({USE_KEYQUESTION},{
+;==============================================================================
+; If a character is available, return true. Otherwise, return false.
+; In:
+; Out: push stack, TOP = HL = true if the key is pressed
+_KEYQUESTION:          ;[11:79]     _key?   ( ret x2 x1 -- x2 ret x1 flag )
+    ex   DE, HL         ; 1:4       _key?
+    ex  (SP),HL         ; 1:19      _key?
+    push HL             ; 1:11      _key?   save ret
+    ld    A,(0x5C08)    ; 3:13      _key?   read last_k
+    add   A, 0xFF       ; 2:7       _key?
+    sbc  HL, HL         ; 2:15      _key?
+    ret                 ; 1:10      _key?}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_KEY},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
 ;==============================================================================
 ; Read key from keyboard
@@ -2989,7 +3005,7 @@ PLAY_OCTODE:            ;[:]        play_octode
     in    A,(0xFE)      ; 2:11      play_octode     read kbd
     or  0xE0            ; 2:7       play_octode
     inc   A             ; 1:4       play_octode
-    jr   nz, $-6        ; 2:7/12    play_octode     wait until no presss
+    jr   nz, $-6        ; 2:7/12    play_octode     wait until no press
     exx                 ; 1:4       play_octode
     push HL             ; 1:11      play_octode
     push IX             ; 2:15      play_octode
