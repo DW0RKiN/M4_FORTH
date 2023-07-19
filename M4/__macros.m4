@@ -4365,6 +4365,41 @@ dnl # Out:
 dnl #   __PRICE       price = 16*(clocks + 4*bytes)
 dnl #   __BYTES       bytes
 dnl #   __CLOCKS      clocks
+define({__MAKE_CODE_AND_DROP_JP_FALSE},{dnl
+__{}ifelse(eval($#<1),1,{
+__{}__{}.error {$0}(): Missing parameter!},
+__{}eval($#>1),1,{
+__{}__{}.error {$0}($@): $# parameters found in macro!},
+__{}{dnl
+__{}__{}define({__BYTES},11){}dnl
+__{}__{}define({__CLOCKS_NJP},53){}dnl
+__{}__{}define({__CLOCKS_JP},50){}dnl
+__{}__{}define({__CLOCKS},51){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_JP;__CLOCKS_NJP/__CLOCKS_NJP] ))__INFO   _TMP_STACK_INFO})
+__{}__{}    ld    A, E          ; 1:4       __INFO
+__{}__{}    and   L             ; 1:4       __INFO
+__{}__{}    jr   nz, $+4        ; 2:7/12    __INFO
+__{}__{}    ld    A, D          ; 1:4       __INFO
+__{}__{}    and   H             ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    jp    z, format({%-11s},$1); 3:10      __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl ============================================
+dnl # Input parameters:
+dnl #                $1 = false label
+dnl #            __INFO = info
+dnl #   _TMP_STACK_INFO = stack info
+dnl #
+dnl # Out:
+dnl #   __PRICE       price = 16*(clocks + 4*bytes)
+dnl #   __BYTES       bytes
+dnl #   __CLOCKS      clocks
 define({__MAKE_CODE_EQ_DROP_JP_FALSE},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}.error {$0}(): Missing parameter!},
