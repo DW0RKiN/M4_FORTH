@@ -853,6 +853,9 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/device.m4
 |<sub>                     |<sub>       ZX_CLS        |<sub>                        |<sub>          ( -- )          |<sub> ZX48:clear screen     |
 |<sub>                     |<sub>      ZX_BORDER      |<sub>                        |<sub>    ( color -- )          |<sub> ZX48:set border color |
 |<sub>                     |<sub>        PLAY         |<sub>                        |<sub>( data_addr -- )          |<sub> need octode2k16 data  |
+|<sub>        at-xy        |<sub>        AT_XY        |<sub>                        |<sub>( data_addr -- )          |<sub> need octode2k16 data  |
+|<sub>       1000 ms       |<sub>        PAUSE        |<sub>                        |<sub>          ( -- )          |<sub> wait one second       |
+|<sub>      20 u/ ms       |<sub>        WAIT         |<sub>                        |<sub>        ( u -- )          |<sub> wait u*0.02 seconds   |
 
 |<sub>      Original       |<sub>      M4 FORTH                                                    |<sub> Data stack |<sub> Comment               |
 | :----------------------: | :-------------------------------------------------------------------: | :-------------- | :------------------------- |
