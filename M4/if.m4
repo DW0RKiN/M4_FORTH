@@ -162,6 +162,25 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
 dnl
+dnl # and if
+define({AND_IF},{dnl
+__{}__ADD_TOKEN({__TOKEN_AND_IF},{and if},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_AND_IF},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({_TMP_STACK_INFO},( flag2 flag1 -- )){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
+__{}ifelse(eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}__MAKE_CODE_AND_DROP_JP_FALSE(else{}IF_COUNT){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # num if
 define({PUSH_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_PUSH_IF},{$1 if},$@){}dnl
