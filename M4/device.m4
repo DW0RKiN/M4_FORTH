@@ -1402,24 +1402,28 @@ dnl
 define({__ASM_TOKEN_KEY},{dnl
 __{}define({__INFO},{key}){}dnl
 ifdef({USE_KEY},,define({USE_KEY},{}))
-    call READKEY        ; 3:17      key})dnl
+    call READKEY        ; 3:17      key}){}dnl
 dnl
 dnl
 dnl
 dnl # ( -- flag )
 dnl # key?
 define({KEYQUESTION},{dnl
+__{}ifdef({KEYQUESTION_SUM},{define({KEYQUESTION_SUM},2)},{define({KEYQUESTION_SUM},1)}){}dnl
 __{}__ADD_TOKEN({__TOKEN_KEYQUESTION},{keyquestion},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_KEYQUESTION},{dnl
 __{}define({__INFO},{keyquestion}){}dnl
-
-    ex   DE, HL         ; 1:4       key?
-    push HL             ; 1:11      key?
-    ld    A,(0x5C08)    ; 3:13      key?   read new value of {LAST K}
-    add   A, 0xFF       ; 2:7       key?   carry if non zero value
-    sbc  HL, HL         ; 2:15      key?})dnl
+__{}ifelse(__PRIORITY:KEYQUESTION_SUM,small:2,{__def({USE_KEYQUESTION})
+__{}    call _KEYQUESTION   ; 3:17      key?   ( -- flag )  version small},
+__{}{
+__{}    ex   DE, HL         ; 1:4       key?   ( -- flag )  version default
+__{}    push HL             ; 1:11      key?
+__{}    ld    A,(0x5C08)    ; 3:13      key?   read new value of {LAST K}
+__{}    add   A, 0xFF       ; 2:7       key?   carry if non zero value
+__{}    sbc  HL, HL         ; 2:15      key?}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -2764,6 +2768,73 @@ __{}__LD_R_NUM(__INFO{   y_row},{A},$2)
 __{}__PUTCHAR_A(__INFO){}dnl
 __{}__LD_R_NUM(__INFO{   x_column},{A},$1)
 __{}__PUTCHAR_A(__INFO){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+dnl # wait one second
+define({PAUSE},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_WAIT},{pause},50){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( time -- )
+dnl # wait time*0.02 seconds
+define({WAIT},{dnl
+__{}__ADD_TOKEN({__TOKEN_WAIT},{wait},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_WAIT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(eval($#>0),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{
+__{}__{}    ei                  ; 1:4       __INFO   ( u -- )  time = u*0.02 seconds
+__{}__{}    halt                ; 1:70000   __INFO   0 .. 0.02 seconds
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    jr   nz, $-4        ; 2:8/13    __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # ( -- )
+define({PUSH_WAIT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_WAIT},{$1 wait},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_WAIT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+
+__{}__HEX_HL($1),0x0000,{
+__{}    ei                  ; 1:4       __INFO   ( -- )
+__{}    halt                ; 1:70000   __INFO   0 .. 0.02 seconds},
+
+__{}__HEX_H($1),0x00,{
+__{}    ei                  ; 1:4       __INFO   ( -- )
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    halt                ; 1:70000   __INFO   0 .. 0.02 seconds
+__{}    djnz $-1            ; 2:8/13    __INFO},
+
+__{}{
+__{}    ei                  ; 1:4       __INFO   ( time -- ){}dnl
+__{}define({__TMP_CODE},__LD_R16({BC},$1)){}__TMP_CODE
+__{}    halt                ; 1:70000   __INFO   0 .. 0.02 seconds
+__{}    ld    A, C          ; 1:4       __INFO
+__{}    or    B             ; 1:4       __INFO
+__{}    dec  BC             ; 1:6       __INFO
+__{}    jr   nz, $-4        ; 2:8/13    __INFO}){}dnl
 }){}dnl
 dnl
 dnl
