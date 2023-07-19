@@ -1,8 +1,13 @@
 BEGIN {
 
-  reserved_words["AT-XY"]       = "AT_XY"           # facility       
-  reserved_words["ERASE"]       = "PUSH(0) FILL"    # for compatibility with the core-ext   
+  reserved_words["AT-XY"]       = "AT_XY"               # facility ext      
+  reserved_words["ERASE"]       = "PUSH(0) FILL"        # for compatibility with the core-ext   
+  reserved_words["PAUSE"]       = "PAUSE"               # not standard   
+  reserved_words["WAIT"]        = "WAIT"                # not standard   
+  reserved_words["MS"]          = "PUSH(20) UDIV WAIT"  # for compatibility with facility ext   
 
+  
+  
   reserved_words["ABORT"]       = "BYE ;# Originally ABORT\n"  # After compilation, there is no difference between ABORT and BYE.  
 #   reserved_words["ABORT\""]     = It's complicated, it has to be read as a string --> "IF PRINT({"..."}) BYE THEN ;# Originally ABORTq\n"  # After compilation, there is no difference between ABORT and BYE.  
   reserved_words["ALIGN"]       = "ALIGN"           # + integer --> ALIGN(integer)
@@ -62,8 +67,11 @@ BEGIN {
   reserved_words["UMOD"]        = "UMOD"
   reserved_words["MOD"]         = "MOD"
   reserved_words["ACCEPT"]      = "ACCEPT"
+  reserved_words["ACCEPT_Z"]    = "ACCEPT_Z"            # not standard
+
   reserved_words["EMIT"]        = "EMIT"
   reserved_words["TYPE"]        = "TYPE"
+  reserved_words["TYPE_Z"]      = "TYPE_Z"              # not standard
 
   reserved_words["SPACE"]       = "SPACE"
   reserved_words["SPACES"]      = "CALL(__SPACES,( n -- ))"     # for compatibility with the standard
@@ -212,7 +220,7 @@ BEGIN {
   reserved_words["-2ROT"]       = "N2ROT"
   reserved_words["2ROT"]        = "_2ROT"
 
-  reserved_words["?KEY"]         = "QUESTIONKEY"
+  reserved_words["KEY?"]        = "KEYQUESTION"
   reserved_words["KEY"]         = "KEY"
 
   reserved_words["D>S"]         = "D_TO_S"
