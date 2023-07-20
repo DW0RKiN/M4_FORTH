@@ -2262,6 +2262,7 @@ dnl
 dnl
 dnl # ( d c b a -- d c b a c )
 dnl #   ( c b a -- c b a c )
+dnl # 2over nip == 2 pick
 define({_2OVER_NIP},{dnl
 __{}__ADD_TOKEN({__TOKEN_2OVER_NIP},{2over nip},$@){}dnl
 }){}dnl
@@ -2282,7 +2283,26 @@ ifelse(_TYP_SINGLE,{small},{
     push DE             ; 1:11      __INFO   c b . b a
     ex   DE, HL         ; 1:4       __INFO   c b . a b
     ld    L, C          ; 1:4       __INFO   c b . a -
-    ld    H, B          ; 1:4       __INFO   c b . a c})}){}dnl
+    ld    H, B          ; 1:4       __INFO   c b . a c}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # ( d c b a -- d c b c a )
+dnl #   ( c b a -- c b c a )
+dnl # 2over nip swap == 2 pick swap
+define({_2OVER_NIP_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_2OVER_NIP_SWAP},{2over nip swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_2OVER_NIP_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:40]     __INFO   ( c b a -- c b c a )
+    pop  BC             ; 1:10      __INFO       . b a   BC = c
+    push BC             ; 1:11      __INFO   c   . b a
+    push DE             ; 1:11      __INFO   c b . b a
+    ld    E, C          ; 1:4       __INFO   c b . - a
+    ld    D, B          ; 1:4       __INFO   c b . c a{}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( f e d c b a -- f e d c b a f e d )
@@ -2802,6 +2822,7 @@ __{}__{}    ld    H, B          ; 1:4       __INFO
 __{}__{}    ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
+dnl
 dnl # 2 pick num ( c b a -- c b a c num )
 define({_2_PICK_PUSH},{dnl
 __{}__ADD_TOKEN({__TOKEN_2_PICK_PUSH},{2 pick $1},$@){}dnl
@@ -2916,8 +2937,9 @@ __{}__ADD_TOKEN({__TOKEN_3_PICK},{3 pick},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_3_PICK},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-__{}__{}                       ;[ 8:65]     __INFO   ( d c b a -- d c b a d )
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse(1,1,{
+__{}__{}                        ;[8:65]     __INFO   ( d c b a -- d c b a d )
 __{}__{}    pop  AF             ; 1:10      __INFO
 __{}__{}    pop  BC             ; 1:10      __INFO
 __{}__{}    push BC             ; 1:11      __INFO
@@ -2925,7 +2947,18 @@ __{}__{}    push AF             ; 1:11      __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    ld    H, B          ; 1:4       __INFO
-__{}__{}    ld    L, C          ; 1:4       __INFO}){}dnl
+__{}__{}    ld    L, C          ; 1:4       __INFO},
+__{}{
+__{}__{}                        ;[8:65]     __INFO   ( d c b a -- d c b a d )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   d c a b
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    pop  AF             ; 1:10      __INFO   = c
+__{}__{}    pop  HL             ; 1:10      __INFO   = d
+__{}__{}    push HL             ; 1:11      __INFO   
+__{}__{}    push AF             ; 1:11      __INFO
+__{}__{}    push BC             ; 1:11      __INFO}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # 3 pick num ( d c b a -- d c b a d num )
@@ -3554,6 +3587,207 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld    B,(HL)        ; 1:7       __INFO
 __{}__{}    ld  (BC),A          ; 1:7       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO})})}){}dnl
+dnl
+dnl
+dnl # 0 roll ( a -- a )
+define({_0_ROLL},{dnl
+}){}dnl
+dnl
+dnl
+dnl # 1 roll ( b a -- b a )
+define({_1_ROLL},{dnl
+__{}__ADD_TOKEN({__TOKEN_SWAP},{1 roll},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # 2 roll ( c b a -- b a c )
+define({_2_ROLL},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROT},{2 roll},$@){}dnl
+}){}dnl
+dnl
+dnl
+dnl # 3 roll ( d c b a -- c b a d )
+define({_3_ROLL},{dnl
+__{}__ADD_TOKEN({__TOKEN_3_ROLL},{3 roll},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_3_ROLL},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                        ;[6:52]     __INFO   ( d c b a -- c b a d )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   d c a b
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO   . d a c
+__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . c a d
+__{}__{}    push BC             ; 1:11      __INFO   c b a d}){}dnl
+dnl
+dnl
+dnl # 3 roll ( d c b a -- c b a a d )
+define({_3_ROLL_OVER_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_3_ROLL_OVER_SWAP},{3 roll over swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_3_ROLL_OVER_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                        ;[7:63]     __INFO   ( d c b a -- c b a a d )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   d c a b
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO   . d a c
+__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . c a d
+__{}__{}    push BC             ; 1:11      __INFO   c b a d
+__{}__{}    push DE             ; 1:11      __INFO   c b a a d}){}dnl
+dnl
+dnl
+dnl # 3 roll ( d c b a -- c b a b d )
+define({_3_ROLL_2OVER_NIP_SWAP},{dnl
+__{}__ADD_TOKEN({__TOKEN_3_ROLL_2OVER_NIP_SWAP},{3 roll 2over nip swap},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_3_ROLL_2OVER_NIP_SWAP},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                        ;[7:61]     __INFO   ( d c b a -- c b a b d )
+__{}__{}    pop  AF             ; 1:10      __INFO   = c
+__{}__{}    pop  BC             ; 1:10      __INFO   = d
+__{}__{}    push AF             ; 1:11      __INFO   . . c b a
+__{}__{}    push DE             ; 1:11      __INFO   . c b b a
+__{}__{}    push HL             ; 1:11      __INFO   c b a b a
+__{}__{}    ld    H, B          ; 1:4       __INFO
+__{}__{}    ld    L, C          ; 1:4       __INFO   c b a b d}){}dnl
+dnl
+dnl
+dnl # 4 roll ( e d c b a -- d c b a e )
+define({_4_ROLL},{dnl
+__{}__ADD_TOKEN({__TOKEN_4_ROLL},{4 roll},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_4_ROLL},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                        ;[8:73]     __INFO   ( e d c b a -- d c b a e )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   e d c a b
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    pop  AF             ; 1:10      __INFO   . e d a b
+__{}__{}    pop  HL             ; 1:10      __INFO   . . e a d
+__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . . d a e
+__{}__{}    push AF             ; 1:11      __INFO   . d c a e
+__{}__{}    push BC             ; 1:11      __INFO   d c b a e}){}dnl
+dnl
+dnl
+dnl # 5 roll ( f e d c b a -- e d c b a f )
+define({_5_ROLL},{dnl
+__{}__ADD_TOKEN({__TOKEN_5_ROLL},{5 roll},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_5_ROLL},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                       ;[12:102]    __INFO   ( f e d c b a -- e d c b a f )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   f e d c a b
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    pop  AF             ; 1:10      __INFO   . f e d a b  AF = c
+__{}__{}    ex   AF, AF'        ; 1:4       __INFO
+__{}__{}    pop  AF             ; 1:10      __INFO   . . f e a b  AF'= d
+__{}__{}    pop  HL             ; 1:10      __INFO   . . . f a e
+__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . . . e a f
+__{}__{}    push AF             ; 1:11      __INFO   . . e d a f
+__{}__{}    ex   AF, AF'        ; 1:4       __INFO
+__{}__{}    push AF             ; 1:11      __INFO   . e d c a f
+__{}__{}    push BC             ; 1:11      __INFO   e d c b a f}){}dnl
+dnl
+dnl
+dnl # 6 roll ( g f e d c b a -- f e d c b a g )
+define({_6_ROLL},{dnl
+__{}__ADD_TOKEN({__TOKEN_6_ROLL},{6 roll},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_6_ROLL},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+__{}__{}                       ;[16:131]    __INFO   ( g f e d c b a -- f e d c b a g )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   g f e d c a b
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    pop  AF             ; 1:10      __INFO   . g f e d  AF = c
+__{}__{}    pop  BC             ; 1:10      __INFO   . . g f e  BC'= d
+__{}__{}    pop  DE             ; 1:10      __INFO   . . . g f  DE'= e
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO   . . . . g a f
+__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . . . . f a g
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    push DE             ; 1:11      __INFO   . . . f e
+__{}__{}    push BC             ; 1:11      __INFO   . . f e d
+__{}__{}    push AF             ; 1:11      __INFO   . f e d c
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    push BC             ; 1:11      __INFO   f e d c b a g}){}dnl
+dnl
+dnl
+dnl # $1 roll ( x$1 .. x0 -- x$-1 .. x0 x$1 )
+define({PUSH_ROLL},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ROLL},{$1 roll},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ROLL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+
+__{}__IS_MEM_REF($1),1,{__ASM_TOKEN_PUSH($1){}__ASM_TOKEN_ROLL},
+
+__{}__IS_NUM($1),0,{__ASM_TOKEN_PUSH($1){}__ASM_TOKEN_ROLL},
+
+__{}__HEX_HL($1),0x0000,{
+__{}                        ;           __INFO   ( -- )},
+
+__{}__HEX_HL($1),0x0001,{__ASM_TOKEN_SWAP},
+
+__{}__HEX_HL($1),0x0002,{__ASM_TOKEN_ROT},
+
+__{}__HEX_HL($1),0x0003,{__ASM_TOKEN_3_ROLL},
+
+__{}__HEX_HL($1),0x0004,{__ASM_TOKEN_4_ROLL},
+
+__{}__HEX_HL($1),0x0005,{__ASM_TOKEN_5_ROLL},
+
+__{}__HEX_HL($1),0x0006,{__ASM_TOKEN_6_ROLL},
+
+__{}{
+__{}__{}                       ;[22:format({%-7s},eval(127+($1)*42)]) __INFO   ( x$1 x{}eval($1-1) .. x0 -- x{}eval($1-1) .. x0 x$1 )
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   HL, __HEX_HL($1+$1)     ; 3:10      __INFO
+__{}__{}    add  HL, SP         ; 1:11      __INFO   HL = x$1 addr
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    ld    D, H          ; 1:4       __INFO   DE = x$1 addr
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    ld    C,(HL)        ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    B,(HL)        ; 1:7       __INFO
+__{}__{}    push BC             ; 1:11      __INFO
+__{}__{}    ld   BC, __HEX_HL($1+$1)     ; 3:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    lddr                ; 2:format({%-8s},eval(($1)*42-5)){}__INFO   (DE--) = (HL--)
+__{}__{}    pop  HL             ; 1:10      __INFO 
+__{}__{}    pop  DE             ; 1:10      __INFO 
+__{}__{}    pop  AF             ; 1:10      __INFO{}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl # roll ( xu xu-1 .. x1 x0 -- xu-1 .. x1 x0 xu )
+define({ROLL},{dnl
+__{}__ADD_TOKEN({__TOKEN_ROLL},{roll},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_ROLL},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}__def({USE_ROLL})
+__{}__{}    call _ROLL          ; 3:17      __INFO   ( xu xu-1 .. x1 x0 u -- xu-1 .. x1 x0 xu )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
 dnl
