@@ -1876,6 +1876,41 @@ U32DIV16_C              ;           u32div16
 dnl
 dnl
 dnl
+ifdef({USE_ROLL},{
+;==============================================================================
+; ( xu xu-1 .. x1 x0 u -- xu-1 .. x1 x0 xu ? )
+;  In: HL = u
+; Out: HL = garbage
+;      DE = xu
+_ROLL:               ;[27:188+u*42] _roll   ( x3 x2 x1 x0 u -- x2 x1 x0 x3 ? )
+    ld    A, L          ; 1:4       _roll
+    or    H             ; 1:4       _roll
+    ret   z             ; 1:5/11    _roll   u = 0?    
+    pop  BC             ; 1:10      _roll   ret
+    push DE             ; 1:11      _roll   .. x2 x1 x0 x0 u
+    push BC             ; 1:11      _roll   .. x2 x1 x0 ret x0 u
+    inc  HL             ; 1:6       _roll   u++
+    add  HL, HL         ; 1:11      _roll   .. x2 x1 x0 ret x0 2*u+2
+    ld    C, L          ; 1:4       _roll
+    ld    B, H          ; 1:4       _roll   BC = 2*u+2
+    add  HL, SP         ; 1:11      _roll   HL = addr xu-1
+    ld    E,(HL)        ; 1:7       _roll
+    inc  HL             ; 1:6       _roll
+    ld    D,(HL)        ; 1:7       _roll   BC = xu
+    push DE             ; 1:11      _roll   .. x2 x1 x0 ret xu xu ?
+    ld    E, L          ; 1:4       _roll
+    ld    D, H          ; 1:4       _roll
+    dec  DE             ; 1:6       _roll
+    dec  DE             ; 1:6       _roll
+    ex   DE, HL         ; 1:4       _roll
+    lddr                ; 2:u*42-5  _roll   (DE--) = (HL--)
+    pop  DE             ; 1:10      _roll   .. x1 x0 ret ret xu ? 
+    pop  HL             ; 1:10      _roll   .. x1 x0 ret xu ret
+    ret                 ; 1:10      _roll
+}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_Fill3},{__def({USE_Fill2})
 ;==============================================================================
 ; ( address u char ret -- ret address+u x ) (address..address+u-1) = char
