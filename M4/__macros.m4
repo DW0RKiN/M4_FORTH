@@ -516,42 +516,6 @@ __{}ifelse(eval($#>1),1,{$0(shift($@))}){}dnl
 dnl
 dnl
 dnl
-dnl # print last $1 parameters from array
-dnl # __LAST_X_PAR(-1,10,20,30,40,50,60) -->
-dnl # __LAST_X_PAR( 0,10,20,30,40,50,60) -->
-dnl # __LAST_X_PAR( 1,10,20,30,40,50,60) --> 60
-dnl # __LAST_X_PAR( 3,10,20,30,40,50,60) --> 40,50,60
-dnl # __LAST_X_PAR( 8,10,20,30,40,50,60) --> 10,20,30,40,50,60
-define({__LAST_X_PAR},{dnl
-__{}ifelse(dnl
-__{}eval($#<2),1,{},
-__{}{ifelse(dnl
-__{}__{}eval($1<=0),1,{},
-__{}__{}eval($#>($1+1)),1,{$0($1,shift(shift($@)))},{shift($@)}){}dnl
-__{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # print first $1 parameters from array
-dnl # __FIRST_X_PAR(-1,10,20,30,40,50,60) -->
-dnl # __FIRST_X_PAR( 0,10,20,30,40,50,60) -->
-dnl # __FIRST_X_PAR( 1,10,20,30,40,50,60) --> 10
-dnl # __FIRST_X_PAR( 3,10,20,30,40,50,60) --> 10,20,30
-dnl # __FIRST_X_PAR( 8,10,20,30,40,50,60) --> 10,20,30,40,50,60
-define({__FIRST_X_PAR},{dnl
-__{}ifelse(dnl
-__{}eval($#<2),1,{},
-__{}{ifelse(dnl
-__{}__{}eval($1<=0),1,{},
-__{}__{}$#,2,{$2},
-__{}__{}$1,1,{$2},
-__{}__{}{$2{,}$0(eval($1-1),shift(shift($@)))}){}dnl
-__{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
 define({__SORT_SET},{define({$1[$2]},{$3})}){}dnl
 define({__SORT_GET},{defn({$1[$2]})}){}dnl
 dnl
@@ -682,6 +646,61 @@ dnl
 dnl
 dnl
 dnl
+dnl # Fail with multiline...
+define({__BOXING},{regexp({$@},{^\(.\)\(.*\)\(.\)$},{\1\1\2\3\3})}){}dnl
+define({__UNBOXING},$*){}dnl
+dnl
+define({__ALL},$@){}dnl
+define({__1},{$1}){}dnl
+define({__2},{$2}){}dnl
+define({__3},{$3}){}dnl
+define({__4},{$4}){}dnl
+define({__5},{$5}){}dnl
+define({__6},{$6}){}dnl
+define({__7},{$7}){}dnl
+define({__8},{$8}){}dnl
+define({__9},{$9}){}dnl
+define({__SPOJ},{$1$2}){}dnl
+dnl
+dnl
+dnl
+dnl # print last $1 parameters from array
+dnl # SHIFTS_X --> __LAST_X_PAR
+dnl # __LAST_X_PAR(-1,10,20,30,40,50,60) -->
+dnl # __LAST_X_PAR( 0,10,20,30,40,50,60) -->
+dnl # __LAST_X_PAR( 1,10,20,30,40,50,60) --> 60
+dnl # __LAST_X_PAR( 3,10,20,30,40,50,60) --> 40,50,60
+dnl # __LAST_X_PAR( 8,10,20,30,40,50,60) --> 10,20,30,40,50,60
+define({__LAST_X_PAR},{dnl
+__{}ifelse(dnl
+__{}eval($#<2),1,{},
+__{}{ifelse(dnl
+__{}__{}eval($1<=0),1,{},
+__{}__{}eval($#>($1+1)),1,{$0($1,shift(shift($@)))},{shift($@)}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # print first $1 parameters from array
+dnl # __FIRST_X_PAR(-1,10,20,30,40,50,60) -->
+dnl # __FIRST_X_PAR( 0,10,20,30,40,50,60) -->
+dnl # __FIRST_X_PAR( 1,10,20,30,40,50,60) --> 10
+dnl # __FIRST_X_PAR( 3,10,20,30,40,50,60) --> 10,20,30
+dnl # __FIRST_X_PAR( 8,10,20,30,40,50,60) --> 10,20,30,40,50,60
+define({__FIRST_X_PAR},{dnl
+__{}ifelse(dnl
+__{}eval($#<2),1,{},
+__{}{ifelse(dnl
+__{}__{}eval($1<=0),1,{},
+__{}__{}$#,2,{$2},
+__{}__{}$1,1,{$2},
+__{}__{}{$2{,}$0(eval($1-1),shift(shift($@)))}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # __PARAM_X()            --> ""
 dnl # __PARAM_X(0)           --> ""
 dnl # __PARAM_X(-1,p1,p2,p3) --> ""
@@ -722,24 +741,6 @@ __{}}){}dnl
 dnl
 dnl
 dnl
-dnl # Fail with multiline...
-define({__BOXING},{regexp({$@},{^\(.\)\(.*\)\(.\)$},{\1\1\2\3\3})}){}dnl
-define({__UNBOXING},$*){}dnl
-dnl
-define({__ALL},$@){}dnl
-define({__1},{$1}){}dnl
-define({__2},{$2}){}dnl
-define({__3},{$3}){}dnl
-define({__4},{$4}){}dnl
-define({__5},{$5}){}dnl
-define({__6},{$6}){}dnl
-define({__7},{$7}){}dnl
-define({__8},{$8}){}dnl
-define({__9},{$9}){}dnl
-define({__SPOJ},{$1$2}){}dnl
-dnl
-dnl
-dnl
 dnl # __DROP_2_PAR(1,2,3,4,5) --> 1,2,3
 define({__DROP_1_PAR},      {ifelse(eval($#>2), 1,{$1,$0(shift($@))},{ifelse($#, 2,{$1})})}){}dnl
 define({__DROP_2_PAR},      {ifelse(eval($#>3), 1,{$1,$0(shift($@))},{ifelse($#, 3,{$1})})}){}dnl
@@ -750,6 +751,10 @@ define({__DROP_6_PAR},      {ifelse(eval($#>7), 1,{$1,$0(shift($@))},{ifelse($#,
 define({__DROP_7_PAR},      {ifelse(eval($#>8), 1,{$1,$0(shift($@))},{ifelse($#, 8,{$1})})}){}dnl
 define({__DROP_8_PAR},      {ifelse(eval($#>9), 1,{$1,$0(shift($@))},{ifelse($#, 9,{$1})})}){}dnl
 define({__DROP_9_PAR},      {ifelse(eval($#>10),1,{$1,$0(shift($@))},{ifelse($#,10,{$1})})}){}dnl
+dnl
+dnl # __DROP_X_PAR(x,...) --> delete last x items
+dnl # __DROP_X_PAR(x,1,2,3,4,5) --> 1,2,3
+define({__DROP_X_PAR},      {ifelse(eval($1==$#-2),1,{$2},eval($1>=0 && $1<$#-2),1,{$2,$0($1,shift(shift($@)))})}){}dnl
 dnl
 dnl # nepouzito, dodelat, zatim shodne s predchozim
 define({__DROP_1_PAR_COMMA},{ifelse(eval($#>2),1,{$1,$0(shift($@))},{ifelse($#,2,{$1})})}){}dnl
