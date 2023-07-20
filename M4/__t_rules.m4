@@ -872,6 +872,150 @@ __{}__{}__{}__{}__SET_TOKEN({__TOKEN_QDO},__T_INFO(0){ }$2,$3)},{__INC_TOKEN_COU
 __T_NAME(1):__T_NAME(0)=__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_2OVER:__TOKEN_PUSHS=0x0003:1:__TOKEN_PICK, {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_2OVER_3_PICK},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
 
 
+
+#                         0x000  0 roll -->                         0x000
+#                   0x111 0x000  1 roll -->                   0x000 0x111
+#             0x222 0x111 0x000  2 roll -->             0x111 0x000 0x222
+#       0x333 0x222 0x111 0x000  3 roll -->       0x222 0x111 0x000 0x333
+# 0x444 0x333 0x222 0x111 0x000  4 roll --> 0x333 0x222 0x111 0x000 0x444
+# ...swap first last...
+roll,,,
+            __T_NAME(0):eval(__T_ITEMS(0)+0==__T_HEX_REVERSE_1(0)+2):$1,    __TOKEN_PUSHS:1:__TOKEN_ROLL,   {__SET_TOKEN({__TOKEN_PUSHS},
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),
+                shift(__DROP_1_PAR(__T_ARRAY(0)),__T_ARRAY_1(0)))},
+
+
+#                   0x... 0x111 0x000  1 roll -->                   0x... 0x000 0x111
+#             0x... 0x222 0x111 0x000  2 roll -->             0x... 0x111 0x000 0x222
+#       0x... 0x333 0x222 0x111 0x000  3 roll -->       0x... 0x222 0x111 0x000 0x333
+# 0x... 0x444 0x333 0x222 0x111 0x000  4 roll --> 0x... 0x333 0x222 0x111 0x000 0x444
+# ...swap first last...
+
+roll,,,
+            __T_NAME(0):eval(__T_ITEMS(0)+0>__T_HEX_REVERSE_1(0)+2):eval(0<__T_HEX_REVERSE_1(0)+0):$1,    __TOKEN_PUSHS:1:1:__TOKEN_ROLL,   {__SET_TOKEN({__TOKEN_PUSHS},
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),
+                __DROP_X_PAR(eval(__T_ITEMS(0)-__T_REVERSE_1(0)-2),__T_ARRAY(0)),
+                __LAST_X_PAR(__T_REVERSE_1(0),__DROP_1_PAR(__T_ARRAY(0))),
+                __REVERSE_X_PAR(eval(__T_REVERSE_1(0)+2),__T_ARRAY(0)))},
+
+#                         0x... 0x000  0 roll -->                         0x... 0x000
+roll,,,
+            __T_NAME(0):eval(__T_ITEMS(0)+0>1):__T_HEX_REVERSE_1(0):$1,    __TOKEN_PUSHS:1:0x0000:__TOKEN_ROLL,   {__SET_TOKEN({__TOKEN_PUSHS},
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),
+                __DROP_1_PAR(__T_ARRAY(0)))},
+
+# unknown tos
+# hl -> tos
+roll,,,
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0001:2:__TOKEN_ROLL,  {__SET_TOKEN({__TOKEN_PUSH_SWAP},          
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),__DROP_1_PAR(__T_ARRAY(0)))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0002:3:__TOKEN_ROLL,  {__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},          
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),__DROP_1_PAR(__T_ARRAY(0)))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0003:4:__TOKEN_ROLL,  {__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),__DROP_1_PAR(__T_ARRAY(0)))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0004:5:__TOKEN_ROLL,  {__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),__DROP_1_PAR(__T_ARRAY(0)))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0005:6:__TOKEN_ROLL,  {__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),__DROP_1_PAR(__T_ARRAY(0)))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0006:7:__TOKEN_ROLL,  {__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __CONCATENATE_WITH({ },__T_INFO(0){ }$2),__DROP_1_PAR(__T_ARRAY(0)))},
+                
+# unknown nos
+# de -> tos --> _1_roll(swap) + hl -> tos
+roll,,,
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0002:2:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0003:3:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0004:4:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0005:5:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0006:6:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0007:7:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+# unknown (sp)
+# (sp) -> tos --> _2_roll(rot) + hl -> tos
+roll,,,
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0003:2:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_ROT,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0004:3:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_ROT,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0005:4:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_ROT,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0006:5:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_ROT,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0007:6:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_ROT,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0008:7:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_ROT,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+# unknown (sp+2)
+# (sp+2) -> tos --> _3_roll + hl -> tos
+roll,,,
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0004:2:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_3_ROLL_2OVER_NIP_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0005:3:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_3_ROLL_2OVER_NIP_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0006:4:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_3_ROLL_2OVER_NIP_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0007:5:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_3_ROLL_2OVER_NIP_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0008:6:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_3_ROLL_2OVER_NIP_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0009:7:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NIP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_3_ROLL_2OVER_NIP_SWAP,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+
+# unknown (sp+4)
+# (sp+4) -> tos --> _4_roll + hl -> tos
+roll,,,
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0005:2:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_4_ROLL,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0006:3:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_4_ROLL,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0007:4:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_4_ROLL,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0008:5:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_4_ROLL,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x0009:6:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_4_ROLL,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+                
+            __T_NAME(0):__T_HEX_REVERSE_1(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:0x000A:7:__TOKEN_ROLL,  {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP_PUSH_SWAP},          
+                __dtto,__DROP_1_PAR(__T_ARRAY(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_4_ROLL,__CONCATENATE_WITH({ },__T_INFO(1){ }$2))},
+
+# other
+roll,,,
+            __T_NAME(0):eval(__T_ITEMS(0)+0>1):$1,    __TOKEN_PUSHS:1:__TOKEN_ROLL,   {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_ROLL},           
+                __CONCATENATE_WITH({ },__T_REVERSE_1(1){ }$2),__T_REVERSE_1(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__TOKEN_PUSHS,__T_INFO(1){ drop},__DROP_1_PAR(__T_ARRAY(1)))},
+
+
 +4,2 1 0 0 pick,,
 +3,2 1 0 1 pick,,
 +2,2 1 0 2 pick,,
@@ -1450,6 +1594,9 @@ o...,,,
 
 dnl # R...
 r...,,,
+            __T_NAME(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:1:__TOKEN_ROLL,         {__SET_TOKEN({__TOKEN_PUSH_ROLL},__T_INFO(0){ }$2,__T_ARRAY(0))},
+
+
             __T_NAME(0):__T_ITEMS(0):$1,   __TOKEN_PUSHS:1:__TOKEN_NROT,   {__SET_TOKEN({__TOKEN_PUSH_NROT},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
 
             __T_NAME(0)-$1,{__TOKEN_ROT-__TOKEN_DROP},{__SET_TOKEN({__TOKEN_ROT_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
@@ -1643,7 +1790,8 @@ num 4pick c!,,,
 
 dnl # S...
 s...,,,
-            __T_NAME(0):$1, __TOKEN_SWAP:__TOKEN_SWAP,     {__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1, __TOKEN_SWAP:__TOKEN_SWAP,      {__DELETE_LAST_TOKEN},
+            __T_NAME(0):$1, __TOKEN_2OVER_NIP:__TOKEN_SWAP, {__SET_TOKEN({__TOKEN_2OVER_NIP_SWAP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
             __T_NAME(1):__T_NAME(0):$1,             __TOKEN_ZLE:__TOKEN_S_TO_Z:__TOKEN_ZNEGATE,                           {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_ZLE_NEGATE_S_TO_Z},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
             __T_NAME(1):__T_NAME(0):$1,             __TOKEN_ZGE:__TOKEN_S_TO_Z:__TOKEN_ZNEGATE,                           {__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_ZGE_NEGATE_S_TO_Z},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0),$2)){}__DELETE_LAST_TOKEN},
