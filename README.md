@@ -211,6 +211,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>       `287454020.`       |<sub> PUSHDOT(`287454020`)|<sub>                  |<sub>            ( -- `0x1122` `0x3344`|
 |<sub>           pick           |<sub>         PICK        |<sub>                  |<sub>          ( u -- xu )             |
 |<sub>         `2` pick         |<sub>                     |<sub>  PUSH_PICK(`2`)  |<sub>   ( x2 x1 x0 -- x2 x1 x0 x2 )    |
+|<sub>           roll           |<sub>         ROLL        |<sub>                  |<sub> ( xu .. x0 u -- xu-1 .. x0 xu )  |
 |<sub>          depth           |<sub>        DEPTH        |<sub>                  |<sub>            ( -- x )              |
 
 |<sub>        Original          |<sub>    M4 FORTH         |<sub>  Data stack                  |<sub> Return address stack |
