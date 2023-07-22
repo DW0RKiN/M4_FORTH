@@ -6,7 +6,13 @@ BEGIN {
   reserved_words["WAIT"]        = "WAIT"                # not standard   
   reserved_words["MS"]          = "PUSH(20) UDIV WAIT"  # for compatibility with facility ext   
   reserved_words["ROLL"]        = "ROLL"                # core ext   
-
+  reserved_words["BOUNDS"]      = "OVER ADD SWAP ;# bounds ( addr u -- addr+u addr ) (ready for \"do\")\n"   # not standard
+  reserved_words["[']"]         = "[']"                 # problem...
+  reserved_words["'"]           = "'"                   # problem...
+  reserved_words["["]           = ""                    # ignore
+  reserved_words["]"]           = ""                    # ignore
+  reserved_words["LITERAL"]     = ""                    # ignore
+  
   reserved_words["ABORT"]       = "BYE ;# Originally ABORT\n"  # After compilation, there is no difference between ABORT and BYE.  
 #   reserved_words["ABORT\""]     = It's complicated, it has to be read as a string --> "IF PRINT({"..."}) BYE THEN ;# Originally ABORTq\n"  # After compilation, there is no difference between ABORT and BYE.  
   reserved_words["ALIGN"]       = "ALIGN"           # + integer --> ALIGN(integer)
@@ -93,7 +99,6 @@ BEGIN {
   reserved_words["CONSTANT"]    = "CONSTANT"
   reserved_words["[CHAR]"]      = ""
   reserved_words["CHAR"]        = ""
-  reserved_words["BOUNDS"]      = "OVER ADD SWAP"   # not standard
   
   reserved_words["INVERT"]      = "INVERT" 
   reserved_words["LSHIFT"]      = "LSHIFT"
@@ -125,8 +130,8 @@ BEGIN {
   reserved_words["*/"]          = "MULDIV ;# Warning: Truncated division, not Floor division\n"
   reserved_words["*/MOD"]       = "MULDIVMOD ;# Warning: Truncated division, not Floor division\n"
 
-  reserved_words["2/"]          = "_2DIV"
-  reserved_words["2*"]          = "_2MUL"
+  reserved_words["2/"]          = " PUSH(2) DIV"     # to activate optimizations in tokens (ta mezera je tam aby si constant nemyslel ze je to push)
+  reserved_words["2*"]          = " PUSH(2) MUL"     # to activate optimizations in tokens
 
   reserved_words["/MOD"]        = "DIVMOD"
   reserved_words["U*"]          = "MUL"             # not standard
@@ -140,9 +145,10 @@ BEGIN {
   reserved_words["FM/MOD"]      = "FMDIVMOD"
   reserved_words["SM/REM"]      = "SMDIVREM"
   reserved_words["UM/MOD"]      = "UMDIVMOD"
+  
+  reserved_words["256/"]        = " PUSH(256) DIV"  # to activate optimizations in tokens (ta mezera je tam aby si constant nemyslel ze je to push)
+  reserved_words["256*"]        = " PUSH(256) MUL"  # to activate optimizations in tokens
 
-  reserved_words["256/"]        = "_256DIV"         # not standard
-  reserved_words["256*"]        = "_256MUL"         # not standard
   reserved_words[":"]           = "COLON"
   reserved_words["LEAVE"]       = "LEAVE"
   reserved_words["RECURSE"]     = "RECURSE"  
@@ -231,7 +237,7 @@ BEGIN {
   reserved_words["CELLS"]       = "CELLS"
   
   reserved_words["HEX"]         = "HEX"                 # limited support for combination "hex (u)(d)." not as a permanent output setting parameter
-  reserved_words["BL"]          = "PUSH(' ')"           # for compatibility with the standard
+  reserved_words["BL"]          = "' '"                 # for compatibility with the standard
 
   reserved_words["T{"]          = "TEST_START"          # not standard
   reserved_words["->"]          = "TEST_EQ"             # not standard
@@ -584,7 +590,12 @@ function Name2Readable(name,readable_name)
         else if ( name_char == "*"    ) readable_name = readable_name "_AST"    #2A Asterisk
         else if ( name_char == "+"    ) readable_name = readable_name "_PLS"    #2B Plus
         else if ( name_char == ","    ) readable_name = readable_name "_CM"     #2C Comma
-        else if ( name_char == "-"    ) readable_name = readable_name "_MNS"    #2D Hyphen-minus
+        else if ( name_char == "-"    ) {
+            if ( j<length(name) )
+                readable_name = readable_name "_"       #2D Hyphen
+            else
+                readable_name = readable_name "_MNS"    #2D minus
+        }
         else if ( name_char == "."    ) readable_name = readable_name "_DOT"    #2E Period, dot or full stop
         else if ( name_char == "/"    ) readable_name = readable_name "_DIV"    #2F Slash or divide            
         else if ( name_char == "0"    ) readable_name = readable_name "_0"      #30 Zero
@@ -597,7 +608,6 @@ function Name2Readable(name,readable_name)
         else if ( name_char == "7"    ) readable_name = readable_name "_7"      #37 Seven
         else if ( name_char == "8"    ) readable_name = readable_name "_8"      #38 Eight
         else if ( name_char == "9"    ) readable_name = readable_name "_9"      #39 Nine
-        # A..Z 
         else if ( name_char == ":"    ) readable_name = readable_name "_CLN"    #3A Colon
         else if ( name_char == ";"    ) readable_name = readable_name "_SCLN"   #3B Semicolon
         else if ( name_char == "<"    ) readable_name = readable_name "_LT"     #3C Less than (or open angled bracket)
@@ -605,13 +615,14 @@ function Name2Readable(name,readable_name)
         else if ( name_char == ">"    ) readable_name = readable_name "_GT"     #3E Greater than (or close angled bracket)
         else if ( name_char == "?"    ) readable_name = readable_name "_QM"     #3F Question mark
         else if ( name_char == "@"    ) readable_name = readable_name "_AT"     #40 At sign
-        # a..z 
+        # A..Z 
         else if ( name_char == "["    ) readable_name = readable_name "_LS"     #5B Opening bracket
         else if ( name_char == "\\"   ) readable_name = readable_name "_BSL"    #5C Backslash
         else if ( name_char == "]"    ) readable_name = readable_name "_RS"     #5D Closing bracket
         else if ( name_char == "^"    ) readable_name = readable_name "_HAT"    #5E Caret - circumflex
         # _             
         else if ( name_char == "`"    ) readable_name = readable_name "_GRV"    #60 Grave accent
+        # a..z
         else if ( name_char == "{"    ) readable_name = readable_name "_LC"     #7B Opening brace
         else if ( name_char == "|"    ) readable_name = readable_name "_VBAR"   #7C Vertical bar
         else if ( name_char == "}"    ) readable_name = readable_name "_RC"     #7D Closing () brace
@@ -624,7 +635,7 @@ function Name2Readable(name,readable_name)
             readable_name = readable_name "_X" name_char
         }
     }
-    return readable_name
+    return "_" readable_name
 }
 
 
@@ -648,7 +659,7 @@ function process_word()
     if (in_comment) {
         if (in_comment==1 && inside_word_definition && fce_count > 2 && fce_words[fce_count-2] == "COLON" ) {
             if ( in_comment == 1 ) {
-                new_word = ",({{{{" word "}}}})"
+                new_word = ",({{{{ " word "}}}})"
                 leading_spaces = "" # no use leading_spaces
             }
             else {
@@ -778,8 +789,14 @@ function process_word()
         if ( collision_check[readable_name] != word )
             print "\n\nError in " FILENAME " at line " NR ": Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"   
 
-        if ( substr(reserved_value[readable_name], length(reserved_value[readable_name])-1) == "((" )
-            new_word = reserved_value[readable_name] readable_name "))"     # PUSHDOT((addr_name)) or PUSH((addr_name))
+        if ( substr(reserved_value[readable_name], length(reserved_value[readable_name])-1) == "((" ) {
+            if ( last_upword == "'" || ( inside_word_definition && last_upword == "[']") ) {
+                change_previous_word("")
+                new_word = substr(reserved_value[readable_name],1,length(reserved_value[readable_name])-1) readable_name ")"
+            }
+            else
+                new_word = reserved_value[readable_name] readable_name "))"     # PUSHDOT((addr_name)) or PUSH((addr_name))
+        }
         else
             new_word = reserved_value[readable_name] readable_name ")"      # PUSH(create_label)
     }
@@ -787,6 +804,11 @@ function process_word()
         if ( collision_check[readable_name] != word )
             print "\n\nError in " FILENAME " at line " NR ": Accidental match in the transliteration of the word: \"" word "\" -> \"" readable_name "\"" > "/dev/stderr"        
 
+        if ( last_upword == "[']" ) {
+            change_previous_word("")
+            new_word = "PUSH(" readable_name ")"
+        }
+        else           
             new_word = reserved_functions[readable_name] readable_name ")"
     }
     else if (word == ":" ) { 
@@ -823,12 +845,7 @@ function process_word()
     }
     else if ( upword == "WORD" || upword == "PARSE" ) {
 
-        string_end = ""
-        if ( inside_word_definition ) {
-            if ( fce_count > 1 ) string_end = fce_words[fce_count-1]
-        }
-        else if ( main_count > 1 )
-            string_end = main_words[main_count-1]
+        string_end = find_previous_word()
 
         if ( string_end == "BL" )
             string_end = " "
@@ -923,6 +940,26 @@ function process_word()
     leading_spaces = char
     word = ""
     upword = ""
+}
+
+
+function change_previous_word(new) {
+    if ( inside_word_definition ) {
+        if ( fce_count > 1 ) fce_words[fce_count-1] = new
+    }
+    else { 
+        if ( main_count > 1 ) main_words[main_count-1] = new
+    }
+}
+
+
+function find_previous_word() {
+    if ( inside_word_definition ) {
+        if ( fce_count > 1 ) return fce_words[fce_count-1]
+    }
+    else if ( main_count > 1 )
+        return main_words[main_count-1]
+    return ""
 }
 
 
@@ -1188,7 +1225,7 @@ END {
 #         printf "  THEN\n"
 #         printf "SEMICOLON"
 #     
-# #         printf "COLON(floor,({{{{f -- n }}}}))
+# #         printf "COLON(floor,({{{{ f -- n }}}}))
 # #         printf "  DUP _0LT IF\n"
 # #         printf "    FNEGATE PUSH(0x3FFF) ;# = 0.999E\n"
 # #         printf "FADD FTRUNC_ABS FNEGATE\n"
