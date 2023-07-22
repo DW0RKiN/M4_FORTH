@@ -1170,7 +1170,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING($*))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
 __{}    push DE             ; 1:11      print     ifelse(eval(len($*)<60),{1},$*)
 __{}    ld   BC, size{}__STRING_MATCH    ; 3:10      print     Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      print     Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
@@ -1198,7 +1198,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
 __{}define({USE_PRINT_Z},{}){}dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z($*))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*}))
 __{}    ld   BC, string{}__STRING_MATCH  ; 3:10      print_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    call PRINT_STRING_Z ; 3:17      print_z{}dnl
 })}){}dnl
@@ -1222,7 +1222,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I($*)){}dnl
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*})){}dnl
 __{}define({USE_PRINT_I},{})
 __{}    ld   BC, string{}__STRING_MATCH  ; 3:10      print_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    call PRINT_STRING_I ; 3:17      print_i{}dnl
@@ -1246,7 +1246,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING($*))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
 __{}    push DE             ; 1:11      __INFO    ( -- addr size )
 __{}    push HL             ; 1:11      __INFO    ifelse(eval(len({$*})<60),{1},{$*})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      __INFO    Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
@@ -1272,7 +1272,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING($*))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
 __{}    push DE             ; 1:11      __INFO    ( -- addr size )
 __{}    ex   DE, HL         ; 1:4       __INFO    ifelse(eval(len({$*})<60),{1},{$*})
 __{}    ld   HL, string{}__STRING_MATCH  ; 3:10      __INFO    Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
@@ -1297,7 +1297,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z($*))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*}))
 __{}    push DE             ; 1:11      string_z   ( -- addr )
 __{}    ex   DE, HL         ; 1:4       string_z   ifelse(eval(len({$*})<60),{1},{$*})
 __{}    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_z   Address of null-terminated string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
@@ -1321,7 +1321,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z($*))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_Z({$*}))
 __{}                        ;           string_z drop   ( -- )   {}dnl
 __{}ifelse(__STRING_LAST,__STRING_MATCH,{dnl
 __{}__{}Allocate null-terminated string{}__STRING_LAST},
@@ -1347,7 +1347,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I($*))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*}))
 __{}    push DE             ; 1:11      string_i   ( -- addr )
 __{}    ex   DE, HL         ; 1:4       string_i   ifelse(eval(len({$*})<60),{1},{$*})
 __{}    ld   HL, format({%-11s},string{}__STRING_MATCH); 3:10      string_i   Address of string{}__STRING_LAST ending with inverted most significant bit{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH}){}dnl
@@ -1370,7 +1370,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 {$1},{},{
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
-__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I($*))
+__{}__ALLOCATE_STRING(__CONVERSION_TO_STRING_I({$*}))
 __{}                        ;           string_i drop   ( -- )   {}dnl
 __{}ifelse(__STRING_LAST,__STRING_MATCH,{dnl
 __{}__{}Allocate string{}__STRING_LAST ending with inverted most significant bit},
@@ -2821,9 +2821,15 @@ __{}__HEX_HL($1),0x0000,{
 __{}    ei                  ; 1:4       __INFO   ( -- )
 __{}    halt                ; 1:70000   __INFO   0 .. 0.02 seconds},
 
+__{}__HEX_HL($1),0x0100,{
+__{}    ei                  ; 1:4       __INFO   ( -- )
+__{}    ld    B, 0x00       ; 2:7       __INFO   256x
+__{}    halt                ; 1:70000   __INFO   0 .. 0.02 seconds
+__{}    djnz $-1            ; 2:8/13    __INFO},
+
 __{}__HEX_H($1),0x00,{
 __{}    ei                  ; 1:4       __INFO   ( -- )
-__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
+__{}    ld    B, __HEX_L($1)       ; 2:7       __INFO   $1x
 __{}    halt                ; 1:70000   __INFO   0 .. 0.02 seconds
 __{}    djnz $-1            ; 2:8/13    __INFO},
 

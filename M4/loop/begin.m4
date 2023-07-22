@@ -133,24 +133,49 @@ __{}__ADD_TOKEN({__TOKEN_PUSH2_WITHIN_UNTIL},{$1 $2 within until},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH2_WITHIN_UNTIL},{dnl
 __{}define({__INFO},{$1 $2 within until}){}dnl
-ifelse(dnl
-BEGIN_STACK,{BEGIN_STACK},{
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0}($@) for non-existent {BEGIN}},
-$1,{},{
+__{}$1,{},{
 __{}  .error {$0}(): Missing parameter!},
-$#,{1},{
+__{}$#,{1},{
 __{}  .error {$0}($@): The second parameter is missing!},
-eval($#>2),{1},{
+__{}eval($#>2),{1},{
 __{}  .error {$0}($@): $# parameters found in macro!},
-{dnl
-__{}define({_TMP_INFO},{$1 $2 within until}){}dnl
-__{}__{}define({PUSH2_WITHIN_UNTIL_CODE},__WITHIN($1,$2))
-__{}                        ;format({%-11s},[eval(5+__WITHIN_B):eval(24+__WITHIN_C)])_TMP_INFO   ( {TOS} -- )  true=($1<={TOS}<$2){}dnl
-__{}PUSH2_WITHIN_UNTIL_CODE
-__{}    ex   DE, HL         ; 1:4       _TMP_INFO
-__{}    pop  DE             ; 1:10      _TMP_INFO
-__{}    jp   nc, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
-__{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
+__{}{dnl
+__{}__{}define({_TMP_INFO},{$1 $2 within until}){}dnl
+__{}__{}__{}define({PUSH2_WITHIN_UNTIL_CODE},__WITHIN($1,$2))
+__{}__{}                        ;format({%-11s},[eval(5+__WITHIN_B):eval(24+__WITHIN_C)])_TMP_INFO   ( {TOS} -- )  true=($1<={TOS}<$2){}dnl
+__{}__{}PUSH2_WITHIN_UNTIL_CODE
+__{}__{}    ex   DE, HL         ; 1:4       _TMP_INFO
+__{}__{}    pop  DE             ; 1:10      _TMP_INFO
+__{}__{}    jp   nc, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
+__{}__{}break{}BEGIN_STACK:               ;           _TMP_INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # and until
+define({AND_UNTIL},{dnl
+__{}__ADD_TOKEN({__TOKEN_AND_UNTIL},{and until},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_AND_UNTIL},{dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},( flag2 flag1 -- )){}dnl
+__{}__{}__MAKE_CODE_AND_DROP_JP_FALSE(begin{}BEGIN_STACK)
+__{}__{}break{}BEGIN_STACK:               ;           __INFO{}dnl
+__{}__{}popdef({BEGIN_STACK}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -1370,6 +1395,25 @@ ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
     jp    z, break{}BEGIN_STACK   ; 3:10      __INFO   zf = false})}){}dnl
+dnl
+dnl
+dnl # and while
+define({AND_WHILE},{dnl
+__{}__ADD_TOKEN({__TOKEN_AND_WHILE},{and while},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_AND_WHILE},{dnl
+__{}define({__INFO},__COMPILE_INFO{(BEGIN_STACK)}){}dnl
+__{}ifelse(dnl
+__{}BEGIN_STACK,{BEGIN_STACK},{
+__{}  .error {$0}($@) for non-existent {BEGIN}},
+__{}eval($#>1),1,{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}{dnl
+__{}__{}define({_TMP_STACK_INFO},( flag2 flag1 -- )){}dnl
+__{}__{}__MAKE_CODE_AND_DROP_JP_FALSE(break{}BEGIN_STACK){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # ( flag -- flag )

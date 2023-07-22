@@ -219,7 +219,9 @@ dnl
 dnl
 dnl # ( u -- u*size_of(cell) )
 define({CELLS},{dnl
-__{}__ADD_TOKEN({__TOKEN_2MUL},{cells})}){}dnl
+__{}__ADD_TOKEN({__TOKEN_PUSHS},{cells},2){}dnl
+__{}__ADD_TOKEN({__TOKEN_MUL},{__dtto}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
