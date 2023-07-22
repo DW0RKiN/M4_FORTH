@@ -21,32 +21,45 @@ __{}__ADD_TOKEN({__TOKEN_REXECUTE},{rexecute},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_REXECUTE},{dnl
-__{}define({__INFO},{rexecute}){}dnl
-
-                       ;[10:55]     rexecute  ( addr -- ) R:( -- ret )
-    ld format({%-17s},{($+6),HL}); 3:16      rexecute
-    ex   DE, HL         ; 1:4       rexecute
-    pop  DE             ; 1:10      rexecute
-    call 0x0000         ; 3:17      rexecute
-    ex   DE, HL         ; 1:4       rexecute
-    exx                 ; 1:4       rexecute  R:( ret -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                       ;[10:55]     __INFO  ( addr -- ) R:( -- ret )
+    ld  ($+6),HL        ; 3:16      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    call 0x0000         ; 3:17      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO  R:( ret -- )}){}dnl
 dnl
 dnl
 dnl # ( addr -- addr )
 dnl # recursion call function
 define({DUP_REXECUTE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_REXECUTE},{dup_rexecute},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_REXECUTE},{dup rexecute},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_REXECUTE},{dnl
-__{}define({__INFO},{dup_rexecute}){}dnl
-
-                        ;[5:25]     dup_rexecute  ( addr -- ) R:( -- )
-    ld   BC, $+5        ; 3:10      dup_rexecute
-    push BC             ; 1:11      dup_rexecute
-    jp  (HL)            ; 1:4       dup_rexecute
-    ex   DE, HL         ; 1:4       dup_rexecute
-    exx                 ; 1:4       dup_rexecute  R:( ret -- )}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:25]     __INFO  ( addr -- ) R:( -- )
+    ld   BC, $+5        ; 3:10      __INFO
+    push BC             ; 1:11      __INFO
+    jp  (HL)            ; 1:4       __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO  R:( ret -- )}){}dnl
+dnl
+dnl
+dnl # ( addr x -- addr x )
+dnl # recursion call function
+define({OVER_REXECUTE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_REXECUTE},{over rexecute},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_REXECUTE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[9:45]     __INFO  ( addr -- ) R:( -- )
+    ld  ($+5),DE        ; 4:20      __INFO
+    call 0x0000         ; 3:17      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    exx                 ; 1:4       __INFO  R:( ret -- )}){}dnl
 dnl
 dnl
 dnl # ( -- )
@@ -171,28 +184,39 @@ __{}__ADD_TOKEN({__TOKEN_EXECUTE},{execute},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_EXECUTE},{dnl
-__{}define({__INFO},{execute}){}dnl
-
-                        ;[8:47]     execute  ( addr -- )
-    ld format({%-17s},{($+6),HL}); 3:16      execute
-    ex   DE, HL         ; 1:4       execute
-    pop  DE             ; 1:10      execute
-    call 0x0000         ; 3:17      execute}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[8:47]     __INFO  ( addr -- )
+    ld  ($+6),HL        ; 3:16      __INFO
+    ex   DE, HL         ; 1:4       __INFO
+    pop  DE             ; 1:10      __INFO
+    call 0x0000         ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # ( addr -- addr )
 dnl # no recursion call function
 define({DUP_EXECUTE},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_EXECUTE},{dup_execute},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_DUP_EXECUTE},{dup execute},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_DUP_EXECUTE},{dnl
-__{}define({__INFO},{dup_execute}){}dnl
-
-                        ;[5:25]     dup_execute  ( addr -- addr )
-    ld   BC, $+5        ; 3:10      dup_execute
-    push BC             ; 1:11      dup_execute
-    jp  (HL)            ; 1:4       dup_execute}){}dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[5:25]     __INFO  ( addr -- addr )
+    ld   BC, $+5        ; 3:10      __INFO
+    push BC             ; 1:11      __INFO
+    jp  (HL)            ; 1:4       __INFO}){}dnl
+dnl
+dnl
+dnl # ( addr x -- addr x )
+dnl # no recursion call function
+define({OVER_EXECUTE},{dnl
+__{}__ADD_TOKEN({__TOKEN_OVER_EXECUTE},{over execute},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_OVER_EXECUTE},{dnl
+__{}define({__INFO},__COMPILE_INFO)
+                        ;[7:37]     __INFO  ( addr x -- addr x )
+    ld  ($+5),DE        ; 4:20      __INFO
+    call 0x0000         ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl # ( -- )
