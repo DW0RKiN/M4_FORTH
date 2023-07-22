@@ -122,11 +122,11 @@ define({CONSTANT},{dnl
 __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing parameters!},
 __{}$#,{1},{dnl
-__{}__{}__ADD_TOKEN({__TOKEN_CONSTANT},{constant $1},$@)},
+__{}__{}__ADD_TOKEN({__TOKEN_CONSTANT},{constant $1},{$1})},
 __{}eval($#>2),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{
-__{}__{}format({%-20s},$1) EQU $2{}dnl
+__{}__{}format({%-20s},{$1}) EQU $2{}dnl
 __{}__{}define({$1},{$2}){}dnl
 __{}}){}dnl
 }){}dnl
@@ -139,8 +139,9 @@ __{}$#,{1},{
 __{}__{}  .error {$0}($@): The second parameter is missing!},
 __{}eval($#>2),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}{
-__{}__{}format({%-20s},$1) EQU $2{}dnl
+__{}ifdef({$1},0,1),1,{
+__{}__{}  .warning {$0}($@): Finding value too late! Skip all optimizations!
+__{}__{}format({%-20s},{$1}) EQU $2{}dnl
 __{}__{}define({$1},{$2}){}dnl
 __{}}){}dnl
 }){}dnl
