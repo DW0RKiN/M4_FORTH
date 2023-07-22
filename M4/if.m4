@@ -20,6 +20,33 @@ __{}pushdef({THEN_STACK}, IF_COUNT)
 dnl
 dnl
 dnl
+dnl # if $1 else $2 then
+define({IF_PUSH_ELSE_PUSH_THEN},{dnl
+__{}__ADD_TOKEN({__TOKEN_IF_PUSH_ELSE_PUSH_THEN},{if $1 else $2 then},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_IF_PUSH_ELSE_PUSH_THEN},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
+__{}define({$0_TRUE},__LD_R16({HL},$1)){}dnl
+__{}define({$0_FALSE},__LD_R16({HL},$2)){}dnl
+__{}pushdef({THEN_STACK}, IF_COUNT)
+__{}    ld    A, H          ; 1:4       __INFO   ( flag -- x )
+__{}    or    L             ; 1:4       __INFO{}dnl
+__{}ifelse(__IS_MEM_REF($1):__IS_MEM_REF($2),1:0,{dnl
+__{}__{}$0_FALSE   false
+__{}__{}    jr    z, format({%-11s},endif{}IF_COUNT); 2:7/12    __INFO{}dnl
+__{}__{}$0_TRUE   true},
+__{}{dnl
+__{}__{}$0_TRUE   true
+__{}__{}    jr   nz, format({%-11s},endif{}IF_COUNT); 2:7/12    __INFO{}dnl
+__{}__{}$0_FALSE   false})
+__{}format({%-24s},endif{}THEN_STACK:);           __INFO{}dnl
+__{}popdef({THEN_STACK}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 dnl # if zero_flag
 define({ZF_IF},{dnl
 __{}__ADD_TOKEN({__TOKEN_ZF_IF},{zf if},$@){}dnl
