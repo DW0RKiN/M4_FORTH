@@ -243,7 +243,7 @@ regexp([{$1}],[{^')'$}]),0,[{define([{$0_INFO}],char right parenthesis)0x29}],
 
 [{dnl
 define([{$0_INFO}],char [{$1}])[{}]dnl
-esyscmd(printf "0x%02X" \'$1)}])[{}]dnl
+esyscmd(printf "0x%02X" \'[{$1}])}])[{}]dnl
 __M4_FORTH_QUOTE()dnl
 }){}dnl
 dnl
@@ -258,9 +258,10 @@ __GET_HEX_ASCII_CODE(\n)
 __GET_HEX_ASCII_CODE('\n')
 __GET_HEX_ASCII_CODE('\\n')
 __GET_HEX_ASCII_CODE({'\n'})
-__GET_HEX_ASCII_CODE($1)
-__GET_HEX_ASCII_CODE('$1')
-__GET_HEX_ASCII_CODE('\$1')
+__GET_HEX_ASCII_CODE({$1})
+>>__GET_HEX_ASCII_CODE({'$1'})<<
+__GET_HEX_ASCII_CODE({'\$1'})
+PUSH({'$1'}){}dnl
 changequote()dnl
 changequote([{,}])dnl
 >>[{}]<<
