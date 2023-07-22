@@ -237,7 +237,7 @@ BEGIN {
   reserved_words["CELLS"]       = "CELLS"
   
   reserved_words["HEX"]         = "HEX"                 # limited support for combination "hex (u)(d)." not as a permanent output setting parameter
-  reserved_words["BL"]          = "' '"                 # for compatibility with the standard
+  reserved_words["BL"]          = "PUSH(' ')"           # for compatibility with the standard
 
   reserved_words["T{"]          = "TEST_START"          # not standard
   reserved_words["->"]          = "TEST_EQ"             # not standard
