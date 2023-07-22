@@ -1,4 +1,7 @@
-changequote(`{', `}')dnl
+changequote({,})dnl
+define({__M4_FORTH_QUOTE},{changequote({,})}){}dnl
+changecom(){}dnl
+changecom(;#){}dnl
 dnl
 sinclude(./path0.m4)dnl
 sinclude(./M4/path1.m4)dnl
