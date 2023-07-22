@@ -445,7 +445,20 @@ BEGIN {
             }
             else
             {
-                word = word char
+                if ( char == "{" )
+                {
+                    word = word "\",0x7B,\""
+                }
+                else if ( char == "}" ) 
+                {
+                    word = word "\",0x7D,\""
+                }
+                else if ( ( char ~ /[0-9#@]/ ) && ( word ~ /\$$/ ) ) 
+                {
+                    word = word "\",\"" char
+                }
+                else
+                    word = word char
                 upword = upword upchar
             }
             continue
@@ -537,13 +550,11 @@ BEGIN {
 
 function Name2Readable(name,readable_name) 
 {
-    readable_name=""
+    readable_name="_"
 
     for (j=1; j<=length(name); j++) {
         name_char = substr(name, j, 1);
-        if ( j == 1 && name_char ~ /^[a-zA-Z_]$/ )
-            readable_name = name_char
-        else if ( j > 1 && name_char ~ /^[0-9a-zA-Z_]$/ )
+        if ( name_char ~ /^[0-9a-zA-Z_]$/ )
             readable_name = readable_name name_char
         else if ( name_char == "\000" ) readable_name = readable_name "_NUL"    #00 Null character
         else if ( name_char == "\001" ) readable_name = readable_name "_SOH"    #01 Start of Heading
@@ -591,10 +602,12 @@ function Name2Readable(name,readable_name)
         else if ( name_char == "+"    ) readable_name = readable_name "_PLS"    #2B Plus
         else if ( name_char == ","    ) readable_name = readable_name "_CM"     #2C Comma
         else if ( name_char == "-"    ) {
-            if ( j<length(name) )
-                readable_name = readable_name "_"       #2D Hyphen
-            else
+            if ( j == 1 )
+                readable_name = readable_name "MNS_"    #2D minus
+            else if ( j == length(name) )
                 readable_name = readable_name "_MNS"    #2D minus
+            else
+                readable_name = readable_name "_"       #2D Hyphen
         }
         else if ( name_char == "."    ) readable_name = readable_name "_DOT"    #2E Period, dot or full stop
         else if ( name_char == "/"    ) readable_name = readable_name "_DIV"    #2F Slash or divide            
@@ -635,7 +648,7 @@ function Name2Readable(name,readable_name)
             readable_name = readable_name "_X" name_char
         }
     }
-    return "_" readable_name
+    return readable_name
 }
 
 
@@ -683,6 +696,16 @@ function process_word()
         else if ( string_type == "CHAR" ) {
             if ( substr(word,1,1) == "\"" )
                 new_word = "PUSH(\47\"\47)"
+            else if ( substr(word,1,1) == "," )
+                new_word = "PUSH({\47,\47})"
+            else if ( substr(word,1,1) == "(" )
+                new_word = "PUSH({\47(\47})"
+            else if ( substr(word,1,1) == ")" )
+                new_word = "PUSH({\47)\47})"
+            else if ( substr(word,1,1) == "{" )
+                new_word = "PUSH(0x7B)"
+            else if ( substr(word,1,1) == "}" )
+                new_word = "PUSH(0x7D)"
             else
                 new_word = "PUSH(\47" substr(word,1,1) "\47)"
         }
