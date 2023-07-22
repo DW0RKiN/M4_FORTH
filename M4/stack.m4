@@ -5,7 +5,40 @@ dnl
 dnl # ( -- a )
 dnl # push(a) ulozi na zasobnik nasledujici polozku
 define({PUSH},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHS},__REMOVE_COMMA($@),$@){}dnl
+__{}ifelse($#<---:--->{$1},1<---:--->,{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}{$1},{},{
+__{}__{}  .error {$0}($@): Empty parameter!},
+__{}eval($#>=1),1,{dnl
+
+__{}__{}ifelse(dnl
+__{}__{}{$1},__CR,{dnl  #  push(\n)
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
+
+__{}__{}{$1},{"}__CR{"},{dnl  #  push("\n")
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
+
+__{}__{}{$1},{'}__CR{'},{dnl  #  push('\n')
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
+
+__{}__{}{$1},{,},{dnl  ;#  push('(')
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char comma},0x2C)},
+
+__{}__{}{$1},{'\},{dnl  ;#  push(')')
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char right parenthesis},0x29)},
+
+__{}__{}regexp({$1},{^'.+'$}),0,{dnl  #  push('char')
+__{}__{}__{}define({$0_CHAR},{__GET_HEX_ASCII_CODE({$1})}){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
+
+__{}__{}regexp({$1},{^".+"$}),0,{dnl  #  push("char")
+__{}__{}__{}define({$0_CHAR},{__GET_HEX_ASCII_CODE({$1})}){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
+
+__{}__{}{dnl # number or variable number
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},$1,$1)}){}dnl
+__{}__{}ifelse(eval($#>1),1,{$0(shift($@))}){}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_PUSH},{dnl
@@ -3594,19 +3627,19 @@ define({_0_ROLL},{dnl
 }){}dnl
 dnl
 dnl
-dnl # 1 roll ( b a -- b a )
+dnl # 1 roll ( b a -- b a ) = swap
 define({_1_ROLL},{dnl
 __{}__ADD_TOKEN({__TOKEN_SWAP},{1 roll},$@){}dnl
 }){}dnl
 dnl
 dnl
-dnl # 2 roll ( c b a -- b a c )
+dnl # 2 roll ( c b a -- b a c ) = rot
 define({_2_ROLL},{dnl
 __{}__ADD_TOKEN({__TOKEN_ROT},{2 roll},$@){}dnl
 }){}dnl
 dnl
 dnl
-dnl # 3 roll ( d c b a -- c b a d )
+dnl # 3 roll ( d c b a -- c b a d ) = -rot 2swap swap
 define({_3_ROLL},{dnl
 __{}__ADD_TOKEN({__TOKEN_3_ROLL},{3 roll},$@){}dnl
 }){}dnl
@@ -3735,7 +3768,48 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 
-__{}__IS_MEM_REF($1),1,{__ASM_TOKEN_PUSH($1){}__ASM_TOKEN_ROLL},
+__{}__IS_MEM_REF($1),1,{define({_TMP_INFO},__INFO)
+__{}__{}                     ;[22:145+u*42] __INFO   ( xu xu-1 .. x0 -- xu-1 .. x0 xu )
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({HL},$1)__CODE_16BIT   u
+__{}__{}    add  HL, HL         ; 1:11      __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO   BC = 2*u
+__{}__{}    add  HL, SP         ; 1:11      __INFO   HL = &xu = lo_addr(xu)
+__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&xu)++ = hi_addr(xu)
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    lddr                ; 2:u*42-5  __INFO   (DE--) = (HL--)
+__{}__{}    pop  HL             ; 1:10      __INFO 
+__{}__{}    pop  DE             ; 1:10      __INFO 
+__{}__{}    pop  AF             ; 1:10      __INFO},
+
+__{}__IS_NUM($1),0,{define({_TMP_INFO},__INFO)
+__{}__{}                     ;[21:127+$1*42] __INFO   ( x$1 x$1-1 .. x0 -- x$1-1 .. x0 x$1 )
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({HL},2*($1))__CODE_16BIT   2*$1
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO   BC = 2*$1
+__{}__{}    add  HL, SP         ; 1:11      __INFO   HL = &x$1 = lo_addr(x$1)
+__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&x$1)++ = hi_addr(x$1)
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    lddr                ; 2:u*42-5  __INFO   (DE--) = (HL--)
+__{}__{}    pop  HL             ; 1:10      __INFO 
+__{}__{}    pop  DE             ; 1:10      __INFO 
+__{}__{}    pop  AF             ; 1:10      __INFO},
 
 __{}__IS_NUM($1),0,{__ASM_TOKEN_PUSH($1){}__ASM_TOKEN_ROLL},
 
@@ -3754,21 +3828,22 @@ __{}__HEX_HL($1),0x0005,{__ASM_TOKEN_5_ROLL},
 
 __{}__HEX_HL($1),0x0006,{__ASM_TOKEN_6_ROLL},
 
-__{}{
-__{}__{}                       ;[22:format({%-7s},eval(127+($1)*42)]) __INFO   ( x$1 x{}eval($1-1) .. x0 -- x{}eval($1-1) .. x0 x$1 )
+__{}{define({_TMP_INFO},__INFO)
+__{}__{}                       ;[21:format({%-7s},eval(127+($1)*42)]) __INFO   ( x$1 x{}eval($1-1) .. x0 -- x{}eval($1-1) .. x0 x$1 )
 __{}__{}    push DE             ; 1:11      __INFO
-__{}__{}    push HL             ; 1:11      __INFO
-__{}__{}    ld   HL, __HEX_HL($1+$1)     ; 3:10      __INFO
-__{}__{}    add  HL, SP         ; 1:11      __INFO   HL = x$1 addr
-__{}__{}    ld    E, L          ; 1:4       __INFO
-__{}__{}    ld    D, H          ; 1:4       __INFO   DE = x$1 addr
-__{}__{}    dec  DE             ; 1:6       __INFO
-__{}__{}    ld    C,(HL)        ; 1:7       __INFO
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__LD_REG16({HL},2*($1))__CODE_16BIT   2*$1
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    ld    B, H          ; 1:4       __INFO   BC = 2*$1
+__{}__{}    add  HL, SP         ; 1:11      __INFO   HL = &x$1 = lo_addr(x$1)
+__{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    B,(HL)        ; 1:7       __INFO
-__{}__{}    push BC             ; 1:11      __INFO
-__{}__{}    ld   BC, __HEX_HL($1+$1)     ; 3:10      __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ld    E, L          ; 1:4       __INFO
+__{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&x$1)++ = hi_addr(x$1)
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    lddr                ; 2:format({%-8s},eval(($1)*42-5)){}__INFO   (DE--) = (HL--)
 __{}__{}    pop  HL             ; 1:10      __INFO 
 __{}__{}    pop  DE             ; 1:10      __INFO 
