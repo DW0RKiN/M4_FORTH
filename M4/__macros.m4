@@ -145,6 +145,134 @@ __{}1){}dnl
 dnl
 dnl
 dnl
+dnl # only in { }
+dnl # {'('}   --> 0x29
+dnl # {')'}   --> 0x29
+dnl # {','}   --> 0x2C
+dnl
+dnl # fail!!!
+dnl # }       --> fail!!!
+dnl # {       --> fail!!!
+dnl # "       --> fail!!!
+dnl
+dnl # \"      --> 0x22
+dnl # \'      --> 0x27
+dnl # '''     --> 0x27
+dnl # '\''    --> 0x27
+dnl # '\'     --> 0x5C
+dnl # \       --> 0x5C
+dnl # '\a'    --> 0x07
+dnl # '\n'    --> 0x0A
+dnl # 'H'     --> 0x48
+dnl # 'Hello' --> 0x48
+dnl # 'A'     --> 0x41
+dnl # 'Z'     --> 0x5A
+dnl # 'a'     --> 0x61
+dnl # 'z'     --> 0x7A
+dnl # A       --> 0x41
+dnl # Z       --> 0x5A
+dnl # a       --> 0x61
+dnl # z       --> 0x7A
+define({__GET_HEX_ASCII_CODE},{dnl
+define({$0_INFO},{}){}dnl
+changequote()dnl
+changequote([{,}])dnl
+ifelse(eval($#>1),1,[{dnl
+ifelse(dnl
+regexp([{$1}],[{^'.+'$}]),0,[{$0([{$1}])}],
+regexp([{$1}],[{^'[^'].+$}]),0,[{$0([{$1'}])}],
+regexp([{$1}],[{^[^'].+$}]),0,[{$0([{$1}])}],
+[{define([{$0_INFO}],char comma)0x2C}])}],
+
+[{$1}], [{,}],   [{define([{$0_INFO}],char comma)0x2C}],
+[{$1}], [{','}], [{define([{$0_INFO}],char comma)0x2C}],
+[{$1}], [{","}], [{define([{$0_INFO}],char comma)0x2C}],
+[{$1}], [{'\,'}],[{define([{$0_INFO}],char comma)0x2C}],
+[{$1}], [{"\,"}],[{define([{$0_INFO}],char comma)0x2C}],
+
+[{$1}], [{__CR}], [{define([{$0_INFO}],char new line)0x0D}],
+[{$1}],[{'__CR'}],[{define([{$0_INFO}],char new line)0x0D}],
+[{$1}],[{"__CR"}],[{define([{$0_INFO}],char new line)0x0D}],
+[{$1}],  [{\n}],  [{define([{$0_INFO}],char new line)0x0D}],
+[{$1}], [{'\n'}], [{define([{$0_INFO}],char new line)0x0D}],
+[{$1}], [{"\n"}], [{define([{$0_INFO}],char new line)0x0D}],
+[{$1}],[{'\\n'}], [{define([{$0_INFO}],char new line)0x0D}],
+
+[{$1}],  [{"}], [{define([{$0_INFO}],char double quote)0x22}],
+[{$1}],[{'\"'}],[{define([{$0_INFO}],char double quote)0x22}],
+
+[{$1}],  [{%}], [{define([{$0_INFO}],char '%')0x25}],
+[{$1}],[{'\%'}],[{define([{$0_INFO}],char '%')0x25}],
+
+[{$1}],  [{&}], [{define([{$0_INFO}],char '&')0x26}],
+[{$1}],[{'\&'}],[{define([{$0_INFO}],char '&')0x26}],
+
+[{$1}],  [{'}], [{define([{$0_INFO}],char single quote)0x27}],
+[{$1}], [{'''}],[{define([{$0_INFO}],char single quote)0x27}],
+[{$1}],[{'\''}],[{define([{$0_INFO}],char single quote)0x27}],
+
+[{$1}],[{'\*'}],[{define([{$0_INFO}],char '*')0x2A}],
+
+[{$1}],  [{>}], [{define([{$0_INFO}],char '>')0x3E}],
+[{$1}],[{'\>'}],[{define([{$0_INFO}],char '>')0x3E}],
+
+[{$1}],  [{;}], [{define([{$0_INFO}],char ';')0x3B}],
+[{$1}],[{'\;'}],[{define([{$0_INFO}],char ';')0x3B}],
+
+[{$1}],  [{<}], [{define([{$0_INFO}],char '<')0x3C}],
+[{$1}],[{'\<'}],[{define([{$0_INFO}],char '<')0x3C}],
+
+dnl [{$1}],  [{{}], [{define([{$0_INFO}],char left curly bracket)0x7B}],
+dnl [{$1}], [{'{'}],[{define([{$0_INFO}],char left curly bracket)0x7B}],
+dnl [{$1}],[{'\{'}],[{define([{$0_INFO}],char left curly bracket)0x7B}],
+--,-,never,
+
+[{$1}],  [{|}], [{define([{$0_INFO}],char '|')0x7C}],
+[{$1}],[{'\|'}],[{define([{$0_INFO}],char '|')0x7C}],
+
+dnl [{$1}],  [{}}], [{define([{$0_INFO}],char right curly bracket)0x7D}],
+dnl [{$1}], [{'}'}],[{define([{$0_INFO}],char right curly bracket)0x7D}],
+dnl [{$1}],[{'\}'}],[{define([{$0_INFO}],char right curly bracket)0x7D}],
+--,-,never,
+
+regexp([{$1}], [{^($}]), 0,[{define([{$0_INFO}],char left parenthesis)0x28}],
+regexp([{$1}],[{^'('$}]),0,[{define([{$0_INFO}],char left parenthesis)0x28}],
+
+regexp([{$1}], [{^)$}]), 0,[{define([{$0_INFO}],char right parenthesis)0x29}],
+regexp([{$1}],[{^')'$}]),0,[{define([{$0_INFO}],char right parenthesis)0x29}],
+
+[{dnl
+define([{$0_INFO}],char [{$1}])[{}]dnl
+esyscmd(printf "0x%02X" \'$1)}])[{}]dnl
+__M4_FORTH_QUOTE()dnl
+}){}dnl
+dnl
+dnl
+dnl
+define({__TEST_ASCII},{
+divert(-1){}dnl
+changecom(){}dnl
+changecom(;#){}dnl
+divert(0){}dnl
+__GET_HEX_ASCII_CODE(\n)
+__GET_HEX_ASCII_CODE('\n')
+__GET_HEX_ASCII_CODE('\\n')
+__GET_HEX_ASCII_CODE({'\n'})
+__GET_HEX_ASCII_CODE($1)
+__GET_HEX_ASCII_CODE('$1')
+__GET_HEX_ASCII_CODE('\$1')
+changequote()dnl
+changequote([{,}])dnl
+>>[{}]<<
+translit([{$1}],[{ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~}],
+                [{22222222222222223333333333333334444444444444444455555555555555556666666666666666777777777777777}])[{}]dnl
+translit([{$1}],[{ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~}],
+                [{0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDE}])[{}]dnl
+__M4_FORTH_QUOTE()dnl
+}){}dnl
+dnl
+dnl
+dnl
 define({__IS_NAME},{dnl
 dnl #           --> 0
 dnl # (abc)     --> 0
