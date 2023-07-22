@@ -20,7 +20,7 @@ __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
 __{}__{}{$1},{'}__CR{'},{dnl  #  push('\n')
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
 
-__{}__{}{$1},{,},{dnl  ;#  push('(')
+__{}__{}{$1},{,},{dnl  ;#  push(',')
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char comma},0x2C)},
 
 __{}__{}{$1},{'\},{dnl  ;#  push(')')
