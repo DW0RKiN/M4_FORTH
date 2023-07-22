@@ -10,7 +10,6 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}{$1},{},{
 __{}__{}  .error {$0}($@): Empty parameter!},
 __{}eval($#>=1),1,{dnl
-
 __{}__{}ifelse(dnl
 __{}__{}{$1},__CR,{dnl  #  push(\n)
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
@@ -28,11 +27,11 @@ __{}__{}{$1},{'\},{dnl  ;#  push(')')
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char right parenthesis},0x29)},
 
 __{}__{}regexp({$1},{^'.+'$}),0,{dnl  #  push('char')
-__{}__{}__{}define({$0_CHAR},{__GET_HEX_ASCII_CODE({$1})}){}dnl
+__{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
 __{}__{}regexp({$1},{^".+"$}),0,{dnl  #  push("char")
-__{}__{}__{}define({$0_CHAR},{__GET_HEX_ASCII_CODE({$1})}){}dnl
+__{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
 __{}__{}{dnl # number or variable number
