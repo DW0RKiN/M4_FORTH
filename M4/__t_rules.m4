@@ -2,6 +2,13 @@ define({__},{})dnl
 dnl
 dnl
 dnl
+define({__DEBUG_INFO},{dnl
+__{}errprint($1{}__T_NAME(0){}dnl
+__{}ifelse(eval(len((__T_ARRAY(0)))<30),1,{(__T_ARRAY(0))},{(...)}){}dnl
+__{}ifelse(eval(len(__T_INFO(0))<40),1,{ "__T_INFO(0)"$2},{ "..."$2})){}dnl
+}){}dnl
+dnl
+dnl
 dnl
 define({__SET_TOKEN_NAME},{dnl
 __{}define({__TOKEN[$1].NAME},{$2})}){}dnl
@@ -189,7 +196,7 @@ dnl define({__INC_TOKEN_COUNT},ifdef({__COUNT_TOKEN},{define({__COUNT_TOKEN},eva
 dnl
 dnl
 define({__ADD_TOKEN},{dnl
-__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...add token }$1)}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint({   ...new }$1{(}shift(shift($@)){) "}$2{"})}){}dnl
 __{}ifdef({__COUNT_TOKEN},
         {ifelse(dnl
 a,,,
@@ -426,10 +433,9 @@ c...,,,
             __T_NAME(0):$1,                              __TOKEN_CFETCH:__TOKEN_0CNE,               {__SET_TOKEN({__TOKEN_CFETCH_0CNE},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
             __T_NAME(0):$1,                              __TOKEN_CFETCH:__TOKEN_0CEQ,               {__SET_TOKEN({__TOKEN_CFETCH_0CEQ},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
-            __T_NAME(0):__T_ITEMS(0):$1:$#,             __TOKEN_PUSHS:1:__TOKEN_CONSTANT:3,         {__SET_TOKEN({__TOKEN_CONSTANT},                   __CONCATENATE_WITH({ },__T_INFO(0),$2),$3,__T_ARRAY(0))},
-            __T_NAME(0):eval(__T_ITEMS(0)>1):$1:$#,     __TOKEN_PUSHS:1:__TOKEN_CONSTANT:3,         {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_CONSTANT},__CONCATENATE_WITH({ },__T_LAST_1_PAR(1),$2),$3,__T_LAST_1_PAR(1)){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ },__T_INFO(1), {drop}),__DROP_1_PAR(__T_ARRAY(1)))},
-            
-            
+            __T_NAME(0):__T_ITEMS(0):$1:$#,             __TOKEN_PUSHS:1:__TOKEN_CONSTANT:3,         {__CR{}format({%-20s},{$3}) EQU __T_ARRAY(0){}define({$3},__T_ARRAY(0)){}__DELETE_LAST_TOKEN},
+            __T_NAME(0):eval(__T_ITEMS(0)>1):$1:$#,     __TOKEN_PUSHS:1:__TOKEN_CONSTANT:3,         {__CR{}format({%-20s},{$3}) EQU __T_REVERSE_1(0){}define({$3},__T_REVERSE_1(0)){}__SET_TOKEN(__T_NAME(0),__CONCATENATE_WITH({ },__T_INFO(0), {drop}),__DROP_1_PAR(__T_ARRAY(0)))},
+
 dnl # DUP
 dup,,,
 
@@ -579,6 +585,10 @@ d...,,,
             __T_NAME(0)=__GET_LOOP_TYPE(LOOP_STACK):$1,__TOKEN_I=S:__TOKEN_DUP,  {__SET_TOKEN({__TOKEN_DUP_DUP},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
 
 dnl # E...
+e...,,,
+            __T_NAME(0):$1,{__TOKEN_DUP:__TOKEN_EXECUTE},       {__SET_TOKEN({__TOKEN_DUP_EXECUTE},__CONCATENATE_WITH({ },__T_INFO(0){ }$2))},
+            __T_NAME(0):$1,{__TOKEN_OVER:__TOKEN_EXECUTE},      {__SET_TOKEN({__TOKEN_OVER_EXECUTE},__CONCATENATE_WITH({ },__T_INFO(0){ }$2))},
+
 dnl # F...
 f...,,,
             __T_NAME(0)-$1,{__TOKEN_FOR-__TOKEN_I},             {__SET_TOKEN({__TOKEN_FOR_I},__T_INFO(0){ }$2,__T_ARRAY(0))},
@@ -1294,7 +1304,7 @@ __T_NAME(0):eval((__T_ITEMS(0)>1) && ifelse(__T_IS_PTR_REVERSE_2_1(0),0,{1},
     __T_HEX_REVERSE_1(0),0x0000,{1},
     __T_HEX_REVERSE_2(0),0x0000,{1},
     __T_HEX_REVERSE_1(0),0x0001,{1},
-    __T_HEX_REVERSE_2(0),0x0001,{1},{0})):$1, __TOKEN_PUSHS:1:__TOKEN_MUL,          {__SET_TOKEN(__TOKEN_PUSHS, __T_INFO(0){ }$2,__DROP_2_PAR(__T_ARRAY(0)){}ifelse(__T_ITEMS(0),2,,{,}){}__EVAL_S16(*,__T_LAST_2_PAR(0)))},
+    __T_HEX_REVERSE_2(0),0x0001,{1},{0})):$1, __TOKEN_PUSHS:1:__TOKEN_MUL,          {__SET_TOKEN(__TOKEN_PUSHS,__CONCATENATE_WITH({ },__T_INFO(0),$2),__DROP_2_PAR(__T_ARRAY(0)){}ifelse(__T_ITEMS(0),2,,{,}){}__EVAL_S16(*,__T_LAST_2_PAR(0)))},
 
 __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__T_HEX_REVERSE_1(0),      __TOKEN_PUSHS:1:__TOKEN_MUL:0x0002,     {__SET_TOKEN(__TOKEN_PUSHS, __T_INFO(0){ }$2,__DROP_1_PAR(__T_ARRAY(0))){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_2MUL},__T_INFO(1))},
 __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__T_HEX_REVERSE_2(0),      __TOKEN_PUSHS:1:__TOKEN_MUL:0x0002,     {__SET_TOKEN(__TOKEN_PUSHS, __T_INFO(0){ }$2,__DROP_2_PAR(__T_ARRAY(0)){}ifelse(__T_ITEMS(0),2,,{,}){}__T_REVERSE_1(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_2MUL},__T_INFO(1))},
@@ -1594,6 +1604,10 @@ o...,,,
 
 dnl # R...
 r...,,,
+
+            __T_NAME(0):$1,{__TOKEN_DUP:__TOKEN_REXECUTE},      {__SET_TOKEN({__TOKEN_DUP_REXECUTE},__CONCATENATE_WITH({ },__T_INFO(0){ }$2))},
+            __T_NAME(0):$1,{__TOKEN_OVER:__TOKEN_REXECUTE},     {__SET_TOKEN({__TOKEN_OVER_REXECUTE},__CONCATENATE_WITH({ },__T_INFO(0){ }$2))},
+
             __T_NAME(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:1:__TOKEN_ROLL,         {__SET_TOKEN({__TOKEN_PUSH_ROLL},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
 
@@ -1915,6 +1929,7 @@ __{}__{}{dnl
 __{}__{}__{}__SET_TOKEN($@){}dnl
 __{}__{}}){}dnl
 __{}}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint({ --> token(}__COUNT_TOKEN{) })__DEBUG_INFO{}errprint(__CR)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -2142,6 +2157,9 @@ __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_HSTORE,   
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_STORE,         {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_STORE)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH_ADD,           {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH_ADD)},
 
+__T_NAME(1):__T_NAME(0),                     __TOKEN_PUSH_OVER:__TOKEN_ADD,          {__SET_CHECK_TOKEN2(__TOKEN_DUP_PUSH_ADD)},
+
+
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH2_WITHIN_IF,    {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH2_WITHIN_IF)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH2_WITHIN_WHILE, {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH2_WITHIN_WHILE)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_DUP:__TOKEN_PUSH2_WITHIN_UNTIL, {__SET_CHECK_TOKEN(__TOKEN_DUP_PUSH2_WITHIN_UNTIL)},
@@ -2178,28 +2196,20 @@ __T_NAME(1):__T_NAME(0),                     __TOKEN_2DROP:__TOKEN_PUSHS,       
 __T_NAME(1):__T_NAME(0),                     __TOKEN_SWAP:__TOKEN_PUSHS,             {__SET_CHECK_TOKEN(__TOKEN_SWAP_PUSHS)},
 
 xxx,yyy,{}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint({   ...second pass(}__COUNT_TOKEN{) }){}dnl
+__{}__{}__DEBUG_INFO{}dnl
+__{}__{}ifelse(__T_NAME(1),__TOKEN_NOPE,{errprint({ Previous token(}eval(__COUNT_TOKEN-1){) is __TOKEN_NOPE})}){}dnl
+__{}__{}errprint(__CR)}){}dnl
 }){}dnl
 dnl
 dnl
 dnl
 define({__CHECK_ALL_TOKENS_REC},{dnl
-__{}ifelse(eval(__COUNT_TOKEN<__SUM_TOKEN),1,{dnl
+__{}ifelse(eval(__COUNT_TOKEN<=__SUM_TOKEN),1,{dnl
 __{}__{}__CHECK_TOKEN{}dnl
 __{}__{}define({__COUNT_TOKEN},eval(__COUNT_TOKEN+1)){}dnl
 __{}$0{}dnl
-__{}},
-__{}{dnl
-__{}__{}define({__COUNT_TOKEN},__SUM_TOKEN){}dnl
-__{}__{}__CHECK_TOKEN{}dnl
 __{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-define({__CHECK_ALL_TOKENS},{dnl
-__{}define({__SUM_TOKEN},__COUNT_TOKEN){}dnl
-__{}define({__COUNT_TOKEN},2){}dnl
-__{}$0_REC{}dnl
 }){}dnl
 dnl
 dnl
@@ -2218,6 +2228,9 @@ __T_NAME(1):__T_NAME(0),   __TOKEN_2DROP:__TOKEN_DUP,        {__SET_TOKEN_X(eval
 
 __T_NAME(1):__T_NAME(0),   __TOKEN_2DUP:__TOKEN_DROP,        {__SET_TOKEN({__TOKEN_OVER},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})},
 
+__T_NAME(1):__T_NAME(0),   __TOKEN_2OVER:__TOKEN_DROP,       {__SET_TOKEN({__TOKEN_3_PICK},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})},
+
+__T_NAME(1):__T_NAME(0),   __TOKEN_NROT_2SWAP:__TOKEN_SWAP,  {__SET_TOKEN({__TOKEN_3_ROLL},__CONCATENATE_WITH({ },__T_INFO(1),__T_INFO(0))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})},
 
 __{}__T_NAME(0),__TOKEN_2DUP_FILL_2DIRTY,{dnl
 __{}__{}__def({USE_Fill_Over}){}dnl
@@ -2241,19 +2254,13 @@ __{}__T_NAME(0),__TOKEN_PUSH3_FILL,{dnl
 __{}__{}ifelse(__HEX_L(__T_HEX_REVERSE_2(0)0>0x8000),0x01,{__def({USE_Fill_Over})}){}dnl
 __{}__{}ifelse(__IS_MEM_REF(__T_REVERSE_3(0)),1,{__def({USE_Fill_Unknown_Addr})}){}dnl
 __{}}){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint({   ...third pass(}__COUNT_TOKEN{) }){}dnl
+__{}__{}__DEBUG_INFO{}dnl
+__{}__{}ifelse(__T_NAME(1),__TOKEN_NOPE,{errprint({ Previous token(}eval(__COUNT_TOKEN-1){) is __TOKEN_NOPE})}){}dnl
+__{}__{}errprint(__CR)}){}dnl
 __{}ifelse(eval(__COUNT_TOKEN<__SUM_TOKEN),1,{dnl
 __{}__{}define({__COUNT_TOKEN},eval(__COUNT_TOKEN+1)){}dnl
 __{}__{}$0{}dnl
-__{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-define({__CHECK_ALL_TOKENS2},{dnl
-__{}ifelse(eval(__COUNT_TOKEN>0),1,{dnl
-__{}__{}define({__SUM_TOKEN},__COUNT_TOKEN){}dnl
-__{}__{}define({__COUNT_TOKEN},1){}dnl
-__{}__{}$0_REC{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -2269,27 +2276,32 @@ dnl
 dnl
 define({__A},{$1$2}){}dnl
 dnl
-define({__COMPILE_REC},{ifelse(eval(__COUNT_TOKEN>__TOKEN_I),{1},{dnl
-__{}define({__TOKEN_I},eval(__TOKEN_I+1))dnl
-__{}ifelse(__GET_TOKEN_INFO(__TOKEN_I),{__dtto},,{define({__COMPILE_INFO},__GET_TOKEN_INFO(__TOKEN_I))}){}dnl
-__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...create }__GET_TOKEN_NAME(__TOKEN_I){ }__COMPILE_INFO)}){}dnl
-__{}ifelse(__GET_TOKEN_PARAM(__TOKEN_I),{()},{dnl
-__{}__{}__A({__ASM}substr(__GET_TOKEN_NAME(__TOKEN_I),1))},
-__{}{dnl
-__{}__{}__A({__ASM}substr(__GET_TOKEN_NAME(__TOKEN_I),1){}__GET_TOKEN_PARAM(__TOKEN_I))}){}dnl
-__{}$0{}dnl
-})}){}dnl
+define({__COMPILE_REC},{dnl
+__{}ifelse(eval(__COUNT_TOKEN<=__SUM_TOKEN),{1},{dnl
+__{}__{}ifelse(__T_INFO(0),{__dtto},,{define({__COMPILE_INFO},__T_INFO(0))}){}dnl
+__{}__{}ifelse(__VERBOSE_LEVEL,1,{__DEBUG_INFO({{   }...create(}__COUNT_TOKEN{) },__CR)}){}dnl
+__{}__{}ifelse(__T_ITEMS(0),{0},{dnl
+__{}__{}__{}__A({__ASM}substr(__T_NAME(0),1))},
+__{}__{}{dnl
+__{}__{}__{}__A({__ASM}substr(__T_NAME(0),1){}(__T_ARRAY(0)))}){}dnl
+__{}__{}define({__COUNT_TOKEN},eval(__COUNT_TOKEN+1))dnl
+__{}__{}$0{}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
 define({__COMPILE},{ifdef({__COUNT_TOKEN},{dnl
-__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...check all tokens})}){}dnl
-__{}__CHECK_ALL_TOKENS{}dnl
-__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...check all tokens2})}){}dnl
-__{}__CHECK_ALL_TOKENS2{}dnl
-__{}define({__TOKEN_I},0)dnl
-__{}$0_REC{}dnl
+__{}define({__SUM_TOKEN},__COUNT_TOKEN){}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...check all tokens}__CR)}){}dnl
+__{}define({__COUNT_TOKEN},1){}dnl
+__{}__CHECK_ALL_TOKENS_REC{}dnl
+__{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR{   ...check all tokens2}__CR)}){}dnl
+__{}define({__COUNT_TOKEN},1){}dnl
+__{}__CHECK_ALL_TOKENS2_REC{}dnl
+__{}define({__COUNT_TOKEN},1){}dnl
 __{}ifelse(__VERBOSE_LEVEL,1,{errprint(__CR)}){}dnl
+__{}$0_REC{}dnl
 })}){}dnl
 dnl
 dnl
