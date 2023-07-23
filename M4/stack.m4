@@ -9,6 +9,12 @@ __{}ifelse($#<---:--->{$1},1<---:--->,{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}{$1},{},{
 __{}__{}  .error {$0}($@): Empty parameter!},
+
+__{}__IS_NUM($1),1,{dnl # number with save sign
+__{}__{}dnl #  5+5 --> 10
+__{}__{}dnl # -5*5 --> -25
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},eval($1))},
+
 __{}eval($#>=1),1,{dnl
 __{}__{}ifelse(dnl
 __{}__{}{$1},__CR,{dnl  #  push(\n)
@@ -34,8 +40,8 @@ __{}__{}regexp({$1},{^".+"$}),0,{dnl  #  push("char")
 __{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
-__{}__{}{dnl # number or variable number
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},$1,$1)}){}dnl
+__{}__{}{dnl # variable name or an expression containing a variable
+__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},$1,__SIMPLIFY_EXPRESSION($1))}){}dnl
 __{}__{}ifelse(eval($#>1),1,{$0(shift($@))}){}dnl
 __{}}){}dnl
 }){}dnl
