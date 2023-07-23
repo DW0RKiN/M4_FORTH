@@ -1021,36 +1021,41 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_MUL},{$1 *},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_MUL},{dnl
 __{}define({__INFO},{$1 *}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!},
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
-__{}__{}.error {$0}($@): $# parameters found in macro!},
-{dnl
-__{}PUSH_MUL_MK1($1){}dnl
-__{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
-__{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
-__{}define({_BEST_INFO},{PUSH_MUL_MK1_INFO}){}dnl
-__{}PUSH_MUL_MK2($1){}dnl
-__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK2_COST,_BEST_COST),{1},{dnl
-__{}__{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
-__{}__{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
-__{}__{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
+__{}__{}.  error {$0}($@): Unexpected parameter!},
+__{}__IS_MEM_REF($1),{1},{
+__{}__{}  .error {$0}($@): $1 is pointer!},
+__{}__IS_NUM($1),{0},{
+__{}__{}  .error {$0}($@): M4 does not know the value of variable or constant $1!},
+__{}{dnl
+__{}__{}PUSH_MUL_MK1($1){}dnl
+__{}__{}define({_BEST_OUT},{PUSH_MUL_MK1_OUT}){}dnl
+__{}__{}define({_BEST_COST},PUSH_MUL_MK1_COST){}dnl
+__{}__{}define({_BEST_INFO},{PUSH_MUL_MK1_INFO}){}dnl
+__{}__{}PUSH_MUL_MK2($1){}dnl
+__{}__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK2_COST,_BEST_COST),{1},{dnl
+__{}__{}__{}define({_BEST_OUT},{PUSH_MUL_MK2_OUT}){}dnl
+__{}__{}__{}define({_BEST_COST},PUSH_MUL_MK2_COST){}dnl
+__{}__{}__{}define({_BEST_INFO},PUSH_MUL_MK2_INFO){}dnl
+__{}__{}}){}dnl
+__{}__{}PUSH_MUL_MK3($1){}dnl
+__{}__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK3_COST,_BEST_COST),{1},{dnl
+__{}__{}__{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
+__{}__{}__{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
+__{}__{}__{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
+__{}__{}}){}dnl
+__{}__{}PUSH_MUL_MK4($1){}dnl
+__{}__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK4_COST,_BEST_COST),{1},{dnl
+__{}__{}__{}define({_BEST_OUT},{PUSH_MUL_MK4_OUT}){}dnl
+__{}__{}__{}define({_BEST_COST},PUSH_MUL_MK4_COST){}dnl
+__{}__{}__{}define({_BEST_INFO},PUSH_MUL_MK4_INFO){}dnl
+__{}__{}}){}dnl
+__{}__{}_BEST_INFO{}dnl
+__{}__{}_BEST_OUT{}dnl
 __{}}){}dnl
-__{}PUSH_MUL_MK3($1){}dnl
-__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK3_COST,_BEST_COST),{1},{dnl
-__{}__{}define({_BEST_OUT},{PUSH_MUL_MK3_OUT}){}dnl
-__{}__{}define({_BEST_COST},PUSH_MUL_MK3_COST){}dnl
-__{}__{}define({_BEST_INFO},PUSH_MUL_MK3_INFO){}dnl
-__{}}){}dnl
-__{}PUSH_MUL_MK4($1){}dnl
-__{}ifelse(PUSH_MUL_CHECK_FIRST_IS_BETTER(PUSH_MUL_MK4_COST,_BEST_COST),{1},{dnl
-__{}__{}define({_BEST_OUT},{PUSH_MUL_MK4_OUT}){}dnl
-__{}__{}define({_BEST_COST},PUSH_MUL_MK4_COST){}dnl
-__{}__{}define({_BEST_INFO},PUSH_MUL_MK4_INFO){}dnl
-__{}}){}dnl
-__{}_BEST_INFO{}dnl
-__{}_BEST_OUT{}dnl
-})}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
