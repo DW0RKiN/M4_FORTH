@@ -4,7 +4,7 @@ dnl
 dnl
 define({__DEBUG_INFO},{dnl
 __{}errprint($1{}__T_NAME(0){}dnl
-__{}ifelse(eval(len((__T_ARRAY(0)))<30),1,{(__T_ARRAY(0))},{(...)}){}dnl
+__{}ifelse(__T_ITEMS(0),0,,eval(len((__T_ARRAY(0)))<30),1,{(__T_ARRAY(0))},{(...)}){}dnl
 __{}ifelse(eval(len(__T_INFO(0))<40),1,{ "__T_INFO(0)"$2},{ "..."$2})){}dnl
 }){}dnl
 dnl
@@ -1312,9 +1312,12 @@ __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__T_HEX_REVERSE_2(0),      __TOKEN_PUSHS:1:_
 __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__T_HEX_REVERSE_1(0),      __TOKEN_PUSHS:1:__TOKEN_MUL:0xFFFF,    {__SET_TOKEN(__TOKEN_PUSHS, __T_INFO(0){ }$2,__DROP_1_PAR(__T_ARRAY(0))){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NEGATE},__T_INFO(1))},
 __T_NAME(0):eval(__T_ITEMS(0)>1):$1:__T_HEX_REVERSE_2(0),      __TOKEN_PUSHS:1:__TOKEN_MUL:0xFFFF,    {__SET_TOKEN(__TOKEN_PUSHS, __T_INFO(0){ }$2,__DROP_2_PAR(__T_ARRAY(0)){}ifelse(__T_ITEMS(0),2,,{,}){}__T_REVERSE_1(0)){}__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_NEGATE},__T_INFO(1))},
 
-            __T_NAME(0):eval(__T_ITEMS(0)>1):$1,                                  __TOKEN_PUSHS:1:__TOKEN_MUL,       {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_MUL}, __T_INFO(1){ }$2,ifelse(__T_IS_PTR_REVERSE_1(1),1,__T_REVERSE_2(1),__T_REVERSE_1(1))){}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__T_INFO(1){ }$2,__DROP_2_PAR(__T_ARRAY(1)){}ifelse(__T_ITEMS(1),2,,{,}){}ifelse(__T_IS_PTR_REVERSE_1(1),1,__T_REVERSE_1(1),__T_REVERSE_2(1)))},
+        __T_NAME(0):__T_ITEMS(0):__T_IS_NUM_REVERSE_1(0):$1,            __TOKEN_PUSHS:1:1:__TOKEN_MUL,     {__SET_TOKEN({__TOKEN_PUSH_MUL},__T_INFO(0){ }$2,__T_ARRAY(0))},
 
-            __T_NAME(0):__T_ITEMS(0):$1,                                          __TOKEN_PUSHS:1:__TOKEN_MUL,       {__SET_TOKEN({__TOKEN_PUSH_MUL},__T_INFO(0){ }$2,__T_ARRAY(0))},
+        __T_NAME(0):eval(__T_ITEMS(0)>1):__T_IS_NUM_REVERSE_2(0):$1,    __TOKEN_PUSHS:1:1:__TOKEN_MUL,       
+            {__INC_TOKEN_COUNT{}__SET_TOKEN({__TOKEN_PUSH_MUL}, __CONCATENATE_WITH({ }, __T_REVERSE_2(1),$2),__T_REVERSE_2(1))
+__{}__{}__{}__{}__SET_TOKEN_X(eval(__COUNT_TOKEN-1),__T_NAME(1),__CONCATENATE_WITH({ }, __T_INFO(1),{nip}),__DROP_2_PAR(__T_ARRAY(1)),__T_REVERSE_1(1))},
+
 
 __T_NAME(0):eval((__T_ITEMS(0)>1) && ifelse(__T_IS_PTR_REVERSE_2_1(0),0,{1},
     __T_HEX_REVERSE_1(0),0x0001,{1},
@@ -2238,6 +2241,11 @@ __SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE}){}dnl
 __SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_NOPE}){}dnl
 __SET_TOKEN_X(eval(__COUNT_TOKEN-3),{__TOKEN_NOPE}){}dnl
 __SET_TOKEN_X(eval(__COUNT_TOKEN-4),{__TOKEN_NOPE})},
+
+__T_NAME(2):__T_NAME(1):__T_NAME(0),   __TOKEN_IF_PUSH_ELSE_PUSH_THEN:__TOKEN_DUP_EMIT:__TOKEN_DROP,  
+{__SET_TOKEN({__TOKEN_IF_PUSH_ELSE_PUSH_THEN_EMIT},__CONCATENATE_WITH({ },__T_INFO(2),__T_INFO(1),__T_INFO(0)),__T_ARRAY(2)){}dnl
+__SET_TOKEN_X(eval(__COUNT_TOKEN-2),{__TOKEN_NOPE}){}dnl
+__SET_TOKEN_X(eval(__COUNT_TOKEN-1),{__TOKEN_NOPE})},
 
 __{}__T_NAME(0),__TOKEN_2DUP_FILL_2DIRTY,{dnl
 __{}__{}__def({USE_Fill_Over}){}dnl
