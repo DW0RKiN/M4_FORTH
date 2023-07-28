@@ -16,8 +16,8 @@ __{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
     ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
     ld    A, D          ; 1:4       __INFO
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
-    pop  DE             ; 1:10      __INFO
-    pop  HL             ; 1:10      __INFO},
+    pop  HL             ; 1:10      __INFO
+    pop  DE             ; 1:10      __INFO},
 __GET_LOOP_BEGIN($1):__IS_MEM_REF(__GET_LOOP_END($1)),{:0},{
     ld  (idx{}$1), HL    ; 3:16      __INFO   index  ( __GET_LOOP_END($1) index -- )
     ex   DE, HL         ; 1:4       __INFO
