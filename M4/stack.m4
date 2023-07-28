@@ -55,7 +55,7 @@ __{}  .error {$0}($@): Unexpected parameter! Maybe you want to use {PUSHS}($@)?}
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
 __{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}    ld   HL, format({%-11s},$1); 3:16      __INFO},
+__{}    ld   HL,format({%-12s},$1); 3:16      __INFO},
 __{}{dnl
 __{}    ld   HL, __FORM({%-11s},{$1}); 3:10      __INFO}){}dnl
 })}){}dnl
