@@ -169,7 +169,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -190,7 +190,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -215,7 +215,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -236,7 +236,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -261,7 +261,7 @@ ifelse(eval($#<3),1,{
 __{}  .error {$0}(): Missing  parameter! Need: dec_pudot(size_bytes,pointer_to_10,pointer_to_tmp)},
 __{}eval($#>3),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -282,7 +282,7 @@ ifelse(eval($#<3),1,{
 __{}  .error {$0}(): Missing  parameter! Need: dec_pudot(size_bytes,pointer_to_10,pointer_to_tmp)},
 __{}eval($#>3),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -311,7 +311,7 @@ ifelse(eval($#<3),1,{
 __{}  .error {$0}(): Missing  parameter! Need: dec_pudot(size_bytes,pointer_to_10,pointer_to_tmp)},
 __{}eval($#>3),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -332,7 +332,7 @@ ifelse(eval($#<3),1,{
 __{}  .error {$0}(): Missing  parameter! Need: dec_pudot(size_bytes,pointer_to_10,pointer_to_tmp)},
 __{}eval($#>3),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -362,7 +362,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -379,7 +379,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -1090,11 +1090,17 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_TYPE_Z},{$1 type_z},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TYPE_Z},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse($1,{},{
-__{}__{}    .error {$0}(): Missing parameter!},
-{define({USE_PRINT_Z},{})
-    ld   BC, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 4:20},{__FORM({%-11s},$1); 3:10})      __INFO   ( -- )
-    call PRINT_STRING_Z ; 3:17      __INFO})})dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}{dnl
+__{}__{}define({USE_PRINT_Z},{}){}dnl
+__{}__{}ifelse(__HAS_PTR($1),{1},{
+__{}__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO   ( -- )},
+__{}__{}{
+__{}__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO   ( -- )})
+__{}__{}    call PRINT_STRING_Z ; 3:17      __INFO{}dnl
+__{}}){}dnl
+})dnl
 dnl
 dnl
 dnl # ( addr -- addr )
@@ -1133,11 +1139,17 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_TYPE_I},{$1 type_i},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TYPE_I},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse($1,{},{
-__{}  .error {$0}(): Missing parameter!},
-{define({USE_PRINT_I},{})
-    ld   BC, ifelse(__IS_MEM_REF($1),{1},{format({%-11s},$1); 4:20},{__FORM({%-11s},$1); 3:10})      __INFO   ( -- )
-    call PRINT_STRING_I ; 3:17      __INFO})})dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}{dnl
+__{}__{}define({USE_PRINT_I},{}){}dnl
+__{}__{}ifelse(__HAS_PTR($1),{1},{
+__{}__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO   ( -- )},
+__{}__{}{
+__{}__{}__{}    ld   BC, format({%-11s},$1); 3:10      __INFO   ( -- )})
+__{}__{}    call PRINT_STRING_I ; 3:17      __INFO{}dnl
+__{}}){}dnl
+})dnl
 dnl
 dnl
 dnl # ( addr -- addr )
@@ -1488,7 +1500,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing color parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}    ld    A,format({%-12s},$1); 3:13      __INFO   ( -- )
 __{}    out (254),A         ; 2:11      __INFO   0=blk,1=blu,2=red,3=mag,4=grn,5=cyn,6=yel,7=wht},
 __{}__IS_NUM($1),1,{
@@ -1715,7 +1727,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  true == press __TESTKEY_NAME($1)
@@ -1764,7 +1776,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  true == press __TESTKEY_NAME($1)
@@ -1811,7 +1823,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{dnl
 __{}__{}ifelse(dnl
@@ -1904,7 +1916,7 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON},{$1 testkempston},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TESTKEMPSTON},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(__IS_MEM_REF($1),1,{
+__{}ifelse(__HAS_PTR($1),1,{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cor +1c 0c=
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP
@@ -1948,7 +1960,7 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON_0EQ},{$1 testkempston 0=},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TESTKEMPSTON_0EQ},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(__IS_MEM_REF($1),1,{
+__{}ifelse(__HAS_PTR($1),1,{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- bool )  bool: port(kempston) $1 cor +1c 0c<>
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP
@@ -1992,7 +2004,7 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_TESTKEMPSTON_ZF},{$1 testkempston zf},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_TESTKEMPSTON_ZF},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(__IS_MEM_REF($1),1,{
+__{}ifelse(__HAS_PTR($1),1,{
 __{}    in    A,(0x1F)      ; 2:11      __INFO   ( -- )  zf: port(kempston) $1 cor +1c
 __{}    ld    C, A          ; 1:4       __INFO
 __{}    ld    A,substr(__FORM({%-13s},$1),1); 3:13      __INFO
@@ -2100,7 +2112,7 @@ __{}{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- x )  x: port($1) | $2
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$2)){}$0_TEMP{}dnl
-__{}__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}__{}ifelse(__HAS_PTR($1),1,{dnl
 __{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1,{HL},$2)){}$0_TEMP
 __{}__{}__{}    in    A,(C)         ; 2:12      __INFO},
 __{}__{}__IS_NUM($1),1,{dnl
@@ -2131,7 +2143,7 @@ __{}{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- x )  x: port($1) | $2
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},ifelse(__IS_NUM($2),1,__HEX_L($2),low $2))){}$0_TEMP{}dnl
-__{}__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}__{}ifelse(__HAS_PTR($1),1,{dnl
 __{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP
 __{}__{}__{}    in    A,(C)         ; 2:12      __INFO},
 __{}__{}__IS_NUM($1),1,{dnl
@@ -2158,13 +2170,13 @@ __{}ifelse(eval($#<2),1,{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
+__{}__HAS_PTR($1):__HAS_PTR($2),1:1,{dnl
 __{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP   ( -- ) set zf: port($1) and $2{}dnl
 __{}__{}__LD_R_NUM(__INFO,{A},$2,{BC},$1)
 __{}__{}    in    C,(C)         ; 2:12      __INFO
 __{}__{}    and   C             ; 1:4       __INFO},
 __{}{dnl
-__{}__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}__{}ifelse(__HAS_PTR($1),1,{dnl
 __{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP   ( -- ) set zf: port($1) and $2
 __{}__{}__{}    in    A,(C)         ; 2:12      __INFO},
 __{}__{}__IS_NUM($1),1,{dnl
@@ -2173,7 +2185,7 @@ __{}__{}__{}    in    A,(__HEX_L($1))      ; 2:11      __INFO},
 __{}__{}{dnl
 __{}__{}__{}__LD_R_NUM(__INFO,A,high $1){   ( -- ) set zf: port($1) and $2}
 __{}__{}__{}    in    A,format({%-12s},(low $1)); 2:11      __INFO}){}dnl
-__{}__{}ifelse(__IS_MEM_REF($2),1,{dnl
+__{}__{}ifelse(__HAS_PTR($2),1,{dnl
 __{}__{}__{}define({$0_TEMP},__LD_R16({BC},$2,{BC},$1)){}$0_TEMP
 __{}__{}__{}    and  C              ; 1:4       __INFO},
 __{}__{}__IS_NUM($2),1,{
@@ -2196,14 +2208,14 @@ __{}ifelse(eval($#<2),1,{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>2),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:1,{dnl
+__{}__HAS_PTR($1):__HAS_PTR($2),1:1,{dnl
 __{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP   ( -- ) set zf: port($1) and $2{}dnl
 __{}__{}__LD_R_NUM(__INFO,{A},$2,{BC},$1)
 __{}__{}    in    C,(C)         ; 2:12      __INFO
 __{}__{}    or    C             ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO},
 __{}{dnl
-__{}__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}__{}ifelse(__HAS_PTR($1),1,{dnl
 __{}__{}__{}define({$0_TEMP},__LD_R16({BC},$1)){}$0_TEMP   ( -- ) set zf: port($1) and $2
 __{}__{}__{}    in    A,(C)         ; 2:12      __INFO},
 __{}__{}__IS_NUM($1),1,{dnl
@@ -2212,7 +2224,7 @@ __{}__{}__{}    in    A,(__HEX_L($1))      ; 2:11      __INFO},
 __{}__{}{dnl
 __{}__{}__{}__LD_R_NUM(__INFO,A,high $1){   ( -- ) set zf: port($1) and $2}
 __{}__{}__{}    in    A,format({%-12s},(low $1)); 2:11      __INFO}){}dnl
-__{}__{}ifelse(__IS_MEM_REF($2),1,{dnl
+__{}__{}ifelse(__HAS_PTR($2),1,{dnl
 __{}__{}__{}define({$0_TEMP},__LD_R16({BC},$2,{BC},$1)){}$0_TEMP
 __{}__{}__{}    and  C              ; 1:4       __INFO},
 __{}__{}__IS_NUM($2),1,{
