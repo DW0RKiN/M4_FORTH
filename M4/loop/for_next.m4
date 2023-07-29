@@ -35,7 +35,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   index
 for{}$1:                 ;           __INFO
-    ld  (idx{}$1),BC     ; 4:20      __INFO   save index}){}dnl
+    ld  [idx{}$1],BC     ; 4:20      __INFO   save index}){}dnl
 dnl
 dnl
 dnl
@@ -60,7 +60,7 @@ for{}$1:                 ;           __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
     ld    H, B          ; 1:4       __INFO   copy index
-    ld  (idx{}$1),HL     ; 3:16      __INFO   save index}){}dnl
+    ld  [idx{}$1],HL     ; 3:16      __INFO   save index}){}dnl
 dnl
 dnl
 dnl
@@ -80,13 +80,17 @@ dnl
 define({__ASM_TOKEN_PUSH_FOR},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1)) && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
-    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
-for{}$1:                 ;           __INFO
-    ld  (idx{}$1),A      ; 3:13      __INFO   save index},
-{
-    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),{1},{4:20},{3:10})      __INFO   ( -- )
-for{}$1:                 ;           __INFO
-    ld  (idx{}$1),BC     ; 4:20      __INFO   save index}){}dnl
+__{}__{}    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO   save index},
+__{}{
+__{}__{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
+__{}__{}__{}    ld   BC,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )},
+__{}__{}{
+__{}__{}__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   ( -- )})
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    ld  [idx{}$1],BC     ; 4:20      __INFO   save index{}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -107,21 +111,26 @@ dnl
 define({__ASM_TOKEN_PUSH_FOR_I},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1))==1 && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
-    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
-for{}$1:                 ;           __INFO
-    ld  (idx{}$1),A      ; 3:13      __INFO   save index
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld    L, A          ; 1:4       __INFO
-    ld    H, 0x00       ; 2:7       __INFO   copy index},
-{
-    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),{1},{4:20},{3:10})      __INFO   ( -- i )
-for{}$1:                 ;           __INFO
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld    L, C          ; 1:4       __INFO
-    ld    H, B          ; 1:4       __INFO   copy index
-    ld  (idx{}$1),HL     ; 3:16      __INFO   save index}){}dnl
+__{}__{}    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO   save index
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    ld    H, 0x00       ; 2:7       __INFO   copy index},
+__{}{
+__{}__{}{}dnl
+__{}__{}__{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
+__{}__{}__{}__{}    ld   BC,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- i )},
+__{}__{}__{}{
+__{}__{}__{}__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   ( -- i )})
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld    L, C          ; 1:4       __INFO
+__{}__{}    ld    H, B          ; 1:4       __INFO   copy index
+__{}__{}    ld  [idx{}$1],HL     ; 3:16      __INFO   save index{}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
@@ -187,7 +196,7 @@ __{}define({__INFO},__COMPILE_INFO)
     inc   A             ; 1:4       __INFO
     jp    z, leave{}$1   ; 3:10      __INFO   ( index -- )
 for{}$1:                 ;           __INFO
-    ld  (idx{}$1),BC     ; 4:20      __INFO   save index}){}dnl
+    ld  [idx{}$1],BC     ; 4:20      __INFO   save index}){}dnl
 dnl
 dnl
 dnl
@@ -205,27 +214,28 @@ __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_QFOR},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__SAVE_EVAL((__GET_LOOP_BEGIN($1)+1) & 0xFFFF),0,{
-    jp    leave{}$1      ; 3:10      __INFO   ( -- )
-for{}$1:                 ;           __INFO},
+__{}__{}    jp    leave{}$1      ; 3:10      __INFO   ( -- )
+__{}__{}for{}$1:                 ;           __INFO},
 __{}__HAS_PTR(__GET_LOOP_BEGIN($1)),{1},{
-    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
-    ld    A, B          ; 1:4       __INFO
-    and   C             ; 1:4       __INFO
-    inc   A             ; 1:4       __INFO
-    jp    z, leave{}$1   ; 3:10      __INFO
-for{}$1:                 ;           __INFO
-    ld  (idx{}$1),BC     ; 4:20      __INFO   save index},
+__{}__{}    ld   BC,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    and   C             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    jp    z, leave{}$1   ; 3:10      __INFO
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    ld  [idx{}$1],BC     ; 4:20      __INFO   save index},
 __{}__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1))==1 && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
-    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
-for{}$1:                 ;           __INFO
-    ld  (idx{}$1),A      ; 3:13      __INFO   save index},
-{
-    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   ( -- )
-for{}$1:                 ;           __INFO
-    ld  (idx{}$1),BC     ; 4:20      __INFO   save index})}){}dnl
+__{}__{}    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO   save index},
+__{}{
+__{}__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   ( -- )
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    ld  [idx{}$1],BC     ; 4:20      __INFO   save index{}dnl
+__{}})dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -243,38 +253,40 @@ __{}{
 __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_QFOR_I},{dnl
-__{}define({__INFO},__COMPILE_INFO)
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__SAVE_EVAL((__GET_LOOP_BEGIN($1)+1) & 0xFFFF),0,{
-    jp    leave{}$1      ; 3:10      __INFO   ( -- )
-for{}$1:                 ;           __INFO},
+__{}__{}    jp    leave{}$1      ; 3:10      __INFO   ( -- )
+__{}__{}for{}$1:                 ;           __INFO},
 __{}__HAS_PTR(__GET_LOOP_BEGIN($1)),{1},{
-    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
-    ld    A, B          ; 1:4       __INFO
-    and   C             ; 1:4       __INFO
-    inc   A             ; 1:4       __INFO
-    jp    z, leave{}$1   ; 3:10      __INFO
-for{}$1:                 ;           __INFO
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld    L, C          ; 1:4       __INFO
-    ld    H, B          ; 1:4       __INFO   copy index
-    ld  (idx{}$1),HL     ; 3:16      __INFO   save index},
+__{}__{}    ld   BC,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    and   C             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO
+__{}__{}    jp    z, leave{}$1   ; 3:10      __INFO
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld    L, C          ; 1:4       __INFO
+__{}__{}    ld    H, B          ; 1:4       __INFO   copy index
+__{}__{}    ld  [idx{}$1],HL     ; 3:16      __INFO   save index},
 __{}__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1))==1 && __GET_LOOP_BEGIN($1)>=0 && __GET_LOOP_BEGIN($1)<256),{1},{
-    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
-for{}$1:                 ;           __INFO
-    ld  (idx{}$1),A      ; 3:13      __INFO   save index
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld    L, A          ; 1:4       __INFO
-    ld    H, 0x00       ; 2:7       __INFO   copy index},
-{
-    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   ( -- )
-for{}$1:                 ;           __INFO
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld    L, C          ; 1:4       __INFO
-    ld    H, B          ; 1:4       __INFO   copy index
-    ld  (idx{}$1),HL     ; 3:16      __INFO   save index})}){}dnl
+__{}__{}    ld    A, format({%-11s},__GET_LOOP_BEGIN($1)); 2:7       __INFO   ( -- )
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO   save index
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}    ld    H, 0x00       ; 2:7       __INFO   copy index},
+__{}{
+__{}__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   ( -- )
+__{}__{}for{}$1:                 ;           __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ld    L, C          ; 1:4       __INFO
+__{}__{}    ld    H, B          ; 1:4       __INFO   copy index
+__{}__{}    ld  [idx{}$1],HL     ; 3:16      __INFO   save index{}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -295,28 +307,30 @@ define({__ASM_TOKEN_NEXT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)),1,{dnl
 __{}__{}ifelse(eval((__GET_LOOP_BEGIN($1)>=0) && (__GET_LOOP_BEGIN($1)<256)),{1},{
-__{}idx{}$1 EQU $+1          ;           __INFO
-__{}    ld    A, 0x00       ; 2:7       __INFO   idx always points to a 16-bit index
-__{}    nop                 ; 1:4       __INFO
-__{}    sub  0x01           ; 2:7       __INFO   index--
-__{}    jp   nc, for{}$1     ; 3:10      __INFO
-__{}leave{}$1:               ;           __INFO},
+__{}__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}__{}    ld    A, 0x00       ; 2:7       __INFO   idx always points to a 16-bit index
+__{}__{}__{}    nop                 ; 1:4       __INFO
+__{}__{}__{}    sub  0x01           ; 2:7       __INFO   index--
+__{}__{}__{}    jp   nc, for{}$1     ; 3:10      __INFO
+__{}__{}__{}leave{}$1:               ;           __INFO},
+__{}__{}{
+__{}__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}__{}    or    C             ; 1:4       __INFO
+__{}__{}__{}    dec  BC             ; 1:6       __INFO   index--, zero flag unaffected
+__{}__{}__{}    jp   nz, for{}$1     ; 3:10      __INFO
+__{}__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}})},
 __{}{
-__{}idx{}$1 EQU $+1          ;           __INFO
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
-__{}    ld    A, B          ; 1:4       __INFO
-__{}    or    C             ; 1:4       __INFO
-__{}    dec  BC             ; 1:6       __INFO   index--, zero flag unaffected
-__{}    jp   nz, for{}$1     ; 3:10      __INFO
-__{}leave{}$1:               ;           __INFO})},
-{
-idx{}$1 EQU $+1          ;           __INFO
-    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
-    ld    A, B          ; 1:4       __INFO
-    or    C             ; 1:4       __INFO
-    dec  BC             ; 1:6       __INFO   index--, zero flag unaffected
-    jp   nz, for{}$1     ; 3:10      __INFO
-leave{}$1:               ;           __INFO}){}dnl
+__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    or    C             ; 1:4       __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO   index--, zero flag unaffected
+__{}__{}    jp   nz, for{}$1     ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl
