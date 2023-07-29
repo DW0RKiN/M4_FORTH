@@ -589,10 +589,15 @@ __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>3),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{define({__INFO},__COMPILE_INFO{(m)})
-    push DE             ; 1:11      __INFO   ( -- $2 $3 )
-    push HL             ; 1:11      __INFO
-    ld   DE, (idx{}$1)   ; 4:20      __INFO   idx always points to a 16-bit index
-    ld   HL, format({%-11s},$3); ifelse(__IS_MEM_REF($3),{1},{3:16},{3:10})      __INFO})}){}dnl
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $2 $3 )
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}    ld   DE,[idx{}$1]    ; 4:20      __INFO   idx always points to a 16-bit index{}dnl
+__{}__{}ifelse(__HAS_PTR($3),{1},{
+__{}__{}__{}    ld   HL,format({%-12s},$3); 3:16      __INFO},
+__{}__{}{
+__{}__{}__{}    ld   HL, format({%-11s},$3); 3:10      __INFO})dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -718,11 +723,17 @@ __{}ifelse(eval($#<3),{1},{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>3),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}{define({__INFO},__COMPILE_INFO)
-    push DE             ; 1:11      __INFO   ( -- $1 $3 )
-    push HL             ; 1:11      __INFO
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      __INFO
-    ld   HL, (idx{}$2)   ; 3:16      __INFO   idx always points to a 16-bit index})}){}dnl
+__{}{dnl
+__{}__{}define({__INFO},__COMPILE_INFO)
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $3 )
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}ifelse(__HAS_PTR($1),{1},{
+__{}__{}__{}    ld   DE,format({%-12s},$1); 4:20      __INFO},
+__{}__{}{
+__{}__{}__{}    ld   DE, format({%-11s},$1); 3:10      __INFO})
+__{}__{}    ld   HL, (idx{}$2)   ; 3:16      __INFO   idx always points to a 16-bit index{}dnl
+__{}__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -775,7 +786,7 @@ __{}ifelse(eval($#<3),{1},{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>3),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),{1},{define({__INFO},__COMPILE_INFO)
+__{}__HAS_PTR($1),{1},{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[13:66]    __INFO   ( -- $1 $3 == $1 addr -- )
 __{}__{}    ld    A, format({%-11s},$1); 3:13      __INFO
 __{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
@@ -858,7 +869,7 @@ __{}ifelse(eval($#<3),{1},{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>3),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),{1},{define({__INFO},__COMPILE_INFO)
+__{}__HAS_PTR($1),{1},{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[8:40]     __INFO   ( -- $1 $3 == $1 addr -- )
 __{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld    A, format({%-11s},$1); 3:13      __INFO
