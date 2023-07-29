@@ -42,9 +42,9 @@ dnl
 define({__ASM_TOKEN_PUSH_ADD},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(dnl
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}    ; warning >>>$1<<< is a pointer to memory
-__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO},
 __IS_NUM($1),{0},{
 __{}    ; warning M4 does not know the numerical value of >>>$1<<<
@@ -122,14 +122,14 @@ dnl # ( -- x )
 dnl # x = $1 + $2
 dnl # CONSTANT(_a,5) CONSTANT(_b,7) PUSH2_ADD({_a},{_b}) -->  ld   HL, 0x000C     ; 3:10      _a _b +
 dnl # CONSTANT(_a,5) CONSTANT(_b,7) PUSH2_ADD(_a,_b)     -->  ld   HL, 0x000C     ; 3:10      5 7 +
-eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{dnl
-__{}ifelse(eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{
+eval((__HAS_PTR($1)+__HAS_PTR($2))>0),{1},{dnl
+__{}ifelse(eval(__HAS_PTR($1)+__HAS_PTR($2)),{2},{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1+$2
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO
 __{}__{}    add  HL, BC         ; 1:11      __INFO},
-__{}__IS_MEM_REF($1),{1},{
+__{}__HAS_PTR($1),{1},{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1+$2
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
@@ -162,10 +162,10 @@ __{}__ADD_TOKEN({__TOKEN_DUP_PUSH_ADD},{dup $1 +},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_PUSH_ADD},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse(__IS_MEM_REF($1),{1},{
+ifelse(__HAS_PTR($1),{1},{
 __{}    push DE             ; 1:11      __INFO   ( x -- x x+$1 )
 __{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld   HL, format({%-11s},$1); 3:16      __INFO
+__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
 __{}    add  HL, DE         ; 1:11      __INFO},
 __IS_NUM($1),{0},{
 __{}    ; warning The condition >>>$1<<< cannot be evaluated
@@ -387,9 +387,9 @@ dnl
 define({__ASM_TOKEN_PUSH_SUB},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(dnl
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}    ; warning >>>$1<<< is a pointer to memory
-__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    or    A             ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO},
 __IS_NUM($1),{0},{
@@ -456,15 +456,15 @@ dnl # ( -- x )
 dnl # x = $1 - $2
 dnl # CONSTANT(_a,7) CONSTANT(_b,5) PUSH2_SUB({_a},{_b}) -->  ld   HL, 0x0002     ; 3:10      _a _b -
 dnl # CONSTANT(_a,7) CONSTANT(_b,5) PUSH2_SUB(_a,_b)     -->  ld   HL, 0x0002     ; 3:10      5 7 -
-eval((__IS_MEM_REF($1)+__IS_MEM_REF($2))>0),{1},{dnl
-__{}ifelse(eval(__IS_MEM_REF($1)+__IS_MEM_REF($2)),{2},{
+eval((__HAS_PTR($1)+__HAS_PTR($2))>0),{1},{dnl
+__{}ifelse(eval(__HAS_PTR($1)+__HAS_PTR($2)),{2},{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1-($2)
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
 __{}__{}    ld   BC,format({%-12s},$2); 4:20      __INFO
 __{}__{}    or    A             ; 1:4       __INFO
 __{}__{}    sbc  HL, BC         ; 2:15      __INFO},
-__{}__IS_MEM_REF($1),{1},{
+__{}__HAS_PTR($1),{1},{
 __{}__{}    push DE             ; 1:11      __INFO   ( -- x )   x = $1-($2)
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    ld   HL,format({%-12s},$1); 3:16      __INFO
@@ -533,8 +533,8 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_MAX},{$1 max},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_MAX},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse(__IS_MEM_REF($1),{1},{
-    ld   BC, format({%-11s},$1); 4:20      __INFO
+ifelse(__HAS_PTR($1),{1},{
+    ld   BC,format({%-12s},$1); 4:20      __INFO
     ld    A, L          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if $1 is max
     sub   C             ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if $1 is max
     ld    A, H          ; 1:4       __INFO    HL<$1 --> HL-$1<0 --> carry if $1 is max
@@ -594,9 +594,9 @@ __{}__ADD_TOKEN({__TOKEN_PUSH_MIN},{$1 min},$@){}dnl
 dnl
 define({__ASM_TOKEN_PUSH_MIN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
-ifelse(__IS_MEM_REF($1),{1},{
+ifelse(__HAS_PTR($1),{1},{
                         ;[16:~62]   __INFO
-    ld   BC, format({%-11s},$1); 4:20      __INFO
+    ld   BC,format({%-12s},$1); 4:20      __INFO
     ld    A, C          ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
     sub   L             ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
     ld    A, B          ; 1:4       __INFO    $1<HL --> $1-HL<0 --> carry if $1 is min
@@ -1025,7 +1025,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}.  error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),{1},{
+__{}__HAS_PTR($1),{1},{
 __{}__{}  .error {$0}($@): $1 is pointer!},
 __{}__IS_NUM($1),{0},{
 __{}__{}  .error {$0}($@): M4 does not know the value of variable or constant $1!},
@@ -1413,7 +1413,7 @@ ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(__IS_MEM_REF($1),{1},{dnl
+ifelse(__HAS_PTR($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld    A, format({%-11s},$1); 3:13     __INFO
 __{}    add   A, L          ; 1:4      __INFO
@@ -1680,9 +1680,9 @@ ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(__IS_MEM_REF($1),{1},{dnl
+ifelse(__HAS_PTR($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    ld   BC,format({%-12s},($1+2)); 4:20      __INFO
@@ -1853,7 +1853,7 @@ ifelse(eval($#<2),1,{
 __{}__{}.error {$0}($@): Missing address parameter!},
 __{}eval($#>2),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($1):__IS_MEM_REF($2),{1:1},{
+__HAS_PTR($1):__HAS_PTR($2),{1:1},{
 __{}    ; warning {$0}($@): The conditions $1 and $2 cannot be evaluated
 __{}    ld   BC,format({%-12s},$2); 4:20      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO
@@ -1861,7 +1861,7 @@ __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    adc  HL, BC         ; 2:15      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld   BC, format({%-11s},$2); 3:10      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO
@@ -1869,7 +1869,7 @@ __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    adc  HL, BC         ; 2:15      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
-__IS_MEM_REF($2):_TYP_DOUBLE,{1:small},{
+__HAS_PTR($2):_TYP_DOUBLE,{1:small},{
 __{}    ; warning {$0}($@): The condition $2 cannot be evaluated
 __{}    ld   BC,format({%-12s},$2); 4:20      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO
@@ -1877,7 +1877,7 @@ __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    ld   BC, format({%-11s},$1); 3:10      __INFO
 __{}    adc  HL, BC         ; 2:15      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
-__IS_MEM_REF($2),{1},{
+__HAS_PTR($2),{1},{
 __{}    ; warning {$0}($@): The condition $2 cannot be evaluated
 __{}    ld   BC,format({%-12s},$2); 4:20      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO
@@ -2348,9 +2348,9 @@ ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(__IS_MEM_REF($1),{1},{dnl
+ifelse(__HAS_PTR($1),{1},{dnl
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
-__{}    ld   BC, format({%-11s},$1); 4:20      __INFO
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    or    A, A          ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
@@ -2497,7 +2497,7 @@ ifelse(eval($#<2),1,{
 __{}__{}.error {$0}($@): Missing address parameter!},
 __{}eval($#>2),{1},{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
-__IS_MEM_REF($1):__IS_MEM_REF($2),{1:1},{
+__HAS_PTR($1):__HAS_PTR($2),{1:1},{
 __{}    ; warning {$0}($@): The conditions $1 and $2 cannot be evaluated
 __{}    ld   BC,format({%-12s},$2); 4:20      __INFO
 __{}    or    A             ; 1:4       __INFO
@@ -2506,7 +2506,7 @@ __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
-__IS_MEM_REF($1):__IS_NUM($2),{1:1},{
+__HAS_PTR($1):__IS_NUM($2),{1:1},{
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld   BC, __HEX_HL(-($2))     ; 3:10      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO
@@ -2515,7 +2515,7 @@ __{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    ccf                 ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}    ; warning {$0}($@): The condition $1 cannot be evaluated
 __{}    ld   BC, __FORM({%-11s},-($2)); 3:10      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO
@@ -2524,7 +2524,7 @@ __{}    ld   BC,format({%-12s},$1); 4:20      __INFO
 __{}    ccf                 ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
-__IS_MEM_REF($2),{1},{
+__HAS_PTR($2),{1},{
 __{}    ; warning {$0}($@): The condition $2 cannot be evaluated
 __{}    ld   BC,format({%-12s},$2); 4:20      __INFO
 __{}    or    A             ; 1:4       __INFO
@@ -2609,14 +2609,14 @@ ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(__IS_MEM_REF($1),{1},{dnl
+ifelse(__HAS_PTR($1),{1},{dnl
 __{}                        ;[27:94/118]$1 dmax
-__{}    ld   BC, format({%-11s},$1); 4:20      $1 dmax
+__{}    ld   BC,format({%-12s},__PTR_ADD($1,0)); 4:20      $1 dmax
 __{}    ld    A, L          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    sub   C             ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    ld    A, H          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    sbc   A, B          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
-__{}    ld   BC, format({%-11s},($1+2)); 4:20      $1 dmax
+__{}    ld   BC,format({%-12s},__PTR_ADD($1,2)); 4:20      $1 dmax
 __{}    ld    A, E          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    sbc   A, C          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
 __{}    ld    A, D          ; 1:4       $1 dmax   DEHL<$1 --> DEHL-$1<0 --> carry if $1 is max
@@ -2627,7 +2627,7 @@ __{}    xor   B             ; 1:4       $1 dmax
 __{}    jp    p, $+8        ; 3:10      $1 dmax
 __{}    ld    D, B          ; 1:4       $1 dmax
 __{}    ld    E, C          ; 1:4       $1 dmax
-__{}    ld   HL, format({%-11s},$1); 3:16      $1 dmax},
+__{}    ld   HL,format({%-12s},$1); 3:16      $1 dmax},
 __IS_NUM($1),{0},{dnl
     .error {$0}($@): M4 does not know $1 parameter value!},
 {
@@ -2679,14 +2679,14 @@ ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-ifelse(__IS_MEM_REF($1),{1},{dnl
+ifelse(__HAS_PTR($1),{1},{dnl
 __{}                        ;[27:94/118]$1 dmin
-__{}    ld   BC, format({%-11s},$1); 4:20      $1 dmin
+__{}    ld   BC,format({%-12s},__PTR_ADD($1,0)); 4:20      $1 dmin
 __{}    ld    A, C          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sub   L             ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    ld    A, B          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sbc   A, H          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
-__{}    ld   BC, format({%-11s},($1+2)); 4:20      $1 dmin
+__{}    ld   BC,format({%-12s},__PTR_ADD($1,2)); 4:20      $1 dmin
 __{}    ld    A, C          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    sbc   A, E          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
 __{}    ld    A, B          ; 1:4       $1 dmin   $1<DEHL --> $1-DEHL<0 --> carry if $1 is min
@@ -2697,7 +2697,7 @@ __{}    xor   B             ; 1:4       $1 dmin
 __{}    jp    p, $+8        ; 3:10      $1 dmin
 __{}    ld    D, B          ; 1:4       $1 dmin
 __{}    ld    E, C          ; 1:4       $1 dmin
-__{}    ld   HL, format({%-11s},$1); 3:16      $1 dmin},
+__{}    ld   HL,format({%-12s},$1); 3:16      $1 dmin},
 __IS_NUM($1),{0},{dnl
     .error {$0}($@): M4 does not know $1 parameter value!},
 {dnl
@@ -2768,7 +2768,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -2785,7 +2785,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -2926,7 +2926,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -2943,7 +2943,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3132,7 +3132,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3149,7 +3149,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3331,7 +3331,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3348,7 +3348,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3448,7 +3448,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3465,7 +3465,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3561,7 +3561,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3578,7 +3578,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3678,7 +3678,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3695,7 +3695,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3791,7 +3791,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3808,7 +3808,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3921,7 +3921,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3941,7 +3941,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3974,7 +3974,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -3994,7 +3994,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -4030,7 +4030,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
@@ -4051,7 +4051,7 @@ ifelse($1,{},{
 __{}  .error {$0}(): Missing  parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}  .error {$0}($@): Parameter is pointer!},
 __SAVE_EVAL($1),{0},{
 __{}  .error {$0}($@): The parameter is 0!},
