@@ -34,7 +34,7 @@ __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(__IS_EQ({$1},{$2}),1,{dnl
 __{}__{}$0_TRUE   ( flag -- x )  true or false},
 
-__{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:0,{
+__{}__HAS_PTR($1):__HAS_PTR($2),1:0,{
 __{}__{}    ld    A, H          ; 1:4       __INFO   ( flag -- x )
 __{}__{}    or    L             ; 1:4       __INFO{}dnl
 __{}__{}$0_FALSE   false
@@ -67,7 +67,7 @@ __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(__IS_EQ({$1},{$2}),1,{dnl
 __{}__{}__LD_R_NUM(__INFO{   ( flag -- )  true or false},{A},$1)},
 
-__{}__IS_MEM_REF($1),0,{
+__{}__HAS_PTR($1),0,{
 __{}__{}    ld    A, H          ; 1:4       __INFO   ( flag -- )
 __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ld    A, format({%-11s},$1); 2:7       __INFO   true
@@ -75,7 +75,7 @@ __{}__{}    jr   nz, format({%-11s},endif{}IF_COUNT); 2:7/12    __INFO{}dnl
 __{}__{}__LD_R_NUM(__INFO{   false},{A},$2)},
 
 
-__{}__IS_MEM_REF($1):__IS_MEM_REF($2),1:0,{
+__{}__HAS_PTR($1):__HAS_PTR($2),1:0,{
 __{}__{}    ld    A, H          ; 1:4       __INFO   ( flag -- )
 __{}__{}    or    L             ; 1:4       __INFO
 __{}__{}    ld    A, format({%-11s},$2); 2:7       __INFO   false
@@ -272,8 +272,8 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
-    ld   BC,format({%-12s},$1); 4:20      __INFO
+__{}__HAS_PTR($1),1,{
+    ld   BC,format({%-12s},__PTR_ADD($1,0)); 4:20      __INFO
     ld    A, B          ; 1:4       __INFO
     or    C             ; 1:4       __INFO
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
@@ -1835,7 +1835,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{dnl
 __{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
@@ -1876,7 +1876,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{dnl
 __{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
@@ -1964,9 +1964,9 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
-__{}__IS_MEM_REF($1),1,{dnl
+__{}__HAS_PTR($1),1,{dnl
 __{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -2014,9 +2014,9 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
-__{}__IS_MEM_REF($1),1,{dnl
+__{}__HAS_PTR($1),1,{dnl
 __{}__{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}__{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}__{}pushdef({THEN_STACK}, IF_COUNT){}dnl
@@ -2076,7 +2076,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameters!},
-__{}__IS_MEM_REF($1),{1},{
+__{}__HAS_PTR($1),{1},{
 __{}    ld    A, format({%-11s},$1); 3:13      __INFO   ( char -- )
 __{}    xor   L             ; 1:4       __INFO
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
@@ -2121,7 +2121,7 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}(): Missing address parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameters!},
-__{}__IS_MEM_REF($1),{1},{
+__{}__HAS_PTR($1),{1},{
 __{}    ld    A, format({%-11s},$1); 3:13      __INFO   ( char -- )
 __{}    xor   L             ; 1:4       __INFO
 __{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
@@ -2168,7 +2168,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),{1},{
+__{}__HAS_PTR($1),{1},{
 __{}    ld    A, format({%-11s},$1); 3:13      __INFO   ( char -- char )
 __{}    xor   L             ; 1:4       __INFO
 __{}    or    H             ; 1:4       __INFO
@@ -2216,7 +2216,7 @@ __{}ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}.error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),{1},{
+__{}__HAS_PTR($1),{1},{
 __{}    ld    A, format({%-11s},$1); 3:13      __INFO   ( char -- char )
 __{}    xor   L             ; 1:4       __INFO
 __{}    or    H             ; 1:4       __INFO
@@ -2363,19 +2363,19 @@ eval((__IS_NUM($1)+__IS_NUM($2))<2),{1},{
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
-__{}ifelse(_TYP_DOUBLE:__IS_MEM_REF($2),small:1,{dnl
+__{}ifelse(_TYP_DOUBLE:__HAS_PTR($2),small:1,{dnl
                         ;[11:60]    __INFO   ( d -- d )   HL == $2
-__{}    ld   BC, format({%-11s},$2); 4:20      __INFO
+__{}    ld   BC,format({%-12s},__PTR_ADD($2,0)); 4:20      __INFO
 __{}    xor   A             ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO   cp HL, BC
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
-__{}__IS_MEM_REF($2),1,{dnl
+__{}__HAS_PTR($2),1,{dnl
                      ;[14:54/27,54] __INFO   ( d -- d )   HL == $2
 __{}    ld    A,format({%-12s},$2); 3:13      __INFO
 __{}    cp    L             ; 1:4       __INFO{}ifelse(__IS_NUM($2),1,{   x[1] = __HEX_L($2)})
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
-__{}    ld    A,format({%-12s},($2+1)); 3:13      __INFO
+__{}    ld    A,format({%-12s},__PTR_ADD($2,1)); 3:13      __INFO
 __{}    cp    H             ; 1:4       __INFO{}ifelse(__IS_NUM($2),1,{   x[2] = __HEX_H($2)})
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 __{}__IS_NUM($2),0,{dnl
@@ -2391,7 +2391,7 @@ __{}define({_TMP_STACK_INFO},{__INFO   ( d -- d )   HL == $2}){}dnl
 __{}__EQ_MAKE_BEST_CODE($2,3,10,else{}IF_COUNT,0)
 __{}_TMP_BEST_CODE
 __{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO})
-__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}ifelse(__HAS_PTR($1),1,{dnl
                      ;[14:54/27,54] __INFO   ( d -- d )   DE == $1
 __{}    ld    A,format({%-12s},$1); 3:13      __INFO
 __{}    cp    E             ; 1:4       __INFO{}ifelse(__IS_NUM($1),1,{   x[3] = __HEX_L($1)})
@@ -2477,25 +2477,25 @@ __{}__{}  .error {$0}($@): $# parameters found in macro!},
 __{}eval((__IS_NUM($1)+__IS_NUM($2))<2),{1},{dnl
 __{}__{}dnl # -------------------
 __{}__{}ifelse(dnl
-__{}__{}__IS_MEM_REF($1),1,{define({_TMP_BEST_B},13)},
+__{}__{}__HAS_PTR($1),1,{define({_TMP_BEST_B},13)},
 __{}__{}__IS_NUM($1),0,{define({_TMP_BEST_B},11)},
 __{}__{}{dnl
 __{}__{}__{}__EQ_MAKE_CODE({DE},$1,3,10,3,0){}dnl
 __{}__{}__{}define({_TMP_BEST_B},__EQ_BYTES)}){}dnl
 __{}__{}ifelse(dnl
-__{}__{}_TYP_DOUBLE:__IS_MEM_REF($2),small:1,{
+__{}__{}_TYP_DOUBLE:__HAS_PTR($2),small:1,{
 __{}__{}__{}                        ;[11:60]    __INFO   ( d -- d )   HL <> $2
-__{}__{}__{}    ld   BC, format({%-11s},$2); 4:20      __INFO
+__{}__{}__{}    ld   BC,format({%-12s},__PTR_ADD($2,0)); 4:20      __INFO
 __{}__{}__{}    xor   A             ; 1:4       __INFO
 __{}__{}__{}    sbc  HL, BC         ; 2:15      __INFO
 __{}__{}__{}    add  HL, BC         ; 1:11      __INFO   cp HL, BC
 __{}__{}__{}    jr   nz, format({%-11s},$+eval(2+_TMP_BEST_B)); 2:7/12    __INFO},
-__{}__{}__IS_MEM_REF($2),1,{
+__{}__{}__HAS_PTR($2),1,{
 __{}__{}__{}                     ;[12:48/29,53] __INFO   ( d -- d )   HL <> $2
 __{}__{}__{}    ld    A,format({%-12s},$2); 3:13      __INFO
 __{}__{}__{}    cp    L             ; 1:4       __INFO{}ifelse(__IS_NUM($2),1,{   x[1] = __HEX_L($2)})
 __{}__{}__{}    jr   nz, format({%-11s},$+eval(8+_TMP_BEST_B)); 2:7/12    __INFO
-__{}__{}__{}    ld    A,format({%-12s},($2+1)); 3:13      __INFO
+__{}__{}__{}    ld    A,format({%-12s},__PTR_ADD($2,1)); 3:13      __INFO
 __{}__{}__{}    cp    H             ; 1:4       __INFO{}ifelse(__IS_NUM($2),1,{   x[2] = __HEX_H($2)})
 __{}__{}__{}    jr   nz, format({%-11s},$+eval(2+_TMP_BEST_B)); 2:7/12    __INFO},
 __{}__{}__IS_NUM($2),0,{
@@ -2512,7 +2512,7 @@ __{}__{}__{}define({_TMP_SECOND_B},$+eval(2+_TMP_BEST_B)){}dnl
 __{}__{}__{}__EQ_MAKE_BEST_CODE($2,2,7,2+_TMP_BEST_B,0)
 __{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}    jr   nz, format({%-11s},_TMP_SECOND_B); 2:7/12    __INFO})
-__{}__{}ifelse(__IS_MEM_REF($1),1,{dnl
+__{}__{}ifelse(__HAS_PTR($1),1,{dnl
 __{}__{} __{}                    ;[13:51/29,51] __INFO   ( d -- d )   DE <> $1
 __{}__{} __{}   ld    A,format({%-12s},$1); 3:13      __INFO
 __{}__{} __{}   cp    E             ; 1:4       __INFO{}ifelse(__IS_NUM($1),1,{   x[3] = __HEX_L($1)})
@@ -3479,14 +3479,14 @@ __{}define({_TMP_STACK_INFO},{ _TMP_INFO   ( d1 -- d1 )   __HEX_DEHL($1) == DEHL
 __{}ifelse($1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}__{}ifelse(__HAS_PTR($1),{1},{
 __{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC,format({%-12s},__PTR_ADD($1,0)); 4:20      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
 __{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
 __{}__{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      _TMP_INFO},
@@ -3529,14 +3529,14 @@ __{}ifelse($1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}                        ;[19:108]   __INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    xor   A             ; 1:4       __INFO
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   lo16($1)
+__{}__{}    ld   BC,format({%-12s},__PTR_ADD($1,0)); 4:20      __INFO   lo16($1)
 __{}__{}    sbc  HL, BC         ; 2:15      __INFO   lo16(d1)-BC
 __{}__{}    jp   nz, $+7        ; 2:7/12    __INFO
-__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      __INFO   hi16($1)
+__{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,2)); 3:16      __INFO   hi16($1)
 __{}__{}    sbc  HL, DE         ; 2:15      __INFO   HL-hi16(d1)
 __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
