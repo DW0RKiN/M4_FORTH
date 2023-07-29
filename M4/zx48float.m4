@@ -200,7 +200,7 @@ __{}ifelse(eval($#<1),1,{
 __{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{dnl
+__{}__HAS_PTR($1),1,{dnl
 __{}__{}__ASM_TOKEN_PUSH($1){}dnl
 __{}__{}__ASM_TOKEN_ZPICK},
 __{}__IS_NUM($1),0,{dnl
@@ -279,7 +279,7 @@ __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 
 __{}__IS_NUM($1),0,{
@@ -793,9 +793,9 @@ __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}.error {$0}($@): $# parameters found in macro!},
-__{}__IS_MEM_REF($1),1,{dnl
+__{}__HAS_PTR($1),1,{dnl
 __{}__{}__def({USE_BC_TO_Z})
-__{}__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   ( Z: -- $1 )
+__{}__{}    ld   BC,format({%-12s},$1); 4:20      __INFO   ( Z: -- $1 )
 __{}__{}    call _BC_TO_Z       ; 3:17      __INFO},
 __{}eval($1>=0),{1},{dnl
 __{}__{}__def({USE_BC_TO_Z})
@@ -832,9 +832,9 @@ __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}(): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): $# parameters found in macro!},
-__{}__IS_MEM_REF($1),{1},{dnl
+__{}__HAS_PTR($1),{1},{dnl
 __{}__def({USE_SIGN_BC_TO_Z}){}dnl
-__{}    ld   BC, format({%-11s},$1); 4:20      __INFO   ( Z: -- $1 )
+__{}    ld   BC,format({%-12s},$1); 4:20      __INFO   ( Z: -- $1 )
 __{}    call _SIGN_BC_TO_Z  ; 3:17      __INFO},
 __{}eval($1>=0),{1},{dnl
 __{}    ld   BC, format({%-11s},$1); 3:10      __INFO   ( Z: -- $1 )
