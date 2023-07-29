@@ -1098,7 +1098,7 @@ __{}define({__INFO},{dup_cfetch until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    ld    A,(HL)        ; 1:7       dup C@ until BEGIN_STACK   ( addr -- addr )
+    ld    A,[HL]        ; 1:7       dup C@ until BEGIN_STACK   ( addr -- addr )
     or    A             ; 1:4       dup C@ until BEGIN_STACK
     jp    z, begin{}BEGIN_STACK   ; 3:10      dup C@ until BEGIN_STACK
 __{}break{}BEGIN_STACK:               ;           dup C@ until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
@@ -1114,7 +1114,7 @@ __{}define({__INFO},{dup_cfetch 0= until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    ld    A,(HL)        ; 1:7       dup C@ 0= until BEGIN_STACK   ( addr -- addr )
+    ld    A,[HL]        ; 1:7       dup C@ 0= until BEGIN_STACK   ( addr -- addr )
     or    A             ; 1:4       dup C@ 0= until BEGIN_STACK
     jp   nz, begin{}BEGIN_STACK   ; 3:10      dup C@ 0= until BEGIN_STACK
 __{}break{}BEGIN_STACK:               ;           dup C@ 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
@@ -1162,7 +1162,7 @@ __{}define({__INFO},{over cfetch until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    ld    A,(DE)        ; 1:7       over C@ until BEGIN_STACK   ( addr x -- addr x )
+    ld    A,[DE]        ; 1:7       over C@ until BEGIN_STACK   ( addr x -- addr x )
     or    A             ; 1:4       over C@ until BEGIN_STACK
     jp    z, begin{}BEGIN_STACK   ; 3:10      over C@ until BEGIN_STACK
 __{}break{}BEGIN_STACK:               ;           over C@ until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
@@ -1178,7 +1178,7 @@ __{}define({__INFO},{over cfetch 0= until}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    ld    A,(DE)        ; 1:7       over C@ 0= until BEGIN_STACK   ( addr x -- addr x )
+    ld    A,[DE]        ; 1:7       over C@ 0= until BEGIN_STACK   ( addr x -- addr x )
     or    A             ; 1:4       over C@ 0= until BEGIN_STACK
     jp   nz, begin{}BEGIN_STACK   ; 3:10      over C@ 0= until BEGIN_STACK
 __{}break{}BEGIN_STACK:               ;           over C@ 0= until BEGIN_STACK{}popdef({BEGIN_STACK})})}){}dnl
@@ -1236,7 +1236,7 @@ __{}  .error {$0}($@): $# parameters found in macro!},
 __{}                        ;[7:42]     _TMP_INFO   ( addr1 d1 -- addr1 d1 )
 __{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr1
 __{}    push BC             ; 1:11      _TMP_INFO
-__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
+__{}    ld    A,[BC]        ; 1:7       _TMP_INFO
 __{}    or    A             ; 1:4       _TMP_INFO
 __{}    jp   nz, begin{}BEGIN_STACK   ; 3:10      _TMP_INFO
 __{}break{}BEGIN_STACK:               ;           _TMP_INFO{}popdef({BEGIN_STACK})})}){}dnl
@@ -1442,7 +1442,7 @@ __{}define({__INFO},{dup_cfetch_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    ld    A,(HL)        ; 1:7       dup C@ while BEGIN_STACK   ( addr -- addr )
+    ld    A,[HL]        ; 1:7       dup C@ while BEGIN_STACK   ( addr -- addr )
     or    A             ; 1:4       dup C@ while BEGIN_STACK
     jp    z, break{}BEGIN_STACK   ; 3:10      dup C@ while})}){}dnl
 dnl
@@ -1457,7 +1457,7 @@ __{}define({__INFO},{dup_cfetch 0=_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    ld    A,(HL)        ; 1:7       dup C@ 0= while BEGIN_STACK   ( addr -- addr )
+    ld    A,[HL]        ; 1:7       dup C@ 0= while BEGIN_STACK   ( addr -- addr )
     or    A             ; 1:4       dup C@ 0= while BEGIN_STACK
     jp   nz, break{}BEGIN_STACK   ; 3:10      dup C@ 0= while})}){}dnl
 dnl
@@ -1472,7 +1472,7 @@ __{}define({__INFO},{over cfetch_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    ld    A,(DE)        ; 1:7       over C@ while BEGIN_STACK   ( addr x -- addr x )
+    ld    A,[DE]        ; 1:7       over C@ while BEGIN_STACK   ( addr x -- addr x )
     or    A             ; 1:4       over C@ while BEGIN_STACK
     jp    z, break{}BEGIN_STACK   ; 3:10      over C@ while})}){}dnl
 dnl
@@ -1487,7 +1487,7 @@ __{}define({__INFO},{over cfetch 0=_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 {
-    ld    A,(DE)        ; 1:7       over C@ 0= while BEGIN_STACK   ( addr x -- addr x )
+    ld    A,[DE]        ; 1:7       over C@ 0= while BEGIN_STACK   ( addr x -- addr x )
     or    A             ; 1:4       over C@ 0= while BEGIN_STACK
     jp   nz, break{}BEGIN_STACK   ; 3:10      over C@ 0= while})}){}dnl
 dnl
@@ -1508,7 +1508,7 @@ __{}  .error {$0}($@): $# parameters found in macro!},
 __{}                        ;[7:42]     _TMP_INFO   ( addr d -- addr d )
 __{}    pop  BC             ; 1:10      _TMP_INFO   BC = addr
 __{}    push BC             ; 1:11      _TMP_INFO
-__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
+__{}    ld    A,[BC]        ; 1:7       _TMP_INFO
 __{}    or    A             ; 1:4       _TMP_INFO
 __{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})}){}dnl
 dnl
@@ -1530,7 +1530,7 @@ __{}                        ;[8:48]     _TMP_INFO   ( addr d -- addr++ d )
 __{}    pop  BC             ; 1:10      _TMP_INFO
 __{}    inc  BC             ; 1:6       _TMP_INFO   BC = addr++
 __{}    push BC             ; 1:11      _TMP_INFO
-__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
+__{}    ld    A,[BC]        ; 1:7       _TMP_INFO
 __{}    or    A             ; 1:4       _TMP_INFO
 __{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO})}){}dnl
 dnl
@@ -1552,7 +1552,7 @@ __{}                       ;[13:74]     _TMP_INFO   ( addr d -- addr++ d )
 __{}    pop  BC             ; 1:10      _TMP_INFO
 __{}    inc  BC             ; 1:6       _TMP_INFO   BC = addr++
 __{}    push BC             ; 1:11      _TMP_INFO
-__{}    ld    A,(BC)        ; 1:7       _TMP_INFO
+__{}    ld    A,[BC]        ; 1:7       _TMP_INFO
 __{}    or    A             ; 1:4       _TMP_INFO
 __{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO
 __{}    push DE             ; 1:11      _TMP_INFO
@@ -3307,7 +3307,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
 {
                        ;[13:81]     Du< while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du< while BEGIN_STACK   lo_2
-    ld    A, C          ; 1:4       Du< while BEGIN_STACK   d2<d1 --> d2-d1<0 --> (SP)BC-DEHL<0 --> no carry if false
+    ld    A, C          ; 1:4       Du< while BEGIN_STACK   d2<d1 --> d2-d1<0 --> [SP]BC-DEHL<0 --> no carry if false
     sub   L             ; 1:4       Du< while BEGIN_STACK   C-L<0 --> no carry if false
     ld    A, B          ; 1:4       Du< while BEGIN_STACK
     sbc   A, H          ; 1:4       Du< while BEGIN_STACK   B-H<0 --> no carry if false
@@ -3338,7 +3338,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
 {
                        ;[13:81]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du>= while BEGIN_STACK   lo_2
-    ld    A, C          ; 1:4       Du>= while BEGIN_STACK   d2>=d1 --> d2-d1>=0 --> (SP)BC-DEHL>=0 --> carry if false
+    ld    A, C          ; 1:4       Du>= while BEGIN_STACK   d2>=d1 --> d2-d1>=0 --> [SP]BC-DEHL>=0 --> carry if false
     sub   L             ; 1:4       Du>= while BEGIN_STACK   C-L>=0 --> carry if false
     ld    A, B          ; 1:4       Du>= while BEGIN_STACK
     sbc   A, H          ; 1:4       Du>= while BEGIN_STACK   B-H>=0 --> carry if false
@@ -3370,7 +3370,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
                        ;[13:88]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du<= while BEGIN_STACK   lo_2
     or    A             ; 1:4       Du<= while BEGIN_STACK
-    sbc  HL, BC         ; 2:15      Du<= while BEGIN_STACK   ud2<=ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> carry if false
+    sbc  HL, BC         ; 2:15      Du<= while BEGIN_STACK   ud2<=ud1 --> 0<=ud1-ud2 --> 0<=DEHL-[SP]BC --> carry if false
     pop  BC             ; 1:10      Du<= while BEGIN_STACK   hi_2
     ex   DE, HL         ; 1:4       Du<= while BEGIN_STACK
     sbc  HL, BC         ; 2:15      Du<= while BEGIN_STACK   hi_2<=hi_1 --> BC<=HL --> 0<=HL-BC --> carry if false
@@ -3400,7 +3400,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
                        ;[13:88]     Du> while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du> while BEGIN_STACK   lo_2
     or    A             ; 1:4       Du> while BEGIN_STACK
-    sbc  HL, BC         ; 2:15      Du> while BEGIN_STACK   ud2>ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> no carry if false
+    sbc  HL, BC         ; 2:15      Du> while BEGIN_STACK   ud2>ud1 --> 0>ud1-ud2 --> 0>DEHL-[SP]BC --> no carry if false
     pop  BC             ; 1:10      Du> while BEGIN_STACK   hi_2
     ex   DE, HL         ; 1:4       Du> while BEGIN_STACK
     sbc  HL, BC         ; 2:15      Du> while BEGIN_STACK   hi_2>hi_1 --> BC>HL --> 0>HL-BC --> no carry if false
@@ -3437,10 +3437,10 @@ __{}    pop  BC             ; 1:10      4dup D= while BEGIN_STACK   h2    . h1 l
 __{}    sbc  HL, BC         ; 2:15      4dup D= while BEGIN_STACK   h2    . h1 --  cp l1-l2
 __{}    add  HL, BC         ; 1:11      4dup D= while BEGIN_STACK   h2    . h1 l1  cp l1-l2
 __{}    jr   nz, $+7        ; 2:7/12    4dup D= while BEGIN_STACK   h2    . h1 h2
-__{}    ex  (SP),HL         ; 1:19      4dup D= while BEGIN_STACK   l1    . h1 h2  HL = h2 = hi16(d2)
+__{}    ex  [SP],HL         ; 1:19      4dup D= while BEGIN_STACK   l1    . h1 h2  HL = h2 = hi16(d2)
 __{}    sbc  HL, DE         ; 2:15      4dup D= while BEGIN_STACK   l1    . h1 --  cp h2-h1
 __{}    add  HL, DE         ; 1:11      4dup D= while BEGIN_STACK   l1    . h1 h2  cp h2-h1
-__{}    ex  (SP),HL         ; 1:19      4dup D= while BEGIN_STACK   h2    . h1 l1  HL = l1
+__{}    ex  [SP],HL         ; 1:19      4dup D= while BEGIN_STACK   h2    . h1 l1  HL = l1
 __{}    push BC             ; 1:11      4dup D= while BEGIN_STACK   h2 l2 . h1 l1
 __{}    jp   nz, break{}BEGIN_STACK   ; 3:10      4dup D= while BEGIN_STACK   h2 l2 . h1 l1}){}dnl
 }){}dnl
@@ -3471,10 +3471,10 @@ _TYP_DOUBLE,{small},{
     sbc  HL, BC         ; 2:15      4dup D<> while BEGIN_STACK   h2    . h1 --  cp l1-l2
     add  HL, BC         ; 1:11      4dup D<> while BEGIN_STACK   h2    . h1 l1  cp l1-l2
     jr   nz, $+7        ; 2:7/12    4dup D<> while BEGIN_STACK   h2    . h1 h2
-    ex  (SP),HL         ; 1:19      4dup D<> while BEGIN_STACK   l1    . h1 h2  HL = h2 = hi16(d2)
+    ex  [SP],HL         ; 1:19      4dup D<> while BEGIN_STACK   l1    . h1 h2  HL = h2 = hi16(d2)
     sbc  HL, DE         ; 2:15      4dup D<> while BEGIN_STACK   l1    . h1 --  cp h2-h1
     add  HL, DE         ; 1:11      4dup D<> while BEGIN_STACK   l1    . h1 h2  cp h2-h1
-    ex  (SP),HL         ; 1:19      4dup D<> while BEGIN_STACK   h2    . h1 l1  HL = l1
+    ex  [SP],HL         ; 1:19      4dup D<> while BEGIN_STACK   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D<> while BEGIN_STACK   h2 l2 . h1 l1
     jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while BEGIN_STACK   h2 l2 . h1 l1},
 _TYP_DOUBLE,{fast},{
@@ -3506,11 +3506,11 @@ _TYP_DOUBLE,{fast},{
     ld    A, B          ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  A = hi(l2)
     sub   H             ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  hi(l2) - hi(l1)
     jr   nz, $+10       ; 2:7/12    4dup D<> while BEGIN_STACK   h2       . h1 l1  --> push bc
-    ex (SP), HL         ; 1:19      4dup D<> while BEGIN_STACK   l1       . h1 h2  HL= hi(d2) = h2
+    ex [SP], HL         ; 1:19      4dup D<> while BEGIN_STACK   l1       . h1 h2  HL= hi(d2) = h2
     ld    A, L          ; 1:4       4dup D<> while BEGIN_STACK   l1       . h1 h2  A = lo(h2)
     sub   E             ; 1:4       4dup D<> while BEGIN_STACK   l1       . h1 h2  lo(h2) - lo(l1)
     ld    A, H          ; 1:4       4dup D<> while BEGIN_STACK   l1       . h1 h2  A = hi(h2)
-    ex (SP), HL         ; 1:19      4dup D<> while BEGIN_STACK   h2       . h1 l1
+    ex [SP], HL         ; 1:19      4dup D<> while BEGIN_STACK   h2       . h1 l1
     jr   nz, $+3        ; 2:7/12    4dup D<> while BEGIN_STACK   h2       . h1 l1  --> push bc
     sub   D             ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  hi(h2) - hi(h1)
     push BC             ; 1:11      4dup D<> while BEGIN_STACK   h2 l2    . h1 l1
@@ -3660,17 +3660,17 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du< while},
 {
                        ;[15:101]    4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du< while BEGIN_STACK   ud2 < ud1 --> ud2-ud1<0 --> (SP)BC-DEHL<0 --> no carry if false
+    pop  BC             ; 1:10      4dup Du< while BEGIN_STACK   ud2 < ud1 --> ud2-ud1<0 --> [SP]BC-DEHL<0 --> no carry if false
     ld    A, C          ; 1:4       4dup Du< while BEGIN_STACK
     sub   L             ; 1:4       4dup Du< while BEGIN_STACK   C-L<0 --> no carry if false
     ld    A, B          ; 1:4       4dup Du< while BEGIN_STACK
     sbc   A, H          ; 1:4       4dup Du< while BEGIN_STACK   B-H<0 --> no carry if false
-    ex  (SP),HL         ; 1:19      4dup Du< while BEGIN_STACK   HL = hi2
-    ld    A, L          ; 1:4       4dup Du< while BEGIN_STACK   HLBC-DE(SP)<0 -- no carry if false
+    ex  [SP],HL         ; 1:19      4dup Du< while BEGIN_STACK   HL = hi2
+    ld    A, L          ; 1:4       4dup Du< while BEGIN_STACK   HLBC-DE[SP]<0 -- no carry if false
     sbc   A, E          ; 1:4       4dup Du< while BEGIN_STACK   L-E<0 --> no carry if false
     ld    A, H          ; 1:4       4dup Du< while BEGIN_STACK
     sbc   A, D          ; 1:4       4dup Du< while BEGIN_STACK   H-D<0 --> no carry if false
-    ex  (SP),HL         ; 1:19      4dup Du< while BEGIN_STACK
+    ex  [SP],HL         ; 1:19      4dup Du< while BEGIN_STACK
     push BC             ; 1:11      4dup Du< while BEGIN_STACK
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du< while})}){}dnl
 dnl
@@ -3695,17 +3695,17 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
     jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du>= while},
 {
                        ;[15:101]    4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du>= while BEGIN_STACK   ud2 >= ud1 --> ud2-ud1>=0 --> (SP)BC-DEHL>=0 --> carry if false
+    pop  BC             ; 1:10      4dup Du>= while BEGIN_STACK   ud2 >= ud1 --> ud2-ud1>=0 --> [SP]BC-DEHL>=0 --> carry if false
     ld    A, C          ; 1:4       4dup Du>= while BEGIN_STACK
     sub   L             ; 1:4       4dup Du>= while BEGIN_STACK   C-L>=0 --> carry if false
     ld    A, B          ; 1:4       4dup Du>= while BEGIN_STACK
     sbc   A, H          ; 1:4       4dup Du>= while BEGIN_STACK   B-H>=0 --> carry if false
-    ex  (SP),HL         ; 1:19      4dup Du>= while BEGIN_STACK   HL = hi2
-    ld    A, L          ; 1:4       4dup Du>= while BEGIN_STACK   HLBC-DE(SP)>=0 -- carry if false
+    ex  [SP],HL         ; 1:19      4dup Du>= while BEGIN_STACK   HL = hi2
+    ld    A, L          ; 1:4       4dup Du>= while BEGIN_STACK   HLBC-DE[SP]>=0 -- carry if false
     sbc   A, E          ; 1:4       4dup Du>= while BEGIN_STACK   L-E>=0 --> carry if false
     ld    A, H          ; 1:4       4dup Du>= while BEGIN_STACK
     sbc   A, D          ; 1:4       4dup Du>= while BEGIN_STACK   H-D>=0 --> carry if false
-    ex  (SP),HL         ; 1:19      4dup Du>= while BEGIN_STACK
+    ex  [SP],HL         ; 1:19      4dup Du>= while BEGIN_STACK
     push BC             ; 1:11      4dup Du>= while BEGIN_STACK
     jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du>= while})}){}dnl
 dnl
@@ -3730,17 +3730,17 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
     jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du<= while},
 {
                        ;[15:101]    4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du<= while BEGIN_STACK   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> carry if false
+    pop  BC             ; 1:10      4dup Du<= while BEGIN_STACK   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-[SP]BC --> carry if false
     ld    A, L          ; 1:4       4dup Du<= while BEGIN_STACK
     sub   C             ; 1:4       4dup Du<= while BEGIN_STACK   0<=L-C --> carry if false
     ld    A, H          ; 1:4       4dup Du<= while BEGIN_STACK
     sbc   A, B          ; 1:4       4dup Du<= while BEGIN_STACK   0<=H-B --> carry if false
-    ex  (SP),HL         ; 1:19      4dup Du<= while BEGIN_STACK   HL = hi2
-    ld    A, E          ; 1:4       4dup Du<= while BEGIN_STACK   0<=DE(SP)-HLBC -- carry if false
+    ex  [SP],HL         ; 1:19      4dup Du<= while BEGIN_STACK   HL = hi2
+    ld    A, E          ; 1:4       4dup Du<= while BEGIN_STACK   0<=DE[SP]-HLBC -- carry if false
     sbc   A, L          ; 1:4       4dup Du<= while BEGIN_STACK   0<=E-L --> carry if false
     ld    A, D          ; 1:4       4dup Du<= while BEGIN_STACK
     sbc   A, H          ; 1:4       4dup Du<= while BEGIN_STACK   0<=D-H --> carry if false
-    ex  (SP),HL         ; 1:19      4dup Du<= while BEGIN_STACK
+    ex  [SP],HL         ; 1:19      4dup Du<= while BEGIN_STACK
     push BC             ; 1:11      4dup Du<= while BEGIN_STACK
     jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du<= while})}){}dnl
 dnl
@@ -3765,17 +3765,17 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du> while},
 {
                        ;[15:101]    4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du> while BEGIN_STACK   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> no carry if false
+    pop  BC             ; 1:10      4dup Du> while BEGIN_STACK   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-[SP]BC --> no carry if false
     ld    A, L          ; 1:4       4dup Du> while BEGIN_STACK
     sub   C             ; 1:4       4dup Du> while BEGIN_STACK   0>L-C --> no carry if false
     ld    A, H          ; 1:4       4dup Du> while BEGIN_STACK
     sbc   A, B          ; 1:4       4dup Du> while BEGIN_STACK   0>H-B --> no carry if false
-    ex  (SP),HL         ; 1:19      4dup Du> while BEGIN_STACK   HL = hi2
-    ld    A, E          ; 1:4       4dup Du> while BEGIN_STACK   0>DE(SP)-HLBC -- no carry if false
+    ex  [SP],HL         ; 1:19      4dup Du> while BEGIN_STACK   HL = hi2
+    ld    A, E          ; 1:4       4dup Du> while BEGIN_STACK   0>DE[SP]-HLBC -- no carry if false
     sbc   A, L          ; 1:4       4dup Du> while BEGIN_STACK   0>E-L --> no carry if false
     ld    A, D          ; 1:4       4dup Du> while BEGIN_STACK
     sbc   A, H          ; 1:4       4dup Du> while BEGIN_STACK   0>D-H --> no carry if false
-    ex  (SP),HL         ; 1:19      4dup Du> while BEGIN_STACK
+    ex  [SP],HL         ; 1:19      4dup Du> while BEGIN_STACK
     push BC             ; 1:11      4dup Du> while BEGIN_STACK
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du> while})}){}dnl
 dnl
@@ -3817,14 +3817,14 @@ define({__ASM_TOKEN_PD0EQ_WHILE},{dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{define({__INFO},__COMPILE_INFO)
-    ld    A,(HL)        ; 1:7       __INFO BEGIN_STACK  ( pd -- pd )
+    ld    A,[HL]        ; 1:7       __INFO BEGIN_STACK  ( pd -- pd )
     ld    C, L          ; 1:4       __INFO BEGIN_STACK
     inc   L             ; 1:4       __INFO BEGIN_STACK
-    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    or  [HL]            ; 1:7       __INFO BEGIN_STACK
     inc   L             ; 1:4       __INFO BEGIN_STACK
-    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    or  [HL]            ; 1:7       __INFO BEGIN_STACK
     inc   L             ; 1:4       __INFO BEGIN_STACK
-    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    or  [HL]            ; 1:7       __INFO BEGIN_STACK
     ld    L, C          ; 1:4       __INFO BEGIN_STACK
     jp   nz, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK})}){}dnl
 dnl
@@ -3859,14 +3859,14 @@ define({__ASM_TOKEN_PD0NE_WHILE},{dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}{define({__INFO},__COMPILE_INFO)
-    ld    A,(HL)        ; 1:7       __INFO BEGIN_STACK  ( pd -- pd )
+    ld    A,[HL]        ; 1:7       __INFO BEGIN_STACK  ( pd -- pd )
     ld    C, L          ; 1:4       __INFO BEGIN_STACK
     inc   L             ; 1:4       __INFO BEGIN_STACK
-    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    or  [HL]            ; 1:7       __INFO BEGIN_STACK
     inc   L             ; 1:4       __INFO BEGIN_STACK
-    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    or  [HL]            ; 1:7       __INFO BEGIN_STACK
     inc   L             ; 1:4       __INFO BEGIN_STACK
-    or  (HL)            ; 1:7       __INFO BEGIN_STACK
+    or  [HL]            ; 1:7       __INFO BEGIN_STACK
     ld    L, C          ; 1:4       __INFO BEGIN_STACK
     jp    z, break{}BEGIN_STACK   ; 3:10      __INFO BEGIN_STACK})}){}dnl
 dnl
@@ -3948,10 +3948,10 @@ __{}__{}ifelse(__HAS_PTR($1),{1},{
 __{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC,format({%-12s},__PTR_ADD($1,0)); 4:20      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
 __{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
 __{}__{}__{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
@@ -3996,10 +3996,10 @@ __{}__{}ifelse(__HAS_PTR($1),{1},{
 __{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    ld   BC, format({%-11s},$1); 4:20      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC, format({%-11s},__PTR_ADD($1,0)); 4:20      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
 __{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
-__{}__{}__{}    ld   HL,format({%-12s},($1+2)); 3:16      _TMP_INFO   hi16($1)
+__{}__{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,2)); 3:16      _TMP_INFO   hi16($1)
 __{}__{}__{}    sbc  HL, DE         ; 2:15      _TMP_INFO   HL-hi16(d1)
 __{}__{}__{}    pop  HL             ; 1:10      _TMP_INFO
 __{}__{}__{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
@@ -4037,9 +4037,9 @@ __HAS_PTR($1),{1},{
                         ;[22:92]    2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # version with constant address
     ld    A,format({%-12s}, $1); 3:13      2dup $1 > while BEGIN_STACK
     sub   L             ; 1:4       2dup $1 > while BEGIN_STACK    L>(addr+0) --> 0>A-L --> no carry if false
-    ld    A,format({%-12s},(1+$1)); 3:13      2dup $1 > while BEGIN_STACK
+    ld    A,format({%-12s},__PTR_ADD($1,1)); 3:13      2dup $1 > while BEGIN_STACK
     sbc   A, H          ; 1:4       2dup $1 > while BEGIN_STACK    H>(addr+1) --> 0>A-H --> no carry if false
-    ld   BC,format({%-12s},(2+$1)); 4:20      2dup $1 > while BEGIN_STACK
+    ld   BC,format({%-12s},__PTR_ADD($1,2)); 4:20      2dup $1 > while BEGIN_STACK
     ld    A, C          ; 1:4       2dup $1 > while BEGIN_STACK
     sbc   A, E          ; 1:4       2dup $1 > while BEGIN_STACK    E>(addr+2) --> 0>A-E --> no carry if false
     ld    A, B          ; 1:4       2dup $1 > while BEGIN_STACK
