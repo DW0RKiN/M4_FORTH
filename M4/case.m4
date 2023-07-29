@@ -95,7 +95,7 @@ define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifels
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}ifelse(__HAS_PTR($1),{1},{dnl
 __{}                        ;[13:51/39] _OF_INFO(push_of($1))   version: variable in memory
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
@@ -234,7 +234,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): M4 cannot calculate "$1".},
-__{}__IS_MEM_REF($1),{1},{dnl
+__{}__HAS_PTR($1),{1},{dnl
 __{}    .error {$0}($@): Does not support variable parameters stored in memory.},
 __{}{dnl
 __{}__{}ifelse(eval($1),{0},{dnl
@@ -263,11 +263,11 @@ __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}                        ;[ifelse(__IS_MEM_REF($2),{1},{15:69},{14:63})]    _OF_INFO(lo_within_of($1),lo_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
+__{}ifelse(__HAS_PTR($1),{1},{dnl
+__{}                        ;[ifelse(__HAS_PTR($2),{1},{15:69},{14:63})]    _OF_INFO(lo_within_of($1),lo_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    C, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   C = $1
-__{}    ld    A, ifelse(__IS_MEM_REF($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      _OF_INFO(lo_within_of($1),lo_within_)
+__{}    ld    A, ifelse(__HAS_PTR($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = $2 - $1
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
@@ -275,7 +275,7 @@ __{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   
 __{}    sub   B             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = (a - $1) - ($2 - $1)
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
-__{}__IS_MEM_REF($2),{1},{dnl
+__{}__HAS_PTR($2),{1},{dnl
 __{}                        ;[13:59]    _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
 __{}    ld    C, __FORM({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    A, format({%-11s},$2); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
@@ -385,7 +385,7 @@ __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): M4 cannot calculate "$1".},
-__{}__IS_MEM_REF($1),{1},{dnl
+__{}__HAS_PTR($1),{1},{dnl
 __{}    .error {$0}($@): Does not support variable parameters stored in memory.},
 __{}{dnl
 __{}__{}ifelse(eval($1),{0},{dnl
@@ -414,11 +414,11 @@ __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__IS_MEM_REF($1),{1},{dnl
-__{}                        ;[ifelse(__IS_MEM_REF($2),{1},{15:69},{14:63})]    _OF_INFO(hi_within_of($1),hi_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
+__{}ifelse(__HAS_PTR($1),{1},{dnl
+__{}                        ;[ifelse(__HAS_PTR($2),{1},{15:69},{14:63})]    _OF_INFO(hi_within_of($1),hi_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    C, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   C = $1
-__{}    ld    A, ifelse(__IS_MEM_REF($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      _OF_INFO(hi_within_of($1),hi_within_)
+__{}    ld    A, ifelse(__HAS_PTR($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   B = ($2)-[$1]
 __{}    ld    A, L          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
@@ -426,7 +426,7 @@ __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   
 __{}    sub   B             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = (a -($1)) - ([$2]-($1))
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
-__{}__IS_MEM_REF($2),{1},{dnl
+__{}__HAS_PTR($2),{1},{dnl
 __{}                        ;[13:59]    _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
 __{}    ld    C, __FORM({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    A, format({%-11s},$2); 3:13      _OF_INFO(hi_within_of($1),hi_within_)
