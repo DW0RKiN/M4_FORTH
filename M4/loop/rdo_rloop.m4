@@ -29,7 +29,7 @@ __{}ifelse(__GET_LOOP_BEGIN($1):__GET_LOOP_END($1),{:},{
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
 do{}$1:                  ;           __INFO},
-__{}__GET_LOOP_END($1):__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{:1},{
+__{}__GET_LOOP_END($1):__HAS_PTR(__GET_LOOP_BEGIN($1)),{:1},{
                        ;[17:109]    __INFO   ( stop __GET_LOOP_BEGIN($1) -- ) ( R: -- stop __GET_LOOP_BEGIN($1) )
     ex  (SP),HL         ; 1:19      __INFO
     exx                 ; 1:4       __INFO
@@ -132,7 +132,7 @@ __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    jp    z, exit{}$1    ; 3:10      __INFO
 __{}__{}do{}$1:                  ;           __INFO},
-__{}__GET_LOOP_END($1):__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{:1},{
+__{}__GET_LOOP_END($1):__HAS_PTR(__GET_LOOP_BEGIN($1)),{:1},{
 __{}__{}                       ;[28:172]    __INFO   ( stop __GET_LOOP_BEGIN($1) -- ) ( R: -- stop __GET_LOOP_BEGIN($1) )
 __{}__{}    ld   BC,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   index
 __{}__{}    push BC             ; 1:11      __INFO
@@ -201,9 +201,9 @@ __{}__{}do{}$1:                  ;           __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    exx                 ; 1:4       __INFO},
 __{}{
-__{}__{}                       ;ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,[10:52],[ 9:42])     __INFO   ( __GET_LOOP_BEGIN($1) __GET_LOOP_END($1) -- ) ( R: -- index )
+__{}__{}                       ;ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,[10:52],[ 9:42])     __INFO   ( __GET_LOOP_BEGIN($1) __GET_LOOP_END($1) -- ) ( R: -- index )
 __{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld   DE, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,4:20,3:10)      __INFO   DE = index
+__{}__{}    ld   DE, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,4:20,3:10)      __INFO   DE = index
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}do{}$1:                  ;           __INFO
 __{}__{}    ld  (HL),D          ; 1:7       __INFO

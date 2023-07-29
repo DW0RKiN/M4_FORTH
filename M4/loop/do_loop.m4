@@ -18,7 +18,7 @@ __{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO},
-__GET_LOOP_BEGIN($1):__IS_MEM_REF(__GET_LOOP_END($1)),{:0},{
+__GET_LOOP_BEGIN($1):__HAS_PTR(__GET_LOOP_END($1)),{:0},{
     ld  (idx{}$1), HL    ; 3:16      __INFO   index  ( __GET_LOOP_END($1) index -- )
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO},
@@ -27,7 +27,7 @@ __GET_LOOP_END($1),{},{
     ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
     ld    A, H          ; 1:4       __INFO
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); 3:ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,16,10)      __INFO
+    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); 3:ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,16,10)      __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO   index
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO},
@@ -53,13 +53,13 @@ __{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO
     jp    z, exit{}$1    ; 3:10      __INFO},
-__GET_LOOP_BEGIN($1):__IS_MEM_REF(__GET_LOOP_END($1)):__SAVE_EVAL(__GET_LOOP_STEP($1)),{:0:1},{
+__GET_LOOP_BEGIN($1):__HAS_PTR(__GET_LOOP_END($1)):__SAVE_EVAL(__GET_LOOP_STEP($1)),{:0:1},{
     ld    C, L          ; 1:4       __INFO
     ld    B, H          ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
     ex   DE, HL         ; 1:4       __INFO
     jp   qdo{}$1         ; 3:10      __INFO},
-__GET_LOOP_BEGIN($1):__IS_MEM_REF(__GET_LOOP_END($1)),{:0},{
+__GET_LOOP_BEGIN($1):__HAS_PTR(__GET_LOOP_END($1)),{:0},{
 define({_TMP_INFO},__INFO){}dnl
 define({_TMP_STACK_INFO},__INFO{   }( __GET_LOOP_END($1) index -- )){}dnl
 __EQ_MAKE_BEST_CODE(__GET_LOOP_END($1),8,40){}dnl
@@ -69,7 +69,7 @@ __{}_TMP_BEST_CODE
     ex   DE, HL         ; 1:4       __INFO
     jp    z, exit{}$1    ; 3:10      __INFO},
 __GET_LOOP_END($1),{},{dnl
-__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
 __{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}    ld    A, H          ; 1:4       __INFO
@@ -84,7 +84,7 @@ __{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- 
 __{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}    ld    A, H          ; 1:4       __INFO
 __{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
-__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,4:20,3:10)      __INFO
+__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,4:20,3:10)      __INFO
 __{}    ld  (idx{}$1), BC    ; 4:20      __INFO
 __{}    or    A             ; 1:4       __INFO
 __{}    sbc  HL, BC         ; 2:15      __INFO
@@ -95,7 +95,7 @@ __{}__{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
 __{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
 __{}__{}__HEX_HL(__GET_LOOP_BEGIN($1)),0xFFFF,{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
@@ -104,7 +104,7 @@ __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
 __{}__{}    and   L             ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO
-__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
 __{}__{}__HEX_HL(__GET_LOOP_BEGIN($1)),0x0101,{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
@@ -114,7 +114,7 @@ __{}__{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
 __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    dec   A             ; 1:4       __INFO
 __{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
 __{}__{}__HEX_H(__GET_LOOP_BEGIN($1)),0x00,{
 __{}__{}    ld    A, H          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
@@ -128,7 +128,7 @@ __{}__{}__{}    inc   A             ; 1:4       __INFO},
 __{}__{}__{}{dnl
 __{}__{}__{}    xor  format({%-15s},low __GET_LOOP_BEGIN($1)); 2:7       __INFO})
 __{}__{}    or    H             ; 1:4       __INFO
-__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
 __{}__{}__HEX_L(__GET_LOOP_BEGIN($1)),0x00,{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
@@ -142,14 +142,14 @@ __{}__{}__{}    inc   A             ; 1:4       __INFO},
 __{}__{}__{}{dnl
 __{}__{}__{}    xor  format({%-15s},high __GET_LOOP_BEGIN($1)); 2:7       __INFO})
 __{}__{}    or    L             ; 1:4       __INFO
-__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), HL    ; 3:16      __INFO},
 __{}__{}{
 __{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
 __{}__{}    ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,4:20,3:10)      __INFO
+__{}__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,4:20,3:10)      __INFO
 __{}__{}    ld  (idx{}$1), BC    ; 4:20      __INFO
 __{}__{}    or    A             ; 1:4       __INFO
 __{}__{}    sbc  HL, BC         ; 2:15      __INFO})})
@@ -186,7 +186,7 @@ __GET_LOOP_END($1),{},{dnl
     ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop-1
     ld    A, H          ; 1:4       __INFO
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop-1
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO
     pop  HL             ; 1:10      __INFO
     ex   DE, HL         ; 1:4       __INFO},
@@ -231,14 +231,14 @@ __{}_TMP_BEST_CODE
     ld  (stp_lo{}$1), A  ; 3:13      __INFO   lo stop-1
     ld    A, H          ; 1:4       __INFO
     ld  (stp_hi{}$1), A  ; 3:13      __INFO   hi stop-1
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO
     pop  HL             ; 1:10      __INFO
     ex   DE, HL         ; 1:4       __INFO},
 {
     ld    C, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
     ld    B, H          ; 1:4       __INFO
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO
     or    A             ; 1:4       __INFO
     sbc  HL, BC         ; 2:15      __INFO
@@ -272,7 +272,7 @@ __GET_LOOP_BEGIN($1),{},{
     pop  DE             ; 1:10      __INFO},
 __GET_LOOP_END($1),{},{
     ld  (stp{}$1), HL    ; 3:16      __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO   ( stop index -- )
     pop  HL             ; 1:10      __INFO
     ex   DE, HL         ; 1:4       __INFO},
@@ -305,7 +305,7 @@ __{}_TMP_BEST_CODE
     jp    z,loop{}$1     ; 3:10      __INFO},
 __GET_LOOP_END($1),{},{dnl
     ld  (stp{}$1), HL    ; 3:16      __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
-__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{dnl
+__{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{dnl
 __{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); 3:16      __INFO
 __{}    dec  HL             ; 1:6       __INFO},
 __{}{dnl
@@ -338,7 +338,7 @@ __GET_LOOP_BEGIN($1),{},{
 __GET_LOOP_END($1),{},{
     dec  HL             ; 1:6       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
     ld  (stp{}$1), HL    ; 3:16      __INFO   stop-1
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO   index
     pop  HL             ; 1:10      __INFO
     ex   DE, HL         ; 1:4       __INFO},
@@ -374,7 +374,7 @@ __GET_LOOP_END($1),{},{
     ld    B, H          ; 1:4       __INFO
     dec  HL             ; 1:6       __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO   stop-1
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
     ld  (idx{}$1), HL    ; 3:16      __INFO   index
     or    A             ; 1:4       __INFO
     sbc  HL, DE         ; 2:15      __INFO

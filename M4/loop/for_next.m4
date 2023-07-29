@@ -84,7 +84,7 @@ __{}ifelse(__SAVE_EVAL(__IS_NUM(__GET_LOOP_BEGIN($1)) && __GET_LOOP_BEGIN($1)>=0
 for{}$1:                 ;           __INFO
     ld  (idx{}$1),A      ; 3:13      __INFO   save index},
 {
-    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{4:20},{3:10})      __INFO   ( -- )
+    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),{1},{4:20},{3:10})      __INFO   ( -- )
 for{}$1:                 ;           __INFO
     ld  (idx{}$1),BC     ; 4:20      __INFO   save index}){}dnl
 }){}dnl
@@ -115,7 +115,7 @@ for{}$1:                 ;           __INFO
     ld    L, A          ; 1:4       __INFO
     ld    H, 0x00       ; 2:7       __INFO   copy index},
 {
-    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{4:20},{3:10})      __INFO   ( -- i )
+    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),{1},{4:20},{3:10})      __INFO   ( -- i )
 for{}$1:                 ;           __INFO
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
@@ -128,7 +128,7 @@ dnl
 dnl
 define({TEST_IDEA_PUSH_FOR_I_NEXT},{
     push DE             ; 1:11      $1 for_101 i_101
-    ld   DE, format({%-11s},$1); ifelse(__IS_MEM_REF($1),{1},{4:20},{3:10})      $1 for_101 i_101
+    ld   DE, format({%-11s},$1); ifelse(__HAS_PTR($1),{1},{4:20},{3:10})      $1 for_101 i_101
 for101:                 ;           $1 for_101 i_101
     ex   DE, HL         ; 1:4       $1 for_101 i_101
     ld  (idx101),HL     ; 3:16      $1 for_101 i_101   save index
@@ -141,7 +141,7 @@ idx101 EQU $+1          ;           next_101
     jp   nz, for101     ; 3:10      next_101
     pop  DE             ; 1:10      next_101
 next101:                ;           next_101
-                       ;ifelse(__IS_MEM_REF($1),{1},{[20:106]},{[19:96]}) only 65 loop}){}dnl
+                       ;ifelse(__HAS_PTR($1),{1},{[20:106]},{[19:96]}) only 65 loop}){}dnl
 dnl
 dnl
 define({TEST_IDEA_FOR_I_NEXT},{
@@ -210,7 +210,7 @@ __{}define({__INFO},__COMPILE_INFO)
 __{}ifelse(__SAVE_EVAL((__GET_LOOP_BEGIN($1)+1) & 0xFFFF),0,{
     jp    leave{}$1      ; 3:10      __INFO   ( -- )
 for{}$1:                 ;           __INFO},
-__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{
+__{}__HAS_PTR(__GET_LOOP_BEGIN($1)),{1},{
     ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
     ld    A, B          ; 1:4       __INFO
     and   C             ; 1:4       __INFO
@@ -247,7 +247,7 @@ __{}define({__INFO},__COMPILE_INFO)
 __{}ifelse(__SAVE_EVAL((__GET_LOOP_BEGIN($1)+1) & 0xFFFF),0,{
     jp    leave{}$1      ; 3:10      __INFO   ( -- )
 for{}$1:                 ;           __INFO},
-__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),{1},{
+__{}__HAS_PTR(__GET_LOOP_BEGIN($1)),{1},{
     ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO   ( -- )
     ld    A, B          ; 1:4       __INFO
     and   C             ; 1:4       __INFO

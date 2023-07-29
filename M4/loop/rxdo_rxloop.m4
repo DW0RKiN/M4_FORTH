@@ -14,7 +14,7 @@ __{}define({__INFO},__COMPILE_INFO{(xr)})
 __{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
 __{}    dec  HL             ; 1:6       __INFO{}dnl
 __{}ifelse(dnl
-__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
 __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO},
 __{}__{}{
 __{}__{}    ld   DE, __FORM({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO})
@@ -37,9 +37,9 @@ __{}ifelse(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1),{
 __{}__{}    jp   exit{}$1        ; 3:10      __INFO
 __{}__{}do{}$1{}save:              ;           __INFO
 __{}__{}do{}$1:                  ;           __INFO},
-__{}__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}__HAS_PTR(__GET_LOOP_END($1)),1,{
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
-__{}__{}ifelse(__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{dnl
+__{}__{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{dnl
 __{}__{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO},
 __{}__{}__{}{dnl
 __{}__{}__{}    ld   DE, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO})
@@ -57,7 +57,7 @@ __{}__{}    ld  (HL),E          ; 1:7       __INFO
 __{}__{}    exx                 ; 1:4       __INFO   R:( -- index )
 __{}__{}do{}$1:                  ;           __INFO{}dnl
 __{}},
-__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
 __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO{}dnl
 __{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,10,0,0){}dnl
@@ -172,7 +172,7 @@ __{}__{}    exx                 ; 1:4       __INFO   variant: +1.default
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    D,(HL)        ; 1:7       __INFO{}dnl
-__{}__{}ifelse(__IS_MEM_REF(__GET_LOOP_END($1)),1,{define({__P1},0xFFFF)},
+__{}__{}ifelse(__HAS_PTR(__GET_LOOP_END($1)),1,{define({__P1},0xFFFF)},
 __{}__{}{dnl
 __{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,10,0,0){}dnl  # before index++ (except stop)
 __{}__{}__{}define({__P1},_TMP_BEST_P){}dnl
@@ -258,7 +258,7 @@ __{}__{}    exx                 ; 1:4       __INFO   variant: -1.default
 __{}__{}    ld    E,(HL)        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    D,(HL)        ; 1:7       __INFO{}dnl
-__{}__{}ifelse(__IS_MEM_REF(__GET_LOOP_END($1)),1,{define({__P1},0xFFFF)},
+__{}__{}ifelse(__HAS_PTR(__GET_LOOP_END($1)),1,{define({__P1},0xFFFF)},
 __{}__{}{dnl
 __{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,10,do{}$1{}save,0){}dnl  # after index--  (including stop)
 __{}__{}__{}define({__P1},_TMP_BEST_P){}dnl
@@ -331,7 +331,7 @@ __{}{dnl
 __{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,_TEMP_REAL_STOP,2,7,2,-7){}dnl
 __{}_TMP_BEST_CODE})},
 
-__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__HAS_PTR(__GET_LOOP_END($1)),1,{
 __{}    exx                 ; 1:4       __INFO
 __{}    ld    E,(HL)        ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
@@ -342,7 +342,7 @@ __{}__{}    inc   E             ; 1:4       __INFO   index++},
 __HEX_HL(__GET_LOOP_BEGIN($1) & 1),0x0000,{
 __{}__{}    inc   E             ; 1:4       __INFO   index++
 __{}__{}    inc  DE             ; 1:6       __INFO   index++},
-__{}__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__{}__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
 __{}__{}    inc  DE             ; 1:6       __INFO   index++
 __{}__{}    inc  DE             ; 1:6       __INFO   index++},
 __{}{
@@ -363,7 +363,7 @@ __{}    jp   nz, do{}$1{}save  ; 3:10      __INFO
 __{}    ld    A, D          ; 1:4       __INFO
 __{}    sbc   A, B          ; 1:4       __INFO   hi(index+2-stop)},
 
-__IS_MEM_REF(__GET_LOOP_BEGIN($1)),1,{
+__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
 __{}    exx                 ; 1:4       __INFO
 __{}    ld    E,(HL)        ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
@@ -460,7 +460,7 @@ __{}define({__INFO},__COMPILE_INFO{}(xr))
     inc   L             ; 1:4       __INFO
     ld    D,(HL)        ; 1:7       __INFO   DE = index
     push HL             ; 1:11      __INFO{}dnl
-__{}ifelse(__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__{}ifelse(__HAS_PTR(__GET_LOOP_END($1)),1,{
 __{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
 __{}    ld   HL, format({%-11s},__GET_LOOP_END($1)); 3:16      __INFO   HL = stop
 __{}    ld    A, E          ; 1:4       __INFO
@@ -469,7 +469,7 @@ __{}    ld    L, A          ; 1:4       __INFO
 __{}    ld    A, D          ; 1:4       __INFO
 __{}    sbc   A, H          ; 1:4       __INFO
 __{}    ld    H, A          ; 1:4       __INFO   HL = index-stop},
-__IS_MEM_REF(__GET_LOOP_END($1)),1,{
+__HAS_PTR(__GET_LOOP_END($1)),1,{
 __{}  .warning: Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
 __{}    ld    L, E          ; 1:4       __INFO
 __{}    ld    H, D          ; 1:4       __INFO

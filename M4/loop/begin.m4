@@ -971,7 +971,7 @@ $1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}                        ;[7:27]     __INFO BEGIN_STACK
 __{}    ld    A,format({%-12s},($1+1)); 3:13      __INFO BEGIN_STACK
 __{}    xor   H             ; 1:4       __INFO BEGIN_STACK   hi(TOS) ^ hi(stop)
@@ -1023,7 +1023,7 @@ $1,{},{
 __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
 __{}                        ;[7:27]     __INFO BEGIN_STACK
 __{}    ld    A,format({%-12s},$1); 3:13      __INFO BEGIN_STACK
 __{}    xor   L             ; 1:4       __INFO BEGIN_STACK   lo(TOS) ^ lo(stop)
@@ -2054,7 +2054,7 @@ __{}.error {$0}($@): $# parameters found in macro!},
 {dnl
 __{}define({_TMP_INFO},{dup $1 c= while}){}dnl
 __{}define({_TMP_STACK_INFO},{_TMP_INFO   ( x1 -- x1 )   $1 == HL}){}dnl
-__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}ifelse(__HAS_PTR($1),{1},{
 __{}    ld    A,format({%-12s},$1); 3:13      _TMP_STACK_INFO
 __{}    cp    L             ; 1:4       _TMP_INFO
 __{}    jp   nz, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
@@ -2090,7 +2090,7 @@ __{}.error {$0}($@): $# parameters found in macro!},
 {dnl
 __{}define({_TMP_INFO},{dup $1 c<> while}){}dnl
 __{}define({_TMP_STACK_INFO},{_TMP_INFO   ( x1 -- x1 )   $1 == HL}){}dnl
-__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}ifelse(__HAS_PTR($1),{1},{
 __{}    ld    A,format({%-12s},$1); 3:13      _TMP_STACK_INFO
 __{}    cp    L             ; 1:4       _TMP_INFO
 __{}    jp    z, break{}BEGIN_STACK   ; 3:10      _TMP_INFO},
@@ -2662,7 +2662,7 @@ __{}$1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{dnl
 __{}__{}ifelse(dnl
@@ -2704,7 +2704,7 @@ __{}$1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{dnl
 __{}__{}ifelse(dnl
@@ -2797,9 +2797,9 @@ __{}$1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
-__{}__IS_MEM_REF($1),1,{dnl
+__{}__HAS_PTR($1),1,{dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP   ( -- )    port(kempston) $1 or +1 0= if
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO
 __{}__{}    or    L             ; 1:4       __INFO
@@ -2843,9 +2843,9 @@ __{}$1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
-__{}__IS_MEM_REF($1),1,{dnl
+__{}__HAS_PTR($1),1,{dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP   ( -- )    port(kempston) $1 or +1 0= if
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO
 __{}__{}    or    L             ; 1:4       __INFO
@@ -2938,7 +2938,7 @@ __{}$1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{dnl
 __{}__{}ifelse(dnl
@@ -2978,7 +2978,7 @@ __{}$1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
 __{}{dnl
 __{}__{}ifelse(dnl
@@ -3063,9 +3063,9 @@ __{}$1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
-__{}__IS_MEM_REF($1),1,{dnl
+__{}__HAS_PTR($1),1,{dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP   ( -- )    port(kempston) $1 or +1 0= if
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO
 __{}__{}    or    L             ; 1:4       __INFO
@@ -3106,9 +3106,9 @@ __{}$1,{},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}__IS_MEM_REF($1),1,{
+__{}__HAS_PTR($1),1,{
 __{}__{}  .error {$0}($@): Parameter is pointer!},
-__{}__IS_MEM_REF($1),1,{dnl
+__{}__HAS_PTR($1),1,{dnl
 __{}__{}define({$0_TEMP},__LD_R16({HL},$1)){}$0_TEMP   ( -- )    port(kempston) $1 or +1 0= if
 __{}__{}    in    A,(0x1F)      ; 2:11      __INFO
 __{}__{}    or    L             ; 1:4       __INFO
@@ -3944,7 +3944,7 @@ __{}__{}    .error {$0}($@) for non-existent {BEGIN}},
 __{}$1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}__{}ifelse(__HAS_PTR($1),{1},{
 __{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
@@ -3992,7 +3992,7 @@ __{}__{}    .error {$0}($@) for non-existent {BEGIN}},
 __{}$1,{},{
 __{}__{}    .error {$0}(): Missing parameter!},
 __{}$#,{1},{dnl
-__{}__{}ifelse(__IS_MEM_REF($1),{1},{
+__{}__{}ifelse(__HAS_PTR($1),{1},{
 __{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
@@ -4033,7 +4033,7 @@ define({__ASM_TOKEN_2DUP_PUSHDOT_DLT_WHILE},{dnl
 __{}define({__INFO},{2dup_pushdot_dlt_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
     .error {$0}($@) for non-existent {BEGIN}},
-__IS_MEM_REF($1),{1},{
+__HAS_PTR($1),{1},{
                         ;[22:92]    2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # version with constant address
     ld    A,format({%-12s}, $1); 3:13      2dup $1 > while BEGIN_STACK
     sub   L             ; 1:4       2dup $1 > while BEGIN_STACK    L>(addr+0) --> 0>A-L --> no carry if false
