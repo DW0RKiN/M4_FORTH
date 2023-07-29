@@ -9,8 +9,8 @@ dnl # Output:
 dnl #    eval(            (num_1) operation (num_2))
 dnl #    eval(((num_3)<<16+num_1) operation (num_2))
 define({__EVAL_OP_NUM_XXX_SJASMPLUS},{dnl
-__{}ifelse(__IS_MEM_REF($2),1,{define({__TEMP_A},$2)},__HEX_HL($2),{},{define({__TEMP_A},{($2)})},{define({__TEMP_A},{eval($2)})}){}dnl
-__{}ifelse(__IS_MEM_REF($3),1,{define({__TEMP_B},$3)},__HEX_HL($3),{},{define({__TEMP_B},{($3)})},{define({__TEMP_B},{eval($3)})}){}dnl
+__{}ifelse(__HAS_PTR($2),1,{define({__TEMP_A},$2)},__HEX_HL($2),{},{define({__TEMP_A},{($2)})},{define({__TEMP_A},{eval($2)})}){}dnl
+__{}ifelse(__HAS_PTR($3),1,{define({__TEMP_B},$3)},__HEX_HL($3),{},{define({__TEMP_B},{($3)})},{define({__TEMP_B},{eval($3)})}){}dnl
 __{}ifelse(__IS_NUM($4),               1,{define({__TEMP_C}, {eval($4)})},           {define({__TEMP_C}, {($4)})}){}dnl
 __{}ifelse(__IS_NUM($2):__IS_NUM($4),1:1,{define({__TEMP_CA},{eval((($4)<<16)+$2)})},  {define({__TEMP_CA},{(($4)<<16+$2)})}){}dnl
 __{}ifelse(__IS_NUM($4),               1,{define({__TEMP_C_SIGN},{eval((($4)>>15)&1)})}, {define({__TEMP_C_SIGN},{((($4)>>15)&1)})}){}dnl
@@ -182,9 +182,9 @@ define({__EVAL_OP_NUM_XXX_PASMO},{dnl
 __{}define({$0_EXPRESION_A},__SIMPLIFY_EXPRESSION({$2})){}dnl
 __{}define({$0_EXPRESION_B},__SIMPLIFY_EXPRESSION({$3})){}dnl
 __{}define({$0_EXPRESION_C},__SIMPLIFY_EXPRESSION({$4})){}dnl
-__{}ifelse(__IS_MEM_REF($0_EXPRESION_A):__IS_NUM($0_EXPRESION_A):__IS_NAME($0_EXPRESION_A),0:0:0,{define({__TEMP_A},($0_EXPRESION_A))},{define({__TEMP_A},$0_EXPRESION_A)}){}dnl
-__{}ifelse(__IS_MEM_REF($0_EXPRESION_B):__IS_NUM($0_EXPRESION_B):__IS_NAME($0_EXPRESION_B),0:0:0,{define({__TEMP_B},($0_EXPRESION_B))},{define({__TEMP_B},$0_EXPRESION_B)}){}dnl
-__{}ifelse(__IS_MEM_REF($0_EXPRESION_C):__IS_NUM($0_EXPRESION_C):__IS_NAME($0_EXPRESION_C),0:0:0,{define({__TEMP_C},($0_EXPRESION_C))},{define({__TEMP_C},$0_EXPRESION_C)}){}dnl
+__{}ifelse(__HAS_PTR($0_EXPRESION_A):__IS_NUM($0_EXPRESION_A):__IS_NAME($0_EXPRESION_A),0:0:0,{define({__TEMP_A},($0_EXPRESION_A))},{define({__TEMP_A},$0_EXPRESION_A)}){}dnl
+__{}ifelse(__HAS_PTR($0_EXPRESION_B):__IS_NUM($0_EXPRESION_B):__IS_NAME($0_EXPRESION_B),0:0:0,{define({__TEMP_B},($0_EXPRESION_B))},{define({__TEMP_B},$0_EXPRESION_B)}){}dnl
+__{}ifelse(__HAS_PTR($0_EXPRESION_C):__IS_NUM($0_EXPRESION_C):__IS_NAME($0_EXPRESION_C),0:0:0,{define({__TEMP_C},($0_EXPRESION_C))},{define({__TEMP_C},$0_EXPRESION_C)}){}dnl
 __{}ifelse(__HEX_HL($2),{},{define({__TEMP_LO_A},{(low($2))})},{define({__TEMP_LO_A},{eval(($2)&0xFF)})}){}dnl
 __{}ifelse(__HEX_HL($3),{},{define({__TEMP_LO_B},{(low($3))})},{define({__TEMP_LO_B},{eval(($3)&0xFF)})}){}dnl
 __{}ifelse(__HEX_HL($2),{},{define({__TEMP_HI_A},{(($2)>>8)})},{define({__TEMP_HI_A},{eval((($2)>>8)&0xFF)})}){}dnl
@@ -298,21 +298,21 @@ __{}__{}$1,              {u*},     {+__TEMP_A*__TEMP_B},
 
 __{}__{}$1:__TEMP_A,                    {+:0},   $0_EXPRESION_B,
 __{}__{}$1:__TEMP_B,                    {+:0},   $0_EXPRESION_A,
-__{}__{}$1:__IS_MEM_REF($0_EXPRESION_A),{+:0},   {__SIMPLIFY_EXPRESSION($0_EXPRESION_A+$0_EXPRESION_B)},
-__{}__{}$1:__IS_MEM_REF($0_EXPRESION_B),{+:0},   {__SIMPLIFY_EXPRESSION($0_EXPRESION_B+$0_EXPRESION_A)},
+__{}__{}$1:__HAS_PTR($0_EXPRESION_A),{+:0},   {__SIMPLIFY_EXPRESSION($0_EXPRESION_A+$0_EXPRESION_B)},
+__{}__{}$1:__HAS_PTR($0_EXPRESION_B),{+:0},   {__SIMPLIFY_EXPRESSION($0_EXPRESION_B+$0_EXPRESION_A)},
 __{}__{}$1,                             {+},     {__SIMPLIFY_EXPRESSION($0_EXPRESION_A+$0_EXPRESION_B)},
 
 __{}__{}$1:__TEMP_A,                    {u+:0},   $0_EXPRESION_B,
 __{}__{}$1:__TEMP_B,                    {u+:0},   $0_EXPRESION_A,
-__{}__{}$1:__IS_MEM_REF($0_EXPRESION_A),{u+:0},   {__SIMPLIFY_EXPRESSION($0_EXPRESION_A+$0_EXPRESION_B)},
-__{}__{}$1:__IS_MEM_REF($0_EXPRESION_B),{u+:0},   {__SIMPLIFY_EXPRESSION($0_EXPRESION_B+$0_EXPRESION_A)},
+__{}__{}$1:__HAS_PTR($0_EXPRESION_A),{u+:0},   {__SIMPLIFY_EXPRESSION($0_EXPRESION_A+$0_EXPRESION_B)},
+__{}__{}$1:__HAS_PTR($0_EXPRESION_B),{u+:0},   {__SIMPLIFY_EXPRESSION($0_EXPRESION_B+$0_EXPRESION_A)},
 __{}__{}$1,                             {u+},     {__SIMPLIFY_EXPRESSION($0_EXPRESION_A+$0_EXPRESION_B)},
 
-__{}__{}$1:__IS_MEM_REF($2):regexp(__TEMP_B,{^[+-]}),  {u+:0:0},   {!! $0_EXPRESION_A__TEMP_B},
-__{}__{}$1:__IS_MEM_REF($3):regexp(__TEMP_A,{^[+-]}),  {u+:0:0},   {!! {}$0_EXPRESION_B__TEMP_A},
+__{}__{}$1:__HAS_PTR($2):regexp(__TEMP_B,{^[+-]}),  {u+:0:0},   {!! $0_EXPRESION_A__TEMP_B},
+__{}__{}$1:__HAS_PTR($3):regexp(__TEMP_A,{^[+-]}),  {u+:0:0},   {!! {}$0_EXPRESION_B__TEMP_A},
 
-__{}__{}$1:__IS_MEM_REF($2),            {u+:0},   {$0_EXPRESION_A+__TEMP_B},
-__{}__{}$1:__IS_MEM_REF($3),            {u+:0},   {{}$0_EXPRESION_B+__TEMP_A},
+__{}__{}$1:__HAS_PTR($2),            {u+:0},   {$0_EXPRESION_A+__TEMP_B},
+__{}__{}$1:__HAS_PTR($3),            {u+:0},   {{}$0_EXPRESION_B+__TEMP_A},
 __{}__{}$1,                             {u+},    {+__TEMP_A+__TEMP_B},
 
 __{}__{}$1:__TEMP_A,     {-:}__TEMP_B, {0},
