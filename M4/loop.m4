@@ -126,7 +126,7 @@ dnl #__{}__{}__{}__ASM_TOKEN_SDO($1)}){}dnl
 __{}__{}__ASM_TOKEN_SDO($1){}dnl
 __{}},
 __{}{
-__{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
+__{}  .error {$0}($@): Unexpected type parameter! Support for M R S and not "__GET_LOOP_TYPE($1)"})}){}dnl
 dnl
 dnl
 dnl
@@ -160,6 +160,7 @@ dnl # __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 dnl # __{}__{}__{}__ASM_TOKEN_PUSH_QFOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_QXDO($1)})},
+
 __{}__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
 __{}__{}ifelse(__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_QRDO($1)},
@@ -171,12 +172,15 @@ dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1}
 dnl #__{}__{}__{}__ASM_TOKEN_QRFOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_QXRDO($1)})},
+
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
-__{}__{}ifelse(dnl
+dnl #__{}__{}ifelse(dnl
 dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 dnl #__{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
-__{}__{}{dnl
-__{}__{}__{}__ASM_TOKEN_QSDO($1)})},
+dnl #__{}__{}{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_QSDO($1)}){}dnl
+__{}__ASM_TOKEN_QSDO($1){}dnl
+__{}},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
@@ -790,18 +794,18 @@ __{}__HAS_PTR($1),{1},{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[13:66]    __INFO   ( -- $1 $3 == $1 addr -- )
 __{}__{}    ld    A, format({%-11s},$1); 3:13      __INFO
 __{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
-__{}__{}    ld  (BC),A          ; 1:7       __INFO
+__{}__{}    ld  [BC],A          ; 1:7       __INFO
 __{}__{}    ld    A, format({%-11s},($1+1)); 3:13      __INFO
 __{}__{}    inc  BC             ; 1:6       __INFO
-__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}__{}    ld  [BC],A          ; 1:7       __INFO},
 __{}__IS_NUM($1),{0},{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[11:54]    __INFO   ( -- $1 $3 == $1 addr -- )
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       __INFO
 __{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
-__{}__{}    ld  (BC),A          ; 1:7       __INFO
+__{}__{}    ld  [BC],A          ; 1:7       __INFO
 __{}__{}    ld    A, high format({%-6s},$1); 2:7       __INFO
 __{}__{}    inc  BC             ; 1:6       __INFO
-__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}__{}    ld  [BC],A          ; 1:7       __INFO},
 __{}{define({__INFO},__COMPILE_INFO)
 __{}__{}define({__CODE1},__LD_R_NUM(__INFO{   lo($1) = __HEX_L($1)},{A},__HEX_L($1))){}dnl
 __{}__{}define({__TMP_C},eval(40+__CLOCKS)){}dnl
@@ -812,10 +816,10 @@ __{}__{}define({__TMP_B},eval(__TMP_B+__BYTES)){}dnl
 __{}__{}                        ;format({%-10s},[__TMP_B:__TMP_C]) __INFO   ( -- )  val=$1, addr=$3{}dnl
 __{}__{}__CODE1
 __{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
-__{}__{}    ld  (BC),A          ; 1:7       __INFO{}dnl
+__{}__{}    ld  [BC],A          ; 1:7       __INFO{}dnl
 __{}__{}__CODE2
 __{}__{}    inc  BC             ; 1:6       __INFO
-__{}__{}    ld  (BC),A          ; 1:7       __INFO}){}dnl
+__{}__{}    ld  [BC],A          ; 1:7       __INFO}){}dnl
 }){}dnl
 dnl
 dnl
@@ -873,19 +877,19 @@ __{}__HAS_PTR($1),{1},{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[8:40]     __INFO   ( -- $1 $3 == $1 addr -- )
 __{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld    A, format({%-11s},$1); 3:13      __INFO
-__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}__{}    ld  [BC],A          ; 1:7       __INFO},
 __{}__IS_NUM($1),{1},{define({__INFO},__COMPILE_INFO)
 __{}__{}define({__CODE1},__LD_R_NUM(__INFO{   lo($1) = __HEX_L($1)},{A},__HEX_L($1))){}dnl
 __{}__{}                        ;format({%-10s},[eval(5+__BYTES):eval(27+__CLOCKS)]) __INFO   ( -- )  val=$1, addr=$3{}dnl
 __{}__{}__CODE1
 __{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
-__{}__{}    ld  (BC),A          ; 1:7       __INFO},
+__{}__{}    ld  [BC],A          ; 1:7       __INFO},
 
 __{}__{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[7:34]     __INFO   ( -- $1 $3 == $1 addr -- )
 __{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       __INFO
-__{}__{}    ld  (BC),A          ; 1:7       __INFO}){}dnl
+__{}__{}    ld  [BC],A          ; 1:7       __INFO}){}dnl
 }){}dnl
 dnl
 dnl
