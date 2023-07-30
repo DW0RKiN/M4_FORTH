@@ -1029,15 +1029,15 @@ __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar right parenthesis},0x29)},
 
 __{}regexp({$1},{^'.+'$}),0,{dnl  #  putchar('char')
 __{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{put}__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
 __{}regexp({$1},{^".+"$}),0,{dnl  #  putchar("char")
 __{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{put}__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
 __{}{dnl
 __{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({'$1'})){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{put}__GET_HEX_ASCII_CODE_INFO,$0_CHAR){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
