@@ -44,7 +44,7 @@ define({__ASM_TOKEN_XDO},{dnl
 dnl #__SHOW_LOOP($1){}dnl
 __{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
 __{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 4:20      __INFO},
+__{}__{}    ld   BC,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO},
 __{}__IS_NUM(__GET_LOOP_BEGIN($1)),1,{
 __{}__{}    ld   BC, __HEX_HL(__GET_LOOP_BEGIN($1))     ; 3:10      __INFO},
 __{}{
@@ -160,7 +160,7 @@ __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-
 __{}__{}    ld    A, 0          ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +1 ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    nop                 ; 1:4       __INFO   hi(index) = 0 = nop -> idx always points to a 16-bit index.
 __{}__{}    inc   A             ; 1:4       __INFO   index++
-__{}__{}    ld  (idx{}$1),A      ; 3:13      __INFO
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   index-stop},
 __{}eval((0<=(__GET_LOOP_BEGIN($1))) && ((__GET_LOOP_BEGIN($1))<(__GET_LOOP_END($1))) && ((__GET_LOOP_END($1))<=256)),{1},{
 __{}__{}                        ;[12:45]    __INFO   variant +1.B: 0 <= index < stop <= 256, run _TEMP_X{}x
@@ -168,7 +168,7 @@ __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-
 __{}__{}    ld    A, 0          ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +1 ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    nop                 ; 1:4       __INFO   hi(index) = 0 = nop -> idx always points to a 16-bit index.
 __{}__{}    inc   A             ; 1:4       __INFO   index++
-__{}__{}    ld  (idx{}$1),A      ; 3:13      __INFO
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO
 __{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   index-stop},
 __{}eval((0x3C00<=(__GET_LOOP_BEGIN($1))) && ((__GET_LOOP_BEGIN($1))<(__GET_LOOP_END($1))) && ((__GET_LOOP_END($1))==0x3D00)),{1},{
@@ -176,14 +176,14 @@ __{}__{}                        ;[9:34]     __INFO   variant +1.C: 0x3C00 <=inde
 __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}__{}    ld    A, 0          ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +1 ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    inc   A             ; 1:4       __INFO   = hi(index) = 0x3c = inc A -> idx always points to a 16-bit index
-__{}__{}    ld  (idx{}$1),A      ; 3:13      __INFO   save index
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO   save index
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 __{}eval((0x3C00<=(__GET_LOOP_BEGIN($1))) && ((__GET_LOOP_BEGIN($1))<(__GET_LOOP_END($1))) && ((__GET_LOOP_END($1))<=0x3D00)),{1},{
 __{}__{}                        ;[11:41]    __INFO   variant +1.D: 0x3C00 <=index < stop <= 0x3D00, run _TEMP_X{}x
 __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}__{}    ld    A, 0          ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +1 ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    inc   A             ; 1:4       __INFO   = hi(index) = 0x3c = inc A -> idx always points to a 16-bit index
-__{}__{}    ld  (idx{}$1),A      ; 3:13      __INFO   save index
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO   save index
 __{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 __{}eval(256*(1+__HEX_H(__GET_LOOP_BEGIN($1)))==__GET_LOOP_END($1)),{1},{
@@ -192,7 +192,7 @@ __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-
 __{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +1 ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    ld    A, C          ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO   index++
-__{}__{}    ld  (idx{}$1),A      ; 3:13      __INFO   save index
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO   save index
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 __{}eval((__HEX_H(__GET_LOOP_BEGIN($1))==__HEX_H(__GET_LOOP_END($1)-1)) && (__HEX_HL(__GET_LOOP_BEGIN($1))<__HEX_HL(__GET_LOOP_END($1)))),{1},{
 __{}__{}                        ;[13:48]    __INFO   variant +1.F: hi(index) == hi(stop-1) && index < stop, run _TEMP_X{}x
@@ -200,7 +200,7 @@ __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-
 __{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +1 ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    ld    A, C          ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO   index++
-__{}__{}    ld  (idx{}$1),A      ; 3:13      __INFO   save index
+__{}__{}    ld  [idx{}$1],A      ; 3:13      __INFO   save index
 __{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 __{}__HEX_L(__GET_LOOP_END($1)):__HEX_L(_TEMP_X<257),{0x00:0x01},{
@@ -861,7 +861,7 @@ __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-
 __{}__{}    ld    A, 0x00       ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    nop                 ; 1:4       __INFO   Contains a zero value because idx always points to a 16-bit index.
 __{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO   A = index+step
-__{}__{}    ld  (idx{}$1), A     ; 3:13      __INFO   save new index
+__{}__{}    ld  [idx{}$1], A     ; 3:13      __INFO   save new index
 __{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 __{}eval((0xC600 <= (__GET_LOOP_BEGIN($1) & 0xFFFF)) && ((__GET_LOOP_BEGIN($1) & 0xFFFF) < (__GET_LOOP_END($1) & 0xFFFF)) && ((__GET_LOOP_END($1) & 0xFFFF) < 0xC700)),{1},{
@@ -869,7 +869,7 @@ __{}__{}                        ;[12:44]    __INFO   variant +X.B: positive step
 __{}__{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit index
 __{}__{}    ld    A, 0x00       ; 2:7       __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1)), real_stop:__HEX_HL(_TEMP_REAL_STOP)
 __{}__{}    add   A, low format({%-7s},__GET_LOOP_STEP($1)); 2:7       __INFO   First byte contains a 0xC6 value because idx always points to a 16-bit index.
-__{}__{}    ld  (idx{}$1), A     ; 3:13      __INFO   save new index
+__{}__{}    ld  [idx{}$1], A     ; 3:13      __INFO   save new index
 __{}__{}    xor  __HEX_L(_TEMP_REAL_STOP)           ; 2:7       __INFO   lo(real_stop)
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
 __{}eval(__GET_LOOP_STEP($1) & 0xFF),{0},{
@@ -1004,7 +1004,7 @@ __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld   HL, 0x0000     ; 3:10      __INFO
 __{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  (idx{}$1), HL    ; 3:16      __INFO   save new index
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save new index
 __{}  .warning Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
 __{}    ld    A,format({%-12s},__GET_LOOP_END($1)); 3:13      __INFO
 __{}    sub   L             ; 1:4       __INFO
@@ -1024,7 +1024,7 @@ __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit 
 __{}    ld   HL, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1))
 __{}    ld   BC, __FORM({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  (idx101), HL    ; 3:16      __INFO   save new index
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save new index
 __{}    ld    A, low __FORM({%-7s},__GET_LOOP_END($1)-1); 2:7       __INFO
 __{}    sub   L             ; 1:4       __INFO
 __{}    ld    L, A          ; 1:4       __INFO
@@ -1131,7 +1131,7 @@ __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld   HL, 0x0000     ; 3:10      __INFO
 __{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  (idx{}$1), HL    ; 3:16      __INFO   save new index
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save new index
 __{}  .warning Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
 __{}    ld    A,format({%-12s},__GET_LOOP_END($1)); 3:13      __INFO
 __{}    sub   L             ; 1:4       __INFO
@@ -1151,7 +1151,7 @@ __{}idx{}$1 EQU $+1          ;           __INFO   idx always points to a 16-bit 
 __{}    ld   HL, 0x0000     ; 3:10      __INFO   __GET_LOOP_BEGIN($1).. __GET_LOOP_STEP($1) ..__GET_LOOP_END($1)
 __{}    ld   BC, __FORM({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  (idx101), HL    ; 3:16      __INFO   save new index
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save new index
 __{}    ld    A, low __FORM({%-7s},__GET_LOOP_END($1)-1); 2:7       __INFO
 __{}    sub   L             ; 1:4       __INFO
 __{}    ld    L, A          ; 1:4       __INFO
@@ -1178,7 +1178,7 @@ __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld   HL, 0x0000     ; 3:10      __INFO
 __{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  (idx{}$1), HL    ; 3:16      __INFO   save new index{}dnl
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save new index{}dnl
 __{}ifelse(__HAS_PTR(__GET_LOOP_END($1)),1,{
 __{}__{}  .warning Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
 __{}__{}    ld    A,format({%-12s},__GET_LOOP_END($1)); 3:13      __INFO
@@ -1250,7 +1250,7 @@ __{}    ld    C, L          ; 1:4       __INFO   BC = step
 __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld   HL, 0x0000     ; 3:10      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  (idx{}$1), HL    ; 3:16      __INFO   save index
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
 __{}ifelse(__IS_NUM(__GET_LOOP_END($1)),{0},{dnl
 __{}__{}    ld    A, format({%-11s},__GET_LOOP_END($1)-1); 2:7       __INFO
 __{}__{}    sub   L             ; 1:4       __INFO
@@ -1274,7 +1274,7 @@ __{}    push DE             ; 1:11      __INFO
 __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld   DE, 0x0000     ; 3:10      __INFO   DE = index
 __{}    add  HL, DE         ; 1:11      __INFO   HL = index+step
-__{}    ld  (idx{}$1), HL    ; 3:16      __INFO   save index
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
 __{}    ld   BC, format({%-11s},-1*(__GET_LOOP_END($1))); 3:10      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step-stop
 __{}    ld    A, H          ; 1:4       __INFO
@@ -1289,7 +1289,7 @@ __{}{
 __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld   BC, 0x0000     ; 3:10      __INFO   BC = index
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  (idx{}$1), HL    ; 3:16      __INFO   save index
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
 __{}    ld    A, L          ; 1:4       __INFO
 __{}    sub   low format({%-10s},__GET_LOOP_END($1)); 2:7       __INFO
 __{}    ld    A, H          ; 1:4       __INFO
