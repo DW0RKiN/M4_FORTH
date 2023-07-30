@@ -3996,7 +3996,7 @@ __{}__{}ifelse(__HAS_PTR($1),{1},{
 __{}__{}__{}                        ;[19:108]   _TMP_INFO    ( d1 -- d1 )   (addr) == DEHL
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
-__{}__{}__{}    ld   BC, format({%-11s},__PTR_ADD($1,0)); 4:20      _TMP_INFO   lo16($1)
+__{}__{}__{}    ld   BC,format({%-12s},__PTR_ADD($1,0)); 4:20      _TMP_INFO   lo16($1)
 __{}__{}__{}    sbc  HL, BC         ; 2:15      _TMP_INFO   lo16(d1)-BC
 __{}__{}__{}    jp   nz, $+7        ; 2:7/12    _TMP_INFO
 __{}__{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,2)); 3:16      _TMP_INFO   hi16($1)
