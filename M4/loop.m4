@@ -382,7 +382,7 @@ define({__ASM_INDEX2M},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(m))
     push DE             ; 1:11      __INFO   ( -- $2 )
     ex   DE, HL         ; 1:4       __INFO
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
+    ld   HL, [idx{}$1]   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
 dnl
 dnl
 dnl # Input:
@@ -430,7 +430,7 @@ dnl #   $1 id $2 loop
 dnl #   $2 i,j,k
 define({__ASM_DROP_INDEX2M},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)})
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   ( x -- $2 )  idx always points to a 16-bit index}){}dnl
+    ld   HL, [idx{}$1]   ; 3:16      __INFO   ( x -- $2 )  idx always points to a 16-bit index}){}dnl
 dnl
 dnl
 dnl # Input:
@@ -478,7 +478,7 @@ __{}define({__INFO},__COMPILE_INFO{(m)})
     push DE             ; 1:11      __INFO   ( x -- x x $2 )
     push HL             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
-    ld   HL, (idx{}$1)   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
+    ld   HL, [idx{}$1]   ; 3:16      __INFO   idx always points to a 16-bit index}){}dnl
 dnl
 dnl
 dnl # Input:
