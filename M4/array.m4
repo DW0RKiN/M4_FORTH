@@ -114,7 +114,7 @@ dnl ld    H, A          ; 1:4
 dnl
 dnl                     ;[8:75]
 dnl push IX             ; 2:15
-dnl ex  (SP),HL         ; 1:19
+dnl ex  [SP],HL         ; 1:19
 dnl ld    C,[HL]        ; 1:7
 dnl inc  HL             ; 1:6
 dnl ld    B,[HL]        ; 1:7
