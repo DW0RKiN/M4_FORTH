@@ -380,7 +380,7 @@ __{}{define({_TMP_INFO},__INFO)
 __{}__{}                        ;[7:42]     __INFO   ( addr1 d1 -- addr1 d1 )
 __{}__{}    pop  BC             ; 1:10      __INFO   BC = addr1
 __{}__{}    push BC             ; 1:11      __INFO
-__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}    ld    A,[BC]        ; 1:7       __INFO
 __{}__{}    or    A             ; 1:4       __INFO
 __{}__{}    jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
 dnl
@@ -402,7 +402,7 @@ __{}{define({_TMP_INFO},__INFO)
 __{}__{}                        ;[7:42]     __INFO   ( addr1 d1 -- addr1 d1 )
 __{}__{}    pop  BC             ; 1:10      __INFO   BC = addr1
 __{}__{}    push BC             ; 1:11      __INFO
-__{}__{}    ld    A,(BC)        ; 1:7       __INFO
+__{}__{}    ld    A,[BC]        ; 1:7       __INFO
 __{}__{}    or    A             ; 1:4       __INFO
 __{}__{}    jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO})}){}dnl
 dnl
@@ -3017,10 +3017,10 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{ye
     sbc  HL, BC         ; 2:15      4dup D= if   h2    . h1 --  cp l1-l2
     add  HL, BC         ; 1:11      4dup D= if   h2    . h1 l1  cp l1-l2
     jr   nz, $+7        ; 2:7/12    4dup D= if   h2    . h1 h2
-    ex  (SP),HL         ; 1:19      4dup D= if   l1    . h1 h2  HL = h2 = hi16(d2)
+    ex  [SP],HL         ; 1:19      4dup D= if   l1    . h1 h2  HL = h2 = hi16(d2)
     sbc  HL, DE         ; 2:15      4dup D= if   l1    . h1 --  cp h2-h1
     add  HL, DE         ; 1:11      4dup D= if   l1    . h1 h2  cp h2-h1
-    ex  (SP),HL         ; 1:19      4dup D= if   h2    . h1 l1  HL = l1
+    ex  [SP],HL         ; 1:19      4dup D= if   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D= if   h2 l2 . h1 l1
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      4dup D= if   h2 l2 . h1 l1})}){}dnl
 dnl
@@ -3051,10 +3051,10 @@ _TYP_DOUBLE,{small},{
     sbc  HL, BC         ; 2:15      4dup D<> if   h2    . h1 --  cp l1-l2
     add  HL, BC         ; 1:11      4dup D<> if   h2    . h1 l1  cp l1-l2
     jr   nz, $+7        ; 2:7/12    4dup D<> if   h2    . h1 h2
-    ex  (SP),HL         ; 1:19      4dup D<> if   l1    . h1 h2  HL = h2 = hi16(d2)
+    ex  [SP],HL         ; 1:19      4dup D<> if   l1    . h1 h2  HL = h2 = hi16(d2)
     sbc  HL, DE         ; 2:15      4dup D<> if   l1    . h1 --  cp h2-h1
     add  HL, DE         ; 1:11      4dup D<> if   l1    . h1 h2  cp h2-h1
-    ex  (SP),HL         ; 1:19      4dup D<> if   h2    . h1 l1  HL = l1
+    ex  [SP],HL         ; 1:19      4dup D<> if   h2    . h1 l1  HL = l1
     push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if   h2 l2 . h1 l1},
 _TYP_DOUBLE,{fast},{
@@ -3086,11 +3086,11 @@ _TYP_DOUBLE,{fast},{
     ld    A, B          ; 1:4       4dup D<> if   h2    . h1 l1  A = hi(l2)
     sub   H             ; 1:4       4dup D<> if   h2    . h1 l1  hi(l2) - hi(l1)
     jr   nz, $+10       ; 2:7/12    4dup D<> if   h2    . h1 l1  --> push bc
-    ex (SP), HL         ; 1:19      4dup D<> if   l1    . h1 h2  HL= hi(d2) = h2
+    ex [SP], HL         ; 1:19      4dup D<> if   l1    . h1 h2  HL= hi(d2) = h2
     ld    A, L          ; 1:4       4dup D<> if   l1    . h1 h2  A = lo(h2)
     sub   E             ; 1:4       4dup D<> if   l1    . h1 h2  lo(h2) - lo(l1)
     ld    A, H          ; 1:4       4dup D<> if   l1    . h1 h2  A = hi(h2)
-    ex (SP), HL         ; 1:19      4dup D<> if   h2    . h1 l1
+    ex [SP], HL         ; 1:19      4dup D<> if   h2    . h1 l1
     jr   nz, $+3        ; 2:7/12    4dup D<> if   h2    . h1 l1  --> push bc
     sub   D             ; 1:4       4dup D<> if   h2    . h1 l1  hi(h2) - hi(h1)
     push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
@@ -3248,17 +3248,17 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du< if},
 {
                        ;[15:101]    4dup Du< if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du< if   ud2 < ud1 --> ud2-ud1<0 --> (SP)BC-DEHL<0 --> carry if true
+    pop  BC             ; 1:10      4dup Du< if   ud2 < ud1 --> ud2-ud1<0 --> [SP]BC-DEHL<0 --> carry if true
     ld    A, C          ; 1:4       4dup Du< if
     sub   L             ; 1:4       4dup Du< if   C-L<0 --> carry if true
     ld    A, B          ; 1:4       4dup Du< if
     sbc   A, H          ; 1:4       4dup Du< if   B-H<0 --> carry if true
-    ex  (SP),HL         ; 1:19      4dup Du< if   HL = hi2
-    ld    A, L          ; 1:4       4dup Du< if   HLBC-DE(SP)<0 -- carry if true
+    ex  [SP],HL         ; 1:19      4dup Du< if   HL = hi2
+    ld    A, L          ; 1:4       4dup Du< if   HLBC-DE[SP]<0 -- carry if true
     sbc   A, E          ; 1:4       4dup Du< if   L-E<0 --> carry if true
     ld    A, H          ; 1:4       4dup Du< if
     sbc   A, D          ; 1:4       4dup Du< if   H-D<0 --> carry if true
-    ex  (SP),HL         ; 1:19      4dup Du< if
+    ex  [SP],HL         ; 1:19      4dup Du< if
     push BC             ; 1:11      4dup Du< if
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du< if})}){}dnl
 dnl
@@ -3285,17 +3285,17 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du>= if},
 {
                        ;[15:101]    4dup Du>= if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du>= if   ud2 >= ud1 --> ud2-ud1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
+    pop  BC             ; 1:10      4dup Du>= if   ud2 >= ud1 --> ud2-ud1>=0 --> [SP]BC-DEHL>=0 --> no carry if true
     ld    A, C          ; 1:4       4dup Du>= if
     sub   L             ; 1:4       4dup Du>= if   C-L>=0 --> no carry if true
     ld    A, B          ; 1:4       4dup Du>= if
     sbc   A, H          ; 1:4       4dup Du>= if   B-H>=0 --> no carry if true
-    ex  (SP),HL         ; 1:19      4dup Du>= if   HL = hi2
-    ld    A, L          ; 1:4       4dup Du>= if   HLBC-DE(SP)>=0 -- no carry if true
+    ex  [SP],HL         ; 1:19      4dup Du>= if   HL = hi2
+    ld    A, L          ; 1:4       4dup Du>= if   HLBC-DE[SP]>=0 -- no carry if true
     sbc   A, E          ; 1:4       4dup Du>= if   L-E>=0 --> no carry if true
     ld    A, H          ; 1:4       4dup Du>= if
     sbc   A, D          ; 1:4       4dup Du>= if   H-D>=0 --> no carry if true
-    ex  (SP),HL         ; 1:19      4dup Du>= if
+    ex  [SP],HL         ; 1:19      4dup Du>= if
     push BC             ; 1:11      4dup Du>= if
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du>= if})}){}dnl
 dnl
@@ -3322,17 +3322,17 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du<= if},
 {
                        ;[15:101]    4dup Du<= if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du<= if   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
+    pop  BC             ; 1:10      4dup Du<= if   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-[SP]BC --> no carry if true
     ld    A, L          ; 1:4       4dup Du<= if
     sub   C             ; 1:4       4dup Du<= if   0<=L-C --> no carry if true
     ld    A, H          ; 1:4       4dup Du<= if
     sbc   A, B          ; 1:4       4dup Du<= if   0<=H-B --> no carry if true
-    ex  (SP),HL         ; 1:19      4dup Du<= if   HL = hi2
-    ld    A, E          ; 1:4       4dup Du<= if   0<=DE(SP)-HLBC -- no carry if true
+    ex  [SP],HL         ; 1:19      4dup Du<= if   HL = hi2
+    ld    A, E          ; 1:4       4dup Du<= if   0<=DE[SP]-HLBC -- no carry if true
     sbc   A, L          ; 1:4       4dup Du<= if   0<=E-L --> no carry if true
     ld    A, D          ; 1:4       4dup Du<= if
     sbc   A, H          ; 1:4       4dup Du<= if   0<=D-H --> no carry if true
-    ex  (SP),HL         ; 1:19      4dup Du<= if
+    ex  [SP],HL         ; 1:19      4dup Du<= if
     push BC             ; 1:11      4dup Du<= if
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du<= if})}){}dnl
 dnl
@@ -3359,17 +3359,17 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du> if},
 {
                        ;[15:101]    4dup Du> if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
-    pop  BC             ; 1:10      4dup Du> if   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
+    pop  BC             ; 1:10      4dup Du> if   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-[SP]BC --> carry if true
     ld    A, L          ; 1:4       4dup Du> if
     sub   C             ; 1:4       4dup Du> if   0>L-C --> carry if true
     ld    A, H          ; 1:4       4dup Du> if
     sbc   A, B          ; 1:4       4dup Du> if   0>H-B --> carry if true
-    ex  (SP),HL         ; 1:19      4dup Du> if   HL = hi2
-    ld    A, E          ; 1:4       4dup Du> if   0>DE(SP)-HLBC -- carry if true
+    ex  [SP],HL         ; 1:19      4dup Du> if   HL = hi2
+    ld    A, E          ; 1:4       4dup Du> if   0>DE[SP]-HLBC -- carry if true
     sbc   A, L          ; 1:4       4dup Du> if   0>E-L --> carry if true
     ld    A, D          ; 1:4       4dup Du> if
     sbc   A, H          ; 1:4       4dup Du> if   0>D-H --> carry if true
-    ex  (SP),HL         ; 1:19      4dup Du> if
+    ex  [SP],HL         ; 1:19      4dup Du> if
     push BC             ; 1:11      4dup Du> if
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du> if})}){}dnl
 dnl
@@ -3576,14 +3576,14 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A,(HL)        ; 1:7       __INFO   ( pd1 -- pd1 )  with align 4
+    ld    A,[HL]        ; 1:7       __INFO   ( pd1 -- pd1 )  with align 4
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     ld    L, C          ; 1:4       __INFO
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
@@ -3600,14 +3600,14 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A,(HL)        ; 1:7       __INFO   ( pd1 -- pd1 )  with align 4
+    ld    A,[HL]        ; 1:7       __INFO   ( pd1 -- pd1 )  with align 4
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     ld    L, C          ; 1:4       __INFO
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
 dnl
@@ -3624,25 +3624,25 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
-    xor (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
+    xor [HL]            ; 1:7       __INFO
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO
     ld    B, E          ; 1:4       __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    xor (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    xor [HL]            ; 1:7       __INFO
     jr   nz, $+12       ; 2:7/12    __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    xor (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    xor [HL]            ; 1:7       __INFO
     jr   nz, $+6        ; 2:7/12    __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    xor (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    xor [HL]            ; 1:7       __INFO
     ld    E, B          ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
@@ -3660,25 +3660,25 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
-    xor (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
+    xor [HL]            ; 1:7       __INFO
     jr   nz, $+25       ; 2:7/12    __INFO
     ld    B, E          ; 1:4       __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    xor (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    xor [HL]            ; 1:7       __INFO
     jr   nz, $+12       ; 2:7/12    __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    xor (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    xor [HL]            ; 1:7       __INFO
     jr   nz, $+6        ; 2:7/12    __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    xor (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    xor [HL]            ; 1:7       __INFO
     ld    E, B          ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
@@ -3697,22 +3697,22 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
-    sub (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
+    sub [HL]            ; 1:7       __INFO
     ld    B, E          ; 1:4       __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO   not carry if false
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO   not carry if false
     ld    E, B          ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
@@ -3732,22 +3732,22 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
-    ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
-    sub (HL)            ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
+    sub [HL]            ; 1:7       __INFO
     ld    B, E          ; 1:4       __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO   carry if false
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO   carry if false
     ld    E, B          ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
@@ -3768,22 +3768,22 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
     scf                 ; 1:4       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     ld    B, E          ; 1:4       __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO   carry if false
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO   carry if false
     ld    E, B          ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
@@ -3804,22 +3804,22 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT)
     scf                 ; 1:4       __INFO   ( pd2 pd1 -- pd2 pd1 )  with align 4
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     ld    B, E          ; 1:4       __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO   not carry if false
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO   not carry if false
     ld    E, B          ; 1:4       __INFO
     ld    L, C          ; 1:4       __INFO
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO}){}dnl
