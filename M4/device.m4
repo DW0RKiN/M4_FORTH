@@ -391,14 +391,14 @@ __{}  .error {$0}($@): The parameter is negative!},
 __{}__def({USE_PRT_HEX_A}){}dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
-__{}    ld    A,(HL)        ; 1:7       __INFO   ( p -- p )  with align $1
+__{}    ld    A,[HL]        ; 1:7       __INFO   ( p -- p )  with align $1
 __{}    call PRT_HEX_A      ; 3:17      __INFO},
 eval($1),2,{
 __{}    inc   L             ; 1:4       __INFO   ( p -- p )  with align $1
-__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}    call PRT_HEX_A      ; 3:17      __INFO
 __{}    dec   L             ; 1:4       __INFO
-__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}    call PRT_HEX_A      ; 3:17      __INFO},
 __{}{
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO   ( p -- p )  with align $1
@@ -406,7 +406,7 @@ __{}    ld    A, B          ; 1:4       __INFO
 __{}    add   A, L          ; 1:4       __INFO
 __{}    ld    L, A          ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO
-__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}    call PRT_HEX_A      ; 3:17      __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO})}){}dnl
 }){}dnl
@@ -899,12 +899,12 @@ dnl
 define({__ASM_TOKEN_DOTS},{dnl
 __{}define({__INFO},{.s}){}dnl
 
-    ex  (SP), HL        ; 1:19      .S  ( x1 x2 x3 )
+    ex  [SP], HL        ; 1:19      .S  ( x1 x2 x3 )
     push HL             ; 1:11      .S  ( x1 x3 x2 x3 )
 __{}__ASM_TOKEN_DOT
     push HL             ; 1:11      .S  ( x1 x2 x3 x2 )
 __{}__ASM_TOKEN_SPACE_DOT
-    ex  (SP), HL        ; 1:19      .S  ( x3 x2 x1 )
+    ex  [SP], HL        ; 1:19      .S  ( x3 x2 x1 )
 __{}__ASM_TOKEN_DUP_SPACE_DOT})dnl
 dnl
 dnl
@@ -973,7 +973,7 @@ __{}__ADD_TOKEN({__TOKEN_DUP_FETCH_EMIT},{dup @ emit},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_FETCH_EMIT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-__{}    ld    A,(HL)        ; 1:7       __INFO   Pollutes: AF, AF', DE', BC'
+__{}    ld    A,[HL]        ; 1:7       __INFO   Pollutes: AF, AF', DE', BC'
 __{}__PUTCHAR_A(__INFO){}dnl
 })dnl
 dnl
@@ -1011,16 +1011,33 @@ dnl # putchar('#') --> use putchar(0x23)
 define({PUTCHAR},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}($@): Missing parameter!},
-__{}eval($#):$1:$2,2:":",{dnl # putchar(",")
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{","}}})},
-__{}eval($#):$1:$2,2::,{dnl # putchar(',')
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{','}}})},
-__{}eval($#>1),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{","}}) or putchar(0x2C)},
-__{}regexp({$1},{^"\""$}),0,{dnl # putchar(""")
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{'"'}}})},
+
+__{}{$1},__CR,{dnl  #  push(\n)
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
+
+__{}{$1},{"}__CR{"},{dnl  #  push("\n")
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
+
+__{}{$1},{'}__CR{'},{dnl  #  push('\n')
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
+
+__{}{$1},{,},{dnl  ;#  push(',')
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar comma},0x2C)},
+
+__{}{$1},{'\},{dnl  ;#  push(')')
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar right parenthesis},0x29)},
+
+__{}regexp({$1},{^'.+'$}),0,{dnl  #  putchar('char')
+__{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
+
+__{}regexp({$1},{^".+"$}),0,{dnl  #  putchar("char")
+__{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
+
 __{}{dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{$@}}){}dnl
+__{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({'$1'})){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -1031,7 +1048,7 @@ __{}eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{','}})},
 __{}{dnl
 __{}__{}define({__INFO},__COMPILE_INFO)
-__{}__{}    ld    A, format({%-11s},{$1})  ; 2:7       __INFO   Pollutes: AF, AF', DE', BC'
+__{}__{}    ld    A, format({%-11s},{$1}); 2:7       __INFO   Pollutes: AF, AF', DE', BC'
 __{}__{}__PUTCHAR_A(__INFO){}dnl
 __{}}){}dnl
 }){}dnl
@@ -1432,7 +1449,7 @@ __{}    call _KEYQUESTION   ; 3:17      key?   ( -- flag )  version small},
 __{}{
 __{}    ex   DE, HL         ; 1:4       key?   ( -- flag )  version default
 __{}    push HL             ; 1:11      key?
-__{}    ld    A,(0x5C08)    ; 3:13      key?   read new value of {LAST K}
+__{}    ld    A,[0x5C08]    ; 3:13      key?   read new value of {LAST K}
 __{}    add   A, 0xFF       ; 2:7       key?   carry if non zero value
 __{}    sbc  HL, HL         ; 2:15      key?}){}dnl
 }){}dnl
@@ -2418,7 +2435,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{
-__{}__{}    out  (C),L          ; 2:12      __INFO   ( char -- char )   port(BC) = char{}dnl
+__{}__{}    out  (C),L          ; 2:12      __INFO   ( char -- char )   port[BC] = char{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -2434,7 +2451,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{
-__{}__{}    out  (C),H          ; 2:12      __INFO   ( x -- x )   port(BC) = hi(x){}dnl
+__{}__{}    out  (C),H          ; 2:12      __INFO   ( x -- x )   port[BC] = hi(x){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -2450,7 +2467,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{
-__{}__{}    out  (C),E          ; 2:12      __INFO   ( char x -- char x )   port(BC) = char{}dnl
+__{}__{}    out  (C),E          ; 2:12      __INFO   ( char x -- char x )   port[BC] = char{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -2466,7 +2483,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($#>1),1,{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}{
-__{}__{}    out  (C),D          ; 2:12      __INFO   ( x2 x1 -- x2 x1 )   port(BC) = hi(x2){}dnl
+__{}__{}    out  (C),D          ; 2:12      __INFO   ( x2 x1 -- x2 x1 )   port[BC] = hi(x2){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
