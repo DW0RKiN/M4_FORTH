@@ -445,7 +445,7 @@ define({__ASM_TOKEN_FLN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_fLn})
     push DE             ; 1:11      __INFO
-    call fLn            ; 3:17      __INFO   HL = ln(HL)
+    call fLn            ; 3:17      __INFO   HL = ln[HL]
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
@@ -459,7 +459,7 @@ define({__ASM_TOKEN_FSIN},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}__def({USE_fSin})
     push DE             ; 1:11      __INFO
-    call fSin           ; 3:17      __INFO   HL = sin(HL)
+    call fSin           ; 3:17      __INFO   HL = sin[HL]
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
 dnl
