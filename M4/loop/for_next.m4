@@ -137,7 +137,10 @@ dnl
 dnl
 define({TEST_IDEA_PUSH_FOR_I_NEXT},{
     push DE             ; 1:11      $1 for_101 i_101
-    ld   DE, format({%-11s},$1); ifelse(__HAS_PTR($1),{1},{4:20},{3:10})      $1 for_101 i_101
+ifelse(__HAS_PTR($1),{1},{
+    ld   DE,format({%-12s},$1); 4:20      $1 for_101 i_101},
+{
+    ld   DE, format({%-11s},$1); 3:10      $1 for_101 i_101})
 for101:                 ;           $1 for_101 i_101
     ex   DE, HL         ; 1:4       $1 for_101 i_101
     ld  (idx101),HL     ; 3:16      $1 for_101 i_101   save index
