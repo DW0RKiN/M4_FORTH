@@ -3392,10 +3392,10 @@ __{}    inc  HL             ; 1:6       __INFO
 __{}    ld  [HL],B          ; 1:7       __INFO
 __{}    pop  HL             ; 1:10      __INFO},
 __{}__HAS_PTR($1),{1},{
-__{}    ld  format({%-16s},{($2),BC}); 4:20      __INFO
+__{}    ld  format({%-16s},{[$2],BC}); 4:20      __INFO
 __{}    pop  HL             ; 1:10      __INFO)},
 __{}{
-__{}    ld  format({%-16s},{($2),BC}); 4:20      __INFO})},
+__{}    ld  format({%-16s},{[$2],BC}); 4:20      __INFO})},
 {
     push DE             ; 1:11      __INFO   ( $1 $2 $3 -- )
     push HL             ; 1:11      __INFO{}dnl
@@ -7943,14 +7943,14 @@ __{}    pop  HL             ; 1:10      __INFO},
 __IS_NUM($1):__IS_NUM($2),{1:1},{
 __{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   lo16
 __{}ifelse(__IS_NUM($3),1,{dnl
-__{}__{}    ld  (__HEX_HL($3)),BC     ; 4:20      __INFO   lo16},
+__{}__{}    ld  [__HEX_HL($3)],BC     ; 4:20      __INFO   lo16},
 __{}{dnl
-__{}__{}    ld  format({%-16s},{($3),BC}); 4:20      __INFO   lo16}){}dnl
+__{}__{}    ld  format({%-16s},{[$3],BC}); 4:20      __INFO   lo16}){}dnl
 __{}define({_TMP_INFO},__INFO   hi16){}__LD_REG16({BC},__HEX_HL($1),{BC},__HEX_HL($2)){}__CODE_16BIT
 __{}ifelse(__IS_NUM($3),1,{dnl
-__{}__{}    ld  (__HEX_HL($3+2)),BC     ; 4:20      __INFO   hi16},
+__{}__{}    ld  [__HEX_HL($3+2)],BC     ; 4:20      __INFO   hi16},
 __{}{dnl
-__{}__{}    ld  format({%-16s},{($3+2),BC}); 4:20      __INFO   hi16})},
+__{}__{}    ld  format({%-16s},{[__SIMPLIFY_EXPRESSION(2+$3)],BC}); 4:20      __INFO   hi16})},
 {dnl
 __{}ifelse(__HAS_PTR($2),1,{
 __{}__{}    ld   BC,format({%-12s},{$2}); 4:20      __INFO   lo16},
@@ -7959,9 +7959,9 @@ __{}__{}    ld   BC,format({%-12s},{$2}); 3:10      __INFO   lo16},
 __{}{
 __{}__{}    ld   BC, __HEX_HL($2)     ; 3:10      __INFO   lo16}){}dnl
 __{}ifelse(__IS_NUM($3),1,{
-__{}__{}    ld  (__HEX_HL($3)),BC     ; 4:20      __INFO   lo16},
+__{}__{}    ld  [__HEX_HL($3)],BC     ; 4:20      __INFO   lo16},
 __{}{
-__{}__{}    ld  format({%-16s},{($3),BC}); 4:20      __INFO   lo16}){}dnl
+__{}__{}    ld  format({%-16s},{[$3],BC}); 4:20      __INFO   lo16}){}dnl
 __{}ifelse(__HAS_PTR($1),1,{
 __{}__{}    ld   BC,format({%-12s},{$1}); 4:20      __INFO   hi16},
 __IS_NUM($1),0,{
@@ -7969,9 +7969,9 @@ __{}__{}    ld   BC,format({%-12s},{$1}); 3:10      __INFO   hi16},
 __{}{
 __{}__{}    ld   BC, __HEX_HL($1)     ; 3:10      __INFO   hi16}){}dnl
 __{}ifelse(__IS_NUM($3),1,{
-__{}__{}    ld  (__HEX_HL($3+2)),BC     ; 4:20      __INFO   hi16},
+__{}__{}    ld  [__HEX_HL($3+2)],BC     ; 4:20      __INFO   hi16},
 __{}{
-__{}__{}    ld  format({%-16s},{($3+2),BC}); 4:20      __INFO   hi16})}){}dnl
+__{}__{}    ld  format({%-16s},{[__SIMPLIFY_EXPRESSION(2+$3)],BC}); 4:20      __INFO   hi16})}){}dnl
 }){}dnl
 dnl
 dnl
