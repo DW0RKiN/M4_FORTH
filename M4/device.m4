@@ -1011,16 +1011,33 @@ dnl # putchar('#') --> use putchar(0x23)
 define({PUTCHAR},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}($@): Missing parameter!},
-__{}eval($#):$1:$2,2:":",{dnl # putchar(",")
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{","}}})},
-__{}eval($#):$1:$2,2::,{dnl # putchar(',')
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{','}}})},
-__{}eval($#>1),1,{
-__{}__{}  .error {$0}($@): Unexpected parameter! If you want to print a comma you have to write putchar({{","}}) or putchar(0x2C)},
-__{}regexp({$1},{^"\""$}),0,{dnl # putchar(""")
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{{'"'}}})},
+
+__{}{$1},__CR,{dnl  #  push(\n)
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
+
+__{}{$1},{"}__CR{"},{dnl  #  push("\n")
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
+
+__{}{$1},{'}__CR{'},{dnl  #  push('\n')
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
+
+__{}{$1},{,},{dnl  ;#  push(',')
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar comma},0x2C)},
+
+__{}{$1},{'\},{dnl  ;#  push(')')
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar right parenthesis},0x29)},
+
+__{}regexp({$1},{^'.+'$}),0,{dnl  #  putchar('char')
+__{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
+
+__{}regexp({$1},{^".+"$}),0,{dnl  #  putchar("char")
+__{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
+
 __{}{dnl
-__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar({$1})},{{$@}}){}dnl
+__{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({'$1'})){}dnl
+__{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},__GET_HEX_ASCII_CODE_INFO,$0_CHAR){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
