@@ -1347,7 +1347,7 @@ ifelse($1,{},{
 __{}__{}.error {$0}(): Missing address parameter!},
 __{}$#,{1},{
     ld    A,format({%-12s},{($1)}); 3:13      __INFO   ( c -- (c)+($1) )
-    add   A,(HL)        ; 1:7       __INFO
+    add   A,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO},
 __{}{
 __{}__{}.error {$0}($@): $# parameters found in macro!})}){}dnl
@@ -1393,7 +1393,7 @@ __{}__{}.error {$0}(): Missing second address parameter!},
 __{}$#,{2},{
                         ;[9:47]     __INFO   ( c --  )
     ld    A,format({%-12s},{($1)}); 3:13      __INFO
-    add   A,(HL)        ; 1:7       __INFO
+    add   A,[HL]        ; 1:7       __INFO
     ld  format({%-16s},{($2), A}); 3:13      __INFO   [$2] = [$1] + [TOS]
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO},
@@ -1587,10 +1587,10 @@ define({__ASM_TOKEN_MULDIVMOD},{dnl
 __{}define({__INFO},{*/mod}){}dnl
 __{}__def({USE_S32DIV16}){}dnl
 __{}__def({USE_S16MUL},{})
-    ex  (SP),HL         ; 1:19      {*/MOD}   ( n1 n2 n3 -- n1*n2%n3 n1*n2/n3 )
+    ex  [SP],HL         ; 1:19      {*/MOD}   ( n1 n2 n3 -- n1*n2%n3 n1*n2/n3 )
     call S16MUL         ; 3:17      {*/MOD}
     ex   DE, HL         ; 1:4       {*/MOD}
-    ex  (SP),HL         ; 1:19      {*/MOD}
+    ex  [SP],HL         ; 1:19      {*/MOD}
     call S32DIV16       ; 3:17      {*/MOD}}){}dnl
 dnl
 dnl
@@ -1604,10 +1604,10 @@ define({__ASM_TOKEN_MULDIV},{dnl
 __{}define({__INFO},{*/}){}dnl
 __{}__def({USE_S32DIV16}){}dnl
 __{}__def({USE_S16MUL},{})
-    ex  (SP),HL         ; 1:19      {*/}   ( n1 n2 n3 -- n1*n2/n3 )
+    ex  [SP],HL         ; 1:19      {*/}   ( n1 n2 n3 -- n1*n2/n3 )
     call S16MUL         ; 3:17      {*/}
     ex   DE, HL         ; 1:4       {*/}
-    ex  (SP),HL         ; 1:19      {*/}
+    ex  [SP],HL         ; 1:19      {*/}
     call S32DIV16       ; 3:17      {*/}
     pop  DE             ; 1:10      {*/}}){}dnl
 dnl
@@ -1644,26 +1644,26 @@ __{}__ADD_TOKEN({__TOKEN_PDADD},{pd+},$@){}dnl
 dnl
 define({__ASM_TOKEN_PDADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] += [pd2] with align 4
-    add   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] += [pd2] with align 4
+    add   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     ld    C, L          ; 1:4       __INFO
     ld    B, E          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    adc   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    adc   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    adc   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    adc   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    adc   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    adc   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     ld    L, C          ; 1:4       __INFO
     ld    E, B          ; 1:4       __INFO}){}dnl
 dnl
@@ -2105,11 +2105,11 @@ __{}define({__INFO},__COMPILE_INFO)
                         ;[9:93]     __INFO   ( hi2 lo2 hi1 lo1 -- hi2 lo2 hi1+hi2+carry lo1+lo2 )
     pop  BC             ; 1:10      __INFO   lo2
     add  HL, BC         ; 1:11      __INFO
-    ex  (SP),HL         ; 1:19      __INFO   hi2
+    ex  [SP],HL         ; 1:19      __INFO   hi2
     ex   DE, HL         ; 1:4       __INFO
     adc  HL, DE         ; 2:15      __INFO
     ex   DE, HL         ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO
+    ex  [SP],HL         ; 1:19      __INFO
     push BC             ; 1:11      __INFO}){}dnl
 dnl
 dnl
@@ -2125,10 +2125,10 @@ __{}define({__INFO},__COMPILE_INFO)
                         ;[10:97]    __INFO   ( d2 d1 -- d3 d2 )  d3 = d2 + d1
     pop  BC             ; 1:10      __INFO   h2 -- . h1 l1   BC = l2
     add  HL, BC         ; 1:11      __INFO   h2 -- . h1 l3   BC = l2
-    ex  (SP),HL         ; 1:19      __INFO   l3 -- . h1 h2   BC = l2
+    ex  [SP],HL         ; 1:19      __INFO   l3 -- . h1 h2   BC = l2
     ex   DE, HL         ; 1:4       __INFO   l3 -- . h2 h1   BC = l2
     adc  HL, DE         ; 2:15      __INFO   l3 -- . h2 h3   BC = l2
-    ex  (SP),HL         ; 1:19      __INFO   h3 -- . h2 l3   BC = l2
+    ex  [SP],HL         ; 1:19      __INFO   h3 -- . h2 l3   BC = l2
     push HL             ; 1:11      __INFO   h3 l3 . h2 l3   BC = l2
     ld    L, C          ; 1:4       __INFO
     ld    H, B          ; 1:4       __INFO   h3 l3 . h2 l2}){}dnl
@@ -2149,10 +2149,10 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    B, H          ; 1:4       __INFO   h2 l2 . h1 l1   BC = l1
     pop  HL             ; 1:10      __INFO   h2 -- . h1 l2   BC = l1
     add  HL, BC         ; 1:11      __INFO   h2 -- . h1 l3   BC = l1
-    ex  (SP),HL         ; 1:19      __INFO   l3 -- . h1 h2   BC = l1
+    ex  [SP],HL         ; 1:19      __INFO   l3 -- . h1 h2   BC = l1
     adc  HL, DE         ; 2:15      __INFO   l3 -- . h1 h3   BC = l1
     ex   DE, HL         ; 1:4       __INFO   l3 -- . h3 h1   BC = l1
-    ex  (SP),HL         ; 1:19      __INFO   h1 -- . h3 l3   BC = l1
+    ex  [SP],HL         ; 1:19      __INFO   h1 -- . h3 l3   BC = l1
     push BC             ; 1:11      __INFO   h1 l1 . h3 l3   BC = l1}){}dnl
 dnl
 dnl
@@ -2202,26 +2202,26 @@ __{}__ADD_TOKEN({__TOKEN_PDSUB},{pd-},$@){}dnl
 dnl
 define({__ASM_TOKEN_PDSUB},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A,(DE)        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] = [pd2] - [pd1]  with align 4
-    sub (HL)            ; 1:7       __INFO
-    ld  (HL), A         ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] = [pd2] - [pd1]  with align 4
+    sub [HL]            ; 1:7       __INFO
+    ld  [HL], A         ; 1:7       __INFO
     ld    C, L          ; 1:4       __INFO
     ld    B, E          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (HL), A         ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [HL], A         ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (HL), A         ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [HL], A         ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (HL), A         ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [HL], A         ; 1:7       __INFO
     ld    L, C          ; 1:4       __INFO
     ld    E, B          ; 1:4       __INFO}){}dnl
 dnl
@@ -2235,26 +2235,26 @@ dnl
 define({__ASM_TOKEN_PDSUB_NEGATE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO   ( pd2 pd1 -- pd2 pd1 )  [pd1] = -[pd2]  with align 4
-    ld    A,(DE)        ; 1:7       __INFO
-    sub (HL)            ; 1:7       __INFO
-    ld  (DE),A          ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sub [HL]            ; 1:7       __INFO
+    ld  [DE],A          ; 1:7       __INFO
     ld    C, L          ; 1:4       __INFO
     ld    B, E          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (DE),A          ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [DE],A          ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (DE),A          ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [DE],A          ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc   E             ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (DE),A          ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [DE],A          ; 1:7       __INFO
     ld    L, C          ; 1:4       __INFO
     ld    E, B          ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO}){}dnl
@@ -2272,26 +2272,26 @@ dnl
 define({__ASM_TOKEN_SWAP_PDSUB},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO   ( pd2 pd1 -- pd1 pd2 )  [pd2] = [pd1] - [pd2]  with align 4
-    ld    A,(DE)        ; 1:7       __INFO
-    sub  (HL)           ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sub  [HL]           ; 1:7       __INFO
+    ld   [HL], A        ; 1:7       __INFO
     ld     C, L         ; 1:4       __INFO
     ld     B, E         ; 1:4       __INFO
     inc    L            ; 1:4       __INFO
     inc    E            ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld   [HL], A        ; 1:7       __INFO
     inc    L            ; 1:4       __INFO
     inc    E            ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld   [HL], A        ; 1:7       __INFO
     inc    L            ; 1:4       __INFO
     inc    E            ; 1:4       __INFO
-    ld    A,(DE)        ; 1:7       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld   (HL), A        ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld   [HL], A        ; 1:7       __INFO
     ld     L, C         ; 1:4       __INFO
     ld     E, B         ; 1:4       __INFO}){}dnl
 dnl
@@ -2328,11 +2328,11 @@ __{}define({__INFO},{2over_d-}){}dnl
     pop  BC             ; 1:10      2over D-   lo2
     or    A             ; 1:4       2over D-
     sbc  HL, BC         ; 2:15      2over D-
-    ex  (SP),HL         ; 1:19      2over D-   hi2
+    ex  [SP],HL         ; 1:19      2over D-   hi2
     ex   DE, HL         ; 1:4       2over D-
     sbc  HL, DE         ; 2:15      2over D-
     ex   DE, HL         ; 1:4       2over D-
-    ex  (SP),HL         ; 1:19      2over D-
+    ex  [SP],HL         ; 1:19      2over D-
     push BC             ; 1:11      2over D-}){}dnl
 dnl
 dnl
@@ -2742,21 +2742,21 @@ define({__ASM_TOKEN_PDNEGATE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     xor   A             ; 1:4       __INFO   ( pd -- pd )  [pd] = -[pd]  with align 4
     ld    B, A          ; 1:4       __INFO
-    sub (HL)            ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    sub [HL]            ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     ld    A, B          ; 1:4       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     ld    A, B          ; 1:4       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     ld    A, B          ; 1:4       __INFO
-    sbc   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    sbc   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     ld    L, C          ; 1:4       __INFO}){}dnl
 dnl
 dnl
@@ -2797,84 +2797,84 @@ __{}  .error {$0}($@): The parameter is negative!},
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
 __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO},
 __{}eval($1),2,{
 __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld    A,0x00        ; 2:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO},
 __{}eval($1),3,{
 __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
 __{}    ld    B, A          ; 1:4       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld    A, B          ; 1:4       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld    A, B          ; 1:4       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO},
 __{}eval($1),4,{
 __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
 __{}    ld    B, A          ; 1:4       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld    A, B          ; 1:4       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld    A, B          ; 1:4       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld    A, B          ; 1:4       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    L, C          ; 1:4       __INFO},
 __{}eval($1),5,{
 __{}                       ;format({%-11s},[14:eval(28+38*$1)]) __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
 __{}    xor   A             ; 1:4       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
 __{}    ld    A, 0x00       ; 2:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO},
 __{}eval($1),256,{
 __{}    xor   A             ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
 __{}    ld    B, A          ; 1:4       __INFO
 __{}    ld    C, A          ; 1:4       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    ld    A, C          ; 1:4       __INFO
 __{}    djnz $-4            ; 2:8/13    __INFO},
 __{}{
 __{}                       ;format({%-11s},[14:eval(44+35*$1)]) __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] = -[p{}eval(8*($1))] with align $1
 __{}    xor   A             ; 1:4       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   BC, __HEX_HL(__HEX_L($1-1)*256)     ; 3:10      __INFO
 __{}    ld    A, C          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    djnz $-4            ; 2:8/13    __INFO
 __{}    pop  HL             ; 1:10      __INFO})}){}dnl
 }){}dnl
@@ -2904,17 +2904,17 @@ __{}__ADD_TOKEN({__TOKEN_PD1ADD},{pd1+},$@){}dnl
 dnl
 define({__ASM_TOKEN_PD1ADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    inc  (HL)           ; 1:11      __INFO   ( pd -- pd )  [pd] += 1 with align 4
+    inc  [HL]           ; 1:11      __INFO   ( pd -- pd )  [pd] += 1 with align 4
     jr    nz, $+14      ; 2:7/12    __INFO
     ld     C, L         ; 1:4       __INFO
     inc    L            ; 1:4       __INFO
-    inc  (HL)           ; 1:11      __INFO
+    inc  [HL]           ; 1:11      __INFO
     jr    nz, $+8       ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    inc  (HL)           ; 1:11      __INFO
+    inc  [HL]           ; 1:11      __INFO
     jr    nz, $+4       ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    inc  (HL)           ; 1:11      __INFO
+    inc  [HL]           ; 1:11      __INFO
     ld     L, C         ; 1:4       __INFO}){}dnl
 dnl
 dnl
@@ -2954,38 +2954,38 @@ __{}  .error {$0}($@): The parameter is negative!},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
-__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1},
+__{}    inc [HL]            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1},
 __{}eval($1),2,{
-__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    inc [HL]            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
 __{}    jr   nz, $+5        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    inc (HL)            ; 1:11      __INFO
+__{}    inc [HL]            ; 1:11      __INFO
 __{}    dec   L             ; 1:4       __INFO},
 __{}eval($1),3,{
-__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    inc [HL]            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
 __{}    jr    nz, $+10      ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    inc (HL)            ; 1:11      __INFO
+__{}    inc [HL]            ; 1:11      __INFO
 __{}    jr   nz, $+5        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    inc (HL)            ; 1:11      __INFO
+__{}    inc [HL]            ; 1:11      __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO},
 __{}eval($1),4,{
-__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    inc [HL]            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
 __{}    jr   nz, $+14       ; 2:7/12    __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    inc (HL)            ; 1:11      __INFO
+__{}    inc [HL]            ; 1:11      __INFO
 __{}    jr   nz, $+8        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    inc (HL)            ; 1:11      __INFO
+__{}    inc [HL]            ; 1:11      __INFO
 __{}    jr   nz, $+4        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    inc (HL)            ; 1:11      __INFO
+__{}    inc [HL]            ; 1:11      __INFO
 __{}    ld    L, C          ; 1:4       __INFO},
 __{}eval($1),256,{
-__{}    inc (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
+__{}    inc [HL]            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
 __{}    jr   nz, $+5        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    jr   nz, $-4        ; 2:7/12    __INFO
@@ -2993,7 +2993,7 @@ __{}    ld    L, 0x00       ; 2:7       __INFO},
 __{}{
 __{}    ld    C, L          ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] += 1  with align $1
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    inc (HL)            ; 1:11      __INFO
+__{}    inc [HL]            ; 1:11      __INFO
 __{}    jr   nz, $+5        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    djnz $-4            ; 2:8/13    __INFO
@@ -3028,98 +3028,98 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(1,0,{
                 ;[19:34,71,100,110] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
     xor   A             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     jr   nz, $+16       ; 2:7/12    __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     jr   nz, $+9        ; 2:7/12    __INFO
-    dec (HL)            ; 1:11      __INFO
+    dec [HL]            ; 1:11      __INFO
     inc   L             ; 1:4       __INFO
-    or  (HL)            ; 1:7       __INFO
+    or  [HL]            ; 1:7       __INFO
     jr   nz, $+4        ; 2:7/12    __INFO
-    dec (HL)            ; 1:11      __INFO
+    dec [HL]            ; 1:11      __INFO
     inc   L             ; 1:4       __INFO
-    dec (HL)            ; 1:11      __INFO
+    dec [HL]            ; 1:11      __INFO
     ld    L, C          ; 1:4       __INFO
-    dec (HL)            ; 1:11      __INFO},
+    dec [HL]            ; 1:11      __INFO},
 1,1,{
                  ;[20:33,66,91,101] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
     ld    A, 0xFF       ; 2:7       __INFO
-    add   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    add   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     jr    c, $+16       ; 2:7/12    __INFO
     ld    C, L          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
-    add   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    add   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     jr    c, $+9        ; 2:7/12    __INFO
     inc   L             ; 1:4       __INFO
-    add   A,(HL)        ; 1:7       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    add   A,[HL]        ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     jr    c, $+4        ; 2:7/12    __INFO
     inc   L             ; 1:4       __INFO
-    dec (HL)            ; 1:11      __INFO
+    dec [HL]            ; 1:11      __INFO
     ld    L, C          ; 1:4       __INFO},
 1,0,{
                 ;[20:34,67,100,114] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
     xor    A            ; 1:4       __INFO
-    or     A,(HL)       ; 1:7       __INFO
+    or     A,[HL]       ; 1:7       __INFO
     jr    nz, $+17      ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    or   (HL)           ; 1:7       __INFO
+    or   [HL]           ; 1:7       __INFO
     jr    nz, $+11      ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    or   (HL)           ; 1:7       __INFO
+    or   [HL]           ; 1:7       __INFO
     jr    nz, $+5       ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO
+    dec  [HL]           ; 1:11      __INFO
     dec    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO
+    dec  [HL]           ; 1:11      __INFO
     dec    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO
+    dec  [HL]           ; 1:11      __INFO
     dec    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO},
+    dec  [HL]           ; 1:11      __INFO},
 1,0,{
                 ;[21:34,75,108,118] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
-    dec  (HL)           ; 1:11      __INFO
-    ld     A,(HL)       ; 1:7       __INFO
+    dec  [HL]           ; 1:11      __INFO
+    ld     A,[HL]       ; 1:7       __INFO
     inc    A            ; 1:4       __INFO
     jr    nz, $+18      ; 2:7/12    __INFO
     ld     C, L         ; 1:4       __INFO
     inc    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO
-    ld     A,(HL)       ; 1:7       __INFO
+    dec  [HL]           ; 1:11      __INFO
+    ld     A,[HL]       ; 1:7       __INFO
     inc    A            ; 1:4       __INFO
     jr     z, $+10      ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO
-    ld     A,(HL)       ; 1:7       __INFO
+    dec  [HL]           ; 1:11      __INFO
+    ld     A,[HL]       ; 1:7       __INFO
     inc    A            ; 1:4       __INFO
     jr     z, $+4       ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO
+    dec  [HL]           ; 1:11      __INFO
     ld     L, C         ; 1:4       __INFO},
 {
                ;[23:37,74,103,113] __INFO   ( pd -- pd )  [pd] -= 1 with align 4
     ld     B, 0x01      ; 2:7       __INFO
-    ld     A,(HL)       ; 1:7       __INFO
+    ld     A,[HL]       ; 1:7       __INFO
     sub    A, B         ; 1:4       __INFO
-    ld   (HL),A         ; 1:7       __INFO
+    ld   [HL],A         ; 1:7       __INFO
     jr    nc, $+18      ; 2:7/12    __INFO
     ld     C, L         ; 1:4       __INFO
     inc    L            ; 1:4       __INFO
-    ld     A,(HL)       ; 1:7       __INFO
+    ld     A,[HL]       ; 1:7       __INFO
     sub    A, B         ; 1:4       __INFO
-    ld   (HL),A         ; 1:7       __INFO
+    ld   [HL],A         ; 1:7       __INFO
     jr     z, $+10      ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    ld     A,(HL)       ; 1:7       __INFO
+    ld     A,[HL]       ; 1:7       __INFO
     sub    A, B         ; 1:4       __INFO
-    ld   (HL),A         ; 1:7       __INFO
+    ld   [HL],A         ; 1:7       __INFO
     jr     z, $+4       ; 2:7/12    __INFO
     inc    L            ; 1:4       __INFO
-    dec  (HL)           ; 1:11      __INFO
+    dec  [HL]           ; 1:11      __INFO
     ld     L, C         ; 1:4       __INFO}){}dnl
 }){}dnl
 dnl
@@ -3160,50 +3160,50 @@ __{}  .error {$0}($@): The parameter is negative!},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
-__{}    dec (HL)            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] -= 1  with align $1},
+__{}    dec [HL]            ; 1:11      __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] -= 1  with align $1},
 __{}eval($1),2,{
 __{}    ld    A, 0xFF       ; 2:7       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] -= 1  with align $1
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    jr    c, $+5        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    dec (HL)            ; 1:11      __INFO
+__{}    dec [HL]            ; 1:11      __INFO
 __{}    dec   L             ; 1:4       __INFO},
 __{}eval($1),3,{
 __{}    ld    A, 0xFF       ; 2:7       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] -= 1  with align $1
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    jr    c, $+11       ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    jr    c, $+5        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    inc (HL)            ; 1:11      __INFO
+__{}    inc [HL]            ; 1:11      __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO},
 __{}eval($1),4,{
 __{}                 ;[20:33,66,91,101] __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] -= 1  with align $1
 __{}    ld    A, 0xFF       ; 2:7       __INFO
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    jr    c, $+16       ; 2:7/12    __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    jr    c, $+9        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    jr    c, $+4        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    dec (HL)            ; 1:11      __INFO
+__{}    dec [HL]            ; 1:11      __INFO
 __{}    ld    L, C          ; 1:4       __INFO},
 __{}eval($1),256,{
 __{}    ld    A, 0xFF       ; 2:7       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] -= 1  with align $1
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    jr    c, $+5        ; 2:7/12    __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    jr   nz, $-5        ; 2:7/12    __INFO
@@ -3212,8 +3212,8 @@ __{}{
 __{}    ld    C, L          ; 1:4       __INFO   ( p{}eval(8*($1)) -- p{}eval(8*($1)) )  [p{}eval(8*($1))] -= 1  with align $1
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
 __{}    ld    A, 0xFF       ; 2:7       __INFO
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    jr    c, $+4        ; 2:7/12    __INFO
 __{}    djnz $-4            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO})}){}dnl
@@ -3359,81 +3359,81 @@ __{}  .error {$0}($@): The parameter is negative!},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO},
 __{}eval($1),2,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
 __{}eval($1),3,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
 __{}eval($1),4,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, E          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    E, B          ; 1:4       __INFO},
 __{}eval($1),256,{
 __{}    or    A             ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    jr   nz, $-5        ; 2:7/12    __INFO},
 __{}{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
-__{}    add   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] with align $1
+__{}    add   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO})}){}dnl
@@ -3476,65 +3476,65 @@ __{}  .error {$0}($@): The parameter is negative!},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO},
 __{}eval($1),2,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
 __{}eval($1),3,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
 __{}eval($1),4,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, E          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    E, B          ; 1:4       __INFO},
 __{}eval($1),256,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    jr   nz, $-5        ; 2:7/12    __INFO},
@@ -3542,9 +3542,9 @@ __{}{
 __{}    ld    C, L          ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] += [p{}eval(8*($1))_2] + carry  with align $1
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    adc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    adc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
@@ -3589,81 +3589,81 @@ __{}  .error {$0}($@): The parameter is negative!},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO},
 __{}eval($1),2,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
 __{}eval($1),3,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
 __{}eval($1),4,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, E          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    E, B          ; 1:4       __INFO},
 __{}eval($1),256,{
 __{}    or    A             ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    jr   nz, $-5        ; 2:7/12    __INFO},
 __{}{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] with align $1
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO})}){}dnl
@@ -3706,65 +3706,65 @@ __{}  .error {$0}($@): The parameter is negative!},
 {dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO},
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO},
 __{}eval($1),2,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
 __{}eval($1),3,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO},
 __{}eval($1),4,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, E          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    E, B          ; 1:4       __INFO},
 __{}eval($1),256,{
-__{}    ld    A,(DE)        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    jr   nz, $-5        ; 2:7/12    __INFO},
@@ -3772,9 +3772,9 @@ __{}{
 __{}    ld    C, L          ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] = [p{}eval(8*($1))_2] - [p{}eval(8*($1))_1] - carry  with align $1
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
@@ -3820,38 +3820,38 @@ __{}  .error {$0}($@): The parameter is negative!},
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(eval($1),1,{
 __{}    ex   DE, HL         ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] -= [p{}eval(8*($1))_2] with align $1
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
 __{}eval($1),2,{
 __{}    ex   DE, HL         ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] -= [p{}eval(8*($1))_2] with align $1
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
 __{}eval($1),3,{
 __{}    ex   DE, HL         ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] -= [p{}eval(8*($1))_2] with align $1
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    dec   L             ; 1:4       __INFO
 __{}    dec   E             ; 1:4       __INFO
 __{}    dec   L             ; 1:4       __INFO
@@ -3859,26 +3859,26 @@ __{}    dec   E             ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
 __{}eval($1),4,{
 __{}    ex   DE, HL         ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] -= [p{}eval(8*($1))_2] with align $1
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, E          ; 1:4       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    E, B          ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
@@ -3886,26 +3886,26 @@ __{}eval($1),256,{
 __{}    ex   DE, HL         ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] -= [p{}eval(8*($1))_2] with align $1
 __{}    or    A             ; 1:4       __INFO
 __{}    ld    B, L          ; 1:4       __INFO   = 0
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO},
 __{}{
 __{}    ex   DE, HL         ; 1:4       __INFO   ( p{}eval(8*($1))_2 p{}eval(8*($1))_1 -- p{}eval(8*($1))_2 p{}eval(8*($1))_1 )  [p{}eval(8*($1))_1] -= [p{}eval(8*($1))_2] with align $1
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sub (HL)            ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sub [HL]            ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1-1)       ; 2:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
