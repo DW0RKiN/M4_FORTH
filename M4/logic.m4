@@ -6995,11 +6995,11 @@ ifelse(_TYP_DOUBLE,{fast},{
     ld    A, B          ; 1:4       4dup D<>   h2       . h1 l1  A = hi(l2)
     sub   H             ; 1:4       4dup D<>   h2       . h1 l1  hi(l2) - hi(l1)
     jr   nz, $+12       ; 2:7/12    4dup D<>   h2       . h1 l1  --> A = 0xFF
-    ex (SP), HL         ; 1:19      4dup D<>   l1       . h1 h2  HL= hi(d2) = h2
+    ex [SP], HL         ; 1:19      4dup D<>   l1       . h1 h2  HL= hi(d2) = h2
     ld    A, L          ; 1:4       4dup D<>   l1       . h1 h2  A = lo(h2)
     sub   E             ; 1:4       4dup D<>   l1       . h1 h2  lo(h2) - lo(l1)
     ld    A, H          ; 1:4       4dup D<>   l1       . h1 h2  A = hi(h2)
-    ex (SP), HL         ; 1:19      4dup D<>   h2       . h1 l1
+    ex [SP], HL         ; 1:19      4dup D<>   h2       . h1 l1
     jr   nz, $+5        ; 2:7/12    4dup D<>   h2       . h1 l1  --> A = 0xFF
     sub   D             ; 1:4       4dup D<>   h2       . h1 l1  hi(h2) - hi(h1)
     jr    z, $+4        ; 2:7/12    4dup D<>   h2       . h1 l1  --> A = 0
@@ -7062,7 +7062,7 @@ ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
     sub   L             ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     ld    A, B          ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     sbc   A, H          ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    ex (SP), HL         ; 1:19      4dup D<   hi_2
+    ex [SP], HL         ; 1:19      4dup D<   hi_2
     ld    A, L          ; 1:4       4dup D<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
     sbc   A, E          ; 1:4       4dup D<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
     ld    A, H          ; 1:4       4dup D<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
@@ -7071,7 +7071,7 @@ ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
     xor   H             ; 1:4       4dup D<
     xor   D             ; 1:4       4dup D<
     add   A, A          ; 1:4       4dup D<                                   --> carry if true
-    ex (SP), HL         ; 1:19      4dup D<   lo_1
+    ex [SP], HL         ; 1:19      4dup D<   lo_1
     push BC             ; 1:11      4dup D<
     push DE             ; 1:11      4dup D<
     ex   DE, HL         ; 1:4       4dup D<
@@ -7094,12 +7094,12 @@ __{}define({__INFO},{4dup_dult}){}dnl
     sub   L             ; 1:4       4dup Du<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     ld    A, B          ; 1:4       4dup Du<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     sbc   A, H          ; 1:4       4dup Du<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
-    ex (SP), HL         ; 1:19      4dup Du<   hi_2
+    ex [SP], HL         ; 1:19      4dup Du<   hi_2
     ld    A, L          ; 1:4       4dup Du<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
     sbc   A, E          ; 1:4       4dup Du<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
     ld    A, H          ; 1:4       4dup Du<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
     sbc   A, D          ; 1:4       4dup Du<   hi_2<hi_1 --> HL<DE --> HL-DE<0 --> carry if true
-    ex (SP), HL         ; 1:19      4dup Du<   lo_1
+    ex [SP], HL         ; 1:19      4dup Du<   lo_1
     push BC             ; 1:11      4dup Du<
     push DE             ; 1:11      4dup Du<
     ex   DE, HL         ; 1:4       4dup Du<
@@ -7129,7 +7129,7 @@ ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
     sub   L             ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
     ld    A, B          ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
     sbc   A, H          ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
-    ex (SP), HL         ; 1:19      4dup D>=   hi_2
+    ex [SP], HL         ; 1:19      4dup D>=   hi_2
     ld    A, L          ; 1:4       4dup D>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     sbc   A, E          ; 1:4       4dup D>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     ld    A, H          ; 1:4       4dup D>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
@@ -7139,7 +7139,7 @@ ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
     xor   D             ; 1:4       4dup D>=
     add   A, A          ; 1:4       4dup D>=                                      --> no carry if true
     ccf                 ; 1:4       4dup D>=                                      --> carry    if true
-    ex (SP), HL         ; 1:19      4dup D>=   lo_1
+    ex [SP], HL         ; 1:19      4dup D>=   lo_1
     push BC             ; 1:11      4dup D>=
     push DE             ; 1:11      4dup D>=
     ex   DE, HL         ; 1:4       4dup D>=
@@ -7162,13 +7162,13 @@ __{}define({__INFO},{4dup_duge}){}dnl
     sub   L             ; 1:4       4dup Du>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
     ld    A, B          ; 1:4       4dup Du>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
     sbc   A, H          ; 1:4       4dup Du>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
-    ex (SP), HL         ; 1:19      4dup Du>=   hi_2
+    ex [SP], HL         ; 1:19      4dup Du>=   hi_2
     ld    A, L          ; 1:4       4dup Du>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     sbc   A, E          ; 1:4       4dup Du>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     ld    A, H          ; 1:4       4dup Du>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     sbc   A, D          ; 1:4       4dup Du>=   hi_2>=hi_1 --> HL>=DE --> HL-DE>=0 --> no carry if true
     ccf                 ; 1:4       4dup Du>=                                      --> carry    if true
-    ex (SP), HL         ; 1:19      4dup Du>=   lo_1
+    ex [SP], HL         ; 1:19      4dup Du>=   lo_1
     push BC             ; 1:11      4dup Du>=
     push DE             ; 1:11      4dup Du>=
     ex   DE, HL         ; 1:4       4dup Du>=
@@ -7198,7 +7198,7 @@ ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
     sub   C             ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     ld    A, H          ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sbc   A, B          ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
-    ex (SP), HL         ; 1:19      4dup D<=   hi_2
+    ex [SP], HL         ; 1:19      4dup D<=   hi_2
     ld    A, E          ; 1:4       4dup D<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
     sbc   A, L          ; 1:4       4dup D<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
     ld    A, D          ; 1:4       4dup D<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
@@ -7208,7 +7208,7 @@ ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
     xor   D             ; 1:4       4dup D<=
     add   A, A          ; 1:4       4dup D<=                                      --> no carry if true
     ccf                 ; 1:4       4dup D<=                                      --> carry    if true
-    ex (SP), HL         ; 1:19      4dup D<=   lo_1
+    ex [SP], HL         ; 1:19      4dup D<=   lo_1
     push BC             ; 1:11      4dup D<=
     push DE             ; 1:11      4dup D<=
     ex   DE, HL         ; 1:4       4dup D<=
@@ -7231,13 +7231,13 @@ __{}define({__INFO},{4dup_dule}){}dnl
     sub   C             ; 1:4       4dup Du<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     ld    A, H          ; 1:4       4dup Du<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sbc   A, B          ; 1:4       4dup Du<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
-    ex (SP), HL         ; 1:19      4dup Du<=   hi_2
+    ex [SP], HL         ; 1:19      4dup Du<=   hi_2
     ld    A, E          ; 1:4       4dup Du<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
     sbc   A, L          ; 1:4       4dup Du<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
     ld    A, D          ; 1:4       4dup Du<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
     sbc   A, H          ; 1:4       4dup Du<=   hi_2<=hi_1 --> HL<=DE --> 0<=DE-HL --> no carry if true
     ccf                 ; 1:4       4dup Du<=                                      --> carry    if true
-    ex (SP), HL         ; 1:19      4dup Du<=   lo_1
+    ex [SP], HL         ; 1:19      4dup Du<=   lo_1
     push BC             ; 1:11      4dup Du<=
     push DE             ; 1:11      4dup Du<=
     ex   DE, HL         ; 1:4       4dup Du<=
@@ -7266,7 +7266,7 @@ ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
     sub   C             ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     ld    A, H          ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     sbc   A, B          ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
-    ex (SP), HL         ; 1:19      4dup D>   hi_2
+    ex [SP], HL         ; 1:19      4dup D>   hi_2
     ld    A, E          ; 1:4       4dup D>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
     sbc   A, L          ; 1:4       4dup D>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
     ld    A, D          ; 1:4       4dup D>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
@@ -7275,7 +7275,7 @@ ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
     xor   B             ; 1:4       4dup D>
     xor   D             ; 1:4       4dup D>
     add   A, A          ; 1:4       4dup D>                                   --> carry if true
-    ex (SP), HL         ; 1:19      4dup D>   lo_1
+    ex [SP], HL         ; 1:19      4dup D>   lo_1
     push BC             ; 1:11      4dup D>
     push DE             ; 1:11      4dup D>
     ex   DE, HL         ; 1:4       4dup D>
@@ -7298,12 +7298,12 @@ __{}define({__INFO},{4dup_dugt}){}dnl
     sub   C             ; 1:4       4dup Du>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     ld    A, H          ; 1:4       4dup Du>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     sbc   A, B          ; 1:4       4dup Du>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
-    ex (SP), HL         ; 1:19      4dup Du>   hi_2
+    ex [SP], HL         ; 1:19      4dup Du>   hi_2
     ld    A, E          ; 1:4       4dup Du>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
     sbc   A, L          ; 1:4       4dup Du>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
     ld    A, D          ; 1:4       4dup Du>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
     sbc   A, H          ; 1:4       4dup Du>   hi_2>hi_1 --> HL>DE --> 0>DE-HL --> carry if true
-    ex (SP), HL         ; 1:19      4dup Du>   lo_1
+    ex [SP], HL         ; 1:19      4dup Du>   lo_1
     push BC             ; 1:11      4dup Du>
     push DE             ; 1:11      4dup Du>
     ex   DE, HL         ; 1:4       4dup Du>
