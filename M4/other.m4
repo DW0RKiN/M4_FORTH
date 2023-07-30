@@ -24,7 +24,7 @@ __{}    ld   HL, 0x0000     ; 3:10      __INFO
 __{}    ld  (putchar_yx),HL ; 3:16      __INFO
 __{}  else
 __{}    ld   HL, 0x1821     ; 3:10      __INFO
-__{}    ld   DE,(0x5C88)    ; 4:20      __INFO
+__{}    ld   DE,[0x5C88]    ; 4:20      __INFO
 __{}    or    A             ; 1:4       __INFO
 __{}    sbc  HL, DE         ; 2:15      __INFO
 __{}    ld    A, L          ; 1:4       __INFO   x
