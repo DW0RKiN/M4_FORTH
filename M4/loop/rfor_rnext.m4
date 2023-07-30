@@ -23,14 +23,14 @@ __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_RFOR},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ex  (SP),HL         ; 1:19      __INFO
+    ex  [SP],HL         ; 1:19      __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   index
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec  L              ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO   stop
+    ld  [HL],E          ; 1:7       __INFO   stop
     exx                 ; 1:4       __INFO   ( index -- ) R: ( -- index )
 for{}$1:                 ;           __INFO}){}dnl
 dnl
@@ -61,7 +61,7 @@ __{}  .error {$0}($@): Unexpected parameter!})}){}dnl
 dnl
 define({__ASM_TOKEN_QRFOR},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ex  (SP),HL         ; 1:19      __INFO   index
+    ex  [SP],HL         ; 1:19      __INFO   index
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   index
@@ -70,9 +70,9 @@ __{}define({__INFO},__COMPILE_INFO)
     and   E             ; 1:4       __INFO
     inc   A             ; 1:4       __INFO
     jp    z, next{}$1    ; 3:10      __INFO   ( -1 -- ) R: ( -- )
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec  L              ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO   stop
+    ld  [HL],E          ; 1:7       __INFO   stop
     exx                 ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   ( index -- ) R: ( -- index )
@@ -101,16 +101,16 @@ define({__ASM_TOKEN_RNEXT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO   DE = index
+    ld    D,[HL]        ; 1:7       __INFO   DE = index
     ld    A, E          ; 1:4       __INFO
     or    D             ; 1:4       __INFO
     jr    z, next{}$1    ; 2:7/12    __INFO   exit
     dec  DE             ; 1:6       __INFO   index--
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     exx                 ; 1:4       __INFO
     jp   for{}$1         ; 3:10      __INFO
 next{}$1:                ;           __INFO
