@@ -27,7 +27,7 @@ fDot:
 
     pop  DE             ; 1:10
     pop  HL             ; 1:10      ret
-    ex  (SP),HL         ; 1:19
+    ex  [SP],HL         ; 1:19
     ex   DE, HL         ; 1:4
     ret                 ; 1:10})dnl
 dnl
