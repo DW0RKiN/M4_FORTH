@@ -414,9 +414,9 @@ __{}__ASM_TOKEN_FETCH_PUSH($@)},
 {dnl
 __{}define({__INFO},__COMPILE_INFO)
 __{}    push DE             ; 1:11      __INFO
-__{}    ld    E, (HL)       ; 1:7       __INFO
+__{}    ld    E, [HL]       ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D, (HL)       ; 1:7       __INFO
+__{}    ld    D, [HL]       ; 1:7       __INFO
 __{}    push DE             ; 1:11      __INFO{}dnl
 __{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 })}){}dnl
@@ -1601,17 +1601,17 @@ ifelse(TYP_2SWAP,{fast},{
                         ;[7:56]     __INFO   ( d c b a -- b a d c ) # fast version can be changed with "define({TYP_2SWAP},{name})", name=default
     ex   DE, HL         ; 1:4       __INFO   d c . a b
     pop  BC             ; 1:10      __INFO   d   . a b     BC = c
-    ex  (SP), HL        ; 1:19      __INFO   b   . a d
+    ex  [SP], HL        ; 1:19      __INFO   b   . a d
     ex   DE, HL         ; 1:4       __INFO   b   . d a
     push HL             ; 1:11      __INFO   b a . d a
     ld    L, C          ; 1:4       __INFO
     ld    H, B          ; 1:4       __INFO   b a . d c},
 {
                         ;[6:67]     __INFO   ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
-    ex  (SP),HL         ; 1:19      __INFO   d a . b c
+    ex  [SP],HL         ; 1:19      __INFO   d a . b c
     ex   DE, HL         ; 1:4       __INFO   d a . c b
     pop  AF             ; 1:10      __INFO   d   . c b     AF = a
-    ex  (SP),HL         ; 1:19      __INFO   b   . c d
+    ex  [SP],HL         ; 1:19      __INFO   b   . c d
     ex   DE, HL         ; 1:4       __INFO   b   . d c
     push AF             ; 1:11      __INFO   b a . d c})}){}dnl
 dnl
@@ -1724,7 +1724,7 @@ define({__ASM_TOKEN_4DUP_DROP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(_TYP_SINGLE,{small},{
                         ;[9:98]     __INFO   ( d c b a -- d c b a d c b )
-    ex  (SP),HL         ; 1:19      __INFO   HL = c
+    ex  [SP],HL         ; 1:19      __INFO   HL = c
     pop  AF             ; 1:10      __INFO   AF = a
     pop  BC             ; 1:10      __INFO   BC = d
     push BC             ; 1:11      __INFO
@@ -1792,9 +1792,9 @@ ifelse(_TYP_SINGLE,{small},{
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, 0x0008     ; 3:10      __INFO
     add  HL, SP         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO
     djnz $-10           ; 2:8/13    __INFO},
 {
@@ -2293,7 +2293,7 @@ __{}define({__INFO},__COMPILE_INFO)
     push AF             ; 1:11      __INFO   d c     . b a
     push DE             ; 1:11      __INFO   d c b   . b a
     push AF             ; 1:11      __INFO   d c b c . b a
-    ex  (SP),HL         ; 1:19      __INFO   d c b a . b c
+    ex  [SP],HL         ; 1:19      __INFO   d c b a . b c
     ld    D, B          ; 1:4       __INFO
     ld    E, C          ; 1:4       __INFO   d c b a . d c}){}dnl
 dnl
@@ -2313,7 +2313,7 @@ ifelse(_TYP_SINGLE,{small},{
     push BC             ; 1:11      __INFO   c   . b a
     push BC             ; 1:11      __INFO   c c . b a
     ex   DE, HL         ; 1:4       __INFO   c c . a b
-    ex  (SP),HL         ; 1:19      __INFO   c b . a c},
+    ex  [SP],HL         ; 1:19      __INFO   c b . a c},
 {
                         ;[6:44]     __INFO   ( c b a -- c b a c )
     pop  BC             ; 1:10      __INFO       . b a   BC = c
@@ -2356,18 +2356,18 @@ __{}define({__INFO},__COMPILE_INFO)
     push HL             ; 1:11      __INFO   f e d c b a . b a
     ld   HL, 0x000B     ; 3:10      __INFO   f e d c b a . b 11
     add  HL, SP         ; 1:11      __INFO   f e d c b a . b -
-    ld    D,(HL)        ; 1:7       __INFO   f e d c b a . - -
+    ld    D,[HL]        ; 1:7       __INFO   f e d c b a . - -
     dec  HL             ; 1:6       __INFO   f e d c b a . - -
-    ld    E,(HL)        ; 1:7       __INFO   f e d c b a . f -
+    ld    E,[HL]        ; 1:7       __INFO   f e d c b a . f -
     dec  HL             ; 1:6       __INFO   f e d c b a . f -
     push DE             ; 1:11      __INFO   f e d c b a f f -
-    ld    D,(HL)        ; 1:7       __INFO   f e d c b a f - -
+    ld    D,[HL]        ; 1:7       __INFO   f e d c b a f - -
     dec  HL             ; 1:6       __INFO   f e d c b a f - -
-    ld    E,(HL)        ; 1:7       __INFO   f e d c b a f e -
+    ld    E,[HL]        ; 1:7       __INFO   f e d c b a f e -
     dec  HL             ; 1:6       __INFO   f e d c b a f e -
-    ld    A,(HL)        ; 1:7       __INFO   f e d c b a f e -
+    ld    A,[HL]        ; 1:7       __INFO   f e d c b a f e -
     dec  HL             ; 1:6       __INFO   f e d c b a f e -
-    ld    L,(HL)        ; 1:7       __INFO   f e d c b a f e -
+    ld    L,[HL]        ; 1:7       __INFO   f e d c b a f e -
     ld    H, A          ; 1:4       __INFO   f e d c b a f e d}){}dnl
 dnl
 dnl
@@ -2388,14 +2388,14 @@ ifelse(_TYP_SINGLE,{small},{
     add  HL, SP         ; 1:11      __INFO   h g f e d c b . . . a -
     ld    B, 0x03       ; 2:7       __INFO   h g f e d c b . . . a -
     push DE             ; 1:11      __INFO   h g f e d c b(a-h-g)f -
-    ld    D,(HL)        ; 1:7       __INFO   h g f e d c b(a-h-g)f -
+    ld    D,[HL]        ; 1:7       __INFO   h g f e d c b(a-h-g)f -
     dec  HL             ; 1:6       __INFO   h g f e d c b(a-h-g)f -
-    ld    E,(HL)        ; 1:7       __INFO   h g f e d c b(a-h-g)f -
+    ld    E,[HL]        ; 1:7       __INFO   h g f e d c b(a-h-g)f -
     dec  HL             ; 1:6       __INFO   h g f e d c b(a-h-g)f -
     djnz $-5            ; 2:8/13    __INFO   h g f e d c b(a-h-g)f -
-    ld    A,(HL)        ; 1:7       __INFO   h g f e d c b a h g f -
+    ld    A,[HL]        ; 1:7       __INFO   h g f e d c b a h g f -
     dec  HL             ; 1:6       __INFO   h g f e d c b a h g f -
-    ld    L,(HL)        ; 1:7       __INFO   h g f e d c b a h g f -
+    ld    L,[HL]        ; 1:7       __INFO   h g f e d c b a h g f -
     ld    H, A          ; 1:4       __INFO   h g f e d c b a h g f e},
 {
                        ;[24:167]    __INFO   ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )   # default version can be changed with "define({_TYP_SINGLE},{small})"
@@ -2403,23 +2403,23 @@ ifelse(_TYP_SINGLE,{small},{
     push HL             ; 1:11      __INFO   h g f e d c b a . . b a
     ld   HL, 0x000F     ; 3:10      __INFO   h g f e d c b a . . b 15
     add  HL, SP         ; 1:11      __INFO   h g f e d c b a . . b -
-    ld    D,(HL)        ; 1:7       __INFO   h g f e d c b a . . - -
+    ld    D,[HL]        ; 1:7       __INFO   h g f e d c b a . . - -
     dec  HL             ; 1:6       __INFO   h g f e d c b a . . - -
-    ld    E,(HL)        ; 1:7       __INFO   h g f e d c b a . . h -
+    ld    E,[HL]        ; 1:7       __INFO   h g f e d c b a . . h -
     dec  HL             ; 1:6       __INFO   h g f e d c b a . . h -
     push DE             ; 1:11      __INFO   h g f e d c b a h . h -
-    ld    D,(HL)        ; 1:7       __INFO   h g f e d c b a h . - -
+    ld    D,[HL]        ; 1:7       __INFO   h g f e d c b a h . - -
     dec  HL             ; 1:6       __INFO   h g f e d c b a h . - -
-    ld    E,(HL)        ; 1:7       __INFO   h g f e d c b a h . g -
+    ld    E,[HL]        ; 1:7       __INFO   h g f e d c b a h . g -
     dec  HL             ; 1:6       __INFO   h g f e d c b a h . g -
     push DE             ; 1:11      __INFO   h g f e d c b a h g g -
-    ld    D,(HL)        ; 1:7       __INFO   h g f e d c b a h g - -
+    ld    D,[HL]        ; 1:7       __INFO   h g f e d c b a h g - -
     dec  HL             ; 1:6       __INFO   h g f e d c b a h g - -
-    ld    E,(HL)        ; 1:7       __INFO   h g f e d c b a h g f -
+    ld    E,[HL]        ; 1:7       __INFO   h g f e d c b a h g f -
     dec  HL             ; 1:6       __INFO   h g f e d c b a h g f -
-    ld    A,(HL)        ; 1:7       __INFO   h g f e d c b a h g f -
+    ld    A,[HL]        ; 1:7       __INFO   h g f e d c b a h g f -
     dec  HL             ; 1:6       __INFO   h g f e d c b a h g f -
-    ld    L,(HL)        ; 1:7       __INFO   h g f e d c b a h g f -
+    ld    L,[HL]        ; 1:7       __INFO   h g f e d c b a h g f -
     ld    H, A          ; 1:4       __INFO   h g f e d c b a h g f e})}){}dnl
 dnl
 dnl
@@ -2432,7 +2432,7 @@ dnl
 define({__ASM_TOKEN_ROT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
     ex   DE, HL         ; 1:4       __INFO   ( c b a -- b a c )
-    ex  (SP),HL         ; 1:19      __INFO}){}dnl
+    ex  [SP],HL         ; 1:19      __INFO}){}dnl
 dnl
 dnl
 dnl # rot drop
@@ -2480,7 +2480,7 @@ ifelse(TYP_2ROT,{fast},{
     pop  DE             ; 1:10      __INFO   f e d   .      DE' = c
     pop  BC             ; 1:10      __INFO   f e     .      BC' = d
     exx                 ; 1:4       __INFO   f e     . b a
-    ex  (SP),HL         ; 1:19      __INFO   f a     . b e
+    ex  [SP],HL         ; 1:19      __INFO   f a     . b e
     pop  AF             ; 1:10      __INFO   f       . b e  AF = a
     pop  BC             ; 1:10      __INFO           . b e  BC = f
     exx                 ; 1:4       __INFO
@@ -2503,7 +2503,7 @@ dnl
 define({__ASM_TOKEN_NROT},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[2:23]     __INFO   ( c b a -- a c b )
-    ex  (SP),HL         ; 1:19      __INFO   a . b c
+    ex  [SP],HL         ; 1:19      __INFO   a . b c
     ex   DE, HL         ; 1:4       __INFO   a . c b}){}dnl
 dnl
 dnl
@@ -2516,7 +2516,7 @@ __{}__ADD_TOKEN({__TOKEN_NROT_SWAP},{nrot swap},$@){}dnl
 dnl
 define({__ASM_TOKEN_NROT_SWAP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ex  (SP),HL         ; 1:19      __INFO   ( c b a -- a b c )}){}dnl
+    ex  [SP],HL         ; 1:19      __INFO   ( c b a -- a b c )}){}dnl
 dnl
 dnl
 dnl # -rot nip
@@ -2561,7 +2561,7 @@ __{}define({__INFO},__COMPILE_INFO)
                         ;[4:44]     __INFO   ( d c b a -- b c a d )
     ex   DE, HL         ; 1:4       __INFO   d c a b
     pop  AF             ; 1:10      __INFO   AF = c
-    ex  (SP), HL        ; 1:19      __INFO   b a d
+    ex  [SP], HL        ; 1:19      __INFO   b a d
     push AF             ; 1:11      __INFO   b c a d }){}dnl
 dnl
 dnl
@@ -2657,7 +2657,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ex   AF, AF'        ; 1:4       __INFO   f e       . b a
     pop  AF             ; 1:10      __INFO   f         . b a   AF'= e
     ex   DE, HL         ; 1:4       __INFO   f         . a b
-    ex  (SP),HL         ; 1:19      __INFO   b         . a f
+    ex  [SP],HL         ; 1:19      __INFO   b         . a f
     push DE             ; 1:11      __INFO   b a       . a f
     push HL             ; 1:11      __INFO   b a f     . a f
     push AF             ; 1:11      __INFO   b a f e   . a f
@@ -3038,7 +3038,7 @@ __{}    push BC             ; 1:11      __INFO   d         . b a
 __{}    push AF             ; 1:11      __INFO   d c       . b a
 __{}    push DE             ; 1:11      __INFO   d c b     . b a
 __{}    push AF             ; 1:11      __INFO   d c b c   . b a
-__{}    ex  (SP),HL         ; 1:19      __INFO   d c b a   . b c
+__{}    ex  [SP],HL         ; 1:19      __INFO   d c b a   . b c
 __{}    push BC             ; 1:11      __INFO   d c b a d . b c
 __{}    ex   DE, HL         ; 1:4       __INFO   d c b a d . c b}){}dnl
 dnl
@@ -3058,9 +3058,9 @@ __{}                       ;[ 8:67]     __INFO   ( ...n1 n0 u -- ...n1 n0 nu )
 __{}    push DE             ; 1:11      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO}){}dnl
 }){}dnl
@@ -3087,9 +3087,9 @@ __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1),{0},{
@@ -3098,9 +3098,9 @@ __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 {dnl
@@ -3115,9 +3115,9 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    H,[HL]        ; 1:7       __INFO
 __{}__{}    ld    L, A          ; 1:4       __INFO ( ...x2 x1 x0 -- ...x2 x1 x0 x$1 )})})}){}dnl
 dnl
 dnl
@@ -3156,9 +3156,9 @@ __{}{
 __{}__{}                        ;[8:45]     __INFO   default version
 __{}__{}    ld   HL, __HEX_HL(2*3-2)     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    H,[HL]        ; 1:7       __INFO
 __{}__{}    ld    L, A          ; 1:4       __INFO  ( e d c b a -- e d c b e )})}){}dnl
 dnl
 dnl
@@ -3183,9 +3183,9 @@ __{}    push DE             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1),{0},{
@@ -3193,9 +3193,9 @@ __{}  ; warning The condition >>>$1<<< cannot be evaluated
 __{}    push DE             ; 1:11      __INFO
 __{}    ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 {dnl
@@ -3208,9 +3208,9 @@ __{}{
 __{}__{}                        ;[8:45]     __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    H,[HL]        ; 1:7       __INFO
 __{}__{}    ld    L, A          ; 1:4       __INFO ( ...x2 x1 x0 x -- ...x2 x1 x0 x$1 )})})}){}dnl
 dnl
 dnl
@@ -3238,9 +3238,9 @@ __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}{dnl
@@ -3252,9 +3252,9 @@ __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}{dnl
@@ -3295,9 +3295,9 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1))     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}__{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}__{}{dnl
@@ -3327,9 +3327,9 @@ __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}{dnl
@@ -3342,9 +3342,9 @@ __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}{dnl
@@ -3386,9 +3386,9 @@ __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1))     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}__{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}__{}{dnl
@@ -3419,14 +3419,14 @@ __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ld   HL,format({%-12s},$2); 3:16      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld  (HL),E          ; 1:7       __INFO
+__{}    ld  [HL],E          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),D          ; 1:7       __INFO
+__{}    ld  [HL],D          ; 1:7       __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __HAS_PTR($1),{1},{
@@ -3435,13 +3435,13 @@ __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld  (HL),low __FORM({%-7s},$2); 2:10      __INFO   lo
+__{}    ld  [HL],low __FORM({%-7s},$2); 2:10      __INFO   lo
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),high __FORM({%-6s},$2); 2:10      __INFO   hi
+__{}    ld  [HL],high __FORM({%-6s},$2); 2:10      __INFO   hi
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1):__HAS_PTR($2),{0:1},{
@@ -3450,14 +3450,14 @@ __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ld   HL,format({%-12s},$2); 3:16      __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld  (HL),E          ; 1:7       __INFO
+__{}    ld  [HL],E          ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),D          ; 1:7       __INFO
+__{}    ld  [HL],D          ; 1:7       __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1),{0},{
@@ -3466,13 +3466,13 @@ __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld  (HL),low __FORM({%-7s},$2); 2:10      __INFO   lo
+__{}    ld  [HL],low __FORM({%-7s},$2); 2:10      __INFO   lo
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld  (HL),high __FORM({%-6s},$2); 2:10      __INFO   hi
+__{}    ld  [HL],high __FORM({%-6s},$2); 2:10      __INFO   hi
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 {dnl
@@ -3486,13 +3486,13 @@ __{}__{}                       ;[15:92]     __INFO   ( -- ) ( R: x$1 .. x1 x0 --
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    H,[HL]        ; 1:7       __INFO
 __{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld  (HL),low __FORM({%-7s},$2); 2:10      __INFO   lo
+__{}__{}    ld  [HL],low __FORM({%-7s},$2); 2:10      __INFO   lo
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld  (HL),high __FORM({%-6s},$2); 2:10      __INFO   hi
+__{}__{}    ld  [HL],high __FORM({%-6s},$2); 2:10      __INFO   hi
 __{}__{}    pop  HL             ; 1:10      __INFO})})}){}dnl
 dnl
 dnl
@@ -3520,11 +3520,11 @@ __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ld    A,format({%-12s},__PTR_ADD($2,0)); 3:13      __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __HAS_PTR($1):__IS_NUM($2),{1:0},{
@@ -3534,11 +3534,11 @@ __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ld    A, __FORM({%-11s},$2); 2:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __HAS_PTR($1),{1},{define({__CODE},__LD_R_NUM(__INFO{   lo},{A},__HEX_L($2))){}dnl
@@ -3550,11 +3550,11 @@ __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
 __{}    add  HL, HL         ; 1:11      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO{}dnl
+__{}    ld    D,[HL]        ; 1:7       __INFO{}dnl
 __{}__CODE
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1):__HAS_PTR($2),{0:1},{
@@ -3564,11 +3564,11 @@ __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ld    A,format({%-12s},__PTR_ADD($2,0)); 3:13      __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 __IS_NUM($1),{0},{
@@ -3578,11 +3578,11 @@ __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO
 __{}    ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
 __{}    add  HL, SP         ; 1:11      __INFO
-__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld  (HL),low __FORM({%-7s},$2); 2:10      __INFO   lo
+__{}    ld  [HL],low __FORM({%-7s},$2); 2:10      __INFO   lo
 __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO},
 {dnl
@@ -3596,22 +3596,22 @@ __{}__{}                       ;[13:82]     __INFO   ( x$1 .. x1 x0 -- x$1 .. x1
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    C,(HL)        ; 1:7       __INFO
+__{}__{}    ld    C,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    B,(HL)        ; 1:7       __INFO
+__{}__{}    ld    B,[HL]        ; 1:7       __INFO
 __{}__{}    ld    A,format({%-12s},$2); 3:13      __INFO
-__{}__{}    ld  (BC),A          ; 1:7       __INFO
+__{}__{}    ld  [BC],A          ; 1:7       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO},
 __{}__IS_NUM($2),0,{
 __{}__{}                       ;[12:76]     __INFO   ( x$1 .. x1 x0 -- x$1 .. x1 x0 )  $2-->(x$1)
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    A,(HL)        ; 1:7       __INFO
+__{}__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    H,(HL)        ; 1:7       __INFO
+__{}__{}    ld    H,[HL]        ; 1:7       __INFO
 __{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld  (HL),low __FORM({%-7s},$2); 2:10      __INFO   lo
+__{}__{}    ld  [HL],low __FORM({%-7s},$2); 2:10      __INFO   lo
 __{}__{}    pop  HL             ; 1:10      __INFO},
 __{}{
 __{}__{}define({__CODE},__LD_R_NUM(__INFO,{A},__HEX_L($2),{H},__HEX_H(2*($1)-2),{L},__HEX_L(2*($1)-2))){}dnl
@@ -3620,10 +3620,10 @@ __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL, __HEX_HL(2*($1)-2)     ; 3:10      __INFO{}dnl
 __{}__{}__CODE
 __{}__{}    add  HL, SP         ; 1:11      __INFO
-__{}__{}    ld    C,(HL)        ; 1:7       __INFO
+__{}__{}    ld    C,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    B,(HL)        ; 1:7       __INFO
-__{}__{}    ld  (BC),A          ; 1:7       __INFO
+__{}__{}    ld    B,[HL]        ; 1:7       __INFO
+__{}__{}    ld  [BC],A          ; 1:7       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO})})}){}dnl
 dnl
 dnl
@@ -3656,7 +3656,7 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO   d c a b
 __{}__{}    ld    B, H          ; 1:4       __INFO
 __{}__{}    ld    C, L          ; 1:4       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO   . d a c
-__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . c a d
+__{}__{}    ex   [SP],HL        ; 1:19      __INFO   . c a d
 __{}__{}    push BC             ; 1:11      __INFO   c b a d}){}dnl
 dnl
 dnl
@@ -3672,7 +3672,7 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO   d c a b
 __{}__{}    ld    B, H          ; 1:4       __INFO
 __{}__{}    ld    C, L          ; 1:4       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO   . d a c
-__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . c a d
+__{}__{}    ex   [SP],HL        ; 1:19      __INFO   . c a d
 __{}__{}    push BC             ; 1:11      __INFO   c b a d
 __{}__{}    push DE             ; 1:11      __INFO   c b a a d}){}dnl
 dnl
@@ -3707,7 +3707,7 @@ __{}__{}    ld    B, H          ; 1:4       __INFO
 __{}__{}    ld    C, L          ; 1:4       __INFO
 __{}__{}    pop  AF             ; 1:10      __INFO   . e d a b
 __{}__{}    pop  HL             ; 1:10      __INFO   . . e a d
-__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . . d a e
+__{}__{}    ex   [SP],HL        ; 1:19      __INFO   . . d a e
 __{}__{}    push AF             ; 1:11      __INFO   . d c a e
 __{}__{}    push BC             ; 1:11      __INFO   d c b a e}){}dnl
 dnl
@@ -3727,7 +3727,7 @@ __{}__{}    pop  AF             ; 1:10      __INFO   . f e d a b  AF = c
 __{}__{}    ex   AF, AF'        ; 1:4       __INFO
 __{}__{}    pop  AF             ; 1:10      __INFO   . . f e a b  AF'= d
 __{}__{}    pop  HL             ; 1:10      __INFO   . . . f a e
-__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . . . e a f
+__{}__{}    ex   [SP],HL        ; 1:19      __INFO   . . . e a f
 __{}__{}    push AF             ; 1:11      __INFO   . . e d a f
 __{}__{}    ex   AF, AF'        ; 1:4       __INFO
 __{}__{}    push AF             ; 1:11      __INFO   . e d c a f
@@ -3751,7 +3751,7 @@ __{}__{}    pop  BC             ; 1:10      __INFO   . . g f e  BC'= d
 __{}__{}    pop  DE             ; 1:10      __INFO   . . . g f  DE'= e
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO   . . . . g a f
-__{}__{}    ex   (SP),HL        ; 1:19      __INFO   . . . . f a g
+__{}__{}    ex   [SP],HL        ; 1:19      __INFO   . . . . f a g
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    push DE             ; 1:11      __INFO   . . . f e
 __{}__{}    push BC             ; 1:11      __INFO   . . f e d
@@ -3782,9 +3782,9 @@ __{}__{}    add  HL, HL         ; 1:11      __INFO
 __{}__{}    ld    C, L          ; 1:4       __INFO
 __{}__{}    ld    B, H          ; 1:4       __INFO   BC = 2*u
 __{}__{}    add  HL, SP         ; 1:11      __INFO   HL = &xu = lo_addr(xu)
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&xu)++ = hi_addr(xu)
@@ -3803,9 +3803,9 @@ __{}__{}__LD_REG16({HL},2*($1))__CODE_16BIT   2*$1
 __{}__{}    ld    C, L          ; 1:4       __INFO
 __{}__{}    ld    B, H          ; 1:4       __INFO   BC = 2*$1
 __{}__{}    add  HL, SP         ; 1:11      __INFO   HL = &x$1 = lo_addr(x$1)
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&x$1)++ = hi_addr(x$1)
@@ -3841,9 +3841,9 @@ __{}__{}__LD_REG16({HL},2*($1))__CODE_16BIT   2*$1
 __{}__{}    ld    C, L          ; 1:4       __INFO
 __{}__{}    ld    B, H          ; 1:4       __INFO   BC = 2*$1
 __{}__{}    add  HL, SP         ; 1:11      __INFO   HL = &x$1 = lo_addr(x$1)
-__{}__{}    ld    E,(HL)        ; 1:7       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    ld    D,(HL)        ; 1:7       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    ld    E, L          ; 1:4       __INFO
 __{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&x$1)++ = hi_addr(x$1)
@@ -3912,14 +3912,14 @@ dnl
 define({__ASM_TOKEN_TO_R},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[9:65]     __INFO   ( c b a -- c b ) ( R: -- a )
-    ex  (SP), HL        ; 1:19      __INFO   a . b c
+    ex  [SP], HL        ; 1:19      __INFO   a . b c
     ex   DE, HL         ; 1:4       __INFO   a . c b
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     exx                 ; 1:4       __INFO}){}dnl
 dnl
 dnl
@@ -3937,9 +3937,9 @@ __{}define({__INFO},__COMPILE_INFO)
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     exx                 ; 1:4       __INFO}){}dnl
 dnl
 dnl
@@ -3961,14 +3961,14 @@ __{}define({__INFO},__COMPILE_INFO)
     jr    z, $+9        ; 2:12      __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     djnz $-5            ; 2:8/13    __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),B          ; 1:7       __INFO   = 0
+    ld  [HL],B          ; 1:7       __INFO   = 0
     dec   L             ; 1:4       __INFO
-    ld  (HL),A          ; 1:7       __INFO   = lo(u)
+    ld  [HL],A          ; 1:7       __INFO   = lo(u)
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
@@ -3993,9 +3993,9 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    B, A          ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     djnz $-5            ; 2:8/13    __INFO
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
@@ -4033,14 +4033,14 @@ __{}ifelse(__HAS_PTR($1),{1},{
     jr    z, $+9        ; 2:7/12    __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     djnz $-5            ; 2:8/13    __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),B          ; 1:7       __INFO   hi(u) = 0
+    ld  [HL],B          ; 1:7       __INFO   hi(u) = 0
     dec   L             ; 1:4       __INFO
-    ld  (HL),A          ; 1:7       __INFO   lo(u)
+    ld  [HL],A          ; 1:7       __INFO   lo(u)
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO},
@@ -4055,14 +4055,14 @@ __IS_NUM($1),{0},{
     jr    z, $+9        ; 2:7/12    __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     djnz $-5            ; 2:8/13    __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),B          ; 1:7       __INFO   hi(u) = 0
+    ld  [HL],B          ; 1:7       __INFO   hi(u) = 0
     dec   L             ; 1:4       __INFO
-    ld  (HL),A          ; 1:7       __INFO   lo(u)
+    ld  [HL],A          ; 1:7       __INFO   lo(u)
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO},
@@ -4072,44 +4072,44 @@ __{}ifelse(eval($1),0,{
     exx                 ; 1:4       __INFO
     xor   A             ; 1:4       __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),A          ; 1:7       __INFO
+    ld  [HL],A          ; 1:7       __INFO
     exx                 ; 1:4       __INFO},
 __{}eval($1),1,{
                        ;[15:95]     __INFO   ( x -- ) ( R: -- x 1 )
-    ex  (SP), HL        ; 1:19      __INFO
+    ex  [SP], HL        ; 1:19      __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),0x00       ; 2:10      __INFO
+    ld  [HL],0x00       ; 2:10      __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),0x01       ; 2:10      __INFO
+    ld  [HL],0x01       ; 2:10      __INFO
     exx                 ; 1:4       __INFO},
 __{}eval($1),2,{
                       ;[21:146]     __INFO   ( x2 x1 -- ) ( R: -- x1 x2 2 )
-    ex   (SP),HL        ; 1:19      __INFO
+    ex   [SP],HL        ; 1:19      __INFO
     push DE             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   DE = x2 = origin nos
     pop  BC             ; 1:10      __INFO   DE = x1 = origin tos
     dec  HL             ; 1:6       __INFO
-    ld  (HL),B          ; 1:7       __INFO
+    ld  [HL],B          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),C          ; 1:7       __INFO
+    ld  [HL],C          ; 1:7       __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),0x00       ; 2:10      __INFO
+    ld  [HL],0x00       ; 2:10      __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),0x02       ; 2:10      __INFO
+    ld  [HL],0x02       ; 2:10      __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO},
 __{}eval($1),3,{
@@ -4119,23 +4119,23 @@ __{}eval($1),3,{
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   origin tos
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     pop  DE             ; 1:10      __INFO   origin nos
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     pop  DE             ; 1:10      __INFO   origin nnos
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),0x00       ; 2:10      __INFO
+    ld  [HL],0x00       ; 2:10      __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),0x03       ; 2:10      __INFO
+    ld  [HL],0x03       ; 2:10      __INFO
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO},
@@ -4152,22 +4152,22 @@ __{}__{}    jr   $+7            ; 2:12      __INFO}){}dnl
 
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     djnz $-10           ; 2:8/13    __INFO
     dec  HL             ; 1:6       __INFO
 __{}ifelse(__HEX_H($1),{0x00},{dnl
-    ld  (HL), B         ; 1:7       __INFO   hi($1)},
+    ld  [HL], B         ; 1:7       __INFO   hi($1)},
 __{}{dnl
-    ld  (HL),__HEX_H($1)       ; 2:10      __INFO   hi($1)})
+    ld  [HL],__HEX_H($1)       ; 2:10      __INFO   hi($1)})
     dec   L             ; 1:4       __INFO
-    ld  (HL),__HEX_L($1)       ; 2:10      __INFO   lo($1)
+    ld  [HL],__HEX_L($1)       ; 2:10      __INFO   lo($1)
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO})}){}dnl
@@ -4205,9 +4205,9 @@ __{}ifelse(__HAS_PTR($1),{1},{
     ld    B, A          ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     djnz $-5            ; 2:8/13    __INFO
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
@@ -4223,9 +4223,9 @@ __IS_NUM($1),{0},{
     ld    B, A          ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     djnz $-5            ; 2:8/13    __INFO
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
@@ -4235,19 +4235,19 @@ __{}ifelse(eval($1),0,{},
 __{}eval($1),1,{__ASM_TOKEN_TO_R},
 __{}eval($1),2,{
                       ;[15:116]     __INFO   ( x2 x1 -- ) ( R: -- x1 x2 )
-    ex   (SP),HL        ; 1:19      __INFO
+    ex   [SP],HL        ; 1:19      __INFO
     push DE             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   DE = x2 = origin nos
     pop  BC             ; 1:10      __INFO   DE = x1 = origin tos
     dec  HL             ; 1:6       __INFO
-    ld  (HL),B          ; 1:7       __INFO
+    ld  [HL],B          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),C          ; 1:7       __INFO
+    ld  [HL],C          ; 1:7       __INFO
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO},
 __{}eval($1),3,{
@@ -4257,19 +4257,19 @@ __{}eval($1),3,{
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO   origin tos
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     pop  DE             ; 1:10      __INFO   origin nos
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     pop  DE             ; 1:10      __INFO   origin nnos
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
     pop  DE             ; 1:10      __INFO},
@@ -4283,14 +4283,14 @@ __{}ifelse(eval(($1)&1),1,{
 __{}    jr   $+7            ; 2:12      __INFO})
     pop  DE             ; 1:10      __INFO   DE
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     pop  DE             ; 1:10      __INFO   DE
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO
+    ld  [HL],E          ; 1:7       __INFO
     djnz $-10           ; 2:8/13    __INFO
     exx                 ; 1:4       __INFO
     pop  HL             ; 1:10      __INFO
@@ -4310,14 +4310,14 @@ define({__ASM_TOKEN_R_FROM},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[9:66]     __INFO   ( b a -- b a i ) ( R: i -- )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO
     exx                 ; 1:4       __INFO   i . b a
     ex   DE, HL         ; 1:4       __INFO   i . a b
-    ex  (SP), HL        ; 1:19      __INFO   b . a i}){}dnl
+    ex  [SP], HL        ; 1:19      __INFO   b . a i}){}dnl
 dnl
 dnl
 dnl
@@ -4334,15 +4334,15 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
     push DE             ; 1:11      __INFO
     push HL             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
     or    A             ; 1:4       __INFO   u = 0..255
     jr    z, $+10       ; 2:7/12    __INFO
     ld    B, A          ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO
     djnz $-5            ; 2:8/13    __INFO
@@ -4381,9 +4381,9 @@ __{}ifelse(__HAS_PTR($1),{1},{
     jr   $+12           ; 2:7/12    __INFO
     exx                 ; 1:4       __INFO
     ld    B, A          ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO   DE
     djnz $-5            ; 2:8/13    __INFO
@@ -4399,9 +4399,9 @@ __IS_NUM($1),{0},{
     jr   $+12           ; 2:7/12    __INFO
     exx                 ; 1:4       __INFO
     ld    B, A          ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO   DE
     djnz $-5            ; 2:8/13    __INFO
@@ -4415,37 +4415,37 @@ __{}eval($1),2,{
                       ;[15:118]     __INFO   ( -- x2 x1 ) ( R: x1 x2 -- )
     push DE             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    C,(HL)        ; 1:7       __INFO
+    ld    C,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    B,(HL)        ; 1:7       __INFO
+    ld    B,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push BC             ; 1:11      __INFO   BC = x1
     push DE             ; 1:11      __INFO   DE = x2
     exx                 ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
-    ex  (SP),HL         ; 1:19      __INFO},
+    ex  [SP],HL         ; 1:19      __INFO},
 __{}eval($1),3,{
                       ;[21:155]     __INFO   ( x3 x2 x1 -- ) ( R: -- x1 x2 x3 )
     push DE             ; 1:11      __INFO
     push HL             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO   new nnos
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO   new nos
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO   new tos
     exx                 ; 1:4       __INFO
@@ -4459,14 +4459,14 @@ __{}{
     ld    B, format({%-11s},eval(($1+1)/2)); 2:7       __INFO   B = ($1+1)/2{}dnl
 __{}ifelse(eval(($1)&1),1,{
 __{}    jr   $+7            ; 2:12      __INFO})
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO   DE
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     push DE             ; 1:11      __INFO   DE
     djnz $-10           ; 2:8/13    __INFO
@@ -4501,9 +4501,9 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  BC             ; 1:10      __INFO   ras
     add  HL, HL         ; 1:11      __INFO
     add  HL, BC         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO}){}dnl
 }){}dnl
 dnl
@@ -4536,25 +4536,25 @@ __{}ifelse(__HAS_PTR($1),{1},{
     ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
     add  HL, HL         ; 1:11      __INFO
     add  HL, DE         ; 1:11      __INFO
-    ld    C,(HL)        ; 1:7       __INFO
+    ld    C,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    B,(HL)        ; 1:7       __INFO
+    ld    B,[HL]        ; 1:7       __INFO
     ex   DE, HL         ; 1:4       __INFO
     push BC             ; 1:11      __INFO   BC = x_{}$1
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO},
+    ex  [SP],HL         ; 1:19      __INFO},
 __IS_NUM($1),{0},{
                        ;[13:85]     __INFO   ( -- x_{}$1 ) ( R: x_{}$1 .. x1 x0 -- x_{}$1 .. x1 x0 )
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     ld   BC, __FORM({%-11s},2*($1)); 3:10      __INFO   2*($1)
     add  HL, BC         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO   HL = x_{}$1},
 {dnl
 __{}ifelse(eval($1),0,{__ASM_TOKEN_R_FETCH},
@@ -4564,12 +4564,12 @@ __{}eval($1),1,{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO
+    ex  [SP],HL         ; 1:19      __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO},
 __{}eval($1),2,{
                        ;[13:84]     __INFO   ( -- x2 ) ( R: x2 x1 x0 -- x2 x1 x0 )
@@ -4577,14 +4577,14 @@ __{}eval($1),2,{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO
+    ex  [SP],HL         ; 1:19      __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO},
 __{}{
                        ;[13:85]     __INFO   ( -- x{}$1 ) ( R: x{}$1 .. x1 x0 -- x{}$1 .. x1 x0 )
@@ -4592,12 +4592,12 @@ __{}{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO
+    ex  [SP],HL         ; 1:19      __INFO
     ld   BC, __HEX_HL(2*($1))     ; 3:10      __INFO   2*($1)
     add  HL, BC         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO})}){}dnl
 })}){}dnl
 dnl
@@ -4631,9 +4631,9 @@ __{}ifelse(__HAS_PTR($1),{1},{
     ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
     add  HL, HL         ; 1:11      __INFO
     add  HL, BC         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO   HL = x_{}$1},
 __IS_NUM($1),{0},{
                        ;[12:72]     __INFO   ( x -- x_{}$1 ) ( R: x_{}$1 .. x1 x0 -- x_{}$1 .. x1 x0 )
@@ -4643,9 +4643,9 @@ __IS_NUM($1),{0},{
     pop  BC             ; 1:10      __INFO   ras
     ld   HL, __FORM({%-11s},2*($1)); 3:10      __INFO
     add  HL, BC         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO   HL = x_{}$1},
 {dnl
 __{}ifelse(eval($1),0,{__ASM_TOKEN_DROP_R_FETCH},
@@ -4657,9 +4657,9 @@ __{}eval($1),1,{
     pop  HL             ; 1:10      __INFO   ras
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO},
 __{}eval($1),2,{
                        ;[12:71]     __INFO   ( x -- x2 ) ( R: x2 x1 x0 -- x2 x1 x0 )
@@ -4671,9 +4671,9 @@ __{}eval($1),2,{
     inc  HL             ; 1:6       __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO},
 __{}{
                        ;[12:72]     __INFO   ( x -- x{}$1 ) ( R: x{}$1 .. x1 x0 -- x{}$1 .. x1 x0 )
@@ -4683,9 +4683,9 @@ __{}{
     pop  BC             ; 1:10      __INFO   ras
     ld   HL, __HEX_HL(2*($1))     ; 3:10      __INFO   2*($1)
     add  HL, BC         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO})}){}dnl
 })}){}dnl
 dnl
@@ -4721,9 +4721,9 @@ __{}ifelse(__HAS_PTR($2),{1},{
     ld   HL,format({%-12s},$2); 3:16      __INFO
     add  HL, HL         ; 1:11      __INFO
     add  HL, DE         ; 1:11      __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO   DE = x_{}$2
+    ld    D,[HL]        ; 1:7       __INFO   DE = x_{}$2
 __{}ifelse(__HAS_PTR($1),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO},
 __{}{dnl
@@ -4735,12 +4735,12 @@ __IS_NUM($2),{0},{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     ld   BC, __FORM({%-11s},2*($2)); 3:10      __INFO   $2+$2
     add  HL, BC         ; 1:11      __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO   DE = x_{}$2
+    ld    D,[HL]        ; 1:7       __INFO   DE = x_{}$2
 __{}ifelse(__HAS_PTR($1),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO},
 __{}{dnl
@@ -4754,12 +4754,12 @@ __{}eval($2),1,{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($1),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO},
 __{}{dnl
@@ -4771,14 +4771,14 @@ __{}eval($2),2,{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($1),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO},
 __{}{dnl
@@ -4790,12 +4790,12 @@ __{}{define({_TMP_INFO},__COMPILE_INFO)__LD_REG16({HL},$1,{BC},$2+$2)
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     ld   BC, __HEX_HL(2*($2))     ; 3:10      __INFO   $2+$2
     add  HL, BC         ; 1:11      __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO{}__CODE_16BIT
+    ld    D,[HL]        ; 1:7       __INFO{}__CODE_16BIT
     ex   DE, HL         ; 1:4       __INFO})}){}dnl
 })}){}dnl
 dnl
@@ -4827,13 +4827,13 @@ __{}ifelse(__HAS_PTR($2),{1},{
     ld   HL,format({%-12s},$2); 3:16      __INFO
     add  HL, HL         ; 1:11      __INFO   $2+$2
     add  HL, DE         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO
-    ld  (HL),low __FORM({%-7s},$1); 2:10      __INFO
+    ld  [HL],low __FORM({%-7s},$1); 2:10      __INFO
     inc  HL             ; 1:6       __INFO
-    ld  (HL),high __FORM({%-6s},$1); 2:10      __INFO
+    ld  [HL],high __FORM({%-6s},$1); 2:10      __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 __IS_NUM($2),{0},{
@@ -4842,13 +4842,13 @@ __IS_NUM($2),{0},{
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, __FORM({%-11s},2*($2)); 3:10      __INFO   $2+$2
     add  HL, DE         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO
-    ld  (HL),low __FORM({%-7s},$1); 2:10      __INFO   lo
+    ld  [HL],low __FORM({%-7s},$1); 2:10      __INFO   lo
     inc  HL             ; 1:6       __INFO
-    ld  (HL),high __FORM({%-6s},$1); 2:10      __INFO   hi
+    ld  [HL],high __FORM({%-6s},$1); 2:10      __INFO   hi
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 {dnl
@@ -4860,13 +4860,13 @@ __{}eval($2),1,{
     ld    D, H          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO
-    ld  (HL),low __FORM({%-7s},$1); 2:10      __INFO   lo
+    ld  [HL],low __FORM({%-7s},$1); 2:10      __INFO   lo
     inc  HL             ; 1:6       __INFO
-    ld  (HL),high __FORM({%-6s},$1); 2:10      __INFO   hi
+    ld  [HL],high __FORM({%-6s},$1); 2:10      __INFO   hi
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 __{}{
@@ -4875,13 +4875,13 @@ __{}{
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, __HEX_HL(2*($2))     ; 3:10      __INFO   $2+$2
     add  HL, DE         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO
-    ld  (HL),low __FORM({%-7s},$1); 2:10      __INFO   lo
+    ld  [HL],low __FORM({%-7s},$1); 2:10      __INFO   lo
     inc  HL             ; 1:6       __INFO
-    ld  (HL),high __FORM({%-6s},$1); 2:10      __INFO   hi
+    ld  [HL],high __FORM({%-6s},$1); 2:10      __INFO   hi
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO})}){}dnl
 })}){}dnl
@@ -4915,11 +4915,11 @@ __{}ifelse(__HAS_PTR($2),{1},{
     ld   HL,format({%-12s},$2); 3:16      __INFO
     add  HL, HL         ; 1:11      __INFO   $2+$2
     add  HL, DE         ; 1:11      __INFO
-    ld    C,(HL)        ; 1:7       __INFO
+    ld    C,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    B,(HL)        ; 1:7       __INFO{}dnl
+    ld    B,[HL]        ; 1:7       __INFO{}dnl
 __{}__CODE
-    ld  (BC),A          ; 1:7       __INFO
+    ld  [BC],A          ; 1:7       __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 __IS_NUM($2),{0},{
@@ -4928,11 +4928,11 @@ __IS_NUM($2),{0},{
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, __FORM({%-11s},2*($2)); 3:10      __INFO   $2+$2
     add  HL, DE         ; 1:11      __INFO
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO
-    ld  (HL),low __FORM({%-7s},$1); 2:10      __INFO   lo
+    ld  [HL],low __FORM({%-7s},$1); 2:10      __INFO   lo
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 {dnl
@@ -4944,11 +4944,11 @@ __{}eval($2),1,{
     ld    D, H          ; 1:4       __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    C,(HL)        ; 1:7       __INFO
+    ld    C,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    B,(HL)        ; 1:7       __INFO{}dnl
+    ld    B,[HL]        ; 1:7       __INFO{}dnl
 __{}__CODE
-    ld  (BC),A          ; 1:7       __INFO
+    ld  [BC],A          ; 1:7       __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 __{}{
@@ -4957,11 +4957,11 @@ __{}{
     ex   DE, HL         ; 1:4       __INFO
     ld   HL, __HEX_HL(2*($2))     ; 3:10      __INFO   $2+$2
     add  HL, DE         ; 1:11      __INFO
-    ld    C,(HL)        ; 1:7       __INFO
+    ld    C,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    B,(HL)        ; 1:7       __INFO{}dnl
+    ld    B,[HL]        ; 1:7       __INFO{}dnl
 __{}__CODE
-    ld  (BC),A          ; 1:7       __INFO
+    ld  [BC],A          ; 1:7       __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO})}){}dnl
 })}){}dnl
@@ -4998,9 +4998,9 @@ __{}ifelse(__HAS_PTR($1),{1},{
     ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO
     add  HL, HL         ; 1:11      __INFO
     add  HL, DE         ; 1:11      __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO   DE = x_{}$1
+    ld    D,[HL]        ; 1:7       __INFO   DE = x_{}$1
 __{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}{dnl
@@ -5011,12 +5011,12 @@ __IS_NUM($1),{0},{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     ld   BC, __FORM({%-11s},2*($1)); 3:10      __INFO   $1+$1
     add  HL, BC         ; 1:11      __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO   DE = x_{}$1
+    ld    D,[HL]        ; 1:7       __INFO   DE = x_{}$1
 __{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}{dnl
@@ -5029,12 +5029,12 @@ __{}eval($1),1,{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}{dnl
@@ -5045,14 +5045,14 @@ __{}eval($1),2,{
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
     inc   L             ; 1:4       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($2),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},$2); 3:16      __INFO},
 __{}{dnl
@@ -5063,12 +5063,12 @@ __{}{define({_TMP_INFO},__COMPILE_INFO)__LD_REG16({HL},$2,{BC},$1+$1)
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO   ras
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   ras
+    ex  [SP],HL         ; 1:19      __INFO   ras
     ld   BC, __HEX_HL(2*($1))     ; 3:10      __INFO   $1+$1
     add  HL, BC         ; 1:11      __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO{}__CODE_16BIT})}){}dnl
+    ld    D,[HL]        ; 1:7       __INFO{}__CODE_16BIT})}){}dnl
 })}){}dnl
 dnl
 dnl
@@ -5088,21 +5088,21 @@ dnl #    exx                 ; 1:4       r_fetch   .
 dnl #    push HL             ; 1:11      r_fetch r .
 dnl #    exx                 ; 1:4       r_fetch r . b a
 dnl #    ex   DE, HL         ; 1:4       r_fetch r . a b
-dnl #    ex  (SP), HL        ; 1:19      r_fetch b . a r     HL = r.a.s.
-dnl #    ld    A,(HL)        ; 1:7       r_fetch
+dnl #    ex  [SP], HL        ; 1:19      r_fetch b . a r     HL = r.a.s.
+dnl #    ld    A,[HL]        ; 1:7       r_fetch
 dnl #    inc   L             ; 1:4       r_fetch
-dnl #    ld    H,(HL)        ; 1:7       r_fetch
+dnl #    ld    H,[HL]        ; 1:7       r_fetch
 dnl #    ld    L, A          ; 1:4       r_fetch b . a i
                         ;[9:64]     __INFO   ( -- i ) ( R: i -- i )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     push DE             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
-    ex  (SP), HL        ; 1:19      __INFO}){}dnl
+    ex  [SP], HL        ; 1:19      __INFO}){}dnl
 dnl
 dnl
 dnl # r@ x
@@ -5119,10 +5119,10 @@ __{}define({__INFO},__COMPILE_INFO)
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   HL = r.a.s.
-    ld    E,(HL)        ; 1:7       __INFO
+    ex  [SP],HL         ; 1:19      __INFO   HL = r.a.s.
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($1),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO},
 __{}{dnl
@@ -5145,15 +5145,15 @@ dnl #    exx                 ; 1:4       r_fetch   .
 dnl #    push HL             ; 1:11      r_fetch r .
 dnl #    exx                 ; 1:4       r_fetch r . b a
 dnl #    pop  HL             ; 1:10      r_fetch   . b r     HL = r.a.s.
-dnl #    ld    A,(HL)        ; 1:7       r_fetch
+dnl #    ld    A,[HL]        ; 1:7       r_fetch
 dnl #    inc   L             ; 1:4       r_fetch
-dnl #    ld    H,(HL)        ; 1:7       r_fetch
+dnl #    ld    H,[HL]        ; 1:7       r_fetch
 dnl #    ld    L, A          ; 1:4       r_fetch   . b i
                         ;[8:51]     __INFO   ( x2 -- x1 ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     push DE             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
@@ -5175,10 +5175,10 @@ __{}define({__INFO},__COMPILE_INFO)
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO   HL = r.a.s.
-    ld    E,(HL)        ; 1:7       __INFO
+    ex  [SP],HL         ; 1:19      __INFO   HL = r.a.s.
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
 __{}ifelse(__HAS_PTR($1),{1},{dnl
 __{}__{}    ld   HL,format({%-12s},__PTR_ADD($1,0)); 3:16      __INFO},
 __{}{dnl
@@ -5198,40 +5198,40 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__HAS_PTR($1),1,{
                         ;[15:76]    __INFO   ( -- ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     ld    A,format({%-12s},__PTR_ADD($1,0)); 3:13      __INFO
-    ld  (DE),A          ; 1:7       __INFO   lo
+    ld  [DE],A          ; 1:7       __INFO   lo
     inc  DE             ; 1:6       __INFO
     ld    A, format({%-11s},(1+$1)); 3:13      __INFO
-    ld  (DE),A          ; 1:7       __INFO   hi
+    ld  [DE],A          ; 1:7       __INFO   hi
     exx                 ; 1:4       __INFO},
 __IS_NUM($1),1,{
                         ;[13:64]    __INFO   ( -- ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
-    ld  (HL),__HEX_L($1)       ; 2:10      __INFO   lo
+    ld  [HL],__HEX_L($1)       ; 2:10      __INFO   lo
     inc  HL             ; 1:6       __INFO
-    ld  (HL),__HEX_H($1)       ; 2:10      __INFO   hi
+    ld  [HL],__HEX_H($1)       ; 2:10      __INFO   hi
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO},
 {
                         ;[13:64]    __INFO   ( -- ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
-    ld  (HL),low __FORM({%-7s},$1); 2:10      __INFO   lo
+    ld  [HL],low __FORM({%-7s},$1); 2:10      __INFO   lo
     inc  HL             ; 1:6       __INFO
-    ld  (HL),high __FORM({%-6s},$1); 2:10      __INFO   hi
+    ld  [HL],high __FORM({%-6s},$1); 2:10      __INFO   hi
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO})}){}dnl
 dnl
@@ -5248,32 +5248,32 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(__HAS_PTR($1),1,{
                         ;[10:50]    __INFO   ( -- ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     ld    A,format({%-12s},__PTR_ADD($1,0)); 3:13      __INFO
-    ld  (DE),A          ; 1:7       __INFO   lo
+    ld  [DE],A          ; 1:7       __INFO   lo
     exx                 ; 1:4       __INFO},
 __IS_NUM($1),1,{define({__CODE},__LD_R_NUM(__INFO{   lo},{A},$1))
                         ;[eval(7+__BYTES):eval(37+__CLOCKS)]     __INFO   ( -- ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO{}dnl
 __{}__CODE
-    ld  (DE),A          ; 1:7       __INFO
+    ld  [DE],A          ; 1:7       __INFO
     exx                 ; 1:4       __INFO},
 {
                         ;[9:44]     __INFO   ( -- ) ( R: x1 -- x1 )
     exx                 ; 1:4       __INFO
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
     ld    A,__FORM({%-12s},low $1); 2:7       __INFO   lo
-    ld  (DE),A          ; 1:7       __INFO
+    ld  [DE],A          ; 1:7       __INFO
     exx                 ; 1:4       __INFO})}){}dnl
 dnl
 dnl
@@ -5331,19 +5331,19 @@ dnl
 define({__ASM_TOKEN_2TO_R},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[15:116]   __INFO   ( d c b a -- d c ) ( R: -- b a )
-    ex  (SP), HL        ; 1:19      __INFO   d a   . b c
+    ex  [SP], HL        ; 1:19      __INFO   d a   . b c
     push DE             ; 1:11      __INFO   d a b . b c
     exx                 ; 1:4       __INFO   d a b .
     pop  DE             ; 1:10      __INFO   d a   . b
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO                ( R: b )
+    ld  [HL],E          ; 1:7       __INFO                ( R: b )
     pop  DE             ; 1:10      __INFO   d     . a
     dec  HL             ; 1:6       __INFO
-    ld  (HL),D          ; 1:7       __INFO
+    ld  [HL],D          ; 1:7       __INFO
     dec   L             ; 1:4       __INFO
-    ld  (HL),E          ; 1:7       __INFO                ( R: b a )
+    ld  [HL],E          ; 1:7       __INFO                ( R: b a )
     exx                 ; 1:4       __INFO   d     . b c
     pop  DE             ; 1:10      __INFO         . d c}){}dnl
 dnl
@@ -5361,19 +5361,19 @@ __{}define({__INFO},__COMPILE_INFO)
                         ;[15:118]   __INFO   ( b a -- b a j i ) ( R: j i -- )
     push DE             ; 1:11      __INFO   b     . b a
     exx                 ; 1:4       __INFO   b     .
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO              ( R: j )
     push DE             ; 1:11      __INFO   b i   .
-    ld    E,(HL)        ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO              ( R : )
     push DE             ; 1:11      __INFO   b i j .
     exx                 ; 1:4       __INFO   b i j . b a
     pop  DE             ; 1:10      __INFO   b i   . j a
-    ex  (SP), HL        ; 1:19      __INFO   b a   . j i}){}dnl
+    ex  [SP], HL        ; 1:19      __INFO   b a   . j i}){}dnl
 dnl
 dnl
 dnl # 2r@
@@ -5391,14 +5391,14 @@ __{}define({__INFO},__COMPILE_INFO)
     exx                 ; 1:4       __INFO   b   .
     push HL             ; 1:11      __INFO   b r .
     exx                 ; 1:4       __INFO   b r . b a
-    ex  (SP), HL        ; 1:19      __INFO   b a . b r     HL = r.a.s.
-    ld    E,(HL)        ; 1:7       __INFO
+    ex  [SP], HL        ; 1:19      __INFO   b a . b r     HL = r.a.s.
+    ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    D,(HL)        ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO   b a . i r
-    ld    A,(HL)        ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
-    ld    H,(HL)        ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO   b a . i j
     ex   DE, HL         ; 1:4       __INFO   b a . j i}){}dnl
 dnl
@@ -5439,7 +5439,7 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  BC             ; 1:10      __INFO   l  k  j  BC
     pop  HL             ; 1:10      __INFO   l  k  HL
     pop  AF             ; 1:10      __INFO   l  AF
-    ex  (SP),HL         ; 1:19      __INFO   j     HL=l
+    ex  [SP],HL         ; 1:19      __INFO   j     HL=l
     push BC             ; 1:11      __INFO   j  i
     push HL             ; 1:11      __INFO   j  i  l
     push AF             ; 1:11      __INFO   j  i  l  k
@@ -5460,7 +5460,7 @@ __{}define({__INFO},__COMPILE_INFO)
     exx                 ; 1:4       __INFO
     push HL             ; 1:11      __INFO
     exx                 ; 1:4       __INFO
-    ex  (SP),HL         ; 1:19      __INFO}){}dnl
+    ex  [SP],HL         ; 1:19      __INFO}){}dnl
 dnl
 dnl
 dnl
