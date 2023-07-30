@@ -1188,7 +1188,7 @@ __{}  .error {$0}(...): Received $# instead of one parameter! Text containing a 
 __{}  .error {$0}(): An empty parameter was received!},
 {dnl
 __{}__ALLOCATE_STRING(__CONVERSION_TO_STRING({$*}))
-__{}    push DE             ; 1:11      print     ifelse(eval(len($*)<60),{1},$*)
+__{}    push DE             ; 1:11      print     ifelse(eval(len($*)<60),{1},{$*})
 __{}    ld   BC, size{}__STRING_MATCH    ; 3:10      print     Length of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    ld   DE, string{}__STRING_MATCH  ; 3:10      print     Address of string{}__STRING_LAST{}ifelse(__STRING_MATCH,__STRING_LAST,,{ == string{}__STRING_MATCH})
 __{}    call 0x203C         ; 3:17      print     Print our string with {ZX 48K ROM}
