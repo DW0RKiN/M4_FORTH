@@ -927,9 +927,9 @@ __{}{$1},{$2},1,
 __{}__HAS_PTR({$1}):__HAS_PTR({$2}),{0:1},0,
 __{}__HAS_PTR({$1}):__HAS_PTR({$2}),{1:0},0,
 __{}__HAS_PTR({$1}):__HAS_PTR({$2}),{1:1},{dnl
-__{}__{}define({$0_ADR1},{substr({$1},1,eval(len({$1})-2))}){}dnl
-__{}__{}define({$0_ADR2},{substr({$1},1,eval(len({$1})-2))}){}dnl
-__{}__{}ifelse(__IS_NUM($0_ADR1):__HEX_HL($0_ADR1),1:__HEX_HL($0_ADR2),1,0)},
+__{}__{}define({$0_ADR1},{__SIMPLIFY_EXPRESSION({$1})}){}dnl
+__{}__{}define({$0_ADR2},{__SIMPLIFY_EXPRESSION({$2})}){}dnl
+__{}__{}ifelse($0_ADR1,$0_ADR2,1,0)},
 __{}__IS_NUM({$1}):__IS_NUM({$2}),{0:1},0,
 __{}__IS_NUM({$1}):__IS_NUM({$2}),{1:0},0,
 __{}__IS_NUM({$1}):__IS_NUM({$2}),{1:1},{dnl
@@ -1755,10 +1755,10 @@ dnl #   $1 name reg pair
 dnl #   $2 16bit value
 ifelse(dnl
 __HAS_PTR($2),{1},{
-__{}    ld    A,format({%-12s},$2); 3:13      _TMP_INFO
+__{}    ld    A,format({%-12s},__PTR_ADD($2,0)); 3:13      _TMP_INFO
 __{}    xor   substr($1,1,1)             ; 1:4       _TMP_INFO
 __{}    ld    substr($1,1,1), A          ; 1:4       _TMP_INFO
-__{}    ld    A,format({%-12s},($2+1)); 3:13      _TMP_INFO
+__{}    ld    A,format({%-12s},__PTR_ADD($2,1)); 3:13      _TMP_INFO
 __{}    xor   substr($1,0,1)             ; 1:4       _TMP_INFO
 __{}    ld    substr($1,0,1), A          ; 1:4       _TMP_INFO},
 __IS_NUM($2),{0},{
@@ -2663,43 +2663,31 @@ dnl #
 dnl # dodelat!!! (HL,2*abc,HL,abc) -> add HL,HL
 dnl # define({$0_DEBUG},1){}dnl
 __{}dnl # checking if we know the previous value
-__{}define({$0_ORIGIN},{}){}dnl
-__{}ifelse($1:eval(len( $4)>0),$3:1,{define({$0_ORIGIN},$4)}){}dnl
-__{}ifelse($1:eval(len( $6)>0),$5:1,{define({$0_ORIGIN},$6)}){}dnl
-__{}ifelse($1:eval(len( $8)>0),$7:1,{define({$0_ORIGIN},$8)}){}dnl
-__{}ifelse($1:eval(len($10)>0),$9:1,{define({$0_ORIGIN},$10)}){}dnl
+__{}define({$0_ORIGIN},{not+found}){}dnl
+__{}ifelse($1:eval(len( $4)>0),$3:1,{define({$0_ORIGIN},__SIMPLIFY_EXPRESSION($4))}){}dnl
+__{}ifelse($1:eval(len( $6)>0),$5:1,{define({$0_ORIGIN},__SIMPLIFY_EXPRESSION($6))}){}dnl
+__{}ifelse($1:eval(len( $8)>0),$7:1,{define({$0_ORIGIN},__SIMPLIFY_EXPRESSION($8))}){}dnl
+__{}ifelse($1:eval(len($10)>0),$9:1,{define({$0_ORIGIN},__SIMPLIFY_EXPRESSION($10))}){}dnl
+__{}define({$0_ORIGIN_FOUND},{ifelse($0_ORIGIN,,0,1)}){}dnl
 __{}dnl
 __{}ifelse($0_DEBUG,1,{errprint(__CR{origin: }$0_ORIGIN)}){}dnl
 __{}dnl
+__{}define({$0_NEED},__SIMPLIFY_EXPRESSION($2)){}dnl
 __{}define({__CLOCKS},0){}dnl
 __{}define({__BYTES},0){}dnl
 __{}define({__PRICE},0){}dnl
 __{}define({$0_CODE},{}){}dnl
 __{}ifelse(dnl
-__{}$2,$0_ORIGIN,{},
-__{}$2,$0_ORIGIN+0,{},
-__{}$2,0+$0_ORIGIN,{},
-__{}$2+0,$0_ORIGIN,{},
-__{}0+$2,$0_ORIGIN,{},
+__{}$0_NEED,$0_ORIGIN,{},
 
-__{}ifelse(dnl
-__{}$2+1, $0_ORIGIN,  1,
-__{}1+$2, $0_ORIGIN,  1,
-__{}$2,   $0_ORIGIN-1,1,
-__{}$2,-1+$0_ORIGIN,  1,
-__{}0),1,{dnl
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-1+$0_ORIGIN),{dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}define({$0_CODE},{
 __{}__{}    dec  $1             ; 1:6       __INFO})},
 
-__{}ifelse(dnl
-__{}$2-1,   $0_ORIGIN,  1,
-__{}-1+$2,  $0_ORIGIN,  1,
-__{}$2,     $0_ORIGIN+1,1,
-__{}$2,   1+$0_ORIGIN,  1,
-__{}0),1,{dnl
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(1+$0_ORIGIN),{dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
@@ -2707,26 +2695,31 @@ __{}__{}define({$0_CODE},{
 __{}__{}    inc  $1             ; 1:6       __INFO})},
 
 __{}ifelse(dnl
-__{}len($3):$2,2:$4, {define({$0_SAME},$3)1},
-__{}len($5):$2,2:$6, {define({$0_SAME},$5)1},
-__{}len($7):$2,2:$8, {define({$0_SAME},$7)1},
-__{}len($9):$2,2:$10,{define({$0_SAME},$9)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION($4), {define({$0_FOUND},$3)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION($6), {define({$0_FOUND},$5)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION($8), {define({$0_FOUND},$7)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION($10),{define({$0_FOUND},$9)1},
 __{}0),1,{dnl
 __{}__{}define({__CLOCKS},8){}dnl
 __{}__{}define({__BYTES},2){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}define({$0_CODE},{
-__{}__{}    ld    substr($1,1,1){{,}} substr($0_SAME,1,1)          ; 1:4       __INFO
-__{}__{}    ld    substr($1,0,1){{,}} substr($0_SAME,0,1)          ; 1:4       __INFO})},
+__{}__{}    ld    substr($1,1,1){{,}} substr($0_FOUND,1,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,0,1){{,}} substr($0_FOUND,0,1)          ; 1:4       __INFO})},
 
 __{}ifelse(dnl
-__{}$2+2,  $0_ORIGIN,  1,
-__{}1+$2+1,$0_ORIGIN,  1,
-__{}2+$2  ,$0_ORIGIN,  1,
-__{}$2,    $0_ORIGIN-2,1,
-__{}$2, -1+$0_ORIGIN-1,1,
-__{}$2, -2+$0_ORIGIN,  1,
-__{}0),1,{dnl
+__{}$0_NEED,__SIMPLIFY_EXPRESSION($4+$0_ORIGIN), {define({$0_FOUND},$3)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION($6+$0_ORIGIN), {define({$0_FOUND},$5)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION($8+$0_ORIGIN), {define({$0_FOUND},$7)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION($10+$0_ORIGIN),{define({$0_FOUND},$9)1},
+__{}__{}0):$1,1:HL,{dnl
+__{}__{}__{}define({__CLOCKS},11){}dnl
+__{}__{}__{}define({__BYTES},1){}dnl
+__{}__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}__{}define({$0_CODE},{
+__{}__{}__{}    add  HL{{,}} $0_FOUND         ; 1:11      __INFO})},
+
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-2+$0_ORIGIN),{dnl
 __{}__{}define({__CLOCKS},12){}dnl
 __{}__{}define({__BYTES},2){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
@@ -2734,14 +2727,7 @@ __{}__{}define({$0_CODE},{
 __{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}    dec  $1             ; 1:6       __INFO})},
 
-__{}ifelse(dnl
-__{}$2-2,   $0_ORIGIN,  1,
-__{}-1+$2-1,$0_ORIGIN,  1,
-__{}-2+$2  ,$0_ORIGIN,  1,
-__{}$2,     $0_ORIGIN+2,1,
-__{}$2,   1+$0_ORIGIN+1,1,
-__{}$2,   2+$0_ORIGIN,  1,
-__{}0),1,{dnl
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(2+$0_ORIGIN),{dnl
 __{}__{}define({__CLOCKS},12){}dnl
 __{}__{}define({__BYTES},2){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
@@ -2750,45 +2736,34 @@ __{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}    inc  $1             ; 1:6       __INFO})},
 
 __{}__HAS_PTR($2):ifelse(dnl
-__{}dnl # nezvladne HL=(0x8000)+1,BC=(0x8000)+2
-__{}dnl # nezvladne HL=(0x8000)+0,BC=(0x8000)+1
-__{}len($3):ifelse($2+1,$4, 1,1+$2, $4,1,$2, $4-1,1,$2, -1+$4,1,0), 2:1,  {define({$0_SAME},$3)1},
-__{}len($5):ifelse($2+1,$6, 1,1+$2, $6,1,$2, $6-1,1,$2, -1+$6,1,0), 2:1,  {define({$0_SAME},$5)1},
-__{}len($7):ifelse($2+1,$8, 1,1+$2, $8,1,$2, $8-1,1,$2, -1+$8,1,0), 2:1,  {define({$0_SAME},$7)1},
-__{}len($9):ifelse($2+1,$10,1,1+$2,$10,1,$2,$10-1,1,$2,-1+$10,1,0), 2:1,  {define({$0_SAME},$9)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-1+$4),  {define({$0_FOUND},$3)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-1+$6),  {define({$0_FOUND},$5)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-1+$8),  {define({$0_FOUND},$7)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-1+$10), {define({$0_FOUND},$9)1},
 __{}0),1:1,{dnl
 __{}__{}define({__CLOCKS},14){}dnl
 __{}__{}define({__BYTES},3){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}define({$0_CODE},{
-__{}__{}    ld    substr($1,1,1){{,}} substr($0_SAME,1,1)          ; 1:4       __INFO
-__{}__{}    ld    substr($1,0,1){{,}} substr($0_SAME,0,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,1,1){{,}} substr($0_FOUND,1,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,0,1){{,}} substr($0_FOUND,0,1)          ; 1:4       __INFO
 __{}__{}    dec  $1             ; 1:6       __INFO})},
 
 __{}__HAS_PTR($2):ifelse(dnl
-__{}len($3):ifelse($2-1,$4, 1,-1+$2, $4,1,$2, $4+1,1,$2, 1+$4,1,0), 2:1,  {define({$0_SAME},$3)1},
-__{}len($5):ifelse($2-1,$6, 1,-1+$2, $6,1,$2, $6+1,1,$2, 1+$6,1,0), 2:1,  {define({$0_SAME},$5)1},
-__{}len($7):ifelse($2-1,$8, 1,-1+$2, $8,1,$2, $8+1,1,$2, 1+$8,1,0), 2:1,  {define({$0_SAME},$7)1},
-__{}len($9):ifelse($2-1,$10,1,-1+$2,$10,1,$2,$10+1,1,$2,1+$10,1,0), 2:1,  {define({$0_SAME},$9)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(1+$4),  {define({$0_FOUND},$3)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(1+$6),  {define({$0_FOUND},$5)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(1+$8),  {define({$0_FOUND},$7)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(1+$10), {define({$0_FOUND},$9)1},
 __{}0),1:1,{dnl
 __{}__{}define({__CLOCKS},14){}dnl
 __{}__{}define({__BYTES},3){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}define({$0_CODE},{
-__{}__{}    ld    substr($1,1,1){{,}} substr($0_SAME,1,1)          ; 1:4       __INFO
-__{}__{}    ld    substr($1,0,1){{,}} substr($0_SAME,0,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,1,1){{,}} substr($0_FOUND,1,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,0,1){{,}} substr($0_FOUND,0,1)          ; 1:4       __INFO
 __{}__{}    inc  $1             ; 1:6       __INFO})},
 
-__{}__HAS_PTR($2):ifelse(dnl
-__{}ifelse($1,HL,0,1):$2+3,  1:$0_ORIGIN,  1,
-__{}ifelse($1,HL,0,1):1+$2+2,1:$0_ORIGIN,  1,
-__{}ifelse($1,HL,0,1):2+$2+1,1:$0_ORIGIN,  1,
-__{}ifelse($1,HL,0,1):3+$2,  1:$0_ORIGIN,  1,
-__{}$2,                        $0_ORIGIN-3,1,
-__{}$2,                     -1+$0_ORIGIN-2,1,
-__{}$2,                     -2+$0_ORIGIN-1,1,
-__{}$2,                     -3+$0_ORIGIN,  1,
-__{}0),1:1,{dnl
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-3+$0_ORIGIN),{dnl
 __{}__{}define({__CLOCKS},18){}dnl
 __{}__{}define({__BYTES},3){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
@@ -2797,16 +2772,7 @@ __{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}    dec  $1             ; 1:6       __INFO})},
 
-__{}__HAS_PTR($2):ifelse(dnl
-__{}ifelse($1,HL,0,1):$2-3,   1:$0_ORIGIN,  1,
-__{}ifelse($1,HL,0,1):-1+$2-2,1:$0_ORIGIN,  1,
-__{}ifelse($1,HL,0,1):-2+$2-1,1:$0_ORIGIN,  1,
-__{}ifelse($1,HL,0,1):-3+$2,  1:$0_ORIGIN,  1,
-__{}$2,                         $0_ORIGIN+3,1,
-__{}$2,                       1+$0_ORIGIN+2,1,
-__{}$2,                       2+$0_ORIGIN+1,1,
-__{}$2,                       3+$0_ORIGIN,  1,
-__{}0),1:1,{dnl
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(3+$0_ORIGIN),{dnl
 __{}__{}define({__CLOCKS},18){}dnl
 __{}__{}define({__BYTES},3){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
@@ -2816,43 +2782,32 @@ __{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}    inc  $1             ; 1:6       __INFO})},
 
 __{}__HAS_PTR($2):ifelse(dnl
-__{}dnl # nezvladne HL=(0x8000)+1,BC=(0x8000)+3
-__{}dnl # nezvladne HL=(0x8000)+0,BC=(0x8000)+2
-__{}dnl # nezvladne ani nahradit 2x inc za add pokud neco obsahuje -2
-__{}ifelse($1,HL,0,1):len($3):ifelse($2+2, $4,  1,1+$2+1,  $4,  1,2+$2,    $4,1,0),1:2:1,{define({$0_SAME},$3)1},
-__{}ifelse($1,HL,0,1):len($5):ifelse($2+2, $6,  1,1+$2+1,  $6,  1,2+$2,    $6,1,0),1:2:1,{define({$0_SAME},$5)1},
-__{}ifelse($1,HL,0,1):len($7):ifelse($2+2, $8,  1,1+$2+1,  $8,  1,2+$2,    $8,1,0),1:2:1,{define({$0_SAME},$7)1},
-__{}ifelse($1,HL,0,1):len($9):ifelse($2+2,$10,  1,1+$2+1, $10,  1,2+$2,   $10,1,0),1:2:1,{define({$0_SAME},$9)1},
-__{}len($3):ifelse($2,   $4-2,1,  $2, -1+$4-1,1,  $2, -2+$4,1,0),  2:1,{define({$0_SAME},$3)1},
-__{}len($5):ifelse($2,   $6-2,1,  $2, -1+$6-1,1,  $2, -2+$6,1,0),  2:1,{define({$0_SAME},$5)1},
-__{}len($7):ifelse($2,   $8-2,1,  $2, -1+$8-1,1,  $2, -2+$8,1,0),  2:1,{define({$0_SAME},$7)1},
-__{}len($9):ifelse($2,  $10-2,1,  $2,-1+$10-1,1,  $2,-2+$10,1,0),  2:1,{define({$0_SAME},$9)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-2+$4),  {define({$0_FOUND},$3)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-2+$6),  {define({$0_FOUND},$5)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-2+$8),  {define({$0_FOUND},$7)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(-2+$10), {define({$0_FOUND},$9)1},
 __{}0),1:1,{dnl
 __{}__{}define({__CLOCKS},20){}dnl
 __{}__{}define({__BYTES},4){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}define({$0_CODE},{
-__{}__{}    ld    substr($1,1,1){{,}} substr($0_SAME,1,1)          ; 1:4       __INFO
-__{}__{}    ld    substr($1,0,1){{,}} substr($0_SAME,0,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,1,1){{,}} substr($0_FOUND,1,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,0,1){{,}} substr($0_FOUND,0,1)          ; 1:4       __INFO
 __{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}    dec  $1             ; 1:6       __INFO})},
 
 __{}__HAS_PTR($2):ifelse(dnl
-__{}ifelse($1,HL,0,1):len($3):ifelse($2-2, $4,  1,-1+$2-1, $4,  1,-2+$2,   $4,1,0),1:2:1,{define({$0_SAME},$3)1},
-__{}ifelse($1,HL,0,1):len($5):ifelse($2-2, $6,  1,-1+$2-1, $6,  1,-2+$2,   $6,1,0),1:2:1,{define({$0_SAME},$5)1},
-__{}ifelse($1,HL,0,1):len($7):ifelse($2-2, $8,  1,-1+$2-1, $8,  1,-2+$2,   $8,1,0),1:2:1,{define({$0_SAME},$7)1},
-__{}ifelse($1,HL,0,1):len($9):ifelse($2-2,$10,  1,-1+$2-1,$10,  1,-2+$2,  $10,1,0),1:2:1,{define({$0_SAME},$9)1},
-__{}len($3):ifelse($2,   $4+2,1,   $2, 1+$4+1,1,   $2, 2+$4,1,0),  2:1,{define({$0_SAME},$3)1},
-__{}len($5):ifelse($2,   $6+2,1,   $2, 1+$6+1,1,   $2, 2+$6,1,0),  2:1,{define({$0_SAME},$5)1},
-__{}len($7):ifelse($2,   $8+2,1,   $2, 1+$8+1,1,   $2, 2+$8,1,0),  2:1,{define({$0_SAME},$7)1},
-__{}len($9):ifelse($2,  $10+2,1,   $2,1+$10+1,1,   $2,2+$10,1,0),  2:1,{define({$0_SAME},$9)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(2+$4),  {define({$0_FOUND},$3)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(2+$6),  {define({$0_FOUND},$5)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(2+$8),  {define({$0_FOUND},$7)1},
+__{}$0_NEED,__SIMPLIFY_EXPRESSION(2+$10), {define({$0_FOUND},$9)1},
 __{}0),1:1,{dnl
 __{}__{}define({__CLOCKS},20){}dnl
 __{}__{}define({__BYTES},4){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}define({$0_CODE},{
-__{}__{}    ld    substr($1,1,1){{,}} substr($0_SAME,1,1)          ; 1:4       __INFO
-__{}__{}    ld    substr($1,0,1){{,}} substr($0_SAME,0,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,1,1){{,}} substr($0_FOUND,1,1)          ; 1:4       __INFO
+__{}__{}    ld    substr($1,0,1){{,}} substr($0_FOUND,0,1)          ; 1:4       __INFO
 __{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}    inc  $1             ; 1:6       __INFO})},
 
@@ -2877,19 +2832,6 @@ __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}define({$0_CODE},{
 __{}__{}    ld   $1{{,}} format({%-11s},$2); 3:10      __INFO}){}dnl
 __{}}){}dnl
-__{}dnl # $2 = unknown number
-__{}ifelse($1:ifelse(dnl # nezvladne to abc+256 kde registr obsahuje 0x0100, nebo abc-1, kde registr obsahuje 0xFFFF
-__{}__{}$2,$0_ORIGIN+$0_ORIGIN,{define({$0_ADD},$1)1},
-__{}__{}ifelse($2,$0_ORIGIN+$4, 1,$2, $4+$0_ORIGIN,1,0),1,{define({$0_ADD},$3)1},
-__{}__{}ifelse($2,$0_ORIGIN+$6, 1,$2, $6+$0_ORIGIN,1,0),1,{define({$0_ADD},$5)1},
-__{}__{}ifelse($2,$0_ORIGIN+$8, 1,$2, $8+$0_ORIGIN,1,0),1,{define({$0_ADD},$7)1},
-__{}__{}ifelse($2,$0_ORIGIN+$10,1,$2,$10+$0_ORIGIN,1,0),1,{define({$0_ADD},$9)1},
-__{}__{}0),HL:1,{dnl
-__{}__{}__{}define({__CLOCKS},11){}dnl
-__{}__{}__{}define({__BYTES},1){}dnl
-__{}__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
-__{}__{}__{}define({$0_CODE},{
-__{}__{}__{}    add  HL{{,}} $0_ADD         ; 1:11      __INFO})}){}dnl
 __{}dnl
 __{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__add({__SUM_BYTES}, __BYTES){}dnl
