@@ -50,12 +50,14 @@ __{}__{}ifelse(eval(__GET_LOOP_END($1)),eval(__GET_LOOP_BEGIN($1)),{
 __{}__{}    jp   exit{}$1        ; 3:10      __COMPILE_INFO   ( stop index -- )
 __{}__{}do{}$1:                  ;           __COMPILE_INFO},
 __{}__{}{__ASM_TOKEN_SDO($1)})},
+
 __{}__HEX_HL(__GET_LOOP_END($1)),0x0000,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
 __{}__{}    ld    A, H          ; 1:4       __COMPILE_INFO
 __{}__{}    or    L             ; 1:4       __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
 __{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+
 __{}__HEX_HL(__GET_LOOP_END($1)),0x0001,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
 __{}__{}    ld    A, L          ; 1:4       __COMPILE_INFO
@@ -63,6 +65,7 @@ __{}__{}    dec   A             ; 1:4       __COMPILE_INFO
 __{}__{}    or    H             ; 1:4       __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
 __{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+
 __{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
 __{}__{}    ld    A, H          ; 1:4       __COMPILE_INFO
@@ -70,12 +73,21 @@ __{}__{}    and   L             ; 1:4       __COMPILE_INFO
 __{}__{}    inc   A             ; 1:4       __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
 __{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+
 __{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
 __{}__{}    or    A             ; 1:4       __COMPILE_INFO
 __{}__{}    sbc  HL, DE         ; 2:15      __COMPILE_INFO
 __{}__{}    add  HL, DE         ; 1:11      __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
 __{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )},
+
+__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:0},{dnl
+__{}__{}__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))
+__{}__{}    ld    A, E          ; 1:4       __COMPILE_INFO
+__{}__{}    or    D             ; 1:4       __COMPILE_INFO
+__{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
+__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop 0 -- stop 0 )},
+
 __{}__GET_LOOP_END($1),{},{dnl
 __{}__{}__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))
 __{}__{}    or    A             ; 1:4       __COMPILE_INFO
@@ -83,6 +95,7 @@ __{}__{}    sbc  HL, DE         ; 2:15      __COMPILE_INFO
 __{}__{}    add  HL, DE         ; 1:11      __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
 __{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )},
+
 __{}__GET_LOOP_BEGIN($1),{},{dnl
 __{}__{}__ASM_TOKEN_PUSH_SWAP(__GET_LOOP_END($1))
 __{}__{}    or    A             ; 1:4       __COMPILE_INFO
@@ -90,9 +103,11 @@ __{}__{}    sbc  HL, DE         ; 2:15      __COMPILE_INFO
 __{}__{}    add  HL, DE         ; 1:11      __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
 __{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )},
+
 __{}__{}__GET_LOOP_END($1),__GET_LOOP_BEGIN($1),{
 __{}__{}    jp   exit{}$1        ; 3:10      __COMPILE_INFO   ( stop index -- )
 __{}__{}do{}$1:                  ;           __COMPILE_INFO},
+
 __{}{dnl
 __{}__{}__ASM_TOKEN_PUSH2(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1))
 __{}__{}    or    A             ; 1:4       __COMPILE_INFO
