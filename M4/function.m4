@@ -42,7 +42,7 @@ __{}define({__INFO},__COMPILE_INFO)
                         ;[5:25]     __INFO  ( addr -- ) R:( -- )
     ld   BC, $+5        ; 3:10      __INFO
     push BC             ; 1:11      __INFO
-    jp  (HL)            ; 1:4       __INFO
+    jp  [HL]            ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
     exx                 ; 1:4       __INFO  R:( ret -- )}){}dnl
 dnl
@@ -77,9 +77,9 @@ format({%-24s;           $2},FCE_STACK:)
     exx                 ; 1:4       : rcolon
     pop  DE             ; 1:10      : rcolon ret
     dec  HL             ; 1:6       : rcolon
-    ld  (HL),D          ; 1:7       : rcolon
+    ld  [HL],D          ; 1:7       : rcolon
     dec   L             ; 1:4       : rcolon
-    ld  (HL),E          ; 1:7       : rcolon (HL') = ret
+    ld  [HL],E          ; 1:7       : rcolon (HL') = ret
     exx                 ; 1:4       : rcolon R:( -- ret )}){}dnl
 dnl
 dnl
@@ -106,12 +106,12 @@ __{}define({__INFO},{rsemicolon}){}dnl
 
 FCE_STACK{}_end:popdef({FCE_STACK})
     exx                 ; 1:4       ; rsemicilon
-    ld    E,(HL)        ; 1:7       ; rsemicilon
+    ld    E,[HL]        ; 1:7       ; rsemicilon
     inc   L             ; 1:4       ; rsemicilon
-    ld    D,(HL)        ; 1:7       ; rsemicilon DE = ret
+    ld    D,[HL]        ; 1:7       ; rsemicilon DE = ret
     inc  HL             ; 1:6       ; rsemicilon
     ex   DE, HL         ; 1:4       ; rsemicilon
-    jp  (HL)            ; 1:4       ; rsemicilon
+    jp  [HL]            ; 1:4       ; rsemicilon
 ;   ---------  end of recursive function  ---------})dnl
 dnl
 dnl
@@ -203,7 +203,7 @@ __{}define({__INFO},__COMPILE_INFO)
                         ;[5:25]     __INFO  ( addr -- addr )
     ld   BC, $+5        ; 3:10      __INFO
     push BC             ; 1:11      __INFO
-    jp  (HL)            ; 1:4       __INFO}){}dnl
+    jp  [HL]            ; 1:4       __INFO}){}dnl
 dnl
 dnl
 dnl # ( addr x -- addr x )
