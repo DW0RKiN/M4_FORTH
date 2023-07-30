@@ -15,9 +15,9 @@ __{}ifelse(PUDM_MIN:PUDM_MAX,1:1,{dnl
 P8DM:                   ;           p8dm
     push BC             ; 1:11      p8dm
     exx                 ; 1:4       p8dm
-    ex  (SP),HL         ; 1:19      p8dm   save R.A.S. && [HL'] = divisor
+    ex  [SP],HL         ; 1:19      p8dm   save R.A.S. && [HL'] = divisor
     xor   A             ; 1:4       p8dm
-    or  (HL)            ; 1:7       p8dm
+    or  [HL]            ; 1:7       p8dm
     ld    D, A          ; 1:4       p8dm   divisor sign
     call  m, PDM_NEG    ; 3:17      p8dm
     exx                 ; 1:4       p8dm   abs([BC])
@@ -25,7 +25,7 @@ P8DM:                   ;           p8dm
     push DE             ; 1:11      p8dm
     exx                 ; 1:4       p8dm
     pop  HL             ; 1:10      p8dm   [HL'] = dividend
-    ld    A,(HL)        ; 1:7       p8dm
+    ld    A,[HL]        ; 1:7       p8dm
     xor   D             ; 1:4       p8dm
     push AF             ; 1:11      p8dm   the sign of the result
     xor   D             ; 1:4       p8dm
@@ -56,8 +56,8 @@ P8DM:                   ;           p8dm
     ret                 ; 1:10      p8dm
 PDM_NEG:                ;           p8dm_neg
     xor   A             ; 1:4       p8dm_neg
-    sub (HL)            ; 1:7       p8dm_neg
-    ld  (HL),A          ; 1:7       p8dm_neg
+    sub [HL]            ; 1:7       p8dm_neg
+    ld  [HL],A          ; 1:7       p8dm_neg
     ret                 ; 1:10      p8dm_neg},
 __{}PUDM_MIN:PUDM_MAX,2:2,{dnl
 ; Divide 16-bit signed values from pointer
@@ -67,10 +67,10 @@ __{}PUDM_MIN:PUDM_MAX,2:2,{dnl
 P16DM:                  ;           p16dm
     push BC             ; 1:11      p16dm
     exx                 ; 1:4       p16dm
-    ex  (SP),HL         ; 1:19      p16dm   save R.A.S. && [HL'] = divisor
+    ex  [SP],HL         ; 1:19      p16dm   save R.A.S. && [HL'] = divisor
     inc   L             ; 1:4       p16dm
     xor   A             ; 1:4       p16dm
-    or  (HL)            ; 1:7       p16dm
+    or  [HL]            ; 1:7       p16dm
     ld    D, A          ; 1:4       p16dm   divisor sign
     call  m, PDM_NEG1   ; 3:17      p16dm
     exx                 ; 1:4       p16dm   abs([BC])
@@ -79,7 +79,7 @@ P16DM:                  ;           p16dm
     exx                 ; 1:4       p16dm
     pop  HL             ; 1:10      p16dm   [HL'] = dividend
     inc   L             ; 1:4       p16dm
-    ld    A,(HL)        ; 1:7       p16dm
+    ld    A,[HL]        ; 1:7       p16dm
     xor   D             ; 1:4       p16dm
     push AF             ; 1:11      p16dm   the sign of the result
     xor   D             ; 1:4       p16dm
@@ -112,12 +112,12 @@ PDM_NEG1:               ;           p16dm_neg
     dec   L             ; 1:4       p16dm_neg
 PDM_NEG2:               ;           p16dm_neg
     xor   A             ; 1:4       p16dm_neg
-    sub (HL)            ; 1:7       p16dm_neg
-    ld  (HL),A          ; 1:7       p16dm_neg
+    sub [HL]            ; 1:7       p16dm_neg
+    ld  [HL],A          ; 1:7       p16dm_neg
     inc   L             ; 1:4       p16dm_neg
     ld    A, 0x00       ; 2:7       p16dm_neg
-    sbc   A,(HL)        ; 1:7       p16dm_neg
-    ld  (HL),A          ; 1:7       p16dm_neg
+    sbc   A,[HL]        ; 1:7       p16dm_neg
+    ld  [HL],A          ; 1:7       p16dm_neg
     ret                 ; 1:10      p16dm_neg},
 __{}PUDM_MIN:PUDM_MAX,256:256,{dnl
 ; Divide 2048-bit signed values from pointer
@@ -126,10 +126,10 @@ __{}PUDM_MIN:PUDM_MAX,256:256,{dnl
 P2048DM:                ;           p2048dm
     push BC             ; 1:11      p2048dm
     exx                 ; 1:4       p2048dm
-    ex  (SP),HL         ; 1:19      p2048dm   save R.A.S. && [HL'] = divisor
+    ex  [SP],HL         ; 1:19      p2048dm   save R.A.S. && [HL'] = divisor
     dec   L             ; 1:4       p2048dm
     xor   A             ; 1:4       p2048dm
-    or  (HL)            ; 1:7       p2048dm
+    or  [HL]            ; 1:7       p2048dm
     ld    D, A          ; 1:4       p2048dm   divisor sign
     call  m, PDM_NEG1   ; 3:17      p2048dm
     exx                 ; 1:4       p2048dm   abs([BC])
@@ -138,7 +138,7 @@ P2048DM:                ;           p2048dm
     exx                 ; 1:4       p2048dm
     pop  HL             ; 1:10      p2048dm   [HL'] = dividend
     dec   L             ; 1:4       p2048dm
-    ld    A,(HL)        ; 1:7       p2048dm
+    ld    A,[HL]        ; 1:7       p2048dm
     xor   D             ; 1:4       p2048dm
     push AF             ; 1:11      p2048dm   the sign of the result
     xor   D             ; 1:4       p2048dm
@@ -178,8 +178,8 @@ PDM_NEG1:               ;           p2048dm_neg
 PDM_NEG2:               ;           p2048dm_neg
     ld    C, L          ; 1:4       p2048dm_neg   = 0
     ld    A, C          ; 1:4       p2048dm_neg
-    sbc   A,(HL)        ; 1:7       p2048dm_neg
-    ld  (HL),A          ; 1:7       p2048dm_neg
+    sbc   A,[HL]        ; 1:7       p2048dm_neg
+    ld  [HL],A          ; 1:7       p2048dm_neg
     inc   L             ; 1:4       p2048dm_neg
     jr   nz, $-4        ; 2:7/12    p2048dm_neg
     ret                 ; 1:10      p2048dm_neg},
@@ -191,7 +191,7 @@ PDM_NEG2:               ;           p2048dm_neg
 PDM:                    ;           pdm
     push BC             ; 1:11      pdm
     exx                 ; 1:4       pdm
-    ex  (SP),HL         ; 1:19      pdm   save R.A.S. && [HL'] = divisor
+    ex  [SP],HL         ; 1:19      pdm   save R.A.S. && [HL'] = divisor
     ld    E, A          ; 1:4       pdm   sizeof(number) in bytes
 
     ld    B, L          ; 1:4       pdm   save offset
@@ -199,7 +199,7 @@ PDM:                    ;           pdm
     dec   A             ; 1:4       pdm
     ld    L, A          ; 1:4       pdm
     xor   A             ; 1:4       pdm
-    or  (HL)            ; 1:7       pdm
+    or  [HL]            ; 1:7       pdm
     ld    D, A          ; 1:4       pdm   divisor sign
     call  m, PDM_NEG1   ; 3:17      pdm
     exx                 ; 1:4       pdm   abs([BC])
@@ -212,7 +212,7 @@ PDM:                    ;           pdm
     add   A, L          ; 1:4       pdm
     dec   A             ; 1:4       pdm
     ld    L, A          ; 1:4       pdm
-    ld    A,(HL)        ; 1:7       pdm
+    ld    A,[HL]        ; 1:7       pdm
     xor   D             ; 1:4       pdm
     push AF             ; 1:11      pdm   the sign of the result
     xor   D             ; 1:4       pdm
@@ -257,8 +257,8 @@ PDM_NEG2:               ;           pdm_neg
     ld    B, E          ; 1:4       pdm_neg
     ld    C, 0x00       ; 2:7       pdm_neg
     ld    A, C          ; 1:4       pdm_neg
-    sbc   A,(HL)        ; 1:7       pdm_neg
-    ld  (HL),A          ; 1:7       pdm_neg
+    sbc   A,[HL]        ; 1:7       pdm_neg
+    ld  [HL],A          ; 1:7       pdm_neg
     inc   L             ; 1:4       pdm_neg
     djnz $-4            ; 2:8/13    pdm_neg
     ret                 ; 1:10      pdm_neg}){}dnl
@@ -272,26 +272,26 @@ ifelse(PUDM_MIN:PUDM_MAX,1:1,{
 ; Out: [HL] = [DE] / [BC], [DE] = [DE] % [BC]
 __{}P8UDM:                  ;           p8udm
 __{}    push BC             ; 1:11      p8udm
-__{}    ld    A,(DE)        ; 1:7       p8udm
-__{}    ex  (SP),HL         ; 1:19      p8udm
+__{}    ld    A,[DE]        ; 1:7       p8udm
+__{}    ex  [SP],HL         ; 1:19      p8udm
 __{}    ld   BC, 0x0000     ; 2:7       p8udm
 __{}    inc   B             ; 1:4       p8udm
-__{}    sla (HL)            ; 2:15      p8udm
+__{}    sla [HL]            ; 2:15      p8udm
 __{}    jr    c, $+8        ; 2:7/12    p8udm
 __{}    jr    z, $+19       ; 2:7/12    p8udm   exit with div 0
-__{}    cp  (HL)            ; 1:7       p8udm
+__{}    cp  [HL]            ; 1:7       p8udm
 __{}    jr   nc, $-8        ; 2:7/12    p8udm
 __{}    or    A             ; 1:4       p8udm
-__{}    rr  (HL)            ; 2:15      p8udm
+__{}    rr  [HL]            ; 2:15      p8udm
 __{}    sla   C             ; 2:8       p8udm   result *= 2
-__{}    cp  (HL)            ; 1:7       p8udm
+__{}    cp  [HL]            ; 1:7       p8udm
 __{}    jr    c, $+4        ; 2:7/12    p8udm
-__{}    sub (HL)            ; 1:7       p8udm
+__{}    sub [HL]            ; 1:7       p8udm
 __{}    inc   C             ; 1:4       p8udm   result += 1
 __{}    djnz $-10           ; 2:8/13    p8udm
-__{}    ex  (SP),HL         ; 1:19      p8udm
-__{}    ld  (HL),C          ; 1:7       p8udm
-__{}    ld  (DE),A          ; 1:7       p8udm
+__{}    ex  [SP],HL         ; 1:19      p8udm
+__{}    ld  [HL],C          ; 1:7       p8udm
+__{}    ld  [DE],A          ; 1:7       p8udm
 __{}    pop  BC             ; 1:10      p8udm
 __{}    ret                 ; 1:10      p8udm},
 PUDM_MIN:PUDM_MAX,2:2,{
@@ -301,66 +301,66 @@ PUDM_MIN:PUDM_MAX,2:2,{
 __{}P16UDM:                 ;           p16udm
 __{}    push BC             ; 1:11      p16udm
 __{}    xor   A             ; 1:4       p16udm
-__{}    ld  (HL),A          ; 1:7       p16udm
+__{}    ld  [HL],A          ; 1:7       p16udm
 __{}    inc   L             ; 1:4       p16udm
-__{}    ld  (HL),A          ; 1:7       p16udm
+__{}    ld  [HL],A          ; 1:7       p16udm
 __{}    dec   L             ; 1:4       p16udm   p16_res = 0
-__{}    ex  (SP),HL         ; 1:19      p16udm
+__{}    ex  [SP],HL         ; 1:19      p16udm
 
 __{}    ld    B, A          ; 1:4       p16udm
 
 __{}    inc   L             ; 1:4       p16udm
-__{}    or  (HL)            ; 1:7       p16udm
+__{}    or  [HL]            ; 1:7       p16udm
 __{}    dec   L             ; 1:4       p16udm
-__{}    or  (HL)            ; 1:7       p16udm   p16_3 == 0?
+__{}    or  [HL]            ; 1:7       p16udm   p16_3 == 0?
 __{}    jr    z, $+57       ; 2:7/12    p16udm   exit with div 0
 
 __{}    inc   B             ; 1:4       p16udm
-__{}    sla (HL)            ; 2:15      p16udm
+__{}    sla [HL]            ; 2:15      p16udm
 __{}    inc   L             ; 1:4       p16udm
-__{}    rl  (HL)            ; 2:15      p16udm
+__{}    rl  [HL]            ; 2:15      p16udm
 __{}    dec   L             ; 1:4       p16udm   p16_3 *= 2
 __{}    jr   nc, $-7        ; 2:7/12    p16udm
 
 __{}    inc   L             ; 1:4       p16udm
-__{}    rr  (HL)            ; 2:15      p16udm
+__{}    rr  [HL]            ; 2:15      p16udm
 __{}    dec   L             ; 1:4       p16udm
-__{}    rr  (HL)            ; 2:15      p16udm
+__{}    rr  [HL]            ; 2:15      p16udm
 
-__{}    ex  (SP),HL         ; 1:19      p16udm
-__{}    sla (HL)            ; 2:15      p16udm
+__{}    ex  [SP],HL         ; 1:19      p16udm
+__{}    sla [HL]            ; 2:15      p16udm
 __{}    inc   L             ; 1:4       p16udm
-__{}    rl  (HL)            ; 2:15      p16udm   result *= 2
+__{}    rl  [HL]            ; 2:15      p16udm   result *= 2
 __{}    dec   L             ; 1:4       p16udm
-__{}    ex  (SP),HL         ; 1:19      p16udm
+__{}    ex  [SP],HL         ; 1:19      p16udm
 
-__{}    ld    A,(DE)        ; 1:7       p16udm
-__{}    sub (HL)            ; 1:7       p16udm
-__{}    ld  (DE),A          ; 1:7       p16udm
+__{}    ld    A,[DE]        ; 1:7       p16udm
+__{}    sub [HL]            ; 1:7       p16udm
+__{}    ld  [DE],A          ; 1:7       p16udm
 __{}    inc   L             ; 1:4       p16udm
 __{}    inc   E             ; 1:4       p16udm
-__{}    ld    A,(DE)        ; 1:7       p16udm
-__{}    sbc   A,(HL)        ; 1:7       p16udm
-__{}    ld  (DE),A          ; 1:7       p16udm
+__{}    ld    A,[DE]        ; 1:7       p16udm
+__{}    sbc   A,[HL]        ; 1:7       p16udm
+__{}    ld  [DE],A          ; 1:7       p16udm
 __{}    dec   L             ; 1:4       p16udm
 __{}    dec   E             ; 1:4       p16udm
 
 __{}    jr    c, $+9        ; 2:7/12    p16udm
 
-__{}    ex  (SP),HL         ; 1:19      p16udm
-__{}    inc (HL)            ; 1:11      p16udm   result += 1
-__{}    ex  (SP),HL         ; 1:19      p16udm
+__{}    ex  [SP],HL         ; 1:19      p16udm
+__{}    inc [HL]            ; 1:11      p16udm   result += 1
+__{}    ex  [SP],HL         ; 1:19      p16udm
 __{}    djnz $-29           ; 2:8/13    p16udm
 __{}    jr   $+15           ; 2:7/12    p16udm
 
-__{}    ld    A,(DE)        ; 1:7       p16udm
-__{}    add   A,(HL)        ; 1:7       p16udm
-__{}    ld  (DE),A          ; 1:7       p16udm
+__{}    ld    A,[DE]        ; 1:7       p16udm
+__{}    add   A,[HL]        ; 1:7       p16udm
+__{}    ld  [DE],A          ; 1:7       p16udm
 __{}    inc   L             ; 1:4       p16udm
 __{}    inc   E             ; 1:4       p16udm
-__{}    ld    A,(DE)        ; 1:7       p16udm
-__{}    adc   A,(HL)        ; 1:7       p16udm
-__{}    ld  (DE),A          ; 1:7       p16udm
+__{}    ld    A,[DE]        ; 1:7       p16udm
+__{}    adc   A,[HL]        ; 1:7       p16udm
+__{}    ld  [DE],A          ; 1:7       p16udm
 __{}    dec   L             ; 1:4       p16udm
 __{}    dec   E             ; 1:4       p16udm
 
@@ -368,7 +368,7 @@ __{}    or    A             ; 1:4       p16udm
 
 __{}    djnz $-44           ; 2:8/13    p16udm
 
-__{}    ex  (SP),HL         ; 1:19      p16udm
+__{}    ex  [SP],HL         ; 1:19      p16udm
 __{}    pop  BC             ; 1:10      p16udm
 __{}    ret                 ; 1:10      p16udm},
 PUDM_MIN:PUDM_MAX,256:256,{
@@ -378,13 +378,13 @@ PUDM_MIN:PUDM_MAX,256:256,{
 __{}P2048UDM:               ;           p2048udm
 __{}    push BC             ; 1:11      p2048udm
 __{}    xor   A             ; 1:4       p2048udm   ( p2048_3 p2048_2 p2048_res -- p2048_3 p2048_mod p2048_res )  p2048_2 u/mod p2048_3  with align $1
-__{}    ld  (HL),A          ; 1:7       p2048udm
+__{}    ld  [HL],A          ; 1:7       p2048udm
 __{}    inc   L             ; 1:4       p2048udm
 __{}    jr   nz, $-2        ; 2:7/12    p2048udm   p2048_res = 0
 
-__{}    ex  (SP),HL         ; 1:19      p2048udm
+__{}    ex  [SP],HL         ; 1:19      p2048udm
 
-__{}    or  (HL)            ; 1:7       p2048udm
+__{}    or  [HL]            ; 1:7       p2048udm
 __{}    inc   L             ; 1:4       p2048udm
 __{}    jr   nz, $-2        ; 2:7/12    p2048udm   p2048_3 == 0?
 
@@ -396,7 +396,7 @@ __{}    ld    B, L          ; 1:4       p2048udm   shift_counter = 0
 __{}
 __{}    inc  BC             ; 1:6       p2048udm   shift_counter++
 __{}
-__{}    rl  (HL)            ; 2:15      p2048udm
+__{}    rl  [HL]            ; 2:15      p2048udm
 __{}    inc   L             ; 1:4       p2048udm
 __{}    jr   nz, $-3        ; 2:7/12    p2048udm   p2048_3 *= 2
 __{}
@@ -404,42 +404,42 @@ __{}    jr   nc, $-6        ; 2:7/12    p2048udm   p2048_3 overflow?
 
 _l_o_o_p_
 __{}    dec   L             ; 1:4       p2048udm
-__{}    rr  (HL)            ; 2:15      p2048udm
+__{}    rr  [HL]            ; 2:15      p2048udm
 __{}    dec   L             ; 1:4       p2048udm
 __{}    jr   nz, $-3        ; 2:7/12    p2048udm   p2048_3 >>= 1
-__{}    rr  (HL)            ; 2:15      p2048udm
+__{}    rr  [HL]            ; 2:15      p2048udm
 
-__{}    ex  (SP),HL         ; 1:19      p2048udm
-__{}    rl  (HL)            ; 2:15      p2048udm
+__{}    ex  [SP],HL         ; 1:19      p2048udm
+__{}    rl  [HL]            ; 2:15      p2048udm
 __{}    inc   L             ; 1:4       p2048udm
 __{}    jr   nz, $-3        ; 2:7/12    p2048udm   result *= 2
-__{}    ex  (SP),HL         ; 1:19      p2048udm
+__{}    ex  [SP],HL         ; 1:19      p2048udm
 
-__{}    ld    A,(DE)        ; 1:7       p2048udm
-__{}    sbc   A,(HL)        ; 1:7       p2048udm
+__{}    ld    A,[DE]        ; 1:7       p2048udm
+__{}    sbc   A,[HL]        ; 1:7       p2048udm
 __{}    inc   L             ; 1:4       p2048udm
 __{}    inc   E             ; 1:4       p2048udm
 __{}    jr   nz, $-4        ; 2:7/12    p2048udm   p2048_mod>p2048_3?
 
 __{}    jr    c, $+12       ; 2:7/12    p2048udm
 
-__{}    ld    A,(DE)        ; 1:7       p2048udm
-__{}    sbc   A,(HL)        ; 1:7       p2048udm
-__{}    ld  (DE),A          ; 1:7       p2048udm
+__{}    ld    A,[DE]        ; 1:7       p2048udm
+__{}    sbc   A,[HL]        ; 1:7       p2048udm
+__{}    ld  [DE],A          ; 1:7       p2048udm
 __{}    inc   L             ; 1:4       p2048udm
 __{}    inc   E             ; 1:4       p2048udm
 __{}    jr   nz, $-5        ; 2:7/12    p2048udm   p2048_mod -= p2048_3?
 
-__{}    ex  (SP),HL         ; 1:19      p2048udm
-__{}    inc (HL)            ; 1:11      p2048udm   result += 1
-__{}    ex  (SP),HL         ; 1:19      p2048udm
+__{}    ex  [SP],HL         ; 1:19      p2048udm
+__{}    inc [HL]            ; 1:11      p2048udm   result += 1
+__{}    ex  [SP],HL         ; 1:19      p2048udm
 
 __{}    dec  BC             ; 1:6       p2048udm
 __{}    ld    A, B          ; 1:4       p2048udm
 __{}    or    C             ; 1:4       p2048udm
 __{}    jr   nz, _l_o_o_p_  ; 2:7/12    p2048udm
 _e_x_i_t_
-__{}    ex  (SP),HL         ; 1:19      p2048udm
+__{}    ex  [SP],HL         ; 1:19      p2048udm
 __{}    pop  BC             ; 1:10      p2048udm
 __{}    ret                 ; 1:10      p2048udm},
 eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{
@@ -457,7 +457,7 @@ __{}    ld    B, A          ; 1:4       p256udm   B' = shift_counter = 0
 __{}    exx                 ; 1:4       p256udm
 
 __{}    ld    B, C          ; 1:4       p256udm
-__{}    ld  (HL),A          ; 1:7       p256udm
+__{}    ld  [HL],A          ; 1:7       p256udm
 __{}    inc   L             ; 1:4       p256udm   px_res = 0
 __{}    djnz $-2            ; 2:8/13    p256udm
 __{}    ex   AF, AF'        ; 1:4       p256udm
@@ -465,13 +465,13 @@ __{}    ld    A, L          ; 1:4       p256udm
 __{}    sub   C             ; 1:4       p256udm
 __{}    ld    L, A          ; 1:4       p256udm   return to original value
 
-__{}    ex  (SP),HL         ; 1:19      p256udm
+__{}    ex  [SP],HL         ; 1:19      p256udm
 
 __{}    ld    A, L          ; 1:4       p256udm   A' = original value L
 __{}    ex   AF, AF'        ; 1:4       p256udm
 
 __{}    ld    B, C          ; 1:4       p256udm
-__{}    or  (HL)            ; 1:7       p256udm
+__{}    or  [HL]            ; 1:7       p256udm
 __{}    inc   L             ; 1:4       p256udm
 __{}    djnz $-2            ; 2:8/13    p256udm   px_3 == 0?
 
@@ -486,7 +486,7 @@ __{}    exx                 ; 1:4       p256udm
 __{}    inc   B             ; 1:4       p256udm   shift_counter++
 __{}    exx                 ; 1:4       p256udm
 __{}
-__{}    rl  (HL)            ; 2:15      p256udm
+__{}    rl  [HL]            ; 2:15      p256udm
 __{}    inc   L             ; 1:4       p256udm
 __{}    djnz $-3            ; 2:8/13    p256udm   px_3 *= 2
 __{}
@@ -495,22 +495,22 @@ __{}    jr   nc, $-12       ; 2:7/12    p256udm   px_3 overflow?
 __{}P256UDM_L:              ;           p256udm
 __{}    ld    B, C          ; 1:4       p256udm   L = orig L + $1
 __{}    dec   L             ; 1:4       p256udm
-__{}    rr  (HL)            ; 2:15      p256udm
+__{}    rr  [HL]            ; 2:15      p256udm
 __{}    djnz $-3            ; 2:8/13    p256udm   px_3 >>= 1
 
-__{}    ex  (SP),HL         ; 1:19      p256udm
+__{}    ex  [SP],HL         ; 1:19      p256udm
 __{}    ld    A, L          ; 1:4       p256udm
 __{}    ld    B, C          ; 1:4       p256udm
-__{}    rl  (HL)            ; 2:15      p256udm
+__{}    rl  [HL]            ; 2:15      p256udm
 __{}    inc   L             ; 1:4       p256udm
 __{}    djnz $-3            ; 2:8/13    p256udm   result *= 2
 __{}    ld    L, A          ; 1:4       p256udm   return to original value
-__{}    ex  (SP),HL         ; 1:19      p256udm
+__{}    ex  [SP],HL         ; 1:19      p256udm
 
 __{}    push  DE            ; 1:11      p256udm
 __{}    ld    B, C          ; 1:4       p256udm
-__{}    ld    A,(DE)        ; 1:7       p256udm
-__{}    sbc   A,(HL)        ; 1:7       p256udm
+__{}    ld    A,[DE]        ; 1:7       p256udm
+__{}    sbc   A,[HL]        ; 1:7       p256udm
 __{}    inc   L             ; 1:4       p256udm
 __{}    inc   E             ; 1:4       p256udm
 __{}    djnz $-4            ; 2:8/13    p256udm   (px_mod < px_3)?
@@ -518,18 +518,18 @@ __{}    pop  DE             ; 1:10      p256udm
 
 __{}    jr    c, P256UDM_N  ; 2:7/12    p256udm
 
-__{}    ex  (SP),HL         ; 1:19      p256udm
-__{}    inc (HL)            ; 1:11      p256udm   result += 1
-__{}    ex  (SP),HL         ; 1:19      p256udm
+__{}    ex  [SP],HL         ; 1:19      p256udm
+__{}    inc [HL]            ; 1:11      p256udm   result += 1
+__{}    ex  [SP],HL         ; 1:19      p256udm
 
 __{}    push DE             ; 1:11      p256udm
 __{}    ex   AF, AF'        ; 1:4       p256udm
 __{}    ld    L, A          ; 1:4       p256udm   return to original value
 __{}    ex   AF, AF'        ; 1:4       p256udm
 __{}    ld    B, C          ; 1:4       p256udm
-__{}    ld    A,(DE)        ; 1:7       p256udm
-__{}    sbc   A,(HL)        ; 1:7       p256udm
-__{}    ld  (DE),A          ; 1:7       p256udm
+__{}    ld    A,[DE]        ; 1:7       p256udm
+__{}    sbc   A,[HL]        ; 1:7       p256udm
+__{}    ld  [DE],A          ; 1:7       p256udm
 __{}    inc   L             ; 1:4       p256udm
 __{}    inc   E             ; 1:4       p256udm
 __{}    djnz $-5            ; 2:8/13    p256udm   px_mod -= px_3
@@ -544,7 +544,7 @@ __{}    jr   nz, P256UDM_L  ; 2:7/12    p256udm
 __{}P256UDM_E:              ;           p256udm
 __{}    ex   AF, AF'        ; 1:4       p256udm
 __{}    ld    L, A          ; 1:4       p256udm   return to original value
-__{}    ex  (SP),HL         ; 1:19      p256udm
+__{}    ex  [SP],HL         ; 1:19      p256udm
 __{}    pop  BC             ; 1:10      p256udm
 __{}    ret                 ; 1:10      p256udm},
 {
@@ -563,7 +563,7 @@ __{}    ld    C, A          ; 1:4       pudm   BC' = shift_counter = 0
 __{}    exx                 ; 1:4       pudm
 
 __{}    ld    B, C          ; 1:4       pudm
-__{}    ld  (HL),A          ; 1:7       pudm
+__{}    ld  [HL],A          ; 1:7       pudm
 __{}    inc   L             ; 1:4       pudm   px_res = 0
 __{}    djnz $-2            ; 2:8/13    pudm
 __{}    ex   AF, AF'        ; 1:4       pudm
@@ -571,13 +571,13 @@ __{}    ld    A, L          ; 1:4       pudm
 __{}    sub   C             ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
 
-__{}    ex  (SP),HL         ; 1:19      pudm
+__{}    ex  [SP],HL         ; 1:19      pudm
 
 __{}    ld    A, L          ; 1:4       pudm   A' = original value L
 __{}    ex   AF, AF'        ; 1:4       pudm
 
 __{}    ld    B, C          ; 1:4       pudm
-__{}    or  (HL)            ; 1:7       pudm
+__{}    or  [HL]            ; 1:7       pudm
 __{}    inc   L             ; 1:4       pudm
 __{}    djnz $-2            ; 2:8/13    pudm   px_3 == 0?
 
@@ -592,7 +592,7 @@ __{}    exx                 ; 1:4       pudm
 __{}    inc   BC            ; 1:6       pudm   shift_counter++
 __{}    exx                 ; 1:4       pudm
 __{}
-__{}    rl  (HL)            ; 2:15      pudm
+__{}    rl  [HL]            ; 2:15      pudm
 __{}    inc   L             ; 1:4       pudm
 __{}    djnz $-3            ; 2:8/13    pudm   px_3 *= 2
 __{}
@@ -601,22 +601,22 @@ __{}    jr   nc, $-12       ; 2:7/12    pudm   px_3 overflow?
 __{}PUDM_LOOP:              ;           pudm
 __{}    ld    B, C          ; 1:4       pudm   L = orig L + $1
 __{}    dec   L             ; 1:4       pudm
-__{}    rr  (HL)            ; 2:15      pudm
+__{}    rr  [HL]            ; 2:15      pudm
 __{}    djnz $-3            ; 2:8/13    pudm   px_3 >>= 1
 
-__{}    ex  (SP),HL         ; 1:19      pudm
+__{}    ex  [SP],HL         ; 1:19      pudm
 __{}    ld    A, L          ; 1:4       pudm
 __{}    ld    B, C          ; 1:4       pudm
-__{}    rl  (HL)            ; 2:15      pudm
+__{}    rl  [HL]            ; 2:15      pudm
 __{}    inc   L             ; 1:4       pudm
 __{}    djnz $-3            ; 2:8/13    pudm   result *= 2
 __{}    ld    L, A          ; 1:4       pudm   return to original value
-__{}    ex  (SP),HL         ; 1:19      pudm
+__{}    ex  [SP],HL         ; 1:19      pudm
 
 __{}    push  DE            ; 1:11      pudm
 __{}    ld    B, C          ; 1:4       pudm
-__{}    ld    A,(DE)        ; 1:7       pudm
-__{}    sbc   A,(HL)        ; 1:7       pudm
+__{}    ld    A,[DE]        ; 1:7       pudm
+__{}    sbc   A,[HL]        ; 1:7       pudm
 __{}    inc   L             ; 1:4       pudm
 __{}    inc   E             ; 1:4       pudm
 __{}    djnz $-4            ; 2:8/13    pudm   (px_mod < px_3)?
@@ -624,18 +624,18 @@ __{}    pop  DE             ; 1:10      pudm
 
 __{}    jr    c, PUDM_NEXT  ; 2:7/12    pudm
 
-__{}    ex  (SP),HL         ; 1:19      pudm
-__{}    inc (HL)            ; 1:11      pudm   result += 1
-__{}    ex  (SP),HL         ; 1:19      pudm
+__{}    ex  [SP],HL         ; 1:19      pudm
+__{}    inc [HL]            ; 1:11      pudm   result += 1
+__{}    ex  [SP],HL         ; 1:19      pudm
 
 __{}    push DE             ; 1:11      pudm
 __{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
 __{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    B, C          ; 1:4       pudm
-__{}    ld    A,(DE)        ; 1:7       pudm
-__{}    sbc   A,(HL)        ; 1:7       pudm
-__{}    ld  (DE),A          ; 1:7       pudm
+__{}    ld    A,[DE]        ; 1:7       pudm
+__{}    sbc   A,[HL]        ; 1:7       pudm
+__{}    ld  [DE],A          ; 1:7       pudm
 __{}    inc   L             ; 1:4       pudm
 __{}    inc   E             ; 1:4       pudm
 __{}    djnz $-5            ; 2:8/13    pudm   px_mod -= px_3
@@ -651,7 +651,7 @@ __{}    jr   nz, PUDM_LOOP  ; 2:7/12    pudm
 __{}PUDM_EXIT:              ;           pudm
 __{}    ex   AF, AF'        ; 1:4       pudm
 __{}    ld    L, A          ; 1:4       pudm   return to original value
-__{}    ex  (SP),HL         ; 1:19      pudm
+__{}    ex  [SP],HL         ; 1:19      pudm
 __{}    pop  BC             ; 1:10      pudm
 __{}    ret                 ; 1:10      pudm}){}dnl
 dnl
@@ -669,18 +669,18 @@ __{}    exx                 ; 1:4       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
 __{}
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO   p{}eval(8*($1))_res = 0
 __{}    djnz $-2            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  [SP],HL         ; 1:19      __INFO
 
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
 __{}
 __{}    inc   L             ; 1:4       __INFO
-__{}    or  (HL)            ; 1:7       __INFO
+__{}    or  [HL]            ; 1:7       __INFO
 __{}    djnz $-2            ; 2:8/13    __INFO   p{}eval(8*($1))_3 == 0?
 
 __{}    or    A             ; 1:4       __INFO
@@ -692,7 +692,7 @@ __{}    exx                 ; 1:4       __INFO
 __{}    inc   BC            ; 1:6       __INFO   shift_counter++
 __{}    exx                 ; 1:4       __INFO
 __{}
-__{}    rl  (HL)            ; 2:15      __INFO
+__{}    rl  [HL]            ; 2:15      __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 *= 2
 __{}
@@ -701,23 +701,23 @@ __{}    jr   nc, $-11       ; 2:7/12    __INFO   p{}eval(8*($1))_3 overflow?
 _l_o_o_p_
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO   L = orig L + $1
 __{}    dec   L             ; 1:4       __INFO
-__{}    rr  (HL)            ; 2:15      __INFO
+__{}    rr  [HL]            ; 2:15      __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 >>= 1
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  [SP],HL         ; 1:19      __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    rl  (HL)            ; 2:15      __INFO
+__{}    rl  [HL]            ; 2:15      __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   result *= 2
 __{}    ld    L, C          ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  [SP],HL         ; 1:19      __INFO
 
 __{}    push  DE            ; 1:11      __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-4            ; 2:8/13    __INFO   (p{}eval(8*($1))_mod < p{}eval(8*($1))_3)?
@@ -725,16 +725,16 @@ __{}    pop  DE             ; 1:10      __INFO
 
 __{}    jr    c, $+17       ; 2:7/12    __INFO
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    inc (HL)            ; 1:11      __INFO   result += 1
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  [SP],HL         ; 1:19      __INFO
+__{}    inc [HL]            ; 1:11      __INFO   result += 1
+__{}    ex  [SP],HL         ; 1:19      __INFO
 
 __{}    push  DE            ; 1:11      __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod -= p{}eval(8*($1))_3
@@ -749,7 +749,7 @@ __{}    jr   nz, _l_o_o_p_  ; 2:7/12    __INFO
 
 _e_x_i_t_
 __{}    ld    L, C          ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO}){}dnl
+__{}    ex  [SP],HL         ; 1:19      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -757,17 +757,17 @@ ifelse(0,1,{
 __{}    xor   A             ; 1:4       __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld  (HL),A          ; 1:7       __INFO
+__{}    ld  [HL],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO   p{}eval(8*($1))_res = 0
 __{}    djnz $-2            ; 2:8/13    __INFO
 __{}    ld    L, C          ; 1:4       __INFO
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  [SP],HL         ; 1:19      __INFO
 
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
-__{}    or  (HL)            ; 1:7       __INFO
+__{}    or  [HL]            ; 1:7       __INFO
 __{}    djnz $-2            ; 2:8/13    __INFO   (p{}eval(8*($1))_3 == 0)?
 
 __{}    or    A             ; 1:4       __INFO
@@ -779,7 +779,7 @@ __{}    ld    L, C          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
 __{}    inc   A             ; 1:4       __INFO   shift_counter++
 __{}
-__{}    rl  (HL)            ; 2:15      __INFO
+__{}    rl  [HL]            ; 2:15      __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 *= 2
 __{}
@@ -789,25 +789,25 @@ _l_o_o_p_
 __{}    push  BC            ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO   L = orig L + $1
 __{}    dec   L             ; 1:4       __INFO
-__{}    rr  (HL)            ; 2:15      __INFO
+__{}    rr  [HL]            ; 2:15      __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   p{}eval(8*($1))_3 >>= 1
 __{}    pop  BC             ; 1:10      __INFO
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  [SP],HL         ; 1:19      __INFO
 __{}    ld    C, L          ; 1:4       __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    rl  (HL)            ; 2:15      __INFO
+__{}    rl  [HL]            ; 2:15      __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    djnz $-3            ; 2:8/13    __INFO   result *= 2
 __{}    ld    L, C          ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  [SP],HL         ; 1:19      __INFO
 
 __{}    ex   AF, AF'        ; 1:4       __INFO
 __{}    or    A             ; 1:4       __INFO
 __{}    push DE             ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-4            ; 2:8/13    __INFO   (p{}eval(8*($1))_mod < p{}eval(8*($1))_3)?
@@ -815,16 +815,16 @@ __{}    pop  DE             ; 1:10      __INFO
 
 __{}    jr    c, $+17       ; 2:7/12    __INFO
 
-__{}    ex  (SP),HL         ; 1:19      __INFO
-__{}    inc (HL)            ; 1:11      __INFO   result += 1
-__{}    ex  (SP),HL         ; 1:19      __INFO
+__{}    ex  [SP],HL         ; 1:19      __INFO
+__{}    inc [HL]            ; 1:11      __INFO   result += 1
+__{}    ex  [SP],HL         ; 1:19      __INFO
 
 __{}    ld    L, C          ; 1:4       __INFO
 __{}    push  DE            ; 1:11      __INFO
 __{}    ld    B, __HEX_L($1)       ; 2:7       __INFO
-__{}    ld    A,(DE)        ; 1:7       __INFO
-__{}    sbc   A,(HL)        ; 1:7       __INFO
-__{}    ld  (DE),A          ; 1:7       __INFO
+__{}    ld    A,[DE]        ; 1:7       __INFO
+__{}    sbc   A,[HL]        ; 1:7       __INFO
+__{}    ld  [DE],A          ; 1:7       __INFO
 __{}    inc   L             ; 1:4       __INFO
 __{}    inc   E             ; 1:4       __INFO
 __{}    djnz $-5            ; 2:8/13    __INFO   p{}eval(8*($1))_mod -= p{}eval(8*($1))_3
@@ -836,7 +836,7 @@ __{}    jr   nz, _l_o_o_p_  ; 2:7/12    __INFO
 
 _e_x_i_t_
 __{}    ld    L, C          ; 1:4       __INFO
-__{}    ex  (SP),HL         ; 1:19      __INFO}){}dnl
+__{}    ex  [SP],HL         ; 1:19      __INFO}){}dnl
 dnl
 dnl
 dnl
