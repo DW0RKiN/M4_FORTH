@@ -160,6 +160,7 @@ dnl # __{}__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{0:-1},{dnl
 dnl # __{}__{}__{}__ASM_TOKEN_PUSH_QFOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_QXDO($1)})},
+
 __{}__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
 __{}__{}ifelse(__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_QRDO($1)},
@@ -171,12 +172,15 @@ dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1}
 dnl #__{}__{}__{}__ASM_TOKEN_QRFOR($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_QXRDO($1)})},
+
 __{}__GET_LOOP_TYPE($1),{S},{dnl # ------- data stack allocation -------
-__{}__{}ifelse(dnl
+dnl #__{}__{}ifelse(dnl
 dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
 dnl #__{}__{}__{}__ASM_TOKEN_QUESTIONSFOR($1)},
-__{}__{}{dnl
-__{}__{}__{}__ASM_TOKEN_QSDO($1)})},
+dnl #__{}__{}{dnl
+dnl #__{}__{}__{}__ASM_TOKEN_QSDO($1)}){}dnl
+__{}__ASM_TOKEN_QSDO($1){}dnl
+__{}},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter!})}){}dnl
 dnl
