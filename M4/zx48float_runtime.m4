@@ -9,10 +9,10 @@ __{}ifelse(_TYP_SINGLE,small,{dnl
 __{}                     ;[26:688..736] _zdepth   # small version can be changed with "define({_TYP_SINGLE},{default})"
 __{}_ZDEPTH:                ;           _zdepth   ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
 __{}    ex   DE, HL         ; 1:4       _zdepth
-__{}    ex  (SP),HL         ; 1:19      _zdepth   ret
+__{}    ex  [SP],HL         ; 1:19      _zdepth   ret
 __{}    push HL             ; 1:11      _zdepth   back ret
-__{}    ld   HL, (0x5C65)   ; 3:16      _zdepth   {STKEND} - Address of temporary work space = address of top of calculator stack
-__{}    ld   BC, (0x5C63)   ; 4:20      _zdepth   {STKBOT} - Address of bottom of calculator stack
+__{}    ld   HL, [0x5C65]   ; 3:16      _zdepth   {STKEND} - Address of temporary work space = address of top of calculator stack
+__{}    ld   BC, [0x5C63]   ; 4:20      _zdepth   {STKBOT} - Address of bottom of calculator stack
 __{}    xor   A             ; 1:4       _zdepth
 __{}    sbc  HL, BC         ; 2:15      _zdepth   HL = 5*n
 __{}  if 1
@@ -40,10 +40,10 @@ __{}{dnl
 __{}                       ;[46:292]    _zdepth   # default version can be changed with "define({_TYP_SINGLE},{small})"
 __{}_ZDEPTH:                ;           _zdepth   ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
 __{}    ex   DE, HL         ; 1:4       _zdepth
-__{}    ex  (SP),HL         ; 1:19      _zdepth   ret
+__{}    ex  [SP],HL         ; 1:19      _zdepth   ret
 __{}    push HL             ; 1:11      _zdepth
-__{}    ld   HL, (0x5C65)   ; 3:16      _zdepth   {STKEND} - Address of temporary work space = address of top of calculator stack
-__{}    ld   BC, (0x5C63)   ; 4:20      _zdepth   {STKBOT} - Address of bottom of calculator stack
+__{}    ld   HL, [0x5C65]   ; 3:16      _zdepth   {STKEND} - Address of temporary work space = address of top of calculator stack
+__{}    ld   BC, [0x5C63]   ; 4:20      _zdepth   {STKBOT} - Address of bottom of calculator stack
 __{}    xor   A             ; 1:4       _zdepth
 __{}    sbc  HL, BC         ; 2:15      _zdepth   HL = 5*n
 __{}  if 1
@@ -93,9 +93,9 @@ dnl # z@
 ifdef({USE_ZFETCH},{
 _ZFETCH:                ;           _z@
     push DE             ; 1:11      _z@   ( addr -- ) ( Z: -- z )
-    ld   DE,(0x5C65)    ; 4:20      _z@   {STKEND}
+    ld   DE,[0x5C65]    ; 4:20      _z@   {STKEND}
     call 0x33C0         ; 3:315     _z@   {call ZX ROM move floating-point number routine HL->DE}
-    ld  (0x5C65),DE     ; 4:20      _z@   {STKEND+5}
+    ld  [0x5C65],DE     ; 4:20      _z@   {STKEND+5}
     pop  HL             ; 1:10      _z@
     pop  BC             ; 1:10      _z@   ret
     pop  DE             ; 1:10      _z@
@@ -110,7 +110,7 @@ _ZSTORE:                ;           _z!
     push DE             ; 1:11      _z!   ( addr -- ) ( Z: z -- )
     push HL             ; 1:11      _z!   addr
     call 0x35bf         ; 3:17      _z!   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld  (0x5C65),HL     ; 3:16      _z!   {save STKEND}
+    ld  [0x5C65],HL     ; 3:16      _z!   {save STKEND}
     pop  DE             ; 1:10      _z!   addr
     ld   BC, 0x0005     ; 3:10      _z!
     ldir                ; 2:21/16   _z!
@@ -130,15 +130,15 @@ _Z_TO_S:                ;           _z>s
     push BC             ; 1:11      _z>s   ret
     push HL             ; 1:11      _z>s
     call 0x36AF         ; 3:17      _z>s   {call ZX ROM int}
-    ld   HL,(0x5C65)    ; 3:16      _z>s   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _z>s   {load STKEND}
     dec  HL             ; 1:6       _z>s
     dec  HL             ; 1:6       _z>s
-    ld    D,(HL)        ; 1:7       _z>s
+    ld    D,[HL]        ; 1:7       _z>s
     dec  HL             ; 1:6       _z>s
-    ld    E,(HL)        ; 1:7       _z>s
+    ld    E,[HL]        ; 1:7       _z>s
     dec  HL             ; 1:6       _z>s
     dec  HL             ; 1:6       _z>s
-    ld  (0x5C65),HL     ; 3:16      _z>s   {save STKEND+5}
+    ld  [0x5C65],HL     ; 3:16      _z>s   {save STKEND+5}
     ex   DE, HL         ; 1:6       _z>s
     pop  DE             ; 1:10      _z>s
     ret                 ; 1:10      _z>s
@@ -153,20 +153,20 @@ _Z_TO_D:                ;           _z>d
     push HL             ; 1:11      _z>d
     push BC             ; 1:11      _z>d   ret
 
-    ld   HL,(0x5C65)    ; 3:16      _z>d   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _z>d   {load STKEND}
     dec  HL             ; 1:6       _z>d
-    ld    C,(HL)        ; 1:7       _z>d
+    ld    C,[HL]        ; 1:7       _z>d
     dec  HL             ; 1:6       _z>d
-    ld    B,(HL)        ; 1:7       _z>d
+    ld    B,[HL]        ; 1:7       _z>d
     dec  HL             ; 1:6       _z>d
-    ld    E,(HL)        ; 1:7       _z>d
+    ld    E,[HL]        ; 1:7       _z>d
     dec  HL             ; 1:6       _z>d
-    ld    D,(HL)        ; 1:7       _z>d
+    ld    D,[HL]        ; 1:7       _z>d
     push DE             ; 1:11      _z>d   sign
     dec  HL             ; 1:6       _z>d
     ld    A, 0xA0       ; 2:7       _z>d
-    sub (HL)            ; 1:7       _z>d
-    ld  (0x5C65),HL     ; 3:16      _z>d   {save STKEND+5}
+    sub [HL]            ; 1:7       _z>d
+    ld  [0x5C65],HL     ; 3:16      _z>d   {save STKEND+5}
 
     set   7, D          ; 2:8       _z>d
 if 1
@@ -242,7 +242,7 @@ _S_TO_Z:                ;           _s>z   ( num ret . de hl -- ret . num de )
     ld    B, H          ; 1:4       _s>z
     ld    C, L          ; 1:4       _s>z
     pop  HL             ; 1:10      _s>z   ( num . de ret )
-    ex  (SP),HL         ; 1:19      _s>z   ( ret . de num )
+    ex  [SP],HL         ; 1:19      _s>z   ( ret . de num )
     ex   DE, HL         ; 1:4       _s>z   ( ret . num de )
     ; fall to _sign_bc_to_z
 }){}dnl
@@ -271,18 +271,18 @@ else
 _CF_BC_TO_Z:           ;[22:138]    _cf_bc>z
     sbc   A, A          ; 1:4       _cf_bc>z   0x00 or 0xff
     push HL             ; 1:11      _cf_bc>z
-    ld   HL,(0x5C65)    ; 3:16      _cf_bc>z   {load STKEND}
-    ld  (HL),0x00       ; 2:10      _cf_bc>z
+    ld   HL,[0x5C65]    ; 3:16      _cf_bc>z   {load STKEND}
+    ld  [HL],0x00       ; 2:10      _cf_bc>z
     inc  HL             ; 1:6       _cf_bc>z
-    ld  (HL), A         ; 1:7       _cf_bc>z
+    ld  [HL], A         ; 1:7       _cf_bc>z
     inc  HL             ; 1:6       _cf_bc>z
-    ld  (HL), C         ; 1:7       _cf_bc>z
+    ld  [HL], C         ; 1:7       _cf_bc>z
     inc  HL             ; 1:6       _cf_bc>z
-    ld  (HL), B         ; 1:7       _cf_bc>z
+    ld  [HL], B         ; 1:7       _cf_bc>z
     inc  HL             ; 1:6       _cf_bc>z
-    ld  (HL),0x00       ; 2:10      _cf_bc>z
+    ld  [HL],0x00       ; 2:10      _cf_bc>z
     inc  HL             ; 1:6       _cf_bc>z
-    ld  (0x5C65),HL     ; 3:16      _cf_bc>z   {save STKEND+5}
+    ld  [0x5C65],HL     ; 3:16      _cf_bc>z   {save STKEND+5}
 endif
     pop  HL             ; 1:10      _cf_bc>z
     ret                 ; 1:10      _cf_bc>z
@@ -335,7 +335,7 @@ _ZDOT:                  ;           _z.
     push HL             ; 1:11      _z.
     call 0x2de3         ; 3:17      _z.   {call ZX ROM print a floating-point number routine}
     pop  HL             ; 1:10      _z.
-    ld  (0x5C65),HL     ; 3:16      _z.   {save STKEND}
+    ld  [0x5C65],HL     ; 3:16      _z.   {save STKEND}
     ld    A, ' '        ; 2:7       _z.   {putchar Pollutes: AF, AF', DE', BC'}
 __PUTCHAR_A(_z.)
     pop  HL             ; 1:10      _z.
@@ -367,7 +367,7 @@ __PUTCHAR_A(_zhex.)
 
 _ZHEXDOT:               ;           _zhex.
     push HL             ; 1:11      _zhex.
-    ld   HL,(0x5C65)    ; 3:16      _zhex.   {HL= stkend}
+    ld   HL,[0x5C65]    ; 3:16      _zhex.   {HL= stkend}
     ld   BC, 0xfffb     ; 3:10      _zhex.
     add  HL, BC         ; 1:11      _zhex.
     ld    B, 0x05       ; 2:7       _zhex.
@@ -375,7 +375,7 @@ _ZHEXDOT:               ;           _zhex.
     ld    A, ','        ; 2:7       _zhex.
 __PUTCHAR_A(_zhex.)
 _ZXHEXDOT_FIRST:        ;           _zhex.
-    ld    A,(HL)        ; 1:7       _zhex.
+    ld    A,[HL]        ; 1:7       _zhex.
     inc  HL             ; 1:6       _zhex.
     call _ZHEX_A        ; 3:17      _zhex.
     djnz $-eval(7+__BYTES)            ; 2:8/13    _zhex.
@@ -425,9 +425,9 @@ dnl
 ifdef({USE_ZDROP_BC},{
 _ZDROP_BC:             ;[10:74]     _zdrop_bc
     push HL             ; 1:11      _zdrop_bc
-    ld   HL,(0x5C65)    ; 3:16      _zdrop_bc   load stkend
+    ld   HL,[0x5C65]    ; 3:16      _zdrop_bc   load stkend
     add  HL, BC         ; 1:11      _zdrop_bc
-    ld  (0x5C65),HL     ; 3:16      _zdrop_bc   save stkend
+    ld  [0x5C65],HL     ; 3:16      _zdrop_bc   save stkend
     pop  HL             ; 1:10      _zdrop_bc
     ret                 ; 1:10      _zdrop_bc
 }){}dnl
@@ -458,7 +458,7 @@ if 1
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC', DE'(=DE)}
 else
     call 0x35bf         ; 3:17      _z*   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld  (0x5C65),HL     ; 3:16      _z*   {save STKEND}
+    ld  [0x5C65],HL     ; 3:16      _z*   {save STKEND}
     call 0x35c2         ; 3:17      _z*   {call ZX ROM            DE= HL    , HL = HL-5}
     call 0x30ca         ; 3:17      _z*   {call ZX ROM fmul, adr_HL = adr_DE * adr_HL}
 endif
@@ -479,7 +479,7 @@ if 1
     db  0x38            ; 1:        calc-end    {Pollutes: AF, BC', DE'(=DE)}
 else
     call 0x35bf         ; 3:17      _z/   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
-    ld  (0x5C65),HL     ; 3:16      _z/   {save STKEND}
+    ld  [0x5C65],HL     ; 3:16      _z/   {save STKEND}
     call 0x35c2         ; 3:17      _z/   {call ZX ROM            DE= HL    , HL = HL-5}
     call 0x31af         ; 3:17      _z/   {call ZX ROM fdiv}
 endif
@@ -566,15 +566,15 @@ else
     db  0x3B            ; 1:        fp_calc_2: (perform the actual operation)
     db  0x38            ; 1:        calc-end
 endif
-    ld   HL,(0x5C65)    ; 3:16      _zcompare2flag   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _zcompare2flag   {load STKEND}
     dec  HL             ; 1:6       _zcompare2flag
     dec  HL             ; 1:6       _zcompare2flag
     dec  HL             ; 1:6       _zcompare2flag
     xor   A             ; 1:4       _zcompare2flag
-    sub (HL)            ; 1:7       _zcompare2flag
+    sub [HL]            ; 1:7       _zcompare2flag
     dec  HL             ; 1:6       _zcompare2flag
     dec  HL             ; 1:6       _zcompare2flag
-    ld  (0x5C65), HL    ; 3:16      _zcompare2flag   {save STKEND-5}
+    ld  [0x5C65], HL    ; 3:16      _zcompare2flag   {save STKEND-5}
     ld    L, A          ; 1:4       _zcompare2flag
     ld    H, A          ; 1:4       _zcompare2flag    
     pop  DE             ; 1:10      _zcompare2flag
@@ -587,15 +587,15 @@ dnl # z0=
 ifdef({USE_Z0EQ},{
 _Z0EQ:                  ;           _z0=
     ex   DE, HL         ; 1:4       _z0=   ( ret . de hl -- de ret . hl flag )
-    ex  (SP),HL         ; 1:19      _z0=
+    ex  [SP],HL         ; 1:19      _z0=
     push HL             ; 1:11      _z0=   ret
-    ld   HL,(0x5C65)    ; 3:16      _z0=   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _z0=   {load STKEND}
     ld    B, 0x05       ; 2:7       _z0=
     xor   A             ; 1:4       _z0=
     dec  HL             ; 1:6       _z0=
-    or  (HL)            ; 1:7       _z0=
+    or  [HL]            ; 1:7       _z0=
     djnz $-2            ; 2:8/13    _z0=
-    ld  (0x5C65), HL    ; 3:16      _z0=   {save STKEND-5}
+    ld  [0x5C65], HL    ; 3:16      _z0=   {save STKEND-5}
     sub  0x01           ; 2:7       _z0=
     sbc  HL, HL         ; 2:15      _z0=
     ret                 ; 1:10      _z0=
@@ -606,14 +606,14 @@ dnl # z0<
 ifdef({USE_Z0LT},{
 _Z0LT:                  ;           _z0<
     ex   DE, HL         ; 1:4       _z0<   ( ret . de hl -- de ret . hl flag )
-    ex  (SP),HL         ; 1:19      _z0<
+    ex  [SP],HL         ; 1:19      _z0<
     push HL             ; 1:11      _z0<   ret
-    ld   HL,(0x5C65)    ; 3:16      _z0<   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _z0<   {load STKEND}
     ld    B, 0x05       ; 2:7       _z0<
-    ld    A,(HL)        ; 1:7       _z0<
+    ld    A,[HL]        ; 1:7       _z0<
     dec  HL             ; 1:6       _z0<
     djnz $-2            ; 2:8/13    _z0<
-    ld  (0x5C65), HL    ; 3:16      _z0<   {save STKEND-5}
+    ld  [0x5C65], HL    ; 3:16      _z0<   {save STKEND-5}
     add   A, A          ; 2:7       _z0<
     sbc  HL, HL         ; 2:15      _z0<
     ret                 ; 1:10      _z0<
@@ -805,7 +805,7 @@ ifdef({USE_ZADDR},{
 _ZADDR:                 ;           _zaddr
     push DE             ; 1:11      _zaddr
     ex   DE, HL         ; 1:4       _zaddr
-    ld   HL,(0x5C65)    ; 3:16      _zaddr   {HL= stkend}
+    ld   HL,[0x5C65]    ; 3:16      _zaddr   {HL= stkend}
 __ASM_TOKEN_UDOTZXROM
     ld    A, 0x0D       ; 2:7       _zaddr cr   {Pollutes: AF, AF', DE', BC'}
 __PUTCHAR_A(_zaddr cr)
@@ -832,13 +832,13 @@ ifdef({USE_Z2DUP},{
 _Z2DUP:                ;[22:144]    _z2dup
     push DE             ; 1:11      _z2dup
     push HL             ; 1:11      _z2dup
-    ld   HL,(0x5C65)    ; 3:16      _z2dup   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _z2dup   {load STKEND}
     ex   DE, HL         ; 1:4       _z2dup
     ld   HL,0xFFF6      ; 3:10      _z2dup   -10
     add  HL, DE         ; 1:11      _z2dup
     ld   BC,0x000A      ; 3:10      _z2dup   10 bytes
     ldir                ; 2:21/16   _z2dup
-    ld  (0x5C65),DE     ; 4:20      _z2dup   {save STKEND+10}
+    ld  [0x5C65],DE     ; 4:20      _z2dup   {save STKEND+10}
     pop  HL             ; 1:10      _z2dup
     pop  DE             ; 1:10      _z2dup
     ret                 ; 1:10      _z2dup
@@ -854,10 +854,10 @@ _ZNIP:                 ;[20:130]    _znip
     ld    B, 0x05       ; 2:7       _znip
     dec  HL             ; 1:6       _znip
     dec  DE             ; 1:6       _znip
-    ld    A,(DE)        ; 1:7       _znip
-    ld  (HL),A          ; 1:7       _znip
+    ld    A,[DE]        ; 1:7       _znip
+    ld  [HL],A          ; 1:7       _znip
     djnz $-4            ; 2:8/13    _znip
-    ld  (0x5C65),DE     ; 4:20      _znip   {save STKEND-5}
+    ld  [0x5C65],DE     ; 4:20      _znip   {save STKEND-5}
     pop  HL             ; 1:10      _znip
     pop  DE             ; 1:10      _znip
     ret                 ; 1:10      _znip
@@ -870,23 +870,23 @@ if 1
 _ZOVER:                ;[22:144]    _zover
     push DE             ; 1:11      _zover
     push HL             ; 1:11      _zover
-    ld   HL,(0x5C65)    ; 3:16      _zover   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _zover   {load STKEND}
     ex   DE, HL         ; 1:4       _zover
     ld   HL,0xFFF6      ; 3:10      _zover   -10
     add  HL, DE         ; 1:11      _zover
     ld   BC,0x0005      ; 3:10      _zover   5 bytes
     ldir                ; 2:21/16   _zover
-    ld  (0x5C65),DE     ; 4:20      _zover   {save STKEND+5}
+    ld  [0x5C65],DE     ; 4:20      _zover   {save STKEND+5}
 else
 _ZOVER:                ;[20:130]    _zover
     push DE             ; 1:11      _zover
     push HL             ; 1:11      _zover
-    ld   HL,(0x5C65)    ; 3:16      _zover   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _zover   {load STKEND}
     ex   DE, HL         ; 1:4       _zover
     ld   HL,0xFFF6      ; 3:10      _zover   -10
     add  HL, DE         ; 1:11      _zover
     call 0x33c0         ; 3:17      _zover
-    ld  (0x5C65),DE     ; 4:20      _zover   {save STKEND+5}
+    ld  [0x5C65],DE     ; 4:20      _zover   {save STKEND+5}
 endif
     pop  HL             ; 1:10      _zover
     pop  DE             ; 1:10      _zover
@@ -906,10 +906,10 @@ _ZPICK:                ;[29:510]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: z
     ld    B, H          ; 1:4       _zpick
     ld    C, L          ; 1:4       _zpick   5(x+1)
     pop  HL             ; 1:10      _zpick   ( x2 x1 ret )
-    ex  (SP),HL         ; 1:19      _zpick
+    ex  [SP],HL         ; 1:19      _zpick
     push HL             ; 1:11      _zpick   ( ret x2 x1 ret )
     push DE             ; 1:11      _zpick   ( ret x2 x1 x1 ret )
-    ld   HL,(0x5C65)    ; 3:16      _zpick   ( .. 5*(u+1) stkend )
+    ld   HL,[0x5C65]    ; 3:16      _zpick   ( .. 5*(u+1) stkend )
     ld    D, H          ; 1:4       _zpick
     ld    E, L          ; 1:4       _zpick   5(x+1)
     sbc  HL, BC         ; 2:15      _zpick   ( .. stkend stkend-5*(u+1) )    
@@ -919,7 +919,7 @@ _ZPICK:                ;[29:510]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: z
     ld   BC,0x0005      ; 3:10      _zpick   5 bytes
     ldir                ; 2:100     _zpick   (DE++) = (HL++)
   endif
-    ld  (0x5C65),DE     ; 4:20      _zpick   {save STKEND}
+    ld  [0x5C65],DE     ; 4:20      _zpick   {save STKEND}
     pop  HL             ; 1:10      _zpick
     pop  DE             ; 1:10      _zpick
     ret                 ; 1:10      _zpick   ( ret x2 x1 -- x2 x1 )
@@ -948,7 +948,7 @@ _ZPICK:                ;[31:514]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: z
     push AF             ; 1:11      _zpick   x2
     push DE             ; 1:11      _zpick   x1
     
-    ld   DE,(0x5C65)    ; 4:20      _zpick   ( ret x2 x1 stkend -5*(u+1) )
+    ld   DE,[0x5C65]    ; 4:20      _zpick   ( ret x2 x1 stkend -5*(u+1) )
     add  HL, DE         ; 1:11      _zpick   ( .. stkend stkend-5*(u+1) )    
   if 1
     call 0x33C0         ; 3:315     _zpick   5x (DE++) = (HL++), BC = 0  ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
@@ -956,7 +956,7 @@ _ZPICK:                ;[31:514]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: z
     ld   BC,0x0005      ; 3x10      _zpick   5 bytes
     ldir                ; 2x100     _zpick   (DE++) = (HL++)
   endif
-    ld  (0x5C65),DE     ; 4:20      _zpick   {save STKEND}
+    ld  [0x5C65],DE     ; 4:20      _zpick   {save STKEND}
     pop  HL             ; 1:10      _zpick
     pop  DE             ; 1:10      _zpick
     ret                 ; 1:10      _zpick   ( ret x2 x1 -- x2 x1 )
@@ -979,7 +979,7 @@ _ZPICK:                ;[31:514]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: z
     sub   C             ; 1:4       _zpick
     ld    B, A          ; 1:4       _zpick   BC = -5*(u+1)
     pop  HL             ; 1:10      _zpick   ret
-    ex  (SP),HL         ; 1:19      _zpick   ( ret x1 x2 ){}dnl
+    ex  [SP],HL         ; 1:19      _zpick   ( ret x1 x2 ){}dnl
 __{}ifdef({USE_ZPICK_C},{
 __{}    push HL             ; 1:11      _zpick
 __{}    push DE             ; 1:11      _zpick
@@ -1002,13 +1002,13 @@ ifdef({USE_ZPICK_BC},{
 _ZPICK_BC:             ;[20:152]    _zpick_bc
     push DE             ; 1:11      _zpick_bc
     push HL             ; 1:11      _zpick_bc
-    ld   HL,(0x5C65)    ; 3:16      _zpick_bc   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _zpick_bc   {load STKEND}
     ld    D, H          ; 1:11      _zpick_bc
     ld    E, L          ; 1:11      _zpick_bc
     add  HL, BC         ; 1:11      _zpick_bc
     ld   BC,0x0005      ; 3:10      _zpick_bc   5 bytes
     ldir                ; 2:21/16   _zpick_bc
-    ld  (0x5C65),DE     ; 4:20      _zpick_bc   {save STKEND+5}
+    ld  [0x5C65],DE     ; 4:20      _zpick_bc   {save STKEND+5}
     pop  HL             ; 1:10      _zpick_bc
     pop  DE             ; 1:10      _zpick_bc
     ret                 ; 1:10      _zpick_bc
@@ -1020,7 +1020,7 @@ ifdef({USE_ZROT},{
 _ZROT:                  ;           _zrot   ( Z: z3 z2 z1 -- z2 z1 z3 )
     push DE             ; 1:11      _zrot
     push HL             ; 1:11      _zrot
-    ld   HL,(0x5C65)    ; 3:16      _zrot   {load STKEND}
+    ld   HL,[0x5C65]    ; 3:16      _zrot   {load STKEND}
     ex   DE, HL         ; 1:4       _zrot   {DE = STKEND = (z0)}
     ld   HL,0xFFF1      ; 3:10      _zrot   -15
     add  HL, DE         ; 1:11      _zrot   {HL = STKEND - 15 = (z3)}
@@ -1060,11 +1060,11 @@ __{}    call 0x35bf         ; 3:17      _zswap   {call ZX ROM stk-pntrs, DE= stk
 __{}    ld    B,0x05        ; 2:7       _zswap
 __{}    dec  DE             ; 1:6       _zswap
 __{}    dec  HL             ; 1:6       _zswap
-__{}    ld    A,(DE)        ; 1:7       _zswap
-__{}    ld    C,(HL)        ; 1:7       _zswap
-__{}    ld  (HL),A          ; 1:7       _zswap
+__{}    ld    A,[DE]        ; 1:7       _zswap
+__{}    ld    C,[HL]        ; 1:7       _zswap
+__{}    ld  [HL],A          ; 1:7       _zswap
 __{}    ld    A, C          ; 1:4       _zswap
-__{}    ld  (DE),A          ; 1:7       _zswap
+__{}    ld  [DE],A          ; 1:7       _zswap
 __{}    djnz $-7            ; 2:8/13    _zswap},
 
 ifelse(TYP_FLOAT,small,0,1):ifdef({USE_DEC_SWAP_5x},1,0),1:1,{
@@ -1105,11 +1105,11 @@ ifdef({USE_DEC_SWAP_Bx},{
 DEC_SWAP_Bx:           ;[10:5+B*57] -swap_Bx
     dec  DE             ; 1:6       -swap_Bx
     dec  HL             ; 1:6       -swap_Bx
-    ld    A,(DE)        ; 1:7       -swap_Bx
-    ld    C,(HL)        ; 1:7       -swap_Bx
-    ld  (HL),A          ; 1:7       -swap_Bx
+    ld    A,[DE]        ; 1:7       -swap_Bx
+    ld    C,[HL]        ; 1:7       -swap_Bx
+    ld  [HL],A          ; 1:7       -swap_Bx
     ld    A, C          ; 1:4       -swap_Bx
-    ld  (DE),A          ; 1:7       -swap_Bx
+    ld  [DE],A          ; 1:7       -swap_Bx
     djnz $-7            ; 2:8/13    -swap_Bx
     ret                 ; 1:10      -swap_Bx
 }){}dnl
@@ -1130,26 +1130,26 @@ ZTEST:                 ;[49:185]    ztest   diff sign
     push DE             ; 1:11      ztest
     push HL             ; 1:11      ztest
     ld   DE, 0xFFFB     ; 3:10      ztest   -5
-    ld   HL,(0x5C65)    ; 3:16      ztest   load stkend
+    ld   HL,[0x5C65]    ; 3:16      ztest   load stkend
     add  HL, DE         ; 1:11      ztest   stkend-5
-    ld    B,(HL)        ; 1:7       ztest   load exp z1
+    ld    B,[HL]        ; 1:7       ztest   load exp z1
     ex   DE, HL         ; 1:4       ztest
     add  HL, DE         ; 1:11      ztest   stkend-10
-    ld  (0x5C65), HL    ; 3:16      ztest   save stkend
-    ld    C,(HL)        ; 1:7       ztest   load exp z2
+    ld  [0x5C65], HL    ; 3:16      ztest   save stkend
+    ld    C,[HL]        ; 1:7       ztest   load exp z2
     inc  HL             ; 1:6       ztest
     inc  DE             ; 1:6       ztest
-    ld    A,(DE)        ; 1:7       ztest   man z1
-    xor (HL)            ; 1:7       ztest   xor sign
-    ld    A,(DE)        ; 1:7       ztest   sign z1
+    ld    A,[DE]        ; 1:7       ztest   man z1
+    xor [HL]            ; 1:7       ztest   xor sign
+    ld    A,[DE]        ; 1:7       ztest   sign z1
     jp    m, ZTEST_DIF_S; 3:10      ztest   diff sign?
     ld    A, B          ; 1:4       ztest
     sub   C             ; 1:4       ztest   exp z1 - exp z2 -> carry: z2>z1
-    ld    C,(HL)        ; 1:7       ztest   sign z2 & z1
+    ld    C,[HL]        ; 1:7       ztest   sign z2 & z1
     jr   nz, ZTEST_DIF  ; 2:7/12    ztest   continues with same exp
     ld    B, 0x04       ; 2:7       ztest
-    ld    A,(DE)        ; 1:7       ztest
-    sub (HL)            ; 1:7       ztest   man z1 - man z2 -> carry: z2>z1
+    ld    A,[DE]        ; 1:7       ztest
+    sub [HL]            ; 1:7       ztest   man z1 - man z2 -> carry: z2>z1
     inc  HL             ; 1:6       ztest
     inc  DE             ; 1:6       ztest
     jr   nz, ZTEST_DIF  ; 2:7/12    ztest   continues with same mantiss
