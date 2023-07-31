@@ -6,7 +6,7 @@ dnl
 dnl # zdepth
 ifdef({USE_ZDEPTH},{
 __{}ifelse(_TYP_SINGLE,small,{dnl
-__{}                     ;[26:688..736] _zdepth   # small version can be changed with "define({_TYP_SINGLE},{default})"
+__{}                     ;[26:688..736] _zdepth   ;# small version can be changed with "define({_TYP_SINGLE},{default})"
 __{}_ZDEPTH:                ;           _zdepth   ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
 __{}    ex   DE, HL         ; 1:4       _zdepth
 __{}    ex  (SP),HL         ; 1:19      _zdepth   ret
@@ -37,7 +37,7 @@ __{}    inc   L             ; 1:4       _zdepth
 __{}    djnz $-7            ; 2:8/13    _zdepth
 __{}    ret                 ; 1:10      _zdepth},
 __{}{dnl
-__{}                       ;[46:292]    _zdepth   # default version can be changed with "define({_TYP_SINGLE},{small})"
+__{}                       ;[46:292]    _zdepth   ;# default version can be changed with "define({_TYP_SINGLE},{small})"
 __{}_ZDEPTH:                ;           _zdepth   ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
 __{}    ex   DE, HL         ; 1:4       _zdepth
 __{}    ex  (SP),HL         ; 1:19      _zdepth   ret

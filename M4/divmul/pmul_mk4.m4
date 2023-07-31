@@ -106,7 +106,7 @@ dnl
 define({MK4_TOKENS_A_ADD_C_MUL},{dnl
 dnl
 __{}define({_TOKEN_PUSH},{dnl
-dnl      #define({_COST},{0})dnl
+dnl ;# define({_COST},{0})dnl
 __{}__{}define({XMUL_SUM},{1})dnl
 __{}__{}define({XMUL_RESULT},{0})dnl
 __{}__{}_ADD_COST(1+256*4)

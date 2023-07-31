@@ -2556,7 +2556,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{__def({USE_FCE_DLT})
-                       ;[10:67]     __INFO   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:67]     __INFO   ( d2 d1 -- )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      __INFO   l2
     pop  AF             ; 1:10      __INFO   h2
     call FCE_DLT        ; 3:17      __INFO   carry if true
@@ -2564,7 +2564,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{__def({USE_FCE_DLT})
     pop  DE             ; 1:10      __INFO
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      __INFO},
 {
-                       ;[18:94]     __INFO   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+                       ;[18:94]     __INFO   ( d2 d1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      __INFO   lo_2
     ld    A, C          ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     sub   L             ; 1:4       __INFO   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
@@ -2620,7 +2620,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
-                       ;[10:67]     D>= if   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:67]     D>= if   ( d2 d1 -- )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>= if   l2
     pop  AF             ; 1:10      D>= if   h2
     call FCE_DLT        ; 3:17      D>= if   D< carry if true --> D>= carry if false
@@ -2628,7 +2628,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{ye
     pop  DE             ; 1:10      D>= if
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
 {
-                       ;[18:94]     D>= if   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+                       ;[18:94]     D>= if   ( d2 d1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D>= if   lo_2
     ld    A, C          ; 1:4       D>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
     sub   L             ; 1:4       D>= if   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
@@ -2683,7 +2683,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{fast},{
-                       ;[18:94]     D<= if   ( d2 d1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[18:94]     D<= if   ( d2 d1 -- )   ;# fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<= if   lo_2
     ld    A, L          ; 1:4       D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sub   C             ; 1:4       D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -2701,7 +2701,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     pop  DE             ; 1:10      D<= if
     jp    m, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
-                       ;[10:67]     D<= if   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:67]     D<= if   ( d2 d1 -- )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<= if   l2
     pop  AF             ; 1:10      D<= if   h2
     call FCE_DGT        ; 3:17      D<= if   D> carry if true --> D<= carry if false
@@ -2709,7 +2709,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     pop  DE             ; 1:10      D<= if
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      D<= if},
 {
-                       ;[18:94]     D<= if   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+                       ;[18:94]     D<= if   ( d2 d1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D<= if   lo_2
     or    A             ; 1:4       D<= if
     sbc  HL, BC         ; 2:15      D<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -2762,7 +2762,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{fast},{
-                       ;[18:94]     D> if   ( d2 d1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[18:94]     D> if   ( d2 d1 -- )   ;# fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D> if   lo_2
     ld    A, L          ; 1:4       D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     sub   C             ; 1:4       D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -2780,7 +2780,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     pop  DE             ; 1:10      D> if
     jp    p, format({%-11s},else{}IF_COUNT); 3:10      D> if},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
-                       ;[10:146]    D> if   ( d2 d1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:146]    D> if   ( d2 d1 -- )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D> if   l2
     pop  AF             ; 1:10      D> if   h2
     call FCE_DGT        ; 3:17      D> if   carry if true
@@ -2788,7 +2788,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     pop  DE             ; 1:10      D> if
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      D> if},
 {
-                       ;[17:97]     D> if   ( d2 d1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+                       ;[17:97]     D> if   ( d2 d1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      D> if   lo_2
     or    A             ; 1:4       D> if
     sbc  HL, BC         ; 2:15      D> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -2919,7 +2919,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{fast},{
-                       ;[15:82]     Du<= if   ( ud2 ud1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[15:82]     Du<= if   ( ud2 ud1 -- )   ;# fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du<= if   lo_2
     ld    A, L          ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sub   C             ; 1:4       Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -2934,7 +2934,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     pop  DE             ; 1:10      Du<= if
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      Du<= if},
 {
-                       ;[13:88]     Du<= if   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+                       ;[13:88]     Du<= if   ( ud2 ud1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      Du<= if   lo_2
     or    A             ; 1:4       Du<= if
     sbc  HL, BC         ; 2:15      Du<= if   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -2960,7 +2960,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{fast},{
-                       ;[15:82]     Du> if   ( ud2 ud1 -- )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[15:82]     Du> if   ( ud2 ud1 -- )   ;# fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du> if   lo_2
     ld    A, L          ; 1:4       Du> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     sub   C             ; 1:4       Du> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -2975,7 +2975,7 @@ __{}ifelse(_TYP_DOUBLE,{fast},{
     pop  DE             ; 1:10      Du> if
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      Du> if},
 {
-                       ;[13:88]     Du> if   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+                       ;[13:88]     Du> if   ( ud2 ud1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  BC             ; 1:10      Du> if   lo_2
     or    A             ; 1:4       Du> if
     sbc  HL, BC         ; 2:15      Du> if   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -3003,7 +3003,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
-                       ;[10:69]     4dup D= if   ( d2 d1 -- d2 d1 )   # function version can be changed with define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup D= if   ( d2 d1 -- d2 d1 )   ;# function version can be changed with define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D= if
     pop  AF             ; 1:10      4dup D= if
     push AF             ; 1:11      4dup D= if
@@ -3011,7 +3011,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{ye
     call FCE_DEQ        ; 3:17      4dup D= if
     jp   nz, format({%-11s},else{}IF_COUNT); 3:10      4dup D= if},
 {
-                   ;[16:132/73,132] 4dup D= if   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                   ;[16:132/73,132] 4dup D= if   ( d2 d1 -- d2 d1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     or   A              ; 1:4       4dup D= if   h2 l2 . h1 l1
     pop  BC             ; 1:10      4dup D= if   h2    . h1 l1  BC = l2 = lo16(d2)
     sbc  HL, BC         ; 2:15      4dup D= if   h2    . h1 --  cp l1-l2
@@ -3037,7 +3037,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
-                       ;[10:69]     4dup D<> if   ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{function})" version can be changed with small,fast,default
+                       ;[10:69]     4dup D<> if   ( d2 d1 -- d2 d1 )   ;# "define({_TYP_DOUBLE},{function})" version can be changed with small,fast,default
     pop  BC             ; 1:10      4dup D<> if
     pop  AF             ; 1:10      4dup D<> if
     push AF             ; 1:11      4dup D<> if
@@ -3045,7 +3045,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{ye
     call FCE_DEQ        ; 3:17      4dup D<> if   D= zero if true --> D<> zero if false
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if},
 _TYP_DOUBLE,{small},{
-                   ;[16:73,132/132] 4dup D<> if   ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{small})" version can be changed with function,fast,default
+                   ;[16:73,132/132] 4dup D<> if   ( d2 d1 -- d2 d1 )   ;# "define({_TYP_DOUBLE},{small})" version can be changed with function,fast,default
     or   A              ; 1:4       4dup D<> if   h2 l2 . h1 l1
     pop  BC             ; 1:10      4dup D<> if   h2    . h1 l1  BC = l2 = lo16(d2)
     sbc  HL, BC         ; 2:15      4dup D<> if   h2    . h1 --  cp l1-l2
@@ -3058,7 +3058,7 @@ _TYP_DOUBLE,{small},{
     push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if   h2 l2 . h1 l1},
 _TYP_DOUBLE,{fast},{
-            ;[23:41,56,113,126/126] 4dup D<> if  ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{fast})" version can be changed with function,small,default
+            ;[23:41,56,113,126/126] 4dup D<> if  ( d2 d1 -- d2 d1 )   ;# "define({_TYP_DOUBLE},{fast})" version can be changed with function,small,default
     pop  BC             ; 1:10      4dup D<> if   h2    . h1 l1  BC= lo(d2) = l2
     push BC             ; 1:11      4dup D<> if   h2 l2 . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<> if   h2 l2 . h1 l1  A = lo(l2)
@@ -3078,7 +3078,7 @@ _TYP_DOUBLE,{fast},{
     sub   D             ; 1:4       4dup D<> if   h2 l2 . h1 l1  hi(h2) - hi(h1)
     jp    z, format({%-11s},else{}IF_COUNT); 3:10      4dup D<> if},
 {
-            ;[21:51,66,123,122/122] 4dup D<> if  ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{default})" version can be changed with function,small,fast,default
+            ;[21:51,66,123,122/122] 4dup D<> if  ( d2 d1 -- d2 d1 )   ;# "define({_TYP_DOUBLE},{default})" version can be changed with function,small,fast,default
     pop  BC             ; 1:10      4dup D<> if   h2    . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<> if   h2    . h1 l1  A = lo(l2)
     sub   L             ; 1:4       4dup D<> if   h2    . h1 l1  lo(l2) - lo(l1)
@@ -3239,7 +3239,7 @@ define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:69]     4dup Du< if   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup Du< if   ( ud2 ud1 -- ud2 ud1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du< if
     pop  AF             ; 1:10      4dup Du< if
     push AF             ; 1:11      4dup Du< if
@@ -3247,7 +3247,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{
     call FCE_DULT       ; 3:17      4dup Du< if   carry if true
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du< if},
 {
-                       ;[15:101]    4dup Du< if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[15:101]    4dup Du< if   ( ud2 ud1 -- ud2 ud1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du< if   ud2 < ud1 --> ud2-ud1<0 --> (SP)BC-DEHL<0 --> carry if true
     ld    A, C          ; 1:4       4dup Du< if
     sub   L             ; 1:4       4dup Du< if   C-L<0 --> carry if true
@@ -3276,7 +3276,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:69]     4dup Du>= if   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup Du>= if   ( ud2 ud1 -- ud2 ud1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du>= if
     pop  AF             ; 1:10      4dup Du>= if
     push AF             ; 1:11      4dup Du>= if
@@ -3284,7 +3284,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{
     call FCE_DULT       ; 3:17      4dup Du>= if   D< carry if true --> D>= carry if false
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du>= if},
 {
-                       ;[15:101]    4dup Du>= if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[15:101]    4dup Du>= if   ( ud2 ud1 -- ud2 ud1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du>= if   ud2 >= ud1 --> ud2-ud1>=0 --> (SP)BC-DEHL>=0 --> no carry if true
     ld    A, C          ; 1:4       4dup Du>= if
     sub   L             ; 1:4       4dup Du>= if   C-L>=0 --> no carry if true
@@ -3313,7 +3313,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:69]     4dup Du<= if   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup Du<= if   ( ud2 ud1 -- ud2 ud1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du<= if
     pop  AF             ; 1:10      4dup Du<= if
     push AF             ; 1:11      4dup Du<= if
@@ -3321,7 +3321,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{
     call FCE_DUGT       ; 3:17      4dup Du<= if   D> carry if true --> D<= carry if false
     jp    c, format({%-11s},else{}IF_COUNT); 3:10      4dup Du<= if},
 {
-                       ;[15:101]    4dup Du<= if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[15:101]    4dup Du<= if   ( ud2 ud1 -- ud2 ud1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du<= if   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-(SP)BC --> no carry if true
     ld    A, L          ; 1:4       4dup Du<= if
     sub   C             ; 1:4       4dup Du<= if   0<=L-C --> no carry if true
@@ -3350,7 +3350,7 @@ __{}define({IF_COUNT}, incr(IF_COUNT)){}dnl
 __{}pushdef({ELSE_STACK}, IF_COUNT){}dnl
 __{}pushdef({THEN_STACK}, IF_COUNT){}dnl
 __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:69]     4dup Du> if   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup Du> if   ( ud2 ud1 -- ud2 ud1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du> if
     pop  AF             ; 1:10      4dup Du> if
     push AF             ; 1:11      4dup Du> if
@@ -3358,7 +3358,7 @@ __{}ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{
     call FCE_DUGT       ; 3:17      4dup Du> if   carry if true
     jp   nc, format({%-11s},else{}IF_COUNT); 3:10      4dup Du> if},
 {
-                       ;[15:101]    4dup Du> if   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[15:101]    4dup Du> if   ( ud2 ud1 -- ud2 ud1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du> if   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-(SP)BC --> carry if true
     ld    A, L          ; 1:4       4dup Du> if
     sub   C             ; 1:4       4dup Du> if   0>L-C --> carry if true

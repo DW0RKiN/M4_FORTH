@@ -1309,13 +1309,13 @@ __{}define({__LOOP[$1].STEP},{$5}){}dnl
 dnl
 define({__SHOW_LOOP},{
 __{};   id: $1
-__{}; type: defn({__LOOP[$1].TYPE})   # M,R,S = memory, recursive, stack
+__{}; type: defn({__LOOP[$1].TYPE})   ;# M,R,S = memory, recursive, stack
 __{};  end: defn({__LOOP[$1].END})
 __{};begin: defn({__LOOP[$1].BEGIN})
 __{}; step: defn({__LOOP[$1].STEP}){}dnl
 }){}dnl
 dnl
-define({__GET_LOOP_TYPE},  {defn({__LOOP[$1].TYPE})}){}dnl   # M,R,S = memory, recursive, stack
+define({__GET_LOOP_TYPE},  {defn({__LOOP[$1].TYPE})}){}dnl   ;# M,R,S = memory, recursive, stack
 define({__GET_LOOP_END},   {defn({__LOOP[$1].END})}){}dnl    #
 define({__GET_LOOP_BEGIN}, {defn({__LOOP[$1].BEGIN})}){}dnl  #
 define({__GET_LOOP_STEP},  {defn({__LOOP[$1].STEP})}){}dnl   #
@@ -1520,7 +1520,7 @@ ifelse(1,0,{errprint({
 __inc_reg16_rec($@): }eval($5-$6+1)x: ifelse(__IS_NUM($2),1,{__HEX_L($2+$3)},__HEX_L$3){
 })}){}dnl
 __{}ifelse(dnl
-__{}__IS_MEM_REF($2),1,{dnl               # pravdepodobnost je zavisla zda prirustek je nasobkem 2, ale protoze v kodu musi byt defenzivne "inc hl" tak je clock=6
+__{}__IS_MEM_REF($2),1,{dnl               ;# pravdepodobnost je zavisla zda prirustek je nasobkem 2, ale protoze v kodu musi byt defenzivne "inc hl" tak je clock=6
 __{}__{}define({__BYTES},1){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
 __{}__{}__add({__SUM_BYTES},__BYTES){}dnl
@@ -3159,7 +3159,7 @@ __{}__{}__{}define({__CLOCKS},20){}dnl
 __{}__{}__{}define({__BYTES},5)
 __{}__{}__{}    ld    A{{,}} __HEX_L(__TMP_VALUE)       ; 2:7       _TMP_INFO
 __{}__{}__{}    ld  format({%-18s},(__TMP_ADDR){{,}}A); 3:13      _TMP_INFO},
-__{}__{}{dnl    # ld (addr),abc
+__{}__{}{dnl    ;# ld (addr),abc
 __{}__{}__{}define({__CLOCKS},20){}dnl
 __{}__{}__{}define({__BYTES},5)
 __{}__{}__{}    ld    A{{,}}format({%-12s},__TMP_VALUE); 2:7       _TMP_INFO
@@ -4984,15 +4984,15 @@ __{}dnl # $0(HL,0x1234,+-bytes no jump,+-clock no jump,+-bytes jump,+-clock jump
 __{}dnl # jr --> define({_TMP_J1},eval(12+_TMP_J0))
 __{}dnl # jp --> define({_TMP_J1},eval(10-($4+0)))
 __{}dnl # _TMP_J1 = clock jump instruction +-clock jump
-__{}define({_TMP_J1},eval(_TMP_J1+_TMP_T1)){}dnl         # clock for fail with    jmp
-__{}define({_TMP_J2},eval($4+_TMP_T2+_TMP_T1)){}dnl      # clock for fail without jmp = clock true
+__{}define({_TMP_J1},eval(_TMP_J1+_TMP_T1)){}dnl         ;# clock for fail with    jmp
+__{}define({_TMP_J2},eval($4+_TMP_T2+_TMP_T1)){}dnl      ;# clock for fail without jmp = clock true
 __{}define({__EQ_CLOCKS_FAIL},eval(_TMP_J1+_TMP_J2)){}dnl
 __{}define({__EQ_CLOCKS_TRUE},eval(_TMP_J2)){}dnl
 __{}define({__EQ_PRICE},eval(8*__EQ_CLOCKS_FAIL)){}dnl
 __{}define({__EQ_CLOCKS_FAIL},eval((1+__EQ_CLOCKS_FAIL)/2)){}dnl
 __{}define({__EQ_CLOCKS},eval((8+__EQ_PRICE)/16)){}dnl
 __{}define({__EQ_BYTES},eval($3+_TMP_B1)){}dnl
-__{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(_TMP_R2,{L},{1},{0}))){}dnl   # = 16*(clocks + 4*bytes) + 1 if it does not check register L first
+__{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(_TMP_R2,{L},{1},{0}))){}dnl   ;# = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}ifelse(debug,-debug,{
 __{}__{}; ------------
 __{}__{}format({%-20s},$1=$2)format({%-10s},t2:_TMP_T2)...clock down code with fail jump
@@ -6742,7 +6742,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},46){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
 __{}__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
@@ -6757,7 +6757,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},39){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo-1})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL< __HEX_HL($1) --> HL<=__HEX_HL($1-1)
 __{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_L($1-1)-L --> false if carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_H($1-1)-H --> false if carry
@@ -6770,7 +6770,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},46){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default})
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
 __{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
 __{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> false if not carry
@@ -6844,7 +6844,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},46){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> HL-$1>=0 --> false if carry
 __{}__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO   HL>=$1 --> HL-$1>=0 --> false if carry
@@ -6859,7 +6859,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},39){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo-1})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL>=__HEX_HL($1) --> HL> __HEX_HL($1-1)
 __{}__{}    cp    L             ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0> __HEX_L($1-1)-L --> false if not carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0> __HEX_H($1-1)-H --> false if not carry
@@ -6872,7 +6872,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},46){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default})
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> L-__HEX_L($1)>=0 --> false if carry
 __{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL>=$1 --> L-__HEX_L($1)>=0 --> false if carry
 __{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> H-__HEX_H($1)>=0 --> false if carry
@@ -6958,7 +6958,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},46){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       __INFO   HL>$1 --> 0>$1-HL --> false if not carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL>$1 --> 0>$1-HL --> false if not carry
@@ -6973,7 +6973,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},39){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL>__HEX_HL($1) --> 0>__HEX_HL($1)-HL
 __{}__{}    cp    L             ; 1:4       __INFO   HL>__HEX_HL($1) --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL>__HEX_HL($1) --> 0>__HEX_H($1)-H --> false if not carry
@@ -6986,7 +6986,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},46){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_H($1)-H --> false if not carry
@@ -7058,7 +7058,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},46){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       __INFO   HL<=$1 --> 0<=$1-HL --> false if carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=$1-HL --> false if carry
@@ -7073,7 +7073,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},39){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=__HEX_HL($1) --> 0<=__HEX_HL($1)-HL
 __{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1) --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1) --> 0<=__HEX_H($1)-H --> false if carry
@@ -7086,7 +7086,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},46){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H --> false if carry
@@ -7256,7 +7256,7 @@ __{}__{}define({__CLOCKS_JP},18)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && -const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && -const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jp   nc, format({%-11s},$2); 3:10      __INFO   +HL < negative constant --> false if not carry
@@ -7273,7 +7273,7 @@ __{}__{}define({__CLOCKS_JP},20)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jr    c, $+11       ; 2:7/12    __INFO   -HL < positive constant --> true if carry
@@ -7290,7 +7290,7 @@ __{}__{}define({__CLOCKS_JP},25)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INFO   _TMP_STACK_INFO #variant: sign_first && variable, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && variable, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
@@ -7310,7 +7310,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
 __{}__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
@@ -7329,7 +7329,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},33){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL< __HEX_HL($1) --> HL<=__HEX_HL($1-1)
 __{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_L($1-1)-L --> false if carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_H($1-1)-H --> false if carry
@@ -7346,7 +7346,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
 __{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
 __{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> false if not carry
@@ -7447,7 +7447,7 @@ __{}__{}define({__CLOCKS_JP},18)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && -const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && -const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jr   nc, format({%-11s},$+11); 2:7/12    __INFO   +HL >= negative constant --> true if not carry
@@ -7464,7 +7464,7 @@ __{}__{}define({__CLOCKS_JP},20)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jp    c, format({%-11s},$2); 3:10      __INFO   -HL >= positive constant --> false if carry
@@ -7481,7 +7481,7 @@ __{}__{}define({__CLOCKS_JP},25)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INFO   _TMP_STACK_INFO #variant: sign_first && variable, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && variable, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
@@ -7501,7 +7501,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> HL-$1>=0 --> false if carry
 __{}__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO   HL>=$1 --> HL-$1>=0 --> false if carry
@@ -7520,7 +7520,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},33){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo-1, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL>=__HEX_HL($1) --> HL>__HEX_HL($1-1)
 __{}__{}    cp    L             ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0>__HEX_L($1-1)-L --> false if not carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0>__HEX_H($1-1)-H --> false if not carry
@@ -7537,7 +7537,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> L-__HEX_L($1)>=0 --> false if carry
 __{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL>=$1 --> L-__HEX_L($1)>=0 --> false if carry
 __{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> H-__HEX_H($1)>=0 --> false if carry
@@ -7638,7 +7638,7 @@ __{}__{}define({__CLOCKS_JP},20)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && -const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && -const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jr   nc, format({%-11s},$+11); 2:7/12    __INFO   +HL > negative constant --> true if not carry
@@ -7655,7 +7655,7 @@ __{}__{}define({__CLOCKS_JP},18)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jp    c, format({%-11s},$2); 3:10      __INFO   -HL > positive constant --> false if carry
@@ -7672,7 +7672,7 @@ __{}__{}define({__CLOCKS_JP},25)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INFO   _TMP_STACK_INFO #variant: sign_first && variable, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/20(+10))] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && variable, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
@@ -7692,7 +7692,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       __INFO   HL>$1 --> 0>$1-HL --> false if not carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL>$1 --> 0>$1-HL --> false if not carry
@@ -7711,7 +7711,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},33){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    cp    L             ; 1:4       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL>$1 --> 0>__HEX_H($1)-H --> false if not carry
@@ -7728,7 +7728,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_H($1)-H --> false if not carry
@@ -7828,7 +7828,7 @@ __{}__{}define({__CLOCKS_JP},18)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && -const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && -const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jp   nc, format({%-11s},$2); 3:10      __INFO   +HL <= negative constant --> false if not carry
@@ -7845,7 +7845,7 @@ __{}__{}define({__CLOCKS_JP},20)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jr    c, format({%-11s},$+11); 2:7/12    __INFO   -HL <= positive constant --> true if carry
@@ -7862,7 +7862,7 @@ __{}__{}define({__CLOCKS_JP},20)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES(+1):format({%-8s},__CLOCKS_NJP(+3)/20(+2))] ))__INFO   _TMP_STACK_INFO #variant: sign_first && variable, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES(+1):format({%-8s},__CLOCKS_NJP(+3)/20(+2))] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && variable, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
@@ -7882,7 +7882,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       __INFO   HL<=$1 --> 0<=$1-HL --> false if carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=$1-HL --> false if carry
@@ -7901,7 +7901,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},33){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    cp    L             ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H --> false if carry
@@ -7918,7 +7918,7 @@ __{}__{}define({__BYTES},11){}dnl
 __{}__{}define({__CLOCKS},40){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default, change: "define({_TYP_SINGLE},{sign_first})"})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H --> false if carry
@@ -8036,7 +8036,7 @@ __{}__{}define({__CLOCKS_JP},20)){}dnl
 __{}__{}define({__CLOCKS},eval((__CLOCKS_JP+__CLOCKS_NJP)/2)){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO #variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS_NJP/__CLOCKS_JP] ))__INFO   _TMP_STACK_INFO ;#variant: sign_first && +const, change:changes using "define({_TYP_SINGLE},{default})})
 __{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add   A, A          ; 1:4       __INFO
 __{}__{}    jr    c, $+11       ; 2:7/12    __INFO   -HL < positive constant --> true if carry
@@ -8051,7 +8051,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},32){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
 __{}__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO   HL<$1 --> HL-$1<0 --> false if not carry
@@ -8064,7 +8064,7 @@ __{}__{}define({__BYTES},7){}dnl
 __{}__{}define({__CLOCKS},25){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo-1})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL< __HEX_HL($1) --> HL<=__HEX_HL($1-1)
 __{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_L($1-1)-L --> false if carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1-1) -->  0<=__HEX_H($1-1)-H --> false if carry
@@ -8075,7 +8075,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},32){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default})
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
 __{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL<$1 --> L-__HEX_L($1)<0 --> false if not carry
 __{}__{}    ld    A, H          ; 1:4       __INFO   HL<$1 --> H-__HEX_H($1)<0 --> false if not carry
@@ -8141,7 +8141,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},32){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> HL-$1>=0 --> false if carry
 __{}__{}    sub   low __FORM({%-10s},$1); 2:7       __INFO   HL>=$1 --> HL-$1>=0 --> false if carry
@@ -8154,7 +8154,7 @@ __{}__{}define({__BYTES},7){}dnl
 __{}__{}define({__CLOCKS},25){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo-1})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo-1})
 __{}__{}    ld    A, __HEX_L($1-1)       ; 2:7       __INFO   HL>=__HEX_HL($1) --> HL> __HEX_HL($1-1)
 __{}__{}    cp    L             ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0> __HEX_L($1-1)-L --> false if not carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL> __HEX_HL($1-1) -->  0> __HEX_H($1-1)-H --> false if not carry
@@ -8165,7 +8165,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},32){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default})
 __{}__{}    ld    A, L          ; 1:4       __INFO   HL>=$1 --> L-__HEX_L($1)>=0 --> false if carry
 __{}__{}    sub  __HEX_L($1)           ; 2:7       __INFO   HL>=$1 --> L-__HEX_L($1)>=0 --> false if carry
 __{}__{}    ld    A, H          ; 1:4       __INFO   HL>=$1 --> H-__HEX_H($1)>=0 --> false if carry
@@ -8241,7 +8241,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},32){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       __INFO   HL>$1 --> 0>$1-HL --> false if not carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL>$1 --> 0>$1-HL --> false if not carry
@@ -8254,7 +8254,7 @@ __{}__{}define({__BYTES},7){}dnl
 __{}__{}define({__CLOCKS},25){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL>__HEX_HL($1) --> 0>__HEX_HL($1)-HL
 __{}__{}    cp    L             ; 1:4       __INFO   HL>__HEX_HL($1) --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL>__HEX_HL($1) --> 0>__HEX_H($1)-H --> false if not carry
@@ -8265,7 +8265,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},32){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL>$1 --> 0>__HEX_L($1)-L --> false if not carry
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   HL>$1 --> 0>__HEX_H($1)-H --> false if not carry
@@ -8329,7 +8329,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},32){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: variable})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: variable})
 __{}__{}  .warning The condition "$1" cannot be evaluated
 __{}__{}    ld    A, low __FORM({%-7s},$1); 2:7       __INFO   HL<=$1 --> 0<=$1-HL --> false if carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=$1-HL --> false if carry
@@ -8342,7 +8342,7 @@ __{}__{}define({__BYTES},7){}dnl
 __{}__{}define({__CLOCKS},25){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: hi == lo})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: hi == lo})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=__HEX_HL($1) --> 0<=__HEX_HL($1)-HL
 __{}__{}    cp    L             ; 1:4       __INFO   HL<=__HEX_HL($1) --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    sbc   A, H          ; 1:4       __INFO   HL<=__HEX_HL($1) --> 0<=__HEX_H($1)-H --> false if carry
@@ -8353,7 +8353,7 @@ __{}__{}define({__BYTES},9){}dnl
 __{}__{}define({__CLOCKS},32){}dnl
 __{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}__{}ifelse(_TMP_STACK_INFO,{},{},{
-__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO #variant: default})
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO ;#variant: default})
 __{}__{}    ld    A, __HEX_L($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    sub   L             ; 1:4       __INFO   HL<=$1 --> 0<=__HEX_L($1)-L --> false if carry
 __{}__{}    ld    A, __HEX_H($1)       ; 2:7       __INFO   HL<=$1 --> 0<=__HEX_H($1)-H --> false if carry
@@ -8518,7 +8518,7 @@ __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   L = 0xFF})},
-__{}eval(__HEX_L(__HEX_H($1)+1)<3),{1},{dnl  # 0xFF.., 0x00.., 0x01..
+__{}eval(__HEX_L(__HEX_H($1)+1)<3),{1},{dnl  ;# 0xFF.., 0x00.., 0x01..
 __{}__{}define({_TMP_A1},{0x00}){}dnl
 __{}__{}define({_TMP_B1},3){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
@@ -8797,7 +8797,7 @@ __{}__{}define({_TMP_J},35){}dnl
 __{}__{}define({_TMP_NJ},55){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 0x0000????
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   ;# 0x0000????
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} L          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    H             ; 1:4       _TMP_INFO
@@ -8810,7 +8810,7 @@ __{}__{}define({_TMP_J},35){}dnl
 __{}__{}define({_TMP_NJ},55){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 0x????0000
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   ;# 0x????0000
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} E          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    D             ; 1:4       _TMP_INFO
@@ -8823,7 +8823,7 @@ __{}__{}define({_TMP_J},46){}dnl
 __{}__{}define({_TMP_NJ},66){}dnl
 __{}__{}define({_TMP_ZERO},{1}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # hi16(d1) == lo16(d1)
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   ;# hi16(d1) == lo16(d1)
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   A = 0
 __{}__{}__{}    sbc  HL{{,}} DE         ; 2:15      _TMP_INFO   hi16(d1)-lo16(d1)
@@ -8836,7 +8836,7 @@ __{}__{}define({_TMP_J},42){}dnl
 __{}__{}define({_TMP_NJ},62){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 4th byte zero
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   ;# 4th byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} __HEX_E($1)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   L             ; 1:4       _TMP_INFO   L = __HEX_E($1)
@@ -8850,7 +8850,7 @@ __{}__{}define({_TMP_J},42){}dnl
 __{}__{}define({_TMP_NJ},62){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 3th byte zero
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   ;# 3th byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} __HEX_D($1)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   H             ; 1:4       _TMP_INFO   H = __HEX_D($1)
@@ -8864,7 +8864,7 @@ __{}__{}define({_TMP_J},42){}dnl
 __{}__{}define({_TMP_NJ},62){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 2nd byte zero
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   ;# 2nd byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} __HEX_L($1)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   E             ; 1:4       _TMP_INFO   E = __HEX_L($1)
@@ -8878,7 +8878,7 @@ __{}__{}define({_TMP_J},42){}dnl
 __{}__{}define({_TMP_NJ},62){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # 1st byte zero
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   ;# 1st byte zero
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    ld    A{{,}} __HEX_H($1)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   D             ; 1:4       _TMP_INFO   D = __HEX_H($1)
@@ -8892,7 +8892,7 @@ __{}__{}define({_TMP_J},56){}dnl
 __{}__{}define({_TMP_NJ},76){}dnl
 __{}__{}define({_TMP_ZERO},{1}){}dnl
 __{}__{}define({_TMP_HLDE_CODE},{dnl
-__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   # default version
+__{}__{}__{}    ex   DE{{,}} HL         ; 1:4       _TMP_INFO   ;# default version
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    ld   BC{{,}} __HEX_DE($1)     ; 3:10      _TMP_INFO   hi16($1)
@@ -8923,7 +8923,7 @@ __{}eval((($1)>>16) & 0xFFFF),{0},{dnl
 __{}__{}define({_TMP_B},10){}dnl
 __{}__{}define({_TMP_J},eval(20+$3)){}dnl
 __{}__{}define({_TMP_NJ},51){}dnl
-__{}__{}define({_TMP_HL_CODE},{   # 0x0000????
+__{}__{}define({_TMP_HL_CODE},{   ;# 0x0000????
 __{}__{}__{}    ld    A{,} E          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    D             ; 1:4       _TMP_INFO
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
@@ -8934,7 +8934,7 @@ __{}eval(($1) & 0xFFFF),{0},{dnl
 __{}__{}define({_TMP_B},10){}dnl
 __{}__{}define({_TMP_J},eval(20+$3)){}dnl
 __{}__{}define({_TMP_NJ},51){}dnl
-__{}__{}define({_TMP_HL_CODE},{   # 0x????0000
+__{}__{}define({_TMP_HL_CODE},{   ;# 0x????0000
 __{}__{}__{}    ld    A{,} L          ; 1:4       _TMP_INFO
 __{}__{}__{}    or    H             ; 1:4       _TMP_INFO
 __{}__{}__{}    jr   nz{,} $+format({%-9s},eval(8+$2)); 2:7/12    _TMP_INFO
@@ -8945,7 +8945,7 @@ __{}eval(($1) & 0xFFFF),eval((($1)>>16) & 0xFFFF),{dnl
 __{}__{}define({_TMP_B},12){}dnl
 __{}__{}define({_TMP_J},eval(42+$3)){}dnl
 __{}__{}define({_TMP_NJ},73){}dnl
-__{}__{}define({_TMP_HL_CODE},{   # hi16(d1) == lo16(d1)
+__{}__{}define({_TMP_HL_CODE},{   ;# hi16(d1) == lo16(d1)
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO   A = 0
 __{}__{}__{}    sbc  HL{,} DE         ; 2:15      _TMP_INFO   lo16(d1)-hi16(d1)
 __{}__{}__{}    add  HL{,} DE         ; 1:11      _TMP_INFO
@@ -8958,7 +8958,7 @@ __{}__{}define({_TMP_B},12){}dnl
 __{}__{}define({_TMP_J},eval(27+$3)){}dnl
 __{}__{}define({_TMP_NJ},58){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
-__{}__{}define({_TMP_HL_CODE},{   # 4th byte zero
+__{}__{}define({_TMP_HL_CODE},{   ;# 4th byte zero
 __{}__{}__{}    ld    A{,} __HEX_E($1)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   E             ; 1:4       _TMP_INFO   E = __HEX_E($1)
 __{}__{}__{}    or    D             ; 1:4       _TMP_INFO   D = 0
@@ -8971,7 +8971,7 @@ __{}__{}define({_TMP_B},12){}dnl
 __{}__{}define({_TMP_J},eval(27+$3)){}dnl
 __{}__{}define({_TMP_NJ},58){}dnl
 __{}__{}define({_TMP_ZERO},{0}){}dnl
-__{}__{}define({_TMP_HL_CODE},{   # 3th byte zero
+__{}__{}define({_TMP_HL_CODE},{   ;# 3th byte zero
 __{}__{}__{}    ld    A{,} __HEX_D($1)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   D             ; 1:4       _TMP_INFO   D = __HEX_D($1)
 __{}__{}__{}    or    E             ; 1:4       _TMP_INFO   E = 0
@@ -8983,7 +8983,7 @@ __{}eval(($1) & 0xFF00),{0},{dnl
 __{}__{}define({_TMP_B},12){}dnl
 __{}__{}define({_TMP_J},eval(27+$3)){}dnl
 __{}__{}define({_TMP_NJ},58){}dnl
-__{}__{}define({_TMP_HL_CODE},{   # 2nd byte zero
+__{}__{}define({_TMP_HL_CODE},{   ;# 2nd byte zero
 __{}__{}__{}    ld    A{,} __HEX_L($1)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   L             ; 1:4       _TMP_INFO   L = __HEX_L($1)
 __{}__{}__{}    or    H             ; 1:4       _TMP_INFO   H = 0
@@ -8995,7 +8995,7 @@ __{}eval(($1) & 0xFF),{0},{dnl
 __{}__{}define({_TMP_B},12){}dnl
 __{}__{}define({_TMP_J},eval(27+$3)){}dnl
 __{}__{}define({_TMP_NJ},58){}dnl
-__{}__{}define({_TMP_HL_CODE},{   # 1st byte zero
+__{}__{}define({_TMP_HL_CODE},{   ;# 1st byte zero
 __{}__{}__{}    ld    A{,} __HEX_H($1)       ; 2:7       _TMP_INFO
 __{}__{}__{}    xor   H             ; 1:4       _TMP_INFO   H = __HEX_H($1)
 __{}__{}__{}    or    L             ; 1:4       _TMP_INFO   L = 0
@@ -9007,7 +9007,7 @@ __{}{dnl
 __{}__{}define({_TMP_B},15){}dnl
 __{}__{}define({_TMP_J},52){}dnl
 __{}__{}define({_TMP_NJ},82){}dnl
-__{}__{}define({_TMP_HL_CODE},{   # default version
+__{}__{}define({_TMP_HL_CODE},{   ;# default version
 __{}__{}__{}    push HL             ; 1:11      _TMP_INFO
 __{}__{}__{}    xor   A             ; 1:4       _TMP_INFO
 __{}__{}__{}    ld   BC{,} __HEX_HL($1)     ; 3:10      _TMP_INFO   lo16($1)

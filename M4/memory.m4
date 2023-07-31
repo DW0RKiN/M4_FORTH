@@ -2541,7 +2541,7 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1):_TYP_SINGLE,1:fast,{
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}__LD_REG16({HL},$1){}dnl
-__{}__{}                       ;[10:47]     __INFO  ( x -- x+$1 )  # fast version can be changed with "define({_TYP_SINGLE},{default})"
+__{}__{}                       ;[10:47]     __INFO  ( x -- x+$1 )  ;# fast version can be changed with "define({_TYP_SINGLE},{default})"
 __{}__{}    ld    A, L          ; 1:4       __INFO
 __{}__{}    ld    B, H          ; 1:4       __INFO{}dnl
 __{}__{}__CODE_16BIT
@@ -2553,7 +2553,7 @@ __{}__{}    ld    H, A          ; 1:4       __INFO},
 __{}__IS_MEM_REF($1),1,{
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}__LD_REG16({HL},$1){}dnl
-__{}__{}                        ;[9:49]     __INFO  ( x -- x+$1 )  # default version can be changed with "define({_TYP_SINGLE},{fast})"
+__{}__{}                        ;[9:49]     __INFO  ( x -- x+$1 )  ;# default version can be changed with "define({_TYP_SINGLE},{fast})"
 __{}__{}    ld    C, L          ; 1:4       __INFO
 __{}__{}    ld    B, H          ; 1:4       __INFO{}dnl
 __{}__{}__CODE_16BIT
@@ -2581,7 +2581,7 @@ __{}__{}    ld    B, 0x00       ; 2:7       __INFO
 __{}__{}    ld    C, A          ; 1:4       __INFO
 __{}__{}    add  HL, BC         ; 1:11      __INFO},
 __{}_TYP_SINGLE,fast,{
-__{}__{}                        ;[8:33]     __INFO  ( x -- x+($1) )  # fast version can be changed with "define({_TYP_SINGLE},{default})"
+__{}__{}                        ;[8:33]     __INFO  ( x -- x+($1) )  ;# fast version can be changed with "define({_TYP_SINGLE},{default})"
 __{}__{}    ld    A,format({%-12s},($1)); 3:13      __INFO
 __{}__{}    add   A, L          ; 1:4       __INFO
 __{}__{}    ld    L, A          ; 1:4       __INFO
@@ -2589,7 +2589,7 @@ __{}__{}    adc   A, H          ; 1:4       __INFO
 __{}__{}    sub   L             ; 1:4       __INFO
 __{}__{}    ld    H, A          ; 1:4       __INFO},
 __{}{
-__{}__{}                        ;[7:35]     __INFO  ( x -- x+($1) )  # default version can be changed with "define({_TYP_SINGLE},{fast})"
+__{}__{}                        ;[7:35]     __INFO  ( x -- x+($1) )  ;# default version can be changed with "define({_TYP_SINGLE},{fast})"
 __{}__{}    ld    A,format({%-12s},($1)); 3:13      __INFO
 __{}__{}    ld    C, A          ; 1:4       __INFO
 __{}__{}    ld    B, 0x00       ; 2:7       __INFO
@@ -2614,7 +2614,7 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__IS_MEM_REF($1):_TYP_SINGLE,1:fast,{
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}__LD_REG16({HL},$1){}dnl
-__{}__{}                       ;[10:47]     __INFO  ( x -- x-$1 )  # fast version can be changed with "define({_TYP_SINGLE},{default})"
+__{}__{}                       ;[10:47]     __INFO  ( x -- x-$1 )  ;# fast version can be changed with "define({_TYP_SINGLE},{default})"
 __{}__{}    ld    A, L          ; 1:4       __INFO
 __{}__{}    ld    B, H          ; 1:4       __INFO{}dnl
 __{}__{}__CODE_16BIT
@@ -2627,7 +2627,7 @@ __{}__IS_MEM_REF($1),1,{
 __{}__{}define({_TMP_INFO},__INFO){}dnl
 __{}__{}__LD_REG16({BC},$1){}dnl
 __{}__{}                        ;[9:50]     __INFO  ( x -- x-$1 ){}dnl
-__{}__{}__CODE_16BIT{}  # default version can be changed with "define({_TYP_SINGLE},{fast})"
+__{}__{}__CODE_16BIT{}  ;# default version can be changed with "define({_TYP_SINGLE},{fast})"
 __{}__{}    ld    A,(BC)        ; 1:7       __INFO
 __{}__{}    ld    C, A          ; 1:4       __INFO
 __{}__{}    xor   A             ; 1:4       __INFO
@@ -3495,7 +3495,7 @@ __{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*19.5+(u>>9)*11] ))_
 __{}__TMP_CODE{}dnl
 __{}},
 __{}{
-__{}                      ;[20:90+u*21] __INFO  ( addr u char -- )  # default version can be changed with "define({_TYP_SINGLE},{small})"
+__{}                      ;[20:90+u*21] __INFO  ( addr u char -- )  ;# default version can be changed with "define({_TYP_SINGLE},{small})"
 __{}    ld    A, L          ; 1:4       __INFO
 __{}    pop  HL             ; 1:10      __INFO  HL = from
 __{}    dec  DE             ; 1:6       __INFO  0xFF01..0x0000 -> zero flag
@@ -3578,7 +3578,7 @@ __{}__{}    jr    z, format({%-11s},$+}eval(__SUM_BYTES+2){); 2:7/12    __INFO  
 __{}__{}__TMP_CODE_END}){}dnl
 __{}__add({__SUM_BYTES},1+1+1+2+1+1){}dnl
 __{}__add({__SUM_CLOCKS},6+4+4+7+10+10){}dnl
-__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*21] ))__INFO  ( addr u -- )  char = $1  # default version, change: "define({_TYP_SINGLE},{small})"
+__{}format({%36s},;[__SUM_BYTES:format({%-8s},__SUM_CLOCKS+u*21] ))__INFO  ( addr u -- )  char = $1  ;# default version, change: "define({_TYP_SINGLE},{small})"
 __{}__TMP_CODE{}dnl
 __{}}){}dnl
 }){}dnl
@@ -7393,7 +7393,7 @@ __{}__{}__RESET_ADD_LD_REG16{}dnl
 __{}__{}__ADD_LD_REG16(                {BC},$3){}dnl
 __{}__{}__ADD_LD_REG16(        {HL},$1,{BC},$3){}dnl
 __{}__{}__ADD_LD_REG16({DE},$2,{HL},$1,{BC},$3){}dnl
-__{}__{}format({%32s},;[eval(__SUM_BYTES_16BIT+14)]:[eval(68+__SUM_CLOCKS_16BIT)+u*42]) __INFO   # default version
+__{}__{}format({%32s},;[eval(__SUM_BYTES_16BIT+14)]:[eval(68+__SUM_CLOCKS_16BIT)+u*42]) __INFO   ;# default version
 __{}__{}    push DE             ; 1:11      __INFO   ( -- )  from = $1, to = $2, u = $3 words
 __{}__{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__LD_REG16({BC},$3){}dnl
@@ -7472,7 +7472,7 @@ __{}__{}__{}__RESET_ADD_LD_REG16{}dnl
 __{}__{}__{}__ADD_LD_REG16(                {BC},2*$3){}dnl
 __{}__{}__{}__ADD_LD_REG16(        {HL},$1,{BC},2*$3){}dnl
 __{}__{}__{}__ADD_LD_REG16({DE},$2,{HL},$1,{BC},2*$3){}dnl
-__{}__{}__{}                      format({%-13s},;[eval(__SUM_BYTES_16BIT+6)]:[eval(37+__SUM_CLOCKS_16BIT+$3*42)]) __INFO   # default version
+__{}__{}__{}                      format({%-13s},;[eval(__SUM_BYTES_16BIT+6)]:[eval(37+__SUM_CLOCKS_16BIT+$3*42)]) __INFO   ;# default version
 __{}__{}__{}    push DE             ; 1:11      __INFO   ( -- )  from = $1, to = $2, u = $3 words
 __{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
 __{}__{}__{}__LD_REG16({BC},2*$3){}dnl
@@ -7628,7 +7628,7 @@ __{}__{}    dec  BC             ; 1:6       __INFO
 __{}__{}    ld   format({%-15s},($2){,} BC); 4:20      __INFO},
 __{}{
 __{}__{}                       ;[12:58]     __INFO   ( -- )  ($2) += $1
-__{}__{}    ld   BC, format({%-11s},$2); 3:10      __INFO   # default version
+__{}__{}    ld   BC, format({%-11s},$2); 3:10      __INFO   ;# default version
 __{}__{}    ld    A,(BC)        ; 1:7       __INFO
 __{}__{}ifelse(__IS_NUM($1),1,{dnl
 __{}__{}__{}    add   A, __HEX_L($1)       ; 2:7       __INFO   lo($1)},
