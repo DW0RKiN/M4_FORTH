@@ -504,38 +504,45 @@ dnl # ( -- )
 dnl # 0 5 do i . -1 +loop --> 5 4 3 2 1 0
 define({__ASM_TOKEN_SUB1_ADDMLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
-ifelse(__GET_LOOP_END($1),{},{
-idx{}$1 EQU $+1          ;[20:78/57] __INFO
-    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
-    dec  BC             ; 1:6       __INFO   index--
-    ld  [idx{}$1], BC    ; 4:20      __INFO   save index
-    ld    A, C          ; 1:4       __INFO   lo new index
-stp_lo{}$1 EQU $+1       ;           __INFO
-    xor  0xFF           ; 2:7       __INFO   lo stop-1
-    jp   nz, do{}$1      ; 3:10      __INFO
-    ld    A, B          ; 1:4       __INFO   hi new index
-stp_hi{}$1 EQU $+1       ;           __INFO
-    xor  0xFF           ; 2:7       __INFO   hi stop-1},
-{dnl
-__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
-define({__TEMP},_TMP_J1+4*_TMP_BEST_B+46){}dnl
-__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1),8,36,0,0){}dnl
-ifelse(eval(__TEMP<=_TMP_J1+4*_TMP_BEST_B),{1},{
-__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
-idx{}$1 EQU $+1         ;[eval(8+_TMP_BEST_B):eval(36+_TMP_BEST_C)]     __INFO   ( __GET_LOOP_END($1) index -- )
-    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
-    dec  BC             ; 1:6       __INFO   index++
-    ld  [idx{}$1], BC    ; 4:20      __INFO   save index
-__{}_TMP_BEST_CODE},
-{
-idx{}$1 EQU $+1         ;[eval(3+_TMP_BEST_B):eval(10+_TMP_BEST_C)]     __INFO   ( __GET_LOOP_END($1) index -- )
-    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
-__{}_TMP_BEST_CODE
-    dec  BC             ; 1:6       __INFO   index++
-    ld  [idx{}$1], BC    ; 4:20      __INFO   save index})})
-    jp   nz, do{}$1      ; 3:10      __INFO
-leave{}$1:               ;           __INFO
-exit{}$1:                ;           __INFO}){}dnl
+__{}ifelse(__GET_LOOP_END($1),{},{
+__{}__{}idx{}$1 EQU $+1          ;[20:78/57] __INFO
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}__{}    dec  BC             ; 1:6       __INFO   index--
+__{}__{}    ld  [idx{}$1], BC    ; 4:20      __INFO   save index
+__{}__{}    ld    A, C          ; 1:4       __INFO   lo new index
+__{}__{}stp_lo{}$1 EQU $+1       ;           __INFO
+__{}__{}    xor  0xFF           ; 2:7       __INFO   lo stop-1
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}__{}    ld    A, B          ; 1:4       __INFO   hi new index
+__{}__{}stp_hi{}$1 EQU $+1       ;           __INFO
+__{}__{}    xor  0xFF           ; 2:7       __INFO   hi stop-1},
+__{}{dnl
+__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
+__{}__{}define({$0_B},eval(_TMP_BEST_B+8)){}dnl
+__{}__{}define({$0_C},eval(_TMP_BEST_C+36)){}dnl
+__{}__{}define({$0_P},eval($0_C+__BYTE_PRICE*$0_B)){}dnl
+__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1),8,36,0,36){}dnl
+__{}__{}define({$0_B2},eval(_TMP_BEST_B+3)){}dnl
+__{}__{}define({$0_C2},eval(_TMP_BEST_C+10)){}dnl
+__{}__{}define({$0_P2},eval($0_C2+__BYTE_PRICE*$0_B2)){}dnl
+__{}__{}ifelse(eval($0_P<=_$0_P2),{1},{
+__{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
+__{}__{}__{}idx{}$1 EQU $+1         ;[$0_B:$0_C]     __INFO   ( __GET_LOOP_END($1) index -- )
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}__{}__{}    dec  BC             ; 1:6       __INFO   index++
+__{}__{}__{}    ld  [idx{}$1], BC    ; 4:20      __INFO   save index
+__{}__{}__{}_TMP_BEST_CODE},
+__{}__{}{
+__{}__{}__{}idx{}$1 EQU $+1         ;[$0_B2:$0_C2]     __INFO   ( __GET_LOOP_END($1) index -- )
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}__{}__{}_TMP_BEST_CODE
+__{}__{}__{}    dec  BC             ; 1:6       __INFO   index++
+__{}__{}__{}    ld  [idx{}$1], BC    ; 4:20      __INFO   save index{}dnl
+__{}__{}}){}dnl
+__{}})
+__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}leave{}$1:               ;           __INFO
+__{}exit{}$1:                ;           __INFO}){}dnl
 dnl
 dnl
 dnl # ( -- )

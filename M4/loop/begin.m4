@@ -3297,7 +3297,7 @@ __{}define({__INFO},{dult_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:67]     Du< while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:67]     Du< while BEGIN_STACK   ( ud2 ud1 -- )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du< while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du< while BEGIN_STACK   h2
     call FCE_DULT       ; 3:17      Du< while BEGIN_STACK   no carry if false
@@ -3305,7 +3305,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
     pop  DE             ; 1:10      Du< while BEGIN_STACK
     jp   nc, break{}BEGIN_STACK   ; 3:10      Du< while},
 {
-                       ;[13:81]     Du< while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[13:81]     Du< while BEGIN_STACK   ( ud2 ud1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du< while BEGIN_STACK   lo_2
     ld    A, C          ; 1:4       Du< while BEGIN_STACK   d2<d1 --> d2-d1<0 --> [SP]BC-DEHL<0 --> no carry if false
     sub   L             ; 1:4       Du< while BEGIN_STACK   C-L<0 --> no carry if false
@@ -3328,7 +3328,7 @@ __{}define({__INFO},{duge_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:67]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:67]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du>= while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du>= while BEGIN_STACK   h2
     call FCE_DULT       ; 3:17      Du>= while BEGIN_STACK   D< carry if true --> D>= carry if false
@@ -3336,7 +3336,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
     pop  DE             ; 1:10      Du>= while BEGIN_STACK
     jp    c, break{}BEGIN_STACK   ; 3:10      Du>= while},
 {
-                       ;[13:81]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[13:81]     Du>= while BEGIN_STACK   ( ud2 ud1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du>= while BEGIN_STACK   lo_2
     ld    A, C          ; 1:4       Du>= while BEGIN_STACK   d2>=d1 --> d2-d1>=0 --> [SP]BC-DEHL>=0 --> carry if false
     sub   L             ; 1:4       Du>= while BEGIN_STACK   C-L>=0 --> carry if false
@@ -3359,7 +3359,7 @@ __{}define({__INFO},{dule_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:67]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:67]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du<= while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du<= while BEGIN_STACK   h2
     call FCE_DUGT       ; 3:17      Du<= while BEGIN_STACK   D> carry if true --> D<= carry if false
@@ -3367,7 +3367,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
     pop  DE             ; 1:10      Du<= while BEGIN_STACK
     jp    c, break{}BEGIN_STACK   ; 3:10      Du<= while},
 {
-                       ;[13:88]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[13:88]     Du<= while BEGIN_STACK   ( ud2 ud1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du<= while BEGIN_STACK   lo_2
     or    A             ; 1:4       Du<= while BEGIN_STACK
     sbc  HL, BC         ; 2:15      Du<= while BEGIN_STACK   ud2<=ud1 --> 0<=ud1-ud2 --> 0<=DEHL-[SP]BC --> carry if false
@@ -3389,7 +3389,7 @@ __{}define({__INFO},{dugt_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:67]     Du> while BEGIN_STACK   ( ud2 ud1 -- )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:67]     Du> while BEGIN_STACK   ( ud2 ud1 -- )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      Du> while BEGIN_STACK   l2
     pop  AF             ; 1:10      Du> while BEGIN_STACK   h2
     call FCE_DUGT       ; 3:17      Du> while BEGIN_STACK   no carry if false
@@ -3397,7 +3397,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
     pop  DE             ; 1:10      Du> while BEGIN_STACK
     jp   nc, break{}BEGIN_STACK   ; 3:10      Du> while},
 {
-                       ;[13:88]     Du> while BEGIN_STACK   ( ud2 ud1 -- )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[13:88]     Du> while BEGIN_STACK   ( ud2 ud1 -- )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      Du> while BEGIN_STACK   lo_2
     or    A             ; 1:4       Du> while BEGIN_STACK
     sbc  HL, BC         ; 2:15      Du> while BEGIN_STACK   ud2>ud1 --> 0>ud1-ud2 --> 0>DEHL-[SP]BC --> no carry if false
@@ -3423,7 +3423,7 @@ __{}define({__INFO},{4dup_deq_while}){}dnl
 __{}ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}__{}  .error {$0}($@) for non-existent {BEGIN}},
 __{}_TYP_DOUBLE,{function},{__def({USE_FCE_DEQ},{yes})
-__{}                       ;[10:69]     4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+__{}                       ;[10:69]     4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
 __{}    pop  BC             ; 1:10      4dup D= while BEGIN_STACK
 __{}    pop  AF             ; 1:10      4dup D= while BEGIN_STACK
 __{}    push AF             ; 1:11      4dup D= while BEGIN_STACK
@@ -3431,7 +3431,7 @@ __{}    push BC             ; 1:11      4dup D= while BEGIN_STACK
 __{}    call FCE_DEQ        ; 3:17      4dup D= while BEGIN_STACK
 __{}    jp   nz, break{}BEGIN_STACK   ; 3:10      4dup D= while},
 __{}{
-__{}                   ;[16:132/73,132] 4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+__{}                   ;[16:132/73,132] 4dup D= while BEGIN_STACK   ( d2 d1 -- d2 d1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
 __{}    or   A              ; 1:4       4dup D= while BEGIN_STACK   h2 l2 . h1 l1
 __{}    pop  BC             ; 1:10      4dup D= while BEGIN_STACK   h2    . h1 l1  BC = l2 = lo16(d2)
 __{}    sbc  HL, BC         ; 2:15      4dup D= while BEGIN_STACK   h2    . h1 --  cp l1-l2
@@ -3457,7 +3457,7 @@ __{}define({__INFO},{4dup_dne_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
-                       ;[10:69]     4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{function})" version can be changed with small,fast,default
+                       ;[10:69]     4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   ;# "define({_TYP_DOUBLE},{function})" version can be changed with small,fast,default
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK
     pop  AF             ; 1:10      4dup D<> while BEGIN_STACK
     push AF             ; 1:11      4dup D<> while BEGIN_STACK
@@ -3465,7 +3465,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
     call FCE_DEQ        ; 3:17      4dup D<> while BEGIN_STACK   D= zero if true --> D<> zero if false
     jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while},
 _TYP_DOUBLE,{small},{
-                   ;[16:73,132/132] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{small})" version can be changed with function,fast,default
+                   ;[16:73,132/132] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   ;# "define({_TYP_DOUBLE},{small})" version can be changed with function,fast,default
     or   A              ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2    . h1 l1  BC = l2 = lo16(d2)
     sbc  HL, BC         ; 2:15      4dup D<> while BEGIN_STACK   h2    . h1 --  cp l1-l2
@@ -3478,7 +3478,7 @@ _TYP_DOUBLE,{small},{
     push BC             ; 1:11      4dup D<> while BEGIN_STACK   h2 l2 . h1 l1
     jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while BEGIN_STACK   h2 l2 . h1 l1},
 _TYP_DOUBLE,{fast},{
-            ;[23:41,56,113,126/126] 4dup D<> while BEGIN_STACK  ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{fast})" version can be changed with function,small,default
+            ;[23:41,56,113,126/126] 4dup D<> while BEGIN_STACK  ( d2 d1 -- d2 d1 )   ;# "define({_TYP_DOUBLE},{fast})" version can be changed with function,small,default
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2    . h1 l1  BC= lo(d2) = l2
     push BC             ; 1:11      4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  A = lo(l2)
@@ -3498,7 +3498,7 @@ _TYP_DOUBLE,{fast},{
     sub   D             ; 1:4       4dup D<> while BEGIN_STACK   h2 l2 . h1 l1  hi(h2) - hi(h1)
     jp    z, break{}BEGIN_STACK   ; 3:10      4dup D<> while},
 {
-            ;[21:51,66,123,122/122] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   # "define({_TYP_DOUBLE},{default})" version can be changed with function,small,fast
+            ;[21:51,66,123,122/122] 4dup D<> while BEGIN_STACK   ( d2 d1 -- d2 d1 )   ;# "define({_TYP_DOUBLE},{default})" version can be changed with function,small,fast
     pop  BC             ; 1:10      4dup D<> while BEGIN_STACK   h2       . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  A = lo(l2)
     sub   L             ; 1:4       4dup D<> while BEGIN_STACK   h2       . h1 l1  lo(l2) - lo(l1)
@@ -3651,7 +3651,7 @@ __{}define({__INFO},{4dup_dult_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:69]     4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du< while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du< while BEGIN_STACK
     push AF             ; 1:11      4dup Du< while BEGIN_STACK
@@ -3659,7 +3659,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
     call FCE_DULT       ; 3:17      4dup Du< while BEGIN_STACK   no carry if false
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du< while},
 {
-                       ;[15:101]    4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[15:101]    4dup Du< while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du< while BEGIN_STACK   ud2 < ud1 --> ud2-ud1<0 --> [SP]BC-DEHL<0 --> no carry if false
     ld    A, C          ; 1:4       4dup Du< while BEGIN_STACK
     sub   L             ; 1:4       4dup Du< while BEGIN_STACK   C-L<0 --> no carry if false
@@ -3686,7 +3686,7 @@ __{}define({__INFO},{4dup_duge_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
-                       ;[10:69]     4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du>= while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du>= while BEGIN_STACK
     push AF             ; 1:11      4dup Du>= while BEGIN_STACK
@@ -3694,7 +3694,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DULT},,define({USE_FCE_DULT},{yes}))
     call FCE_DULT       ; 3:17      4dup Du>= while BEGIN_STACK   D< carry if true --> D>= carry if false
     jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du>= while},
 {
-                       ;[15:101]    4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[15:101]    4dup Du>= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du>= while BEGIN_STACK   ud2 >= ud1 --> ud2-ud1>=0 --> [SP]BC-DEHL>=0 --> carry if false
     ld    A, C          ; 1:4       4dup Du>= while BEGIN_STACK
     sub   L             ; 1:4       4dup Du>= while BEGIN_STACK   C-L>=0 --> carry if false
@@ -3721,7 +3721,7 @@ __{}define({__INFO},{4dup_dule_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:69]     4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du<= while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du<= while BEGIN_STACK
     push AF             ; 1:11      4dup Du<= while BEGIN_STACK
@@ -3729,7 +3729,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
     call FCE_DUGT       ; 3:17      4dup Du<= while BEGIN_STACK   D> carry if true --> D<= carry if false
     jp    c, break{}BEGIN_STACK   ; 3:10      4dup Du<= while},
 {
-                       ;[15:101]    4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[15:101]    4dup Du<= while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du<= while BEGIN_STACK   ud2 <= ud1 --> 0<=ud1-ud2 --> 0<=DEHL-[SP]BC --> carry if false
     ld    A, L          ; 1:4       4dup Du<= while BEGIN_STACK
     sub   C             ; 1:4       4dup Du<= while BEGIN_STACK   0<=L-C --> carry if false
@@ -3756,7 +3756,7 @@ __{}define({__INFO},{4dup_dugt_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
 __{}.error {$0}($@) for non-existent {BEGIN}},
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
-                       ;[10:69]     4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                       ;[10:69]     4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup Du> while BEGIN_STACK
     pop  AF             ; 1:10      4dup Du> while BEGIN_STACK
     push AF             ; 1:11      4dup Du> while BEGIN_STACK
@@ -3764,7 +3764,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DUGT},,define({USE_FCE_DUGT},{yes}))
     call FCE_DUGT       ; 3:17      4dup Du> while BEGIN_STACK   no carry if false
     jp   nc, break{}BEGIN_STACK   ; 3:10      4dup Du> while},
 {
-                       ;[15:101]    4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[15:101]    4dup Du> while BEGIN_STACK   ( ud2 ud1 -- ud2 ud1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup Du> while BEGIN_STACK   ud2 > ud1 --> 0>ud1-ud2 --> 0>DEHL-[SP]BC --> no carry if false
     ld    A, L          ; 1:4       4dup Du> while BEGIN_STACK
     sub   C             ; 1:4       4dup Du> while BEGIN_STACK   0>L-C --> no carry if false
@@ -4034,7 +4034,7 @@ __{}define({__INFO},{2dup_pushdot_dlt_while}){}dnl
 ifelse(BEGIN_STACK,{BEGIN_STACK},{
     .error {$0}($@) for non-existent {BEGIN}},
 __HAS_PTR($1),{1},{
-                        ;[22:92]    2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # version with constant address
+                        ;[22:92]    2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   ;# version with constant address
     ld    A,format({%-12s}, $1); 3:13      2dup $1 > while BEGIN_STACK
     sub   L             ; 1:4       2dup $1 > while BEGIN_STACK    L>(addr+0) --> 0>A-L --> no carry if false
     ld    A,format({%-12s},__PTR_ADD($1,1)); 3:13      2dup $1 > while BEGIN_STACK
@@ -4050,7 +4050,7 @@ __HAS_PTR($1),{1},{
     jp    p, break{}BEGIN_STACK   ; 3:10      2dup $1 > while BEGIN_STACK    no sign --> false},
 
 _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
-                       ;[10:69]     2dup D> while BEGIN_STACK   ( d1 -- d1 )   # function version can be changed with "define({_TYP_DOUBLE},{default})" or small
+                       ;[10:69]     2dup D> while BEGIN_STACK   ( d1 -- d1 )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})" or small
     pop  BC             ; 1:10      2dup D> while BEGIN_STACK
     pop  AF             ; 1:10      2dup D> while BEGIN_STACK
     push AF             ; 1:11      2dup D> while BEGIN_STACK
@@ -4058,7 +4058,7 @@ _TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     call FCE_DGT        ; 3:17      2dup D> while BEGIN_STACK   no carry if false
     jp   nc, break{}BEGIN_STACK   ; 3:10      2dup Du< while},
 _TYP_DOUBLE,{small},{
-                        ;[17:62]    2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # small version can be changed with "define({_TYP_DOUBLE},{function})" or default
+                        ;[17:62]    2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   ;# small version can be changed with "define({_TYP_DOUBLE},{function})" or default
     ld    A, __HEX_L($1)       ; 2:7       2dup $1 > while BEGIN_STACK    DEHL>__HEX_DEHL($1)
     sub   L             ; 1:4       2dup $1 > while BEGIN_STACK    L>A --> A-L<0 --> no carry if false
     ld    A, __HEX_H($1)       ; 2:7       2dup $1 > while BEGIN_STACK
@@ -4075,12 +4075,12 @@ __{}{dnl
 __{}    jp    m, break{}BEGIN_STACK   ; 3:10      2dup $1 > while BEGIN_STACK    negative constant --> sign if false})},
 {
 __{}ifelse(eval(($1)&0x80000000),0,{dnl
-__{}                     ;[20:72/18,72] 2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})" or small
+__{}                     ;[20:72/18,72] 2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})" or small
 __{}    ld    A, D          ; 1:4       2dup $1 > while BEGIN_STACK    DEHL>__HEX_DEHL($1)
 __{}    add   A, A          ; 1:4       2dup $1 > while BEGIN_STACK    check d1 signs
 __{}    jp    c, break{}BEGIN_STACK   ; 3:10      2dup $1 > while BEGIN_STACK    different signs --> negative d1 --> false},
 __{}{dnl
-__{}                     ;[19:20,69/69] 2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   # default version can be changed with "define({_TYP_DOUBLE},{function})" or small
+__{}                     ;[19:20,69/69] 2dup $1 > while BEGIN_STACK    ( d1 -- d1 )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})" or small
 __{}    ld    A, D          ; 1:4       2dup $1 > while BEGIN_STACK    DEHL>__HEX_DEHL($1)
 __{}    add   A, A          ; 1:4       2dup $1 > while BEGIN_STACK    check d1 signs
 __{}    jr   nc, $+17       ; 2:7/12    2dup $1 > while BEGIN_STACK    different signs --> positive d1 --> true})

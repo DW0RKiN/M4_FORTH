@@ -173,11 +173,11 @@ __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    D,[HL]        ; 1:7       __INFO{}dnl
 __{}__{}ifelse(__HAS_PTR(__GET_LOOP_END($1)),1,{define({__P1},0xFFFF)},
 __{}__{}{dnl
-__{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,10,0,0){}dnl  # before index++ (except stop)
+__{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,10,0,0){}dnl  ;# before index++ (except stop)
 __{}__{}__{}define({__P1},_TMP_BEST_P){}dnl
 __{}__{}__{}define({__C1},__EQ_CODE){}dnl
 __{}__{}}){}dnl
-__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),  3,10,do{}$1{}save,0){}dnl  # after index++  (except stop)
+__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),  3,10,do{}$1{}save,0){}dnl  ;# after index++  (except stop)
 __{}__{}define({__P2},_TMP_BEST_P){}dnl
 __{}__{}define({__C2},__EQ_CODE){}dnl
 __{}__{}ifelse(eval(__P1>=__P2),1,{
@@ -259,11 +259,11 @@ __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    D,[HL]        ; 1:7       __INFO{}dnl
 __{}__{}ifelse(__HAS_PTR(__GET_LOOP_END($1)),1,{define({__P1},0xFFFF)},
 __{}__{}{dnl
-__{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,10,do{}$1{}save,0){}dnl  # after index--  (including stop)
+__{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1)-1,3,10,do{}$1{}save,0){}dnl  ;# after index--  (including stop)
 __{}__{}__{}define({__P1},_TMP_BEST_P){}dnl
 __{}__{}__{}define({__C1},__EQ_CODE){}dnl
 __{}__{}}){}dnl
-__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,10,0,0){}dnl    # before index-- (including stop)
+__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,__GET_LOOP_END($1),3,10,0,0){}dnl    ;# before index-- (including stop)
 __{}__{}define({__P2},_TMP_BEST_P){}dnl
 __{}__{}define({__C2},__EQ_CODE){}dnl
 __{}__{}ifelse(eval(__P1>__P2),1,{dnl
