@@ -4929,11 +4929,17 @@ __{}__{}define({_TMP_T1},8){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{{{,}}} _TMP_R1          ; 1:4       _TMP_INFO
 __{}__{}    inc   A             ; 1:4       _TMP_INFO   x[1] = 0xFF})},
-__{}_TMP_N1,0,{dnl
+__{}_TMP_N2:_TMP_N1,{0:0},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+1)){}dnl
 __{}__{}define({_TMP_T1},4){}dnl
 __{}__{}define({__EQ_CODE_1},{
 __{}__{}    ld    A{{{,}}} _TMP_R1          ; 1:4       _TMP_INFO   x[1] = 0})},
+__{}_TMP_N1,0,{dnl
+__{}__{}define({_TMP_B1},eval(_TMP_B2+2)){}dnl
+__{}__{}define({_TMP_T1},8){}dnl
+__{}__{}define({__EQ_CODE_1},{
+__{}__{}    ld    A{{{,}}} _TMP_R1          ; 1:4       _TMP_INFO   x[1] = 0
+__{}__{}    or    A             ; 1:4})},
 __{}_TMP_N2,{255},{dnl
 __{}__{}define({_TMP_B1},eval(_TMP_B2+3)){}dnl
 __{}__{}define({_TMP_T1},11){}dnl
