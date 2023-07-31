@@ -4687,9 +4687,7 @@ dnl #
 dnl #  A, flag, can change C if C is not in $1
 dnl
 define({__EQ_MAKE_CODE},{dnl
-
-errprint(__CR$@__CR)
-
+dnl # errprint(__CR$@__CR)
 __{}undefine({__COMMA}){}dnl
 __{}define({_TMP_R2},substr($1,0,1)){}dnl
 __{}define({_TMP_R1},substr($1,1,1)){}dnl
@@ -4997,6 +4995,7 @@ __{}define({__EQ_BYTES},eval($3+_TMP_B1)){}dnl
 __{}define({__EQ_PRICE},eval(__EQ_PRICE+(64*__EQ_BYTES)+ifelse(_TMP_R2,{L},{1},{0}))){}dnl   # = 16*(clocks + 4*bytes) + 1 if it does not check register L first
 __{}ifelse(debug,-debug,{
 __{}__{}; ------------
+__{}__{}{$0($@)}
 __{}__{}format({%-20s},$1=$2)format({%-10s},t2:_TMP_T2)...clock down code with fail jump
 __{}__{}format({%-20s},{ true:}__EQ_CLOCKS_TRUE)format({%-10s},b1:_TMP_B1)...bytes all  code
 __{}__{}format({%-20s},{ fail:}__EQ_CLOCKS_FAIL)format({%-10s},b2:_TMP_B2)...bytes down code with jump
