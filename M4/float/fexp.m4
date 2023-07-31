@@ -1,7 +1,7 @@
 ifdef({USE_fExp},{{}ifdef({USE_fMul},,define({USE_fMul},{}))
 ; Natural exponential function
 ; Input: HL
-; Output: HL = exp(HL)) +- lowest 2 bit
+; Output: HL = exp[HL]) +- lowest 2 bit
 ; e^((2^e)*m) =
 ; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625))
 ; m1 => b1 = 1, m0.5 => b0.5 = 0 or 1, m0.25 => b0.25 = 0 or 1, ...
@@ -27,19 +27,19 @@ ifdef({USE_fExp},{{}ifdef({USE_fMul},,define({USE_fMul},{}))
 
     ex   DE, HL         ; 1:4
     inc   L             ; 1:4
-    ld    D, (HL)       ; 1:7
+    ld    D, [HL]       ; 1:7
     dec   L             ; 1:4
-    ld    E, (HL)       ; 1:7
+    ld    E, [HL]       ; 1:7
 
 fExp_0_BIT:
     jr    z, fExp_EXIT  ; 2:7/11
 fExp_Loop:
     dec   L             ; 1:4       exp--
-    ld    B, (HL)       ; 1:7
+    ld    B, [HL]       ; 1:7
     dec   L             ; 1:4
     add   A, A          ; 1:4
     jr   nc, fExp_0_BIT ; 2:7/11
-    ld    C, (HL)       ; 1:7
+    ld    C, [HL]       ; 1:7
 
     push HL             ; 1:11
     push AF             ; 1:11
