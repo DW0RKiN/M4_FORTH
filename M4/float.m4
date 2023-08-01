@@ -18,7 +18,7 @@ __{}{dnl
 __{}__{}define({$0_HEX_REAL},$0_ORIG_FHEX)}){}dnl
 __{}dnl
 __{}ifelse($0_SIGN:$0_HEX_REAL,{0x8000:0x0p+0},{
-__{}__{}  .WARNING You are trying to convert "negative zero" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero.{}dnl  
+__{}__{}  .WARNING You are trying to convert "negative zero" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero.{}dnl
 __{}__{}define({$0_RES},FMMIN)},
 __{}$0_HEX_REAL,{0x0p+0},{
 __{}__{}  .WARNING You are trying to convert "positive zero" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero.{}dnl
@@ -33,9 +33,9 @@ __{}$0_HEX_REAL,{nan},{
 __{}__{}  .WARNING You are trying to convert "Not a Number" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero.{}dnl
 __{}__{}define({$0_RES},FPMIN)},
 __{}{dnl
-__{}__{}dnl    # Výpočet exponentu
+__{}__{}dnl    ;# Výpočet exponentu
 __{}__{}define({$0_EXP},{eval(substr($0_HEX_REAL,incr(index($0_HEX_REAL,{p}))) + 0x40)}){}dnl
-__{}__{}dnl    # Výpočet mantisy    
+__{}__{}dnl    ;# Výpočet mantisy
 __{}__{}define({$0_MAN},{substr($0_HEX_REAL,incr(index($0_HEX_REAL,{x})),eval(index($0_HEX_REAL,{p})-index($0_HEX_REAL,{x})-1))}){}dnl
 __{}__{}ifelse(substr($0_MAN,0,2),{1.},{define({$0_MAN},{1}substr($0_MAN,2))}){}dnl
 __{}__{}define({$0_MAN},$0_MAN{000}){}dnl
@@ -89,15 +89,15 @@ __{}__{}ifelse(eval(($0_EXP < 0) && $0_SIGN),1,{
 __{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a negative value closest to zero.{}dnl
 __{}__{}__{}define({$0_RES},FMMIN)},
 __{}__{}eval($0_EXP < 0 ),1,{
-__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a positive value closest to zero.{}dnl    
+__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a positive value closest to zero.{}dnl
 __{}__{}__{}define({$0_RES},FPMIN)},
 __{}__{}eval(($0_EXP > 0x7F) && $0_SIGN ),1,{
 __{}__{}__{}  .WARNING The value "$1" is less than the smallest possible value, so it will be changed to the smallest possible value.{}dnl
-__{}__{}__{}define({$0_RES},FMMAX)},  
+__{}__{}__{}define({$0_RES},FMMAX)},
 __{}__{}eval($0_EXP > 0x7F),1,{
 __{}__{}__{}  .WARNING The value "$1" is greater than the largest possible value, so it will be changed to the largest possible value.{}dnl
-__{}__{}__{}define({$0_RES},FPMAX)},  
-__{}__{}{dnl   # Sestavení hexadecimální hodnoty
+__{}__{}__{}define({$0_RES},FPMAX)},
+__{}__{}{dnl   ;# Sestavení hexadecimální hodnoty
 __{}__{}__{}ifelse($0_NEW_FHEX,$0_ORIG_FHEX,,{define({$0_INFO},{$1 (=}$0_ORIG_FHEX{ ≈ }$0_NEW_FHEX{=}$0_REAL{)})}){}dnl
 __{}__{}__{}define({$0_RES},__HEX_HL($0_SIGN + $0_EXP * 0x100 + $0_MAN)){}dnl
 __{}__{}}){}dnl
@@ -514,14 +514,14 @@ dnl
 define({__ASM_TOKEN_F0EQ},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(TYP_FLOAT,{small},{
-__{}                        ;[6:40]     __INFO   ( f -- flag )  flag: f == +-0e  # version: TYP_FLOAT = small; other: default
+__{}                        ;[6:40]     __INFO   ( f -- flag )  flag: f == +-0e  ;# version: TYP_FLOAT = small; other: default
 __{}    add  HL, HL         ; 1:11      __INFO   sign out
 __{}    ld    A, H          ; 1:4       __INFO
 __{}    dec  HL             ; 1:6       __INFO
 __{}    sub   H             ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
 __{}{
-__{}                        ;[7:34]     __INFO   ( f -- flag )  flag: f == +-0e  # version: TYP_FLOAT = default; other: small
+__{}                        ;[7:34]     __INFO   ( f -- flag )  flag: f == +-0e  ;# version: TYP_FLOAT = default; other: small
 __{}    ld    A, H          ; 1:4       __INFO
 __{}    add   A, A          ; 1:4       __INFO
 __{}    or    L             ; 1:4       __INFO
@@ -540,19 +540,19 @@ dnl
 define({__ASM_TOKEN_F0LT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(TYP_FLOAT,{small},{
-__{}                        ;[6:33]     __INFO   ( f -- flag )  flag: f < +-0e  # version: TYP_FLOAT = small; other: default
+__{}                        ;[6:33]     __INFO   ( f -- flag )  flag: f < +-0e  ;# version: TYP_FLOAT = small; other: default
 __{}    ld    A, H          ; 1:4       __INFO
 __{}    dec  HL             ; 1:6       __INFO
 __{}    and   H             ; 1:4       __INFO   negative without +-0e
 __{}    add   A, A          ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
 __{}TYP_FLOAT,{no_A},{
-__{}                        ;[6:36]     __INFO   ( f -- flag )  flag: f < +-0e  # version: TYP_FLOAT = small; other: default
+__{}                        ;[6:36]     __INFO   ( f -- flag )  flag: f < +-0e  ;# version: TYP_FLOAT = small; other: default
 __{}    ld   BC, 0x7FFF     ; 3:10      __INFO
 __{}    add  HL, BC         ; 1:11      __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
 __{}{
-__{}                        ;[7:30]     __INFO   ( f -- flag )  flag: f < +-0e  # version: TYP_FLOAT = default; other: small
+__{}                        ;[7:30]     __INFO   ( f -- flag )  flag: f < +-0e  ;# version: TYP_FLOAT = default; other: small
 __{}    ld    A, H          ; 1:4       __INFO
 __{}    dec  HL             ; 1:6       __INFO
 __{}    and   H             ; 1:4       __INFO   negative without +-0e
