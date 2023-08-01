@@ -58,9 +58,9 @@ __{}$0_HEX_REAL,{nan},{
 __{}__{}  .WARNING You are trying to convert "Not a Number" to ZX floating point format. It will be converted as a zero.{}dnl
 __{}__{}__SET_ZXFLOAT(0,0,0)},
 __{}{dnl
-__{}__{}dnl    # Výpočet exponentu
+__{}__{}dnl    ;# Výpočet exponentu
 __{}__{}define({$0_EXP},{eval(substr($0_HEX_REAL,incr(index($0_HEX_REAL,{p}))) + 0x81)}){}dnl
-__{}__{}dnl    # Výpočet mantisy    
+__{}__{}dnl    ;# Výpočet mantisy
 __{}__{}define({$0_MAN},{substr($0_HEX_REAL,incr(index($0_HEX_REAL,{x})),eval(index($0_HEX_REAL,{p})-index($0_HEX_REAL,{x})-1))}){}dnl
 __{}__{}ifelse(substr($0_MAN,0,2),{1.},{dnl
 __{}__{}__{}define({$0_MAN},substr($0_MAN,2))},
@@ -83,7 +83,7 @@ __{}__{}ifelse(1,0,{errprint({
 })}){}dnl
 __{}__{}dnl
 __{}__{}ifelse(eval($0_EXP <= 0),1,{
-__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a zero.{}dnl   
+__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a zero.{}dnl
 __{}__{}__{}__SET_ZXFLOAT(0,0,0)},
 __{}__{}eval(($0_EXP > 0xFF) && $0_SIGN ),1,{
 __{}__{}__{}  .WARNING The value "$1" is less than the smallest possible value, so it will be changed to the smallest possible value.{}dnl
@@ -91,7 +91,7 @@ __{}__{}__{}__SET_ZXFLOAT(1,0xFF,0x7FFFFFFF)},
 __{}__{}eval($0_EXP > 0xFF),1,{
 __{}__{}__{}  .WARNING The value "$1" is greater than the largest possible value, so it will be changed to the largest possible value.{}dnl
 __{}__{}__{}__SET_ZXFLOAT(0,0xFF,0x7FFFFFFF)},
-__{}__{}{dnl   # Sestavení hexadecimální hodnoty
+__{}__{}{dnl   ;# Sestavení hexadecimální hodnoty
 __{}__{}__{}__SET_ZXFLOAT($0_SIGN,$0_EXP,$0_MAN){}dnl
 __{}__{}}){}dnl
 __{}}){}dnl
