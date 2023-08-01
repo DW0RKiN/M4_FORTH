@@ -230,3 +230,9 @@ __{}define({__VERBOSE_LEVEL},{$1})}){}dnl
 dnl
 dnl
 dnl
+define({SEPARATE},{dnl
+__{}define({__SEPARATE_TOKEN},{$1})}){}dnl
+dnl
+dnl
+dnl
+dnl
