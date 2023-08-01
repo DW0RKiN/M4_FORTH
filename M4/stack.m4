@@ -17,13 +17,13 @@ __{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},eval($1))},
 
 __{}eval($#>=1),1,{dnl
 __{}__{}ifelse(dnl
-__{}__{}{$1},__CR,{dnl  #  push(\n)
+__{}__{}{$1},__CR,{dnl  ;#  push(\n)
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
 
-__{}__{}{$1},{"}__CR{"},{dnl  #  push("\n")
+__{}__{}{$1},{"}__CR{"},{dnl  ;#  push("\n")
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
 
-__{}__{}{$1},{'}__CR{'},{dnl  #  push('\n')
+__{}__{}{$1},{'}__CR{'},{dnl  ;#  push('\n')
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char new line},0x0D)},
 
 __{}__{}{$1},{,},{dnl  ;#  push(',')
@@ -32,11 +32,11 @@ __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char comma},0x2C)},
 __{}__{}{$1},{'\},{dnl  ;#  push(')')
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{char right parenthesis},0x29)},
 
-__{}__{}regexp({$1},{^'.+'$}),0,{dnl  #  push('char')
+__{}__{}regexp({$1},{^'.+'$}),0,{dnl  ;#  push('char')
 __{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
-__{}__{}regexp({$1},{^".+"$}),0,{dnl  #  push("char")
+__{}__{}regexp({$1},{^".+"$}),0,{dnl  ;#  push("char")
 __{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
 __{}__{}__ADD_TOKEN({__TOKEN_PUSHS},__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
@@ -714,7 +714,7 @@ __{}pushdef({__SUM_CLOCKS},33){}dnl
 __{}pushdef({__SUM_BYTES},3){}dnl
 __{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
 __{}define({$0_CODE_1},{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # DE DE HL
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  ;# DE DE HL
 __{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__LD_R16(            DE,$1){}dnl
 __{}__{}{
@@ -729,7 +729,7 @@ __{}pushdef({__SUM_CLOCKS},33){}dnl
 __{}pushdef({__SUM_BYTES},3){}dnl
 __{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
 __{}define({$0_CODE_2},{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # DE HL DE
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  ;# DE HL DE
 __{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__LD_R16(            DE,$1){}dnl
 __{}__{}{
@@ -750,7 +750,7 @@ __{}pushdef({__SUM_CLOCKS},33){}dnl
 __{}pushdef({__SUM_BYTES},3){}dnl
 __{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
 __{}define({$0_CODE_3},{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # HL DE DE
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  ;# HL DE DE
 __{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__LD_R16(            HL,$1){}dnl
 __{}__{}{
@@ -772,7 +772,7 @@ __{}pushdef({__SUM_CLOCKS},33){}dnl
 __{}pushdef({__SUM_BYTES},3){}dnl
 __{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
 __{}define({$0_CODE_4},{
-__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # HL HL DE
+__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  ;# HL HL DE
 __{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__LD_R16(            HL,$1){}dnl
 __{}__{}{
@@ -796,7 +796,7 @@ __{}__{}pushdef({__SUM_CLOCKS},33){}dnl
 __{}__{}pushdef({__SUM_BYTES},3){}dnl
 __{}__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
 __{}__{}define({$0_CODE_5},{
-__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # DE H DE L
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  ;# DE H DE L
 __{}__{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__{}__LD_R16(                                       DE,$1){}dnl
 __{}__{}__{}{
@@ -821,7 +821,7 @@ __{}__{}pushdef({__SUM_CLOCKS},33){}dnl
 __{}__{}pushdef({__SUM_BYTES},3){}dnl
 __{}__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
 __{}__{}define({$0_CODE_6},{
-__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # DE L DE H
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  ;# DE L DE H
 __{}__{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__{}__LD_R16(                                       DE,$1){}dnl
 __{}__{}__{}{
@@ -849,7 +849,7 @@ __{}__{}pushdef({__SUM_CLOCKS},33){}dnl
 __{}__{}pushdef({__SUM_BYTES},3){}dnl
 __{}__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
 __{}__{}define({$0_CODE_7},{
-__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # HL D HL E
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  ;# HL D HL E
 __{}__{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__{}__LD_R16(                                        HL,$1){}dnl
 __{}__{}__{}{
@@ -876,7 +876,7 @@ __{}__{}pushdef({__SUM_CLOCKS},33){}dnl
 __{}__{}pushdef({__SUM_BYTES},3){}dnl
 __{}__{}pushdef({__SUM_PRICE},eval(__SUM_CLOCKS+__BYTE_PRICE*__SUM_BYTES)){}dnl
 __{}__{}define({$0_CODE_8},{
-__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  # HL E HL D
+__{}__{}__{}    push DE             ; 1:11      __INFO   ( -- $1 $2 $3 )  ;# HL E HL D
 __{}__{}__{}    push HL             ; 1:11      __INFO}dnl
 __{}__{}__{}__LD_R16(                                        HL,$1){}dnl
 __{}__{}__{}{
@@ -1598,7 +1598,7 @@ dnl
 define({__ASM_TOKEN_2SWAP},{dnl
 __{}define({__INFO},{2swap}){}dnl
 ifelse(TYP_2SWAP,{fast},{
-                        ;[7:56]     __INFO   ( d c b a -- b a d c ) # fast version can be changed with "define({TYP_2SWAP},{name})", name=default
+                        ;[7:56]     __INFO   ( d c b a -- b a d c ) ;# fast version can be changed with "define({TYP_2SWAP},{name})", name=default
     ex   DE, HL         ; 1:4       __INFO   d c . a b
     pop  BC             ; 1:10      __INFO   d   . a b     BC = c
     ex  [SP], HL        ; 1:19      __INFO   b   . a d
@@ -1607,7 +1607,7 @@ ifelse(TYP_2SWAP,{fast},{
     ld    L, C          ; 1:4       __INFO
     ld    H, B          ; 1:4       __INFO   b a . d c},
 {
-                        ;[6:67]     __INFO   ( d c b a -- b a d c ) # default version can be changed with "define({TYP_2SWAP},{name})", name=fast
+                        ;[6:67]     __INFO   ( d c b a -- b a d c ) ;# default version can be changed with "define({TYP_2SWAP},{name})", name=fast
     ex  [SP],HL         ; 1:19      __INFO   d a . b c
     ex   DE, HL         ; 1:4       __INFO   d a . c b
     pop  AF             ; 1:10      __INFO   d   . c b     AF = a
@@ -1786,7 +1786,7 @@ dnl
 define({__ASM_TOKEN_6DUP},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(_TYP_SINGLE,{small},{
-                       ;[14:440]    __INFO   ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )   # small version can be changed with "define({_TYP_SINGLE},{default})"
+                       ;[14:440]    __INFO   ( d3 d2 d1 -- d3 d2 d1 d3 d2 d1 )   ;# small version can be changed with "define({_TYP_SINGLE},{default})"
     ld    B, 0x06       ; 2:7       __INFO   6x "5 pick"
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
@@ -2381,7 +2381,7 @@ dnl
 define({__ASM_TOKEN_4OVER},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(_TYP_SINGLE,{small},{
-                       ;[19:212]    __INFO   ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )   # small version can be changed with "define({_TYP_SINGLE},{default})"
+                       ;[19:212]    __INFO   ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )   ;# small version can be changed with "define({_TYP_SINGLE},{default})"
     ex   DE, HL         ; 1:4       __INFO   h g f e d c . . . . a b
     push HL             ; 1:11      __INFO   h g f e d c b . . . a b
     ld   HL, 0x000D     ; 3:10      __INFO   h g f e d c b . . . a 13
@@ -2398,7 +2398,7 @@ ifelse(_TYP_SINGLE,{small},{
     ld    L,[HL]        ; 1:7       __INFO   h g f e d c b a h g f -
     ld    H, A          ; 1:4       __INFO   h g f e d c b a h g f e},
 {
-                       ;[24:167]    __INFO   ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )   # default version can be changed with "define({_TYP_SINGLE},{small})"
+                       ;[24:167]    __INFO   ( d4 d3 d2 d1 -- d4 d3 d2 d1 d4 d3 )   ;# default version can be changed with "define({_TYP_SINGLE},{small})"
     push DE             ; 1:11      __INFO   h g f e d c b . . . b a
     push HL             ; 1:11      __INFO   h g f e d c b a . . b a
     ld   HL, 0x000F     ; 3:10      __INFO   h g f e d c b a . . b 15
@@ -2456,7 +2456,7 @@ dnl
 define({__ASM_TOKEN_2ROT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(TYP_2ROT,{fast},{
-                       ;[17:120]    __INFO   ( f e d c b a -- d c b a f e ) # fast version can be changed with "define({TYP_2ROT},{default})"
+                       ;[17:120]    __INFO   ( f e d c b a -- d c b a f e ) ;# fast version can be changed with "define({TYP_2ROT},{default})"
     pop  BC             ; 1:10      __INFO   f e d   . b a  BC = c
     exx                 ; 1:4       __INFO   f e d   . - R
     pop  BC             ; 1:10      __INFO   f e     . - R  BC'= d
@@ -2475,7 +2475,7 @@ ifelse(TYP_2ROT,{fast},{
     ld    H, A          ; 1:4       __INFO   d c b a . b R
     exx                 ; 1:4       __INFO   d c b a . f e},
 {
-                       ;[15:127]    __INFO   ( f e d c b a -- d c b a f e ) # default version can be changed with "define({TYP_2ROT},{fast})"
+                       ;[15:127]    __INFO   ( f e d c b a -- d c b a f e ) ;# default version can be changed with "define({TYP_2ROT},{fast})"
     exx                 ; 1:4       __INFO   f e d c .
     pop  DE             ; 1:10      __INFO   f e d   .      DE' = c
     pop  BC             ; 1:10      __INFO   f e     .      BC' = d
@@ -2993,7 +2993,7 @@ __{}__{}    ld    B, H          ; 1:4       __INFO
 __{}__{}    ld    C, L          ; 1:4       __INFO
 __{}__{}    pop  AF             ; 1:10      __INFO   = c
 __{}__{}    pop  HL             ; 1:10      __INFO   = d
-__{}__{}    push HL             ; 1:11      __INFO   
+__{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    push AF             ; 1:11      __INFO
 __{}__{}    push BC             ; 1:11      __INFO}){}dnl
 }){}dnl
@@ -3791,8 +3791,8 @@ __{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&xu)++ = hi_ad
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    lddr                ; 2:u*42-5  __INFO   (DE--) = (HL--)
-__{}__{}    pop  HL             ; 1:10      __INFO 
-__{}__{}    pop  DE             ; 1:10      __INFO 
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    pop  AF             ; 1:10      __INFO},
 
 __{}__IS_NUM($1),0,{define({_TMP_INFO},__INFO)
@@ -3812,8 +3812,8 @@ __{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&x$1)++ = hi_a
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    lddr                ; 2:u*42-5  __INFO   (DE--) = (HL--)
-__{}__{}    pop  HL             ; 1:10      __INFO 
-__{}__{}    pop  DE             ; 1:10      __INFO 
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    pop  AF             ; 1:10      __INFO},
 
 __{}__IS_NUM($1),0,{__ASM_TOKEN_PUSH($1){}__ASM_TOKEN_ROLL},
@@ -3850,8 +3850,8 @@ __{}__{}    ld    D, H          ; 1:4       __INFO   DE = (char) (&x$1)++ = hi_a
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    lddr                ; 2:format({%-8s},eval(($1)*42-5)){}__INFO   (DE--) = (HL--)
-__{}__{}    pop  HL             ; 1:10      __INFO 
-__{}__{}    pop  DE             ; 1:10      __INFO 
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    pop  AF             ; 1:10      __INFO{}dnl
 __{}}){}dnl
 }){}dnl
