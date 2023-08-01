@@ -318,17 +318,17 @@ __{}__{}    inc   A             ; 1:4       __INFO   lo(real_stop) exclusivity},
 __{}_TEMP_LO_FALSE_POSITIVE,0,{dnl
 __{}__{}__LD_R_NUM(__INFO,A,__HEX_L(_TEMP_REAL_STOP))
 __{}    cp    E             ; 1:4       __INFO   lo(real_stop) exclusivity},
-__{}_TEMP_LO_FALSE_POSITIVE:__HEX_L(_TEMP_REAL_STOP),0:0x01,{
+__{}_TEMP_HI_FALSE_POSITIVE:__HEX_H(_TEMP_REAL_STOP),0:0x01,{
 __{}__{}    ld    A, D          ; 1:4       __INFO
 __{}__{}    dec   A             ; 1:4       __INFO   hi(real_stop) exclusivity},
-__{}_TEMP_LO_FALSE_POSITIVE:__HEX_L(_TEMP_REAL_STOP),0:0xFF,{
+__{}_TEMP_HI_FALSE_POSITIVE:__HEX_H(_TEMP_REAL_STOP),0:0xFF,{
 __{}__{}    ld    A, D          ; 1:4       __INFO
 __{}__{}    inc   A             ; 1:4       __INFO   hi(real_stop) exclusivity},
 __{}_TEMP_HI_FALSE_POSITIVE,0,{dnl
 __{}__{}__LD_R_NUM(__INFO,A,__HEX_H(_TEMP_REAL_STOP))
 __{}    cp    D             ; 1:4       __INFO   hi(real_stop) exclusivity},
 __{}{dnl
-__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,_TEMP_REAL_STOP,2,7,2,-7){}dnl
+__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,_TEMP_REAL_STOP,3,10,do{}$1{}save,0){}dnl
 __{}_TMP_BEST_CODE})},
 
 __IS_MEM_REF(__GET_LOOP_END($1)),1,{
