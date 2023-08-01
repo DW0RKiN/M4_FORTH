@@ -8,7 +8,7 @@ __def({USE_fAdd})
 ; *****************************************
                    fFloor                 ; *
 ; *****************************************
-        
+
     ld    A, H          ; 1:4       floor       dup 0>= if
     add   A, A          ; 1:4       floor       dup 0>= if
     jr   nc, fTrunc_abs ; 2:7/12    floor       ftrunc      floor(0+) = ftrunc
@@ -41,7 +41,7 @@ ifdef({USE_fTrunc},{__def({USE_fTrunc_abs})
 ; *****************************************
                     fTrunc                ; *
 ; *****************************************
-    
+
     bit   7, H          ; 2:8
     jr    z, fTrunc_abs ; 2:7/12
 

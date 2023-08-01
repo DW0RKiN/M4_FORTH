@@ -181,7 +181,9 @@ __{}eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
 __{}{dnl
 __{}__{}ifelse(dnl
-__{}__{}ifelse(__GET_LOOP_BEGIN($1),__GET_LOOP_END($1),1,__IS_NUM(__GET_LOOP_BEGIN($1)):__HEX_HL(__GET_LOOP_BEGIN($1)),1:__HEX_HL(__GET_LOOP_END($1)),1,0),1,{
+__{}__{}ifelse(eval(len(__GET_LOOP_BEGIN($1))>0):__GET_LOOP_BEGIN($1),1:__GET_LOOP_END($1),1,
+__{}__{}__{}__IS_NUM(__GET_LOOP_BEGIN($1)):__HEX_HL(__GET_LOOP_BEGIN($1)),1:__HEX_HL(__GET_LOOP_END($1)),1,
+__{}__{}__{}0),1,{
 __{}__{}__{}                        ;           __INFO   variant -1 and no repeat},
 __{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0000,{dnl
 __{}__{}__{}dnl # stop if "index   =  0" --> no store end to DE
