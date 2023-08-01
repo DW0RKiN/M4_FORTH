@@ -152,6 +152,7 @@ dnl # ()        --> 0
 dnl # other     --> 0
 __{}ifelse(eval($#>1),1,0,
 __{}regexp({$1},{^.*\[.*\].*$}),0,1,
+__{}regexp({$1},{^\s*(.+--.+)\s*$}),0,0,
 __{}regexp({$1},{^\s*(.+)\s*$}),0,{errprint(__CR{warning: probably forgotten pointer old type (...) __has_ptr($@)}__CR)0},
 __{}0){}dnl
 }){}dnl
