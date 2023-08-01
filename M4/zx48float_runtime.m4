@@ -6,7 +6,7 @@ dnl
 dnl # zdepth
 ifdef({USE_ZDEPTH},{
 __{}ifelse(_TYP_SINGLE,small,{dnl
-__{}                     ;[26:688..736] _zdepth   # small version can be changed with "define({_TYP_SINGLE},{default})"
+__{}                     ;[26:688..736] _zdepth   ;# small version can be changed with "define({_TYP_SINGLE},{default})"
 __{}_ZDEPTH:                ;           _zdepth   ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
 __{}    ex   DE, HL         ; 1:4       _zdepth
 __{}    ex  [SP],HL         ; 1:19      _zdepth   ret
@@ -37,7 +37,7 @@ __{}    inc   L             ; 1:4       _zdepth
 __{}    djnz $-7            ; 2:8/13    _zdepth
 __{}    ret                 ; 1:10      _zdepth},
 __{}{dnl
-__{}                       ;[46:292]    _zdepth   # default version can be changed with "define({_TYP_SINGLE},{small})"
+__{}                       ;[46:292]    _zdepth   ;# default version can be changed with "define({_TYP_SINGLE},{small})"
 __{}_ZDEPTH:                ;           _zdepth   ( -- n ) if ( Z: zn .. z1 -- zn .. z1 )
 __{}    ex   DE, HL         ; 1:4       _zdepth
 __{}    ex  [SP],HL         ; 1:19      _zdepth   ret
@@ -576,7 +576,7 @@ endif
     dec  HL             ; 1:6       _zcompare2flag
     ld  [0x5C65], HL    ; 3:16      _zcompare2flag   {save STKEND-5}
     ld    L, A          ; 1:4       _zcompare2flag
-    ld    H, A          ; 1:4       _zcompare2flag    
+    ld    H, A          ; 1:4       _zcompare2flag
     pop  DE             ; 1:10      _zcompare2flag
     ret                 ; 1:10      _zcompare2flag
 }){}dnl
@@ -896,12 +896,12 @@ dnl
 dnl
 dnl # zpick ( u -- ) ( Z: zu .. z2 z1 z0 -- zu .. z2 z1 z0 zu )
 ifdef({xUSE_ZPICK},{
-_ZPICK:                ;[29:510]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )   
-    inc  HL             ; 1:6       _zpick 
+_ZPICK:                ;[29:510]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
+    inc  HL             ; 1:6       _zpick
     ld    B, H          ; 1:4       _zpick
-    ld    C, L          ; 1:4       _zpick   x+1 
-    add  HL, HL         ; 1:11      _zpick   2(x+1) 
-    add  HL, HL         ; 1:11      _zpick   4(x+1) 
+    ld    C, L          ; 1:4       _zpick   x+1
+    add  HL, HL         ; 1:11      _zpick   2(x+1)
+    add  HL, HL         ; 1:11      _zpick   4(x+1)
     add  HL, BC         ; 1:11      _zpick   5(x+1)
     ld    B, H          ; 1:4       _zpick
     ld    C, L          ; 1:4       _zpick   5(x+1)
@@ -912,7 +912,7 @@ _ZPICK:                ;[29:510]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: z
     ld   HL,[0x5C65]    ; 3:16      _zpick   ( .. 5*(u+1) stkend )
     ld    D, H          ; 1:4       _zpick
     ld    E, L          ; 1:4       _zpick   5(x+1)
-    sbc  HL, BC         ; 2:15      _zpick   ( .. stkend stkend-5*(u+1) )    
+    sbc  HL, BC         ; 2:15      _zpick   ( .. stkend stkend-5*(u+1) )
   if 1
     call 0x33C0         ; 3:315     _zpick   5x (DE++) = (HL++), BC = 0  ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
   else
@@ -928,28 +928,28 @@ dnl
 dnl
 dnl # zpick ( u -- ) ( Z: zu .. z2 z1 z0 -- zu .. z2 z1 z0 zu )
 ifdef({xxUSE_ZPICK},{
-_ZPICK:                ;[31:514]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )   
+_ZPICK:                ;[31:514]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
     ld    A, L          ; 1:4       _zpick
     cpl                 ; 1:4       _zpick
     ld    L, A          ; 1:4       _zpick
     ld    A, H          ; 1:4       _zpick
     cpl                 ; 1:4       _zpick
     ld    H, A          ; 1:4       _zpick
-    
+
     ld    B, H          ; 1:4       _zpick
     ld    C, L          ; 1:4       _zpick
-    add  HL, HL         ; 1:11      _zpick 
-    add  HL, HL         ; 1:11      _zpick 
+    add  HL, HL         ; 1:11      _zpick
+    add  HL, HL         ; 1:11      _zpick
     add  HL, BC         ; 1:11      _zpick   -5*(u+1)
-    
+
     pop  BC             ; 1:10      _zpick   ret
     pop  AF             ; 1:10      _zpick   x2
     push BC             ; 1:11      _zpick   ret
     push AF             ; 1:11      _zpick   x2
     push DE             ; 1:11      _zpick   x1
-    
+
     ld   DE,[0x5C65]    ; 4:20      _zpick   ( ret x2 x1 stkend -5*(u+1) )
-    add  HL, DE         ; 1:11      _zpick   ( .. stkend stkend-5*(u+1) )    
+    add  HL, DE         ; 1:11      _zpick   ( .. stkend stkend-5*(u+1) )
   if 1
     call 0x33C0         ; 3:315     _zpick   5x (DE++) = (HL++), BC = 0  ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
   else
@@ -966,11 +966,11 @@ dnl
 dnl # zpick ( u -- ) ( Z: zu .. z2 z1 z0 -- zu .. z2 z1 z0 zu )
 ifdef({USE_ZPICK},{__def({USE_ZPICK_BC})
 _ZPICK:                ;[31:514]    _zpick   ( x2 ret x1 u -- ret x2 x1 ) ( Z: zu .. z1 z0 -- zu .. z1 z0 zu )
-    inc  HL             ; 1:6       _zpick 
+    inc  HL             ; 1:6       _zpick
     ld    B, H          ; 1:4       _zpick
     ld    C, L          ; 1:4       _zpick
-    add  HL, HL         ; 1:11      _zpick 
-    add  HL, HL         ; 1:11      _zpick 
+    add  HL, HL         ; 1:11      _zpick
+    add  HL, HL         ; 1:11      _zpick
     add  HL, BC         ; 1:11      _zpick   5*(u+1)
     xor   A             ; 1:4       _zpick
     sub   L             ; 1:4       _zpick
@@ -1042,7 +1042,7 @@ _ZNROT:                ;[14:103]    _z-rot   ( Z: z3 z2 z1 -- z1 z3 z2 )
     push HL             ; 1:11      _z-rot
     call 0x35bf         ; 3:17      _z-rot   {call ZX ROM stk-pntrs, DE= stkend, HL = DE-5}
     call DEC_SWAP_5x    ; 3:17      _z-rot   ( Z: z3 z2 z1 -- z3 z1 z2 )
-    call DEC_SWAP_5x    ; 3:17      _z-rot   ( Z: z3 z1 z2 -- z1 z3 z2 ) 
+    call DEC_SWAP_5x    ; 3:17      _z-rot   ( Z: z3 z1 z2 -- z1 z3 z2 )
     pop  HL             ; 1:10      _z-rot
     pop  DE             ; 1:10      _z-rot
     ret                 ; 1:10      _z-rot
