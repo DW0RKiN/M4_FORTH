@@ -16,7 +16,7 @@ __{}__{}ZX_BRIGHT            EQU 0x13     ; zx_constant   0 or 1
 __{}__{}ZX_INVERSE           EQU 0x14     ; zx_constant   0 or 1
 __{}__{}ZX_OVER              EQU 0x15     ; zx_constant   0 or 1
 __{}__{}ZX_AT                EQU 0x16     ; zx_constant   Y,X
-__{}__{}ZX_TAB               EQU 0x17     ; zx_constant   # spaces
+__{}__{}ZX_TAB               EQU 0x17     ; zx_constant   ;# spaces
 __{}__{}
 __{}__{}ZX_BLACK             EQU %000     ; zx_constant
 __{}__{}ZX_BLUE              EQU %001     ; zx_constant
@@ -135,14 +135,14 @@ dnl # {{"Text",,"",,}}                --> {{"Tex","t" + 0x80}}
 dnl # {{"Text",0x0D,"",,}}            --> {{"Text",0x0D + 0x80}}
 define({__CONVERSION_TO_STRING_I},{ifelse(dnl
 __{}__{}regexp({$*},     {^{\(.*\)\("[^"]"\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{"x","x"}}),{"x","x"},
-__{}__{}__{}{regexp({$*},{^{\(.*\)\("[^"]"\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{{\1\2 + 0x80}}})},dnl           # "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
+__{}__{}__{}{regexp({$*},{^{\(.*\)\("[^"]"\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{{\1\2 + 0x80}}})},dnl           ;# "H","e","l","l","o"      --> "H","e","l","l","o" + 0x80
 __{}__{}regexp({$*},     {^{\(.*".*[^"]\)\([^"]\)"\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{"...xx"}}),{"...xx"},
 __{}__{}__{}{regexp({$*},{^{\(.*".*[^"]\)\([^"]\)"\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{{\1","\2" + 0x80}}})},dnl # "Hello"                  --> "Hell","o"+0x80
 __{}__{}regexp({$*},     {^{\(.*\)\s*\([^",]*[^", ]+\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{x,x}}),{x,x},
 __{}__{}__{}{regexp({$*},{^{\(.*\)\s*\([^",]*[^", ]+\)\s*\(,[ ]*\(""\|\)\s*\)*\s*}$},{{{\1\2 + 0x80}}})},dnl # 0x48,0x65,0x6c,0x6c,0x6f --> 0x48,0x65,0x6c,0x6c,0x6f+0x80
 __{}__{}{dnl
 __{}__{}__{}regexp({$*},{^{\(.+[^ ]\)\s*}$},{{{\1 + 0x80}}}){}errprint({
-  .warning {$0}:($*) Last character not found. Check if you have an even number of characters "})}){}dnl           # ???                      --> ??? + 0x80
+  .warning {$0}:($*) Last character not found. Check if you have an even number of characters "})}){}dnl           ;# ???                      --> ??? + 0x80
 }){}dnl
 dnl
 dnl
@@ -1012,13 +1012,13 @@ define({PUTCHAR},{dnl
 __{}ifelse(eval($#<1),1,{
 __{}__{}  .error {$0}($@): Missing parameter!},
 
-__{}{$1},__CR,{dnl  #  push(\n)
+__{}{$1},__CR,{dnl  ;#  push(\n)
 __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
 
-__{}{$1},{"}__CR{"},{dnl  #  push("\n")
+__{}{$1},{"}__CR{"},{dnl  ;#  push("\n")
 __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
 
-__{}{$1},{'}__CR{'},{dnl  #  push('\n')
+__{}{$1},{'}__CR{'},{dnl  ;#  push('\n')
 __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar new line},0x0D)},
 
 __{}{$1},{,},{dnl  ;#  push(',')
@@ -1027,11 +1027,11 @@ __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar comma},0x2C)},
 __{}{$1},{'\},{dnl  ;#  push(')')
 __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{putchar right parenthesis},0x29)},
 
-__{}regexp({$1},{^'.+'$}),0,{dnl  #  putchar('char')
+__{}regexp({$1},{^'.+'$}),0,{dnl  ;#  putchar('char')
 __{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
 __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{put}__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
-__{}regexp({$1},{^".+"$}),0,{dnl  #  putchar("char")
+__{}regexp({$1},{^".+"$}),0,{dnl  ;#  putchar("char")
 __{}__{}__{}define({$0_CHAR},__GET_HEX_ASCII_CODE({$1})){}dnl
 __{}__{}__ADD_TOKEN({__TOKEN_PUTCHAR},{put}__GET_HEX_ASCII_CODE_INFO,$0_CHAR)},
 
