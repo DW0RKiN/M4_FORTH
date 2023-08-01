@@ -371,7 +371,7 @@ dnl
 define({__ASM_TOKEN_WITHIN},{dnl
 __{}define({__INFO},{within}){}dnl
 ifelse(TYP_WITHIN,{fast},{
-                       ;[18:91]     within ( a b c -- flag=(b<=a<c) )   # fast version can be changed with "define({TYP_WITHIN},{name})", name=fast
+                       ;[18:91]     within ( a b c -- flag=(b<=a<c) )   ;# fast version can be changed with "define({TYP_WITHIN},{name})", name=fast
     ld    A, L          ; 1:4       within
     sub   E             ; 1:4       within
     ld    C, A          ; 1:4       within
@@ -390,7 +390,7 @@ ifelse(TYP_WITHIN,{fast},{
     ld    H, A          ; 1:4       within
     pop  DE             ; 1:10      within ( a b c -- ((a-b) (c-b) U<) )}dnl
 ,{
-                       ;[16:97]     within ( a b c -- flag=(b<=a<c) )   # default version can be changed with "define({TYP_WITHIN},{name})", name=fast
+                       ;[16:97]     within ( a b c -- flag=(b<=a<c) )   ;# default version can be changed with "define({TYP_WITHIN},{name})", name=fast
     ld    A, L          ; 1:4       within
     sub   E             ; 1:4       within
     ld    C, A          ; 1:4       within
@@ -709,13 +709,13 @@ dnl
 define({__ASM_TOKEN_0NE},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(_TYP_SINGLE,small,{
-__{}                        ;[6:30]     __INFO   ( x -- flag )  flag: x <> 0  # small version can be changed with "define({TYP_D0EQ},{default})"
+__{}                        ;[6:30]     __INFO   ( x -- flag )  flag: x <> 0  ;# small version can be changed with "define({TYP_D0EQ},{default})"
 __{}    ld    A, L          ; 1:4       __INFO
 __{}    or    H             ; 1:4       __INFO
 __{}    add   A, 0xFF       ; 2:7       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
 __{}{
-__{}                        ;[7:25/20]  __INFO   ( x -- flag )  flag: x <> 0  # default version can be changed with "define({TYP_D0EQ},{small})"
+__{}                        ;[7:25/20]  __INFO   ( x -- flag )  flag: x <> 0  ;# default version can be changed with "define({TYP_D0EQ},{small})"
 __{}    ld    A, L          ; 1:4       __INFO
 __{}    or    H             ; 1:4       __INFO
 __{}    jr    z, $+5        ; 2:7/12    __INFO
@@ -732,11 +732,11 @@ dnl
 define({__ASM_TOKEN_0LT},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}ifelse(TYP_0LT,{small},{
-__{}                        ;[4:23]     __INFO   ( x -- flag )  flag: x < 0  # small version can be changed with "define({TYP_D0EQ},{default})"
+__{}                        ;[4:23]     __INFO   ( x -- flag )  flag: x < 0  ;# small version can be changed with "define({TYP_D0EQ},{default})"
 __{}    rl    H             ; 2:8       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO},
 __{}{
-__{}                        ;[5:20]     __INFO   ( x -- flag )  flag: x < 0  # default version can be changed with "define({TYP_D0EQ},{small})"
+__{}                        ;[5:20]     __INFO   ( x -- flag )  flag: x < 0  ;# default version can be changed with "define({TYP_D0EQ},{small})"
 __{}    rl    H             ; 2:8       __INFO
 __{}    sbc   A, A          ; 1:4       __INFO
 __{}    ld    L, A          ; 1:4       __INFO
@@ -5528,7 +5528,7 @@ dnl
 define({__ASM_TOKEN_D0EQ},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(TYP_D0EQ,{small},{
-                        ;[8:54]     __INFO   ( hi lo -- flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
+                        ;[8:54]     __INFO   ( hi lo -- flag )   ;# small version can be changed with "define({TYP_D0EQ},{default})"
     add  HL, DE         ; 1:11      __INFO   carry: 0    1
     sbc   A, A          ; 1:4       __INFO          0x00 0xff
     or    H             ; 1:4       __INFO          H    0xff
@@ -5537,7 +5537,7 @@ ifelse(TYP_D0EQ,{small},{
     sbc  HL, HL         ; 2:15      __INFO   set flag D == 0
     pop   DE            ; 1:10      __INFO},
 {
-                        ;[9:48]     __INFO   ( hi lo -- flag )   # fast version can be changed with "define({TYP_D0EQ},{small})"
+                        ;[9:48]     __INFO   ( hi lo -- flag )   ;# fast version can be changed with "define({TYP_D0EQ},{small})"
     ld    A, D          ; 1:4       __INFO
     or    E             ; 1:4       __INFO
     or    H             ; 1:4       __INFO
@@ -5556,7 +5556,7 @@ dnl
 define({__ASM_TOKEN_2DUP_D0EQ},{dnl
 __{}define({__INFO},__COMPILE_INFO){}dnl
 ifelse(TYP_D0EQ,{small},{
-                        ;[9:59]     __INFO   ( d -- d flag )   # small version can be changed with "define({TYP_D0EQ},{default})"
+                        ;[9:59]     __INFO   ( d -- d flag )   ;# small version can be changed with "define({TYP_D0EQ},{default})"
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     add  HL, DE         ; 1:11      __INFO   carry: 0    1
@@ -5566,7 +5566,7 @@ ifelse(TYP_D0EQ,{small},{
     sub   H             ; 1:4       __INFO   carry: 1|0  0
     sbc  HL, HL         ; 2:15      __INFO   set flag D == 0},
 {
-                       ;[10:53]     __INFO   ( d -- d flag )   # fast version can be changed with "define({TYP_D0EQ},{small})"
+                       ;[10:53]     __INFO   ( d -- d flag )   ;# fast version can be changed with "define({TYP_D0EQ},{small})"
     push DE             ; 1:11      __INFO
     ex   DE, HL         ; 1:4       __INFO
     ld    A, D          ; 1:4       __INFO
@@ -6046,8 +6046,8 @@ __{}__DEQ_MAKE_BEST_CODE(__HEX_DE_HL($1,$2),6,37,0,0){}dnl
 __{}__DEQ_MAKE_HLDE_CODE(__HEX_DE_HL($1,$2),9+{_TMP_ZERO}){}dnl
 __{}ifelse(_TMP_ZERO,{1},{dnl
 __{}__{}define({_TMP_B},eval(_TMP_B+5)){}dnl
-__{}__{}define({_TMP_T}, eval(_TMP_NJ+19)){}dnl  # true
-__{}__{}define({_TMP_F}, eval(_TMP_J+8)){}dnl    # false
+__{}__{}define({_TMP_T}, eval(_TMP_NJ+19)){}dnl  ;# true
+__{}__{}define({_TMP_F}, eval(_TMP_J+8)){}dnl    ;# false
 __{}__{}define({_TMP_F2},eval(_TMP_NJ+20)){}dnl # false2
 __{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}                     ;[_TMP_B:_TMP_T/_TMP_F,_TMP_F2] _TMP_INFO   ( d -- d flag )
@@ -6058,8 +6058,8 @@ __{}__{}__{}    ld    L, A          ; 1:4       _TMP_INFO
 __{}__{}__{}    ld    H, A          ; 1:4       _TMP_INFO   set flag d==__HEX_DE_HL($1,$2)})},
 __{}{dnl
 __{}__{}define({_TMP_B},eval(_TMP_B+6)){}dnl
-__{}__{}define({_TMP_T}, eval(_TMP_NJ+20)){}dnl  # true
-__{}__{}define({_TMP_F}, eval(_TMP_J+15)){}dnl   # false
+__{}__{}define({_TMP_T}, eval(_TMP_NJ+20)){}dnl  ;# true
+__{}__{}define({_TMP_F}, eval(_TMP_J+15)){}dnl   ;# false
 __{}__{}define({_TMP_F2},eval(_TMP_NJ+22)){}dnl # false2
 __{}__{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}__{}                     ;[_TMP_B:_TMP_T/_TMP_F,_TMP_F2] _TMP_INFO   ( d -- d flag )
@@ -6186,9 +6186,9 @@ __{}define({_TMP_STACK_INFO},{ }__INFO{   ( d -- d flag )  flag: d<>$1*65536+$2}
 __{}__DEQ_MAKE_BEST_CODE(__HEX_DE_HL($1,$2),6,37,0,0){}dnl
 __{}__DEQ_MAKE_HLDE_CODE(__HEX_DE_HL($1,$2),9){}dnl
 __{}define({_TMP_B},eval(_TMP_B+5)){}dnl
-__{}define({_TMP_T}, eval(_TMP_J+10)){}dnl   # true
-__{}define({_TMP_T2},eval(_TMP_NJ+17)){}dnl  # true2
-__{}define({_TMP_F}, eval(_TMP_NJ+12)){}dnl  # false
+__{}define({_TMP_T}, eval(_TMP_J+10)){}dnl   ;# true
+__{}define({_TMP_T2},eval(_TMP_NJ+17)){}dnl  ;# true2
+__{}define({_TMP_F}, eval(_TMP_NJ+12)){}dnl  ;# false
 __{}define({_TMP_HLDE_CODE},{dnl
 __{}__{}                     ;[_TMP_B:_TMP_T,_TMP_T2/_TMP_F] _TMP_INFO   ( d -- d flag )
 __{}__{}}_TMP_HLDE_CODE{
@@ -6301,14 +6301,14 @@ dnl
 define({__ASM_TOKEN_DLT},{dnl
 __{}define({__INFO},{dlt}){}dnl
 ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
-                        ;[8:62]     D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[8:62]     D<   ( d2 d1 -- d2 d1 flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<   l2
     pop  AF             ; 1:10      D<   h2
     call FCE_DLT        ; 3:17      D<   carry if true
     pop  DE             ; 1:10      D<
     sbc  HL, HL         ; 2:15      D<   set flag d2<d1},
 {
-                       ;[17:93]     D<   ( d2 d1 -- flag )   # fast version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[17:93]     D<   ( d2 d1 -- flag )   ;# fast version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      D<   lo_2
     ld    A, C          ; 1:4       D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     sub   L             ; 1:4       D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
@@ -6348,7 +6348,7 @@ __{}__{}__SET_BYTES_CLOCKS_PRICES(10,70){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({DE},$1,{HL},$2){}dnl
 __{}__LD_REG16({HL},$2){}dnl
-__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
 __{}    push HL             ; 1:10      __INFO   hi16(d)
 __{}    ld   C, E           ; 1:4       __INFO
 __{}    ld   B, D           ; 1:4       __INFO   lo16(d){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT
@@ -6357,7 +6357,7 @@ __{}    call FCE_DLT        ; 3:17      __INFO   carry if true
 __{}    pop  DE             ; 1:10      __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   set flag d < $1*65536+$2},
 __{}{dnl
-__{}__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},3,25)
+__{}__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"},3,25)
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d < $1*65536+$2}){}dnl
 }){}dnl
@@ -6459,7 +6459,7 @@ dnl
 define({__ASM_TOKEN_DGE},{dnl
 __{}define({__INFO},{dge}){}dnl
 ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
-                        ;[9:66]     D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[9:66]     D>=   ( d2 d1 -- d2 d1 flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>=   l2
     pop  AF             ; 1:10      D>=   h2
     call FCE_DLT        ; 3:17      D>=   D< carry if true --> D>= carry if false
@@ -6467,7 +6467,7 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
     pop  DE             ; 1:10      D>=
     sbc  HL, HL         ; 2:15      D>=   set flag d2>=d1},
 {
-                        ;[16:96]    D>=   ( d2 d1 -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                        ;[16:96]    D>=   ( d2 d1 -- flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      D>=   lo(ud2)
     scf                 ; 1:4       D>=
     sbc  HL, BC         ; 2:15      D>=   BC>=HL --> BC+1>HL --> 0>HL-BC-1 --> carry if true
@@ -6505,7 +6505,7 @@ __{}__{}__SET_BYTES_CLOCKS_PRICES(11,74){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({DE},$1,{HL},$2){}dnl
 __{}__LD_REG16({HL},$2){}dnl
-__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
 __{}    push HL             ; 1:10      __INFO   hi16(d)
 __{}    ld   C, E           ; 1:4       __INFO
 __{}    ld   B, D           ; 1:4       __INFO   lo16(d){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT
@@ -6515,7 +6515,7 @@ __{}    pop  DE             ; 1:10      __INFO
 __{}    ccf                 ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   set flag d >= $1*65536+$2},
 __{}{dnl
-__{}__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},4,29)
+__{}__{}__MAKE_CODE_DLT_SET_CARRY($@,{( d -- flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"},4,29)
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    ccf                 ; 1:4       __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d >= $1*65536+$2}){}dnl
@@ -6620,7 +6620,7 @@ dnl
 define({__ASM_TOKEN_DLE},{dnl
 __{}define({__INFO},{dle}){}dnl
 ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
-                        ;[9:66]     D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[9:66]     D<=   ( d2 d1 -- d2 d1 flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D<=   l2
     pop  AF             ; 1:10      D<=   h2
     call FCE_DGT        ; 3:17      D<=   D> carry if true --> D<= carry if false
@@ -6628,7 +6628,7 @@ ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
     pop  DE             ; 1:10      D<=
     sbc  HL, HL         ; 2:15      D<=   set flag d2<=d1},
 {
-                       ;[18:97]     D<=   ( d2 d1 -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[18:97]     D<=   ( d2 d1 -- flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      D<=   lo_2
     ld    A, L          ; 1:4       D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sub   C             ; 1:4       D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -6669,7 +6669,7 @@ __{}__{}__SET_BYTES_CLOCKS_PRICES(11,74){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({DE},$1,{HL},$2){}dnl
 __{}__LD_REG16({HL},$2){}dnl
-__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
 __{}    push HL             ; 1:10      __INFO   hi16(d)
 __{}    ld   C, E           ; 1:4       __INFO
 __{}    ld   B, D           ; 1:4       __INFO   lo16(d){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT
@@ -6679,7 +6679,7 @@ __{}    pop  DE             ; 1:10      __INFO
 __{}    ccf                 ; 1:4       __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   set flag d <= $1*65536+$2},
 __{}{dnl
-__{}__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},4,29)
+__{}__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"},4,29)
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    ccf                 ; 1:4       __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d <= $1*65536+$2}){}dnl
@@ -6785,14 +6785,14 @@ dnl
 define({__ASM_TOKEN_DGT},{dnl
 __{}define({__INFO},{dgt}){}dnl
 ifelse(_TYP_DOUBLE,{function},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
-                        ;[8:62]     D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[8:62]     D>   ( d2 d1 -- d2 d1 flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      D>   l2
     pop  AF             ; 1:10      D>   h2
     call FCE_DGT        ; 3:17      D>   carry if true
     pop  DE             ; 1:10      D>
     sbc  HL, HL         ; 2:15      D>   set flag d2>d1},
 {
-                        ;[17:93]    D>   ( d2 d1 -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{function})"
+                        ;[17:93]    D>   ( d2 d1 -- flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      D>   lo(ud2)
     ld    A, L          ; 1:4       D>   BC>HL --> 0>HL-BC --> carry if true
     sub   C             ; 1:4       D>   BC>HL --> 0>HL-BC --> carry if true
@@ -6832,7 +6832,7 @@ __{}__{}__SET_BYTES_CLOCKS_PRICES(10,70){}dnl
 __{}define({_TMP_INFO},__INFO){}dnl
 __{}__LD_REG16({DE},$1,{HL},$2){}dnl
 __{}__LD_REG16({HL},$2){}dnl
-__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+__{}                        ;[__SUM_BYTES:__SUM_CLOCKS]    __INFO   ( d -- flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
 __{}    push HL             ; 1:10      __INFO   hi16(d)
 __{}    ld   C, E           ; 1:4       __INFO
 __{}    ld   B, D           ; 1:4       __INFO   lo16(d){}__CODE_16BIT{}__LD_REG16({DE},$1,{HL},$2){}__CODE_16BIT
@@ -6841,7 +6841,7 @@ __{}    call FCE_DGT        ; 3:17      __INFO   carry if true
 __{}    pop  DE             ; 1:10      __INFO
 __{}    sbc  HL, HL         ; 2:15      __INFO   set flag d > $1*65536+$2},
 __{}{dnl
-__{}__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"},3,25)
+__{}__{}__MAKE_CODE_DGT_SET_CARRY($@,{( d -- flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"},3,25)
 __{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}    sbc  HL, HL         ; 2:15      __INFO   set flag d > $1*65536+$2}){}dnl
 }){}dnl
@@ -6987,7 +6987,7 @@ dnl
 define({__ASM_TOKEN_4DUP_DNE},{dnl
 __{}define({__INFO},{4dup_dne}){}dnl
 ifelse(_TYP_DOUBLE,{fast},{
-            ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # fast version can be changed with "define({_TYP_DOUBLE},{default})"
+            ;[26:71,86,143,149/147] 4dup D<>   ( d2 d1 -- d2 d1 flag )   ;# fast version can be changed with "define({_TYP_DOUBLE},{default})"
     pop  BC             ; 1:10      4dup D<>   h2       . h1 l1  BC= lo(d2) = l2
     ld    A, C          ; 1:4       4dup D<>   h2       . h1 l1  A = lo(l2)
     sub   L             ; 1:4       4dup D<>   h2       . h1 l1  lo(l2) - lo(l1)
@@ -7010,7 +7010,7 @@ ifelse(_TYP_DOUBLE,{fast},{
     ld    H, A          ; 1:4       4dup D<>   h2 l2 h1 . l1 f-
     ld    L, A          ; 1:4       4dup D<>   h2 l2 h1 . l1 ff HL= flag d2<>d1},
 {
-                  ;[20:119,136/131] 4dup D<>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{fast})"
+                  ;[20:119,136/131] 4dup D<>   ( d2 d1 -- d2 d1 flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{fast})"
     pop  AF             ; 1:10      4dup D<>   h2          . h1 l1  AF = lo(d2) = l2
     pop  BC             ; 1:10      4dup D<>               . h1 l1  BC = hi(d2) = h2
     push BC             ; 1:11      4dup D<>   h2          . h1 l1
@@ -7050,13 +7050,13 @@ dnl
 define({__ASM_TOKEN_4DUP_DLT},{dnl
 __{}define({__INFO},{4dup_dlt}){}dnl
 ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
-                        ;[7:201]    4dup D<   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[7:201]    4dup D<   ( d2 d1 -- d2 d1 flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DLT   ; 3:17      4dup D<   carry if true
     push DE             ; 1:11      4dup D<
     ex   DE, HL         ; 1:4       4dup D<
     sbc  HL, HL         ; 2:15      4dup D<   set flag d2<d1},
 {
-                       ;[20:137]    4dup D<   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[20:137]    4dup D<   ( d2 d1 -- d2 d1 flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup D<   lo_2
     ld    A, C          ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
     sub   L             ; 1:4       4dup D<   lo_2<lo_1 --> BC<HL --> BC-HL<0 --> carry if true
@@ -7116,14 +7116,14 @@ dnl
 define({__ASM_TOKEN_4DUP_DGE},{dnl
 __{}define({__INFO},{4dup_dge}){}dnl
 ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DLT},{yes})
-                        ;[8:51]     4dup D>=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[8:51]     4dup D>=   ( d2 d1 -- d2 d1 flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DLT   ; 3:17      4dup D>=   D< carry if true --> D>= carry if false
     ccf                 ; 1:4       4dup D>=   invert carry
     push DE             ; 1:11      4dup D>=
     ex   DE, HL         ; 1:4       4dup D>=
     sbc  HL, HL         ; 2:15      4dup D>=   set flag d2<=d1},
 {
-                       ;[21:141]    4dup D>=   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[21:141]    4dup D>=   ( d2 d1 -- d2 d1 flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup D>=   lo_2
     ld    A, C          ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
     sub   L             ; 1:4       4dup D>=   lo_2>=lo_1 --> BC>=HL --> BC-HL>=0 --> no carry if true
@@ -7185,14 +7185,14 @@ dnl
 define({__ASM_TOKEN_4DUP_DLE},{dnl
 __{}define({__INFO},{4dup_dle}){}dnl
 ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
-                        ;[8:51]     4dup D<=   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[8:51]     4dup D<=   ( d2 d1 -- d2 d1 flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DGT   ; 3:17      4dup D<=   D> carry if true --> D<= carry if false
     ccf                 ; 1:4       4dup D<=   invert carry
     push DE             ; 1:11      4dup D<=
     ex   DE, HL         ; 1:4       4dup D<=
     sbc  HL, HL         ; 2:15      4dup D<=   set flag d2<=d1},
 {
-                       ;[21:141]    4dup D<=   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[21:141]    4dup D<=   ( d2 d1 -- d2 d1 flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup D<=   lo_2
     ld    A, L          ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
     sub   C             ; 1:4       4dup D<=   lo_2<=lo_1 --> BC<=HL --> 0<=HL-BC --> no carry if true
@@ -7254,13 +7254,13 @@ dnl
 define({__ASM_TOKEN_4DUP_DGT},{dnl
 __{}define({__INFO},{4dup_dgt}){}dnl
 ifelse(_TYP_DOUBLE,{function},{define({USE_FCE_4DUP_DGT},{yes})
-                        ;[7:201]    4dup D>   ( d2 d1 -- d2 d1 flag )   # function version can be changed with "define({_TYP_DOUBLE},{default})"
+                        ;[7:201]    4dup D>   ( d2 d1 -- d2 d1 flag )   ;# function version can be changed with "define({_TYP_DOUBLE},{default})"
     call FCE_4DUP_DGT   ; 3:17      4dup D>   carry if true
     push DE             ; 1:11      4dup D>
     ex   DE, HL         ; 1:4       4dup D>
     sbc  HL, HL         ; 2:15      4dup D>   set flag d2>d1},
 {
-                       ;[20:137]    4dup D>   ( d2 d1 -- d2 d1 flag )   # default version can be changed with "define({_TYP_DOUBLE},{function})"
+                       ;[20:137]    4dup D>   ( d2 d1 -- d2 d1 flag )   ;# default version can be changed with "define({_TYP_DOUBLE},{function})"
     pop  BC             ; 1:10      4dup D>   lo_2
     ld    A, L          ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
     sub   C             ; 1:4       4dup D>   lo_2>lo_1 --> BC>HL --> 0>HL-BC --> carry if true
@@ -7477,7 +7477,7 @@ __{}    sbc  HL, HL         ; 2:15      2dup $1 D>    set flag d1>$1},
 __{}__IS_NUM($1),{0},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{
-__{}                       ;[21:92]     2dup $1 D>   ( d1 -- d1 flag )   # default version
+__{}                       ;[21:92]     2dup $1 D>   ( d1 -- d1 flag )   ;# default version
 __{}    ld    A, D          ; 1:4       2dup $1 D>
 __{}    sub  0x80           ; 2:7       2dup $1 D>{}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
 __{}__{}    jr    c, $+14       ; 2:7/12    2dup $1 D>   positive d1 > negative constant --> true},
@@ -7552,7 +7552,7 @@ __{}    sbc  HL, HL         ; 2:15      2dup $1 D<=    set flag d1<=$1},
 __{}__IS_NUM($1),{0},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{
-__{}                       ;[21:93]     2dup $1 D<=   ( d1 -- d1 flag )   # default version
+__{}                       ;[21:93]     2dup $1 D<=   ( d1 -- d1 flag )   ;# default version
 __{}    ld    A, D          ; 1:4       2dup $1 D<=
 __{}    add   A, A          ; 1:4       2dup $1 D<={}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
 __{}__{}    jr   nc, $+15       ; 2:7/12    2dup $1 D<=   positive d1 <= negative constant --> false},
@@ -7630,7 +7630,7 @@ __{}    sbc  HL, HL         ; 2:15      __INFO    set flag d1<$1},
 __{}__IS_NUM($1),{0},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{
-__{}                       ;[20:89]     __INFO   ( d1 -- d1 flag )   # default version
+__{}                       ;[20:89]     __INFO   ( d1 -- d1 flag )   ;# default version
 __{}    ld    A, D          ; 1:4       __INFO
 __{}    add   A, A          ; 1:4       __INFO{}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
 __{}__{}    jr   nc, $+14       ; 2:7/12    __INFO   positive d1 < negative constant --> false},
@@ -7707,7 +7707,7 @@ __{}    sbc  HL, HL         ; 2:15      2dup $1 D>=    set flag d1<$1},
 __{}__IS_NUM($1),{0},{
 __{}   .error {$0}($@): M4 does not know $1 parameter value!},
 __{}{
-__{}                       ;[22:96]     2dup $1 D>=   ( d1 -- d1 flag )   # default version
+__{}                       ;[22:96]     2dup $1 D>=   ( d1 -- d1 flag )   ;# default version
 __{}    ld    A, D          ; 1:4       2dup $1 D>=
 __{}    sub  0x80           ; 2:7       2dup $1 D>={}ifelse(eval((($1) & 0x80000000) - 0x80000000),0,{
 __{}__{}    jr    c, $+15       ; 2:7/12    2dup $1 D>=   positive d1 >= negative constant --> true},
