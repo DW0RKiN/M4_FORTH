@@ -61,7 +61,7 @@ fDiv_OVER:
     ld    D, A          ; 1:4
 
     ld    H, DIVTAB/256 ; 2:7
-    ld    E, [HL]       ; 1:7
+    ld    E,[HL]        ; 1:7
     ; continues with fMul (HL = BC * DE), DE = 1 / HL}){}dnl
 dnl
 dnl
@@ -99,9 +99,9 @@ fMul_DIFF:
     ld    L, A          ; 1:4       L = a - b
     ld    A, E          ; 1:4
     ld    H, Tab_AmB/256; 2:7
-    ld    E, [HL]       ; 1:7
+    ld    E,[HL]        ; 1:7
     inc   H             ; 1:4
-    ld    D, [HL]       ; 1:7
+    ld    D,[HL]        ; 1:7
     add   A, C          ; 1:4
     ld    L, A          ; 1:4       L = a + b
 
@@ -110,11 +110,11 @@ fMul_DIFF:
     add   A, Tab_ApB/256; 2:7
     ld    H, A          ; 1:4
 
-    ld    A, [HL]       ; 1:4
+    ld    A,[HL]        ; 1:7
     add   A, E          ; 1:4
     ld    E, A          ; 1:4       for rounding
     inc   H             ; 1:4
-    ld    A, [HL]       ; 1:4
+    ld    A,[HL]        ; 1:7
     adc   A, D          ; 1:4
     ld    H, A          ; 1:4
     ld    L, E          ; 1:4
