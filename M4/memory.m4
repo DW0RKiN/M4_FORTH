@@ -2348,9 +2348,9 @@ dnl
 define({__ASM_TOKEN_CFETCH_SWAP_CFETCH_SWAP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[6:29]     __INFO   ( addr2 addr1 -- char2 char1 )
-    ld    L, [HL]       ; 1:7       __INFO
+    ld    L,[HL]        ; 1:7       __INFO
     ld    H, 0x00       ; 2:7       __INFO
-    ld    A, [DE]       ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
     ld    E, A          ; 1:4       __INFO
     ld    D, H          ; 1:4       __INFO}){}dnl
 dnl
@@ -2367,9 +2367,9 @@ __{}define({__INFO},__COMPILE_INFO)
                         ;[8:51]     __INFO   ( addr2 addr1 -- addr2 addr1 char2 char1 )
     push DE             ; 1:11      __INFO
     push HL             ; 1:11      __INFO
-    ld    L, [HL]       ; 1:7       __INFO
+    ld    L,[HL]        ; 1:7       __INFO
     ld    H, 0x00       ; 2:7       __INFO
-    ld    A, [DE]       ; 1:7       __INFO
+    ld    A,[DE]        ; 1:7       __INFO
     ld    E, A          ; 1:4       __INFO
     ld    D, H          ; 1:4       __INFO}){}dnl
 dnl
@@ -5554,9 +5554,9 @@ __{}__ADD_TOKEN({__TOKEN_FETCH},{@},$@){}dnl
 dnl
 define({__ASM_TOKEN_FETCH},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-    ld    A, [HL]       ; 1:7       __INFO   ( addr -- x )
+    ld    A,[HL]        ; 1:7       __INFO   ( addr -- x )
     inc  HL             ; 1:6       __INFO
-    ld    H, [HL]       ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO}){}dnl
 dnl
 dnl
@@ -5574,15 +5574,15 @@ eval($#>1),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
 __HAS_PTR($1),{1},{
     push DE             ; 1:11      __INFO   ( addr -- x $1 )  x = (addr)
-    ld    E, [HL]       ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    D, [HL]       ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     ld   HL,format({%-12s},$1); 3:16      __INFO},
 {
     push DE             ; 1:11      __INFO   ( addr -- x $1 )  x = (addr)
-    ld    E, [HL]       ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    D, [HL]       ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     ld   HL, __FORM({%-11s},$1); 3:10      __INFO}){}dnl
 }){}dnl
 dnl
@@ -5599,9 +5599,9 @@ define({__ASM_TOKEN_DUP_FETCH},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[6:41]     __INFO   ( addr -- addr x )
     push DE             ; 1:11      __INFO
-    ld    E, [HL]       ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    D, [HL]       ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec  HL             ; 1:6       __INFO
     ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
@@ -5617,9 +5617,9 @@ define({__ASM_TOKEN_DUP_FETCH_SWAP},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[5:37]     __INFO   ( addr -- x addr )
     push DE             ; 1:11      __INFO
-    ld    E, [HL]       ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    D, [HL]       ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     dec  HL             ; 1:6       __INFO}){}dnl
 dnl
 dnl
@@ -7665,13 +7665,13 @@ define({__ASM_TOKEN_2FETCH},{dnl
 __{}define({__INFO},__COMPILE_INFO)
                         ;[10:65]    __INFO   ( adr -- lo hi )
     push DE             ; 1:11      __INFO
-    ld    E, [HL]       ; 1:7       __INFO
+    ld    E,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    D, [HL]       ; 1:7       __INFO
+    ld    D,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    A, [HL]       ; 1:7       __INFO
+    ld    A,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
-    ld    H, [HL]       ; 1:7       __INFO
+    ld    H,[HL]        ; 1:7       __INFO
     ld    L, A          ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO}){}dnl
 dnl
@@ -7696,13 +7696,13 @@ __{}__{}                       ;[13:88]     __INFO   ( -- lo hi )
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}    ld   HL,format({%-12s},(3+$1)); 3:16      __INFO
-__{}__{}    ld    D, [HL]       ; 1:7       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
-__{}__{}    ld    E, [HL]       ; 1:7       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
-__{}__{}    ld    A, [HL]       ; 1:7       __INFO
+__{}__{}    ld    A,[HL]        ; 1:7       __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
-__{}__{}    ld    L, [HL]       ; 1:7       __INFO
+__{}__{}    ld    L,[HL]        ; 1:7       __INFO
 __{}__{}    ld    H, A          ; 1:4       __INFO},
 __{}{
 __{}__{}                        ;[9:58]     __INFO   ( -- lo hi )
