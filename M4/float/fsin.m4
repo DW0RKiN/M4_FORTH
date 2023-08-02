@@ -1,14 +1,14 @@
 ifdef({USE_fSin},{
 ; Trigonometric function sine
 ; Input: HL -π/2..π/2
-; Output: HL = sin[HL]
+; Output: HL = sin(HL)
 ; Pollutes: AF, DE
 ; *****************************************
                     fSin                ; *
 ; *****************************************
 
     ld    A, H          ; 1:4
-    and  0x7F           ; 2:7       abs[HL]
+    and  0x7F           ; 2:7       abs(HL)
     sub  0x3F           ; 2:7
     jr   nc, fSin_3F40  ; 2:12/7
     add   A, 0x02       ; 2:7
@@ -27,7 +27,7 @@ fSin_3D3E:
     ld    A, L          ; 1:4
     rra                 ; 1:4
     ld    E, A          ; 1:4
-    ld    A, [DE]       ; 1:7
+    ld    A,[DE]        ; 1:7
     jr    c, $+6        ; 2:12/7
     rra                 ; 1:4
     rra                 ; 1:4
@@ -50,7 +50,7 @@ fSin_3F40:
     ex   DE, HL         ; 1:4
     ld    H, A          ; 1:4
     ld    L, E          ; 1:4
-    ld    L, [HL]       ; 1:7
+    ld    L,[HL]        ; 1:7
     ld    H, 0xFF       ; 2:7
     add  HL, DE         ; 1:11{}ifelse(carry_flow_warning,{1},{
     or    A             ; 1:4       reset carry})
