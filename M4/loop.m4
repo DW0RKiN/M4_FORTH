@@ -283,6 +283,7 @@ __{}__{}__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDXLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_ADDXLOOP($1)})},
+
 __{}__GET_LOOP_TYPE($1),{R},{dnl
 __{}__{}ifelse(dnl
 dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl
@@ -311,6 +312,7 @@ __{}__{}__GET_LOOP_STEP($1),{},{dnl
 __{}__{}__{}__ASM_TOKEN_ADDRLOOP($1)},
 __{}__{}{dnl
 __{}__{}__{}__ASM_TOKEN_PUSH_XRADDLOOP($1)})},
+
 __{}__GET_LOOP_TYPE($1),{S},{dnl
 __{}__{}ifelse(dnl
 dnl #__{}__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1):__GET_LOOP_STEP($1),{0::-1},{dnl

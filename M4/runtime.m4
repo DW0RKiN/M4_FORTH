@@ -2941,7 +2941,7 @@ putchar_b:              ;           putchar   draw
     xor [HL]            ; 1:7       putchar   draw
     and   D             ; 1:4       putchar   draw
     xor [HL]            ; 1:7       putchar   draw
-    ld  [HL],A          ; 1:4       putchar   draw   ulozeni jednoho bajtu z masky
+    ld  [HL],A          ; 1:7       putchar   draw   ulozeni jednoho bajtu z masky
 
     exx                 ; 1:4       putchar   draw
     ld    A, B          ; 1:4       putchar   draw   načtení druhe poloviny "bajtu" z masky
@@ -2951,7 +2951,7 @@ putchar_b:              ;           putchar   draw
     xor [HL]            ; 1:7       putchar   draw
     and   E             ; 1:4       putchar   draw
     xor [HL]            ; 1:7       putchar   draw
-    ld  [HL],A          ; 1:4       putchar   draw   ulozeni jednoho bajtu z masky
+    ld  [HL],A          ; 1:7       putchar   draw   ulozeni jednoho bajtu z masky
     dec   L             ; 1:4       putchar   draw
     inc   H             ; 1:4       putchar   draw
 
