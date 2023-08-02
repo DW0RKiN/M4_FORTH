@@ -226,7 +226,7 @@ __{}ifelse(__GET_LOOP_END($1),{},{
     ld    D,(HL)        ; 1:7       __INFO   DE = index
     inc  HL             ; 1:6       __INFO
     inc  DE             ; 1:6       __INFO   index++
-    ld    A,(HL)        ; 1:4       __INFO
+    ld    A,(HL)        ; 1:7       __INFO
     xor   E             ; 1:4       __INFO   lo(index ^ stop)
     jr   nz, $+8        ; 2:7/12    __INFO
     ld    A, D          ; 1:4       __INFO
