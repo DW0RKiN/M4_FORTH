@@ -414,9 +414,9 @@ __{}__ASM_TOKEN_FETCH_PUSH($@)},
 {dnl
 __{}define({__INFO},__COMPILE_INFO)
 __{}    push DE             ; 1:11      __INFO
-__{}    ld    E, [HL]       ; 1:7       __INFO
+__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    ld    D, [HL]       ; 1:7       __INFO
+__{}    ld    D,[HL]        ; 1:7       __INFO
 __{}    push DE             ; 1:11      __INFO{}dnl
 __{}__ASM_TOKEN_2DROP_PUSHS($@){}dnl
 })}){}dnl
