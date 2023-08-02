@@ -110,11 +110,11 @@ fMul_DIFF:
     add   A, Tab_ApB/256; 2:7
     ld    H, A          ; 1:4
 
-    ld    A, (HL)       ; 1:4
+    ld    A, (HL)       ; 1:7
     add   A, E          ; 1:4
     ld    E, A          ; 1:4       for rounding
     inc   H             ; 1:4
-    ld    A, (HL)       ; 1:4
+    ld    A, (HL)       ; 1:7
     adc   A, D          ; 1:4
     ld    H, A          ; 1:4
     ld    L, E          ; 1:4
