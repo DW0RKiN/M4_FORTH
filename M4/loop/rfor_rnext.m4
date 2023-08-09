@@ -31,7 +31,7 @@ __{}define({__INFO},__COMPILE_INFO)
     ld  [HL],D          ; 1:7       __INFO
     dec  L              ; 1:4       __INFO
     ld  [HL],E          ; 1:7       __INFO   stop
-    exx                 ; 1:4       __INFO   ( index -- ) R: ( -- index )
+    exx                 ; 1:4       __INFO   ( index -- ) ( R: -- index )
 for{}$1:                 ;           __INFO}){}dnl
 dnl
 dnl
@@ -69,13 +69,13 @@ __{}define({__INFO},__COMPILE_INFO)
     ld    A, D          ; 1:4       __INFO
     and   E             ; 1:4       __INFO
     inc   A             ; 1:4       __INFO
-    jp    z, next{}$1    ; 3:10      __INFO   ( -1 -- ) R: ( -- )
+    jp    z, next{}$1    ; 3:10      __INFO   ( -1 -- ) ( R: -- )
     ld  [HL],D          ; 1:7       __INFO
     dec  L              ; 1:4       __INFO
     ld  [HL],E          ; 1:7       __INFO   stop
     exx                 ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO   ( index -- ) R: ( -- index )
+    pop  DE             ; 1:10      __INFO   ( index -- ) ( R: -- index )
 for{}$1:                 ;           __INFO}){}dnl
 dnl
 dnl

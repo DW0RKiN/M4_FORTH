@@ -11,7 +11,7 @@ __{}define({__INFO},{rcall}){}dnl
 
     call format({%-15s},$1); 3:17      rcall
     ex   DE, HL         ; 1:4       rcall
-    exx                 ; 1:4       rcall R:( ret -- )}){}dnl
+    exx                 ; 1:4       rcall ( R: ret -- )}){}dnl
 dnl
 dnl
 dnl # ( addr -- )
@@ -22,13 +22,13 @@ __{}__ADD_TOKEN({__TOKEN_REXECUTE},{rexecute},$@){}dnl
 dnl
 define({__ASM_TOKEN_REXECUTE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                       ;[10:55]     __INFO  ( addr -- ) R:( -- ret )
+                       ;[10:55]     __INFO  ( addr -- ) ( R: -- ret )
     ld  ($+6),HL        ; 3:16      __INFO
     ex   DE, HL         ; 1:4       __INFO
     pop  DE             ; 1:10      __INFO
     call 0x0000         ; 3:17      __INFO
     ex   DE, HL         ; 1:4       __INFO
-    exx                 ; 1:4       __INFO  R:( ret -- )}){}dnl
+    exx                 ; 1:4       __INFO  ( R: ret -- )}){}dnl
 dnl
 dnl
 dnl # ( addr -- addr )
@@ -39,12 +39,12 @@ __{}__ADD_TOKEN({__TOKEN_DUP_REXECUTE},{dup rexecute},$@){}dnl
 dnl
 define({__ASM_TOKEN_DUP_REXECUTE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[5:25]     __INFO  ( addr -- ) R:( -- )
+                        ;[5:25]     __INFO  ( addr -- ) ( R: -- )
     ld   BC, $+5        ; 3:10      __INFO
     push BC             ; 1:11      __INFO
     jp  [HL]            ; 1:4       __INFO
     ex   DE, HL         ; 1:4       __INFO
-    exx                 ; 1:4       __INFO  R:( ret -- )}){}dnl
+    exx                 ; 1:4       __INFO  ( R: ret -- )}){}dnl
 dnl
 dnl
 dnl # ( addr x -- addr x )
@@ -55,11 +55,11 @@ __{}__ADD_TOKEN({__TOKEN_OVER_REXECUTE},{over rexecute},$@){}dnl
 dnl
 define({__ASM_TOKEN_OVER_REXECUTE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[9:45]     __INFO  ( addr -- ) R:( -- )
+                        ;[9:45]     __INFO  ( addr -- ) ( R: -- )
     ld  ($+5),DE        ; 4:20      __INFO
     call 0x0000         ; 3:17      __INFO
     ex   DE, HL         ; 1:4       __INFO
-    exx                 ; 1:4       __INFO  R:( ret -- )}){}dnl
+    exx                 ; 1:4       __INFO  ( R: ret -- )}){}dnl
 dnl
 dnl
 dnl # ( -- )
@@ -80,7 +80,7 @@ format({%-24s;           $2},FCE_STACK:)
     ld  [HL],D          ; 1:7       : rcolon
     dec   L             ; 1:4       : rcolon
     ld  [HL],E          ; 1:7       : rcolon (HL') = ret
-    exx                 ; 1:4       : rcolon R:( -- ret )}){}dnl
+    exx                 ; 1:4       : rcolon ( R: -- ret )}){}dnl
 dnl
 dnl
 dnl # ( -- )

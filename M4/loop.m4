@@ -57,14 +57,14 @@ __{}__GET_LOOP_TYPE($1),{S},{
 __{}__{}    pop  HL             ; 1:10      unloop_{}$1(s)   ( stop_i i -- )
 __{}__{}    pop  DE             ; 1:10      unloop_{}$1(s)},
 __{}__GET_LOOP_TYPE($1)-__GET_LOOP_END($1),{R-},{
-__{}__{}    exx                 ; 1:4       unloop_{}$1(r)   R:( stop_i i -- )
+__{}__{}    exx                 ; 1:4       unloop_{}$1(r)   ( R: stop_i i -- )
 __{}__{}    inc   L             ; 1:4       unloop_{}$1(r)
 __{}__{}    inc  HL             ; 1:6       unloop_{}$1(r)
 __{}__{}    inc   L             ; 1:4       unloop_{}$1(r)
 __{}__{}    inc  HL             ; 1:6       unloop_{}$1(r)
 __{}__{}    exx                 ; 1:4       unloop_{}$1(r)},
 __{}__GET_LOOP_TYPE($1),{R},{
-__{}__{}    exx                 ; 1:4       unloop_{}$1(r)   R:( i -- )
+__{}__{}    exx                 ; 1:4       unloop_{}$1(r)   ( R: i -- )
 __{}__{}    inc   L             ; 1:4       unloop_{}$1(r)
 __{}__{}    inc  HL             ; 1:6       unloop_{}$1(r)
 __{}__{}    exx                 ; 1:4       unloop_{}$1(r)},
@@ -127,6 +127,27 @@ __{}__{}__ASM_TOKEN_SDO($1){}dnl
 __{}},
 __{}{
 __{}  .error {$0}($@): Unexpected type parameter! Support for M R S and not "__GET_LOOP_TYPE($1)"})}){}dnl
+dnl
+dnl
+dnl
+define({__ASM_TOKEN_RDO_I},{dnl
+__{}dnl #__SHOW_LOOP($1){}dnl
+__{}ifelse(__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
+__{}__{}ifelse(dnl
+__{}__{}__GET_LOOP_STEP($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_RDO_I($1)},
+__{}__{}__GET_LOOP_BEGIN($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_RDO_I($1)},
+__{}__{}__GET_LOOP_END($1),{},{dnl
+__{}__{}__{}__ASM_TOKEN_RDO_I($1)},
+__{}__{}{dnl
+__{}__{}__{}__ASM_TOKEN_XRDO_I($1){}dnl
+__{}__{}}){}dnl
+__{}},
+__{}{
+__{}  .error {$0}($@): Unexpected type parameter! Support for R only and not "__GET_LOOP_TYPE($1)"{}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

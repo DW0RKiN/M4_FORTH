@@ -8,19 +8,30 @@ dnl # rxdo(R,stop,index) ... loop
 dnl # rxdo(R,stop,index) ... addloop
 dnl # rxdo(R,stop,index) ... push_addloop(step)
 define({__ASM_TOKEN_XRDO},{dnl
-__{}define({__INFO},__COMPILE_INFO{(xr)})
-__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
-__{}    dec  HL             ; 1:6       __INFO{}dnl
+__{}define({__INFO},__COMPILE_INFO{(xr)}){}dnl
 __{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
-__{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO},
-__{}{
-__{}__{}    ld   DE, __FORM({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO})
+__{}__{}                       ;[10:52]     __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO
 __{}do{}$1{}save:              ;           __INFO
-__{}    ld  [HL],D          ; 1:7       __INFO
-__{}    dec   L             ; 1:4       __INFO
-__{}    ld  [HL],E          ; 1:7       __INFO
-__{}    exx                 ; 1:4       __INFO   R:( -- index )
-__{}do{}$1:                  ;           __INFO}){}dnl
+__{}__{}    ld  [HL],D          ; 1:7       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld  [HL],E          ; 1:7       __INFO
+__{}__{}    exx                 ; 1:4       __INFO   ( R: -- index )},
+
+__{}{
+__{}__{}                        ;[9:42]     __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld   DE, __FORM({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO
+__{}do{}$1{}save:              ;           __INFO
+__{}__{}    ld  [HL],D          ; 1:7       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld  [HL],E          ; 1:7       __INFO
+__{}__{}    exx                 ; 1:4       __INFO   ( R: -- index ){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl # Napevno zadavana optimalizovana konstantni smycka, jejiz rozsah je znam uz v dobe kompilace a kterou nelze programove menit
@@ -29,21 +40,36 @@ dnl # rxdo_i(R,stop,index) ... loop
 dnl # rxdo_i(R,stop,index) ... addloop
 dnl # rxdo_i(R,stop,index) ... push_addloop(step)
 define({__ASM_TOKEN_XRDO_I},{dnl
-__{}define({__INFO},__COMPILE_INFO{(xr)})
-__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- i ) ( R: -- __GET_LOOP_BEGIN($1) )
-__{}    dec  HL             ; 1:6       __INFO{}dnl
+__{}define({__INFO},__COMPILE_INFO{(xr)}){}dnl
 __{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
-__{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO},
-__{}{
-__{}__{}    ld   DE, __FORM({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO})
+__{}__{}                       ;[13:86]     __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO
 __{}do{}$1{}save:              ;           __INFO
-__{}    ld  [HL],D          ; 1:7       __INFO
-__{}    dec   L             ; 1:4       __INFO
-__{}    ld  [HL],E          ; 1:7       __INFO
-__{}    push DE             ; 1:11      __INFO
-__{}    exx                 ; 1:4       __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ex  [SP], HL        ; 1:19      __INFO   R:( -- index ) ( -- index )}){}dnl
+__{}__{}    ld  [HL],D          ; 1:7       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld  [HL],E          ; 1:7       __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ex  [SP], HL        ; 1:19      __INFO   ( R: -- index ) ( -- index )},
+
+__{}{
+__{}__{}                       ;[12:76]     __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld   DE, __FORM({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO
+__{}do{}$1{}save:              ;           __INFO
+__{}__{}    ld  [HL],D          ; 1:7       __INFO
+__{}__{}    dec   L             ; 1:4       __INFO
+__{}__{}    ld  [HL],E          ; 1:7       __INFO
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    ex  [SP], HL        ; 1:19      __INFO   ( R: -- index ) ( -- index ){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
@@ -55,8 +81,7 @@ define({__ASM_TOKEN_QXRDO},{dnl
 __{}define({__INFO},__COMPILE_INFO{(xr)}){}dnl
 __{}ifelse(__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)),__SIMPLIFY_EXPRESSION(__GET_LOOP_BEGIN($1)),{
 __{}__{}    jp   exit{}$1        ; 3:10      __INFO
-__{}__{}do{}$1{}save:              ;           __INFO
-__{}__{}do{}$1:                  ;           __INFO},
+__{}__{}do{}$1{}save:              ;           __INFO},
 
 __{}__HAS_PTR(__GET_LOOP_END($1)),1,{
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
@@ -78,7 +103,7 @@ __{}__{}    ld  [HL],E          ; 1:7       __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    ex  [SP], HL        ; 1:19      __INFO   R:( -- index ) ( -- index ){}dnl
+__{}__{}    ex  [SP], HL        ; 1:19      __INFO   ( R: -- index ) ( -- index ){}dnl
 __{}},
 
 __{}__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
@@ -95,14 +120,13 @@ __{}__{}    ld  [HL],E          ; 1:7       __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    ex  [SP], HL        ; 1:19      __INFO   R:( -- index ) ( -- index ){}dnl
+__{}__{}    ex  [SP], HL        ; 1:19      __INFO   ( R: -- index ) ( -- index ){}dnl
 __{}},
 
 __{}ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)),0,1,__IS_NUM(__GET_LOOP_END($1)),0,1,0),1,{
 __{}__{}  if ((__GET_LOOP_BEGIN($1))=(__GET_LOOP_END($1)))
 __{}__{}    jp   exit{}$1        ; 3:10      __INFO
 __{}__{}do{}$1{}save:              ;           __INFO
-__{}__{}do{}$1:                  ;           __INFO
 __{}__{}  else
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
 __{}__{}    ld   DE, __FORM({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO
@@ -114,14 +138,13 @@ __{}__{}    ld  [HL],E          ; 1:7       __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    ex  [SP], HL        ; 1:19      __INFO   R:( -- index ) ( -- index )
+__{}__{}    ex  [SP], HL        ; 1:19      __INFO   ( R: -- index ) ( -- index )
 __{}__{}  endif{}dnl
 __{}},
 
 __{}__HEX_HL(__GET_LOOP_END($1)),__HEX_HL(__GET_LOOP_BEGIN($1)),{
 __{}__{}    jp   exit{}$1        ; 3:10      __INFO
-__{}__{}do{}$1{}save:              ;           __INFO
-__{}__{}do{}$1:                  ;           __INFO},
+__{}__{}do{}$1{}save:              ;           __INFO},
 
 __{}{
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
@@ -134,7 +157,7 @@ __{}__{}    ld  [HL],E          ; 1:7       __INFO
 __{}__{}    push DE             ; 1:11      __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    ex  [SP], HL        ; 1:19      __INFO   R:( -- index ) ( -- index ){}dnl
+__{}__{}    ex  [SP], HL        ; 1:19      __INFO   ( R: -- index ) ( -- index ){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -148,8 +171,7 @@ define({__ASM_TOKEN_QXRDO_I},{dnl
 __{}define({__INFO},__COMPILE_INFO{(xr)}){}dnl
 __{}ifelse(__GET_LOOP_END($1),__GET_LOOP_BEGIN($1),{
 __{}__{}    jp   exit{}$1        ; 3:10      __INFO
-__{}__{}do{}$1{}save:              ;           __INFO
-__{}__{}do{}$1:                  ;           __INFO},
+__{}__{}do{}$1{}save:              ;           __INFO},
 __{}__HAS_PTR(__GET_LOOP_END($1)),1,{
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
 __{}__{}ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{dnl
@@ -167,8 +189,7 @@ __{}__{}do{}$1{}save:              ;           __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    ld  [HL],E          ; 1:7       __INFO
-__{}__{}    exx                 ; 1:4       __INFO   R:( -- index )
-__{}__{}do{}$1:                  ;           __INFO{}dnl
+__{}__{}    exx                 ; 1:4       __INFO   ( R: -- index ){}dnl
 __{}},
 __{}__HAS_PTR(__GET_LOOP_BEGIN($1)),1,{
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
@@ -181,15 +202,13 @@ __{}__{}do{}$1{}save:              ;           __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    ld  [HL],E          ; 1:7       __INFO
-__{}__{}    exx                 ; 1:4       __INFO   R:( -- index )
-__{}__{}do{}$1:                  ;           __INFO{}dnl
+__{}__{}    exx                 ; 1:4       __INFO   ( R: -- index ){}dnl
 __{}},
 
 __{}ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)),0,1,__IS_NUM(__GET_LOOP_END($1)),0,1,0),1,{
 __{}__{}  if ((__GET_LOOP_BEGIN($1))=(__GET_LOOP_END($1)))
 __{}__{}    jp   exit{}$1        ; 3:10      __INFO
 __{}__{}do{}$1{}save:              ;           __INFO
-__{}__{}do{}$1:                  ;           __INFO
 __{}__{}  else
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
 __{}__{}    ld   DE, __FORM({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO
@@ -198,15 +217,13 @@ __{}__{}do{}$1{}save:              ;           __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    ld  [HL],E          ; 1:7       __INFO
-__{}__{}    exx                 ; 1:4       __INFO   R:( -- index )
-__{}__{}do{}$1:                  ;           __INFO
+__{}__{}    exx                 ; 1:4       __INFO   ( R: -- index )
 __{}__{}  endif{}dnl
 __{}},
 
 __{}__HEX_HL(__GET_LOOP_END($1)),__HEX_HL(__GET_LOOP_BEGIN($1)),{
 __{}__{}    jp   exit{}$1        ; 3:10      __INFO
-__{}__{}do{}$1{}save:              ;           __INFO
-__{}__{}do{}$1:                  ;           __INFO},
+__{}__{}do{}$1{}save:              ;           __INFO},
 
 __{}{
 __{}__{}    exx                 ; 1:4       __INFO   ( __GET_LOOP_END($1) __GET_LOOP_BEGIN($1) -- ) ( R: -- __GET_LOOP_BEGIN($1) )
@@ -216,8 +233,7 @@ __{}__{}do{}$1{}save:              ;           __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    ld  [HL],E          ; 1:7       __INFO
-__{}__{}    exx                 ; 1:4       __INFO   R:( -- index )
-__{}__{}do{}$1:                  ;           __INFO{}dnl
+__{}__{}    exx                 ; 1:4       __INFO   ( R: -- index ){}dnl
 __{}}){}dnl
 }){}dnl
 dnl
@@ -304,7 +320,7 @@ __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO{}dnl
 __{}})
 __{}leave{}$1:               ;           __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    exx                 ; 1:4       __INFO   R:( index -- )
+__{}    exx                 ; 1:4       __INFO   ( R: index -- )
 __{}exit{}$1:                ;           __INFO}){}dnl
 dnl
 dnl
@@ -389,7 +405,7 @@ __{}__{}__{}__C1})
 __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO})
 __{}leave{}$1:               ;           __INFO
 __{}    inc  HL             ; 1:6       __INFO
-__{}    exx                 ; 1:4       __INFO   R:( index -- )
+__{}    exx                 ; 1:4       __INFO   ( R: index -- )
 __{}exit{}$1:                ;           __INFO}){}dnl
 dnl
 dnl
@@ -566,11 +582,11 @@ __{}__{}__{}__{}    cp    E             ; 1:4       __INFO   lo(real_stop) exclu
 __{}__{}__{}{
 __{}__{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,DE,_TEMP_REAL_STOP,3,10,do{}$1save,-10){}dnl
 __{}__{}__{}__{}_TMP_BEST_CODE})
-__{}__{}__{}    jp   nz, do{}$1save  ; 3:10      __INFO   ( -- ) R:( index -- index+__GET_LOOP_STEP($1) ){}dnl
+__{}__{}__{}    jp   nz, do{}$1save  ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) ){}dnl
 __{}__{}})
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    exx                 ; 1:4       __INFO   ( -- ) R:( index -- )
+__{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: index -- )
 __{}__{}exit{}$1:                ;           __INFO},
 
 __{}{
@@ -600,26 +616,35 @@ __{}__{}__{}    ld   HL, format({%-11s},eval(-(__GET_LOOP_END($1)))); 3:10      
 __{}__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop},
 __{}__{}{
 __{}__{}__{}    ld   HL, __FORM({%-11s},-(__GET_LOOP_END($1))); 3:10      __INFO   HL =      -stop = -( __GET_LOOP_END($1) )
-__{}__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop})
-__{}__{}    ld   BC, format({%-11s},eval(__GET_LOOP_STEP($1))); 3:10      __INFO   BC =            step
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step{}dnl
-__{}__{}ifelse(eval((__GET_LOOP_STEP($1))<0),{1},{
-__{}__{}__{}    jr   nc, leave{}$1-1 ; 2:7/12    __INFO   -step},
-__{}__{}{
-__{}__{}__{}    jr    c, leave{}$1-1 ; 2:7/12    __INFO   +step})
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  HL             ; 1:10      __INFO
-__{}__{}    ld  [HL],D          ; 1:7       __INFO
-__{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}    ld  [HL],E          ; 1:7       __INFO
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    jp   do{}$1          ; 3:10      __INFO   ( -- ) R:( index -- index+__GET_LOOP_STEP($1) )
-__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop}){}dnl
+__{}__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),1,{
+__{}__{}__{}    ld   BC, __HEX_HL(__GET_LOOP_STEP($1))     ; 3:10      __INFO   BC =            step = __GET_LOOP_STEP($1)
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   index+step
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    pop  HL             ; 1:10      __INFO{}dnl
+__{}__{}__{}ifelse(eval((__GET_LOOP_STEP($1)) & 0x8000),0,{
+__{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   +step},
+__{}__{}__{}{
+__{}__{}__{}    jp    m, do{}$1save  ; 3:10      __INFO   -step})},
+__{}__{}{dnl
+__{}__{}__{}define({$0_TMP},__LD_R16(BC,__GET_LOOP_STEP($1))){}$0_TMP   BC =            step
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   index+step
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
+__{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   +step
+__{}__{}__{}  else
+__{}__{}__{}    jp    m, do{}$1save  ; 3:10      __INFO   -step
+__{}__{}__{}  endif})
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    exx                 ; 1:4       __INFO   ( -- ) R:( index -- )
+__{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: index -- )
 __{}__{}exit{}$1:                ;           __INFO{}dnl
 __{}}){}dnl
 }){}dnl
