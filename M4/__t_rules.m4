@@ -1952,7 +1952,9 @@ dnl
 dnl
 dnl # xxx + pushs = xxx_pushs ( after all pushs + xxx = pushs_xxx rule is done )
 define({__CHECK_TOKEN},{ifelse(dnl
-__T_NAME(1):__T_NAME(0),                     __TOKEN_DROP:__TOKEN_SWAP,              {__SET_CHECK_TOKEN(__TOKEN_DROP_SWAP)},
+__T_NAME(1):__T_NAME(0),                     __TOKEN_DROP:__TOKEN_SWAP,             {__SET_CHECK_TOKEN(__TOKEN_DROP_SWAP)},
+
+__T_NAME(1):__GET_LOOP_TYPE(__T_ARRAY_1(1)):__T_NAME(0),    __TOKEN_DO:R:__TOKEN_I, {__SET_CHECK_TOKEN(__TOKEN_DO_I)},
 
 __T_NAME(1):__T_NAME(0),                     __TOKEN_2SWAP:__TOKEN_2OVER_DADD,       {__SET_CHECK_TOKEN(__TOKEN_2SWAP_2OVER_DADD)},
 __T_NAME(1):__T_NAME(0),                     __TOKEN_2OVER_DADD:__TOKEN_2SWAP,       {__SET_CHECK_TOKEN(__TOKEN_2OVER_DADD_2SWAP)},

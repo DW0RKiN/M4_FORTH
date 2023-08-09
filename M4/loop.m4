@@ -130,7 +130,7 @@ __{}  .error {$0}($@): Unexpected type parameter! Support for M R S and not "__G
 dnl
 dnl
 dnl
-define({__ASM_TOKEN_RDO_I},{dnl
+define({__ASM_TOKEN_DO_I},{dnl
 __{}dnl #__SHOW_LOOP($1){}dnl
 __{}ifelse(__GET_LOOP_TYPE($1),{R},{dnl # ------- return address stack allocation -------
 __{}__{}ifelse(dnl

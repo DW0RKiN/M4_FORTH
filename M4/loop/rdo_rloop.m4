@@ -1105,13 +1105,13 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}ifelse(__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x0000,{
 __{}__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO},
 __{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x8000,{
-__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO},
+__{}__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO},
 __{}__{}{
-__{}__{}__{}if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
+__{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
 __{}__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO
-__{}__{}__{}else
+__{}__{}__{}  else
 __{}__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO
-__{}__{}__{}endif})
+__{}__{}__{}  endif})
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: stop index -- )
@@ -1128,15 +1128,14 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dn
 __{}__{}__CODE
 __{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC =  step = __GET_LOOP_STEP($1)
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}    sbc   A, A          ; 1:4       __INFO{}dnl
+__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign{}dnl
 __{}__{}__ADD_R16_CONST(HL,__GET_LOOP_END($1),{BC =  stop = __GET_LOOP_END(}$1{)},{HL+=  stop = index+step}){}dnl
 __{}__{}__CODE
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    or   A              ; 1:4       __INFO
 __{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
-__{}__{}    jp    z, do{}$1save  ; 3:10      __INFO
+__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO
 __{}__{}  else
-__{}__{}    jp   nz, do{}$1save  ; 3:10      __INFO
+__{}__{}    jp    m, do{}$1save  ; 3:10      __INFO
 __{}__{}  endif
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
@@ -1155,21 +1154,20 @@ __{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dn
 __{}__{}__CODE
 __{}__{}    ld   BC, __HEX_HL(__GET_LOOP_STEP($1))     ; 3:10      __INFO   BC =  step = __GET_LOOP_STEP($1)
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}    sbc   A, A          ; 1:4       __INFO{}dnl
+__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign{}dnl
 __{}__{}__ADD_R16_CONST(HL,__GET_LOOP_END($1),{BC =  stop = __GET_LOOP_END($1)},{HL+=  stop = index+step}){}dnl
 __{}__{}__CODE
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    or   A              ; 1:4       __INFO{}dnl
+__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),1,{dnl
 __{}__{}__{}ifelse(eval((__GET_LOOP_STEP($1)) & 0x8000),0,{
-__{}__{}__{}    jp    z, do{}$1save  ; 3:10      __INFO},
+__{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO},
 __{}__{}__{}{
-__{}__{}__{}    jp   nz, do{}$1save  ; 3:10      __INFO})},
+__{}__{}__{}    jp    m, do{}$1save  ; 3:10      __INFO})},
 __{}__{}{
 __{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
-__{}__{}__{}    jp    z, do{}$1save  ; 3:10      __INFO
+__{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO
 __{}__{}__{}  else
-__{}__{}__{}    jp   nz, do{}$1save  ; 3:10      __INFO
+__{}__{}__{}    jp    m, do{}$1save  ; 3:10      __INFO
 __{}__{}__{}  endif})
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
