@@ -1,883 +1,724 @@
-dnl ## FLoat
-dnl
-define({carry_flow_warning},1){}dnl
-include(M4PATH{}float_const.m4){}dnl
-dnl
-dnl
-dnl
-define({FSTRING_TO_FHEX},{dnl
-__{}define({$0_SIGN},0){}dnl
-__{}define({$0_ORIG_FHEX},__HEX_FLOAT($1)){}dnl
-__{}define({$0_INFO},$1 (=$0_ORIG_FHEX)){}dnl
-__{}ifelse(substr($1,0,1),{-},{dnl
-__{}__{}define({$0_SIGN},0x8000){}dnl
-__{}__{}define({$0_HEX_REAL},substr($0_ORIG_FHEX,1))},
-__{}substr($1,0,1),{+},{dnl
-__{}__{}define({$0_HEX_REAL},substr($0_ORIG_FHEX,1))},
-__{}{dnl
-__{}__{}define({$0_HEX_REAL},$0_ORIG_FHEX)}){}dnl
-__{}dnl
-__{}ifelse($0_SIGN:$0_HEX_REAL,{0x8000:0x0p+0},{
-__{}__{}  .WARNING You are trying to convert "negative zero" to Danagy 16 bit floating point format, so it will be changed to a negative value closest to zero.{}dnl
-__{}__{}define({$0_RES},FMMIN)},
-__{}$0_HEX_REAL,{0x0p+0},{
-__{}__{}  .WARNING You are trying to convert "positive zero" to Danagy 16 bit floating point format, so it will be changed to a positive value closest to zero.{}dnl
-__{}__{}define({$0_RES},FPMIN)},
-__{}$0_SIGN:$0_HEX_REAL,{0x8000:inf},{
-__{}__{}  .WARNING You are trying to convert "-inf" to Danagy 16 bit floating point format. It will be converted as a smallest possible value.{}dnl
-__{}__{}define({$0_RES},FMMAX)},
-__{}$0_HEX_REAL,{inf},{
-__{}__{}  .WARNING You are trying to convert "+inf" to Danagy 16 bit floating point format. It will be converted as a largest possible value.{}dnl
-__{}__{}define({$0_RES},FPMAX)},
-__{}$0_HEX_REAL,{nan},{
-__{}__{}  .WARNING You are trying to convert "Not a Number" to Danagy 16 bit floating point format. It will be converted as a positive value closest to zero.{}dnl
-__{}__{}define({$0_RES},FPMIN)},
-__{}{dnl
-__{}__{}dnl    ;# Výpočet exponentu
-__{}__{}define({$0_EXP},{eval(substr($0_HEX_REAL,incr(index($0_HEX_REAL,{p}))) + 0x40)}){}dnl
-__{}__{}dnl    ;# Výpočet mantisy
-__{}__{}define({$0_MAN},{substr($0_HEX_REAL,incr(index($0_HEX_REAL,{x})),eval(index($0_HEX_REAL,{p})-index($0_HEX_REAL,{x})-1))}){}dnl
-__{}__{}ifelse(substr($0_MAN,0,2),{1.},{define({$0_MAN},{1}substr($0_MAN,2))}){}dnl
-__{}__{}define({$0_MAN},$0_MAN{000}){}dnl
-__{}__{}define({$0_ROUND_NIBBLE},substr($0_MAN,3,1)){}dnl
-__{}__{}define({$0_MAN},{0x}substr($0_MAN,0,3)){}dnl
-__{}__{}ifelse(eval({0x}$0_ROUND_NIBBLE>7),1,{define({$0_MAN},eval($0_MAN+1))}){}dnl
-__{}__{}ifelse(__HEX_HL($0_MAN),0x0200,{dnl
-__{}__{}__{}define({$0_EXP},incr($0_EXP)){}dnl
-__{}__{}__{}define({$0_MAN},0)},
-__{}__{}{dnl
-__{}__{}__{}define({$0_MAN},eval($0_MAN-0x100))}){}dnl
-__{}__{}dnl
-__{}__{}ifelse($0_MAN:eval(($0_EXP>=0x40)&&($0_EXP<0x50)),0:1,{dnl
-__{}__{}__{}define({$0_REAL},eval(2**eval($0_EXP-0x40)))},
-__{}__{}$0_MAN,0,{dnl
-__{}__{}__{}define({$0_REAL},2**eval($0_EXP-0x40))},
-__{}__{}eval(($0_EXP-0x48)>=0),1,{dnl
-__{}__{}__{}define({$0_POW2},__POW(2,eval($0_EXP-0x48))){}dnl
-__{}__{}__{}ifelse($0_POW2,0,{dnl
-__{}__{}__{}__{}define({$0_REAL},eval($0_MAN+256)*(2**eval($0_EXP-0x48)))},
-__{}__{}__{}{dnl
-__{}__{}__{}__{}define({$0_REAL},eval(($0_MAN+256)*__POW(2,eval($0_EXP-0x48))))})},
-__{}__{}{dnl
-__{}__{}__{}define({$0_POW2},__POW(2,eval(0x48-$0_EXP))){}dnl
-__{}__{}__{}ifelse($0_POW2,0,{dnl
-__{}__{}__{}__{}define({$0_REAL},eval($0_MAN+256)/(2**eval(0x48-$0_EXP)))},
-__{}__{}__{}{dnl
-__{}__{}__{}__{}define({$0_REAL},eval($0_MAN+256)/__POW(2,eval(0x48-$0_EXP)))})
-__{}__{}}){}dnl
-__{}__{}dnl
-__{}__{}ifelse($0_SIGN,0x8000,{define({$0_REAL},{-}$0_REAL)}){}dnl
-__{}__{}dnl
-__{}__{}ifelse($0_MAN,0,{dnl
-__{}__{}__{}define({$0_NEW_FHEX},ifelse($0_SIGN,0x8000,{-}){0x1p}format({%+i},eval($0_EXP-0x40)))},
-__{}__{}eval($0_MAN & 15),0,{dnl
-__{}__{}__{}define({$0_NEW_FHEX},ifelse($0_SIGN,0x8000,{-}){0x1.}format({%x},eval($0_MAN>>4)){p}format({%+i},eval($0_EXP-0x40)))},
-__{}__{}{dnl
-__{}__{}__{}define({$0_NEW_FHEX},ifelse($0_SIGN,0x8000,{-}){0x1.}format({%x},eval($0_MAN)){p}format({%+i},eval($0_EXP-0x40)))}){}dnl
-__{}__{}dnl
-__{}__{}ifelse(1,0,{errprint({
-;---------
-;    orig:$1
-;orig_hex: }$0_ORIG_FHEX{
-;       s: }$0_SIGN{
-;       e: }$0_EXP = __HEX_L($0_EXP) = eval($0_EXP-0x48){
-;       m: }__HEX_HL($0_MAN){
-;    info: }$0_REAL{
-; new_hex: }$0_NEW_FHEX)}){}dnl
-__{}__{}dnl
-__{}__{}ifelse(eval(($0_EXP < 0) && $0_SIGN),1,{
-__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a negative value closest to zero.{}dnl
-__{}__{}__{}define({$0_RES},FMMIN)},
-__{}__{}eval($0_EXP < 0 ),1,{
-__{}__{}__{}  .WARNING The value "$1" is too close to zero, so it will be changed to a positive value closest to zero.{}dnl
-__{}__{}__{}define({$0_RES},FPMIN)},
-__{}__{}eval(($0_EXP > 0x7F) && $0_SIGN ),1,{
-__{}__{}__{}  .WARNING The value "$1" is less than the smallest possible value, so it will be changed to the smallest possible value.{}dnl
-__{}__{}__{}define({$0_RES},FMMAX)},
-__{}__{}eval($0_EXP > 0x7F),1,{
-__{}__{}__{}  .WARNING The value "$1" is greater than the largest possible value, so it will be changed to the largest possible value.{}dnl
-__{}__{}__{}define({$0_RES},FPMAX)},
-__{}__{}{dnl   ;# Sestavení hexadecimální hodnoty
-__{}__{}__{}ifelse($0_NEW_FHEX,$0_ORIG_FHEX,,{define({$0_INFO},{$1 (=}$0_ORIG_FHEX{ ≈ }$0_NEW_FHEX{=}$0_REAL{)})}){}dnl
-__{}__{}__{}define({$0_RES},__HEX_HL($0_SIGN + $0_EXP * 0x100 + $0_MAN)){}dnl
-__{}__{}}){}dnl
-__{}}){}dnl
-})dnl
-dnl
-dnl
-dnl
-define({FPUSH},{dnl
-__{}FSTRING_TO_FHEX($1){}dnl
-__{}__ADD_TOKEN({__TOKEN_PUSHS},FSTRING_TO_FHEX_INFO,FSTRING_TO_FHEX_RES){}dnl
-})dnl
-dnl
-dnl
-dnl
-dnl # FVARIABLE(name)       --> (name) = 0
-dnl # FVARIABLE(name,1)     --> (name) = 0x4000
-dnl # FVARIABLE(name,1e)    --> (name) = 0x4000
-dnl # FVARIABLE(name,-1e)   --> (name) = 0xC000
-dnl # FVARIABLE(name,inf)   --> (name) = 0x7FFF
-dnl # FVARIABLE(name,-inf)  --> (name) = 0xFFFF
-define({FVARIABLE},{dnl
-__{}ifelse($1,{},{
-__{}__{}  .error {$0}(): Missing  parameter with variable name!},
-__{}__IS_NUM($1),1,{
-__{}__{}  .error {$0}($@): First parameter is number! Need variable name!},
-__{}eval($#>2),1,{
-__{}__{}  .error {$0}($@): $# parameters found in macro!},
-__{}$#,1,{dnl
-__{}__{}define({__PSIZE_}$1,2)dnl
-__{}__{}__ADD_TOKEN({__TOKEN_VARIABLE},{fvariable $1},$@)},
-__{}{dnl
-__{}__{}define({__PSIZE_}$1,2)dnl
-__{}__{}FSTRING_TO_FHEX($2){}dnl
-__{}__{}__ADD_TOKEN({__TOKEN_VARIABLE},{fvariable $1 }FSTRING_TO_FHEX_INFO,$1,FSTRING_TO_FHEX_RES){}dnl
-__{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl # ( pf -- f )
-define({FFETCH},{dnl
-__{}__ADD_TOKEN({__TOKEN_FETCH},{f@},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # ( f pf -- )
-define({FSTORE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_STORE_1ADD},{f!},$@){}dnl
-__{}__ADD_TOKEN({__TOKEN_2DROP},{__dtto},$@){}dnl
-}){}dnl
+define({carry_flow_warning},{1})dnl
 dnl
 dnl
-dnl # ( s1 -- f1 )
-define({S2F},{dnl
-__{}__ADD_TOKEN({__TOKEN_S2F},{s>f},$@){}dnl
-}){}dnl
+dnl ( s1 -- f1 )
+define({S2F},{
+ifdef({USE_fIld},,define({USE_fIld},{}))dnl
+    call fIld           ; 3:17      s>f})dnl
 dnl
-define({__ASM_TOKEN_S2F},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fIld})
-    call fIld           ; 3:17      __INFO}){}dnl
 dnl
+dnl ( u1 -- f1 )
+define({U2F},{
+ifdef({USE_fWld},,define({USE_fWld},{}))dnl
+    call fWld           ; 3:17      u>f})dnl
 dnl
-dnl # ( u1 -- f1 )
-define({U2F},{dnl
-__{}__ADD_TOKEN({__TOKEN_U2F},{u>f},$@){}dnl
-}){}dnl
 dnl
-define({__ASM_TOKEN_U2F},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fWld})
-    call fWld           ; 3:17      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 -- s1 )
-define({F2S},{dnl
-__{}__ADD_TOKEN({__TOKEN_F2S},{f>s},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_F2S},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fIst})
-    call fIst           ; 3:17      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 -- u1 )
-define({F2U},{dnl
-__{}__ADD_TOKEN({__TOKEN_F2U},{f>u},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_F2U},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fWst})
-    call fWst           ; 3:17      __INFO}){}dnl
-dnl
-dnl
-dnl # ( adr -- adr+2 )
-define({FLOATADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_2ADD},{float+},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # ( f2 f1 -- f )
-dnl # f = f2 + f1
-define({FADD},{dnl
-__{}__ADD_TOKEN({__TOKEN_FADD},{f+},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FADD},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fAdd})
-    call fAdd           ; 3:17      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f2 f1 -- f )
-dnl # f = f2 + f1
-define({FSUB},{dnl
-__{}__ADD_TOKEN({__TOKEN_FSUB},{f-},$@){}dnl
-}){}dnl
+dnl ( f1 -- s1 )
+define({F2S},{
+ifdef({USE_fIst},,define({USE_fIst},{}))dnl
+    call fIst           ; 3:17      f>s})dnl
 dnl
-define({__ASM_TOKEN_FSUB},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fSub})
-    call fSub           ; 3:17      __INFO
-    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
+dnl ( f1 -- u1 )
+define({F2U},{
+ifdef({USE_fWst},,define({USE_fWst},{}))dnl
+    call fWst           ; 3:17      f>u})dnl
 dnl
-dnl # ( f1 -- -f1 )
-define({FNEGATE},{dnl
-__{}__ADD_TOKEN({__TOKEN_FNEGATE},{fnegate},$@){}dnl
-}){}dnl
 dnl
-define({__ASM_TOKEN_FNEGATE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    ld    A, H          ; 1:4       __INFO
-    xor  0x80           ; 2:7       __INFO
-    ld    H, A          ; 1:4       __INFO}){}dnl
-dnl
+dnl ( f2 f1 -- f )
+dnl f = f2 + f1
+define({FADD},{
+ifdef({USE_fAdd},,define({USE_fAdd},{}))dnl
+    call fAdd           ; 3:17      f+
+    pop  DE             ; 1:10      f+})dnl
 dnl
-dnl # ( f1 -- f2 )
-define({FABS},{dnl
-__{}__ADD_TOKEN({__TOKEN_FABS},{fabs},$@){}dnl
-}){}dnl
 dnl
-define({__ASM_TOKEN_FABS},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    res   7, H          ; 2:8       __INFO}){}dnl
+dnl ( f2 f1 -- f )
+dnl f = f2 + f1
+define({FSUB},{
+ifdef({USE_fSub},,define({USE_fSub},{}))dnl
+    call fSub           ; 3:17      f-
+    pop  DE             ; 1:10      f-})dnl
 dnl
 dnl
-dnl # ( f1 -- )
-define({FDOT},{dnl
-__{}__ADD_TOKEN({__TOKEN_FDOT},{f.},$@){}dnl
-}){}dnl
+dnl ( f1 -- -f1 )
+define({FNEGATE},{
+    ld    A, H          ; 1:4       fnegate
+    xor  0x80           ; 2:7       fnegate
+    ld    H, A          ; 1:4       fnegate})dnl
 dnl
-define({__ASM_TOKEN_FDOT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fDot})
-    call fDot           ; 3:17      __INFO}){}dnl
 dnl
+dnl ( f1 -- f2 )
+define({FABS},{
+    res   7, H          ; 2:8       fabs})dnl
 dnl
-dnl # ( f2 f1 -- f )
-dnl # f = f2 * f1
-define({FMUL},{dnl
-__{}__ADD_TOKEN({__TOKEN_FMUL},{f*},$@){}dnl
-}){}dnl
 dnl
-define({__ASM_TOKEN_FMUL},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fMul})
-    ld    B, H          ; 1:4       __INFO
-    ld    C, L          ; 1:4       __INFO
-    call fMul           ; 3:17      __INFO   HL = BC*DE
-    pop  DE             ; 1:10      __INFO}){}dnl
+dnl ( f1 -- )
+define({FDOT},{
+ifdef({USE_fDot},,define({USE_fDot},{}))dnl
+    call fDot           ; 3:17      f.})dnl
 dnl
 dnl
-dnl # ( f2 f1 -- f )
-dnl # f = f2 / f1
-define({FDIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_FDIV},{f/},$@){}dnl
-}){}dnl
+dnl ( f2 f1 -- f )
+dnl f = f2 * f1
+define({FMUL},{
+ifdef({USE_fMul},,define({USE_fMul},{}))dnl
+    ld    B, H          ; 1:4       f*
+    ld    C, L          ; 1:4       f*
+    call fMul           ; 3:17      f* HL = BC*DE
+    pop  DE             ; 1:10      f*})dnl
 dnl
-define({__ASM_TOKEN_FDIV},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fDiv})
-    ld    B, D          ; 1:4       __INFO
-    ld    C, E          ; 1:4       __INFO
-    call fDiv           ; 3:17      __INFO   HL = BC/HL
-    pop  DE             ; 1:10      __INFO}){}dnl
 dnl
+dnl ( f2 f1 -- f )
+dnl f = f2 / f1
+define({FDIV},{
+ifdef({USE_fDiv},,define({USE_fDiv},{}))dnl
+    ld    B, D          ; 1:4       f/
+    ld    C, E          ; 1:4       f/
+    call fDiv           ; 3:17      f/ HL = BC/HL
+    pop  DE             ; 1:10      f/})dnl
+dnl
+dnl
+dnl ( f2 f1 -- f )
+dnl f = f2 / f1
+define({FSQRT},{
+ifdef({USE_fSqrt},,define({USE_fSqrt},{}))dnl
+    call fSqrt          ; 3:17      fsqrt})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl "round towards zero"
+define({FTRUNC},{
+ifdef({USE_fTrunc},,define({USE_fTrunc},{}))dnl
+    call fTrunc         ; 3:17      ftrunc})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = f1 % 1.0
+define({FFRAC},{
+ifdef({USE_fFrac},,define({USE_fFrac},{}))dnl
+    call fFrac          ; 3:17      ffrac})dnl
+dnl
 dnl
-dnl # fdrop
-dnl # ( f1 -- )
-define({FDROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_DROP},{fdrop},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # f2drop
-dnl # ( f2 f1 -- )
-define({F2DROP},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DROP},{f2drop},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # fdup
-dnl # ( f1 -- f1 f1 )
-define({FDUP},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP},{fdup},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # f2dup
-dnl # ( f2 f1 -- f2 f1 f2 f1 )
-define({F2DUP},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP},{f2dup},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # fnip
-dnl # ( f2 f1 -- f1 )
-define({FNIP},{dnl
-__{}__ADD_TOKEN({__TOKEN_NIP},{fnip},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # fover
-dnl # ( f2 f1 -- f2 f1 f2 )
-define({FOVER},{dnl
-__{}__ADD_TOKEN({__TOKEN_OVER},{fover},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # fpick
-dnl # ( fu .. f1 f0 u -- fu .. f1 f0 fu )
-define({FPICK},{dnl
-__{}__ADD_TOKEN({__TOKEN_PICK},{fpick},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # frot
-dnl # ( f3 f2 f1 -- f2 f1 f3 )
-define({FROT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT},{frot},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # f-rot
-dnl # ( f3 f2 f1 -- f2 f1 f3 )
-define({FNROT},{dnl
-__{}__ADD_TOKEN({__TOKEN_NROT},{f-rot},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # ( f2 f1 -- f )
-dnl # f = f2 / f1
-define({FSQRT},{dnl
-__{}__ADD_TOKEN({__TOKEN_FSQRT},{fsqrt},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FSQRT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fSqrt})
-    call fSqrt          ; 3:17      __INFO}){}dnl
-dnl
-dnl
-dnl # fswap
-dnl # ( f2 f1 -- f1 f2 )
-define({FSWAP},{dnl
-__{}__ADD_TOKEN({__TOKEN_SWAP},{fswap},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl # ( f1 -- f2 )
-dnl # "round towards zero"
-define({FTRUNC},{dnl
-__{}__ADD_TOKEN({__TOKEN_FTRUNC},{ftrunc},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FTRUNC},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fTrunc})
-    call fTrunc         ; 3:17      __INFO}){}dnl
-dnl
-dnl
-dnl # ( uf1 -- uf2 )
-dnl # "round down to zero"
-define({FTRUNC_ABS},{dnl
-__{}__ADD_TOKEN({__TOKEN_FTRUNC_ABS},{ftrunc_abs},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FTRUNC_ABS},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fTrunc_abs})
-    call fTrunc_abs     ; 3:17      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 -- f2 )
-dnl # "round towards negative infinity"
-define({FLOOR},{dnl
-__{}__ADD_TOKEN({__TOKEN_FLOOR},{floor},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FLOOR},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fFloor}){}dnl
-__{}__def({USE_fTrunc_abs}){}dnl
-__{}__def({USE_fAdd})
-    call fFloor         ; 3:17      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 -- f2 )
-dnl # f2 = f1 % 1.0
-define({FFRAC},{dnl
-__{}__ADD_TOKEN({__TOKEN_FFRAC},{ffrac},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FFRAC},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fFrac})
-    call fFrac          ; 3:17      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 -- f2 )
-dnl # f2 = e^f1
-define({FEXP},{dnl
-__{}__ADD_TOKEN({__TOKEN_FEXP},{fexp},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FEXP},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fExp})
-    push DE             ; 1:11      __INFO
-    call fExp           ; 3:17      __INFO   HL = e^HL
-    pop  DE             ; 1:10      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 -- f2 )
-dnl # f2 = ln(f1)
-define({FLN},{dnl
-__{}__ADD_TOKEN({__TOKEN_FLN},{fln},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FLN},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fLn})
-    push DE             ; 1:11      __INFO
-    call fLn            ; 3:17      __INFO   HL = ln(HL)
-    pop  DE             ; 1:10      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 -- f2 )
-dnl # f2 = sin(f1)
-define({FSIN},{dnl
-__{}__ADD_TOKEN({__TOKEN_FSIN},{fsin},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FSIN},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fSin})
-    push DE             ; 1:11      __INFO
-    call fSin           ; 3:17      __INFO   HL = sin(HL)
-    pop  DE             ; 1:10      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 f2 -- f3 )
-dnl # f3 = f1 % f2
-define({FMOD},{dnl
-__{}__ADD_TOKEN({__TOKEN_FMOD},{fmod},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FMOD},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}__def({USE_fMod})
-    ld    B, D          ; 1:4       __INFO
-    ld    C, E          ; 1:4       __INFO
-    call fMod           ; 3:17      __INFO   HL = BC % HL
-    pop  DE             ; 1:10      __INFO}){}dnl
-dnl
-dnl
-dnl # ( f1 -- f2 )
-dnl # f2 = f1 * 2.0
-define({F2MUL},{dnl
-__{}__ADD_TOKEN({__TOKEN_F2MUL},{f2*},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_F2MUL},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    inc   H             ;  1:4      __INFO
-    .WARNING The exponent is not tested and may overflow!}){}dnl
-dnl
-dnl
-dnl # ( f1 -- f2 )
-dnl # f2 = f1 / 2.0
-define({F2DIV},{dnl
-__{}__ADD_TOKEN({__TOKEN_F2DIV},{f2/},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_F2DIV},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-    dec   H             ;  1:4      __INFO
-    .WARNING The exponent is not tested and may underflow!}){}dnl
-dnl
-dnl
-dnl
-dnl # f0=
-dnl # ( f -- flag )
-dnl # if ( f == +-0e ) flag = -1; else flag = 0;
-dnl # 0 if 16-bit floating point number not equal to +-zero, -1 if equal
-define({F0EQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_F0EQ},{f0=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_F0EQ},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(TYP_FLOAT,{small},{
-__{}                        ;[6:40]     __INFO   ( f -- flag )  flag: f == +-0e  ;# version: TYP_FLOAT = small; other: default
-__{}    add  HL, HL         ; 1:11      __INFO   sign out
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    dec  HL             ; 1:6       __INFO
-__{}    sub   H             ; 1:4       __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-__{}{
-__{}                        ;[7:34]     __INFO   ( f -- flag )  flag: f == +-0e  ;# version: TYP_FLOAT = default; other: small
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    add   A, A          ; 1:4       __INFO
-__{}    or    L             ; 1:4       __INFO
-__{}    sub  0x01           ; 2:7       __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # f0<
-dnl # ( f -- flag )
-define({F0LT},{dnl
-__{}__ADD_TOKEN({__TOKEN_F0LT},{f0<},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_F0LT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(TYP_FLOAT,{small},{
-__{}                        ;[6:33]     __INFO   ( f -- flag )  flag: f < +-0e  ;# version: TYP_FLOAT = small; other: default
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    dec  HL             ; 1:6       __INFO
-__{}    and   H             ; 1:4       __INFO   negative without +-0e
-__{}    add   A, A          ; 1:4       __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-__{}TYP_FLOAT,{no_A},{
-__{}                        ;[6:36]     __INFO   ( f -- flag )  flag: f < +-0e  ;# version: TYP_FLOAT = small; other: default
-__{}    ld   BC, 0x7FFF     ; 3:10      __INFO
-__{}    add  HL, BC         ; 1:11      __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-__{}{
-__{}                        ;[7:30]     __INFO   ( f -- flag )  flag: f < +-0e  ;# version: TYP_FLOAT = default; other: small
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    dec  HL             ; 1:6       __INFO
-__{}    and   H             ; 1:4       __INFO   negative without +-0e
-__{}    add   A, A          ; 1:4       __INFO
-__{}    sbc   A, A          ; 1:4       __INFO
-__{}    ld    H, A          ; 1:4       __INFO
-__{}    ld    L, A          ; 1:4       __INFO}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # dup f0=
-dnl # ( f -- f flag )
-dnl # if ( f == +-0e ) flag = -1; else flag = 0;
-dnl # 0 if 16-bit floating point number not equal to +-zero, -1 if equal
-define({DUP_F0EQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_F0EQ},{dup f0=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DUP_F0EQ},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[9:49]     __INFO   ( f -- f flag )  flag: f == +-0e
-    ld    A, H          ; 1:4       __INFO
-    add   A, A          ; 1:4       __INFO
-    or    L             ; 1:4       __INFO
-    sub  0x01           ; 2:7       __INFO
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    sbc  HL, HL         ; 2:15      __INFO   HL = flag{}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # dup f0<
-dnl # ( f -- f flag )
-define({DUP_F0LT},{dnl
-__{}__ADD_TOKEN({__TOKEN_DUP_F0LT},{dup f0<},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DUP_F0LT},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                        ;[8:51]     __INFO   ( f -- f flag )  flag: f < +-0e
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld   HL, 0x7FFF     ; 3:10      __INFO
-    add  HL, DE         ; 1:11      __INFO
-    sbc  HL, HL         ; 2:15      __INFO   HL = flag{}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # f=
-dnl # ( f1 f2 -- flag )
-define({FEQ},{dnl
-__{}__ADD_TOKEN({__TOKEN_EQ},{f=},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # f<>
-dnl # ( f1 f2 -- flag )
-define({FNE},{dnl
-__{}__ADD_TOKEN({__TOKEN_NE},{f<>},$@){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # f<
-dnl # ( f1 f2 -- flag )
-define({FLT},{dnl
-__{}__ADD_TOKEN({__TOKEN_FLT},{f<},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FLT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(1,0,{
-__{}                       ;[12:67]     __INFO   ( f1 f2 -- flag )  flag: f1 < f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    adc   A, 0x00       ; 2:7       __INFO   invert carry?
-__{}    rra                 ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-
-1,0,{
-__{}                       ;[13:70]     __INFO   ( f1 f2 -- flag )  flag: f1 < f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO   i... ....
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    jr    z, $+6        ; 2:7/12    __INFO
-__{}    rra                 ; 1:4       __INFO   ci.. ....
-__{}    sub  0x40           ; 2:7       __INFO   f... ....
-__{}    add   A, A          ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-
-__{}{
-__{}                       ;[11:62]     __INFO   ( f1 f2 -- flag )  flag: f1 < f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    jp    m, $+4        ; 3:10      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # 2dup f<
-dnl # ( f1 f2 -- f1 f2 flag )
-define({_2DUP_FLT},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_FLT},{2dup f<},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_2DUP_FLT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(1,0,{
-__{}                       ;[13:84]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 < f2
-__{}    push DE             ; 1:11      __INFO
-__{}    push HL             ; 1:11      __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    jp    m, $+4        ; 3:10      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO},
-1,0,{
-__{}                       ;[15:74]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 < f2
-__{}    push DE             ; 1:11      __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    ld    C, A          ; 1:4       __INFO
-__{}    add   A, A          ; 1:4       __INFO   set carry
-__{}    ld    A, E          ; 1:4       __INFO
-__{}    sbc   A, L          ; 1:4       __INFO
-__{}    ld    A, D          ; 1:4       __INFO
-__{}    sbc   A, H          ; 1:4       __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    rra                 ; 1:4       __INFO
-__{}    xor   C             ; 1:4       __INFO
-__{}    add   A, A          ; 1:4       __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-{
-__{}                       ;[12:68]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 < f2
-__{}    push DE             ; 1:11      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    adc   A, 0x00       ; 2:7       __INFO   invert carry?
-__{}    rra                 ; 1:4       __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # f>
-dnl # ( f1 f2 -- flag )
-define({FGT},{dnl
-__{}__ADD_TOKEN({__TOKEN_FGT},{f>},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FGT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(1,1,{
-__{}                       ;[11:63]     __INFO   ( f1 f2 -- flag )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-__{}    adc   A, 0x00       ; 2:7       __INFO   invert carry?
-__{}    rra                 ; 1:4       __INFO
-__{}    pop  DE             ; 1:10      __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-
-__{}{
-__{}                       ;[11:62]     __INFO   ( f1 f2 -- flag )  flag: f1 > f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    jp    p, $+4        ; 3:10      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # 2dup f>
-dnl # ( f1 f2 -- f1 f2 flag )
-define({_2DUP_FGT},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_FGT},{2dup f>},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_2DUP_FGT},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
-__{}ifelse(1,0,{
-__{}                       ;[13:84]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 > f2
-__{}    push DE             ; 1:11      __INFO
-__{}    push HL             ; 1:11      __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    jp    p, $+4        ; 3:10      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO},
-
-1,1,{
-__{}                       ;[13:72]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 > f2
-__{}    push DE             ; 1:11      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    rlca                ; 1:4       __INFO   set carry and 0 bit
-__{}    ccf                 ; 1:4       __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-__{}    adc   A, 0x01       ; 2:7       __INFO   invert carry?
-__{}    rra                 ; 1:4       __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag},
-
-1,1,{
-__{}                       ;[14:75]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 > f2
-__{}    push DE             ; 1:11      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO   i... ....
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1<f2 --> f1-f2<0 --> carry if true
-__{}    jr    z, $+6        ; 2:7/12    __INFO   remove fail with -x -x
-__{}    adc   A, A          ; 1:4       __INFO   i .... ...c
-__{}    sbc   A, 0x00       ; 2:7       __INFO     .... ...?
-__{}    rra                 ; 1:4       __INFO     .... .... ?
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # f>=
-dnl # ( f1 f2 -- flag )
-define({FGE},{dnl
-__{}__ADD_TOKEN({__TOKEN_FGE},{f>=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FGE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-__{}                       ;[12:66]     __INFO   ( f1 f2 -- flag )  flag: f1 >= f2
-__{}    ld    A, H          ; 1:4       __INFO
-__{}    or    D             ; 1:4       __INFO
-__{}    jp    m, $+4        ; 3:10      __INFO
-__{}    ex   DE, HL         ; 1:4       __INFO
-__{}    sbc  HL, DE         ; 2:15      __INFO   f1>=f2 --> f1-f2>=0 --> not carry if true
-__{}    ccf                 ; 1:4       __INFO
-__{}    sbc  HL, HL         ; 2:15      __INFO   HL = flag
-__{}    pop  DE             ; 1:10      __INFO{}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # 2dup f>=
-dnl # ( f1 f2 -- f1 f2 flag )
-define({_2DUP_FGE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_FGE},{2dup f>=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_2DUP_FGE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                       ;[12:68]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 >= f2
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld    A, H          ; 1:4       __INFO
-    or    D             ; 1:4       __INFO
-    rlca                ; 1:4       __INFO   set carry and 0 bit
-    sbc  HL, DE         ; 2:15      __INFO   f1>=f2 --> f1-f2>=0 --> not carry if true
-    adc   A, 0x01       ; 2:7       __INFO   invert carry?
-    rra                 ; 1:4       __INFO
-    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
-dnl
-dnl
-dnl
-dnl # f<=
-dnl # ( f1 f2 -- flag )
-define({FLE},{dnl
-__{}__ADD_TOKEN({__TOKEN_FLE},{f<=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_FLE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                       ;[11:63]     __INFO   ( f1 f2 -- flag )  flag: f1 <= f2
-    ld    A, H          ; 1:4       __INFO
-    or    D             ; 1:4       __INFO
-    rlca                ; 1:4       __INFO   set carry and 0 bit
-    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-    adc   A, 0x01       ; 2:7       __INFO   invert carry?
-    rra                 ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO
-    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
-dnl
-dnl
-dnl
-dnl # 2dup f<=
-dnl # ( f1 f2 -- f1 f2 flag )
-define({_2DUP_FLE},{dnl
-__{}__ADD_TOKEN({__TOKEN_2DUP_FLE},{2dup f<=},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_2DUP_FLE},{dnl
-__{}define({__INFO},__COMPILE_INFO)
-                       ;[13:72]     __INFO   ( f1 f2 -- f1 f2 flag )  flag: f1 <= f2
-    push DE             ; 1:11      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    ld    A, H          ; 1:4       __INFO
-    or    D             ; 1:4       __INFO
-    rlca                ; 1:4       __INFO   set carry and 0 bit
-    ccf                 ; 1:4       __INFO
-    sbc  HL, DE         ; 2:15      __INFO   f1>f2 --> 0>f2-f1 --> carry if true
-    adc   A, 0x00       ; 2:7       __INFO   invert carry?
-    rra                 ; 1:4       __INFO
-    sbc  HL, HL         ; 2:15      __INFO   HL = flag}){}dnl
-dnl
-dnl
+dnl ( f1 -- f2 )
+dnl f2 = e^f1
+define({FEXP},{
+ifdef({USE_fExp},,define({USE_fExp},{}))dnl
+    push DE             ; 1:11      fexp
+    call fExp           ; 3:17      fexp HL = e^HL
+    pop  DE             ; 1:10      fexp})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = ln(f1)
+define({FLN},{
+ifdef({USE_fLn},,define({USE_fLn},{}))dnl
+    push DE             ; 1:11      fln
+    call fLn            ; 3:17      fln HL = ln(HL)
+    pop  DE             ; 1:10      fln})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = sin(f1)
+define({FSIN},{
+ifdef({USE_fSin},,define({USE_fSin},{}))dnl
+    push DE             ; 1:11      fsin
+    call fSin           ; 3:17      fsin HL = sin(HL)
+    pop  DE             ; 1:10      fsin})dnl
+dnl
+dnl
+dnl ( f1 f2 -- f3 )
+dnl f3 = f1 % f2
+define({FMOD},{
+ifdef({USE_fMod},,define({USE_fMod},{}))dnl
+    ld    B, D          ; 1:4       fmod
+    ld    C, E          ; 1:4       fmod
+    call fMod           ; 3:17      fmod HL = BC % HL
+    pop  DE             ; 1:10      fmod})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = f1 * 2.0
+define({F2MUL},{
+    inc   H             ;  1:4      f2*
+    .WARNING The exponent is not tested and may overflow!})dnl
+dnl
+dnl
+dnl ( f1 -- f2 )
+dnl f2 = f1 / 2.0
+define({F2DIV},{
+    dec   H             ;  1:4      f2/
+    .WARNING The exponent is not tested and may underflow!})dnl
+dnl
+dnl
+dnl
+dnl
+dnl ; floating point constants
+define({FM256},0xc800)dnl   ;-2.560000e+02 sign(1=0x8000) exp(  8=0x4800) mantisa(  0=0x00)
+define({FM255},0xc7fe)dnl   ;-2.550000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(254=0xFE)
+define({FM254},0xc7fc)dnl   ;-2.540000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(252=0xFC)
+define({FM253},0xc7fa)dnl   ;-2.530000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(250=0xFA)
+define({FM252},0xc7f8)dnl   ;-2.520000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(248=0xF8)
+define({FM251},0xc7f6)dnl   ;-2.510000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(246=0xF6)
+define({FM250},0xc7f4)dnl   ;-2.500000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(244=0xF4)
+define({FM249},0xc7f2)dnl   ;-2.490000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(242=0xF2)
+define({FM248},0xc7f0)dnl   ;-2.480000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(240=0xF0)
+define({FM247},0xc7ee)dnl   ;-2.470000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(238=0xEE)
+define({FM246},0xc7ec)dnl   ;-2.460000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(236=0xEC)
+define({FM245},0xc7ea)dnl   ;-2.450000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(234=0xEA)
+define({FM244},0xc7e8)dnl   ;-2.440000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(232=0xE8)
+define({FM243},0xc7e6)dnl   ;-2.430000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(230=0xE6)
+define({FM242},0xc7e4)dnl   ;-2.420000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(228=0xE4)
+define({FM241},0xc7e2)dnl   ;-2.410000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(226=0xE2)
+define({FM240},0xc7e0)dnl   ;-2.400000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(224=0xE0)
+define({FM239},0xc7de)dnl   ;-2.390000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(222=0xDE)
+define({FM238},0xc7dc)dnl   ;-2.380000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(220=0xDC)
+define({FM237},0xc7da)dnl   ;-2.370000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(218=0xDA)
+define({FM236},0xc7d8)dnl   ;-2.360000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(216=0xD8)
+define({FM235},0xc7d6)dnl   ;-2.350000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(214=0xD6)
+define({FM234},0xc7d4)dnl   ;-2.340000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(212=0xD4)
+define({FM233},0xc7d2)dnl   ;-2.330000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(210=0xD2)
+define({FM232},0xc7d0)dnl   ;-2.320000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(208=0xD0)
+define({FM231},0xc7ce)dnl   ;-2.310000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(206=0xCE)
+define({FM230},0xc7cc)dnl   ;-2.300000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(204=0xCC)
+define({FM229},0xc7ca)dnl   ;-2.290000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(202=0xCA)
+define({FM228},0xc7c8)dnl   ;-2.280000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(200=0xC8)
+define({FM227},0xc7c6)dnl   ;-2.270000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(198=0xC6)
+define({FM226},0xc7c4)dnl   ;-2.260000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(196=0xC4)
+define({FM225},0xc7c2)dnl   ;-2.250000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(194=0xC2)
+define({FM224},0xc7c0)dnl   ;-2.240000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(192=0xC0)
+define({FM223},0xc7be)dnl   ;-2.230000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(190=0xBE)
+define({FM222},0xc7bc)dnl   ;-2.220000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(188=0xBC)
+define({FM221},0xc7ba)dnl   ;-2.210000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(186=0xBA)
+define({FM220},0xc7b8)dnl   ;-2.200000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(184=0xB8)
+define({FM219},0xc7b6)dnl   ;-2.190000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(182=0xB6)
+define({FM218},0xc7b4)dnl   ;-2.180000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(180=0xB4)
+define({FM217},0xc7b2)dnl   ;-2.170000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(178=0xB2)
+define({FM216},0xc7b0)dnl   ;-2.160000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(176=0xB0)
+define({FM215},0xc7ae)dnl   ;-2.150000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(174=0xAE)
+define({FM214},0xc7ac)dnl   ;-2.140000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(172=0xAC)
+define({FM213},0xc7aa)dnl   ;-2.130000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(170=0xAA)
+define({FM212},0xc7a8)dnl   ;-2.120000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(168=0xA8)
+define({FM211},0xc7a6)dnl   ;-2.110000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(166=0xA6)
+define({FM210},0xc7a4)dnl   ;-2.100000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(164=0xA4)
+define({FM209},0xc7a2)dnl   ;-2.090000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(162=0xA2)
+define({FM208},0xc7a0)dnl   ;-2.080000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(160=0xA0)
+define({FM207},0xc79e)dnl   ;-2.070000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(158=0x9E)
+define({FM206},0xc79c)dnl   ;-2.060000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(156=0x9C)
+define({FM205},0xc79a)dnl   ;-2.050000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(154=0x9A)
+define({FM204},0xc798)dnl   ;-2.040000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(152=0x98)
+define({FM203},0xc796)dnl   ;-2.030000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(150=0x96)
+define({FM202},0xc794)dnl   ;-2.020000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(148=0x94)
+define({FM201},0xc792)dnl   ;-2.010000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(146=0x92)
+define({FM200},0xc790)dnl   ;-2.000000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(144=0x90)
+define({FM199},0xc78e)dnl   ;-1.990000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(142=0x8E)
+define({FM198},0xc78c)dnl   ;-1.980000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(140=0x8C)
+define({FM197},0xc78a)dnl   ;-1.970000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(138=0x8A)
+define({FM196},0xc788)dnl   ;-1.960000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(136=0x88)
+define({FM195},0xc786)dnl   ;-1.950000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(134=0x86)
+define({FM194},0xc784)dnl   ;-1.940000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(132=0x84)
+define({FM193},0xc782)dnl   ;-1.930000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(130=0x82)
+define({FM192},0xc780)dnl   ;-1.920000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(128=0x80)
+define({FM191},0xc77e)dnl   ;-1.910000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(126=0x7E)
+define({FM190},0xc77c)dnl   ;-1.900000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(124=0x7C)
+define({FM189},0xc77a)dnl   ;-1.890000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(122=0x7A)
+define({FM188},0xc778)dnl   ;-1.880000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(120=0x78)
+define({FM187},0xc776)dnl   ;-1.870000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(118=0x76)
+define({FM186},0xc774)dnl   ;-1.860000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(116=0x74)
+define({FM185},0xc772)dnl   ;-1.850000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(114=0x72)
+define({FM184},0xc770)dnl   ;-1.840000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(112=0x70)
+define({FM183},0xc76e)dnl   ;-1.830000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(110=0x6E)
+define({FM182},0xc76c)dnl   ;-1.820000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(108=0x6C)
+define({FM181},0xc76a)dnl   ;-1.810000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(106=0x6A)
+define({FM180},0xc768)dnl   ;-1.800000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(104=0x68)
+define({FM179},0xc766)dnl   ;-1.790000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(102=0x66)
+define({FM178},0xc764)dnl   ;-1.780000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(100=0x64)
+define({FM177},0xc762)dnl   ;-1.770000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 98=0x62)
+define({FM176},0xc760)dnl   ;-1.760000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 96=0x60)
+define({FM175},0xc75e)dnl   ;-1.750000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 94=0x5E)
+define({FM174},0xc75c)dnl   ;-1.740000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 92=0x5C)
+define({FM173},0xc75a)dnl   ;-1.730000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 90=0x5A)
+define({FM172},0xc758)dnl   ;-1.720000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 88=0x58)
+define({FM171},0xc756)dnl   ;-1.710000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 86=0x56)
+define({FM170},0xc754)dnl   ;-1.700000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 84=0x54)
+define({FM169},0xc752)dnl   ;-1.690000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 82=0x52)
+define({FM168},0xc750)dnl   ;-1.680000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 80=0x50)
+define({FM167},0xc74e)dnl   ;-1.670000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 78=0x4E)
+define({FM166},0xc74c)dnl   ;-1.660000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 76=0x4C)
+define({FM165},0xc74a)dnl   ;-1.650000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 74=0x4A)
+define({FM164},0xc748)dnl   ;-1.640000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 72=0x48)
+define({FM163},0xc746)dnl   ;-1.630000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 70=0x46)
+define({FM162},0xc744)dnl   ;-1.620000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 68=0x44)
+define({FM161},0xc742)dnl   ;-1.610000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 66=0x42)
+define({FM160},0xc740)dnl   ;-1.600000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 64=0x40)
+define({FM159},0xc73e)dnl   ;-1.590000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 62=0x3E)
+define({FM158},0xc73c)dnl   ;-1.580000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 60=0x3C)
+define({FM157},0xc73a)dnl   ;-1.570000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 58=0x3A)
+define({FM156},0xc738)dnl   ;-1.560000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 56=0x38)
+define({FM155},0xc736)dnl   ;-1.550000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 54=0x36)
+define({FM154},0xc734)dnl   ;-1.540000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 52=0x34)
+define({FM153},0xc732)dnl   ;-1.530000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 50=0x32)
+define({FM152},0xc730)dnl   ;-1.520000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 48=0x30)
+define({FM151},0xc72e)dnl   ;-1.510000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 46=0x2E)
+define({FM150},0xc72c)dnl   ;-1.500000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 44=0x2C)
+define({FM149},0xc72a)dnl   ;-1.490000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 42=0x2A)
+define({FM148},0xc728)dnl   ;-1.480000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 40=0x28)
+define({FM147},0xc726)dnl   ;-1.470000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 38=0x26)
+define({FM146},0xc724)dnl   ;-1.460000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 36=0x24)
+define({FM145},0xc722)dnl   ;-1.450000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 34=0x22)
+define({FM144},0xc720)dnl   ;-1.440000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 32=0x20)
+define({FM143},0xc71e)dnl   ;-1.430000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 30=0x1E)
+define({FM142},0xc71c)dnl   ;-1.420000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 28=0x1C)
+define({FM141},0xc71a)dnl   ;-1.410000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 26=0x1A)
+define({FM140},0xc718)dnl   ;-1.400000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 24=0x18)
+define({FM139},0xc716)dnl   ;-1.390000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 22=0x16)
+define({FM138},0xc714)dnl   ;-1.380000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 20=0x14)
+define({FM137},0xc712)dnl   ;-1.370000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 18=0x12)
+define({FM136},0xc710)dnl   ;-1.360000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 16=0x10)
+define({FM135},0xc70e)dnl   ;-1.350000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 14=0x0E)
+define({FM134},0xc70c)dnl   ;-1.340000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 12=0x0C)
+define({FM133},0xc70a)dnl   ;-1.330000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa( 10=0x0A)
+define({FM132},0xc708)dnl   ;-1.320000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(  8=0x08)
+define({FM131},0xc706)dnl   ;-1.310000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(  6=0x06)
+define({FM130},0xc704)dnl   ;-1.300000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(  4=0x04)
+define({FM129},0xc702)dnl   ;-1.290000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(  2=0x02)
+define({FM128},0xc700)dnl   ;-1.280000e+02 sign(1=0x8000) exp(  7=0x4700) mantisa(  0=0x00)
+define({FM127},0xc6fc)dnl   ;-1.270000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(252=0xFC)
+define({FM126},0xc6f8)dnl   ;-1.260000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(248=0xF8)
+define({FM125},0xc6f4)dnl   ;-1.250000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(244=0xF4)
+define({FM124},0xc6f0)dnl   ;-1.240000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(240=0xF0)
+define({FM123},0xc6ec)dnl   ;-1.230000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(236=0xEC)
+define({FM122},0xc6e8)dnl   ;-1.220000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(232=0xE8)
+define({FM121},0xc6e4)dnl   ;-1.210000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(228=0xE4)
+define({FM120},0xc6e0)dnl   ;-1.200000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(224=0xE0)
+define({FM119},0xc6dc)dnl   ;-1.190000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(220=0xDC)
+define({FM118},0xc6d8)dnl   ;-1.180000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(216=0xD8)
+define({FM117},0xc6d4)dnl   ;-1.170000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(212=0xD4)
+define({FM116},0xc6d0)dnl   ;-1.160000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(208=0xD0)
+define({FM115},0xc6cc)dnl   ;-1.150000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(204=0xCC)
+define({FM114},0xc6c8)dnl   ;-1.140000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(200=0xC8)
+define({FM113},0xc6c4)dnl   ;-1.130000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(196=0xC4)
+define({FM112},0xc6c0)dnl   ;-1.120000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(192=0xC0)
+define({FM111},0xc6bc)dnl   ;-1.110000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(188=0xBC)
+define({FM110},0xc6b8)dnl   ;-1.100000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(184=0xB8)
+define({FM109},0xc6b4)dnl   ;-1.090000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(180=0xB4)
+define({FM108},0xc6b0)dnl   ;-1.080000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(176=0xB0)
+define({FM107},0xc6ac)dnl   ;-1.070000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(172=0xAC)
+define({FM106},0xc6a8)dnl   ;-1.060000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(168=0xA8)
+define({FM105},0xc6a4)dnl   ;-1.050000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(164=0xA4)
+define({FM104},0xc6a0)dnl   ;-1.040000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(160=0xA0)
+define({FM103},0xc69c)dnl   ;-1.030000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(156=0x9C)
+define({FM102},0xc698)dnl   ;-1.020000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(152=0x98)
+define({FM101},0xc694)dnl   ;-1.010000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(148=0x94)
+define({FM100},0xc690)dnl   ;-1.000000e+02 sign(1=0x8000) exp(  6=0x4600) mantisa(144=0x90)
+define({FM99},0xc68c)dnl    ;-9.900000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(140=0x8C)
+define({FM98},0xc688)dnl    ;-9.800000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(136=0x88)
+define({FM97},0xc684)dnl    ;-9.700000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(132=0x84)
+define({FM96},0xc680)dnl    ;-9.600000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(128=0x80)
+define({FM95},0xc67c)dnl    ;-9.500000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(124=0x7C)
+define({FM94},0xc678)dnl    ;-9.400000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(120=0x78)
+define({FM93},0xc674)dnl    ;-9.300000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(116=0x74)
+define({FM92},0xc670)dnl    ;-9.200000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(112=0x70)
+define({FM91},0xc66c)dnl    ;-9.100000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(108=0x6C)
+define({FM90},0xc668)dnl    ;-9.000000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(104=0x68)
+define({FM89},0xc664)dnl    ;-8.900000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(100=0x64)
+define({FM88},0xc660)dnl    ;-8.800000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 96=0x60)
+define({FM87},0xc65c)dnl    ;-8.700000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 92=0x5C)
+define({FM86},0xc658)dnl    ;-8.600000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 88=0x58)
+define({FM85},0xc654)dnl    ;-8.500000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 84=0x54)
+define({FM84},0xc650)dnl    ;-8.400000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 80=0x50)
+define({FM83},0xc64c)dnl    ;-8.300000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 76=0x4C)
+define({FM82},0xc648)dnl    ;-8.200000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 72=0x48)
+define({FM81},0xc644)dnl    ;-8.100000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 68=0x44)
+define({FM80},0xc640)dnl    ;-8.000000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 64=0x40)
+define({FM79},0xc63c)dnl    ;-7.900000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 60=0x3C)
+define({FM78},0xc638)dnl    ;-7.800000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 56=0x38)
+define({FM77},0xc634)dnl    ;-7.700000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 52=0x34)
+define({FM76},0xc630)dnl    ;-7.600000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 48=0x30)
+define({FM75},0xc62c)dnl    ;-7.500000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 44=0x2C)
+define({FM74},0xc628)dnl    ;-7.400000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 40=0x28)
+define({FM73},0xc624)dnl    ;-7.300000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 36=0x24)
+define({FM72},0xc620)dnl    ;-7.200000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 32=0x20)
+define({FM71},0xc61c)dnl    ;-7.100000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 28=0x1C)
+define({FM70},0xc618)dnl    ;-7.000000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 24=0x18)
+define({FM69},0xc614)dnl    ;-6.900000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 20=0x14)
+define({FM68},0xc610)dnl    ;-6.800000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 16=0x10)
+define({FM67},0xc60c)dnl    ;-6.700000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa( 12=0x0C)
+define({FM66},0xc608)dnl    ;-6.600000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(  8=0x08)
+define({FM65},0xc604)dnl    ;-6.500000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(  4=0x04)
+define({FM64},0xc600)dnl    ;-6.400000e+01 sign(1=0x8000) exp(  6=0x4600) mantisa(  0=0x00)
+define({FM63},0xc5f8)dnl    ;-6.300000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(248=0xF8)
+define({FM62},0xc5f0)dnl    ;-6.200000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(240=0xF0)
+define({FM61},0xc5e8)dnl    ;-6.100000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(232=0xE8)
+define({FM60},0xc5e0)dnl    ;-6.000000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(224=0xE0)
+define({FM59},0xc5d8)dnl    ;-5.900000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(216=0xD8)
+define({FM58},0xc5d0)dnl    ;-5.800000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(208=0xD0)
+define({FM57},0xc5c8)dnl    ;-5.700000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(200=0xC8)
+define({FM56},0xc5c0)dnl    ;-5.600000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(192=0xC0)
+define({FM55},0xc5b8)dnl    ;-5.500000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(184=0xB8)
+define({FM54},0xc5b0)dnl    ;-5.400000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(176=0xB0)
+define({FM53},0xc5a8)dnl    ;-5.300000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(168=0xA8)
+define({FM52},0xc5a0)dnl    ;-5.200000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(160=0xA0)
+define({FM51},0xc598)dnl    ;-5.100000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(152=0x98)
+define({FM50},0xc590)dnl    ;-5.000000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(144=0x90)
+define({FM49},0xc588)dnl    ;-4.900000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(136=0x88)
+define({FM48},0xc580)dnl    ;-4.800000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(128=0x80)
+define({FM47},0xc578)dnl    ;-4.700000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(120=0x78)
+define({FM46},0xc570)dnl    ;-4.600000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(112=0x70)
+define({FM45},0xc568)dnl    ;-4.500000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(104=0x68)
+define({FM44},0xc560)dnl    ;-4.400000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 96=0x60)
+define({FM43},0xc558)dnl    ;-4.300000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 88=0x58)
+define({FM42},0xc550)dnl    ;-4.200000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 80=0x50)
+define({FM41},0xc548)dnl    ;-4.100000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 72=0x48)
+define({FM40},0xc540)dnl    ;-4.000000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 64=0x40)
+define({FM39},0xc538)dnl    ;-3.900000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 56=0x38)
+define({FM38},0xc530)dnl    ;-3.800000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 48=0x30)
+define({FM37},0xc528)dnl    ;-3.700000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 40=0x28)
+define({FM36},0xc520)dnl    ;-3.600000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 32=0x20)
+define({FM35},0xc518)dnl    ;-3.500000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 24=0x18)
+define({FM34},0xc510)dnl    ;-3.400000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa( 16=0x10)
+define({FM33},0xc508)dnl    ;-3.300000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(  8=0x08)
+define({FM32},0xc500)dnl    ;-3.200000e+01 sign(1=0x8000) exp(  5=0x4500) mantisa(  0=0x00)
+define({FM31},0xc4f0)dnl    ;-3.100000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(240=0xF0)
+define({FM30},0xc4e0)dnl    ;-3.000000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(224=0xE0)
+define({FM29},0xc4d0)dnl    ;-2.900000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(208=0xD0)
+define({FM28},0xc4c0)dnl    ;-2.800000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(192=0xC0)
+define({FM27},0xc4b0)dnl    ;-2.700000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(176=0xB0)
+define({FM26},0xc4a0)dnl    ;-2.600000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(160=0xA0)
+define({FM25},0xc490)dnl    ;-2.500000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(144=0x90)
+define({FM24},0xc480)dnl    ;-2.400000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(128=0x80)
+define({FM23},0xc470)dnl    ;-2.300000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(112=0x70)
+define({FM22},0xc460)dnl    ;-2.200000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa( 96=0x60)
+define({FM21},0xc450)dnl    ;-2.100000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa( 80=0x50)
+define({FM20},0xc440)dnl    ;-2.000000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa( 64=0x40)
+define({FM19},0xc430)dnl    ;-1.900000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa( 48=0x30)
+define({FM18},0xc420)dnl    ;-1.800000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa( 32=0x20)
+define({FM17},0xc410)dnl    ;-1.700000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa( 16=0x10)
+define({FM16},0xc400)dnl    ;-1.600000e+01 sign(1=0x8000) exp(  4=0x4400) mantisa(  0=0x00)
+define({FM15},0xc3e0)dnl    ;-1.500000e+01 sign(1=0x8000) exp(  3=0x4300) mantisa(224=0xE0)
+define({FM14},0xc3c0)dnl    ;-1.400000e+01 sign(1=0x8000) exp(  3=0x4300) mantisa(192=0xC0)
+define({FM13},0xc3a0)dnl    ;-1.300000e+01 sign(1=0x8000) exp(  3=0x4300) mantisa(160=0xA0)
+define({FM12},0xc380)dnl    ;-1.200000e+01 sign(1=0x8000) exp(  3=0x4300) mantisa(128=0x80)
+define({FM11},0xc360)dnl    ;-1.100000e+01 sign(1=0x8000) exp(  3=0x4300) mantisa( 96=0x60)
+define({FM10},0xc340)dnl    ;-1.000000e+01 sign(1=0x8000) exp(  3=0x4300) mantisa( 64=0x40)
+define({FM9},0xc320)dnl     ;-9.000000e+00 sign(1=0x8000) exp(  3=0x4300) mantisa( 32=0x20)
+define({FM8},0xc300)dnl     ;-8.000000e+00 sign(1=0x8000) exp(  3=0x4300) mantisa(  0=0x00)
+define({FM7},0xc2c0)dnl     ;-7.000000e+00 sign(1=0x8000) exp(  2=0x4200) mantisa(192=0xC0)
+define({FM6},0xc280)dnl     ;-6.000000e+00 sign(1=0x8000) exp(  2=0x4200) mantisa(128=0x80)
+define({FM5},0xc240)dnl     ;-5.000000e+00 sign(1=0x8000) exp(  2=0x4200) mantisa( 64=0x40)
+define({FM4},0xc200)dnl     ;-4.000000e+00 sign(1=0x8000) exp(  2=0x4200) mantisa(  0=0x00)
+define({FM3},0xc180)dnl     ;-3.000000e+00 sign(1=0x8000) exp(  1=0x4100) mantisa(128=0x80)
+define({FM2},0xc100)dnl     ;-2.000000e+00 sign(1=0x8000) exp(  1=0x4100) mantisa(  0=0x00)
+define({FM1_5},0xc080)dnl   ;-1.500000e+00 sign(1=0x8000) exp(  0=0x4000) mantisa(  0=0x80)
+define({FM1},0xc000)dnl     ;-1.000000e+00 sign(1=0x8000) exp(  0=0x4000) mantisa(  0=0x00)
+define({FM0_9},0xbfcd)dnl   ;-9.003906e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa(205=0xCD)
+define({FM0_8},0xbf9a)dnl   ;-8.007812e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa(154=0x9A)
+define({FM0_7},0xbf66)dnl   ;-6.992188e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa(102=0x66)
+define({FM0_6},0xbf33)dnl   ;-5.996094e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa( 51=0x33)
+define({FM0_5},0xbf00)dnl   ;-5.000000e-01 sign(1=0x8000) exp( -1=0x3F00) mantisa(  0=0x00)
+define({FM0_4},0xbe9a)dnl   ;-4.003906e-01 sign(1=0x8000) exp( -2=0x3E00) mantisa(154=0x9A)
+define({FM0_3},0xbe33)dnl   ;-2.998047e-01 sign(1=0x8000) exp( -2=0x3E00) mantisa( 51=0x33)
+define({FM0_2},0xbd9a)dnl   ;-2.001953e-01 sign(1=0x8000) exp( -3=0x3D00) mantisa(154=0x9A)
+define({FM0_1},0xbc9a)dnl   ;-1.000977e-01 sign(1=0x8000) exp( -4=0x3C00) mantisa(154=0x9A)
+define({FP0_1},0x3c9a)dnl   ; 1.000977e-01 sign(0=0x0000) exp( -4=0x3C00) mantisa(154=0x9A)
+define({FP0_2},0x3d9a)dnl   ; 2.001953e-01 sign(0=0x0000) exp( -3=0x3D00) mantisa(154=0x9A)
+define({FP0_3},0x3e33)dnl   ; 2.998047e-01 sign(0=0x0000) exp( -2=0x3E00) mantisa( 51=0x33)
+define({FP0_4},0x3e9a)dnl   ; 4.003906e-01 sign(0=0x0000) exp( -2=0x3E00) mantisa(154=0x9A)
+define({FP0_5},0x3f00)dnl   ; 5.000000e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(  0=0x00)
+define({FP0_6},0x3f33)dnl   ; 5.996094e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa( 51=0x33)
+define({FP0_7},0x3f66)dnl   ; 6.992188e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(102=0x66)
+define({FP0_8},0x3f9a)dnl   ; 8.007812e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(154=0x9A)
+define({FP0_9},0x3fcd)dnl   ; 9.003906e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(205=0xCD)
+define({FP1},0x4000)dnl     ; 1.000000e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(  0=0x00)
+define({FP1_5},0x4080)dnl   ; 1.500000e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(  0=0x80)
+define({FP2},0x4100)dnl     ; 2.000000e+00 sign(0=0x0000) exp(  1=0x4100) mantisa(  0=0x00)
+define({FP3},0x4180)dnl     ; 3.000000e+00 sign(0=0x0000) exp(  1=0x4100) mantisa(128=0x80)
+define({FP4},0x4200)dnl     ; 4.000000e+00 sign(0=0x0000) exp(  2=0x4200) mantisa(  0=0x00)
+define({FP5},0x4240)dnl     ; 5.000000e+00 sign(0=0x0000) exp(  2=0x4200) mantisa( 64=0x40)
+define({FP6},0x4280)dnl     ; 6.000000e+00 sign(0=0x0000) exp(  2=0x4200) mantisa(128=0x80)
+define({FP7},0x42c0)dnl     ; 7.000000e+00 sign(0=0x0000) exp(  2=0x4200) mantisa(192=0xC0)
+define({FP8},0x4300)dnl     ; 8.000000e+00 sign(0=0x0000) exp(  3=0x4300) mantisa(  0=0x00)
+define({FP9},0x4320)dnl     ; 9.000000e+00 sign(0=0x0000) exp(  3=0x4300) mantisa( 32=0x20)
+define({FP10},0x4340)dnl    ; 1.000000e+01 sign(0=0x0000) exp(  3=0x4300) mantisa( 64=0x40)
+define({FP11},0x4360)dnl    ; 1.100000e+01 sign(0=0x0000) exp(  3=0x4300) mantisa( 96=0x60)
+define({FP12},0x4380)dnl    ; 1.200000e+01 sign(0=0x0000) exp(  3=0x4300) mantisa(128=0x80)
+define({FP13},0x43a0)dnl    ; 1.300000e+01 sign(0=0x0000) exp(  3=0x4300) mantisa(160=0xA0)
+define({FP14},0x43c0)dnl    ; 1.400000e+01 sign(0=0x0000) exp(  3=0x4300) mantisa(192=0xC0)
+define({FP15},0x43e0)dnl    ; 1.500000e+01 sign(0=0x0000) exp(  3=0x4300) mantisa(224=0xE0)
+define({FP16},0x4400)dnl    ; 1.600000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(  0=0x00)
+define({FP17},0x4410)dnl    ; 1.700000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa( 16=0x10)
+define({FP18},0x4420)dnl    ; 1.800000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa( 32=0x20)
+define({FP19},0x4430)dnl    ; 1.900000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa( 48=0x30)
+define({FP20},0x4440)dnl    ; 2.000000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa( 64=0x40)
+define({FP21},0x4450)dnl    ; 2.100000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa( 80=0x50)
+define({FP22},0x4460)dnl    ; 2.200000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa( 96=0x60)
+define({FP23},0x4470)dnl    ; 2.300000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(112=0x70)
+define({FP24},0x4480)dnl    ; 2.400000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(128=0x80)
+define({FP25},0x4490)dnl    ; 2.500000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(144=0x90)
+define({FP26},0x44a0)dnl    ; 2.600000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(160=0xA0)
+define({FP27},0x44b0)dnl    ; 2.700000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(176=0xB0)
+define({FP28},0x44c0)dnl    ; 2.800000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(192=0xC0)
+define({FP29},0x44d0)dnl    ; 2.900000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(208=0xD0)
+define({FP30},0x44e0)dnl    ; 3.000000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(224=0xE0)
+define({FP31},0x44f0)dnl    ; 3.100000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa(240=0xF0)
+define({FP32},0x4500)dnl    ; 3.200000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(  0=0x00)
+define({FP33},0x4508)dnl    ; 3.300000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(  8=0x08)
+define({FP34},0x4510)dnl    ; 3.400000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 16=0x10)
+define({FP35},0x4518)dnl    ; 3.500000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 24=0x18)
+define({FP36},0x4520)dnl    ; 3.600000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 32=0x20)
+define({FP37},0x4528)dnl    ; 3.700000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 40=0x28)
+define({FP38},0x4530)dnl    ; 3.800000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 48=0x30)
+define({FP39},0x4538)dnl    ; 3.900000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 56=0x38)
+define({FP40},0x4540)dnl    ; 4.000000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 64=0x40)
+define({FP41},0x4548)dnl    ; 4.100000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 72=0x48)
+define({FP42},0x4550)dnl    ; 4.200000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 80=0x50)
+define({FP43},0x4558)dnl    ; 4.300000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 88=0x58)
+define({FP44},0x4560)dnl    ; 4.400000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa( 96=0x60)
+define({FP45},0x4568)dnl    ; 4.500000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(104=0x68)
+define({FP46},0x4570)dnl    ; 4.600000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(112=0x70)
+define({FP47},0x4578)dnl    ; 4.700000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(120=0x78)
+define({FP48},0x4580)dnl    ; 4.800000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(128=0x80)
+define({FP49},0x4588)dnl    ; 4.900000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(136=0x88)
+define({FP50},0x4590)dnl    ; 5.000000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(144=0x90)
+define({FP51},0x4598)dnl    ; 5.100000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(152=0x98)
+define({FP52},0x45a0)dnl    ; 5.200000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(160=0xA0)
+define({FP53},0x45a8)dnl    ; 5.300000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(168=0xA8)
+define({FP54},0x45b0)dnl    ; 5.400000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(176=0xB0)
+define({FP55},0x45b8)dnl    ; 5.500000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(184=0xB8)
+define({FP56},0x45c0)dnl    ; 5.600000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(192=0xC0)
+define({FP57},0x45c8)dnl    ; 5.700000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(200=0xC8)
+define({FP58},0x45d0)dnl    ; 5.800000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(208=0xD0)
+define({FP59},0x45d8)dnl    ; 5.900000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(216=0xD8)
+define({FP60},0x45e0)dnl    ; 6.000000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(224=0xE0)
+define({FP61},0x45e8)dnl    ; 6.100000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(232=0xE8)
+define({FP62},0x45f0)dnl    ; 6.200000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(240=0xF0)
+define({FP63},0x45f8)dnl    ; 6.300000e+01 sign(0=0x0000) exp(  5=0x4500) mantisa(248=0xF8)
+define({FP64},0x4600)dnl    ; 6.400000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(  0=0x00)
+define({FP65},0x4604)dnl    ; 6.500000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(  4=0x04)
+define({FP66},0x4608)dnl    ; 6.600000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(  8=0x08)
+define({FP67},0x460c)dnl    ; 6.700000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 12=0x0C)
+define({FP68},0x4610)dnl    ; 6.800000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 16=0x10)
+define({FP69},0x4614)dnl    ; 6.900000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 20=0x14)
+define({FP70},0x4618)dnl    ; 7.000000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 24=0x18)
+define({FP71},0x461c)dnl    ; 7.100000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 28=0x1C)
+define({FP72},0x4620)dnl    ; 7.200000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 32=0x20)
+define({FP73},0x4624)dnl    ; 7.300000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 36=0x24)
+define({FP74},0x4628)dnl    ; 7.400000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 40=0x28)
+define({FP75},0x462c)dnl    ; 7.500000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 44=0x2C)
+define({FP76},0x4630)dnl    ; 7.600000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 48=0x30)
+define({FP77},0x4634)dnl    ; 7.700000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 52=0x34)
+define({FP78},0x4638)dnl    ; 7.800000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 56=0x38)
+define({FP79},0x463c)dnl    ; 7.900000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 60=0x3C)
+define({FP80},0x4640)dnl    ; 8.000000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 64=0x40)
+define({FP81},0x4644)dnl    ; 8.100000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 68=0x44)
+define({FP82},0x4648)dnl    ; 8.200000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 72=0x48)
+define({FP83},0x464c)dnl    ; 8.300000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 76=0x4C)
+define({FP84},0x4650)dnl    ; 8.400000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 80=0x50)
+define({FP85},0x4654)dnl    ; 8.500000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 84=0x54)
+define({FP86},0x4658)dnl    ; 8.600000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 88=0x58)
+define({FP87},0x465c)dnl    ; 8.700000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 92=0x5C)
+define({FP88},0x4660)dnl    ; 8.800000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa( 96=0x60)
+define({FP89},0x4664)dnl    ; 8.900000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(100=0x64)
+define({FP90},0x4668)dnl    ; 9.000000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(104=0x68)
+define({FP91},0x466c)dnl    ; 9.100000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(108=0x6C)
+define({FP92},0x4670)dnl    ; 9.200000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(112=0x70)
+define({FP93},0x4674)dnl    ; 9.300000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(116=0x74)
+define({FP94},0x4678)dnl    ; 9.400000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(120=0x78)
+define({FP95},0x467c)dnl    ; 9.500000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(124=0x7C)
+define({FP96},0x4680)dnl    ; 9.600000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(128=0x80)
+define({FP97},0x4684)dnl    ; 9.700000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(132=0x84)
+define({FP98},0x4688)dnl    ; 9.800000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(136=0x88)
+define({FP99},0x468c)dnl    ; 9.900000e+01 sign(0=0x0000) exp(  6=0x4600) mantisa(140=0x8C)
+define({FP100},0x4690)dnl   ; 1.000000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(144=0x90)
+define({FP101},0x4694)dnl   ; 1.010000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(148=0x94)
+define({FP102},0x4698)dnl   ; 1.020000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(152=0x98)
+define({FP103},0x469c)dnl   ; 1.030000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(156=0x9C)
+define({FP104},0x46a0)dnl   ; 1.040000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(160=0xA0)
+define({FP105},0x46a4)dnl   ; 1.050000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(164=0xA4)
+define({FP106},0x46a8)dnl   ; 1.060000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(168=0xA8)
+define({FP107},0x46ac)dnl   ; 1.070000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(172=0xAC)
+define({FP108},0x46b0)dnl   ; 1.080000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(176=0xB0)
+define({FP109},0x46b4)dnl   ; 1.090000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(180=0xB4)
+define({FP110},0x46b8)dnl   ; 1.100000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(184=0xB8)
+define({FP111},0x46bc)dnl   ; 1.110000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(188=0xBC)
+define({FP112},0x46c0)dnl   ; 1.120000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(192=0xC0)
+define({FP113},0x46c4)dnl   ; 1.130000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(196=0xC4)
+define({FP114},0x46c8)dnl   ; 1.140000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(200=0xC8)
+define({FP115},0x46cc)dnl   ; 1.150000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(204=0xCC)
+define({FP116},0x46d0)dnl   ; 1.160000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(208=0xD0)
+define({FP117},0x46d4)dnl   ; 1.170000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(212=0xD4)
+define({FP118},0x46d8)dnl   ; 1.180000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(216=0xD8)
+define({FP119},0x46dc)dnl   ; 1.190000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(220=0xDC)
+define({FP120},0x46e0)dnl   ; 1.200000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(224=0xE0)
+define({FP121},0x46e4)dnl   ; 1.210000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(228=0xE4)
+define({FP122},0x46e8)dnl   ; 1.220000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(232=0xE8)
+define({FP123},0x46ec)dnl   ; 1.230000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(236=0xEC)
+define({FP124},0x46f0)dnl   ; 1.240000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(240=0xF0)
+define({FP125},0x46f4)dnl   ; 1.250000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(244=0xF4)
+define({FP126},0x46f8)dnl   ; 1.260000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(248=0xF8)
+define({FP127},0x46fc)dnl   ; 1.270000e+02 sign(0=0x0000) exp(  6=0x4600) mantisa(252=0xFC)
+define({FP128},0x4700)dnl   ; 1.280000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(  0=0x00)
+define({FP129},0x4702)dnl   ; 1.290000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(  2=0x02)
+define({FP130},0x4704)dnl   ; 1.300000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(  4=0x04)
+define({FP131},0x4706)dnl   ; 1.310000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(  6=0x06)
+define({FP132},0x4708)dnl   ; 1.320000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(  8=0x08)
+define({FP133},0x470a)dnl   ; 1.330000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 10=0x0A)
+define({FP134},0x470c)dnl   ; 1.340000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 12=0x0C)
+define({FP135},0x470e)dnl   ; 1.350000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 14=0x0E)
+define({FP136},0x4710)dnl   ; 1.360000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 16=0x10)
+define({FP137},0x4712)dnl   ; 1.370000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 18=0x12)
+define({FP138},0x4714)dnl   ; 1.380000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 20=0x14)
+define({FP139},0x4716)dnl   ; 1.390000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 22=0x16)
+define({FP140},0x4718)dnl   ; 1.400000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 24=0x18)
+define({FP141},0x471a)dnl   ; 1.410000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 26=0x1A)
+define({FP142},0x471c)dnl   ; 1.420000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 28=0x1C)
+define({FP143},0x471e)dnl   ; 1.430000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 30=0x1E)
+define({FP144},0x4720)dnl   ; 1.440000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 32=0x20)
+define({FP145},0x4722)dnl   ; 1.450000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 34=0x22)
+define({FP146},0x4724)dnl   ; 1.460000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 36=0x24)
+define({FP147},0x4726)dnl   ; 1.470000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 38=0x26)
+define({FP148},0x4728)dnl   ; 1.480000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 40=0x28)
+define({FP149},0x472a)dnl   ; 1.490000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 42=0x2A)
+define({FP150},0x472c)dnl   ; 1.500000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 44=0x2C)
+define({FP151},0x472e)dnl   ; 1.510000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 46=0x2E)
+define({FP152},0x4730)dnl   ; 1.520000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 48=0x30)
+define({FP153},0x4732)dnl   ; 1.530000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 50=0x32)
+define({FP154},0x4734)dnl   ; 1.540000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 52=0x34)
+define({FP155},0x4736)dnl   ; 1.550000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 54=0x36)
+define({FP156},0x4738)dnl   ; 1.560000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 56=0x38)
+define({FP157},0x473a)dnl   ; 1.570000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 58=0x3A)
+define({FP158},0x473c)dnl   ; 1.580000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 60=0x3C)
+define({FP159},0x473e)dnl   ; 1.590000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 62=0x3E)
+define({FP160},0x4740)dnl   ; 1.600000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 64=0x40)
+define({FP161},0x4742)dnl   ; 1.610000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 66=0x42)
+define({FP162},0x4744)dnl   ; 1.620000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 68=0x44)
+define({FP163},0x4746)dnl   ; 1.630000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 70=0x46)
+define({FP164},0x4748)dnl   ; 1.640000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 72=0x48)
+define({FP165},0x474a)dnl   ; 1.650000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 74=0x4A)
+define({FP166},0x474c)dnl   ; 1.660000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 76=0x4C)
+define({FP167},0x474e)dnl   ; 1.670000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 78=0x4E)
+define({FP168},0x4750)dnl   ; 1.680000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 80=0x50)
+define({FP169},0x4752)dnl   ; 1.690000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 82=0x52)
+define({FP170},0x4754)dnl   ; 1.700000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 84=0x54)
+define({FP171},0x4756)dnl   ; 1.710000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 86=0x56)
+define({FP172},0x4758)dnl   ; 1.720000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 88=0x58)
+define({FP173},0x475a)dnl   ; 1.730000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 90=0x5A)
+define({FP174},0x475c)dnl   ; 1.740000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 92=0x5C)
+define({FP175},0x475e)dnl   ; 1.750000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 94=0x5E)
+define({FP176},0x4760)dnl   ; 1.760000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 96=0x60)
+define({FP177},0x4762)dnl   ; 1.770000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa( 98=0x62)
+define({FP178},0x4764)dnl   ; 1.780000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(100=0x64)
+define({FP179},0x4766)dnl   ; 1.790000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(102=0x66)
+define({FP180},0x4768)dnl   ; 1.800000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(104=0x68)
+define({FP181},0x476a)dnl   ; 1.810000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(106=0x6A)
+define({FP182},0x476c)dnl   ; 1.820000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(108=0x6C)
+define({FP183},0x476e)dnl   ; 1.830000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(110=0x6E)
+define({FP184},0x4770)dnl   ; 1.840000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(112=0x70)
+define({FP185},0x4772)dnl   ; 1.850000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(114=0x72)
+define({FP186},0x4774)dnl   ; 1.860000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(116=0x74)
+define({FP187},0x4776)dnl   ; 1.870000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(118=0x76)
+define({FP188},0x4778)dnl   ; 1.880000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(120=0x78)
+define({FP189},0x477a)dnl   ; 1.890000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(122=0x7A)
+define({FP190},0x477c)dnl   ; 1.900000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(124=0x7C)
+define({FP191},0x477e)dnl   ; 1.910000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(126=0x7E)
+define({FP192},0x4780)dnl   ; 1.920000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(128=0x80)
+define({FP193},0x4782)dnl   ; 1.930000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(130=0x82)
+define({FP194},0x4784)dnl   ; 1.940000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(132=0x84)
+define({FP195},0x4786)dnl   ; 1.950000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(134=0x86)
+define({FP196},0x4788)dnl   ; 1.960000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(136=0x88)
+define({FP197},0x478a)dnl   ; 1.970000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(138=0x8A)
+define({FP198},0x478c)dnl   ; 1.980000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(140=0x8C)
+define({FP199},0x478e)dnl   ; 1.990000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(142=0x8E)
+define({FP200},0x4790)dnl   ; 2.000000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(144=0x90)
+define({FP201},0x4792)dnl   ; 2.010000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(146=0x92)
+define({FP202},0x4794)dnl   ; 2.020000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(148=0x94)
+define({FP203},0x4796)dnl   ; 2.030000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(150=0x96)
+define({FP204},0x4798)dnl   ; 2.040000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(152=0x98)
+define({FP205},0x479a)dnl   ; 2.050000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(154=0x9A)
+define({FP206},0x479c)dnl   ; 2.060000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(156=0x9C)
+define({FP207},0x479e)dnl   ; 2.070000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(158=0x9E)
+define({FP208},0x47a0)dnl   ; 2.080000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(160=0xA0)
+define({FP209},0x47a2)dnl   ; 2.090000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(162=0xA2)
+define({FP210},0x47a4)dnl   ; 2.100000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(164=0xA4)
+define({FP211},0x47a6)dnl   ; 2.110000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(166=0xA6)
+define({FP212},0x47a8)dnl   ; 2.120000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(168=0xA8)
+define({FP213},0x47aa)dnl   ; 2.130000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(170=0xAA)
+define({FP214},0x47ac)dnl   ; 2.140000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(172=0xAC)
+define({FP215},0x47ae)dnl   ; 2.150000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(174=0xAE)
+define({FP216},0x47b0)dnl   ; 2.160000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(176=0xB0)
+define({FP217},0x47b2)dnl   ; 2.170000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(178=0xB2)
+define({FP218},0x47b4)dnl   ; 2.180000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(180=0xB4)
+define({FP219},0x47b6)dnl   ; 2.190000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(182=0xB6)
+define({FP220},0x47b8)dnl   ; 2.200000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(184=0xB8)
+define({FP221},0x47ba)dnl   ; 2.210000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(186=0xBA)
+define({FP222},0x47bc)dnl   ; 2.220000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(188=0xBC)
+define({FP223},0x47be)dnl   ; 2.230000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(190=0xBE)
+define({FP224},0x47c0)dnl   ; 2.240000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(192=0xC0)
+define({FP225},0x47c2)dnl   ; 2.250000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(194=0xC2)
+define({FP226},0x47c4)dnl   ; 2.260000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(196=0xC4)
+define({FP227},0x47c6)dnl   ; 2.270000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(198=0xC6)
+define({FP228},0x47c8)dnl   ; 2.280000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(200=0xC8)
+define({FP229},0x47ca)dnl   ; 2.290000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(202=0xCA)
+define({FP230},0x47cc)dnl   ; 2.300000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(204=0xCC)
+define({FP231},0x47ce)dnl   ; 2.310000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(206=0xCE)
+define({FP232},0x47d0)dnl   ; 2.320000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(208=0xD0)
+define({FP233},0x47d2)dnl   ; 2.330000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(210=0xD2)
+define({FP234},0x47d4)dnl   ; 2.340000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(212=0xD4)
+define({FP235},0x47d6)dnl   ; 2.350000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(214=0xD6)
+define({FP236},0x47d8)dnl   ; 2.360000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(216=0xD8)
+define({FP237},0x47da)dnl   ; 2.370000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(218=0xDA)
+define({FP238},0x47dc)dnl   ; 2.380000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(220=0xDC)
+define({FP239},0x47de)dnl   ; 2.390000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(222=0xDE)
+define({FP240},0x47e0)dnl   ; 2.400000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(224=0xE0)
+define({FP241},0x47e2)dnl   ; 2.410000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(226=0xE2)
+define({FP242},0x47e4)dnl   ; 2.420000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(228=0xE4)
+define({FP243},0x47e6)dnl   ; 2.430000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(230=0xE6)
+define({FP244},0x47e8)dnl   ; 2.440000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(232=0xE8)
+define({FP245},0x47ea)dnl   ; 2.450000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(234=0xEA)
+define({FP246},0x47ec)dnl   ; 2.460000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(236=0xEC)
+define({FP247},0x47ee)dnl   ; 2.470000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(238=0xEE)
+define({FP248},0x47f0)dnl   ; 2.480000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(240=0xF0)
+define({FP249},0x47f2)dnl   ; 2.490000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(242=0xF2)
+define({FP250},0x47f4)dnl   ; 2.500000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(244=0xF4)
+define({FP251},0x47f6)dnl   ; 2.510000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(246=0xF6)
+define({FP252},0x47f8)dnl   ; 2.520000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(248=0xF8)
+define({FP253},0x47fa)dnl   ; 2.530000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(250=0xFA)
+define({FP254},0x47fc)dnl   ; 2.540000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(252=0xFC)
+define({FP255},0x47fe)dnl   ; 2.550000e+02 sign(0=0x0000) exp(  7=0x4700) mantisa(254=0xFE)
+define({FP256},0x4800)dnl   ; 2.560000e+02 sign(0=0x0000) exp(  8=0x4800) mantisa(  0=0x00)
+dnl
+define({ROOT2F},0x406a)dnl  ; 1.414062e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(106=0x6A) Square root of 2 (1.41421356)
+define({FPMIN},0x0000)dnl   ; 5.421011e-20 sign(0=0x0000) exp(-64=0x0000) mantisa(  0=0x00)
+define({FMMIN},0x8000)dnl   ;-5.421011e-20 sign(1=0x8000) exp(-64=0x0000) mantisa(  0=0x00)
+define({FM0},FPMIN )dnl
+define({FP0},FPMIN )dnl
+define({FMMAX},0xffff)dnl      ;-1.841072e+19 sign(1=0x8000) exp( 63=0x7F00) mantisa(255=0xFF)
+define({FPMAX},0x7fff)dnl      ; 1.841072e+19 sign(0=0x0000) exp( 63=0x7F00) mantisa(255=0xFF)
+define({FM0_01875},0xba33)dnl  ;-1.873779e-02 sign(1=0x8000) exp( -6=0x3A00) mantisa( 51=0x33)
+define({FM0_0375},0xbb33)dnl   ;-3.747559e-02 sign(1=0x8000) exp( -5=0x3B00) mantisa( 51=0x33)
+define({FM0_0625},0xbc00)dnl   ;-6.250000e-02 sign(1=0x8000) exp( -4=0x3C00) mantisa(  0=0x00)
+define({FM0_075},0xbc33)dnl    ;-7.495117e-02 sign(1=0x8000) exp( -4=0x3C00) mantisa( 51=0x33)
+define({FM0_15},0xbd33)dnl     ;-1.499023e-01 sign(1=0x8000) exp( -3=0x3D00) mantisa( 51=0x33)
+define({FM0_25},0xbe00)dnl     ;-2.500000e-01 sign(1=0x8000) exp( -2=0x3E00) mantisa(  0=0x00)
+define({FP0_000156},0x3348)dnl ; 1.564026e-04 sign(0=0x0000) exp(-13=0x3300) mantisa( 72=0x48)
+define({FP0_001406},0x3671)dnl ; 1.407623e-03 sign(0=0x0000) exp(-10=0x3600) mantisa(113=0x71)
+define({FP0_0025},0x3748)dnl   ; 2.502441e-03 sign(0=0x0000) exp( -9=0x3700) mantisa( 72=0x48)
+define({FP0_01},0x3948)dnl     ; 1.000977e-02 sign(0=0x0000) exp( -7=0x3900) mantisa( 72=0x48)
+define({FP0_0125},0x399a)dnl   ; 1.251221e-02 sign(0=0x0000) exp( -7=0x3900) mantisa(154=0x9A)
+define({FP0_0225},0x3a71)dnl   ; 2.252197e-02 sign(0=0x0000) exp( -6=0x3A00) mantisa(113=0x71)
+define({FP0_03125},0x3b00)dnl  ; 3.125000e-02 sign(0=0x0000) exp( -5=0x3B00) mantisa(  0=0x00)
+define({FP0_0375},0x3b33)dnl   ; 3.747559e-02 sign(0=0x0000) exp( -5=0x3B00) mantisa( 51=0x33)
+define({FP0_04},0x3b48)dnl     ; 4.003906e-02 sign(0=0x0000) exp( -5=0x3B00) mantisa( 72=0x48)
+define({FP0_05},0x3b9a)dnl     ; 5.004883e-02 sign(0=0x0000) exp( -5=0x3B00) mantisa(154=0x9A)
+define({FP0_09},0x3c71)dnl     ; 9.008789e-02 sign(0=0x0000) exp( -4=0x3C00) mantisa(113=0x71)
+define({FP0_125},0x3d00)dnl    ; 1.250000e-01 sign(0=0x0000) exp( -3=0x3D00) mantisa(  0=0x00)
+define({FP0_15},0x3d33)dnl     ; 1.499023e-01 sign(0=0x0000) exp( -3=0x3D00) mantisa( 51=0x33)
+define({FP0_1875},0x3d80)dnl   ; 1.875000e-01 sign(0=0x0000) exp( -3=0x3D00) mantisa(128=0x80)
+define({FP0_25},0x3e00)dnl     ; 2.500000e-01 sign(0=0x0000) exp( -2=0x3E00) mantisa(  0=0x00)
+define({FP0_75},0x3f80)dnl     ; 7.500000e-01 sign(0=0x0000) exp( -1=0x3F00) mantisa(128=0x80)
+define({FP0_36},0x3e71)dnl     ; 3.603516e-01 sign(0=0x0000) exp( -2=0x3E00) mantisa(113=0x71)
+define({FP1_5},0x4080)dnl      ; 1.500000e+00 sign(0=0x0000) exp(  0=0x4000) mantisa(128=0x80)
+define({FP18_75},0x442c)dnl    ; 1.875000e+01 sign(0=0x0000) exp(  4=0x4400) mantisa( 44=0x2C)
+define({FP300},0x482c)dnl      ; 3.000000e+02 sign(0=0x0000) exp(  8=0x4800) mantisa( 44=0x2C)
 dnl
 dnl

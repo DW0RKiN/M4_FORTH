@@ -1,5 +1,5 @@
 ifdef({USE_fSub}, {
-        ; continue from {@FMOD} (if it was included)
+        ; continue from @FMOD (if it was included)
 dnl
 ; Subtract two floating-point numbers
 ;  In: HL, DE numbers to subtract, no restrictions

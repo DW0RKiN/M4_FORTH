@@ -677,7 +677,7 @@ MULTIPLY_SIZE EQU  $-MULTIPLY},
 TYPMUL,{test7},{
 ; Pollutes: AF, BC, DE
 MULTIPLY:
-                        ;[35:577-623] ;# test7 version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
+                        ;[35:577-623] # test7 version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
     ld    B, H          ; 1:4
     ld    C, L          ; 1:4       BC = HL
 
@@ -712,7 +712,7 @@ TYPMUL,{test8},{
 ; HL*DE = (H0+L)*(D0+E)= H0*D0 + H0*E + D0*L + L*E = 0 + H0*E + D0*L + L*E
 ; Pollutes: AF, C, DE
 MULTIPLY:
-                        ;[35:570-623] ;# test8 version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
+                        ;[35:570-623] # test8 version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
 
     ld    C, L          ; 1:4
     ld    L, E          ; 1:4
@@ -747,7 +747,7 @@ MULTIPLY_SIZE EQU  $-MULTIPLY},
 TYPMUL,{z88dk},{
 ; Pollutes: AF, C, DE
 MULTIPLY:
-                        ;[31:807-886] ;# z88dk version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
+                        ;[31:807-886] # z88dk version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
 
     inc   H             ; 1:4
     dec   H             ; 1:4
@@ -779,7 +779,7 @@ MULTIPLY_SIZE EQU  $-MULTIPLY},
 TYPMUL,{old_default},{
 ; Pollutes: AF, B, DE
 MULTIPLY:
-                        ;[42:cca 593-757] ;# old_default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
+                        ;[42:cca 593-757] # old_default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
     ld    A, H          ; 1:4
     sub   D             ; 1:4
     jr    c, $+3        ; 2:7/12
@@ -816,7 +816,7 @@ MULTIPLY_SIZE EQU  $-MULTIPLY},
 ; HL = HL*DE = H0*E + L*DE
 ; Pollutes: AF, C, DE
 MULTIPLY:
-                        ;[36:471-627] ;# default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
+                        ;[36:471-627] # default version can be changed with "define({TYPMUL},{name})", name=fast,small,test,test2,...
     xor   A             ; 1:4
     ld    C, E          ; 1:4
 

@@ -1,4 +1,5 @@
 dnl ## n Case n1 Of .. EndOf n2 Of .. EndOf default EndCase
+define({__},{})dnl
 dnl
 dnl
 dnl --------- case of endof endcase ------------
@@ -18,7 +19,6 @@ dnl
 dnl
 define({CASE_COUNT},100)dnl
 define({LASTOF_STACK},100000)dnl
-define({_OF_INFO},{$1 eval(OF_STACK % 1000) from $2{}case CASE_STACK})dnl
 dnl
 dnl
 dnl # Non standard CASE: ( n -- n )
@@ -38,26 +38,17 @@ dnl #       default-code
 dnl #   DROP
 dnl # ENDCASE ( n -- )
 dnl
-define({CASE},{dnl
-__{}__ADD_TOKEN({__TOKEN_CASE},{case},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_CASE},{dnl
-__{}define({__INFO},{case}){}dnl
-define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
+define({CASE},{define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
 ;   v---v---v case CASE_STACK v---v---v
                         ;           case CASE_STACK{}dnl
 })dnl
 dnl
 dnl
-dnl ( b a -- b a )
-define({OF},{dnl
-__{}__ADD_TOKEN({__TOKEN_OF},{of},$@){}dnl
-}){}dnl
+define({_OF_INFO},{$1 eval(OF_STACK % 1000) from $2{}case CASE_STACK})dnl
 dnl
-define({__ASM_TOKEN_OF},{dnl
-__{}define({__INFO},{of}){}dnl
-define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($#,{0},,{
+dnl
+dnl ( b a -- b a )
+define({OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($#,{0},,{
 .error 'of': Unexpected parameter $@, 'of' uses a parameter eval(OF_STACK % 1000) from the stack!})
                         ;[8:44]     _OF_INFO(of)
     xor   A             ; 1:4       _OF_INFO(of)
@@ -69,13 +60,7 @@ define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifels
 dnl
 dnl
 dnl ( b a -- b a )
-define({ZERO_OF},{dnl
-__{}__ADD_TOKEN({__TOKEN_ZERO_OF},{zero_of},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_ZERO_OF},{dnl
-__{}define({__INFO},{zero_of}){}dnl
-define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($#,{0},,{
+define({ZERO_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($#,{0},,{
 .error 'of': Unexpected parameter $@, 'of' uses a parameter eval(OF_STACK % 1000) from the stack!})
                         ;[5:18]     _OF_INFO(zero_of)   version: zero check
     ld    A, H          ; 1:4       _OF_INFO(zero_of)
@@ -85,17 +70,11 @@ define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifels
 dnl
 dnl
 dnl ( a -- a )
-define({PUSH_OF},{dnl
-__{}__ADD_TOKEN({__TOKEN_PUSH_OF},{push_of},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_PUSH_OF},{dnl
-__{}define({__INFO},{push_of}){}dnl
-define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({PUSH_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__HAS_PTR($1),{1},{dnl
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
 __{}                        ;[13:51/39] _OF_INFO(push_of($1))   version: variable in memory
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
@@ -113,12 +92,12 @@ __{}                        ;[10:36/30] _OF_INFO(push_of($1))   version: hi($1) 
 __{}    ld    A, L          ; 1:4       _OF_INFO(push_of($1))
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jr   nz, $+5        ; 2:7/12    _OF_INFO(push_of($1))
-__{}    ld    A, low __FORM({%-7s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}eval(($1)>>8),{0},{dnl
 __{}                        ;[7:25]     _OF_INFO(push_of($1))   version: hi($1) = 0
-__{}    ld    A, low __FORM({%-7s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
 __{}    or    H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
@@ -130,10 +109,10 @@ __{}    or    L             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))},
 __{}{dnl
 __{}                        ;[11:39/33] _OF_INFO(push_of($1))   version: default
-__{}    ld    A, low __FORM({%-7s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, low format({%-7s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   L             ; 1:4       _OF_INFO(push_of($1))
 __{}    jr   nz, $+5        ; 2:7/12    _OF_INFO(push_of($1))
-__{}    ld    A, high __FORM({%-6s},$1); 2:7       _OF_INFO(push_of($1))
+__{}    ld    A, high format({%-6s},$1); 2:7       _OF_INFO(push_of($1))
 __{}    xor   H             ; 1:4       _OF_INFO(push_of($1))
 __{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(push_of($1))}){}dnl
 })dnl
@@ -141,13 +120,7 @@ dnl
 dnl
 dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
 dnl $1 <= a < $2
-define({WITHIN_OF},{dnl
-__{}__ADD_TOKEN({__TOKEN_WITHIN_OF},{within_of},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_WITHIN_OF},{dnl
-__{}define({__INFO},{within_of}){}dnl
-define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}  .error {$0}(): Missing parameters!},
 $#,{1},{
 __{}.error {$0}($@): The second parameter is missing!},
@@ -160,35 +133,17 @@ __{}    jp   nc, endof{}OF_STACK; 3:10      _TMP_INFO}){}dnl
 }){}dnl
 dnl
 dnl
-define({ENDOF},{dnl
-__{}__ADD_TOKEN({__TOKEN_ENDOF},{endof},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_ENDOF},{dnl
-__{}define({__INFO},{endof}){}dnl
-
+define({ENDOF},{
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(endof)
 endof{}OF_STACK:            ;           _OF_INFO(endof){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({DECLINING_ENDOF},{dnl
-__{}__ADD_TOKEN({__TOKEN_DECLINING_ENDOF},{declining_endof},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_DECLINING_ENDOF},{dnl
-__{}define({__INFO},{declining_endof}){}dnl
-
+define({DECLINING_ENDOF},{
 ;   --vvv-- falling down --vvv--    _OF_INFO(declining_endof)
 endof{}OF_STACK:            ;           _OF_INFO(declining_endof){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({ENDCASE},{dnl
-__{}__ADD_TOKEN({__TOKEN_ENDCASE},{endcase},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_ENDCASE},{dnl
-__{}define({__INFO},{endcase}){}dnl
-popdef({LASTOF_STACK})define({OF_COUNT}, LASTOF_STACK)
+define({ENDCASE},{popdef({LASTOF_STACK})define({OF_COUNT}, LASTOF_STACK)
 endcase{}CASE_STACK:             ;           endcase CASE_STACK
 ;   ^---^---^ endcase CASE_STACK ^---^---^{}popdef({CASE_STACK})})dnl
 dnl
@@ -210,31 +165,19 @@ dnl #       default-code
 dnl #   DROP
 dnl # LO_ENDCASE
 dnl
-define({LO_CASE},{dnl
-__{}__ADD_TOKEN({__TOKEN_LO_CASE},{lo_case},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_LO_CASE},{dnl
-__{}define({__INFO},{lo_case}){}dnl
-define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
+define({LO_CASE},{define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
 ;   v---v---v lo_case CASE_STACK v---v---v
     ld    A, L          ; 1:4       lo_case CASE_STACK{}dnl
 })dnl
 dnl
 dnl
-define({LO_OF},{dnl
-__{}__ADD_TOKEN({__TOKEN_LO_OF},{lo_of},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_LO_OF},{dnl
-__{}define({__INFO},{lo_of}){}dnl
-define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({LO_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): M4 cannot calculate "$1".},
-__{}__HAS_PTR($1),{1},{dnl
+__{}__IS_MEM_REF($1),{1},{dnl
 __{}    .error {$0}($@): Does not support variable parameters stored in memory.},
 __{}{dnl
 __{}__{}ifelse(eval($1),{0},{dnl
@@ -244,30 +187,24 @@ __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(lo_of($1),lo_)},
 __{}__{}{dnl
 __{}__{}__{}                        ;[5:17]     _OF_INFO(lo_of($1),lo_){}ifelse(eval((($1)>>8) == 0),{0},{
 __{}__{}__{}    .warning {$0}($@): Value $1 is greater than 255.})
-__{}__{}__{}    cp   low __FORM({%-11s},$1); 2:7       _OF_INFO(lo_of($1),lo_)
+__{}__{}__{}    cp   low format({%-11s},$1); 2:7       _OF_INFO(lo_of($1),lo_)
 __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(lo_of($1),lo_)})}){}dnl
 })dnl
 dnl
 dnl
 dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
 dnl $1 <= a < $2
-define({LO_WITHIN_OF},{dnl
-__{}__ADD_TOKEN({__TOKEN_LO_WITHIN_OF},{lo_within_of},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_LO_WITHIN_OF},{dnl
-__{}define({__INFO},{lo_within_of}){}dnl
-define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({LO_WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__HAS_PTR($1),{1},{dnl
-__{}                        ;[ifelse(__HAS_PTR($2),{1},{15:69},{14:63})]    _OF_INFO(lo_within_of($1),lo_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}                        ;[ifelse(__IS_MEM_REF($2),{1},{15:69},{14:63})]    _OF_INFO(lo_within_of($1),lo_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    C, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   C = $1
-__{}    ld    A, ifelse(__HAS_PTR($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      _OF_INFO(lo_within_of($1),lo_within_)
+__{}    ld    A, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:13},{2:7 })      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = $2 - $1
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
@@ -275,9 +212,9 @@ __{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   
 __{}    sub   B             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = (a - $1) - ($2 - $1)
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
-__{}__HAS_PTR($2),{1},{dnl
+__{}__IS_MEM_REF($2),{1},{dnl
 __{}                        ;[13:59]    _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    ld    C, __FORM({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
+__{}    ld    C, format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    A, format({%-11s},$2); 3:13      _OF_INFO(lo_within_of($1),lo_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   B = $2 - ($1)
@@ -288,57 +225,39 @@ __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{0},{dnl
 __{}                        ;[5:17]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    cp   low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    cp   low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{1},{dnl
 __{}                        ;[7:25]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
 __{}    dec   A             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
-__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}eval($1),{-1},{dnl
 __{}                        ;[7:25]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
 __{}    inc   A             ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
-__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)},
 __{}{dnl
 __{}                        ;[8:28]     _OF_INFO(lo_within_of($1),lo_within_)   ( a -- flag=($1<=a<$2) )
-__{}    sub  low __FORM({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
-__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low format({%-11s},$1); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   A = a - ($1)
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(lo_within_of($1),lo_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, L          ; 1:4       _OF_INFO(lo_within_of($1),lo_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(lo_within_of($1),lo_within_)})})dnl
 dnl
 dnl
-define({LO_ENDOF},{dnl
-__{}__ADD_TOKEN({__TOKEN_LO_ENDOF},{lo_endof},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_LO_ENDOF},{dnl
-__{}define({__INFO},{lo_endof}){}dnl
-
+define({LO_ENDOF},{
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(lo_endof,lo_)
 endof{}OF_STACK:            ;           _OF_INFO(lo_endof,lo_){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({LO_DECLINING_ENDOF},{dnl
-__{}__ADD_TOKEN({__TOKEN_LO_DECLINING_ENDOF},{lo_declining_endof},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_LO_DECLINING_ENDOF},{dnl
-__{}define({__INFO},{lo_declining_endof}){}dnl
-
+define({LO_DECLINING_ENDOF},{
 ;   --vvv-- falling down --vvv--    _OF_INFO(lo_declining_endof,lo_)
 endof{}OF_STACK:            ;           _OF_INFO(lo_declining_endof,lo_){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({LO_ENDCASE},{dnl
-__{}__ADD_TOKEN({__TOKEN_LO_ENDCASE},{lo_endcase},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_LO_ENDCASE},{dnl
-__{}define({__INFO},{lo_endcase}){}dnl
-popdef({LASTOF_STACK})
+define({LO_ENDCASE},{popdef({LASTOF_STACK})
 endcase{}CASE_STACK:             ;           lo_endcase CASE_STACK
 ;   ^---^---^ lo_endcase CASE_STACK ^---^---^{}popdef({CASE_STACK})})dnl
 dnl
@@ -361,31 +280,19 @@ dnl #       default-code
 dnl #   DROP
 dnl # HI_ENDCASE ( n -- )
 dnl
-define({HI_CASE},{dnl
-__{}__ADD_TOKEN({__TOKEN_HI_CASE},{hi_case},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_HI_CASE},{dnl
-__{}define({__INFO},{hi_case}){}dnl
-define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
+define({HI_CASE},{define({CASE_COUNT}, incr(CASE_COUNT))pushdef({CASE_STACK}, CASE_COUNT)pushdef({LASTOF_STACK}, LASTOF_STACK)define({LASTOF_STACK},CASE_COUNT{000})
 ;   v---v---v hi_case CASE_STACK v---v---v
     ld    A, H          ; 1:4       hi_case CASE_STACK{}dnl
 })dnl
 dnl
 dnl
-define({HI_OF},{dnl
-__{}__ADD_TOKEN({__TOKEN_HI_OF},{hi_of},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_HI_OF},{dnl
-__{}define({__INFO},{hi_of}){}dnl
-define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({HI_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameter!},
 __{}$#,{1},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
 __{}ifelse(__IS_NUM($1),{0},{dnl
 __{}    .error {$0}($@): M4 cannot calculate "$1".},
-__{}__HAS_PTR($1),{1},{dnl
+__{}__IS_MEM_REF($1),{1},{dnl
 __{}    .error {$0}($@): Does not support variable parameters stored in memory.},
 __{}{dnl
 __{}__{}ifelse(eval($1),{0},{dnl
@@ -395,30 +302,24 @@ __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(hi_of($1),hi_)},
 __{}__{}{dnl
 __{}__{}__{}                        ;[5:17]     _OF_INFO(hi_of($1),hi_){}ifelse(eval((($1)>>8) == 0),{0},{
 __{}__{}__{}    .warning {$0}($@): Value $1 is greater than 255.})
-__{}__{}__{}    cp   low __FORM({%-11s},$1); 2:7       _OF_INFO(hi_of($1),hi_)
+__{}__{}__{}    cp   low format({%-11s},$1); 2:7       _OF_INFO(hi_of($1),hi_)
 __{}__{}__{}    jp   nz, endof{}OF_STACK; 3:10      _OF_INFO(hi_of($1),hi_)})}){}dnl
 })dnl
 dnl
 dnl
 dnl ( a $1 $2 -- ((a-$1) ($2-$1) U<) )
 dnl $1 <= a < $2
-define({HI_WITHIN_OF},{dnl
-__{}__ADD_TOKEN({__TOKEN_HI_WITHIN_OF},{hi_within_of},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_HI_WITHIN_OF},{dnl
-__{}define({__INFO},{hi_within_of}){}dnl
-define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
+define({HI_WITHIN_OF},{define({LASTOF_STACK}, incr(LASTOF_STACK))pushdef({OF_STACK}, LASTOF_STACK)ifelse($1,{},{
 __{}__{}.error {$0}(): Missing parameters!},
 __{}$#,{1},{
 __{}__{}.error {$0}($@): The second parameter is missing!},
 __{}$#,{2},,{
 __{}__{}.error {$0}($@): $# parameters found in macro!})
-__{}ifelse(__HAS_PTR($1),{1},{dnl
-__{}                        ;[ifelse(__HAS_PTR($2),{1},{15:69},{14:63})]    _OF_INFO(hi_within_of($1),hi_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
+__{}ifelse(__IS_MEM_REF($1),{1},{dnl
+__{}                        ;[ifelse(__IS_MEM_REF($2),{1},{15:69},{14:63})]    _OF_INFO(hi_within_of($1),hi_within_)   ( a $1 $2 -- flag=($1<=a<$2) )
 __{}    ld    A, format({%-11s},$1); 3:13      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    C, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   C = $1
-__{}    ld    A, ifelse(__HAS_PTR($2),{1},{format({%-11s},$2); 3:13},{__FORM({%-11s},$2); 2:7 })      _OF_INFO(hi_within_of($1),hi_within_)
+__{}    ld    A, format({%-11s},$2); ifelse(__IS_MEM_REF($2),{1},{3:13},{2:7 })      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   B = ($2)-[$1]
 __{}    ld    A, L          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
@@ -426,9 +327,9 @@ __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   
 __{}    sub   B             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = (a -($1)) - ([$2]-($1))
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
-__{}__HAS_PTR($2),{1},{dnl
+__{}__IS_MEM_REF($2),{1},{dnl
 __{}                        ;[13:59]    _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    ld    C, __FORM({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
+__{}    ld    C, format({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    A, format({%-11s},$2); 3:13      _OF_INFO(hi_within_of($1),hi_within_)
 __{}    sub   C             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    B, A          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   B = $2 - ($1)
@@ -439,57 +340,39 @@ __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{0},{dnl
 __{}                        ;[5:17]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    cp   low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    cp   low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{1},{dnl
 __{}                        ;[7:25]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
 __{}    dec   A             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a - ($1)
-__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}eval($1),{-1},{dnl
 __{}                        ;[7:25]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
 __{}    inc   A             ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)   A = a - ($1)
-__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   carry: (a - ($1)) - ($2 - ($1))
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)},
 __{}{
 __{}                        ;[8:28]     _OF_INFO(hi_within_of($1),hi_within_)   ( a -- flag=($1<=a<$2) )
-__{}    sub  low __FORM({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   A = a-($1)
-__{}    sub  low __FORM({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
+__{}    sub  low format({%-11s},$1); 2:7       _OF_INFO(hi_within_of($1),hi_within_)   A = a-($1)
+__{}    sub  low format({%-11s},$2-($1)); 2:7       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    ld    A, H          ; 1:4       _OF_INFO(hi_within_of($1),hi_within_)
 __{}    jp   nc, endof{}OF_STACK; 3:10      _OF_INFO(hi_within_of($1),hi_within_)})})dnl
 dnl
 dnl
-define({HI_ENDOF},{dnl
-__{}__ADD_TOKEN({__TOKEN_HI_ENDOF},{hi_endof},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_HI_ENDOF},{dnl
-__{}define({__INFO},{hi_endof}){}dnl
-
+define({HI_ENDOF},{
     jp   endcase{}CASE_STACK     ; 3:10      _OF_INFO(hi_endof,hi_)
 endof{}OF_STACK:            ;           _OF_INFO(hi_endof,hi_){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({HI_DECLINING_ENDOF},{dnl
-__{}__ADD_TOKEN({__TOKEN_HI_DECLINING_ENDOF},{hi_declining_endof},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_HI_DECLINING_ENDOF},{dnl
-__{}define({__INFO},{hi_declining_endof}){}dnl
-
+define({HI_DECLINING_ENDOF},{
 ;   --vvv-- falling down --vvv--    _OF_INFO(hi_declining_endof,hi_)
 endof{}OF_STACK:            ;           _OF_INFO(hi_declining_endof,hi_){}popdef({OF_STACK})})dnl
 dnl
 dnl
-define({HI_ENDCASE},{dnl
-__{}__ADD_TOKEN({__TOKEN_HI_ENDCASE},{hi_endcase},$@){}dnl
-}){}dnl
-dnl
-define({__ASM_TOKEN_HI_ENDCASE},{dnl
-__{}define({__INFO},{hi_endcase}){}dnl
-popdef({LASTOF_STACK})
+define({HI_ENDCASE},{popdef({LASTOF_STACK})
 endcase{}CASE_STACK:             ;           hi_endcase CASE_STACK
 ;   ^---^---^ hi_endcase CASE_STACK ^---^---^{}popdef({CASE_STACK})})dnl
 dnl
