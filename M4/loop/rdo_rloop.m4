@@ -613,7 +613,7 @@ __{}__{}    jp   do{}$1          ; 3:10      __INFO   ( step -- ) R:( stop index
 __{}{
 __{}dnl #                      ;[25:121+22=143]
 __{}__{}__ADD_HL_CONST(-(__GET_LOOP_END(}$1{)),{BC = -stop = -(__GET_LOOP_END(}$1{))},{HL+= -stop = index-stop}){}dnl
-__{}__{}                       ;[eval(17+2*__BYTES):eval(102+2*__CLOCKS)]    __INFO
+__{}__{}                       ;[eval(18+2*__BYTES):eval(106+2*__CLOCKS)]    __INFO
 __{}__{}    ex  (SP),HL         ; 1:19      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
@@ -629,6 +629,7 @@ __{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit{}dnl
 __{}__{}__ADD_HL_CONST(__GET_LOOP_END(}$1{),{BC =  stop = __GET_LOOP_END(}$1{)},{HL+=  stop = index+step}){}dnl
 __{}__{}__CODE
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    or    A             ; 1:4       __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO})
 __{}leave{}$1:               ;           __INFO
 __{}    inc  HL             ; 1:6       __INFO
