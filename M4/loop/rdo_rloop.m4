@@ -983,7 +983,7 @@ __{}__{}    add   A, C          ; 1:4       __INFO
 __{}__{}    ld    A, D          ; 1:4       __INFO
 __{}__{}    adc   A, B          ; 1:4       __INFO
 __{}__{}    xor   D             ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    exx                 ; 1:4       __INFO 
@@ -1077,7 +1077,7 @@ __{}__HEX_HL(__GET_LOOP_STEP($1)),{0xFFFF},{__ASM_TOKEN_SUB1_ADDRLOOP($1)},
 __{}__HEX_HL(__GET_LOOP_STEP($1)),{0x0002},{__ASM_TOKEN_2_ADDRLOOP($1)},
 
 __{}__HAS_PTR(__GET_LOOP_STEP($1)):__GET_LOOP_END($1),{1:},{
-__{}__{}                       ;[32:150]    __INFO
+__{}__{}                       ;[27:160]    __INFO   variant: stop from stack and step is pointer
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
@@ -1086,35 +1086,25 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    ld    C,[HL]        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}    ld    B,[HL]        ; 1:7       __INFO   BC = stop
+__{}__{}    push HL             ; 1:11      __INFO   save R.A.S. index
+__{}__{}    ld   HL, format({%-11s},__SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1))); 3:16      __INFO   HL = step
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    xor   A             ; 1:4       __INFO
 __{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
-__{}__{}    ld    A, format({%-11s},__PTR_ADD(__GET_LOOP_STEP($1),0)); 3:13      __INFO   lo8(step)
-__{}__{}    add   A, L          ; 1:4       __INFO
-__{}__{}    ld    L, A          ; 1:4       __INFO
-__{}__{}    ld    A, format({%-11s},__PTR_ADD(__GET_LOOP_STEP($1),1)); 3:13      __INFO   hi8(step)
-__{}__{}    adc   A, H          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO   HL = index-stop+step
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
 __{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
-__{}__{}ifelse(__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x0000,{
-__{}__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO},
-__{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x8000,{
-__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO},
-__{}__{}{
-__{}__{}__{}if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
-__{}__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO
-__{}__{}__{}else
-__{}__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO
-__{}__{}__{}endif})
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO   load R.A.S. index
+__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: stop index -- )
 __{}__{}exit{}$1:                ;           __INFO},
 
 __{}__GET_LOOP_END($1),{},{
-__{}__{}                       ;[28:138]    __INFO
+__{}__{}                       ;[28:138]    __INFO   variant: stop from stack
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
@@ -1136,22 +1126,68 @@ __{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
 __{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}ifelse(__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x0000,{
-__{}__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO},
+__{}__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO   positive step},
 __{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x8000,{
-__{}__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO},
+__{}__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO   negative step},
 __{}__{}{
 __{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
-__{}__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO
+__{}__{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO   positive step
 __{}__{}__{}  else
-__{}__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO
+__{}__{}__{}    jp    m, do{}$1save1 ; 3:10      __INFO   negative step
 __{}__{}__{}  endif})
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: stop index -- )
 __{}__{}exit{}$1:                ;           __INFO},
 
-__{}__HAS_PTR(__GET_LOOP_STEP($1)),1,{
-__{}__{}  .error Dodelat!!!},
+__{}__HAS_PTR(__GET_LOOP_STEP($1)),{1},{
+__{}__{}define({$0_STOP},__LD_R16({BC},__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)))){}dnl
+__{}__{}                       ;[eval(23+__BYTES):eval(136+__CLOCKS)]    __INFO   variant: step is pointer
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index{}dnl
+__{}__{}$0_STOP   BC = stop
+__{}__{}    push HL             ; 1:11      __INFO   save R.A.S. index
+__{}__{}    ld   HL, format({%-11s},__SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1))); 3:16      __INFO   HL = step
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO   load R.A.S. index
+__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
+__{}__{}leave{}$1:               ;           __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: stop index -- )
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}__HAS_PTR(__GET_LOOP_END($1)),{1},{
+__{}__{}                       ;[26:146]    __INFO   variant: stop is pointer
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index
+__{}__{}    push HL             ; 1:11      __INFO   save R.A.S. index
+__{}__{}    ld   HL, format({%-11s},__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1))); 3:16      __INFO   HL = stop
+__{}__{}    ld   BC, format({%-11s},__SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1))); 3:10      __INFO   BC = step
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}    sbc  HL, DE         ; 2:15      __INFO   HL = index-stop
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index+step
+__{}__{}    xor   B             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO   load R.A.S. index
+__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
+__{}__{}leave{}$1:               ;           __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: stop index -- )
+__{}__{}exit{}$1:                ;           __INFO},
 
 __{}{dnl
 __{}__{}__ADD_R16_CONST(HL,-(__GET_LOOP_END($1)),{BC = -stop = -(__GET_LOOP_END($1))},{HL+= -stop = index-stop}){}dnl
@@ -1165,7 +1201,7 @@ __{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
 __{}__{}__add({__SUM_BYTES}, __BYTES){}dnl
 __{}__{}__add({__SUM_PRICE}, __PRICE){}dnl
 __{}__{}ifelse(__POLLUTES,{sz},{
-__{}__{}__{}                       ;[eval(12+__SUM_BYTES):eval(61+__SUM_CLOCKS)]     __INFO
+__{}__{}__{}                       ;[eval(12+__SUM_BYTES):eval(61+__SUM_CLOCKS)]     __INFO   variant: default(sz)
 __{}__{}__{}    exx                 ; 1:4       __INFO
 __{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}__{}    inc   L             ; 1:4       __INFO
@@ -1189,7 +1225,7 @@ __{}__{}__{}__{}    jp    c, do{}$1save  ; 3:10      __INFO   negative step
 __{}__{}__{}__{}  endif})},
 
 __{}__{}{
-__{}__{}__{}                       ;[eval(13+__SUM_BYTES):eval(65+__SUM_CLOCKS)]    __INFO
+__{}__{}__{}                       ;[eval(13+__SUM_BYTES):eval(65+__SUM_CLOCKS)]    __INFO   variant: default
 __{}__{}__{}    exx                 ; 1:4       __INFO
 __{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}__{}    inc   L             ; 1:4       __INFO
