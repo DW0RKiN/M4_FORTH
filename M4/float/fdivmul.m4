@@ -57,11 +57,11 @@ fDiv_OVER:
     or    A             ; 1:4
     jr    z, fDiv_POW2  ; 2:12/7
     ld    A, H          ; 1:4       NegE - 1 = (0 - (E - bias)) + bias - 1 = 2*bias - E - 1 = 128 - E - 1 = 127 - E
-    xor  0x7F           ; 2:7       NegE = 127 - E = 0x7F - E = 0x7F XOR E
+    xor  0x7F           ; 2:7       NegE = 127 - E = 0x7F - E = 0x7F xor E
     ld    D, A          ; 1:4
 
     ld    H, DIVTAB/256 ; 2:7
-    ld    E, (HL)       ; 1:7
+    ld    E,[HL]        ; 1:7
     ; continues with fMul (HL = BC * DE), DE = 1 / HL}){}dnl
 dnl
 dnl
@@ -99,9 +99,9 @@ fMul_DIFF:
     ld    L, A          ; 1:4       L = a - b
     ld    A, E          ; 1:4
     ld    H, Tab_AmB/256; 2:7
-    ld    E, (HL)       ; 1:7
+    ld    E,[HL]        ; 1:7
     inc   H             ; 1:4
-    ld    D, (HL)       ; 1:7
+    ld    D,[HL]        ; 1:7
     add   A, C          ; 1:4
     ld    L, A          ; 1:4       L = a + b
 
@@ -110,11 +110,11 @@ fMul_DIFF:
     add   A, Tab_ApB/256; 2:7
     ld    H, A          ; 1:4
 
-    ld    A, (HL)       ; 1:4
+    ld    A,[HL]        ; 1:7
     add   A, E          ; 1:4
     ld    E, A          ; 1:4       for rounding
     inc   H             ; 1:4
-    ld    A, (HL)       ; 1:4
+    ld    A,[HL]        ; 1:7
     adc   A, D          ; 1:4
     ld    H, A          ; 1:4
     ld    L, E          ; 1:4

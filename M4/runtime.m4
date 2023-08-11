@@ -4,22 +4,22 @@ dnl
 dnl
 dnl
 ifdef({USE_TESTING},{
-;==============================================================================
-; T{ ...max255... -> ...max255... }T
-; ( -- )
+;#==============================================================================
+;# T{ ...max255... -> ...max255... }T
+;# ( -- )
 T_OPEN:                 ;           t_open
     push HL             ; 1:11      t_open
-    ld   (T_EQ_SP), SP  ; 4:20      t_open
+    ld   [T_EQ_SP], SP  ; 4:20      t_open
     pop  HL             ; 1:10      t_open
     ret                 ; 1:10      t_open
 
-; T{ ...max255... -> ...max255... }T
-; ->
-; ( -- )
+;# T{ ...max255... -> ...max255... }T
+;# ->
+;# ( -- )
 T_EQ:                   ;           t_eq
     push HL             ; 1:11      t_eq
-    ld   (T_CLOSE_B),SP ; 4:20      t_eq
-    ld   (T_CLOSE_C),SP ; 4:20      t_eq
+    ld   [T_CLOSE_B],SP ; 4:20      t_eq
+    ld   [T_CLOSE_C],SP ; 4:20      t_eq
 T_EQ_SP EQU $+1         ;           t_eq
     ld   HL, 0x0000     ; 3:10      t_eq
     or    A             ; 1:4       t_eq
@@ -28,12 +28,12 @@ T_EQ_SP EQU $+1         ;           t_eq
     pop  HL             ; 1:10      t_eq
     ret                 ; 1:10      t_eq
 
-; T{ ...max255... -> ...max255... }T
-; ( max255 -- )
+;# T{ ...max255... -> ...max255... }T
+;# ( max255 -- )
 T_CLOSE:                ;           t_close
     ex   DE, HL         ; 1:4       t_close
-    ex  (SP),HL         ; 1:19      t_close   push de
-    ld (T_CLOSE_E), HL  ; 3:16      t_close   save ret
+    ex  [SP],HL         ; 1:19      t_close   push de
+    ld [T_CLOSE_E], HL  ; 3:16      t_close   save ret
     push DE             ; 1:11      t_close   push hl
 T_CLOSE_B EQU $+1       ;           t_close
     ld   HL, 0x0000     ; 3:10      t_close
@@ -51,19 +51,19 @@ T_CLOSE_D EQU $+1       ;           t_close
 T_CLOSE_C EQU $+1       ;           t_close
     ld   HL, 0x0000     ; 3:10      t_close
     pop  DE             ; 1:10      t_close
-    ld    A,(HL)        ; 1:7       t_close
+    ld    A,[HL]        ; 1:7       t_close
     xor   E             ; 1:4       t_close
     or    C             ; 1:4       t_close
     ld    C, A          ; 1:4       t_close
     inc  HL             ; 1:6       t_close
-    ld    A,(HL)        ; 1:7       t_close
+    ld    A,[HL]        ; 1:7       t_close
     xor   D             ; 1:4       t_close
     or    C             ; 1:4       t_close
     ld    C, A          ; 1:4       t_close
     inc  HL             ; 1:6       t_close
     djnz $-11           ; 2:8/13    t_close{}STRING_Z({"INCORRECT RESULT", 0x0D})
     call nz, PRINT_STRING_Z; 3:10/17 t_close
-    ld   HL, (T_EQ_SP)  ; 3:16      t_close
+    ld   HL, [T_EQ_SP]  ; 3:16      t_close
     ld   SP, HL         ; 1:6       t_close
     pop  HL             ; 1:10      t_close
     pop  DE             ; 1:10      t_close
@@ -120,10 +120,10 @@ BIN32BCD1:              ;           bin32bcd
     ld   DE, BIN32BCDRES; 3:10      bin32bcd
     ld    B, 0x05       ; 2:7       bin32bcd
 BIN32BCD2:              ;           bin32bcd
-    ld    A,(DE)        ; 1:7       bin32bcd
-    adc   A,(HL)        ; 1:7       bin32bcd
+    ld    A,[DE]        ; 1:7       bin32bcd
+    adc   A,[HL]        ; 1:7       bin32bcd
     daa                 ; 1:4       bin32bcd
-    ld  (DE),A          ; 1:7       bin32bcd
+    ld  [DE],A          ; 1:7       bin32bcd
     dec  HL             ; 1:6       bin32bcd
     dec  DE             ; 1:6       bin32bcd
     djnz BIN32BCD2      ; 2:8/13    bin32bcd
@@ -152,19 +152,19 @@ dnl
 dnl
 dnl
 ifdef({USE_PRT_SP_HEX_U32},{__def({USE_PRT_HEX_U32})
-;==============================================================================
-;    Input: 32-bit unsigned number in DEHL
-;   Output: Print space and Hex DEHL
-; Pollutes: A
+;#==============================================================================
+;#    Input: 32-bit unsigned number in DEHL
+;#   Output: Print space and Hex DEHL
+;# Pollutes: A
 PRT_SP_HEX_U32:         ;           prt_sp_hex_u32
-    ld    A, ' '        ; 2:7       prt_sp_hex_u32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_sp_hex_u32   putchar(reg A) with {ZX 48K ROM}
+    ld    A, ' '        ; 2:7       prt_sp_hex_u32   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_sp_hex_u32)
     ; fall to prt_hex_u32}){}dnl
 ifdef({USE_PRT_HEX_U32},{__def({USE_PRT_HEX_U16})
-;------------------------------------------------------------------------------
-;    Input: 32-bit unsigned number in DEHL
-;   Output: Print Hex DEHL
-; Pollutes: A
+;#------------------------------------------------------------------------------
+;#    Input: 32-bit unsigned number in DEHL
+;#   Output: Print Hex DEHL
+;# Pollutes: A
 PRT_HEX_U32:            ;           prt_hex_u32
     ld    A, D          ; 1:4       prt_hex_u32
     call PRT_HEX_A      ; 3:17      prt_hex_u32
@@ -176,28 +176,29 @@ __{}{dnl
 __{}    ; fall to prt_hex_u16})}){}dnl
 dnl
 ifdef({USE_PRT_SP_HEX_U16},{__def({USE_PRT_HEX_U16})
-;==============================================================================
-;    Input: 16-bit unsigned number in DEHL
-;   Output: Print space and Hex HL
-; Pollutes: A
+;#==============================================================================
+;#    Input: 16-bit unsigned number in DEHL
+;#   Output: Print space and Hex HL
+;# Pollutes: A
 PRT_SP_HEX_U16:         ;           prt_sp_hex_u16
-    ld    A, ' '        ; 2:7       prt_sp_hex_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_sp_hex_u16   putchar(reg A) with {ZX 48K ROM}
+    ld    A, ' '        ; 2:7       prt_sp_hex_u16   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_sp_hex_u16)
     ; fall to prt_hex_u16}){}dnl
-ifdef({USE_PRT_HEX_U16},{
-;------------------------------------------------------------------------------
-;   Input: 16-bit unsigned number in HL
-;   Output: Print Hex HL
-; Pollutes: A
+ifdef({USE_PRT_HEX_U16},{__def({USE_PRT_HEX_A})
+;#------------------------------------------------------------------------------
+;#   Input: 16-bit unsigned number in HL
+;#   Output: Print Hex HL
+;# Pollutes: A
 PRT_HEX_U16:            ;           prt_hex_u16
     ld    A, H          ;  1:4      prt_hex_u16
     call PRT_HEX_A      ;  3:17     prt_hex_u16
     ld    A, L          ;  1:4      prt_hex_u16
-    ; fall to prt_hex_a
-;------------------------------------------------------------------------------
-;    Input: A
-;   Output: 00 .. FF
-; Pollutes: A
+    ; fall to prt_hex_a}){}dnl
+ifdef({USE_PRT_HEX_A},{__def({USE_PRT_HEX_NIBBLE})
+;#------------------------------------------------------------------------------
+;#    Input: A
+;#   Output: 00 .. FF
+;# Pollutes: A
 PRT_HEX_A:              ;           prt_hex_a
     push AF             ; 1:11      prt_hex_a
     rra                 ; 1:4       prt_hex_a
@@ -206,35 +207,36 @@ PRT_HEX_A:              ;           prt_hex_a
     rra                 ; 1:4       prt_hex_a
     call PRT_HEX_NIBBLE ; 3:17      prt_hex_a
     pop  AF             ; 1:10      prt_hex_a
-    ; fall to prt_hex_nibble
-;------------------------------------------------------------------------------
-;    Input: A = number, DE = adr
-;   Output: (A & $0F) => '0'..'9','A'..'F'
-; Pollutes: A
+    ; fall to prt_hex_nibble}){}dnl
+ifdef({USE_PRT_HEX_NIBBLE},{
+;#------------------------------------------------------------------------------
+;#    Input: A = number, DE = adr
+;#   Output: (A & $0F) => '0'..'9','A'..'F'
+;# Pollutes: AF, AF',BC',DE'
 PRT_HEX_NIBBLE:         ;           prt_hex_nibble
     or      $F0         ; 2:7       prt_hex_nibble   reset H flag
     daa                 ; 1:4       prt_hex_nibble   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
     add   A, $A0        ; 2:7       prt_hex_nibble   $F0..$F9, $100..$105
     adc   A, $40        ; 2:7       prt_hex_nibble   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
-    rst   0x10          ; 1:11      prt_hex_nibble   putchar(reg A) with {ZX 48K ROM}
+__{}__PUTCHAR_A(prt_hex_nibble)
     ret                 ; 1:10}){}dnl
 dnl
 dnl
 dnl
 ifdef({USE_DUP_ZXPRT_SP_U16},{__def({USE_DUP_ZXPRT_U16})
-;==============================================================================
-; Input: HL
-; Output: Print space and unsigned decimal number in HL
-; Pollutes: AF, BC
+;#==============================================================================
+;# Input: HL
+;# Output: Print space and unsigned decimal number in HL
+;# Pollutes: AF, BC
 DUP_ZXPRT_SP_U16:       ;           dup_zxprt_sp_u16
-    ld    A, ' '        ; 2:7       dup_zxprt_sp_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      dup_zxprt_sp_u16   putchar(reg A) with {ZX 48K ROM}
+    ld    A, ' '        ; 2:7       dup_zxprt_sp_u16   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(dup_zxprt_sp_u16)
     ; fall to dup_zxprt_u16}){}dnl
 ifdef({USE_DUP_ZXPRT_U16},{
-;------------------------------------------------------------------------------
-; Input: HL
-; Output: Print unsigned decimal number in HL
-; Pollutes: AF, BC
+;#------------------------------------------------------------------------------
+;# Input: HL
+;# Output: Print unsigned decimal number in HL
+;# Pollutes: AF, BC
 DUP_ZXPRT_U16:          ;           dup_zxprt_u16   ( u -- )
     ld    B, H          ; 1:4       dup_zxprt_u16
     ld    C, L          ; 1:4       dup_zxprt_u16
@@ -251,19 +253,19 @@ dnl
 dnl
 dnl
 ifdef({USE_ZXPRT_SP_U16},{__def({USE_ZXPRT_U16})
-;==============================================================================
-; Input: HL
-; Output: Print space and unsigned decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#==============================================================================
+;# Input: HL
+;# Output: Print space and unsigned decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 ZXPRT_SP_U16:           ;           zxprt_sp_u16
-    ld    A, ' '        ; 2:7       zxprt_sp_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      zxprt_sp_u16   putchar(reg A) with {ZX 48K ROM}
+    ld    A, ' '        ; 2:7       zxprt_sp_u16   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(zxprt_sp_u16)
     ; fall to zxprt_u16}){}dnl
 ifdef({USE_ZXPRT_U16},{
-;------------------------------------------------------------------------------
-; Input: HL
-; Output: Print unsigned decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#------------------------------------------------------------------------------
+;# Input: HL
+;# Output: Print unsigned decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 ZXPRT_U16:              ;           zxprt_u16   ( u -- )
     push DE             ; 1:11      zxprt_u16
     ld    B, H          ; 1:4       zxprt_u16
@@ -280,19 +282,19 @@ dnl
 dnl
 dnl
 ifdef({USE_ZXPRT_SP_S16},{__def({USE_ZXPRT_S16})
-;==============================================================================
-; Input: HL
-; Output: Print space and signed decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#==============================================================================
+;# Input: HL
+;# Output: Print space and signed decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 ZXPRT_SP_S16:           ;           zxprt_sp_s16
-    ld    A, ' '        ; 2:7       zxprt_sp_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      zxprt_sp_s16   putchar with {ZX 48K ROM} in, this will print char in A
+    ld    A, ' '        ; 2:7       zxprt_sp_s16   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(zxprt_sp_s16)
     ; fall to zxprt_s16}){}dnl
 ifdef({USE_ZXPRT_S16},{
-;------------------------------------------------------------------------------
-; Input: HL
-; Output: Print signed decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#------------------------------------------------------------------------------
+;# Input: HL
+;# Output: Print signed decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 ZXPRT_S16:              ;           zxprt_s16   ( x -- )
     push DE             ; 1:11      zxprt_s16
     ld    A, H          ; 1:4       zxprt_s16
@@ -312,32 +314,32 @@ ZXPRT_S16:              ;           zxprt_s16   ( x -- )
     pop  BC             ; 1:10      zxprt_s16   load ret
     pop  DE             ; 1:10      zxprt_s16
     push BC             ; 1:11      zxprt_s16   save ret
-    ret                 ; 1:10      zxprt_u16}){}dnl
+    ret                 ; 1:10      zxprt_s16}){}dnl
 dnl
 dnl
 dnl
 ifdef({USE_PRT_SP_S32},{__def({USE_PRT_S32})
-;==============================================================================
-; ( hi lo -- )
-; Input: DEHL
-; Output: Print space and signed decimal number in DEHL
-; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+;#==============================================================================
+;# ( hi lo -- )
+;# Input: DEHL
+;# Output: Print space and signed decimal number in DEHL
+;# Pollutes: AF, BC, HL <- [SP], DE <- (SP-2)
 PRT_SP_S32:             ;           prt_sp_s32
-    ld    A, ' '        ; 2:7       prt_sp_s32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_sp_s32   putchar(reg A) with {ZX 48K ROM}
+    ld    A, ' '        ; 2:7       prt_sp_s32   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_sp_s32)
     ; fall to prt_s32}){}dnl
 ifdef({USE_PRT_S32},{__def({USE_DNEGATE}){}__def({USE_PRT_U32})
-;------------------------------------------------------------------------------
-; ( hi lo -- )
-; Input: DEHL
-; Output: Print signed decimal number in DEHL
-; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+;#------------------------------------------------------------------------------
+;# ( hi lo -- )
+;# Input: DEHL
+;# Output: Print signed decimal number in DEHL
+;# Pollutes: AF, BC, HL <- [SP], DE <- (SP-2)
 PRT_S32:                ;           prt_s32
     ld    A, D          ; 1:4       prt_s32
     add   A, A          ; 1:4       prt_s32
     jr   nc, PRT_U32    ; 2:7/12    prt_s32
-    ld    A, '-'        ; 2:7       prt_s32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_s32   putchar(reg A) with {ZX 48K ROM}
+    ld    A, '-'        ; 2:7       prt_s32   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_s32)
     call NEGATE_32      ; 3:17      prt_s32
 __{}ifdef({USE_PRT_SP_U32},{dnl
 __{}    jr   PRT_U32        ; 2:12      prt_s32},
@@ -346,19 +348,19 @@ __{}    ; fall to prt_u32})}){}dnl
 dnl
 dnl
 ifdef({USE_PRT_SP_U32},{__def({USE_PRT_U32})
-;==============================================================================
-; Input: DEHL
-; Output: Print space and unsigned decimal number in DEHL
-; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+;#==============================================================================
+;# Input: DEHL
+;# Output: Print space and unsigned decimal number in DEHL
+;# Pollutes: AF, BC, HL <- [SP], DE <- (SP-2)
 PRT_SP_U32:             ;           prt_sp_u32
-    ld    A, ' '        ; 2:7       prt_sp_u32   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_sp_u32   putchar(reg A) with {ZX 48K ROM}
+    ld    A, ' '        ; 2:7       prt_sp_u32   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_sp_u32)
     ; fall to prt_u32}){}dnl
 ifdef({USE_PRT_U32},{
-;------------------------------------------------------------------------------
-; Input: DEHL
-; Output: Print unsigned decimal number in DEHL
-; Pollutes: AF, BC, HL <- (SP), DE <- (SP-2)
+;#------------------------------------------------------------------------------
+;# Input: DEHL
+;# Output: Print unsigned decimal number in DEHL
+;# Pollutes: AF, BC, HL <- [SP], DE <- (SP-2)
 PRT_U32:                ;           prt_u32
     xor   A             ; 1:4       prt_u32   HL = 103 & A=0 => 103, HL = 103 & A='0' => 00103
     push IX             ; 2:15      prt_u32
@@ -396,10 +398,10 @@ PRT_U32:                ;           prt_u32
     pop  DE             ; 1:10      prt_u32
     push BC             ; 1:11      prt_u32   save ret
     jr   BIN32_DEC_CHAR ; 2:12      prt_u32
-;------------------------------------------------------------------------------
-; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
-; Output: if ((HLIX/(-BCDE) > 0) || (A >= '0')) print number HLIX/(-BCDE)
-; Pollutes: AF, AF', IX, HL
+;#------------------------------------------------------------------------------
+;# Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
+;# Output: if ((HLIX/(-BCDE) > 0) || (A >= '0')) print number HLIX/(-BCDE)
+;# Pollutes: AF, AF', IX, HL
 BIN32_DEC:              ;           bin32_dec
     add  IX, DE         ; 2:15      bin32_dec   lo word
     adc  HL, BC         ; 2:15      bin32_dec   hi word
@@ -418,31 +420,31 @@ BIN32_DEC:              ;           bin32_dec
     ret   z             ; 1:5/11    bin32_dec   does not print leading zeros
 BIN32_DEC_CHAR:         ;           bin32_dec
     or   '0'            ; 2:7       bin32_dec   1..9 --> '1'..'9', unchanged '0'..'9'
-    rst  0x10           ; 1:11      bin32_dec   putchar with {ZX 48K ROM} in, this will print char in A
+__{}__PUTCHAR_A(bin32_dec)
     ld    A, '0'        ; 2:7       bin32_dec   reset A to '0'
     ret                 ; 1:10      bin32_dec}){}dnl
 dnl
 dnl
 ifdef({USE_PRT_SP_S16},{__def({USE_PRT_S16})
-;==============================================================================
-; Input: HL
-; Output: Print space and signed decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#==============================================================================
+;# Input: HL
+;# Output: Print space and signed decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 PRT_SP_S16:             ;           prt_sp_s16
-    ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_sp_s16   putchar(reg A) with {ZX 48K ROM}
+    ld    A, ' '        ; 2:7       prt_sp_s16   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_sp_s16)
     ; fall to prt_s16}){}dnl
 ifdef({USE_PRT_S16},{__def({USE_PRT_U16})
-;------------------------------------------------------------------------------
-; Input: HL
-; Output: Print signed decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#------------------------------------------------------------------------------
+;# Input: HL
+;# Output: Print signed decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 PRT_S16:                ;           prt_s16
     ld    A, H          ; 1:4       prt_s16
     add   A, A          ; 1:4       prt_s16
     jr   nc, PRT_U16    ; 2:7/12    prt_s16
-    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_s16   putchar(reg A) with {ZX 48K ROM}
+    ld    A, '-'        ; 2:7       prt_s16   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_s16)
     xor   A             ; 1:4       prt_s16   neg
     sub   L             ; 1:4       prt_s16   neg
     ld    L, A          ; 1:4       prt_s16   neg
@@ -456,19 +458,19 @@ __{}    ; fall to prt_u16})}){}dnl
 dnl
 dnl
 ifdef({USE_PRT_SP_U16},{__def({USE_PRT_U16})
-;==============================================================================
-; Input: HL
-; Output: Print space and unsigned decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#==============================================================================
+;# Input: HL
+;# Output: Print space and unsigned decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 PRT_SP_U16:             ;           prt_sp_u16
-    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, DE', BC'
-    rst   0x10          ; 1:11      prt_sp_u16   putchar with {ZX 48K ROM} in, this will print char in A
+    ld    A, ' '        ; 2:7       prt_sp_u16   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_sp_u16)
     ; fall to prt_u16}){}dnl
 ifdef({USE_PRT_U16},{
-;------------------------------------------------------------------------------
-; Input: HL
-; Output: Print unsigned decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#------------------------------------------------------------------------------
+;# Input: HL
+;# Output: Print unsigned decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 PRT_U16:                ;           prt_u16
     xor   A             ; 1:4       prt_u16   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
     ld   BC, -10000     ; 3:10      prt_u16
@@ -481,13 +483,13 @@ PRT_U16:                ;           prt_u16
     call BIN16_DEC      ; 3:17      prt_u16
     ld    A, L          ; 1:4       prt_u16
     pop  HL             ; 1:10      prt_u16   load ret
-    ex  (SP),HL         ; 1:19      prt_u16
+    ex  [SP],HL         ; 1:19      prt_u16
     ex   DE, HL         ; 1:4       prt_u16
     jr   BIN16_DEC_CHAR ; 2:12      prt_u16
-;------------------------------------------------------------------------------
-; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
-; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
-; Pollutes: AF, HL
+;#------------------------------------------------------------------------------
+;# Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
+;# Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
+;# Pollutes: AF, HL
     inc   A             ; 1:4       bin16_dec
 BIN16_DEC:              ;           bin16_dec
     add  HL, BC         ; 1:11      bin16_dec
@@ -497,19 +499,201 @@ BIN16_DEC:              ;           bin16_dec
     ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
 BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
-    rst   0x10          ; 1:11      bin16_dec   putchar with {ZX 48K ROM} in, this will print char in A
+__{}__PUTCHAR_A(bin16_dec)
     ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec}){}dnl
 dnl
 dnl
 dnl
+ifdef({USE_PRT_P},{__def({USE_PRT_PU})
+;#==============================================================================
+;# Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
+;# Output: Print decimal (if [BC]=10) number in [DE]
+;# Pollutes: AF, AF', BC', DE', [DE] = first number, [HL] = 0
+PRT_P:                  ;           prt_p
+    push HL             ; 1:11      prt_p
+    push BC             ; 1:11      prt_p
+    push AF             ; 1:11      prt_p
+    ld    B, A          ; 1:4       prt_p   B = sizeof(number) in bytes
+    add   A, E          ; 1:4       prt_p
+    ld    L, A          ; 1:4       prt_p
+    dec   L             ; 1:4       prt_p
+    ld    H, D          ; 1:4       prt_p
+    ld    A,[HL]        ; 1:7       prt_p
+    add   A, A          ; 1:4       prt_p
+    jr   nc, $+14       ; 2:7/12    prt_p
+    ld    A, '-'        ; 2:7       prt_p   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_p)
+    ld    L, E          ; 1:4       prt_p
+    xor   A             ; 1:4       prt_p   clear carry
+    ld    C, A          ; 1:4       prt_p
+    ld    A, C          ; 1:4       prt_p
+    sbc   A,[HL]        ; 1:7       prt_p
+    ld  [HL],A          ; 1:7       prt_p
+    inc   L             ; 1:4       prt_p
+    djnz $-4            ; 2:8/13    prt_p
+    pop  AF             ; 1:10      prt_p
+    pop  BC             ; 1:10      prt_p
+    pop  HL             ; 1:10      prt_p{}dnl
+__{}ifdef({USE_PRT_SP_PU},{
+    jr   PRT_PU         ; 2:12      prt_p})}){}dnl
+dnl
+ifdef({USE_PRT_SP_PU},{__def({USE_PRT_PU})
+;#==============================================================================
+;# Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
+;# Output: Print space and unsigned decimal (if [BC]=10) number in [DE]
+;# Pollutes: AF, AF', BC', DE', [DE] = first number, [HL] = 0
+PRT_SP_PU:              ;           prt_sp_pu
+    push AF             ; 1:11      prt_sp_pu
+    ld    A, ' '        ; 2:7       prt_sp_pu   putchar Pollutes: AF, AF', DE', BC'
+__{}__PUTCHAR_A(prt_sp_pu)
+    pop  AF             ; 1:10      prt_sp_pu
+    ; fall to prt_pu}){}dnl
+dnl
+ifdef({USE_PRT_PU},{
+;#------------------------------------------------------------------------------
+;# Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
+;# Output: Print unsigned decimal (if [BC]=10) number in [DE]
+;# Pollutes: AF', BC', DE', [DE] = first number, [HL] = 0
+
+PRT_PU:                 ;           prt_pu
+    exx                 ; 1:4       prt_pu
+    ld    E, A          ; 1:4       prt_pu   E' = sizeof(number) in bytes
+    exx                 ; 1:4       prt_pu
+    or    A             ; 1:4       prt_pu
+    ex   DE, HL         ; 1:4       prt_pu
+    jr   PRT_PU_ENTR    ; 2:12      prt_pu
+PRT_PU_LOOP:            ;           prt_pu
+    ex   DE, HL         ; 1:4       prt_pu
+    exx                 ; 1:4       prt_pu
+    ld    A, E          ; 1:4       prt_pu   E' = sizeof(number) in bytes
+    exx                 ; 1:4       prt_pu
+ifelse(PUDM_MIN:PUDM_MAX,1:1,{dnl
+__{}    call  c, P8UDM      ; 3:17      prt_pu},
+PUDM_MIN:PUDM_MAX,2:2,{dnl
+__{}    call  c, P16UDM     ; 3:17      prt_pu},
+PUDM_MIN:PUDM_MAX,256:256,{dnl
+__{}    call  c, P2048UDM   ; 3:17      prt_pu},
+eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{dnl
+__{}    call  c, P256UDM    ; 3:17      prt_pu},
+{dnl
+__{}    call  c, PUDM       ; 3:17      prt_pu})
+
+    ld    A,[DE]        ; 1:7       prt_pu   DE = number mod [BC]
+    scf                 ; 1:4       prt_pu
+PRT_PU_ENTR:            ;           prt_pu
+    push AF             ; 1:11      prt_pu   print number if carry or end_mark
+
+    push HL             ; 1:11      prt_pu
+
+    scf                 ; 1:4       prt_pu
+    ld    A,[BC]        ; 1:7       prt_pu
+
+    exx                 ; 1:4       prt_pu
+    ld    B, E          ; 1:4       prt_pu
+
+    exx                 ; 1:4       prt_pu
+    sbc   A,[HL]        ; 1:7       prt_pu   10-x-1=9-x
+    inc   L             ; 1:4       prt_pu
+    jr    c, $+7        ; 2:7/12    prt_pu
+    xor   A             ; 1:4       prt_pu
+    exx                 ; 1:4       prt_pu
+    djnz $-7            ; 2:8/13    prt_pu
+    exx                 ; 1:4       prt_pu
+
+    pop  HL             ; 1:10      prt_pu
+
+    jr    c, PRT_PU_LOOP; 2:7/12    prt_pu
+
+    ld    A,[HL]        ; 1:7       prt_pu
+
+ifdef({USE_PRT_HEX_NIBBLE},{dnl
+    ex   DE, HL         ; 1:4       prt_pu
+    call PRT_HEX_NIBBLE ; 3:17      prt_pu
+    pop  AF             ; 1:10      prt_pu
+    jr    c, $-5        ; 2:7/12    prt_pu},
+{dnl
+    ex   DE, HL         ; 1:4       prt_pu
+    or      $F0         ; 2:7       prt_pu   reset H flag
+    daa                 ; 1:4       prt_pu   $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
+    add   A, $A0        ; 2:7       prt_pu   $F0..$F9, $100..$105
+    adc   A, $40        ; 2:7       prt_pu   $30..$39, $41..$46   = '0'..'9', 'A'..'F'
+__PUTCHAR_A(prt_pu)
+    pop  AF             ; 1:10      prt_pu
+    jr    c, $-eval(9+__BYTES)       ; 2:7/12    prt_pu})
+    ret                 ; 1:10      prt_pu
+}){}dnl
+dnl
+ifdef({USE_PRT_PU2},{
+;#------------------------------------------------------------------------------
+;# Input: A = bytes, [BC] = 10, [DE] = number, [HL] = tmp_result
+;# Output: Print unsigned decimal (if [BC]=10) number in [DE]
+;# Pollutes: AF', BC', DE', [DE] = first number, [HL] = 0
+
+PRT_PU:                 ;           prt_pu
+    exx                 ; 1:4       prt_pu
+    ld    E, A          ; 1:4       prt_pu   E' = sizeof(number) in bytes
+PRT_PU_IN:              ;           prt_pu
+    exx                 ; 1:4       prt_pu
+    or    A             ; 1:4       prt_pu
+PRT_PU_LOOP:            ;           prt_pu
+    push AF             ; 1:11      prt_pu   no carry = end
+    exx                 ; 1:4       prt_pu
+    ld    A, E          ; 1:4       prt_pu
+    exx                 ; 1:4       prt_pu
+ifelse(PUDM_MIN:PUDM_MAX,1:1,{dnl
+__{}    call P8UDM          ; 3:17      prt_pu},
+PUDM_MIN:PUDM_MAX,2:2,{dnl
+__{}    call P16UDM         ; 3:17      prt_pu},
+PUDM_MIN:PUDM_MAX,256:256,{dnl
+__{}    call P2048UDM       ; 3:17      prt_pu},
+eval(PUDM_MIN<=32):eval(PUDM_MAX<=32),1:1,{dnl
+__{}    call P256UDM        ; 3:17      prt_pu},
+{dnl
+__{}    call PUDM           ; 3:17      prt_pu})
+
+    exx                 ; 1:4       prt_pu
+    ld    B, E          ; 1:4       prt_pu   E' = sizeof(number) in bytes
+    exx                 ; 1:4       prt_pu
+    push HL             ; 1:11      prt_pu
+    scf                 ; 1:4       prt_pu
+    ld    A,[BC]        ; 1:7       prt_pu
+
+    sbc   A,[HL]        ; 1:7       prt_pu 10-x-1=9-x
+    inc   L             ; 1:4       prt_pu
+    jr    c, $+8        ; 2:7/12    prt_pu
+    xor   A             ; 1:4       prt_pu
+    exx                 ; 1:4       prt_pu
+    dec   B             ; 1:4       prt_pu   B'--
+    exx                 ; 1:4       prt_pu
+    jr   nz, $-8        ; 2:7/12    prt_pu
+
+    pop  HL             ; 1:10      prt_pu
+    ex   DE, HL         ; 1:4       prt_pu
+    ld    A,[HL]        ; 1:7       prt_pu
+    jr    c, PRT_PU_LOOP; 2:7/12    prt_pu
+
+    scf                 ; 1:4       prt_pu
+    push AF             ; 1:11      prt_pu
+    ld    A,[DE]        ; 1:7       prt_pu
+    push AF             ; 1:11      prt_pu
+
+    pop  AF             ; 1:10      prt_pu
+    ex   DE, HL         ; 1:4       prt_pu
+    ret  nc             ; 1:5/11    prt_pu
+    add   A, $30        ; 2:7       prt_pu   '0'..'9'
+__PUTCHAR_A(prt_pu)
+    jr    c, $-eval(5+__BYTES)        ; 2:7/12    prt_pu}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_BITSET16},{
-;==============================================================================
-; ( x1 u -- ? x )  x = x1 | 2**u
-; set u bit
-;  Input: HL, DE
-; Output: HL = DE | ( 1<<HL )
-; Pollutes: AF, B, DE, HL
+;#==============================================================================
+;# ( x1 u -- ? x )  x = x1 | 2**u
+;# set u bit
+;#  Input: HL, DE
+;# Output: HL = DE | ( 1<<HL )
+;# Pollutes: AF, B, DE, HL
 BITSET16:               ;[21:89/30] bitset16   ( x1 u -- ? x )  x = x1 | 2**u
     ld    A, 0xF0       ; 2:7       bitset16
     and   L             ; 1:4       bitset16
@@ -530,17 +714,17 @@ dnl
 dnl
 dnl
 ifdef({USE_BITSET32},{__def({USE_BC_BITSET32})
-;==============================================================================
-; ( d1 u -- d )  d = d1 | 2**u
-; set u bit
-;  Input: HL=u, DE=lo, (SP)=ret, (SP+2)=hi
-; Output: DEHL = d1 | (1 << u)
-; Pollutes: AF, BC, DE, HL
+;#==============================================================================
+;# ( d1 u -- d )  d = d1 | 2**u
+;# set u bit
+;#  Input: HL=u, DE=lo, [SP]=ret, (SP+2)=hi
+;# Output: DEHL = d1 | (1 << u)
+;# Pollutes: AF, BC, DE, HL
 BITSET32:              ;[29:143/67] bitset32   ( d1 u -- d )  d = d1 | 2**u
     ld    C, L          ; 1:4       bitset32
     ld    B, H          ; 1:4       bitset32   BC = u
     pop  HL             ; 1:10      bitset32   ret
-    ex  (SP),HL         ; 1:19      bitset32
+    ex  [SP],HL         ; 1:19      bitset32
     ex   DE, HL         ; 1:4       bitset32   DEHL = d1
     ; fall to BC_BITSET32}){}dnl
 ifdef({USE_BC_BITSET32},{
@@ -568,26 +752,26 @@ dnl
 dnl
 dnl
 ifdef({USE_DLSHIFT},{__def({USE_ROT_DLSHIFT})
-;==============================================================================
-; ( d1 u -- d )  d = d1<<u
-; shifts d1 left u places
-;  Input: HL=u, DE=lo, (SP)=ret, (SP+2)=hi
-; Output: DEHL = d1 << u
-; Pollutes: AF, BC, DE, HL
+;#==============================================================================
+;# ( d1 u -- d )  d = d1<<u
+;# shifts d1 left u places
+;#  Input: HL=u, DE=lo, [SP]=ret, (SP+2)=hi
+;# Output: DEHL = d1 << u
+;# Pollutes: AF, BC, DE, HL
 LSHIFT32:               ;[39:]      lshift32
     ld    C, L          ; 1:4       lshift32
     ld    B, H          ; 1:4       lshift32   BC = u
     pop  HL             ; 1:10      lshift32   ret
-    ex  (SP),HL         ; 1:19      lshift32
+    ex  [SP],HL         ; 1:19      lshift32
     ex   DE, HL         ; 1:4       lshift32   DEHL = d1
     ; fall to BC_DLSHIFT32}){}dnl
 ifdef({USE_ROT_DLSHIFT},{
-;-------------------------------------------------------------------------------
-; ( d1 -- d )  d = d1<<BC
-; shifts d1 left BC places
-;  Input: BC=u, DEHL=d1, (SP)=ret
-; Output: DEHL <<=  BC
-; Pollutes: AF, BC, DE, HL
+;#-------------------------------------------------------------------------------
+;# ( d1 -- d )  d = d1<<BC
+;# shifts d1 left BC places
+;#  Input: BC=u, DEHL=d1, [SP]=ret
+;# Output: DEHL <<=  BC
+;# Pollutes: AF, BC, DE, HL
 BC_LSHIFT32:            ;[34:]      lshift32
     ld    A, 0xE0       ; 2:7       lshift32
     and   C             ; 1:4       lshift32
@@ -618,26 +802,26 @@ dnl
 dnl
 dnl
 ifdef({USE_DRSHIFT},{__def({USE_ROT_DRSHIFT})
-;==============================================================================
-; ( d1 u -- d )  d = d1>>u
-; shifts d1 right u places
-;  Input: HL=u, DE=lo, (SP)=ret, (SP+2)=hi
-; Output: DEHL = d1 >> u
-; Pollutes: AF, BC, DE, HL
+;#==============================================================================
+;# ( d1 u -- d )  d = d1>>u
+;# shifts d1 right u places
+;#  Input: HL=u, DE=lo, [SP]=ret, (SP+2)=hi
+;# Output: DEHL = d1 >> u
+;# Pollutes: AF, BC, DE, HL
 RSHIFT32:               ;[39:]      rshift32
     ld    C, L          ; 1:4       rshift32
     ld    B, H          ; 1:4       rshift32   BC = u
     pop  HL             ; 1:10      rshift32   ret
-    ex  (SP),HL         ; 1:19      rshift32
+    ex  [SP],HL         ; 1:19      rshift32
     ex   DE, HL         ; 1:4       rshift32   DEHL = d1
     ; fall to BC_DRSHIFT32}){}dnl
 ifdef({USE_ROT_DRSHIFT},{
-;-------------------------------------------------------------------------------
-; ( d1 -- d )  d = d1>>BC
-; shifts d1 right BC places
-;  Input: BC=u, DEHL=d1, (SP)=ret
-; Output: DEHL >>=  BC
-; Pollutes: AF, BC, DE, HL
+;#-------------------------------------------------------------------------------
+;# ( d1 -- d )  d = d1>>BC
+;# shifts d1 right BC places
+;#  Input: BC=u, DEHL=d1, [SP]=ret
+;# Output: DEHL >>=  BC
+;# Pollutes: AF, BC, DE, HL
 BC_RSHIFT32:            ;[37:]      rshift32
     ld    A, 0xE0       ; 2:7       rshift32
     and   C             ; 1:4       rshift32
@@ -689,12 +873,12 @@ dnl
 dnl
 dnl
 ifdef({USE_LSHIFT},{
-;==============================================================================
-; ( x u -- ? x<<u )
-; shifts x left u places
-;  Input: HL, DE
-; Output: HL = DE << HL
-; Pollutes: AF, B, DE, HL
+;#==============================================================================
+;# ( x u -- ? x<<u )
+;# shifts x left u places
+;#  Input: HL, DE
+;# Output: HL = DE << HL
+;# Pollutes: AF, B, DE, HL
 DE_LSHIFT:              ;[27:]      de_lshift
     ld    A, 0xF0       ; 2:7       de_lshift
     and   L             ; 1:4       de_lshift
@@ -720,12 +904,12 @@ dnl
 dnl
 dnl
 ifdef({USE_RSHIFT},{
-;==============================================================================
-; ( x u -- ? x>>u )
-; shifts x right u places
-;  Input: HL, DE
-; Output: HL = DE >> HL
-; Pollutes: AF, BC, DE, HL
+;#==============================================================================
+;# ( x u -- ? x>>u )
+;# shifts x right u places
+;#  Input: HL, DE
+;# Output: HL = DE >> HL
+;# Pollutes: AF, BC, DE, HL
 DE_RSHIFT:              ;[ifdef({USE_LSHIFT},{28},{32}):]      de_rshift
     ld    A, 15         ; 2:7       de_rshift
     sub   L             ; 1:4       de_rshift
@@ -755,8 +939,8 @@ dnl
 dnl
 dnl
 ifdef({USE_DNEGATE},{
-;==============================================================================
-; ( d -- -d )
+;#==============================================================================
+;# ( d -- -d )
 NEGATE_32:              ;[14:62]    negate_32   ( hi lo -- 0-hi-carry 0-lo )
     xor   A             ; 1:4       negate_32
     ld    C, A          ; 1:4       negate_32
@@ -775,17 +959,17 @@ NEGATE_32:              ;[14:62]    negate_32   ( hi lo -- 0-hi-carry 0-lo )
 dnl
 dnl
 ifdef({USE_DMAX},{
-;==============================================================================
-; ( 5 3 -- 5 )
-; ( -5 -3 -- -3 )
-; ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -- DE:hi_max HL:lo_max )
+;#==============================================================================
+;# ( 5 3 -- 5 )
+;# ( -5 -3 -- -3 )
+;# ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -- DE:hi_max HL:lo_max )
 MAX_32:                ;[21:104/129]max_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -- DE:hi_max HL:lo_max )
     push AF             ; 1:11      max_32   BC = lo_2
     ld    A, L          ; 1:4       max_32   BC>HL --> 0>HL-BC --> carry if lo_2 is max
     sub   C             ; 1:4       max_32   BC>HL --> 0>HL-BC --> carry if lo_2 is max
     ld    A, H          ; 1:4       max_32   BC>HL --> 0>HL-BC --> carry if lo_2 is max
     sbc   A, B          ; 1:4       max_32   BC>HL --> 0>HL-BC --> carry if lo_2 is max
-    ex  (SP),HL         ; 1:19      max_32   HL = hi_2
+    ex  [SP],HL         ; 1:19      max_32   HL = hi_2
     ld    A, E          ; 1:4       max_32   HL>DE --> 0>DE-HL --> carry if hi_2 is max
     sbc   A, L          ; 1:4       max_32   HL>DE --> 0>DE-HL --> carry if hi_2 is max
     ld    A, D          ; 1:4       max_32   HL>DE --> 0>DE-HL --> carry if hi_2 is max
@@ -803,17 +987,17 @@ dnl
 dnl
 dnl
 ifdef({USE_DMIN},{
-;==============================================================================
-; ( 5 3 -- 3 )
-; ( -5 -3 -- -5 )
-; ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -- DE:hi_min HL:lo_min )
+;#==============================================================================
+;# ( 5 3 -- 3 )
+;# ( -5 -3 -- -5 )
+;# ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -- DE:hi_min HL:lo_min )
 MIN_32:                ;[21:104/129]min_32   ( AF:hi_2 BC:lo_2 DE:hi_1 HL:lo_1 -- DE:hi_min HL:lo_min )
     push AF             ; 1:11      min_32   BC = lo_2
     ld    A, C          ; 1:4       min_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     sub   L             ; 1:4       min_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     ld    A, B          ; 1:4       min_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
     sbc   A, H          ; 1:4       min_32   BC<HL --> BC-HL<0 --> carry if lo_2 is min
-    ex  (SP),HL         ; 1:19      min_32   HL = hi_2
+    ex  [SP],HL         ; 1:19      min_32   HL = hi_2
     ld    A, L          ; 1:4       min_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
     sbc   A, E          ; 1:4       min_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
     ld    A, H          ; 1:4       min_32   HL<DE --> HL-DE<0 --> carry if hi_2 is min
@@ -831,10 +1015,10 @@ dnl
 dnl
 dnl
 ifdef({USE_FCE_4DUP_DEQ},{ifdef({USE_FCE_DEQ},,define({USE_FCE_DEQ},{yes}))
-;==============================================================================
-; ( d2 ret d1 -- d2 d1 )
-;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
-; Out: (SP+2) = h2, (SP)   = l2, (SP) = ret, AF = h2, BC = l2
+;#==============================================================================
+;# ( d2 ret d1 -- d2 d1 )
+;#  In: (SP+4) = h2, (SP+2) = l2, [SP] = ret
+;# Out: (SP+2) = h2, [SP]   = l2, [SP] = ret, AF = h2, BC = l2
 FCE_4DUP_DEQ:           ;[9:75]     fce_4dup_deq   ( d2 ret d1 -- d2 d1 )
     pop  AF             ; 1:10      fce_4dup_deq   h2 l2 .. ..  AF = ret
     pop  BC             ; 1:10      fce_4dup_deq   h2 .. .. ..  BC = l2
@@ -847,15 +1031,15 @@ FCE_4DUP_DEQ:           ;[9:75]     fce_4dup_deq   ( d2 ret d1 -- d2 d1 )
     ex   AF, AF'        ; 1:4       fce_4dup_deq   h2 l2 rt ..  AF = h2
     ; fall to fce_deq}){}dnl
 ifdef({USE_FCE_DEQ},{
-;==============================================================================
-; ( d2 ret d1 -- d1 )
-; set zero if d2==d1 is true
-;  In: AF = h2, BC = l2, DE = h1, HL = l1
-; Out:          BC = h2, DE = h1, HL = l1, set zero if true
+;#==============================================================================
+;# ( d2 ret d1 -- d1 )
+;# set zero if d2==d1 is true
+;#  In: AF = h2, BC = l2, DE = h1, HL = l1
+;# Out:          BC = h2, DE = h1, HL = l1, set zero if true
 ifelse(USE_FCE_DEQ,{small},{dnl
-__{}FCE_DEQ:           ;[11:100/70,100] fce_deq   ( d2 ret d1 -- d2 d1 )   # small version because "define({_USE_FCE_DEQ},{small})"
+__{}FCE_DEQ:           ;[11:100/70,100] fce_deq   ( d2 ret d1 -- d2 d1 )   ;# small version because "define({_USE_FCE_DEQ},{small})"
 __{}    push AF             ; 1:11      fce_deq   h2 l2 rt h2 h1 l1
-__{}    ex  (SP),HL         ; 1:19      fce_deq   h2 l2 rt l1 h1 h2
+__{}    ex  [SP],HL         ; 1:19      fce_deq   h2 l2 rt l1 h1 h2
 __{}    or    A             ; 1:4       fce_deq   h2 l2 rt l1 h1 h2
 __{}    sbc  HL, DE         ; 2:15      fce_deq   h2 l2 rt l1 h1 --  hi16(d2)-hi16(d1) --> nz if false
 __{}    pop  HL             ; 1:10      fce_deq   h2 l2 rt .. h1 l1
@@ -864,7 +1048,7 @@ __{}    sbc  HL, BC         ; 2:15      fce_deq   h2 l2 rt .. h1 --  lo16(d1)-lo
 __{}    add  HL, BC         ; 1:11      fce_deq   h2 l2 rt .. h1 l1
 __{}    ret                 ; 1:10      fce_deq   h2 l2 .. .. h1 l1},
 USE_FCE_DEQ,{fast},{dnl
-__{}FCE_DEQ:       ;[16:86/23,36,74,86] fce_deq   ( d2 ret d1 -- d2 d1 )   # fast version because "define({_USE_FCE_DEQ},{fast})"
+__{}FCE_DEQ:       ;[16:86/23,36,74,86] fce_deq   ( d2 ret d1 -- d2 d1 )   ;# fast version because "define({_USE_FCE_DEQ},{fast})"
 __{}    ex   AF, AF'        ; 1:4       fce_deq   h2 l2 rt .. h1 l1
 __{}    ld    A, L          ; 1:4       fce_deq   h2 l2 rt .. h1 l1  lo8(d1) ^ lo8(d2) --> nz if false
 __{}    xor   C             ; 1:4       fce_deq   h2 l2 rt .. h1 l1
@@ -882,9 +1066,9 @@ __{}    ld    A, D          ; 1:4       fce_deq   h2 l2 rt .. h1 l1       d1 ^ d
 __{}    xor   B             ; 1:4       fce_deq   h2 l2 rt .. h1 l1
 __{}    ret                 ; 1:10      fce_deq   h2 l2 .. .. h1 l1},
 __{}{dnl
-__{}FCE_DEQ:          ;[13:95/70,83,95] fce_deq   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DEQ},{small})" or fast
+__{}FCE_DEQ:          ;[13:95/70,83,95] fce_deq   ( d2 ret d1 -- d2 d1 )   ;# default version, changes using "define({_USE_FCE_DEQ},{small})" or fast
 __{}    push AF             ; 1:11      fce_deq   h2 l2 rt h2 h1 l1
-__{}    ex  (SP),HL         ; 1:19      fce_deq   h2 l2 rt l1 h1 h2
+__{}    ex  [SP],HL         ; 1:19      fce_deq   h2 l2 rt l1 h1 h2
 __{}    or    A             ; 1:4       fce_deq   h2 l2 rt l1 h1 h2
 __{}    sbc  HL, DE         ; 2:15      fce_deq   h2 l2 rt l1 h1 --  hi16(d2)-hi16(d1) --> nz if false
 __{}    pop  HL             ; 1:10      fce_deq   h2 l2 rt .. h1 l1
@@ -899,10 +1083,10 @@ dnl
 dnl
 dnl
 ifdef({USE_FCE_4DUP_DLT},{ifdef({USE_FCE_DLT},,define({USE_FCE_DLT},{yes}))
-;==============================================================================
-; ( d2 ret d1 -- d2 d1 )
-;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
-; Out: (SP+2) = h2, (SP)   = l2, (SP) = ret, AF = h2, BC = l2
+;#==============================================================================
+;# ( d2 ret d1 -- d2 d1 )
+;#  In: (SP+4) = h2, (SP+2) = l2, [SP] = ret
+;# Out: (SP+2) = h2, [SP]   = l2, [SP] = ret, AF = h2, BC = l2
 FCE_4DUP_DLT:           ;[9:75]     fce_4dup_dlt   ( d2 ret d1 -- d2 d1 )
     pop  AF             ; 1:10      fce_4dup_dlt   h2 l2 .. ..  AF = ret
     pop  BC             ; 1:10      fce_4dup_dlt   h2 .. .. ..  BC = l2
@@ -915,13 +1099,13 @@ FCE_4DUP_DLT:           ;[9:75]     fce_4dup_dlt   ( d2 ret d1 -- d2 d1 )
     ex   AF, AF'        ; 1:4       fce_4dup_dlt   h2 l2 rt ..  AF = h2
     ; fall to fce_dlt}){}dnl
 ifdef({USE_FCE_DLT},{
-;==============================================================================
-; ( d2 ret d1 -- d1 )
-; set carry if d2<d1 is true
-;  In: AF = h2, BC = l2, DE = h1, HL = l1
-; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+;#==============================================================================
+;# ( d2 ret d1 -- d1 )
+;# set carry if d2<d1 is true
+;#  In: AF = h2, BC = l2, DE = h1, HL = l1
+;# Out:          BC = h2, DE = h1, HL = l1, set carry if true
 ifelse(eval(ifelse(USE_FCE_DLT,{small},{1},{0}) && ifdef({USE_FCE_DULT},{0},{1})),{1},{dnl
-__{}FCE_DLT:               ;[15:79]     fce_dlt   ( d2 ret d1 -- d2 d1 )   # small version because "define({_USE_FCE_DLT},{small})"
+__{}FCE_DLT:               ;[15:79]     fce_dlt   ( d2 ret d1 -- d2 d1 )   ;# small version because "define({_USE_FCE_DLT},{small})"
 __{}    push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1
 __{}    ld    A, C          ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
 __{}    sub   L             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  C-L<0 --> carry if true
@@ -939,7 +1123,7 @@ __{}    add   A, A          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1        --> c
 __{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1},
 __{}{dnl
 __{}ifdef({USE_FCE_DULT},{dnl
-__{}__{}FCE_DLT:               ;[10:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DLT},{small})"
+__{}__{}FCE_DLT:               ;[10:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   ;# default version, changes using "define({_USE_FCE_DLT},{small})"
 __{}__{}    push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
 __{}__{}    sub   D             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
 __{}__{}    jr    z, FCE_DULT_2 ; 2:7/12    fce_dlt   h2 l2 rt h2 h1 l1
@@ -950,7 +1134,7 @@ __{}__{}    xor   D             ; 1:4       fce_dlt   h2 l2 rt .. h1 l1
 __{}__{}    add   A, A          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1        --> carry if true
 __{}__{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1},
 __{}{dnl
-__{}__{}FCE_DLT:               ;[18:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DLT},{small})"
+__{}__{}FCE_DLT:               ;[18:58,71]  fce_dlt   ( d2 ret d1 -- d2 d1 )   ;# default version, changes using "define({_USE_FCE_DLT},{small})"
 __{}__{}    push AF             ; 1:11      fce_dlt   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
 __{}__{}    sub   D             ; 1:4       fce_dlt   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
 __{}__{}    jr    z, $+8        ; 2:7/12    fce_dlt   h2 l2 rt h2 h1 l1
@@ -970,11 +1154,11 @@ __{}__{}    sbc   A, E          ; 1:4       fce_dlt   h2 l2 rt .. h1 l1  C-E<0 -
 __{}__{}    ret                 ; 1:10      fce_dlt   h2 l2 .. .. h1 l1})})}){}dnl
 dnl
 ifdef({USE_FCE_DULT},{
-;==============================================================================
-; ( d2 ret d1 -- d1 )
-; set carry if d2 u< d1 is true
-;  In: AF = h2, BC = l2, DE = h1, HL = l1
-; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+;#==============================================================================
+;# ( d2 ret d1 -- d1 )
+;# set carry if d2 u< d1 is true
+;#  In: AF = h2, BC = l2, DE = h1, HL = l1
+;# Out:          BC = h2, DE = h1, HL = l1, set carry if true
 FCE_DULT:              ;[14:42,71]  fce_dult   ( d2 ret d1 -- d2 d1 )
     push AF             ; 1:11      fce_dult   h2 l2 rt h2 h1 l1  d2<d1 --> d2-d1<0 --> AFBC-DEHL<0 --> carry if true
     sub   D             ; 1:4       fce_dult   h2 l2 rt h2 h1 l1  A-D<0 --> carry if true
@@ -996,10 +1180,10 @@ dnl
 dnl
 dnl
 ifdef({USE_FCE_4DUP_DGT},{ifdef({USE_FCE_DGT},,define({USE_FCE_DGT},{yes}))
-;==============================================================================
-; ( d2 ret d1 -- d2 d1 )
-;  In: (SP+4) = h2, (SP+2) = l2, (SP) = ret
-; Out: (SP+2) = h2, (SP)   = l2, (SP) = ret, AF = h2, BC = l2
+;#==============================================================================
+;# ( d2 ret d1 -- d2 d1 )
+;#  In: (SP+4) = h2, (SP+2) = l2, [SP] = ret
+;# Out: (SP+2) = h2, [SP]   = l2, [SP] = ret, AF = h2, BC = l2
 FCE_4DUP_DGT:           ;[9:75]     fce_4dup_dgt   ( d2 ret d1 -- d2 d1 )
     pop  AF             ; 1:10      fce_4dup_dgt   h2 l2 .. ..  AF = ret
     pop  BC             ; 1:10      fce_4dup_dgt   h2 .. .. ..  BC = l2
@@ -1012,13 +1196,13 @@ FCE_4DUP_DGT:           ;[9:75]     fce_4dup_dgt   ( d2 ret d1 -- d2 d1 )
     ex   AF, AF'        ; 1:4       fce_4dup_dgt   h2 l2 rt ..  AF = h2
     ; fall to fce_dgt}){}dnl
 ifdef({USE_FCE_DGT},{
-;==============================================================================
-; ( d2 ret d1 -- d1 )
-; carry if d2>d1 is true
-;  In: AF = h2, BC = l2, DE = h1, HL = l1
-; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+;#==============================================================================
+;# ( d2 ret d1 -- d1 )
+;# carry if d2>d1 is true
+;#  In: AF = h2, BC = l2, DE = h1, HL = l1
+;# Out:          BC = h2, DE = h1, HL = l1, set carry if true
 ifelse(eval(ifelse(USE_FCE_DGT,{small},{1},{0}) && ifdef({USE_FCE_DUGT},{0},{1})),{1},{dnl
-__{}FCE_DGT:               ;[15:79]     fce_dgt   ( d2 ret d1 -- d2 d1 )   # small version because "define({_USE_FCE_DGT},{small})"
+__{}FCE_DGT:               ;[15:79]     fce_dgt   ( d2 ret d1 -- d2 d1 )   ;# small version because "define({_USE_FCE_DGT},{small})"
 __{}    push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
 __{}    ld    A, L          ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1
 __{}    sub   C             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  0>L-C --> carry if true
@@ -1036,7 +1220,7 @@ __{}    add   A, A          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1        --> c
 __{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1},
 __{}{dnl
 __{}ifdef({USE_FCE_DUGT},{dnl
-__{}__{}FCE_DGT:               ;[14:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DGT},{small})"
+__{}__{}FCE_DGT:               ;[14:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   ;# default version, changes using "define({_USE_FCE_DGT},{small})"
 __{}__{}    push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
 __{}__{}    xor   D             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  A==D?
 __{}__{}    jr    z, FCE_DUGT_2 ; 2:7/12    fce_dgt   h2 l2 rt h2 h1 l1
@@ -1049,7 +1233,7 @@ __{}__{}    ld    A, D          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  identic
 __{}__{}    sub   B             ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>D-B --> carry if true
 __{}__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1},
 __{}{dnl
-__{}__{}FCE_DGT:               ;[22:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   # default version, changes using "define({_USE_FCE_DGT},{small})"
+__{}__{}FCE_DGT:               ;[22:60,71]  fce_dgt   ( d2 ret d1 -- d2 d1 )   ;# default version, changes using "define({_USE_FCE_DGT},{small})"
 __{}__{}    push AF             ; 1:11      fce_dgt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
 __{}__{}    xor   D             ; 1:4       fce_dgt   h2 l2 rt h2 h1 l1  A==D?
 __{}__{}    jr    z, $+12       ; 2:7/12    fce_dgt   h2 l2 rt h2 h1 l1
@@ -1071,11 +1255,11 @@ __{}__{}    sbc   A, C          ; 1:4       fce_dgt   h2 l2 rt .. h1 l1  0>E-C -
 __{}__{}    ret                 ; 1:10      fce_dgt   h2 l2 .. .. h1 l1})})}){}dnl
 dnl
 ifdef({USE_FCE_DUGT},{
-;==============================================================================
-; ( d2 ret d1 -- d1 )
-; carry if d2 u> d1 is true
-;  In: AF = h2, BC = l2, DE = h1, HL = l1
-; Out:          BC = h2, DE = h1, HL = l1, set carry if true
+;#==============================================================================
+;# ( d2 ret d1 -- d1 )
+;# carry if d2 u> d1 is true
+;#  In: AF = h2, BC = l2, DE = h1, HL = l1
+;# Out:          BC = h2, DE = h1, HL = l1, set carry if true
 FCE_DUGT:              ;[15:46,71]  fce_dugt   ( d2 ret d1 -- d2 d1 )
     push AF             ; 1:11      fce_dugt   h2 l2 rt h2 h1 l1  d2>d1 --> 0>d1-d2 --> 0>DEHL-AFBC --> carry if true
     sub   D             ; 1:4       fce_dugt   h2 l2 rt h2 h1 l1  A==D?
@@ -1097,37 +1281,54 @@ dnl
 dnl
 dnl
 dnl
+dnl
+dnl
+dnl
+ifdef({USE_PUMUL},{
+;#==============================================================================
+include(M4PATH{}divmul/pumul.m4){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_PUDIVMOD},{
+;#==============================================================================
+include(M4PATH{}divmul/pudivmod.m4){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_MUL},{
-;==============================================================================
+;#==============================================================================
 include(M4PATH{}divmul/mul.m4){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-ifdef({USE_DIV},{ifdef({USE_UDIV},,define({USE_UDIV},{}))
-;==============================================================================
+ifdef({USE_DIV},{__def({USE_UDIV})
+;#==============================================================================
 include(M4PATH{}divmul/div.m4){}dnl
 }){}dnl
 dnl
 dnl
 dnl
 ifdef({USE_UDIV},{
-;==============================================================================
+;#==============================================================================
 include(M4PATH{}divmul/udiv.m4){}dnl
 }){}dnl
 dnl
 dnl
 dnl
-ifdef({USE_S16MUL},{define({USE_U16MUL},{})
-;==============================================================================
+ifdef({USE_S16MUL},{__def({USE_U16MUL})
+;#==============================================================================
 S16MUL:
-; ( x1 x2 -- d )
-; DE       * HL        = DE * HL
-; DE       *(HL-65536) = DE * HL - DE<<16
-;(DE-65536)* HL        = DE * HL          - HL<<16
-;(DE-65536)*(HL-65536) = DE * HL - DE<<16 - HL<<16 + 0
-;   DEHL = DE * HL
-; Out: A = 0, BC = HL, DEHL = DE * HL
+;# ( x1 x2 -- d )
+;# DE       * HL        = DE * HL
+;# DE       *(HL-65536) = DE * HL - DE<<16
+;#(DE-65536)* HL        = DE * HL          - HL<<16
+;#(DE-65536)*(HL-65536) = DE * HL - DE<<16 - HL<<16 + 0
+;#   DEHL = DE * HL
+;# Out: A = 0, BC = HL, DEHL = DE * HL
     push DE             ; 1:11      s16mul
     push HL             ; 1:11      s16mul
     call U16MUL         ; 3:17      s16mul
@@ -1151,11 +1352,11 @@ dnl
 dnl
 dnl
 ifdef({USE_U16MUL},{
-;==============================================================================
+;#==============================================================================
 U16MUL:
-; ( u1 u2 -- ud )
-;   DEHL = DE * HL
-; Out: A = 0, BC = HL, DEHL = DE * HL
+;# ( u1 u2 -- ud )
+;#   DEHL = DE * HL
+;# Out: A = 0, BC = HL, DEHL = DE * HL
     ld    B, H          ; 1:4       u16mul
     ld    C, L          ; 1:4       u16mul
     ld   HL, 0x0000     ; 3:10      u16mul
@@ -1174,11 +1375,11 @@ dnl
 dnl
 dnl
 ifdef({zzzUSE_U16MUL},{
-;==============================================================================
+;#==============================================================================
 _U16MUL:
-; ( u1 u2 -- ud )
-;   DEHL = DE * HL
-; Out: A = 0, BC = HL, DEHL = DE * HL
+;# ( u1 u2 -- ud )
+;#   DEHL = DE * HL
+;# Out: A = 0, BC = HL, DEHL = DE * HL
     ld    C, H          ; 1:4       u16mul
     ld    A, L          ; 1:4       u16mul
     ld   HL, 0x0000     ; 3:10      u16mul
@@ -1199,12 +1400,12 @@ U16MUL_L:               ;           u16mul
 dnl
 dnl
 dnl
-ifdef({USE_F32DIV16},{define({USE_S32DIV16},{})
-;==============================================================================
+ifdef({USE_F32DIV16},{__def({USE_S32DIV16})
+;#==============================================================================
 F32DIV16:
-; ( lo n -- floored_remainder floored_quotient ), BC = hi
-; fm/mod ( d n -- rem quot )
-; ( d x -- d%x d/x )
+;# ( lo n -- floored_remainder floored_quotient ), BC = hi
+;# fm/mod ( d n -- rem quot )
+;# ( d x -- d%x d/x )
     push HL             ; 1:11      f32div16    ret n DE=lo HL=n, BC = hi
     call  S32DIV16      ; 3:17      f32div16
     pop  BC             ; 1:10      f32div16    n
@@ -1222,12 +1423,12 @@ F32DIV16:
 dnl
 dnl
 dnl
-ifdef({USE_S32DIV16},{define({USE_U31DIV15},{})
-;==============================================================================
+ifdef({USE_S32DIV16},{__def({USE_U31DIV15})
+;#==============================================================================
 S32DIV16:
-; ( lo n -- symmetric_remainder symmetric_quotient ), BC = hi
-; sm/rem ( d n -- rem quot )
-; ( d x -- d%x d/x )
+;# ( lo n -- symmetric_remainder symmetric_quotient ), BC = hi
+;# sm/rem ( d n -- rem quot )
+;# ( d x -- d%x d/x )
 
     ld    A, B          ; 1:4       s32div16
     xor   H             ; 1:4       s32div16
@@ -1278,16 +1479,16 @@ dnl
 dnl
 dnl
 ifdef({USE_U31DIV15},{ifelse(TYP_U31DIV15,{fast},{
-;==============================================================================
+;#==============================================================================
 U31DIV15:               ;[86:604+16*(quot bit 0:1=22:12)]
-; 796..956 tclock
-; # fast version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
-; ( lo u -- remainder quotient ), BC = hi
-; um/mod ( ud u -- rem quot )
-; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
-; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLDE / BC, DE = HLDE % BC
+;# 796..956 tclock
+;# fast version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
+;# ( lo u -- remainder quotient ), BC = hi
+;# um/mod ( ud u -- rem quot )
+;# ( ud u -- ud%u ud/u )
+;# HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
+;# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+;# HL = HLDE / BC, DE = HLDE % BC
     xor   A             ; 1:4       u31div15
     sub   L             ; 1:4       u31div15
     ld    L, C          ; 1:4       u31div15
@@ -1358,16 +1559,16 @@ U31DIV15_BYTE:          ;[66:254+8*(quot bit 0:1=22:12)]
     adc   A, A          ; 1:4       u31div15     A << 1
     ret                 ; 1:10      u31div15},
 TYP_U31DIV15,{small},{
-;==============================================================================
+;#==============================================================================
 U31DIV15:               ;[26:48+16*(quot bit 0:1=81:71)]
-; 1184..1344 tclock
-; # small version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
-; ( lo u -- remainder quotient ), BC = hi
-; um/mod ( ud u -- rem quot )
-; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
-; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLBC / DE, DE = HLBC % DE
+;# 1184..1344 tclock
+;# small version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
+;# ( lo u -- remainder quotient ), BC = hi
+;# um/mod ( ud u -- rem quot )
+;# ( ud u -- ud%u ud/u )
+;# HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
+;# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+;# HL = HLBC / DE, DE = HLBC % DE
     ex   DE, HL         ; 1:4       u31div15
     ld    A, L          ; 1:4       u31div15
     ld    L, C          ; 1:4       u31div15
@@ -1390,16 +1591,16 @@ U31DIV15_L              ;           u31div15
     ex   DE, HL         ; 1:4       u31div15
     ret                 ; 1:10      u31div15},
 {
-;==============================================================================
+;#==============================================================================
 U31DIV15:               ;[44:206+8*(quot bit 00,01,10,11:112,93,102,83)]
-; 870..950..1022..1102 tclock
-; # default version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
-; ( lo u -- remainder quotient ), BC = hi
-; um/mod ( ud u -- rem quot )
-; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
-; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLDE / BC, DE = HLDE % BC
+;# 870..950..1022..1102 tclock
+;# default version can be changed with "define({TYP_U31DIV15},{name})", name=fast,small,default
+;# ( lo u -- remainder quotient ), BC = hi
+;# um/mod ( ud u -- rem quot )
+;# ( ud u -- ud%u ud/u )
+;# HL = BCDE / HL, DE = BCDE % HL, "u" <= 0x8000, hi("ud") < 0x8000, "u" > hi("ud")
+;# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+;# HL = HLDE / BC, DE = HLDE % BC
     xor   A             ; 1:4       u31div15
     sub   L             ; 1:4       u31div15
     ld    L, C          ; 1:4       u31div15
@@ -1442,16 +1643,16 @@ dnl
 dnl
 dnl
 ifdef({USE_U32DIV16},{ifelse(TYP_U32DIV16,{small},{
-;==============================================================================
+;#==============================================================================
 U32DIV16:               ;[37:60+16*(quot bit 0:1/carry=88:78/73)]
-; 1308..1468 tclock, average 1388 tclock
-; # small version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
-; ( lo u -- remainder quotient ), BC = hi
-; um/mod ( ud u -- rem quot )
-; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
-; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLAC / DE, DE = HLAC % DE
+;# 1308..1468 tclock, average 1388 tclock
+;# small version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+;# ( lo u -- remainder quotient ), BC = hi
+;# um/mod ( ud u -- rem quot )
+;# ( ud u -- ud%u ud/u )
+;# HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+;# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+;# HL = HLAC / DE, DE = HLAC % DE
     ex   DE, HL         ; 1:4       u32div16
     ld    A, L          ; 1:4       u32div16
     ld    L, C          ; 1:4       u32div16
@@ -1483,16 +1684,16 @@ U32DIV16_E:             ;           u32div16
     ex   DE, HL         ; 1:4       u32div16
     ret                 ; 1:10      u32div16},
 TYP_U32DIV16,{test},{
-;==============================================================================
+;#==============================================================================
 U32DIV16:               ;[42:60+16*(quot bit 0:1/carry=83:73/75)]
-; 1228..1388 tclock, average 1308 tclock
-; # test version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
-; ( lo u -- remainder quotient ), BC = hi
-; um/mod ( ud u -- rem quot )
-; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
-; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLAC / DE, DE = HLAC % DE
+;# 1228..1388 tclock, average 1308 tclock
+;# test version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+;# ( lo u -- remainder quotient ), BC = hi
+;# um/mod ( ud u -- rem quot )
+;# ( ud u -- ud%u ud/u )
+;# HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+;# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+;# HL = HLAC / DE, DE = HLAC % DE
     ex   DE, HL         ; 1:4       u32div16
     ld    A, L          ; 1:4       u32div16
     ld    L, C          ; 1:4       u32div16
@@ -1529,16 +1730,16 @@ U32DIV16_C              ;           u32div16
     ex   DE, HL         ; 1:4       u32div16
     ret                 ; 1:10      u32div16},
 TYP_U32DIV16,{test2},{
-;==============================================================================
+;#==============================================================================
 U32DIV16:               ;[45:80+16*(quot bit 0:1/carry=83:69/67)]
-; 1184..1408 tclock, average 1296 tclock
-; # test2 version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
-; ( lo u -- remainder quotient ), BC = hi
-; um/mod ( ud u -- rem quot )
-; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
-; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLAC / DE, DE = HLAC % DE
+;# 1184..1408 tclock, average 1296 tclock
+;# test2 version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+;# ( lo u -- remainder quotient ), BC = hi
+;# um/mod ( ud u -- rem quot )
+;# ( ud u -- ud%u ud/u )
+;# HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+;# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+;# HL = HLAC / DE, DE = HLAC % DE
     xor   A             ; 1:4       u32div16
     sub   L             ; 1:4       u32div16
     ld    L, C          ; 1:4       u32div16
@@ -1579,16 +1780,16 @@ U32DIV16_C              ;           u32div16
     ex   DE, HL         ; 1:4       u32div16
     ret                 ; 1:10      u32div16},
 TYP_U32DIV16,{test3},{
-;==============================================================================
+;#==============================================================================
 U32DIV16:               ;[39:83+16*(quot bit 0:1/carry=80:70/67)]
-; 1203..1363 tclock, average 1283 tclock
-; # test3 version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
-; ( lo u -- remainder quotient ), BC = hi
-; um/mod ( ud u -- rem quot )
-; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
-; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLAC / DE, DE = HLAC % DE
+;# 1203..1363 tclock, average 1283 tclock
+;# test3 version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+;# ( lo u -- remainder quotient ), BC = hi
+;# um/mod ( ud u -- rem quot )
+;# ( ud u -- ud%u ud/u )
+;# HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+;# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+;# HL = HLAC / DE, DE = HLAC % DE
     xor   A             ; 1:4       u32div16
     sub   L             ; 1:4       u32div16
     ld    L, C          ; 1:4       u32div16
@@ -1622,16 +1823,16 @@ U32DIV16_C              ;           u32div16
     djnz U32DIV16_L     ; 2:13/8    u32div16
     jr   U32DIV16_E     ; 2:12      u32div16},
 {
-;==============================================================================
+;#==============================================================================
 U32DIV16:               ;[46:144+16*(quot bit 0:1/carry=72:62/59)]
-; 1136..1296 tclock, average 1216 tclock
-; # default version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
-; ( lo u -- remainder quotient ), BC = hi
-; um/mod ( ud u -- rem quot )
-; ( ud u -- ud%u ud/u )
-; HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
-; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-; HL = HLAC / DE, DE = HLAC % DE
+;# 1136..1296 tclock, average 1216 tclock
+;# default version can be changed with "define({TYP_U32DIV16},{name})", name=default,small,test,test2,...
+;# ( lo u -- remainder quotient ), BC = hi
+;# um/mod ( ud u -- rem quot )
+;# ( ud u -- ud%u ud/u )
+;# HL = BCDE / HL, DE = BCDE % HL, "u" > hi("ud")
+;# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+;# HL = HLAC / DE, DE = HLAC % DE
     xor   A             ; 1:4       u32div16
     sub   L             ; 1:4       u32div16
     ld    L, C          ; 1:4       u32div16
@@ -1675,11 +1876,197 @@ U32DIV16_C              ;           u32div16
 dnl
 dnl
 dnl
+ifdef({USE_ROLL},{
+;#==============================================================================
+;# ( xu xu-1 .. x1 x0 u -- xu-1 .. x1 x0 xu ? )
+;#  In: HL = u
+;# Out: HL = garbage
+;#      DE = xu
+_ROLL:               ;[27:188+u*42] _roll   ( x3 x2 x1 x0 u -- x2 x1 x0 x3 ? )
+    ld    A, L          ; 1:4       _roll
+    or    H             ; 1:4       _roll
+    ret   z             ; 1:5/11    _roll   u = 0?
+    pop  BC             ; 1:10      _roll   ret
+    push DE             ; 1:11      _roll   .. x2 x1 x0 x0 u
+    push BC             ; 1:11      _roll   .. x2 x1 x0 ret x0 u
+    inc  HL             ; 1:6       _roll   u++
+    add  HL, HL         ; 1:11      _roll   .. x2 x1 x0 ret x0 2*u+2
+    ld    C, L          ; 1:4       _roll
+    ld    B, H          ; 1:4       _roll   BC = 2*u+2
+    add  HL, SP         ; 1:11      _roll   HL = addr xu-1
+    ld    E,[HL]        ; 1:7       _roll
+    inc  HL             ; 1:6       _roll
+    ld    D,[HL]        ; 1:7       _roll   BC = xu
+    push DE             ; 1:11      _roll   .. x2 x1 x0 ret xu xu ?
+    ld    E, L          ; 1:4       _roll
+    ld    D, H          ; 1:4       _roll
+    dec  DE             ; 1:6       _roll
+    dec  DE             ; 1:6       _roll
+    ex   DE, HL         ; 1:4       _roll
+    lddr                ; 2:u*42-5  _roll   (DE--) = (HL--)
+    pop  DE             ; 1:10      _roll   .. x1 x0 ret ret xu ?
+    pop  HL             ; 1:10      _roll   .. x1 x0 ret xu ret
+    ret                 ; 1:10      _roll
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_Fill3},{__def({USE_Fill2})
+;#==============================================================================
+;# ( address u char ret -- ret address+u x ) (address..address+u-1) = char
+;#  In: (SP+2) = address, DE = u, L = char
+;# Out:  A = char
+;#      BC = 0
+;#      DE = address+u
+Fill3:                  ;[4:37]     Fill3
+    ld    A, L          ; 1:4       Fill3
+    pop  HL             ; 1:10      Fill3   ret
+    ex  [SP],HL         ; 1:19      Fill3   address
+    ex   DE, HL         ; 1:4       Fill3
+;#   ...fall down to Fill2}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_Fill2},{__def({USE_Fill}){}dnl
+__{}ifdef({USE_Fill_Over},,{
+__{}  .error Not activate {USE_Fill_Over}!}){}dnl
+__{}ifdef({USE_Fill_Unknown_Addr},,{
+__{}  .error Not activate {USE_Fill_Unknown_Addr}!})
+;#==============================================================================
+;# ( -- ) (DE..DE+HL-1) = A
+;#  In: DE = address, HL = u, A=char
+;# Out: BC = 0
+;#      DE+= HL, HL>>=3
+Fill2:                 ;[26:108]    Fill2
+    ex   AF, AF'        ; 1:4       Fill2
+    xor   A             ; 1:4       Fill2
+    sub   L             ; 1:4       Fill2  -0,-1,-2,-3,-4,-5,-6,-7
+    and  0x07           ; 2:7       Fill2   0, 7, 6, 5, 4, 3, 2, 1
+    add   A, A          ; 1:4       Fill2   0,14,12,10, 8, 6, 4, 2
+    ld  (Fill2_self+1),A; 3:13      Fill2
+    dec  HL             ; 1:6       Fill2   if B=0=256 --> C--
+    ld    A, L          ; 1:4       Fill2
+    srl   H             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2   HA >> 1
+    srl   H             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2   HA >> 2
+    srl   H             ; 2:8       Fill2
+    rra                 ; 1:4       Fill2   HA >> 3
+    ld    C, H          ; 1:4       Fill2
+    ld    B, A          ; 1:4       Fill2
+    inc   C             ; 1:4       Fill2
+    inc   B             ; 1:4       Fill2   B=255->256=0 ok
+    ex   AF, AF'        ; 1:4       Fill2
+Fill2_self:             ;           Fill2
+    jr  $+0             ; 2:12      Fill2
+;#   ...fall down to Fill}){}dnl
+ifdef({USE_Fill},{
+;#==============================================================================
+;# ( -- ) (DE_in..DE_out-1) = A{}dnl
+ifelse(
+__{}ifdef({USE_Fill_Over},1,0):ifdef({USE_Fill_Unknown_Addr},1,0),1:1,{
+__{};  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
+__{}; Out: BC = 0
+__{};      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
+__{}Fill:    ;[22:B*117+(C-1)*29963+16] Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +0
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +2
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +4
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +6
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +8
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +10
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +12
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +14
+__{}    inc  DE             ; 1:6       Fill
+__{}    djnz Fill           ; 2:8/13    Fill
+__{}    dec   C             ; 1:4       Fill
+__{}    jr   nz, Fill       ; 2:7/12    Fill},
+__{}ifdef({USE_Fill_Over},1,0),1,{
+__{};  In: DE = address, A=char, u = (C-1)*2048 + B*8 - (start_address-Fill)/2
+__{}; Out: BC = 0
+__{};      DE+= (C-1)*2048+(B-1)*8+(Fill+16-start_address)/2
+__{}Fill:    ;[22:B*109+(C-1)*27915+16] Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +0
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +2
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +4
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +6
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +8
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +10
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +12
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +14
+__{}    inc  DE             ; 1:6       Fill
+__{}    djnz Fill           ; 2:8/13    Fill   DE = even address
+__{}    dec   C             ; 1:4       Fill
+__{}    jr   nz, Fill       ; 2:7/12    Fill},
+__{}ifdef({USE_Fill_Unknown_Addr},1),1,{
+__{};  In: DE = address, A=char, u = B*8 - (start_address-Fill)/2
+__{}; Out:  B = 0
+__{};      DE+= B*8 + (Fill-start_address)/2
+__{}Fill:                  ;[19:B*117+5]Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +0
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +2
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +4
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +6
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +8
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +10
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +12
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +14
+__{}    inc  DE             ; 1:6       Fill
+__{}    djnz Fill           ; 2:8/13    Fill},
+__{}{
+__{};  In: DE = address, A=char, u = B*8 - (start_address-Fill)/2
+__{}; Out:  B = 0
+__{};      DE+= B*8 + (Fill-start_address)/2
+__{}Fill:                  ;[19:B*109+5]Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +0
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +2
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +4
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +6
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill  +8
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +10
+__{}    inc  DE             ; 1:6       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +12
+__{}    inc   E             ; 1:4       Fill
+__{}    ld  [DE],A          ; 1:7       Fill +14
+__{}    inc  DE             ; 1:6       Fill
+__{}    djnz Fill           ; 2:8/13    Fill   DE = even address})
+    ret                 ; 1:10      Fill
+}){}dnl
+dnl
+dnl
+dnl
+dnl
 ifdef({USE_Random},{ifdef({USE_Rnd},,define({USE_Rnd},{}))
-;==============================================================================
-; ( max -- rand )
-; 16-bit pseudorandom generator
-; HL = random < max, or HL = 0
+;#==============================================================================
+;# ( max -- rand )
+;# 16-bit pseudorandom generator
+;# HL = random < max, or HL = 0
 Random:                 ;[41:]      Random
     ld    A, H          ; 1:4       Random
     or    A             ; 1:4       Random
@@ -1700,9 +2087,9 @@ Random_0L:              ;           Random
     cp    L             ; 1:4       Random
     jr    c, $-2        ; 2:7/11    Random
     ld    C, A          ; 1:4       Random   BC = mask = 0x00??
-;------------------------------------------------------------------------------
-; In: BC = mask, HL = max
-; Out: HL = 0..max-1
+;#------------------------------------------------------------------------------
+;# In: BC = mask, HL = max
+;# Out: HL = 0..max-1
 Random_Begin:           ;           Random
     push  DE            ; 1:11      Random
     ex    DE, HL        ; 1:4       Random   DE = max
@@ -1723,11 +2110,11 @@ dnl
 dnl
 dnl
 ifdef({USE_Rnd},{
-;==============================================================================
-; ( -- rand )
-; 16-bit pseudorandom generator
-; Out: HL = 0..65535
-; Pollutes: AF, AF', HL
+;#==============================================================================
+;# ( -- rand )
+;# 16-bit pseudorandom generator
+;# Out: HL = 0..65535
+;# Pollutes: AF, AF', HL
 Rnd:                    ;[44:182]   rnd
 SEED_8BIT EQU $+1
     ld    L, 0x01       ; 2:7       rnd   seed must not be 0
@@ -1767,11 +2154,289 @@ SEED EQU $+1
 dnl
 dnl
 dnl
+ifdef({USE_LZM},{
+;# ----------------------------------------------------------------------------
+;# LZM decoder by Busy                  ; 07.07.2016
+;# modified by _Dw0rkin                 ; 16.07.2023
+;# "Small" version (24 bytes only) cca 1.42 LDIR on 0x8000+
+;# ----------------------------------------------------------------------------
+;# Parameters:
+;#   HL: source address (compressed data)
+;#   DE: destination address (decompressing)
+;# ----------------------------------------------------------------------------
+;# <Byte Stream>
+;#          <Block><Block>...<Block><EndMark>
+;# <Block>
+;#          <Unpacked block>     =  <BlockLength> <Data..>
+;#          <Repeated sequence>  =  <BlockLength> <Negative offset>
+;# <BlockLength>
+;#      bit 76543210
+;#          ???????D
+;#          .......0  =  unpacked data, next block is <Data..>
+;#          ???????1  =  7 bits length of <Data>
+;#          .......1  =  repeated sequence, next block is <Offset>
+;#          ???????0  =  7 bits length
+;# <Data..>
+;#          Data bytes what are directly copied by LDIR.
+;# <Offset>
+;#          One byte relative offset
+;# <EndMark> is 0x00
+
+LZM_REP:                ;           lzm_depack
+    ld    A, E          ; 1:4       lzm_depack      Determine address of source sequence
+    sub [HL]            ; 1:7       lzm_depack      DE = destination address
+    inc  HL             ; 1:6       lzm_depack
+    push HL             ; 1:11      lzm_depack
+    ld    L, A          ; 1:4       lzm_depack
+    sbc   A, A          ; 1:4       lzm_depack
+    add   A, D          ; 1:4       lzm_depack
+    ld    H, A          ; 1:4       lzm_depack
+    ldir                ; 2:16/21   lzm_depack      Copy repeated sequence
+    pop	 HL             ; 1:10      lzm_depack
+;#   ...fall down to lzm_depack
+LZM_DEPACK:             ;           lzm_depack
+    ld    B, 0x00       ; 2:7       lzm_depack      All copied blocks will be no longer than 255 bytes
+LZM_LOOP:               ;           lzm_depack
+    ld    C,[HL]        ; 1:7       lzm_depack      Get identification of block
+    inc  HL             ; 1:6       lzm_depack      Move to next byte in packed data
+    srl   C             ; 2:8       lzm_depack      BC = length
+    ret   z             ; 1:5/11    lzm_depack      Zero length means end mark
+    jr    c, LZM_REP    ; 2:7/12    lzm_depack      If it is packed sequence then jump
+    ldir                ; 2:16/21   lzm_depack      lz__depack(small)      Copy unpacked data block
+    jr   LZM_LOOP       ; 2:12      lzm_depack}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_LZ_},{ifelse(USE_LZ_,small,{
+;# ----------------------------------------------------------------------------
+;# LZ_ decoder by _Dw0rkin              ; 15.07.2023
+;# based by LZE decoder by Busy         ; 08.07.2016
+;# "Small" version (39 bytes only) cca 1.64 LDIR on 0x8000+
+;# ----------------------------------------------------------------------------
+;# Parameters:
+;#   HL: source address (compressed data)
+;#   DE: destination address (decompressing)
+;# ----------------------------------------------------------------------------
+;# <Byte Stream>
+;#          <Block><Block>...<Block><EndMark>
+;# <Block>
+;#          <Unpacked block>     =  <BlockLength> <Data..>
+;#          <Repeated sequence>  =  <BlockLength> <Negative offset>
+;# <BlockLength>
+;#      bit 76543210
+;#          D??????P
+;#          0.......  =  one byte BlockLength
+;#          0??????.  =  6 low bits (5..0) length
+;#          1.......  =  two bytes BlockLength
+;#          1??????.  =  6 hi bits (13..8) length + 8 low bits next byte
+;#          .......0  =  unpacked data, next block is <Data..>
+;#          .......1  =  repeated sequence, next block is <Negative_Offset>
+;# <Data..>
+;#          Data bytes what are directly copied by LDIR.
+;# <Negative offset>
+;#      bit 76543210
+;#          ???????D
+;#          .......0  =  one byte negative Offset
+;#          ???????0  =  7 low negative bits (6..0) offset
+;#          .......1  =  two bytes negate Offset
+;#          ???????1  =  7 hi negative bits (14..8) offset + 8 low negative bits next byte
+;# <EndMark> is 0x00
+LZ__DEPREP:             ;           lz__depack(small)
+    push DE             ; 1:11      lz__depack(small)      carry = 1
+    ld    D, 0xFF       ; 2:7       lz__depack(small)
+    ld    E,[HL]        ; 1:7       lz__depack(small)      E = %???? ???D; D = double bit
+    inc  HL             ; 1:6       lz__depack(small)
+    rr    E             ; 2:8       lz__depack(small)      DE = %1111 1111 1???? ??? = 7 bits negative offset
+    jr   nc, LZ__DEPREP2; 2:7/12    lz__depack(small)
+    ld    D, E          ; 1:4       lz__depack(small)
+    ld    E,[HL]        ; 1:7       lz__depack(small)      DE = %1??? ???? ???? ???? = 15 bits negative offset
+    inc  HL             ; 1:6       lz__depack(small)
+LZ__DEPREP2:            ;           lz__depack(small)      DE = negative offset
+    ex  [SP],HL         ; 1:19      lz__depack(small)      save HL & load DE
+    ex   DE, HL         ; 1:4       lz__depack(small)
+    add  HL, DE         ; 1:11      lz__depack(small)
+
+    ldir                ; 2:16/21   lz__depack(small)      Copy sequence
+    pop  HL             ; 1:10      lz__depack(small)
+                  ;[18:107/95+ldir] lz__depack(small)
+;#   ...fall down to lz__depack
+;# Input:
+;#  HL = address of source packed data
+;#  DE = address of destination to depack data
+;# ===========================================
+LZ__DEPACK:             ;           lz__depack(small)
+    xor   A             ; 1:4       lz__depack(small)      reset carry
+    ld    B, A          ; 1:4       lz__depack(small)
+    or  [HL]            ; 1:7       lz__depack(small)      A = %D??????P; P = packed bit; D = double bit; set sign and zero flag
+    inc  HL             ; 1:6       lz__depack(small)
+    rla                 ; 1:4       lz__depack(small)      A = %??????P0; sign unaffected
+    rrca                ; 1:4       lz__depack(small)      A = %0??????P; sign unaffected; reset carry
+
+    rra                 ; 1:4       lz__depack(small)      A = %00??????; sign unaffected; carry=P
+    ld    C, A          ; 1:4       lz__depack(small)
+    jp    p, LZ__DEPACK2; 3:10      lz__depack(small)      One byte length
+    ld    B, C          ; 1:4       lz__depack(small)
+    ld    C,[HL]        ; 1:7       lz__depack(small)      Get low byte of two-byte value
+    inc  HL             ; 1:6       lz__depack(small)
+LZ__DEPACK2:            ;           lz__depack(small)
+    jr    c, LZ__DEPREP ; 2:7/12    lz__depack(small)      If packed block then jump
+    ret   z             ; 1:5/11    lz__depack(small)      If zero then end of depacking
+    ldir                ; 2:16/21   lz__depack(small)      Copy unpacked data block
+    jr   LZ__DEPACK     ; 2:12      lz__depack(small)
+                       ;[21:104]    lz__depack(small)},
+{
+;# ----------------------------------------------------------------------------
+;# LZ_ decoder by _Dw0rkin              ; 15.07.2023
+;# based by LZE decoder by Busy         ; 08.07.2016
+;# "Fast" version (40 bytes only) cca 1.64 LDIR on 0x8000+
+;# ----------------------------------------------------------------------------
+;# Parameters:
+;#   HL: source address (compressed data)
+;#   DE: destination address (decompressing)
+;# ----------------------------------------------------------------------------
+;# <Byte Stream>
+;#          <Block><Block>...<Block><EndMark>
+;# <Block>
+;#          <Unpacked block>     =  <BlockLength> <Data..>
+;#          <Repeated sequence>  =  <BlockLength> <Negative offset>
+;# <BlockLength>
+;#      bit 76543210
+;#          D??????P
+;#          0.......  =  one byte BlockLength
+;#          0??????.  =  6 low bits (5..0) length
+;#          1.......  =  two bytes BlockLength
+;#          1??????.  =  6 hi bits (13..8) length + 8 low bits next byte
+;#          .......0  =  unpacked data, next block is <Data..>
+;#          .......1  =  repeated sequence, next block is <Negative_Offset>
+;# <Data..>
+;#          Data bytes what are directly copied by LDIR.
+;# <Negative offset>
+;#      bit 76543210
+;#          ???????D
+;#          .......0  =  one byte negative Offset
+;#          ???????0  =  7 low negative bits (6..0) offset
+;#          .......1  =  two bytes negate Offset
+;#          ???????1  =  7 hi negative bits (14..8) offset + 8 low negative bits next byte
+;# <EndMark> is 0x00
+LZ__DEPREP:             ;           lz__depack
+    ld    A,[HL]        ; 1:7       lz__depack      A = %???? ???D; D = Double bit; carry = 1
+    rra                 ; 1:4       lz__depack      A = %???? ???D -> %1??? ???? & carry=D
+    jr   nc, LZ__DEPREP2; 2:7/12    lz__depack
+    inc  HL             ; 1:6       lz__depack
+    push HL             ; 1:11      lz__depack
+    ld    L,[HL]        ; 1:7       lz__depack      Get low byte of two-byte value
+    ld    H, A          ; 1:4       lz__depack      HL = %1??? ???? ???? ???? = 15 bits negative offset
+    jr   LZ__DEPREP3    ; 2:12      lz__depack
+LZ__DEPREP2:            ;           lz__depack
+    push HL             ; 1:11      lz__depack
+    ld    L, A          ; 1:4       lz__depack
+    ld    H, 0xFF       ; 2:7       lz__depack      HL = %1111 1111 1??? ???? = 7 bits negative offset
+LZ__DEPREP3:            ;           lz__depack
+    add  HL, DE         ; 1:11      lz__depack
+
+    ldir                ; 2:16/21   lz__depack      Copy sequence
+    pop  HL             ; 1:10      lz__depack
+    inc  HL             ; 1:6       lz__depack
+                   ;[19:85/72+ldir] lz__depack
+;#   ...fall down to lz__depack
+;# Input:
+;#  HL = address of source packed data
+;#  DE = address of destination to depack data
+;# ===========================================
+LZ__DEPACK:             ;           lz__depack
+    xor   A             ; 1:4       lz__depack      reset carry
+    ld    B, A          ; 1:4       lz__depack
+    or  [HL]            ; 1:7       lz__depack      A = %D??????P; P = packed bit; D = double bit; set sign and zero flag
+    inc  HL             ; 1:6       lz__depack
+    rla                 ; 1:4       lz__depack      A = %??????P0; sign unaffected
+    rrca                ; 1:4       lz__depack      A = %0??????P; sign unaffected; reset carry
+
+    rra                 ; 1:4       lz__depack      A = %00??????; sign unaffected; carry=P
+    ld    C, A          ; 1:4       lz__depack
+    jp    p, LZ__DEPACK2; 3:10      lz__depack      One byte length
+    ld    B, C          ; 1:4       lz__depack
+    ld    C,[HL]        ; 1:7       lz__depack      Get low byte of two-byte value
+    inc  HL             ; 1:6       lz__depack
+LZ__DEPACK2:            ;           lz__depack
+    jr    c, LZ__DEPREP ; 2:7/12    lz__depack      If packed block then jump
+    ret   z             ; 1:5/11    lz__depack      If zero then end of depacking
+    ldir                ; 2:16/21   lz__depack      Copy unpacked data block
+    jr   LZ__DEPACK     ; 2:12      lz__depack
+                       ;[21:104]    lz__depack})}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_ZX0},{
+;# ----------------------------------------------------------------------------
+;# ZX0 decoder by Einar Saukas & Urusergi
+;# "Standard" version (68 bytes only)
+;# ----------------------------------------------------------------------------
+;# Parameters:
+;#   HL: source address (compressed data)
+;#   DE: destination address (decompressing)
+;# ----------------------------------------------------------------------------
+
+ZX0_DEPACK:             ;           zx0_depack
+    ld   BC, 0xFFFF     ; 3:10      zx0_depack      preserve default offset 1
+    push BC             ; 1:11      zx0_depack
+    inc  BC             ; 1:6       zx0_depack
+    ld    A, 0x80       ; 2:7       zx0_depack
+ZX0_LIT:                ;           zx0_depack      literals
+    call ZX0_ELIAS      ; 3:17      zx0_depack      obtain length
+    ldir                ; 2:16/21   zx0_depack      copy literals
+    add   A, A          ; 1:4       zx0_depack      copy from last offset or new offset?
+    jr    c, ZX0_NEW_OFF; 2:7/12    zx0_depack
+    call ZX0_ELIAS      ; 3:17      zx0_depack      obtain length
+ZX0_COPY:               ;           zx0_depack
+    ex  [SP],HL         ; 1:19      zx0_depack      preserve source, restore offset
+    push HL             ; 1:11      zx0_depack      preserve offset
+    add  HL, DE         ; 1:11      zx0_depack      calculate destination - offset
+    ldir                ; 2:16/21   zx0_depack      copy from offset
+    pop  HL             ; 1:10      zx0_depack      restore offset
+    ex  [SP],HL         ; 1:19      zx0_depack      preserve offset, restore source
+    add   A, A          ; 1:4       zx0_depack      copy from literals or new offset?
+    jr   nc, ZX0_LIT    ; 2:7/12    zx0_depack
+ZX0_NEW_OFF:            ;           zx0_depack      new offset
+    pop   BC            ; 1:10      zx0_depack      discard last offset
+    ld     C, 0xFE      ; 2:7       zx0_depack      prepare negative offset
+    call  ZX0E_LOOP     ; 3:17      zx0_depack      obtain offset MSB
+    inc    C            ; 1:4       zx0_depack
+    ret    z            ; 1:5/11    zx0_depack      check end marker
+    ld     B, C         ; 1:4       zx0_depack
+    ld     C,[HL]       ; 1:7       zx0_depack      obtain offset LSB
+    inc   HL            ; 1:6       zx0_depack
+    rr     B            ; 2:8       zx0_depack      last offset bit becomes first length bit
+    rr     C            ; 2:8       zx0_depack
+    push  BC            ; 1:11      zx0_depack      preserve new offset
+    ld    BC, 0x0001    ; 3:10      zx0_depack      obtain length
+    call  nc, ZX0E_BT   ; 3:10/17   zx0_depack
+    inc   BC            ; 1:6       zx0_depack
+    jr    ZX0_COPY      ; 2:12      zx0_depack
+
+ZX0_ELIAS:              ;           zx0_depack      elias
+    inc    C            ; 1:4       zx0_depack      interlaced Elias gamma coding
+ZX0E_LOOP:              ;           zx0_depack
+    add    A, A         ; 1:4       zx0_depack
+    jr    nz, ZX0E_SKIP ; 2:7/12    zx0_depack
+    ld     A,[HL]       ; 1:7       zx0_depack      load another group of 8 bits
+    inc   HL            ; 1:6       zx0_depack
+    rla                 ; 1:4       zx0_depack
+ZX0E_SKIP:              ;           zx0_depack
+    ret    c            ; 1:5/11    zx0_depack
+ZX0E_BT:                ;           zx0_depack      backtrack
+    add    A, A         ; 1:4       zx0_depack
+    rl     C            ; 2:8       zx0_depack
+    rl     B            ; 2:8       zx0_depack
+    jr    ZX0E_LOOP     ; 2:12      zx0_depack
+;# -----------------------------------------------------------------------------}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_ACCEPT},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
-;==============================================================================
-; Read string from keyboard
-; In: DE = addr_string, HL = max_length
-; Out: pop stack, TOP = HL = loaded
+;#==============================================================================
+;# Read string from keyboard
+;#  In: DE = addr_string, HL = max_length
+;# Out: pop stack, TOP = HL = loaded
 READSTRING:
 __{}ifdef({USE_ACCEPT_Z},{dnl
 __{}    dec  HL             ; 1:6       readstring_z
@@ -1779,12 +2444,12 @@ __{}}){}dnl
     ld   BC, 0x0000     ; 3:10      readstring   loaded
     call CLEARBUFF      ; 3:17      readstring
 READSTRING2:
-    ld    A,(0x5C08)    ; 3:13      readstring   read new value of {LAST K}
+    ld    A,[0x5C08]    ; 3:13      readstring   read new value of {LAST K}
     or    A             ; 1:4       readstring   is it still zero?
     jr    z, READSTRING2; 2:7/12    readstring
 
     call CLEARBUFF      ; 3:17      readstring
-    ld  (DE),A          ; 1:7       readstring   save char
+    ld  [DE],A          ; 1:7       readstring   save char
 
     cp  0x0C            ; 2:7       readstring   delete?
     jr   nz, READSTRING3; 2:7/12    readstring
@@ -1795,18 +2460,16 @@ READSTRING2:
     dec  BC             ; 1:6       readstring   loaded--
     inc  HL             ; 1:6       readstring   space++
     ld    A, 0x08       ; 2:7       readstring
-    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}
+__{}__PUTCHAR_A(readstring)
     ld    A, 0x20       ; 2:7       readstring
-    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}
+__{}__PUTCHAR_A(readstring)
     ld    A, 0x08       ; 2:7       readstring
-    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}
+__{}__PUTCHAR_A(readstring)
     jr   READSTRING2    ; 2:12      readstring
 READSTRING3:
-
     cp  0x0D            ; 2:7       readstring   enter?
     jr    z, READSTRING4; 2:7/12    readstring
-
-    rst   0x10          ; 1:11      readstring   putchar(reg A) with {ZX 48K ROM}
+__{}__PUTCHAR_A(readstring)
     inc  DE             ; 1:6       readstring   addr++
     inc  BC             ; 1:6       readstring   loaded++
     dec  HL             ; 1:6       readstring   space--
@@ -1817,7 +2480,7 @@ READSTRING3:
 READSTRING4:            ;           readstring   A = 0, flag: z, nc
 __{}ifdef({USE_ACCEPT_Z},{dnl
 __{}    xor   A             ; 1:7       readstring_z
-__{}    ld  (DE),A          ; 1:7       readstring_z  set zero char
+__{}    ld  [DE],A          ; 1:7       readstring_z  set zero char
 __{}}){}dnl
     pop  HL             ; 1:10      readstring   ret
     pop  DE             ; 1:10      readstring
@@ -1828,43 +2491,59 @@ __{}}){}dnl
 dnl
 dnl
 dnl
+ifdef({USE_KEYQUESTION},{
+;#==============================================================================
+;# If a character is available, return true. Otherwise, return false.
+;# In:
+;# Out: push stack, TOP = HL = true if the key is pressed
+_KEYQUESTION:          ;[11:79]     _key?   ( ret x2 x1 -- x2 ret x1 flag )
+    ex   DE, HL         ; 1:4       _key?
+    ex  [SP],HL         ; 1:19      _key?
+    push HL             ; 1:11      _key?   save ret
+    ld    A,[0x5C08]    ; 3:13      _key?   read last_k
+    add   A, 0xFF       ; 2:7       _key?
+    sbc  HL, HL         ; 2:15      _key?
+    ret                 ; 1:10      _key?}){}dnl
+dnl
+dnl
+dnl
 ifdef({USE_KEY},{ifdef({USE_CLEARKEY},,define({USE_CLEARKEY},{}))
-;==============================================================================
-; Read key from keyboard
-; In:
-; Out: push stack, TOP = HL = key
+;#==============================================================================
+;# Read key from keyboard
+;# In:
+;# Out: push stack, TOP = HL = key
 READKEY:
     ex   DE, HL         ; 1:4       readkey   ( ret . old _DE old_HL -- old_DE ret . old_HL key )
-    ex  (SP),HL         ; 1:19      readkey
+    ex  [SP],HL         ; 1:19      readkey
     push HL             ; 1:11      readkey
 
-    ld    A,(0x5C08)    ; 3:13      readkey   read new value of {LAST K}
+    ld    A,[0x5C08]    ; 3:13      readkey   read new value of {LAST K}
     or    A             ; 1:4       readkey   is it still zero?
     jr    z, $-4        ; 2:7/12    readkey
     ld    L, A          ; 1:4       readkey
     ld    H, 0x00       ; 2:7       readkey
-;   ...fall down to clearbuff}){}dnl
+;#   ...fall down to clearbuff}){}dnl
 ifdef({USE_CLEARKEY},{
-;==============================================================================
-; Clear key buffer
-; In:
-; Out: {(LAST_K)} = 0
+;#==============================================================================
+;# Clear key buffer
+;# In:
+;# Out: {(LAST_K)} = 0
 CLEARBUFF:
     push HL             ; 1:11      clearbuff
     ld   HL, 0x5C08     ; 3:10      clearbuff   {ZX Spectrum LAST K} system variable
-    ld  (HL),0x00       ; 2:10      clearbuff
+    ld  [HL],0x00       ; 2:10      clearbuff
     pop  HL             ; 1:10      clearbuff
     ret                 ; 1:10      clearbuff}){}dnl
 dnl
 dnl
 dnl
 ifdef({USE_TYPE},{
-;==============================================================================
-; ( addr n -- )
-; print n chars from addr
-;  Input: HL, DE
-; Output: Print decimal number in HL
-; Pollutes: AF, BC, DE
+;#==============================================================================
+;# ( addr n -- )
+;# print n chars from addr
+;#  Input: HL, DE
+;# Output: Print decimal number in HL
+;# Pollutes: AF, BC, DE
 PRINT_TYPE:             ;[10:76]    print_string
     ld    B, H          ; 1:4       print_string
     ld    C, L          ; 1:4       print_string   BC = length of string to print
@@ -1878,56 +2557,607 @@ dnl
 dnl
 dnl
 ifdef({USE_TYPE_Z},{define({USE_PRINT_Z},{})
-;==============================================================================
-; Print C-style stringZ
-; In: HL = addr stringZ
-; Out: BC = addr zero
+;#==============================================================================
+;# Print C-style stringZ
+;# In: HL = addr stringZ
+;# Out: BC = addr zero
 PRINT_TYPE_Z:           ;           print_type_z
     ld    B, H          ; 1:4       print_type_z
     ld    C, L          ; 1:4       print_type_z   BC = addr stringZ
-    db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
-    ; fall to PRINT_STRING_Z}){}dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    jr   $+5            ; 2:7/12    print_type_z},
+__{}{dnl
+__{}    db   0x3E           ; 1:7       print_type_z   ld    A, 0xD7
+__{}    ; fall to PRINT_STRING_Z}){}dnl
+}){}dnl
 dnl
 ifdef({USE_PRINT_Z},{
-;------------------------------------------------------------------------------
-; Print C-style stringZ
-; In: BC = addr
-; Out: BC = addr zero + 1
-    rst  0x10           ; 1:11      print_string_z putchar with {ZX 48K ROM} in, this will print char in A
-PRINT_STRING_Z:         ;           print_string_z
-    ld    A,(BC)        ; 1:7       print_string_z
-    inc  BC             ; 1:6       print_string_z
-    or    A             ; 1:4       print_string_z
-    jp   nz, $-4        ; 3:10      print_string_z
-    ret                 ; 1:10      print_string_z}){}dnl
+;#------------------------------------------------------------------------------
+;# Print C-style stringZ
+;# In: BC = addr
+;# Out: BC = addr zero + 1
+__{}__PUTCHAR_A(print_string_z)
+__{}PRINT_STRING_Z:         ;           print_string_z
+__{}    ld    A,[BC]        ; 1:7       print_string_z
+__{}    inc  BC             ; 1:6       print_string_z
+__{}    or    A             ; 1:4       print_string_z
+__{}    jp   nz, $-eval(3+__BYTES)        ; 3:10      print_string_z
+__{}    ret                 ; 1:10      print_string_z{}dnl
+}){}dnl
 dnl
 dnl
 dnl
 ifdef({USE_TYPE_I},{__def({USE_PRINT_I})
-;==============================================================================
-; Print string ending with inverted most significant bit
-; In: HL = addr string_imsb
-; Out: BC = addr last_char + 1
+;#==============================================================================
+;# Print string ending with inverted most significant bit
+;# In: HL = addr string_imsb
+;# Out: BC = addr last_char + 1
 PRINT_TYPE_I:           ;           print_type_i
     ld    B, H          ; 1:4       print_type_i
     ld    C, L          ; 1:4       print_type_i   BC = addr string_imsb
-    db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
-    ; fall to PRINT_STRING_I}){}dnl
+__{}ifdef({USE_FONT_5x8},{dnl
+__{}    jr   $+5            ; 2:7/12    print_type_i},
+__{}{dnl
+__{}    db   0x3E           ; 1:7       print_type_i   ld    A, 0xD7
+__{}    ; fall to PRINT_STRING_Z}){}dnl
+}){}dnl
 dnl
 ifdef({USE_PRINT_I},{
-;------------------------------------------------------------------------------
-; Print string ending with inverted most significant bit
-; In: BC = addr string_imsb
-; Out: BC = addr last_char + 1
-    rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
-PRINT_STRING_I:         ;           print_string_i
-    ld    A,(BC)        ; 1:7       print_string_i
-    inc  BC             ; 1:6       print_string_i
-    or    A             ; 1:4       print_string_i
-    jp    p, $-4        ; 3:10      print_string_i
-    and  0x7f           ; 2:7       print_string_i
-    rst  0x10           ; 1:11      print_string_i putchar with {ZX 48K ROM} in, this will print char in A
-    ret                 ; 1:10      print_string_i}){}dnl
+;#------------------------------------------------------------------------------
+;# Print string ending with inverted most significant bit
+;# In: BC = addr string_imsb
+;# Out: BC = addr last_char + 1
+__{}__PUTCHAR_A(print_string_i)
+__{}PRINT_STRING_I:         ;           print_string_i
+__{}    ld    A,[BC]        ; 1:7       print_string_i
+__{}    inc  BC             ; 1:6       print_string_i
+__{}    or    A             ; 1:4       print_string_i
+__{}    jp    p, $-eval(3+__BYTES)        ; 3:10      print_string_i
+__{}    and  0x7f           ; 2:7       print_string_i
+__{}__PUTCHAR_A(print_string_i)
+__{}    ret                 ; 1:10      print_string_i{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+ifelse(ifdef({USE_FONT_5x8},1){}ifdef({USE_FONT_5x8_CALL},1),1,{
+;#==============================================================================
+;# Print text with 5x8 font
+;# entry point is "putchar"
+
+MAX_X           equ 51       ; x = 0..50
+MAX_Y           equ 24       ; y = 0..23
+CURCHL          equ 0x5C51
+PRINT_OUT       equ 0x5CBB
+
+set_ink:                ;           putchar   0x10
+    ld   HL, self_attr  ; 3:10      putchar
+    xor [HL]            ; 1:7       putchar
+    and 0x07            ; 2:7       putchar
+    xor [HL]            ; 1:7       putchar
+    jr  set_attr        ; 2:12      putchar
+
+set_paper:              ;           putchar   0x11
+    ld   HL, self_attr  ; 3:10      putchar
+    add   A, A          ; 1:4       putchar   2x
+    add   A, A          ; 1:4       putchar   4x
+    add   A, A          ; 1:4       putchar   8x
+    xor [HL]            ; 1:7       putchar
+    and 0x38            ; 2:7       putchar
+    xor [HL]            ; 1:7       putchar
+    jr  set_attr        ; 2:12      putchar
+
+set_flash:              ;           putchar   0x12
+    rra                 ; 1:4       putchar   carry = flash
+    ld   HL, self_attr  ; 3:10      putchar
+    ld    A,[HL]        ; 1:7       putchar
+    adc   A, A          ; 1:4       putchar
+    rrca                ; 1:4       putchar
+    jr  set_attr        ; 2:12      putchar
+
+set_bright:             ;           putchar   0x13
+    ld   HL, self_attr  ; 3:10      putchar
+    rrca                ; 1:4       putchar
+    rrca                ; 1:4       putchar
+    xor [HL]            ; 1:7       putchar
+    and 0x40            ; 2:7       putchar
+    xor [HL]            ; 1:7       putchar
+    jr   set_attr       ; 2:12      putchar
+
+set_inverse:            ;           putchar   0x14
+    ld   HL, self_attr  ; 3:10      putchar
+    ld    A,[HL]        ; 1:7       putchar
+    and  0x38           ; 2:7       putchar   A = 00pp p000
+    add   A, A          ; 1:4       putchar
+    add   A, A          ; 1:4       putchar   A = ppp0 0000
+    xor [HL]            ; 1:7       putchar
+    and  0xF8           ; 2:7       putchar
+    xor [HL]            ; 1:7       putchar   A = ppp0 0iii
+    rlca                ; 1:4       putchar
+    rlca                ; 1:4       putchar
+    rlca                ; 1:4       putchar   A = 00ii ippp
+    xor [HL]            ; 1:7       putchar
+    and  0x3F           ; 2:7       putchar
+    xor [HL]            ; 1:7       putchar   A = fbii ippp
+
+set_attr:               ;           putchar
+    ld  [HL],A          ; 1:7       putchar   save new attr
+clean_set_0:            ;           putchar
+    xor   A             ; 1:4       putchar
+clean_set_A:            ;           putchar
+    ld  (self_jmp),A    ; 3:13      putchar
+    pop  HL             ; 1:10      putchar
+    ret                 ; 1:10      putchar
+
+set_over:               ;           putchar   0x15
+    jr   clean_set_0    ; 2:12      putchar
+
+set_at:                 ;           putchar   0x16
+    ld  (putchar_y),A   ; 3:13      putchar   save new Y
+    neg                 ; 2:8       putchar
+    add   A, 0x18       ; 2:7       putchar
+    ld  [0x5C89],A      ; 3:13      putchar
+    ld   A,$+4-jump_from; 2:7       putchar
+    jr   clean_set_A    ; 2:12      putchar
+
+set_at_x:               ;           putchar
+    ld  (putchar_yx),A  ; 3:13      putchar   save new X
+    jr   clean_set_0    ; 2:12      putchar
+
+  if 0
+    jr   print_comma    ; 2:12      putchar   0x06
+    jr   print_edit     ; 2:12      putchar   0x07
+    jr   cursor_left    ; 2:12      putchar   0x08
+    jr   cursor_right   ; 2:12      putchar   0x09
+    jr   cursor_down    ; 2:12      putchar   0x0A
+    jr   cursor_up      ; 2:12      putchar   0x0B
+    jr   delete         ; 2:12      putchar   0x0C
+    jr   enter          ; 2:12      putchar   0x0D
+    jr   not_used       ; 2:12      putchar   0x0E
+    jr   not_used       ; 2:12      putchar   0x0F
+  endif
+
+tab_spec:               ;           putchar
+    jr   set_ink        ; 2:12      putchar   0x10
+    jr   set_paper      ; 2:12      putchar   0x11
+    jr   set_flash      ; 2:12      putchar   0x12
+    jr   set_bright     ; 2:12      putchar   0x13
+    jr   set_inverse    ; 2:12      putchar   0x14
+    jr   set_over       ; 2:12      putchar   0x15
+    jr   set_at         ; 2:12      putchar   0x16
+;#   jr   set_tab        ; 2:12      putchar   0x17
+
+set_tab:                ;           putchar
+    ld   HL,(putchar_yx); 3:16      putchar   load origin cursor
+    sub  MAX_X          ; 2:7       putchar
+    jr   nc,$-2         ; 2:7/12    putchar
+    add   A, MAX_X      ; 2:7       putchar   (new x) mod MAX_X
+    cp    L             ; 1:4       putchar
+    call  c, next_line  ; 3:10/17   putchar   new x < (old x+1)
+set_tab_A               ;           putchar
+    ld    L, A          ; 1:4       putchar
+    ld  (putchar_yx),HL ; 3:16      putchar   save new cursor
+    jr   clean_set_0    ; 2:12      putchar
+
+cursor_left:            ;           putchar   0x08
+    ld   HL,(putchar_yx); 3:16      putchar
+    inc   L             ; 1:4       putchar
+    dec   L             ; 1:4       putchar
+    dec  HL             ; 1:6       putchar
+    jr   nz, $+4        ; 2:7/12    putchar
+    ld    L, MAX_X-1    ; 2:7       putchar
+    jr   enter_exit     ; 2:12      putchar
+
+print_comma:            ;           putchar   0x06
+    ld   HL,(putchar_yx); 3:16      putchar   H = next Y, L = next X
+    ld    A, 17         ; 2:7       putchar
+    cp    L             ; 1:4       putchar
+    jr   nc, set_tab_A  ; 2:12      putchar
+    add   A, A          ; 1:4       putchar
+    cp    L             ; 1:4       putchar
+    jr   nc, set_tab_A  ; 2:12      putchar
+    xor   A             ; 1:4       putchar
+
+enter:                  ;           putchar   0x0D
+    call  z, next_line  ; 3:10/17   putchar
+enter_exit:             ;           putchar
+    ld  (putchar_yx),HL ; 3:16      putchar   save new cursor
+    pop  HL             ; 1:10      putchar   load HL
+    ret                 ; 3:10
+
+
+print_edit:             ;           putchar   0x07
+cursor_right:           ;           putchar   0x09
+cursor_down:            ;           putchar   0x0A
+cursor_up:              ;           putchar   0x0B
+delete:                 ;           putchar   0x0C
+not_used:               ;           putchar   0x0E, 0x0F
+
+print_question          ;           putchar   0x00..0x05 + 0x0E..0x0F + 0x18..0x1F
+    ld    A, '?'        ; 2:7       putchar
+    jr   print_char_HL  ; 2:7/12    putchar
+
+;#------------------------------------------------------------------------------
+;#  Input: A = char
+;# Poluttes: AF, AF', DE', BC'
+putchar:
+    push HL                 ; 1:11
+self_jmp    equ $+1
+    jr   jump_from          ; 2:7/12    self-modifying
+jump_from:
+    cp   0xA5               ; 2:7       token RND
+    jr   nc, print_token    ; 2:7/12
+
+    cp   0x20               ; 2:7
+    jr   nc, print_char_HL  ; 2:7/12
+
+    cp   0x06               ; 2:7       comma
+    jr    z, print_comma    ; 2:7/12
+    cp   0x08               ; 2:7       cursor_left
+    jr    z, cursor_left    ; 2:7/12
+    cp   0x09               ; 2:7       cursor_right
+    jp    z, next_cursor    ; 3:10
+    cp   0x0D               ; 2:7       enter
+    jr    z, enter          ; 2:7/12
+
+    sub  0x10               ; 2:7       set_ink
+    jr    c, print_question ; 2:7/12
+
+    cp   0x08               ; 2:7       >print_tab
+    jr   nc, print_question ; 2:7/12
+
+draw_spec:
+    add   A,A               ; 1:4       2x
+    sub  jump_from-tab_spec ; 2:7
+    ld  (self_jmp),A        ; 3:13
+draw_spec_exit:             ;
+    pop  HL                 ; 1:10
+    ret                     ; 1:10
+
+print_token:
+    ex   DE, HL             ; 1:4
+    ld   DE, 0x0095	        ; 3:10      The base address of the token table
+    sub  0xA5               ; 2:7
+    push AF                 ; 1:11      Save the code on the stack. (Range +00 to +5A, RND to COPY).
+
+;# Input
+;#   A   Message table entry number
+;#   DE  Message table start address
+;# Output
+;#   DE  Address of the first character of message number A
+;#   F   Carry flag: suppress (set) or allow (reset) a leading space
+    call 0x0C41             ; 3:17      {THE 'TABLE SEARCH' SUBROUTINE}
+    ex   DE, HL             ; 1:4
+
+    ld    A,' '             ; 2:7       {A 'space' will be printed before the message/token if required (bit 0 of FLAGS reset).}
+    bit   0,(IY+0x01)       ;
+    call  z, print_char     ; 3:17
+
+;# The characters of the message/token are printed in turn.
+
+token_loop:
+    ld    A,[HL]            ; 1:7       Collect a code.
+    and  0x7F               ; 2:7       Cancel any 'inverted bit'.
+    call print_char         ; 3:17      Print the character.
+    ld    A,[HL]            ; 1:7       Collect the code again.
+    inc  HL                 ; 1:6       Advance the pointer.
+    add   A, A              ; 1:4       The 'inverted bit' goes to the carry flag and signals the end of the message/token; otherwise jump back.
+    jr   nc, token_loop     ; 2:7/12
+
+;# Now consider whether a 'trailing space' is required.
+
+    pop  HL                 ; 1:10      For messages, H holds +00; for tokens, H holds +00 to +5A.
+    cp   0x48               ; 2:7       Jump forward if the last character was a '$'
+    jr    z, $+6            ; 2:7/12
+    cp   0x82               ; 2:7       Return if the last character was any other before 'A'.
+    jr    c, draw_spec_exit ; 2:7/12
+    ld    A, H              ; 1:4       Examine the value in H and return if it indicates a message, RND, INKEY$ or PI.
+    cp   0x03               ; 2:7
+    ld    A, ' '            ; 2:7       All other cases will require a 'trailing space'.
+    ret   c                 ; 1:5/11
+    pop  HL                 ; 1:10
+print_char:
+    push HL                 ; 1:11    uschovat HL na zásobník
+print_char_HL:
+ifdef({USE_FONT_5x8},{
+    exx                     ; 1:4})
+    push DE                 ; 1:11    uschovat DE na zásobník
+    push BC                 ; 1:11    uschovat BC na zásobník
+ifdef({USE_FONT_5x8_CALL},{
+    exx                     ; 1:4})
+    push HL                 ; 1:11    uschovat HL na zásobník
+
+    ld    BC, FONT_ADR      ; 3:10    adresa, od níž začínají masky znaků
+
+    add   A, A              ; 1:4
+    ld    L, A              ; 1:4     2x
+    ld    H, 0x00           ; 1:4     C je nenulové
+    add  HL, HL             ; 1:11    4x
+    add  HL, BC             ; 1:11    přičíst bázovou adresu masek znaků
+    exx                     ; 1:4
+
+;# YX -> ATTR
+
+putchar_yx     equ     $+1
+putchar_y      equ     $+2
+
+    ld   DE, 0x0000         ; 3:10
+    ld    A, E              ; 1:4     X
+    add   A, A              ; 1:4     2*X
+    add   A, A              ; 1:4     4*X
+    add   A, E              ; 1:4     5*X
+    ld    B, A              ; 1:4     save 5*X
+
+    xor   D                 ; 1:4
+    and 0xF8                ; 2:7
+    xor   D                 ; 1:4
+    rrca                    ; 1:4
+    rrca                    ; 1:4
+    rrca                    ; 1:4
+    ld    L, A              ; 1:4
+
+    ld    A, D              ; 1:4
+    or  0xC7                ; 2:7     110y y111, reset carry
+    rra                     ; 1:4     0110 yy11, set carry
+    rrca                    ; 1:4     1011 0yy1, set carry
+    ccf                     ; 1:4     reset carry
+    rra                     ; 1:4     0101 10yy
+    ld    H, A              ; 1:4
+
+self_attr       equ $+1
+    ld  [HL],0x38           ; 2:10    uložení atributu znaku
+
+    ld    A, D              ; 1:4
+    and 0x18                ; 2:7
+    or  0x40                ; 2:7
+    ld    H, A              ; 1:4
+
+    ld    A, B              ; 1:4     load 5*X
+    and 0x07                ; 2:7
+    cpl                     ; 1:4
+    add   A, 0x09           ; 2:7
+    ld    B, A              ; 2:7     pocitadlo pro pocatecni posun vlevo masky znaku
+    exx                     ; 1:4
+    ld    C, A              ; 1:4
+    exx                     ; 1:4
+    ex   DE, HL             ; 1:4
+    ld   HL, 0x00F0         ; 3:10
+    add  HL, HL             ; 1:11    pocatecni posun masky
+    djnz  $-1               ; 2:8/13
+    ex   DE, HL             ; 1:4
+
+    ld    C, 4          ; 2:7       putchar   draw
+putchar_c:              ;           putchar   draw
+    exx                 ; 1:4       putchar   draw
+    ld    A,[HL]        ; 1:7       putchar   draw
+    inc  HL             ; 1:6       putchar   draw
+    ld    B, C          ; 1:4       putchar   draw
+    rlca                ; 1:4       putchar   draw
+    djnz  $-1           ; 2:8/13    putchar   draw
+    ld    B, A          ; 1:4       putchar   draw
+    exx                 ; 1:4       putchar   draw
+    ld    B, 2          ; 2:7       putchar   draw
+putchar_b:              ;           putchar   draw
+    xor [HL]            ; 1:7       putchar   draw
+    and   D             ; 1:4       putchar   draw
+    xor [HL]            ; 1:7       putchar   draw
+    ld  [HL],A          ; 1:7       putchar   draw   ulozeni jednoho bajtu z masky
+
+    exx                 ; 1:4       putchar   draw
+    ld    A, B          ; 1:4       putchar   draw   načtení druhe poloviny "bajtu" z masky
+    exx                 ; 1:4       putchar   draw
+
+    inc   L             ; 1:4       putchar   draw
+    xor [HL]            ; 1:7       putchar   draw
+    and   E             ; 1:4       putchar   draw
+    xor [HL]            ; 1:7       putchar   draw
+    ld  [HL],A          ; 1:7       putchar   draw   ulozeni jednoho bajtu z masky
+    dec   L             ; 1:4       putchar   draw
+    inc   H             ; 1:4       putchar   draw
+
+    exx                 ; 1:4       putchar   draw
+    ld    A, B          ; 1:4       putchar   draw   načtení jednoho bajtu z masky
+    rlca                ; 1:4       putchar   draw
+    rlca                ; 1:4       putchar   draw
+    rlca                ; 1:4       putchar   draw
+    rlca                ; 1:4       putchar   draw
+    ld    B, A          ; 1:4       putchar   draw
+    exx                 ; 1:4       putchar   draw
+
+;#     halt
+
+    djnz putchar_b      ; 2:8/13    putchar   draw
+
+    dec   C             ; 2:7       putchar   draw
+    jr   nz, putchar_c  ; 2/7/12    putchar   draw
+
+ifdef({USE_FONT_5x8_CALL},{
+    exx                 ; 1:4       putchar})
+    pop  HL             ; 1:10      putchar   obnovit obsah HL ze zásobníku
+ifdef({USE_FONT_5x8_CALL},{dnl
+    exx                 ; 1:4       putchar})
+    pop  BC             ; 1:10      putchar   obnovit obsah BC ze zásobníku
+    pop  DE             ; 1:10      putchar   obnovit obsah DE ze zásobníku
+ifdef({USE_FONT_5x8},{dnl
+    exx                 ; 1:4       putchar})
+;#   fall to next cursor
+
+;# Output: [putchar_yx] = cursor right
+next_cursor:            ;
+    ld   HL,(putchar_yx); 3:16
+;# Input: HL = YX
+next_cursor_HL:         ;
+    inc   L             ; 1:4     0..50
+    ld    A, L          ; 1:4
+    sub  MAX_X          ; 2:7     -51
+    call nc, next_line  ; 3:10/17
+next_exit:
+    ld  (putchar_yx),HL ; 3:16
+exit_hl:                ;
+    pop  HL             ; 1:10    obnovit obsah HL ze zásobníku
+    ret                 ; 1:10
+
+;# Input:
+;# Output: H = Y+1/Y+0+scroll, L=0
+next_line:
+    push AF             ; 1:11      putchar
+ifdef({USE_FONT_5x8_CALL},{dnl
+__{}    ld   HL, 0x5C88     ; 3:10      putchar
+__{}    ld  [HL], 0x01      ; 2:10      putchar
+__{}    ld    A, 0x09       ; 2:7       putchar   cursor_right
+__{}    rst  0x10           ; 1:11      putchar},
+{dnl
+__{}    ld   HL, 0x5C88     ; 3:10      putchar
+__{}    ld  [HL], 0x01      ; 2:10      putchar
+__{}    ld    A, 0x09       ; 2:7       putchar   cursor_right
+__{}    push HL             ; 1:11      putchar
+__{}    call 0x09F4         ; 3:17      putchar   rst 0x10 --> call 0x09F4
+__{}    ld   HL, putchar    ; 3:10      putchar
+__{}    ld  (PRINT_OUT),HL  ; 3:10      putchar
+__{}    pop  HL             ; 1:10      putchar})
+    ld    A, 0x18       ; 2:7       putchar
+    inc   L             ; 1:4       putchar
+    sub [HL]            ; 1:7       putchar
+    ld    H, A          ; 1:7       putchar
+    ld    L, 0x00       ; 2:7       putchar
+    pop  AF             ; 1:10      putchar
+    ret                 ; 1:10      putchar}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_OCTODE},{
+;# ============================================================================
+;# Input: HL = data address
+;# Pollutes: AF, HL, DE
+PLAY_OCTODE:            ;[:]        play_octode
+    ld    E,[HL]        ; 1:7       play_octode
+    inc  HL             ; 1:6       play_octode
+    ld    D,[HL]        ; 1:7       play_octode     DE = addr loop
+    inc  HL             ; 1:6       play_octode     HL = addr data
+    ld  (seqpntr),HL    ; 3:16      play_octode     set addr song start
+    ld  (nameloop),DE   ; 4:20      play_octode     set addr song loop
+    xor   A             ; 1:4       play_octode
+    in    A,(0xFE)      ; 2:11      play_octode     read kbd
+    or  0xE0            ; 2:7       play_octode
+    inc   A             ; 1:4       play_octode
+    jr   nz, $-6        ; 2:7/12    play_octode     wait until no press
+    exx                 ; 1:4       play_octode
+    push HL             ; 1:11      play_octode
+    push IX             ; 2:15      play_octode
+    push IY             ; 2:15      play_octode
+    call OCTODE2K16_ROUTINE; 3:17      play_octode
+    pop  IY             ; 2:14      play_octode
+    pop  IX             ; 2:14      play_octode
+    pop  HL             ; 1:10      play_octode
+    exx                 ; 1:4       play_octode
+    ret                 ; 1:10      play_octode}){}dnl
+dnl
+dnl
+dnl
+ifelse(ifdef({USE_FONT_5x8},1){}ifdef({USE_FONT_5x8_CALL},1),1,{
+FONT_ADR    equ     FONT_5x8-32*4
+FONT_5x8:
+    db %00000000,%00000000,%00000000,%00000000 ; 0x20 space
+    db %00000010,%00100010,%00100000,%00100000 ; 0x21 !
+    db %00000101,%01010000,%00000000,%00000000 ; 0x22 "
+    db %00000000,%01011111,%01011111,%01010000 ; 0x23 #
+    db %00000010,%01110110,%00110111,%00100000 ; 0x24 $
+    db %00001100,%11010010,%01001011,%00110000 ; 0x25 %
+    db %00000000,%11101010,%01011010,%11010000 ; 0x26 &
+    db %00000011,%00010010,%00000000,%00000000 ; 0x27 '
+    db %00000010,%01000100,%01000100,%00100000 ; 0x28 (
+    db %00000100,%00100010,%00100010,%01000000 ; 0x29 )
+    db %00000000,%00001010,%01001010,%00000000 ; 0x2A *
+    db %00000000,%00000100,%11100100,%00000000 ; 0x2B +
+    db %00000000,%00000000,%00000010,%00100100 ; 0x2C ,
+    db %00000000,%00000000,%11100000,%00000000 ; 0x2D -
+    db %00000000,%00000000,%00000000,%01000000 ; 0x2E .
+    db %00000000,%00010010,%01001000,%00000000 ; 0x2F /
+
+    db %00000110,%10011011,%11011001,%01100000 ; 0x30 0
+    db %00000010,%01100010,%00100010,%01110000 ; 0x31 1
+    db %00000110,%10010001,%01101000,%11110000 ; 0x32 2
+    db %00000110,%10010010,%00011001,%01100000 ; 0x33 3
+    db %00000010,%01101010,%11110010,%00100000 ; 0x34 4
+    db %00001111,%10001110,%00011001,%01100000 ; 0x35 5
+    db %00000110,%10001110,%10011001,%01100000 ; 0x36 6
+    db %00001111,%00010010,%01000100,%01000000 ; 0x37 7
+    db %00000110,%10010110,%10011001,%01100000 ; 0x38 8
+    db %00000110,%10011001,%01110001,%01100000 ; 0x39 9
+    db %00000000,%00000010,%00000010,%00000000 ; 0x3A :
+    db %00000000,%00000010,%00000010,%01000000 ; 0x3B ;
+    db %00000000,%00010010,%01000010,%00010000 ; 0x3C <
+    db %00000000,%00000111,%00000111,%00000000 ; 0x3D =
+    db %00000000,%01000010,%00010010,%01000000 ; 0x3E >
+    db %00001110,%00010010,%01000000,%01000000 ; 0x3F ?
+
+    db %00000000,%01101111,%10111000,%01100000 ; 0x40 @
+    db %00000110,%10011001,%11111001,%10010000 ; 0x41 A
+    db %00001110,%10011110,%10011001,%11100000 ; 0x42 B
+    db %00000110,%10011000,%10001001,%01100000 ; 0x43 C
+    db %00001110,%10011001,%10011001,%11100000 ; 0x44 D
+    db %00001111,%10001110,%10001000,%11110000 ; 0x45 E
+    db %00001111,%10001110,%10001000,%10000000 ; 0x46 F
+    db %00000110,%10011000,%10111001,%01110000 ; 0x47 G
+    db %00001001,%10011111,%10011001,%10010000 ; 0x48 H
+    db %00000111,%00100010,%00100010,%01110000 ; 0x49 {I}
+    db %00000111,%00010001,%00011001,%01100000 ; 0x4A {J}
+    db %00001001,%10101100,%10101001,%10010000 ; 0x4B {K}
+    db %00001000,%10001000,%10001000,%11110000 ; 0x4C L
+    db %00001001,%11111001,%10011001,%10010000 ; 0x4D M
+    db %00001001,%11011011,%10011001,%10010000 ; 0x4E N
+    db %00000110,%10011001,%10011001,%01100000 ; 0x4F O
+
+    db %00001110,%10011001,%11101000,%10000000 ; 0x50 P
+    db %00000110,%10011001,%10011010,%01010000 ; 0x51 Q
+    db %00001110,%10011001,%11101001,%10010000 ; 0x52 R
+    db %00000111,%10000110,%00010001,%11100000 ; 0x53 S
+    db %00001111,%00100010,%00100010,%00100000 ; 0x54 T
+    db %00001001,%10011001,%10011001,%01100000 ; 0x55 U
+    db %00001001,%10011001,%10010101,%00100000 ; 0x56 V
+    db %00001001,%10011001,%10011111,%10010000 ; 0x57 W
+    db %00001001,%10010110,%10011001,%10010000 ; 0x58 X
+    db %00001001,%10010101,%00100010,%00100000 ; 0x59 Y
+    db %00001111,%00010010,%01001000,%11110000 ; 0x5A Z
+    db %00000111,%01000100,%01000100,%01110000 ; 0x5B [
+    db %00000000,%10000100,%00100001,%00000000 ; 0x5C \
+    db %00001110,%00100010,%00100010,%11100000 ; 0x5D ]
+    db %00000010,%01010000,%00000000,%00000000 ; 0x5E ^
+    db %00000000,%00000000,%00000000,%11110000 ; 0x5F _
+
+    db %00000011,%01001110,%01000100,%11110000 ; 0x60 ` GBP
+    db %00000000,%01100001,%01111001,%01110000 ; 0x61 a
+    db %00001000,%11101001,%10011001,%11100000 ; 0x62 b
+    db %00000000,%01101001,%10001001,%01100000 ; 0x63 c
+    db %00000001,%01111001,%10011001,%01110000 ; 0x64 d
+    db %00000000,%01101001,%11111000,%01110000 ; 0x65 e
+    db %00110100,%11100100,%01000100,%01000000 ; 0x66 f
+    db %00000000,%01111001,%10010111,%00010110 ; 0x67 g
+    db %00001000,%11101001,%10011001,%10010000 ; 0x68 h
+    db %00100000,%01100010,%00100010,%01110000 ; 0x69 i
+    db %00010000,%00110001,%00010001,%10010110 ; 0x6A j
+    db %00001000,%10011010,%11001010,%10010000 ; 0x6B k
+    db %00001100,%01000100,%01000100,%11100000 ; 0x6C l
+    db %00000000,%11001011,%10111011,%10010000 ; 0x6D m
+    db %00000000,%10101101,%10011001,%10010000 ; 0x6E n
+    db %00000000,%01101001,%10011001,%01100000 ; 0x6F o
+
+    db %00000000,%11101001,%10011001,%11101000 ; 0x70 p
+    db %00000000,%01111001,%10011001,%01110001 ; 0x71 q
+    db %00000000,%10101101,%10001000,%10000000 ; 0x72 r
+    db %00000000,%01111000,%01100001,%11100000 ; 0x73 s
+    db %00000100,%11100100,%01000100,%00110000 ; 0x74 t
+    db %00000000,%10011001,%10011001,%01100000 ; 0x75 u
+    db %00000000,%10011001,%10010101,%00100000 ; 0x76 v
+    db %00000000,%10011001,%10011111,%10010000 ; 0x77 w
+    db %00000000,%10011001,%01101001,%10010000 ; 0x78 x
+    db %00000000,%10011001,%10010111,%00010110 ; 0x79 y
+    db %00000000,%11110010,%01001000,%11110000 ; 0x7A z
+    db %00010010,%00100100,%00100010,%00010000 ; 0x7B {
+    db %01000100,%01000100,%01000100,%01000000 ; 0x7C |
+    db %10000100,%01000010,%01000100,%10000000 ; 0x7D }
+    db %00000101,%10100000,%00000000,%00000000 ; 0x7E ~
+    db %00000110,%10011011,%10111001,%01100000 ; 0x7F (c)}){}dnl
 dnl
 dnl
 dnl
@@ -1943,6 +3173,104 @@ ifelse(ALL_VARIABLE,{},,{
 VARIABLE_SECTION:
 }ALL_VARIABLE
 ){}dnl
+dnl
+dnl
+dnl
+__INCLUDE_TXT_FILE{}dnl
+dnl
+dnl
+dnl
+__INCLUDE_BIN_FILE{}dnl
+dnl
+dnl
+dnl
+ifdef({USE_OCTODE},{
+;# ============================================================================
+;# Octode 2k16 play routine
+  if $ < 0x8000
+    ORG 0x8000
+  endif
+include M4PATH{}../octode2k16/octode2k16.asm
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({USE_BUFFERPLAY},{
+;# ============================================================================
+__{}ifelse(USE_BUFFERPLAY,,,{dnl
+__{}__{}  if ($>USE_BUFFERPLAY)
+__{}__{}    .error Buffer overwrites previous data!
+__{}__{}  endif
+__{}__{}    ORG USE_BUFFERPLAY})
+__{}__{}BUFFERPLAY:{}dnl
+}){}dnl
+dnl
+dnl
+dnl
+ifdef({BUFFERPLAY_SIZE},{
+BUFFERPLAY_END       equ   BUFFERPLAY+BUFFERPLAY_SIZE
+  if (BUFFERPLAY_END<BUFFERPLAY)
+    if (BUFFERPLAY_END>=0x8000)
+        .error Buffer overflow 64k! over 32768..65535 bytes
+    endif
+    if (BUFFERPLAY_END>=0x4000)
+        .error Buffer overflow 64k! over 16384..32767 bytes
+    endif
+    if (BUFFERPLAY_END>=0x2000)
+        .error Buffer overflow 64k! over 8192..16383 bytes
+    endif
+    if (BUFFERPLAY_END>=0x1000)
+        .error Buffer overflow 64k! over 4096..8191 bytes
+    endif
+    if (BUFFERPLAY_END>=0x0800)
+        .error Buffer overflow 64k! over 2048..4095 bytes
+    endif
+    if (BUFFERPLAY_END>=0x0400)
+        .error Buffer overflow 64k! over 1024..2047 bytes
+    endif
+    if (BUFFERPLAY_END>=0x0200)
+        .error Buffer overflow 64k! over 512..1023 bytes
+    endif
+    if (BUFFERPLAY_END>=0x0100)
+        .error Buffer overflow 64k! over 256..511 bytes
+    endif
+    .error Buffer overflow 64k! over 0..255 bytes
+  endif
+  if (BUFFERPLAY_END>0xFF00)
+    .warning Buffer BUFFERPLAY rewrite 0xFF00+ address!
+  endif
+},
+{ifelse(ALL_VARIABLE,{},,{
+;# ============================================================================
+  if ($<0x0100)
+    .error Overflow 64k! over 0..255 bytes
+  endif
+  if ($<0x0200)
+    .error Overflow 64k! over 256..511 bytes
+  endif
+  if ($<0x0400)
+    .error Overflow 64k! over 512..1023 bytes
+  endif
+  if ($<0x0800)
+    .error Overflow 64k! over 1024..2047 bytes
+  endif
+  if ($<0x1000)
+    .error Overflow 64k! over 2048..4095 bytes
+  endif
+  if ($<0x2000)
+    .error Overflow 64k! over 4096..8191 bytes
+  endif
+  if ($<0x3000)
+    .error Overflow 64k! over 8192..12287 bytes
+  endif
+  if ($<0x4000)
+    .error Overflow 64k! over 12288..16383 bytes
+  endif
+  if ($>0xFF00)
+    .warning Data ends at 0xFF00+ address!
+  endif{}dnl
+}){}dnl
+}){}dnl
 dnl
 dnl
 dnl

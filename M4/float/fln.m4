@@ -16,9 +16,9 @@ ifdef({USE_fLn},{ifdef({USE_fAdd},,define({USE_fAdd},{}))
     ld    A, H          ; 1:4       save
 
     ld    H, high Ln_M  ; 2:7       Ln_M[]
-    ld    E, (HL)       ; 1:7
+    ld    E,[HL]        ; 1:7
     inc   H             ; 1:4       hi Ln_M[]
-    ld    D, (HL)       ; 1:7
+    ld    D,[HL]        ; 1:7
 
     add   A, A          ; 1:4       sign out, HL = abs(HL)
     ld    L, A          ; 1:4
@@ -27,9 +27,9 @@ ifdef({USE_fLn},{ifdef({USE_fAdd},,define({USE_fAdd},{}))
 
     inc   H             ; 1:4       Ln2_Exp[]
 
-    ld    A, (HL)       ; 1:7
+    ld    A,[HL]        ; 1:7
     inc   L             ; 1:4
-    ld    H, (HL)       ; 1:7
+    ld    H,[HL]        ; 1:7
     ld    L, A          ; 1:4
 
     ld    A, D          ; 1:4
@@ -39,9 +39,9 @@ ifdef({USE_fLn},{ifdef({USE_fAdd},,define({USE_fAdd},{}))
 
 fLn_FIX:
     ld    H, high Ln_FIX; 2:7
-    ld    E, (HL)       ; 1:7
+    ld    E,[HL]        ; 1:7
     inc   H             ; 1:4
-    ld    D, (HL)       ; 1:7
+    ld    D,[HL]        ; 1:7
 
 fLn_NO_Add:
     ex   DE, HL         ; 1:4

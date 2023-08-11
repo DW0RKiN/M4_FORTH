@@ -44,9 +44,9 @@ PIXEL:
     rla                 ; 1:4       ??xxx110
     ld   ($+4), A       ; 3:13
 PIXEL_MODE:
-    set   0,(HL)        ; 2:15      0xCB 0xC6..+8..0xFE %11xx x110
-;   bit   0,(HL)        ; 2:12      0xCB 0x46..+8..0x7E %01xx x110
-;   res   0,(HL)        ; 2:15      0xCB 0x86..+8..0xBE %10xx x110
+    set   0,[HL]        ; 2:15      0xCB 0xC6..+8..0xFE %11xx x110
+;   bit   0,[HL]        ; 2:12      0xCB 0x46..+8..0x7E %01xx x110
+;   res   0,[HL]        ; 2:15      0xCB 0x86..+8..0xBE %10xx x110
     pop  HL             ; 1:10
     ret                 ; 1:10})dnl
 dnl
@@ -121,9 +121,9 @@ line_n_loop:
 line_n_in:
     exx                 ; 1:4
     ex   AF, AF'        ; 1:4
-    ld    A,(DE)        ; 1:7
+    ld    A,[DE]        ; 1:7
     or    C             ; 1:4
-    ld  (DE),A          ; 1:7
+    ld  [DE],A          ; 1:7
 line_n_adr EQU $+1
     call 0x0000         ; 3:17
     ex   AF, AF'        ; 1:4
@@ -184,9 +184,9 @@ line_p_loop:
 line_p_in:
     exx                 ; 1:4
     ex   AF, AF'        ; 1:4
-    ld    A,(DE)        ; 1:7
+    ld    A,[DE]        ; 1:7
     or    C             ; 1:4
-    ld  (DE),A          ; 1:7
+    ld  [DE],A          ; 1:7
 line_p_adr EQU $+1
     call 0x0000         ; 3:17
     ex   AF, AF'        ; 1:4

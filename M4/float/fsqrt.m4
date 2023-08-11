@@ -14,7 +14,7 @@ ifdef({USE_fSqrt},{
     inc   H             ; 1:4{}ifelse(carry_flow_warning,{1},{
     or    A             ; 1:4       RET with reset carry})
 fSqrt1:
-    ld    L, (HL)       ; 1:7
+    ld    L,[HL]        ; 1:7
     ld    H, A          ; 1:4
     ret                 ; 1:10
 })dnl
