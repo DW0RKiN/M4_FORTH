@@ -13,7 +13,8 @@ __{}__{}  .error {$0}($@): Empty parameter!},
 __{}__IS_NUM($1),1,{dnl # number with save sign
 __{}__{}dnl #  5+5 --> 10
 __{}__{}dnl # -5*5 --> -25
-__{}__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},eval($1))},
+__{}__{}__ADD_TOKEN({__TOKEN_PUSHS},{$1},eval($1)){}dnl
+__{}__{}ifelse(eval($#>1),1,{$0(shift($@))}){}dnl},
 
 __{}eval($#>=1),1,{dnl
 __{}__{}ifelse(dnl
