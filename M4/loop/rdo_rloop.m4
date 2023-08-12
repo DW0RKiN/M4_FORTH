@@ -547,7 +547,7 @@ __{}__SAVE_EVAL(__GET_LOOP_STEP($1)),{-1},{__ASM_TOKEN_SUB1_ADDRLOOP($1)},
 __{}__SAVE_EVAL(__GET_LOOP_STEP($1)),{2},{__ASM_TOKEN_2_ADDRLOOP($1)},
 __{}{define({__INFO},__COMPILE_INFO{}(r)){}dnl
 __{}ifelse(__GET_LOOP_END($1):_TYP_SINGLE,{:fast},{
-__{}__{}                       ;[38:193]    __INFO   fast version
+__{}__{}                       ;[39:197]    __INFO   fast version
 __{}__{}    ex  (SP),HL         ; 1:19      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
@@ -573,7 +573,8 @@ __{}__{}    ld    A, E          ; 1:4       __INFO
 __{}__{}    add   A, C          ; 1:4       __INFO
 __{}__{}    ld    A, D          ; 1:4       __INFO
 __{}__{}    adc   A, B          ; 1:4       __INFO
-__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   B             ; 1:4       __INFO
 __{}__{}    jp    m, leave{}$1   ; 3:10      __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
@@ -596,9 +597,9 @@ __{}__{}    ex  (SP),HL         ; 1:19      __INFO   HL = step
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    xor   A             ; 1:4       __INFO
 __{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
-__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO
@@ -623,9 +624,9 @@ __{}__{}    ld    D,(HL)        ; 1:7       __INFO   DE = index
 __{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
 __{}__{}__CODE
 __{}__{}    pop  BC             ; 1:10      __INFO   BC =  step
-__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit{}dnl
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   B             ; 1:4       __INFO{}dnl
 __{}__{}__ADD_HL_CONST(__GET_LOOP_END(}$1{),{BC =  stop = __GET_LOOP_END(}$1{)},{HL+=  stop = index+step}){}dnl
 __{}__{}__CODE
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
