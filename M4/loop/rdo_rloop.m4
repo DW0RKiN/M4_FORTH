@@ -29,7 +29,7 @@ __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( R: stop-1 index -- stop-1 index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -53,7 +53,7 @@ __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( R: stop index -- stop index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -75,7 +75,7 @@ __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO  DE =
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( R: stop-1 index -- stop-1 index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -96,7 +96,7 @@ __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO  DE =
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( R: stop index -- stop index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -118,7 +118,7 @@ __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   DE 
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( R: stop index -- stop index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -139,7 +139,7 @@ __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   DE 
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( R: stop index -- stop index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -194,7 +194,7 @@ __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( -- index ) ( R: stop-1 index -- stop-1 index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -221,7 +221,7 @@ __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( -- index ) ( R: stop index -- stop index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -246,7 +246,7 @@ __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO  DE =
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( -- index ) ( R: stop-1 index -- stop-1 index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -270,7 +270,7 @@ __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 4:20      __INFO  DE =
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( -- index ) ( R: stop index -- stop index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -295,7 +295,7 @@ __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   DE 
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( -- index ) ( R: stop index -- stop index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -319,7 +319,7 @@ __{}__{}    ld   DE,format({%-12s},__GET_LOOP_BEGIN($1)); 3:10      __INFO   DE 
 __{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO   ( -- index ) ( R: stop index -- stop index )
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -390,7 +390,7 @@ __{}__{}    xor   D             ; 1:4       __INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -420,7 +420,7 @@ __{}__{}    xor   D             ; 1:4       __INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -448,7 +448,7 @@ __{}__{}    xor   D             ; 1:4       __INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -475,7 +475,7 @@ __{}__{}    xor   D             ; 1:4       __INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -503,7 +503,7 @@ __{}__{}    xor   D             ; 1:4       __INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -530,7 +530,7 @@ __{}__{}    xor   D             ; 1:4       __INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __INFO
 __{}__{}do{}$1{}save1:             ;           __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
-__{}__{}do{}$1{}save2:             ;           __INFO    
+__{}__{}do{}$1{}save2:             ;           __INFO
 __{}__{}    dec  HL             ; 1:6       __INFO
 __{}__{}    ld  [HL],D          ; 1:7       __INFO
 __{}__{}    dec   L             ; 1:4       __INFO
@@ -557,7 +557,7 @@ __{}__{}    ld  [HL],E          ; 1:7       __INFO
 __{}__{}    exx                 ; 1:4       __INFO},
 
 __{}__{}__SIMPLIFY_EXPRESSION(__GET_LOOP_BEGIN($1)),__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)),{
-__{}__{}                        ;[5:18]     __INFO   ( -- ) ( R: -- )  __GET_LOOP_BEGIN($1) == __GET_LOOP_END($1) 
+__{}__{}                        ;[5:18]     __INFO   ( -- ) ( R: -- )  __GET_LOOP_BEGIN($1) == __GET_LOOP_END($1)
 __{}__{}    jp   exit{}$1        ; 3:10      __INFO
 __{}__{}do{}$1save:               ;           __INFO},
 
@@ -762,7 +762,7 @@ __{}ifelse(__GET_LOOP_END($1),{},{
     ld    A,[HL]        ; 1:7       __INFO
     xor   D             ; 1:4       __INFO   hi8(--index ^ --stop)
     jp   nz, do{}$1save1 ; 3:10      __INFO},
-    
+
 __HEX_HL(__GET_LOOP_END($1)-1),0xFFFF,{
                        ;[12:56]     __INFO   variant: stop-1 = -1
     exx                 ; 1:4       __INFO
@@ -773,7 +773,7 @@ __HEX_HL(__GET_LOOP_END($1)-1),0xFFFF,{
     or    D             ; 1:4       __INFO
     dec  DE             ; 1:6       __INFO   index--
     jp   nz, do{}$1save  ; 3:10      __INFO},
-    
+
 __HEX_HL(__GET_LOOP_END($1)-1),0x0000,{
                        ;[12:56]     __INFO   variant: stop-1 = 0
     exx                 ; 1:4       __INFO
@@ -784,7 +784,7 @@ __HEX_HL(__GET_LOOP_END($1)-1),0x0000,{
     ld    A, E          ; 1:4       __INFO
     or    D             ; 1:4       __INFO
     jp   nz, do{}$1save  ; 3:10      __INFO},
-    
+
 __HEX_H(__GET_LOOP_END($1)-1),0x00,{
                        ;[14:63]     __INFO   variant: hi8(stop-1) = 0
     exx                 ; 1:4       __INFO
@@ -796,7 +796,7 @@ __HEX_H(__GET_LOOP_END($1)-1),0x00,{
     xor   E             ; 1:4       __INFO   lo(index ^ stop-1)
     or    D             ; 1:4       __INFO   hi(stop-1) = 0
     jp   nz, do{}$1save  ; 3:10      __INFO},
-    
+
 __HEX_L(__GET_LOOP_END($1)-1),0x00,{
                        ;[14:63]     __INFO   variant: lo8(stop-1) = 0
     exx                 ; 1:4       __INFO
@@ -808,22 +808,22 @@ __HEX_L(__GET_LOOP_END($1)-1),0x00,{
     xor   D             ; 1:4       __INFO   hi(index ^ stop-1)
     or    E             ; 1:4       __INFO   lo(stop-1) = 0
     jp   nz, do{}$1save  ; 3:10      __INFO},
-   
+
 __HAS_PTR(__GET_LOOP_END($1)-1),1,{
                        ;[21:94]     __INFO   variant: stop is pointer
     exx                 ; 1:4       __INFO
     ld    E,[HL]        ; 1:7       __INFO
     inc   L             ; 1:4       __INFO
     ld    D,[HL]        ; 1:7       __INFO   DE = index
-    ld   BC, format({%-11s},__GET_LOOP_END($1)); 4:20      __INFO   stop    
+    ld   BC, format({%-11s},__GET_LOOP_END($1)); 4:20      __INFO   stop
     ld    A, E          ; 1:4       __INFO   lo index
     xor   C             ; 1:4       __INFO   lo(index ^ stop)
-    ld    A, D          ; 1:4       __INFO   hi index    
+    ld    A, D          ; 1:4       __INFO   hi index
     dec  DE             ; 1:6       __INFO   index--
     jp   nz, do{}$1save  ; 3:10      __INFO
     xor   B             ; 1:4       __INFO   hi(index ^ stop)
     jp   nz, do{}$1save  ; 3:10      __INFO},
-   
+
 __IS_NUM(__GET_LOOP_END($1)-1),0,{
                        ;[19:80]     __INFO   variant: stop is unknown
     exx                 ; 1:4       __INFO
@@ -987,7 +987,7 @@ __{}__{}    xor   B             ; 1:4       __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    exx                 ; 1:4       __INFO 
+__{}__{}    exx                 ; 1:4       __INFO
 __{}__{}exit{}$1:                ;           __INFO},
 
 __{}__GET_LOOP_END($1),{},{
@@ -1015,7 +1015,7 @@ __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    jp    p, do{}$1save1 ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    exx                 ; 1:4       __INFO 
+__{}__{}    exx                 ; 1:4       __INFO
 __{}__{}exit{}$1:                ;           __INFO},
 
 __{}{
@@ -1059,7 +1059,7 @@ __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO})
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    exx                 ; 1:4       __INFO 
+__{}__{}    exx                 ; 1:4       __INFO
 __{}__{}exit{}$1:                ;           __INFO{}dnl
 __{}}){}dnl
 }){}dnl
