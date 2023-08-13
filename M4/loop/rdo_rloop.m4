@@ -956,7 +956,7 @@ __{}__SAVE_EVAL(__GET_LOOP_STEP($1)),{-1},{__ASM_TOKEN_SUB1_ADDRLOOP($1)},
 __{}__SAVE_EVAL(__GET_LOOP_STEP($1)),{2},{__ASM_TOKEN_2_ADDRLOOP($1)},
 
 __{}__GET_LOOP_END($1):_TYP_SINGLE,{:fast},{
-__{}__{}                       ;[31:165]    __INFO   fast version
+__{}__{}                       ;[32:169]    __INFO   fast version
 __{}__{}    ex  [SP],HL         ; 1:19      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
@@ -982,7 +982,8 @@ __{}__{}    ld    A, E          ; 1:4       __INFO
 __{}__{}    add   A, C          ; 1:4       __INFO
 __{}__{}    ld    A, D          ; 1:4       __INFO
 __{}__{}    adc   A, B          ; 1:4       __INFO
-__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   B             ; 1:4       __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
@@ -1005,9 +1006,9 @@ __{}__{}    ex  [SP],HL         ; 1:19      __INFO   HL = step
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    xor   A             ; 1:4       __INFO
 __{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
-__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO
@@ -1032,28 +1033,27 @@ __{}__{}__CODE
 __{}__{}    pop  BC             ; 1:10      __INFO   BC =  step{}dnl
 __{}__{}__ADD_R16_CONST(HL,__GET_LOOP_END($1),{BC =  stop = __GET_LOOP_END($1)},{HL+=  stop = index+step}){}dnl
 __{}__{}ifelse(dnl
-__{}__{}__POLLUTES:eval(__PRICE<=17+__BYTE_PRICE*3),{sz:1},{
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}__POLLUTES:eval(__PRICE<=21+__BYTE_PRICE*4),{sz:1},{
 __{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
-__{}__{}__{}    add   A, A          ; 1:4       __INFO   recursive sign to carry
+__{}__{}__{}    sbc   A, A          ; 1:4       __INFO{}dnl
 __{}__{}__{}__CODE
+__{}__{}__{}    xor   B             ; 1:4       __INFO
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}__{}    jp   nc, do{}$1save  ; 3:10      __INFO},
+__{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO},
 
 __{}__{}__POLLUTES,{sz},{
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
+__{}__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}__{}    xor   B             ; 1:4       __INFO
 __{}__{}__{}    ld   BC, __HEX_HL(__GET_LOOP_END($1))     ; 3:10      __INFO   __GET_LOOP_END($1)
 __{}__{}__{}    add  HL, BC         ; 1:11      __INFO   $4
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO},
 
 __{}__{}__{}{
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
-__{}__{}__{}    xor   H             ; 1:4       __INFO   reverse sign --> exit
+__{}__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}__{}    xor   B             ; 1:4       __INFO{}dnl
 __{}__{}__{}__CODE
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO})
@@ -1190,16 +1190,12 @@ __{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: stop index -- )
 __{}__{}exit{}$1:                ;           __INFO},
 
 __{}{dnl
-__{}__{}__ADD_R16_CONST(HL,-(__GET_LOOP_END($1)),{BC = -stop = -(__GET_LOOP_END($1))},{HL+= -stop = index-stop}){}dnl
-__{}__{}define({$0_CODE},__CODE){}dnl
-__{}__{}define({__SUM_CLOCKS},__CLOCKS){}dnl
-__{}__{}define({__SUM_BYTES}, __BYTES){}dnl
-__{}__{}define({__SUM_PRICE}, __PRICE){}dnl
-__{}__{}define({$0_BC},__LD_R16({BC},__GET_LOOP_STEP($1))){}dnl
+__{}__{}__RESET_SUMS{}dnl
 __{}__{}__ADD_R16_CONST(HL,__GET_LOOP_END($1),{BC =  stop = __GET_LOOP_END($1)},{HL+=  stop = index+step}){}dnl
-__{}__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
-__{}__{}__add({__SUM_BYTES}, __BYTES){}dnl
-__{}__{}__add({__SUM_PRICE}, __PRICE){}dnl
+__{}__{}define({$0_ADD_STOP},__CODE){}dnl
+__{}__{}define({$0_BC},__LD_R16({BC},__GET_LOOP_STEP($1))){}dnl
+__{}__{}__ADD_R16_CONST(HL,-(__GET_LOOP_END($1)),{BC = -stop = -(__GET_LOOP_END($1))},{HL+= -stop = index-stop}){}dnl
+__{}__{}define({$0_SUB_STOP},__CODE){}dnl
 __{}__{}ifelse(__POLLUTES,{sz},{
 __{}__{}__{}                       ;[eval(12+__SUM_BYTES):eval(61+__SUM_CLOCKS)]     __INFO   variant: default(sz)
 __{}__{}__{}    exx                 ; 1:4       __INFO
@@ -1207,10 +1203,10 @@ __{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
-__{}__{}__{}$0_CODE{}dnl
+__{}__{}__{}$0_SUB_STOP{}dnl
 __{}__{}__{}$0_BC   BC =  step = __GET_LOOP_STEP($1)
 __{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step{}dnl
-__{}__{}__{}__CODE
+__{}__{}__{}$0_ADD_STOP
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),1,{dnl
 __{}__{}__{}__{}ifelse(eval((__GET_LOOP_STEP($1)) & 0x8000),0,{
