@@ -633,47 +633,50 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: index -- )
 __{}__{}exit{}$1:                ;           __INFO},
 
-__{}__HAS_PTR(__GET_LOOP_STEP($1)):__HEX_HL(__GET_LOOP_END($1)),{1:0x0000},{
-__{}__{}define({$0_STEP},__LD_R16(BC,__GET_LOOP_STEP($1))){}dnl
-__{}__{}                       ;[eval(15+__BYTES):eval(72+__CLOCKS)]     __INFO   variant: step is pointer, end is zero
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,[HL]        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index{}dnl
-__{}__{}$0_STEP   BC = step
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
-__{}__{}    xor   B             ; 2:7       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   +step
-__{}__{}leave{}$1:               ;           __INFO
-__{}__{}    inc  HL             ; 1:6       __INFO
-__{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: index -- )
-__{}__{}exit{}$1:                ;           __INFO{}dnl
-__{}},
-
-__{}__HAS_PTR(__GET_LOOP_STEP($1)),{1},{
-__{}__{}define({$0_STEP},__LD_R16(HL,__GET_LOOP_STEP($1))){}dnl
-__{}__{}define({$0_END},__LD_R16(BC,__GET_LOOP_END($1))){}dnl
-__{}__{}                       ;[eval(24+__BYTES):eval(135+__CLOCKS)]    __INFO   variant: step is pointer
-__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}    ld    E,[HL]        ; 1:7       __INFO
-__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index
-__{}__{}    push HL             ; 1:11      __INFO{}dnl
-__{}__{}$0_STEP   HL = step{}dnl
-__{}__{}$0_END   BC = stop
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    or    A             ; 1:4       __INFO
-__{}__{}    sbc  HL, BC         ; 2:11      __INFO   HL = index-stop
-__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}__{}    xor   D             ; 2:7       __INFO
-__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}    pop  HL             ; 1:10      __INFO
-__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   +step
+__{}__HAS_PTR(__GET_LOOP_STEP($1)),{1},{dnl
+__{}__{}__RESET_SUMS{}dnl
+__{}__{}__ADD_R16_CONST(HL,__GET_LOOP_END($1),{},{HL+= +stop = index+step}){}dnl
+__{}__{}ifelse(__POLLUTES,{c},{
+__{}__{}__{}__RESET_SUMS{}dnl
+__{}__{}__{}define({$0_STEP},__LD_R16(HL,__GET_LOOP_STEP($1))){}dnl
+__{}__{}__{}define({$0_END},__LD_R16(BC,__GET_LOOP_END($1))){}dnl
+__{}__{}__{}                       ;[eval(21+__SUM_BYTES):eval(119+__SUM_CLOCKS)]    __INFO   variant: step is pointer
+__{}__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
+__{}__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index
+__{}__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}__{}$0_STEP   HL = step{}dnl
+__{}__{}__{}$0_END   BC = stop
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}__{}    sbc  HL, BC         ; 2:11      __INFO   HL = index-stop
+__{}__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}__{}__{}    xor   D             ; 2:7       __INFO
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   +step},
+__{}__{}{
+__{}__{}__{}define({$0_ADD_STOP},__CODE){}dnl
+__{}__{}__{}__ADD_R16_CONST(HL,-(__GET_LOOP_END($1)),{},{HL+= -stop = index-stop}){}dnl
+__{}__{}__{}define({$0_SUB_STOP},__CODE){}dnl
+__{}__{}__{}define({$0_STEP},__LD_R16(BC,__GET_LOOP_STEP($1))){}dnl
+__{}__{}__{}                       ;[eval(15+__SUM_BYTES):format({%-7s},eval(72+__SUM_CLOCKS)]) __INFO   variant: step is pointer, -stop is optimized
+__{}__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
+__{}__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index{}dnl
+__{}__{}__{}$0_STEP   BC = step
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}__{}$0_SUB_STOP
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign{}dnl
+__{}__{}__{}$0_ADD_STOP
+__{}__{}__{}    xor   B             ; 2:7       __INFO
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   +step})
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    exx                 ; 1:4       __INFO   ( -- ) ( R: index -- )

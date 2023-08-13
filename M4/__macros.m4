@@ -1205,6 +1205,14 @@ __{}{define({$1},$2)}){}dnl
 dnl
 dnl
 dnl
+define({__RESET_SUMS},{dnl
+__{}define({__SUM_CLOCKS},0){}dnl
+__{}define({__SUM_BYTES}, 0){}dnl
+__{}define({__SUM_PRICE}, 0){}dnl
+}){}dnl
+dnl
+dnl
+dnl
 define({__RESET_ADD_LD_REG16},{dnl
 __{}define({__SUM_CLOCKS_16BIT},0){}dnl
 __{}define({__SUM_BYTES_16BIT}, 0){}dnl
@@ -3615,9 +3623,7 @@ dnl
 dnl
 dnl
 define({__RESET_BYTES_CLOCKS_PRICES},{dnl
-__{}define({__SUM_CLOCKS},0){}dnl
-__{}define({__SUM_BYTES}, 0){}dnl
-__{}define({__SUM_PRICE}, 0){}dnl
+__{}__RESET_SUMS{}dnl
 }){}dnl
 dnl
 dnl
@@ -3646,6 +3652,9 @@ dnl #              carry flag and BC affected if use "add HL,BC"
 dnl # __CLOCKS
 dnl # __BYTES
 dnl # __PRICE = __CLOCKS+__BYTE_PRICE*__BYTES
+dnl # __SUM_CLOCKS
+dnl # __SUM_BYTES
+dnl # __SUM_PRICE
 dnl
 __{}ifelse($1:__HAS_PTR($2),{HL:1},{dnl
 __{}__{}define({__CODE},{
@@ -3653,8 +3662,7 @@ __{}__{}__{}    ld   BC{,}format({%-12s},__PTR_ADD($2,0)); 4:20      __INFO   $3
 __{}__{}__{}    add  HL{,} BC         ; 1:11      __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{c}){}dnl
 __{}__{}define({__CLOCKS},31){}dnl
-__{}__{}define({__BYTES},5){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},5)},
 
 __{}$1:__HAS_PTR($2),{DE:1},{dnl
 __{}__{}define({__CODE},{
@@ -3664,8 +3672,7 @@ __{}__{}__{}    add  HL{,} BC         ; 1:11      __INFO   $4
 __{}__{}__{}    ex   DE{,} HL         ; 1:4       __INFO}){}dnl
 __{}__{}define({__POLLUTES},{c}){}dnl
 __{}__{}define({__CLOCKS},39){}dnl
-__{}__{}define({__BYTES},7){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},7)},
 
 __{}$1:__IS_NUM($2),{HL:0},{dnl
 __{}__{}define({__CODE},{
@@ -3673,8 +3680,7 @@ __{}__{}__{}    ld   BC{,} format({%-11s},$2); 3:10      __INFO   $3
 __{}__{}__{}    add  HL{,} BC         ; 1:11      __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{c}){}dnl
 __{}__{}define({__CLOCKS},21){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}$1:__IS_NUM($2),{DE:0},{dnl
 __{}__{}define({__CODE},{
@@ -3684,23 +3690,20 @@ __{}__{}__{}    add  HL{,} BC         ; 1:11      __INFO   $4
 __{}__{}__{}    ex   DE{,} HL         ; 1:4       __INFO}){}dnl
 __{}__{}define({__POLLUTES},{c}){}dnl
 __{}__{}define({__CLOCKS},29){}dnl
-__{}__{}define({__BYTES},6){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},6)},
 
 __{}__HEX_HL($2),{0x0000},{dnl # 0
 __{}__{}define({__CODE},{}){}dnl
 __{}__{}define({__POLLUTES},{}){}dnl
 __{}__{}define({__CLOCKS},0){}dnl
-__{}__{}define({__BYTES},0){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},0)},
 
 __{}__HEX_HL($2),{0x0001},{dnl # 1
 __{}__{}define({__CODE},{
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{}){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
-__{}__{}define({__BYTES},1){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},1)},
 
 __{}__HEX_HL($2),{0x0002},{dnl # 2
 __{}__{}define({__CODE},{
@@ -3708,8 +3711,7 @@ __{}__{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{}){}dnl
 __{}__{}define({__CLOCKS},12){}dnl
-__{}__{}define({__BYTES},2){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},2)},
 
 __{}__HEX_HL($2),{0x0003},{dnl # 2
 __{}__{}define({__CODE},{
@@ -3718,16 +3720,14 @@ __{}__{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{}){}dnl
 __{}__{}define({__CLOCKS},18){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0xFFFF},{dnl # -1
 __{}__{}define({__CODE},{
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{}){}dnl
 __{}__{}define({__CLOCKS},6){}dnl
-__{}__{}define({__BYTES},1){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},1)},
 
 __{}__HEX_HL($2),{0xFFFE},{dnl # -2
 __{}__{}define({__CODE},{
@@ -3735,8 +3735,7 @@ __{}__{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{}){}dnl
 __{}__{}define({__CLOCKS},12){}dnl
-__{}__{}define({__BYTES},2){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},2)},
 
 __{}__HEX_HL($2),{0xFFFD},{dnl # -3
 __{}__{}define({__CODE},{
@@ -3745,8 +3744,7 @@ __{}__{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{}){}dnl
 __{}__{}define({__CLOCKS},18){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0x00FE},{dnl # 254
 __{}__{}define({__CODE},{
@@ -3755,8 +3753,7 @@ __{}__{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},16){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0x00FF},{dnl # 255
 __{}__{}define({__CODE},{
@@ -3764,16 +3761,14 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},10){}dnl
-__{}__{}define({__BYTES},2){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},2)},
 
 __{}__HEX_HL($2),{0x0100},{dnl # 256
 __{}__{}define({__CODE},{
 __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},4){}dnl
-__{}__{}define({__BYTES},1){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},1)},
 
 __{}__HEX_HL($2),{0x0101},{dnl # 257
 __{}__{}define({__CODE},{
@@ -3781,8 +3776,7 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},10){}dnl
-__{}__{}define({__BYTES},2){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},2)},
 
 __{}__HEX_HL($2),{0x0102},{dnl # 258
 __{}__{}define({__CODE},{
@@ -3791,8 +3785,7 @@ __{}__{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},16){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0xFF02},{dnl # -254
 __{}__{}define({__CODE},{
@@ -3801,8 +3794,7 @@ __{}__{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},16){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0xFF01},{dnl # -255
 __{}__{}define({__CODE},{
@@ -3810,16 +3802,14 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},10){}dnl
-__{}__{}define({__BYTES},2){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},2)},
 
 __{}__HEX_HL($2),{0xFF00},{dnl # -256
 __{}__{}define({__CODE},{
 __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},4){}dnl
-__{}__{}define({__BYTES},1){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},1)},
 
 __{}__HEX_HL($2),{0xFEFF},{dnl # -257
 __{}__{}define({__CODE},{
@@ -3827,8 +3817,7 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},10){}dnl
-__{}__{}define({__BYTES},2){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},2)},
 
 __{}__HEX_HL($2),{0xFEFE},{dnl # -258
 __{}__{}define({__CODE},{
@@ -3837,8 +3826,7 @@ __{}__{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},16){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0x01FE},{dnl # 510
 __{}__{}define({__CODE},{
@@ -3848,8 +3836,7 @@ __{}__{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},20){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0x01FF},{dnl # 511
 __{}__{}define({__CODE},{
@@ -3858,8 +3845,7 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},14){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0x0200},{dnl # 512
 __{}__{}define({__CODE},{
@@ -3867,8 +3853,7 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},8){}dnl
-__{}__{}define({__BYTES},2){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},2)},
 
 __{}__HEX_HL($2),{0x0201},{dnl # 513
 __{}__{}define({__CODE},{
@@ -3877,8 +3862,7 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},14){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0x0202},{dnl # 514
 __{}__{}define({__CODE},{
@@ -3888,8 +3872,7 @@ __{}__{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},20){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0xFE02},{dnl # -510
 __{}__{}define({__CODE},{
@@ -3899,8 +3882,7 @@ __{}__{}__{}    inc  $1             ; 1:6       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},20){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0xFE01},{dnl # -511
 __{}__{}define({__CODE},{
@@ -3909,8 +3891,7 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},14){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0xFE00},{dnl # -512
 __{}__{}define({__CODE},{
@@ -3918,8 +3899,7 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},8){}dnl
-__{}__{}define({__BYTES},2){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},2)},
 
 __{}__HEX_HL($2),{0xFDFF},{dnl # -513
 __{}__{}define({__CODE},{
@@ -3928,8 +3908,7 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},14){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0xFDFE},{dnl # -514
 __{}__{}define({__CODE},{
@@ -3939,8 +3918,7 @@ __{}__{}__{}    dec  $1             ; 1:6       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},20){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0x02FF},{dnl # 767
 __{}__{}define({__CODE},{
@@ -3950,8 +3928,7 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},18){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0x0300},{dnl # 768
 __{}__{}define({__CODE},{
@@ -3960,8 +3937,7 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},12){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0x0301},{dnl # 769
 __{}__{}define({__CODE},{
@@ -3971,8 +3947,7 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},18){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0xFD01},{dnl # -767
 __{}__{}define({__CODE},{
@@ -3982,8 +3957,7 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},18){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0xFD00},{dnl # -768
 __{}__{}define({__CODE},{
@@ -3992,8 +3966,7 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},12){}dnl
-__{}__{}define({__BYTES},3){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},3)},
 
 __{}__HEX_HL($2),{0xFCFF},{dnl # -769
 __{}__{}define({__CODE},{
@@ -4003,8 +3976,7 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  $1             ; 1:6       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},18){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0x0400},{dnl # 1024
 __{}__{}define({__CODE},{
@@ -4014,8 +3986,7 @@ __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    inc  substr($1,0,1)              ; 1:4       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},16){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__HEX_HL($2),{0xFC00},{dnl # -1024
 __{}__{}define({__CODE},{
@@ -4025,8 +3996,7 @@ __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO
 __{}__{}__{}    dec  substr($1,0,1)              ; 1:4       __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{sz}){}dnl
 __{}__{}define({__CLOCKS},16){}dnl
-__{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},4)},
 
 __{}__{}$1,DE,{dnl
 __{}__{}define({__CODE},{
@@ -4036,8 +4006,7 @@ __{}__{}__{}    add  HL{,} BC         ; 1:11      __INFO   $4
 __{}__{}__{}    ex   DE{,} HL         ; 1:4       __INFO}){}dnl
 __{}__{}define({__POLLUTES},{c}){}dnl
 __{}__{}define({__CLOCKS},29){}dnl
-__{}__{}define({__BYTES},6){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES))},
+__{}__{}define({__BYTES},6)},
 
 __{}__{}{dnl
 __{}__{}define({__CODE},{
@@ -4046,8 +4015,11 @@ __{}__{}__{}    add  HL{,} BC         ; 1:11      __INFO   $4}){}dnl
 __{}__{}define({__POLLUTES},{c}){}dnl
 __{}__{}define({__CLOCKS},21){}dnl
 __{}__{}define({__BYTES},4){}dnl
-__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
 __{}}){}dnl
+__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__add({__SUM_CLOCKS},__CLOCKS){}dnl
+__{}__add({__SUM_BYTES}, __BYTES){}dnl
+__{}__add({__SUM_PRICE}, __PRICE){}dnl
 }){}dnl
 dnl
 dnl
