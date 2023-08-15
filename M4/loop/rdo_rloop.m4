@@ -1227,11 +1227,11 @@ __{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
 __{}__{}__{}    inc   L             ; 1:4       __INFO
 __{}__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
-__{}__{}__{}$0_CODE{}dnl
+__{}__{}__{}$0_SUB_STOP{}dnl
 __{}__{}__{}$0_BC   BC =  step = __GET_LOOP_STEP($1)
 __{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step
 __{}__{}__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign{}dnl
-__{}__{}__{}__CODE
+__{}__{}__{}$0_ADD_STOP
 __{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
 __{}__{}__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),1,{dnl
 __{}__{}__{}__{}ifelse(eval((__GET_LOOP_STEP($1)) & 0x8000),0,{
