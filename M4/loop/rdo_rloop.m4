@@ -991,7 +991,7 @@ __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}exit{}$1:                ;           __INFO},
 
 __{}__GET_LOOP_END($1),{},{
-__{}__{}                       ;[26:175]    __INFO   default version
+__{}__{}                       ;[26:175]    __INFO   version step and end from stack
 __{}__{}    ex  [SP],HL         ; 1:19      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
@@ -1018,10 +1018,35 @@ __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
 __{}__{}exit{}$1:                ;           __INFO},
 
+__{}__HAS_PTR(__GET_LOOP_END($1)),{1},{
+__{}__{}                       ;[26:171]    __INFO   version step from stack and end is pointer
+__{}__{}    ex  [SP],HL         ; 1:19      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}    ld    E,[HL]        ; 1:7       __INFO
+__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index
+__{}__{}    ld   BC,format({%-12s},__PTR_ADD(__GET_LOOP_END($1))); 4:20      __INFO   BC = stop = __GET_LOOP_END($1)
+__{}__{}    ex  [SP],HL         ; 1:19      __INFO   HL = step
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    jp    p, do{}$1save  ; 3:10      __INFO   ( step -- ) ( R: stop index -- stop index+step )
+__{}__{}leave{}$1:               ;           __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO
+__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}exit{}$1:                ;           __INFO},
+
 __{}{
 __{}dnl #                      ;[25:121+22=143]
 __{}__{}__ADD_R16_CONST(HL,-(__GET_LOOP_END($1)),{BC = -stop = -(__GET_LOOP_END($1))},{HL+= -stop = index-stop}){}dnl
-__{}__{}                       ;[eval(17+2*__BYTES):eval(102+2*__CLOCKS)]    __INFO
+__{}__{}                       ;[eval(17+2*__BYTES):eval(102+2*__CLOCKS)]    __INFO   version step from stack
 __{}__{}    ex  [SP],HL         ; 1:19      __INFO
 __{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    exx                 ; 1:4       __INFO
