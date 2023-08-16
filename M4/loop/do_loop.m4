@@ -10,30 +10,63 @@ dnl # 5 5 do i . loop --> 5 6 7 ... -2 -1 0 1 2 3 4
 dnl # ( stop index -- ) r:( -- )
 define({__ASM_TOKEN_MDO_I8},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
-__{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
-    ld  [idx{}$1], HL    ; 3:16      __INFO   index  ( stop index -- )
-    ld    A, E          ; 1:4       __INFO
-    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop
-    ld    A, D          ; 1:4       __INFO
-    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO},
-__GET_LOOP_BEGIN($1):__HAS_PTR(__GET_LOOP_END($1)),{:0},{
-    ld  [idx{}$1], HL    ; 3:16      __INFO   index  ( __GET_LOOP_END($1) index -- )
-    ex   DE, HL         ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO},
-__GET_LOOP_END($1),{},{
-    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
-    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop
-    ld    A, H          ; 1:4       __INFO
-    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); 3:ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,16,10)      __INFO
-    ld  [idx{}$1], HL    ; 3:16      __INFO   index
-    ex   DE, HL         ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO},
-{
-__{}  .error {$0}($@): Unexpected combination of loop parameters. __SHOW_LOOP($1)})
-do{}$1:                  ;           __INFO}){}dnl
+__{}ifelse(ifelse(__HEX_HL(__GET_LOOP_STEP($1)),{0x0001},{1},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0xFFFF},{1},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0x0002},{1},
+__{}__GET_LOOP_STEP($1):__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{::},{1},
+__{}{0}),1,{
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   index  ( stop index -- )
+__{}__{}    ld    A, E          ; 1:4       __INFO
+__{}__{}    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop
+__{}__{}    ld    A, D          ; 1:4       __INFO
+__{}__{}    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   index  ( stop index -- )
+__{}__{}    ld  [stp{}$1], DE    ; 4:20      __INFO   stop
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}__GET_LOOP_STEP($1):__GET_LOOP_END($1),{:},{
+__{}__{}define({$0_BEGIN},__LD_R16({HL},__GET_LOOP_BEGIN($1))){}dnl
+__{}__{}    ld  [stp{}$1], HL    ; 3:16      __INFO   ( stop __GET_LOOP_BEGIN($1) -- ){}dnl
+__{}__{}$0_BEGIN   HL = index
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}__GET_LOOP_STEP($1):__GET_LOOP_BEGIN($1),{:},{
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   ( __GET_LOOP_END($1) index -- )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}__GET_LOOP_STEP($1),{},{dnl
+__{}__{}define({$0_BEGIN},__LD_R16({BC},__GET_LOOP_BEGIN($1))){}dnl
+__{}__{}$0_BEGIN   BC = index
+__{}__{}    ld  [idx{}$1], BC    ; 4:20      __INFO   save index},
+
+__{}ifelse(eval(len(__GET_LOOP_STEP($1))>0),{1},{1},
+__{}__GET_LOOP_BEGIN($1):__HAS_PTR(__GET_LOOP_END($1)),{:0},{1},
+__{}{0}),1,{
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   index  ( __GET_LOOP_END($1) index -- )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}__GET_LOOP_END($1),{},{
+__{}__{}    ld    A, L          ; 1:4       __INFO   ( stop __GET_LOOP_BEGIN($1) -- )
+__{}__{}    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop
+__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); 3:ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,16,10)      __INFO
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   index
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}{
+__{}__{}  .error {$0}($@): Unexpected combination of loop parameters. __SHOW_LOOP($1)})
+__{}do{}$1:                  ;           __INFO}){}dnl
 dnl
 dnl
 dnl # ---------  ?do ... 1 +loop  -----------
@@ -43,22 +76,22 @@ dnl # ( stop index -- ) r:( -- stop index )
 define({__ASM_TOKEN_QMDO_I8},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
 __{}ifelse(__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
-    ld  [idx{}$1], HL    ; 3:16      __INFO   index  ( stop index -- )
-    or    A             ; 1:4       __INFO
-    sbc  HL, DE         ; 2:15      __INFO
-    ld    A, E          ; 1:4       __INFO
-    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop
-    ld    A, D          ; 1:4       __INFO
-    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop
-    pop  HL             ; 1:10      __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    z, exit{}$1    ; 3:10      __INFO},
-__GET_LOOP_BEGIN($1):__HAS_PTR(__GET_LOOP_END($1)):__SAVE_EVAL(__GET_LOOP_STEP($1)),{:0:1},{
-    ld    C, L          ; 1:4       __INFO
-    ld    B, H          ; 1:4       __INFO
-    pop  HL             ; 1:10      __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    jp   qdo{}$1         ; 3:10      __INFO},
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   index  ( stop index -- )
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, DE         ; 2:15      __INFO
+__{}    ld    A, E          ; 1:4       __INFO
+__{}    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop
+__{}    ld    A, D          ; 1:4       __INFO
+__{}    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    z, exit{}$1    ; 3:10      __INFO},
+__{}__GET_LOOP_BEGIN($1):__HAS_PTR(__GET_LOOP_END($1)):__SAVE_EVAL(__GET_LOOP_STEP($1)),{:0:1},{
+__{}    ld    C, L          ; 1:4       __INFO
+__{}    ld    B, H          ; 1:4       __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO
+__{}    jp   qdo{}$1         ; 3:10      __INFO},
 __GET_LOOP_BEGIN($1):__HAS_PTR(__GET_LOOP_END($1)),{:0},{
 define({_TMP_INFO},__INFO){}dnl
 define({_TMP_STACK_INFO},__INFO{   }( __GET_LOOP_END($1) index -- )){}dnl
@@ -181,33 +214,71 @@ dnl # 0 5 do i . loop --> 5 4 3 2 1 0
 dnl # 0 0 do i . loop --> 0
 dnl # ( stop index -- ) r:( -- )
 define({__ASM_TOKEN_MDO_D8},{dnl
-__{}define({__INFO},__COMPILE_INFO{(m)})
-__{}ifelse(__GET_LOOP_BEGIN($1):__GET_LOOP_END($1),{:},{dnl
-    ld  [idx{}$1], HL    ; 3:16      __INFO   ( stop index -- )
-    dec  DE             ; 1:6       __INFO
-    ld    A, E          ; 1:4       __INFO
-    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop-1
-    ld    A, D          ; 1:4       __INFO
-    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop-1
-    pop  DE             ; 1:10      __INFO
-    pop  HL             ; 1:10      __INFO},
-__GET_LOOP_BEGIN($1),{},{dnl
-    ld  [idx{}$1], HL    ; 3:16      __INFO   ( __GET_LOOP_END($1) index -- )
-    pop  HL             ; 1:10      __INFO
-    ex   DE, HL         ; 1:4       __INFO},
-__GET_LOOP_END($1),{},{dnl
-    dec  HL             ; 1:6       __INFO
-    ld    A, L          ; 1:4       __INFO
-    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop-1
-    ld    A, H          ; 1:4       __INFO
-    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop-1
-    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
-    ld  [idx{}$1], HL    ; 3:16      __INFO
-    pop  HL             ; 1:10      __INFO
-    ex   DE, HL         ; 1:4       __INFO},
-{
-__{}  .error {$0}($@): Unexpected combination of loop parameters. __SHOW_LOOP($1)})
-do{}$1:                  ;           __INFO}){}dnl
+__{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
+__{}ifelse(ifelse(__HEX_HL(__GET_LOOP_STEP($1)),{0x0001},{1},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0xFFFF},{1},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0x0002},{1},
+__{}__GET_LOOP_STEP($1):__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{::},{1},
+__{}{0}),1,{
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   ( stop index -- )
+__{}__{}    dec  DE             ; 1:6       __INFO
+__{}__{}    ld    A, E          ; 1:4       __INFO
+__{}__{}    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop-1
+__{}__{}    ld    A, D          ; 1:4       __INFO
+__{}__{}    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop-1
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO},
+
+__{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   index  ( stop index -- )
+__{}__{}    ld  [stp{}$1], DE    ; 4:20      __INFO   stop
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}__GET_LOOP_STEP($1):__GET_LOOP_END($1),{:},{
+__{}__{}define({$0_BEGIN},__LD_R16({HL},__GET_LOOP_BEGIN($1))){}dnl
+__{}__{}    ld  [stp{}$1], HL    ; 3:16      __INFO   ( stop __GET_LOOP_BEGIN($1) -- ){}dnl
+__{}__{}$0_BEGIN   HL = index
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}__GET_LOOP_BEGIN($1),{},{
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   ( __GET_LOOP_END($1) index -- )
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}__GET_LOOP_STEP($1),{},{dnl
+__{}__{}define({$0_BEGIN},__LD_R16({BC},__GET_LOOP_BEGIN($1))){}dnl
+__{}__{}$0_BEGIN   BC = index
+__{}__{}    ld  [idx{}$1], BC    ; 4:20      __INFO   save index},
+
+__{}ifelse(__HEX_HL(__GET_LOOP_STEP($1)),{0x0001},{1},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0xFFFF},{1},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0x0002},{1},
+__{}__GET_LOOP_END($1):__GET_LOOP_STEP($1),{:},{1},
+__{}{0}),1,{
+__{}__{}    dec  HL             ; 1:6       __INFO
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    ld  [stp_lo{}$1], A  ; 3:13      __INFO   lo stop-1
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    ld  [stp_hi{}$1], A  ; 3:13      __INFO   hi stop-1
+__{}__{}    ld   HL, format({%-11s},__GET_LOOP_BEGIN($1)); ifelse(__HAS_PTR(__GET_LOOP_BEGIN($1)),1,3:16,3:10)      __INFO
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO},
+
+__{}eval(len(__GET_LOOP_STEP($1))>0):eval(len(__GET_LOOP_BEGIN($1))>0),{1:1},{
+__{}__{}define({$0_HL},__LD_R16({HL},__GET_LOOP_BEGIN($1))){}dnl
+__{}__{}    ld  [stp{}$1], HL    ; 3:16      __INFO   ( stop __GET_LOOP_BEGIN($1) -- ) with step: __GET_LOOP_STEP($1){}dnl
+__{}__{}$0_HL   HL = begin
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO},
+
+__{}{
+__{}__{}  .error {$0}($@): Unexpected combination of loop parameters. __SHOW_LOOP($1)})
+__{}do{}$1:                  ;           __INFO}){}dnl
 dnl
 dnl
 dnl # ---------  ?do ... 1 +loop  -----------
@@ -636,17 +707,79 @@ dnl
 dnl
 dnl # step +loop
 define({__ASM_TOKEN_PUSH_ADDMLOOP},{dnl
-__{}ifelse(__SAVE_EVAL(__GET_LOOP_STEP($1)),{1},{{}__ASM_TOKEN_MLOOP_I8($1)},
-__{}__SAVE_EVAL(__GET_LOOP_STEP($1)),{-1},{__ASM_TOKEN_SUB1_ADDMLOOP($1)},
-__{}__SAVE_EVAL(__GET_LOOP_STEP($1)),{2},{__ASM_TOKEN_2_ADDMLOOP($1)},
-__{}{dnl
-__{}__{}define({__INFO},__COMPILE_INFO{(m)})
+__{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
+__{}ifelse(dnl
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0x0001},{{}__ASM_TOKEN_MLOOP_I8($1)},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0xFFFF},{__ASM_TOKEN_SUB1_ADDMLOOP($1)},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0x0002},{__ASM_TOKEN_2_ADDMLOOP($1)},
+
+__{}__GET_LOOP_END($1),,{
+__{}__{}define({$0_STEP},__LD_R16({DE},__GET_LOOP_STEP($1))){}dnl
+__{}                       ;[eval(22+__BYTES):eval(133+__CLOCKS)]    __INFO
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}idx{}$1 EQU $+1          ;           __INFO
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index
+__{}stp{}$1 EQU $+1          ;           __INFO
+__{}    ld   BC, 0x0000     ; 3:10      __INFO   BC = stop{}dnl
+__{}$0_STEP   DE = step
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO},
+
+__{}__IS_NUM(__GET_LOOP_STEP($1)):__IS_NUM(__GET_LOOP_END($1)),1:1,{
+__{}__{}define({$0_STEP},__LD_R16({DE},__GET_LOOP_STEP($1))){}dnl
+__{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
+__{}                       ;[eval(19+__BYTES):eval(123+__CLOCKS)]    __INFO
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}idx{}$1 EQU $+1          ;           __INFO
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}$0_STOP   BC = stop{}dnl
+__{}$0_STEP   DE = step
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO},
+
+__{}1,1,{
+__{}__{}define({$0_STEP},__LD_R16({DE},__GET_LOOP_STEP($1))){}dnl
+__{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
+__{}                       ;[eval(19+__BYTES):eval(123+__CLOCKS)]    __INFO
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}idx{}$1 EQU $+1          ;           __INFO
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}$0_STOP   BC = stop{}dnl
+__{}$0_STEP   DE = step
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO},
+
+__{}{
 __{}__{}    push HL             ; 1:11      __INFO
 __{}__{}idx{}$1 EQU $+1          ;           __INFO
 __{}__{}    ld   HL, 0x0000     ; 3:10      __INFO
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO BC = step
-__{}__{}    add  HL, BC         ; 1:11      __INFO HL = index+step
-__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO save index
+__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
 __{}__{}stp_lo{}$1 EQU $+1       ;           __INFO
 __{}__{}__{}ifelse(__GET_LOOP_END($1),{},{dnl
 __{}__{}__{}    ld    A, 0xFF       ; 2:7       __INFO   lo stop-1},
@@ -660,49 +793,113 @@ __{}__{}__{}    ld    A, 0xFF       ; 2:7       __INFO   hi stop-1},
 __{}__{}__{}{dnl
 __{}__{}__{}    ld    A, format({%-11s},high +(__GET_LOOP_END($1))-1); 2:7       __INFO   hi stop-1})
 __{}__{}    sbc   A, H          ; 1:4       __INFO
-__{}__{}    ld    H, A          ; 1:4       __INFO HL = stop-(index+step)
-__{}__{}    add  HL, BC         ; 1:11      __INFO HL = stop-index
+__{}__{}    ld    H, A          ; 1:4       __INFO   HL = stop-(index+step)
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = stop-index
 __{}__{}    xor   H             ; 1:4       __INFO
 __{}__{}    pop  HL             ; 1:10      __INFO
 __{}__{}    jp    p, do{}$1      ; 3:10      __INFO
 __{}__{}dnl #                     ;??:???
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}exit{}$1:                ;           __INFO{}dnl
-})}){}dnl
+__{}}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
 define({__ASM_TOKEN_ADDMLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{(m)}){}dnl
+__{}ifelse(__HAS_PTR(__GET_LOOP_END($1)),1,{
+__{}__{}    ld    B, H          ; 1:4       __INFO   variant step from stack and stop is pointer
+__{}__{}    ld    C, L          ; 1:4       __INFO   BC = step
+__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}    ld   HL, 0x0000     ; 3:10      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}__{}stp_lo{}$1 EQU $+1       ;           __INFO
+__{}__{}__{}ifelse(__GET_LOOP_END($1),{},{dnl
+__{}__{}__{}    ld    A, 0xFF       ; 2:7       __INFO   lo stop-1},
+__{}__{}__{}{dnl
+__{}__{}__{}    ld    A, format({%-11s},low +(__GET_LOOP_END($1))-1); 2:7       __INFO   lo stop-1})
+__{}__{}    sub   L             ; 1:4       __INFO
+__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}stp_hi{}$1 EQU $+1       ;           __INFO
+__{}__{}__{}ifelse(__GET_LOOP_END($1),{},{dnl
+__{}__{}__{}    ld    A, 0xFF       ; 2:7       __INFO   hi stop-1},
+__{}__{}__{}{dnl
+__{}__{}__{}    ld    A, format({%-11s},high +(__GET_LOOP_END($1))-1); 2:7       __INFO   hi stop-1})
+__{}__{}    sbc   A, H          ; 1:4       __INFO
+__{}__{}    ld    H, A          ; 1:4       __INFO   HL = stop-(index+step)
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = stop-index
+__{}__{}    xor   H             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO
+__{}__{}exit{}$1:                ;           __INFO},
 
-    ld    B, H          ; 1:4       __INFO
-    ld    C, L          ; 1:4       __INFO BC = step
-idx{}$1 EQU $+1          ;           __INFO
-    ld   HL, 0x0000     ; 3:10      __INFO
-    add  HL, BC         ; 1:11      __INFO HL = index+step
-    ld  [idx{}$1], HL    ; 3:16      __INFO save index
-stp_lo{}$1 EQU $+1       ;           __INFO
-__{}ifelse(__GET_LOOP_END($1),{},{dnl
-__{}    ld    A, 0xFF       ; 2:7       __INFO   lo stop-1},
-__{}{dnl
-__{}    ld    A, format({%-11s},low +(__GET_LOOP_END($1))-1); 2:7       __INFO   lo stop-1})
-    sub   L             ; 1:4       __INFO
-    ld    L, A          ; 1:4       __INFO
-stp_hi{}$1 EQU $+1       ;           __INFO
-__{}ifelse(__GET_LOOP_END($1),{},{dnl
-__{}    ld    A, 0xFF       ; 2:7       __INFO   hi stop-1},
-__{}{dnl
-__{}    ld    A, format({%-11s},high +(__GET_LOOP_END($1))-1); 2:7       __INFO   hi stop-1})
-    sbc   A, H          ; 1:4       __INFO
-    ld    H, A          ; 1:4       __INFO HL = stop-(index+step)
-    add  HL, BC         ; 1:11      __INFO HL = stop-index
-    xor   H             ; 1:4       __INFO
-    ex   DE, HL         ; 1:4       __INFO
-    pop  DE             ; 1:10      __INFO
-    jp    p, do{}$1      ; 3:10      __INFO
-dnl #                     ;24:114
-leave{}$1:               ;           __INFO
-exit{}$1:                ;           __INFO{}dnl
+__{}1,1,{
+__{}__{}                       ;[27:126]    __INFO   variant step from stack
+__{}__{}    push DE             ; 1:11      __INFO
+__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}    ld   DE, 0x0000     ; 3:10      __INFO   DE = index
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index+step
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}__{}    ld    A, L          ; 1:4       __INFO{}dnl
+__{}__{}ifelse(__GET_LOOP_END($1),{},{
+__{}__{}__{}stp{}$1 EQU $+1          ;           __INFO
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   BC = step
+__{}__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index+step-stop},
+__{}__{}__HAS_PTR(__GET_LOOP_END($1)),{1},{
+__{}__{}__{}    ld   BC, format({%-11s},__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1))); 4:20      __INFO   BC = stop
+__{}__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index+step-stop},
+__{}__{}{
+__{}__{}__{}    ld   BC, format({%-11s},__SIMPLIFY_EXPRESSION(-(__GET_LOOP_END($1)))); 3:10      __INFO   BC = -stop
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step-stop})
+__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    pop  HL             ; 1:10      __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}{
+__{}__{}                       ;[27:126]    __INFO   variant step from stack
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO   BC = step
+__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}    ld   HL, 0x0000     ; 3:10      __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}ifelse(__GET_LOOP_END($1),{},{dnl
+__{}__{}__{}stp_lo{}$1 EQU $+1       ;           __INFO
+__{}__{}__{}    sub 0x00            ; 2:7       __INFO   lo8(index+step-stop)
+__{}__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}__{}stp_hi{}$1 EQU $+1       ;           __INFO
+__{}__{}__{}    sbc   A, 0x00       ; 2:7       __INFO   hi8(index+step-stop)},
+__{}__{}{
+__{}__{}__{}    sub  format({%-15s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1))); 2:7       __INFO   lo8(index+step-stop)
+__{}__{}__{}    ld    L, A          ; 1:4       __INFO
+__{}__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}__{}stp_hi{}$1 EQU $+1       ;           __INFO
+__{}__{}__{}    sbc   A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1))); 2:7       __INFO   hi8(index+step-stop)})
+__{}__{}    ld    H, A          ; 1:4       __INFO   HL = index+step-stop
+__{}__{}    xor   A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   B             ; 1:4       __INFO
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO
+__{}__{}exit{}$1:                ;           __INFO{}dnl
+__{}}){}dnl
 }){}dnl
 dnl
 dnl

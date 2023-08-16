@@ -997,7 +997,52 @@ __{}__{}    jp   nz, do{}$1{}save  ; 3:10      __INFO   _TEMP_HI_FALSE_POSITIVE{
 __{}{
 __{}   .error +xloop: This variant should never happen... index: __GET_LOOP_BEGIN($1), stop:__GET_LOOP_END($1), step: __GET_LOOP_STEP($1)})},
 
+__HAS_PTR(__GET_LOOP_END($1)),10,{
+__{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
+__{}                       ;[eval(24+__BYTES):eval(121+__CLOCKS)]    __INFO   variant pointer: positive step 3..n
+__{}    push HL             ; 1:11      __INFO
+__{}idx{}$1 EQU $+1          ;           __INFO
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}$0_STOP   BC = stop
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}    ld    A,format({%-12s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1))); 2:7       __INFO   lo(stop)
+__{}    add   A, L          ; 1:4       __INFO
+__{}    ld    L, A          ; 1:4       __INFO
+__{}    ld    A,format({%-12s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1))); 2:7       __INFO   hi(stop)
+__{}    adc   A, H          ; 1:4       __INFO
+__{}    ld    H, A          ; 1:4       __INFO   HL = index-stop+step
+__{}    sbc   A, A          ; 1:4       __INFO   save carry to sign
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}    pop  HL             ; 1:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO},
+
 __HAS_PTR(__GET_LOOP_END($1)),1,{
+__{}__{}__RESET_SUMS{}dnl
+__{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
+__{}__{}define({$0_STEP},__LD_R16({DE},__GET_LOOP_STEP($1))){}dnl
+__{}                       ;[eval(19+__SUM_BYTES):eval(123+__SUM_CLOCKS)]    __INFO   variant pointer: positive step 3..n
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}idx{}$1 EQU $+1          ;           __INFO
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}$0_STOP   BC = stop{}dnl
+__{}$0_STEP   DE = step
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO},
+
+__HAS_PTR(__GET_LOOP_END($1)),1,{
+dnl ;# fail!!!
+dnl ;# VARIABLE(stop,54321)
+dnl ;# PUSH([stop])       PUSH(4321)       DO I CALL(_test) PUSH(10000)       ADDLOOP CALL(_show)
 __{}                       ;[27:137]    __INFO   variant pointer: positive step 3..n
 __{}    push HL             ; 1:11      __INFO   __GET_LOOP_BEGIN($1).. +__GET_LOOP_STEP($1) ..(__GET_LOOP_END($1))
 __{}idx{}$1 EQU $+1          ;           __INFO
@@ -1006,10 +1051,10 @@ __{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = st
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
 __{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save new index
 __{}  .warning Used for Stop pointer, unlike the specification, the pointer will be updated before each check.
-__{}    ld    A,format({%-12s},__GET_LOOP_END($1)); 3:13      __INFO
+__{}    ld    A,format({%-12s},__PTR_ADD(__GET_LOOP_END($1),0)); 3:13      __INFO   lo(stop)
 __{}    sub   L             ; 1:4       __INFO
 __{}    ld    L, A          ; 1:4       __INFO
-__{}    ld    A,format({%-12s},{(}substr(__GET_LOOP_END($1),1,eval(len(__GET_LOOP_END($1))-2)){+1)}); 3:13      __INFO
+__{}    ld    A,format({%-12s},__PTR_ADD(__GET_LOOP_END($1),1)); 3:13      __INFO   hi(stop)
 __{}    sbc   A, H          ; 1:4       __INFO
 __{}    ld    H, A          ; 1:4       __INFO
 __{}    dec  HL             ; 1:6       __INFO   HL = (stop-1)-(index+step)
@@ -1218,26 +1263,42 @@ dnl
 dnl # step +loop
 dnl # ( -- )
 define({__ASM_TOKEN_PUSH_ADDXLOOP},{dnl
-__{}define({__INFO},{push_addxloop}){}dnl
-ifelse($1,{},{
-__{}__{}.error {$0}(): Missing parameter!
-__{}},
-__{}$#,{1},,{
-__{}__{}.error {$0}($@): $# parameters found in macro!
-__{}})dnl
-__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),{0},{dnl
-__{}__{}__ASM_TOKEN_NO_NUM_ADDXLOOP($1)},
-__{}{dnl
-__{}__{}ifelse(dnl
-__{}__{}__HEX_HL(__GET_LOOP_STEP($1)),0x0001,{__ASM_TOKEN_XLOOP($1)},
-__{}__{}__HEX_HL(__GET_LOOP_STEP($1)),0xFFFF,{__ASM_TOKEN_SUB1_ADDXLOOP($1)},
-__{}__{}__HEX_HL(__GET_LOOP_STEP($1)),0x0002,{__ASM_TOKEN_ADD2_ADDXLOOP($1)},
-__{}__{}__HEX_HL(__GET_LOOP_STEP($1)),0xFFFE,{__ASM_TOKEN_SUB2_ADDXLOOP($1)},
-__{}__{}eval(__GET_LOOP_STEP($1)>0),{1},{dnl
-__{}__{}__{}__ASM_TOKEN_POSITIVE_ADDXLOOP($1)},
-__{}__{}{dnl
-__{}__{}__{}__ASM_TOKEN_NEGATIVE_ADDXLOOP($1)}){}dnl
-__{}}){}dnl
+__{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+
+__{}__HAS_PTR(__GET_LOOP_STEP($1)),1,{
+__{}__{}__RESET_SUMS{}dnl
+__{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
+__{}__{}define({$0_STEP},__LD_R16({HL},__GET_LOOP_STEP($1))){}dnl
+__{}                       ;[eval(20+__SUM_BYTES):eval(127+__SUM_CLOCKS)]    __INFO   version step is pointer
+__{}    push DE             ; 1:11      __INFO
+__{}    push HL             ; 1:11      __INFO
+__{}idx{}$1 EQU $+1          ;           __INFO
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}$0_STOP   BC = stop{}dnl
+__{}$0_STEP   DE = step
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}    xor   D             ; 1:4       __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO},
+
+__{}__HEX_HL(__GET_LOOP_STEP($1)),0x0001,{__ASM_TOKEN_XLOOP($1)},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),0xFFFF,{__ASM_TOKEN_SUB1_ADDXLOOP($1)},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),0x0002,{__ASM_TOKEN_ADD2_ADDXLOOP($1)},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),0xFFFE,{__ASM_TOKEN_SUB2_ADDXLOOP($1)},
+__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x0000},{__ASM_TOKEN_POSITIVE_ADDXLOOP($1)},
+__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x8000},{__ASM_TOKEN_NEGATIVE_ADDXLOOP($1)},
+__{}{__ASM_TOKEN_NO_NUM_ADDXLOOP($1)}){}dnl
 }){}dnl
 dnl
 dnl
@@ -1285,7 +1346,47 @@ __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO
 __{}    jp    p, do{}$1      ; 3:10      __INFO
                        ;[21:122]},
-__{}{
+                              
+__{}__HAS_PTR(__GET_LOOP_END($1)),1,{
+__{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
+__{}                       ;[eval(20+__BYTES):eval(120+__CLOCKS)]    __INFO   version step from stack and stop is pointer
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO   DE = step
+__{}idx{}$1 EQU $+1          ;           __INFO
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}$0_STOP   BC = stop
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}    xor   D             ; 1:4       __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO},
+
+__{}1,1,{
+__{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
+__{}                       ;[eval(20+__BYTES):eval(120+__CLOCKS)]    __INFO   version step from stack
+__{}    push DE             ; 1:11      __INFO
+__{}    ex   DE, HL         ; 1:4       __INFO   DE = step
+__{}idx{}$1 EQU $+1          ;           __INFO
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}$0_STOP   BC = stop
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
+__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}    sbc   A, A          ; 1:4       __INFO
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}    xor   D             ; 1:4       __INFO
+__{}    pop  HL             ; 1:10      __INFO
+__{}    pop  DE             ; 1:10      __INFO
+__{}    jp    p, do{}$1      ; 3:10      __INFO},
+
+__{}{fail with "54321 4321 do 1000 asm() +loop"
+__{}                       ;[26:113]    __INFO   version step from stack
 __{}idx{}$1 EQU $+1          ;           __INFO
 __{}    ld   BC, 0x0000     ; 3:10      __INFO   BC = index
 __{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
@@ -1302,8 +1403,7 @@ __{}    sbc   A, high format({%-6s},__GET_LOOP_END($1)); 2:7       __INFO   A = 
 __{}    xor   H             ; 1:4       __INFO
 __{}    ex   DE, HL         ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
-__{}    jp    p, do{}$1      ; 3:10      __INFO
-                       ;[26:113]})
+__{}    jp    p, do{}$1      ; 3:10      __INFO})
 leave{}$1:               ;           __INFO
 exit{}$1:                ;           __INFO{}dnl
 }){}dnl
