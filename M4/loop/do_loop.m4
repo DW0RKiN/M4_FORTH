@@ -708,39 +708,41 @@ __{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
 __{}    pop  HL             ; 1:10      __INFO
 __{}    xor   D             ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
-__{}    jp    p, do{}$1      ; 3:10      __INFO},
+__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}leave{}$1:               ;           __INFO
+__{}exit{}$1:                ;           __INFO},
 
 __{}__GET_LOOP_END($1),,{
-__{}__{}define({$0_STEP},__LD_R16({DE},__GET_LOOP_STEP($1))){}dnl
-__{}                       ;[25:143]    __INFO   version stop from stack
-__{}    push DE             ; 1:11      __INFO
+__{}__{}__RESET_SUMS(){}dnl
+__{}__{}__ADD_R16_CONST({HL},__SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1)),{BC = step},{HL = index+step}){}dnl
+__{}__{}define({$0_ADD_STEP},__CODE){}dnl
+__{}__{}define({$0_MIN_STEP},__LD_R16({BC},__SIMPLIFY_EXPRESSION(-(__GET_LOOP_STEP($1))))){}dnl
+__{}                       ;[eval(18+__SUM_BYTES):eval(97+__SUM_CLOCKS)]    __INFO   version stop from stack
 __{}    push HL             ; 1:11      __INFO
 __{}idx{}$1 EQU $+1          ;           __INFO
-__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index
-__{}stp{}$1 EQU $+1          ;           __INFO
-__{}    ld   BC, 0x0000     ; 3:10      __INFO   BC = stop{}dnl
-__{}$0_STEP   DE = step
-__{}    or    A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
-__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
-__{}    sbc   A, A          ; 1:4       __INFO
-__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
+__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}$0_ADD_STEP
 __{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
+__{}stp{}$1 EQU $+1          ;           __INFO
+__{}    ld   BC, 0x0000     ; 3:10      __INFO   BC = stop
+__{}    or    A             ; 1:4       __INFO
+__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index+step-stop{}dnl
+__{}$0_MIN_STEP
+__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop
 __{}    pop  HL             ; 1:10      __INFO{}dnl
 __{}ifelse(dnl
 __{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x0000,{
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO   positive step},
+__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step},
 __{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x8000,{
-__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}    jp    m, do{}$1      ; 3:10      __INFO   negative step},
+__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step},
 __{}{
-__{}__{}    pop  DE             ; 1:10      __INFO
 __{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO   positive step
+__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step
 __{}__{}  else
-__{}__{}    jp    m, do{}$1      ; 3:10      __INFO   negative step
-__{}__{}  endif})},
+__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step
+__{}__{}  endif})
+__{}leave{}$1:               ;           __INFO
+__{}exit{}$1:                ;           __INFO},
 
 __{}__HAS_PTR(__GET_LOOP_STEP($1)),1,{
 __{}__{}__RESET_SUMS{}dnl
@@ -762,68 +764,72 @@ __{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index
 __{}    pop  HL             ; 1:10      __INFO
 __{}    xor   D             ; 1:4       __INFO
 __{}    pop  DE             ; 1:10      __INFO
-__{}    jp    p, do{}$1      ; 3:10      __INFO},
+__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}leave{}$1:               ;           __INFO
+__{}exit{}$1:                ;           __INFO},
 
 __{}__HAS_PTR(__GET_LOOP_END($1)),1,{
-__{}__RESET_SUMS(){}dnl
-__{}__{}define({$0_STEP},    __LD_R16({BC},__SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1)))){}dnl
-__{}__{}define({$0_MIN_STEP},__LD_R16({BC},__SIMPLIFY_EXPRESSION(-(__GET_LOOP_STEP($1))))){}dnl
-__{}__{}define({$0_STOP},    __LD_R16({BC},__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)))){}dnl
-__{}                       ;[eval(16+__SUM_BYTES):eval(98+__SUM_CLOCKS)]    __INFO   version default
-__{}    push HL             ; 1:11      __INFO
-__{}idx{}$1 EQU $+1          ;           __INFO
-__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
-__{}$0_STEP   BC = step
-__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index{}dnl
-__{}$0_STOP   BC = stop
-__{}    or    A             ; 1:4       __INFO
-__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index+step-stop{}dnl
-__{}$0_MIN_STEP   BC = -step
-__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop
-__{}    pop  HL             ; 1:10      __INFO{}dnl
-__{}ifelse(dnl
-__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x0000,{
-__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step},
-__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x8000,{
-__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step},
-__{}{
-__{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
-__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step
-__{}__{}  else
-__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step
-__{}__{}  endif}){}dnl
-__{}},
+__{}__{}__RESET_SUMS(){}dnl
+__{}__{}__ADD_R16_CONST({HL},__SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1)),{BC = step},{HL = index+step}){}dnl
+__{}__{}define({$0_ADD_STEP},__CODE){}dnl
+__{}__{}define({$0_MIN_STEP},       __LD_R16({BC},__SIMPLIFY_EXPRESSION(-(__GET_LOOP_STEP($1))))){}dnl
+__{}__{}define({$0_STOP},           __LD_R16({BC},__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)))){}dnl
+__{}__{}                       ;[eval(15+__SUM_BYTES):eval(87+__SUM_CLOCKS)]    __INFO   version default
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}__{}$0_ADD_STEP
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index{}dnl
+__{}__{}$0_STOP   BC = stop
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index+step-stop{}dnl
+__{}__{}$0_MIN_STEP   BC = -step
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop
+__{}__{}    pop  HL             ; 1:10      __INFO{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x0000,{
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step},
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x8000,{
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step},
+__{}__{}{
+__{}__{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step
+__{}__{}__{}  else
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step
+__{}__{}__{}  endif})
+__{}leave{}$1:               ;           __INFO
+__{}exit{}$1:                ;           __INFO},
 
 __{}{
-__{}__RESET_SUMS(){}dnl
-__{}__{}define({$0_STEP},    __LD_R16({BC},__SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1)))){}dnl
+__{}__{}__RESET_SUMS(){}dnl
+__{}__{}__ADD_R16_CONST({HL},__SIMPLIFY_EXPRESSION(__GET_LOOP_STEP($1)),{BC = step},{HL = index+step}){}dnl
+__{}__{}define({$0_ADD_STEP},__CODE){}dnl
+__{}__{}__ADD_R16_CONST({HL},__SIMPLIFY_EXPRESSION(-(__GET_LOOP_END($1))),{BC = -stop},{HL = index+step-stop}){}dnl
+__{}__{}define({$0_MIN_STOP},__CODE){}dnl
 __{}__{}define({$0_MIN_STEP},__LD_R16({BC},__SIMPLIFY_EXPRESSION(-(__GET_LOOP_STEP($1))))){}dnl
-__{}__{}define({$0_MIN_STOP},__LD_R16({BC},__SIMPLIFY_EXPRESSION(-(__GET_LOOP_END($1))))){}dnl
-__{}                       ;[eval(14+__SUM_BYTES):eval(90+__SUM_CLOCKS)]    __INFO   version default
-__{}    push HL             ; 1:11      __INFO
-__{}idx{}$1 EQU $+1          ;           __INFO
-__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
-__{}$0_STEP   BC = step
-__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index{}dnl
-__{}$0_MIN_STOP   BC = -stop
-__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step-stop{}dnl
-__{}$0_MIN_STEP   BC = -step
-__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop
-__{}    pop  HL             ; 1:10      __INFO{}dnl
-__{}ifelse(dnl
-__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x0000,{
-__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step},
-__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x8000,{
-__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step},
-__{}{
-__{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
-__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step
-__{}__{}  else
-__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step
-__{}__{}  endif}){}dnl
-__{}}){}dnl
+__{}__{}                       ;format({%-11s},[eval(12+__SUM_BYTES):eval(68+__SUM_CLOCKS)]) __INFO   version default
+__{}__{}    push HL             ; 1:11      __INFO
+__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}    ld   HL, 0x0000     ; 3:10      __INFO   HL = index{}dnl
+__{}__{}$0_ADD_STEP
+__{}__{}    ld  [idx{}$1], HL    ; 3:16      __INFO   save index{}dnl
+__{}__{}$0_MIN_STOP{}dnl
+__{}__{}$0_MIN_STEP   BC = -step
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop
+__{}__{}    pop  HL             ; 1:10      __INFO{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x0000,{
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step},
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),0x8000,{
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step},
+__{}__{}{
+__{}__{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   positive step
+__{}__{}__{}  else
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   negative step
+__{}__{}__{}  endif})
+__{}leave{}$1:               ;           __INFO
+__{}exit{}$1:                ;           __INFO}){}dnl
 }){}dnl
 dnl
 dnl
