@@ -50,7 +50,7 @@ __{}__{}    ld   BC, __HEX_HL(__GET_LOOP_BEGIN($1))     ; 3:10      __INFO},
 __{}{
 __{}__{}    ld   BC, __FORM({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO})
 __{}do{}$1{}save:              ;           __INFO
-__{}    ld  format({%-16s},(idx{}$1){,}BC); 4:20      __INFO
+__{}    ld  format({%-16s},[idx{}$1]{,}BC); 4:20      __INFO
 __{}do{}$1:                  ;           __INFO})dnl
 dnl
 dnl
@@ -72,7 +72,7 @@ __{}pushdef({UNLOOP_STACK},{
 __{}__{}                                 ;           unloop_{}$1}){}dnl
 __{}    ld   BC, format({%-11s},$2); 3:10      xdo_xi($1,$2) LOOP_STACK
 __{}do{}$1{}save:              ;           xdo_xi($1,$2) LOOP_STACK
-__{}    ld  format({%-16s},(idx{}$1){,}BC); 4:20      xdo_xi($1,$2) LOOP_STACK
+__{}    ld  format({%-16s},[idx{}$1]{,}BC); 4:20      xdo_xi($1,$2) LOOP_STACK
 __{}do{}$1:                  ;           xdo_xi($1,$2) LOOP_STACK
 __{}    push DE             ; 1:11      xdo_xi($1,$2) LOOP_STACK
 __{}    ex   DE, HL         ; 1:4       xdo_xi($1,$2) LOOP_STACK
@@ -98,7 +98,7 @@ __{}pushdef({UNLOOP_STACK},{
 __{}__{}                                 ;           unloop_{}$1}){}dnl
 __{}    ld   BC, format({%-11s},$2); 3:10      xdo_drop_xi($1,$2) LOOP_STACK
 __{}do{}$1{}save:              ;           xdo_drop_xi($1,$2) LOOP_STACK
-__{}    ld  format({%-16s},(idx{}$1){,}BC); 4:20      xdo_drop_xi($1,$2) LOOP_STACK
+__{}    ld  format({%-16s},[idx{}$1]{,}BC); 4:20      xdo_drop_xi($1,$2) LOOP_STACK
 __{}do{}$1:                  ;           xdo_drop_xi($1,$2) LOOP_STACK
 __{}    ld    H, B          ; 1:4       xdo_drop_xi($1,$2) LOOP_STACK
 __{}    ld    L, C          ; 1:4       xdo_drop_xi($1,$2) LOOP_STACK})dnl
@@ -122,7 +122,7 @@ __{}pushdef({UNLOOP_STACK},{
 __{}__{}                                 ;           unloop_{}$1}){}dnl
 __{}    ld   BC, format({%-11s},$2); 3:10      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}do{}$1{}save:              ;           xdo_push_xi($1,$2,$3) LOOP_STACK
-__{}    ld  format({%-16s},(idx{}$1){,}BC); 4:20      xdo_push_xi($1,$2,$3) LOOP_STACK
+__{}    ld  format({%-16s},[idx{}$1]{,}BC); 4:20      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}do{}$1:                  ;           xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    push DE             ; 1:11      xdo_push_xi($1,$2,$3) LOOP_STACK
 __{}    push HL             ; 1:11      xdo_push_xi($1,$2,$3) LOOP_STACK
@@ -142,7 +142,7 @@ __{}do{}$1{}save:              ;           __INFO},
 __{}{
 __{}__{}    ld   BC, format({%-11s},__GET_LOOP_BEGIN($1)); 3:10      __INFO
 __{}do{}$1{}save:              ;           __INFO
-__{}__{}    ld  format({%-16s},(idx{}$1){,}BC); 4:20      __INFO})
+__{}__{}    ld  format({%-16s},[idx{}$1]{,}BC); 4:20      __INFO})
 __{}do{}$1:                  ;           __INFO})dnl
 dnl
 dnl
@@ -1273,7 +1273,7 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__HAS_PTR(__GET_LOOP_STEP($1)),1,{
 __{}__{}__RESET_SUMS{}dnl
 __{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
-__{}__{}define({$0_STEP},__LD_R16({HL},__GET_LOOP_STEP($1))){}dnl
+__{}__{}define({$0_STEP},__LD_R16({DE},__GET_LOOP_STEP($1))){}dnl
 __{}                       ;[eval(20+__SUM_BYTES):eval(127+__SUM_CLOCKS)]    __INFO   version step is pointer
 __{}    push DE             ; 1:11      __INFO
 __{}    push HL             ; 1:11      __INFO

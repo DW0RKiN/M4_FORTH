@@ -2485,7 +2485,7 @@ dnl #     ld    H, C          ; 1:4       __INFO   H = C = 0x23
 __{}define({$0_CODE_2},{}){}dnl
 __{}define({$0_CODE_3},{}){}dnl
 __{}define({$0_CODE_1},dnl
-__{}__{}__LD_R8_R8($1,$2{}ifelse(__IS_NUM($4),{1},{,$3,$4}){}ifelse(__IS_NUM($6),{1},{,$5,$6}){}ifelse(__IS_NUM($8),{1},{,$7,$8}){}ifelse(__IS_NUM($10),{1},{,$9,$10}))){}dnl
+__{}__{}__LD_R8_R8($1,$2{}ifelse(__IS_NUM($4),{1},{,$3,}__HEX_HL($4)){}ifelse(__IS_NUM($6),{1},{,$5,}__HEX_HL($6)){}ifelse(__IS_NUM($8),{1},{,$7,}__HEX_HL($8)){}ifelse(__IS_NUM($10),{1},{,$9,}__HEX_HL($10)))){}dnl
 __{}define({__CLOCKS},__TMP_C1){}dnl
 __{}define({__BYTES}, __TMP_B1){}dnl
 __{}define({__PRICE}, __TMP_P1){}dnl
@@ -2627,9 +2627,7 @@ __{}__{}}){}dnl
 __{}}){}dnl
 __{}$0_CODE_1{}$0_CODE_2{}$0_CODE_3{}dnl
 __{}dnl # debug
-__{}ifelse(1,0,{errprint({
-__ld_r16_num($@)
-})}){}dnl
+__{}ifelse(1,0,{errprint(__CR{__ld_r16_num($@)}__CR{}$0_CODE_1{}$0_CODE_2{}$0_CODE_3{}__CR)}){}dnl
 })dnl
 dnl
 dnl
