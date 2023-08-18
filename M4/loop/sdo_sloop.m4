@@ -14,13 +14,13 @@ __{}define({__COMPILE_INFO},__COMPILE_INFO{(s)}){}dnl
 __{}ifelse(dnl
 __{}__HEX_HL(__GET_LOOP_END($1)),0x0000,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( __GET_LOOP_END($1) index -- index )  stop = __GET_LOOP_END($1)},
 __{}__HEX_HL(__GET_LOOP_END($1)),0x0001,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( __GET_LOOP_END($1) index -- index )  stop = __GET_LOOP_END($1)},
 __{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( __GET_LOOP_END($1) index -- index )  stop = __GET_LOOP_END($1)},
 __{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
 __{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- stop index )},
 __{}__GET_LOOP_END($1),{},{dnl
@@ -56,7 +56,7 @@ __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))}
 __{}__{}    ld    A, H          ; 1:4       __COMPILE_INFO
 __{}__{}    or    L             ; 1:4       __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( __GET_LOOP_END($1) index -- index )  stop = __GET_LOOP_END($1)},
 
 __{}__HEX_HL(__GET_LOOP_END($1)),0x0001,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
@@ -64,7 +64,7 @@ __{}__{}    ld    A, L          ; 1:4       __COMPILE_INFO
 __{}__{}    dec   A             ; 1:4       __COMPILE_INFO
 __{}__{}    or    H             ; 1:4       __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( __GET_LOOP_END($1) index -- index )  stop = __GET_LOOP_END($1)},
 
 __{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,{dnl
 __{}__{}ifelse(__GET_LOOP_BEGIN($1),{},,{__ASM_TOKEN_PUSH(__GET_LOOP_BEGIN($1))})
@@ -72,7 +72,7 @@ __{}__{}    ld    A, H          ; 1:4       __COMPILE_INFO
 __{}__{}    and   L             ; 1:4       __COMPILE_INFO
 __{}__{}    inc   A             ; 1:4       __COMPILE_INFO
 __{}__{}    jp    z, leave{}$1   ; 3:10      __COMPILE_INFO
-__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( stop index -- index )  stop = __GET_LOOP_END($1)},
+__{}__{}do{}$1:                  ;           __COMPILE_INFO   ( __GET_LOOP_END($1) index -- index )  stop = __GET_LOOP_END($1)},
 
 __{}__GET_LOOP_END($1):__GET_LOOP_BEGIN($1),{:},{
 __{}__{}    or    A             ; 1:4       __COMPILE_INFO
@@ -127,43 +127,52 @@ define({__ASM_TOKEN_SLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{(s)}){}dnl
 __{}ifelse($#,{0},{
 __{}  .error {$0}($@): Missing parameter!},
+
 __{}eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameter!},
-__{}{dnl
-__{}__{}ifelse(dnl
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0000,
-__{}__{}{
-__{}__{}__{}dnl # stop if "index+1 =  0"
-__{}__{}__{}dnl # stop if "index   = -1"
-__{}__{}__{}    inc  HL             ; 1:6       __INFO   index++
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}__{}    or    H             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0001,
-__{}__{}{
-__{}__{}__{}dnl # stop if "index+1 =  1"
-__{}__{}__{}dnl # stop if "index   =  0"
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}__{}    or    H             ; 1:4       __INFO
-__{}__{}__{}    inc  HL             ; 1:6       __INFO   index++
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,
-__{}__{}{
-__{}__{}__{}dnl # stop if "index+1 = -1"
-__{}__{}__{}dnl # stop if "index   = -2"
-__{}__{}__{}    inc  HL             ; 1:6       __INFO   index++
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}__{}    and   H             ; 1:4       __INFO
-__{}__{}__{}    inc   A             ; 1:4       __INFO   0xFF?
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO},
-__{}__{}{
-__{}__{}__{}    inc  HL             ; 1:6       __INFO   index++
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}__{}    xor   E             ; 1:4       __INFO   lo(index - stop)
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}__{}    xor   D             ; 1:4       __INFO   hi(index - stop)
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO})
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0x0000},{
+__{}__{}dnl # stop if "index+1 =  0"
+__{}__{}dnl # stop if "index   = -1"
+__{}__{}    inc  HL             ; 1:6       __INFO   index++
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0x0001},{
+__{}__{}dnl # stop if "index+1 =  1"
+__{}__{}dnl # stop if "index   =  0"
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO   index++
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0xFFFF},{
+__{}__{}dnl # stop if "index+1 = -1"
+__{}__{}dnl # stop if "index   = -2"
+__{}__{}    inc  HL             ; 1:6       __INFO   index++
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    and   H             ; 1:4       __INFO
+__{}__{}    inc   A             ; 1:4       __INFO   0xFF?
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}{
+__{}__{}    inc  HL             ; 1:6       __INFO   index++
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    xor   E             ; 1:4       __INFO   lo(index - stop)
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}__{}    ld    A, H          ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO   hi(index - stop)
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}leave{}$1:               ;           __INFO{}dnl
 __{}__{}__ASM_TOKEN_UNLOOP($1)
 __{}__{}exit{}$1:                ;           __INFO{(s)}{}dnl
@@ -328,190 +337,232 @@ define({__ASM_TOKEN_ADDSLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{}(s)){}dnl
 __{}ifelse($#,{0},{
 __{}__{}  .error {$0}($@): Missing parameter!},
+
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}{dnl
-__{}__{}ifelse(dnl
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0000,
-__{}__{}{
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO   ( index step -- index+step )  stop=0
-__{}__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index+step
-__{}__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
-__{}__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0x0001,
-__{}__{}{
-__{}__{}__{}    dec  DE             ; 1:6       __INFO   index-stop
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO   ( index step -- index+step )  stop=1
-__{}__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
-__{}__{}__{}    inc  HL             ; 1:6       __INFO   index+step
-__{}__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,
-__{}__{}{
-__{}__{}__{}    inc  DE             ; 1:6       __INFO   index-stop
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO   ( index step -- index+step )  stop=-1
-__{}__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
-__{}__{}__{}    dec  HL             ; 1:6       __INFO   index+step
-__{}__{}__{}    pop  DE             ; 1:10      __INFO
-__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__{}_TYP_SINGLE,{fast},{
-__{}__{}__{}dnl #                    12:61
-__{}__{}__{}    pop  BC             ; 1:10      __INFO   BC = stop
-__{}__{}__{}    add  HL, DE         ; 1:11      __INFO   index+step
-__{}__{}__{}    ld    A, E          ; 1:4       __INFO
-__{}__{}__{}    sub   C             ; 1:4       __INFO
-__{}__{}__{}    ld    A, D          ; 1:4       __INFO
-__{}__{}__{}    sbc   A, B          ; 1:4       __INFO
-__{}__{}__{}    ld    E, A          ; 1:4       __INFO   E = hi index-stop
-__{}__{}__{}    ld    A, L          ; 1:4       __INFO
-__{}__{}__{}    sub   C             ; 1:4       __INFO
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}__{}    sbc   A, B          ; 1:4       __INFO
-__{}__{}__{}    xor   E             ; 1:4       __INFO
-__{}__{}__{}    ld    D, B          ; 1:4       __INFO
-__{}__{}__{}    ld    E, C          ; 1:4       __INFO
-__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__{}{
-__{}__{}__{}dnl #                     9:63
-__{}__{}__{}    pop  BC             ; 1:10      __INFO   BC = stop
-__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO
-__{}__{}__{}    or    A             ; 1:4       __INFO
-__{}__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
-__{}__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
-__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step, sign flag unaffected
-__{}__{}__{}    ld    D, B          ; 1:4       __INFO
-__{}__{}__{}    ld    E, C          ; 1:4       __INFO
-__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO})
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0x0000},{
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   ( index step -- index+step )  stop=0
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
 __{}__{}leave{}$1:               ;           __INFO{}dnl
 __{}__{}__ASM_TOKEN_UNLOOP($1)
-__{}__{}exit{}$1:                ;           __INFO{(s)}{}dnl
-__{}}){}dnl
-}){}dnl
-dnl
-dnl
-dnl
-dnl # step +loop
-dnl # ( stop index -- stop index+step )
-define({__ASM_TOKEN_NO_NUM_ADDSLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO{(s)}){}dnl
-__{}ifelse($#,{0},{
-__{}  .error {$0}($@): Missing parameter!},
-__{}eval($#>1),{1},{
-__{}  .error {$0}($@): Unexpected parameter!},
-__{}{ifelse(dnl
-__{}__HEX_HL(__GET_LOOP_END($1)),0x0000,
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0x0001},{
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   ( index step -- index+step )  stop=1
+__{}__{}    dec  HL             ; 1:6       __INFO   index-stop
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO   index+step
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0xFFFF},{
+__{}__{}    ex   DE, HL         ; 1:4       __INFO   ( index step -- index+step )  stop=-1
+__{}__{}    inc  HL             ; 1:6       __INFO   index-stop
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO   index+step
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    pop  DE             ; 1:10      __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO},
+
 __{}{
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step, stop = 0
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__HEX_HL(__GET_LOOP_END($1)),0x0001,
-__{}{
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step, stop = 1
-__{}__{}    dec  HL             ; 1:6       __INFO   HL-= stop = index-stop
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
-__{}__{}    inc  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,
-__{}{
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step, stop = -1
-__{}__{}    inc  HL             ; 1:6       __INFO   HL-= stop = index-stop
-__{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
-__{}__{}    dec  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO},
-__{}{
+__{}__{}    pop  BC             ; 1:10      __INFO   BC = stop
+__{}__{}    ex   DE, HL         ; 1:4       __INFO
 __{}__{}    or    A             ; 1:4       __INFO
-__{}__{}    sbc  HL, DE         ; 2:15      __INFO   HL = index-stop
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
+__{}__{}    sbc  HL, BC         ; 2:15      __INFO   HL = index-stop
 __{}__{}    ld    A, H          ; 1:4       __INFO
-__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
-__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index+step, sign flag unaffected
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO})
-__{}leave{}$1:               ;           __INFO{}dnl
-__{}__ASM_TOKEN_UNLOOP($1)
-__{}exit{}$1:                ;           __INFO{(s)}{}dnl
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step, sign flag unaffected
+__{}__{}    xor   D             ; 1:4       __INFO
+__{}__{}    ld    D, B          ; 1:4       __INFO
+__{}__{}    ld    E, C          ; 1:4       __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO{}dnl
 __{}}){}dnl
 }){}dnl
 dnl
 dnl
+dnl
 dnl # step +loop
 dnl # ( stop index -- stop index+step )
-define({__ASM_TOKEN_NUM_ADDSLOOP},{dnl
+define({__ASM_TOKEN_PTR_ADDSLOOP},{dnl
 __{}define({__INFO},__COMPILE_INFO{(s)}){}dnl
 __{}ifelse($#,{0},{
 __{}__{}  .error {$0}($@): Missing parameter!},
 __{}eval($#>1),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
-__{}{ifelse(dnl
-__{}__HEX_HL(__GET_LOOP_END($1)),0x0000,
-__{}{
-__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step, stop = 0
+
+__{}__HEX_HL(__GET_LOOP_END($1)),0x0000,{
+__{}__{}    ld   BC,format({%-12s},__GET_LOOP_STEP($1)); 4:20      __INFO   BC = step, stop = 0
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step
-__{}__{}__{}ifelse(eval(__GET_LOOP_STEP($1) & 0x8000),0,{dnl
-__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO},
-__{}__{}__{}{dnl
-__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO})},
-__{}__HEX_HL(__GET_LOOP_END($1)),0x0001,
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    xor   B             ; 1:4       __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}leave{}$1:               ;           __INFO{}dnl
+__{}__ASM_TOKEN_UNLOOP($1)
+__{}exit{}$1:                ;           __INFO},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),0x0001,{
+__{}__{}    ld   BC,format({%-12s},__GET_LOOP_STEP($1)); 4:20      __INFO   BC = step, stop = 1
+__{}__{}    dec  HL             ; 1:6       __INFO   HL-= stop = index-stop
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    inc  HL             ; 1:6       __INFO   HL+= stop = index+step
+__{}__{}    xor   B             ; 1:4       __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}leave{}$1:               ;           __INFO{}dnl
+__{}__ASM_TOKEN_UNLOOP($1)
+__{}exit{}$1:                ;           __INFO},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,{
+__{}__{}    ld   BC, format({%-12s},__GET_LOOP_STEP($1)); 4:20      __INFO   BC = step, stop = -1
+__{}__{}    inc  HL             ; 1:6       __INFO   HL-= stop = index-stop
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO
+__{}__{}    dec  HL             ; 1:6       __INFO   HL+= stop = index+step
+__{}__{}    xor   B             ; 1:4       __INFO
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}leave{}$1:               ;           __INFO{}dnl
+__{}__ASM_TOKEN_UNLOOP($1)
+__{}exit{}$1:                ;           __INFO},
+
 __{}{
+__{}__{}    or    A             ; 1:4       __INFO
+__{}__{}    sbc  HL, DE         ; 2:15      __INFO   HL = index-stop
+__{}__{}    ld   BC,format({%-12s},__GET_LOOP_STEP($1)); 4:20      __INFO   BC = step
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step
+__{}__{}    sbc   A, A          ; 1:4       __INFO   carry to sign
+__{}__{}    xor   B             ; 1:4       __INFO   sign flag!
+__{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index+step, sign flag unaffected
+__{}__{}    jp    p, do{}$1      ; 3:10      __INFO
+__{}leave{}$1:               ;           __INFO{}dnl
+__{}__ASM_TOKEN_UNLOOP($1)
+__{}exit{}$1:                ;           __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # step +loop
+dnl # ( stop index -- stop index+step )
+define({__ASM_TOKEN_NOPTR_ADDSLOOP},{dnl
+__{}define({__INFO},__COMPILE_INFO{(s)}){}dnl
+__{}ifelse($#,{0},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0x0000},{
+__{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step, stop = 0
+__{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index+step{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x0000},{
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   positive step},
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x8000},{
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   negative step},
+__{}__{}{
+__{}__{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   positive step
+__{}__{}__{}  else
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   negative step
+__{}__{}__{}  endif})
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0x0001},{
 __{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step, stop = 1
 __{}__{}    dec  HL             ; 1:6       __INFO   HL-= stop = index-stop
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    inc  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}__{}ifelse(eval(__GET_LOOP_STEP($1) & 0x8000),0,{dnl
-__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO},
-__{}__{}__{}{dnl
-__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO})},
-__{}__HEX_HL(__GET_LOOP_END($1)),0xFFFF,
-__{}{
+__{}__{}    inc  HL             ; 1:6       __INFO   HL+= stop = index+step{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x0000},{
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   positive step},
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x8000},{
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   negative step},
+__{}__{}{
+__{}__{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   positive step
+__{}__{}__{}  else
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   negative step
+__{}__{}__{}  endif})
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO},
+
+__{}__HEX_HL(__GET_LOOP_END($1)),{0xFFFF},{
 __{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step, stop = -1
 __{}__{}    inc  HL             ; 1:6       __INFO   HL-= stop = index-stop
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL+= step = index-stop+step
-__{}__{}    dec  HL             ; 1:6       __INFO   HL+= stop = index+step
-__{}__{}__{}ifelse(eval(__GET_LOOP_STEP($1) & 0x8000),0,{dnl
-__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO},
-__{}__{}__{}{dnl
-__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO})},
+__{}__{}    dec  HL             ; 1:6       __INFO   HL+= stop = index+step{}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x0000},{
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   positive step},
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x8000},{
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   negative step},
+__{}__{}{
+__{}__{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
+__{}__{}__{}    jp   nc, do{}$1      ; 3:10      __INFO   positive step
+__{}__{}__{}  else
+__{}__{}__{}    jp    c, do{}$1      ; 3:10      __INFO   negative step
+__{}__{}__{}  endif})
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO},
+
 __{}{
 __{}__{}    or    A             ; 1:4       __INFO
 __{}__{}    sbc  HL, DE         ; 2:15      __INFO   HL = index-stop
 __{}__{}    ld   BC, format({%-11s},__GET_LOOP_STEP($1)); 3:10      __INFO   BC = step
-__{}__{}    ld    A, H          ; 1:4       __INFO
 __{}__{}    add  HL, BC         ; 1:11      __INFO   HL = index-stop+step
-__{}__{}    xor   H             ; 1:4       __INFO   sign flag!
+__{}__{}    sbc   A, A          ; 1:4       __INFO   carry to sign
 __{}__{}    add  HL, DE         ; 1:11      __INFO   HL = index+step, sign flag unaffected
-__{}__{}    jp    p, do{}$1      ; 3:10      __INFO})
-__{}leave{}$1:               ;           __INFO{}dnl
-__{}__ASM_TOKEN_UNLOOP($1)
-__{}exit{}$1:                ;           __INFO{(s)}{}dnl
-__{}}){}dnl
+__{}__{}ifelse(dnl
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x0000},{
+__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO   positive step},
+__{}__{}__HEX_HL(0x8000 & (__GET_LOOP_STEP($1))),{0x8000},{
+__{}__{}__{}    jp    m, do{}$1      ; 3:10      __INFO   negative step},
+__{}__{}{
+__{}__{}__{}  if ((0x8000 & (__GET_LOOP_STEP($1))) = 0)
+__{}__{}__{}    jp    p, do{}$1      ; 3:10      __INFO   positive step
+__{}__{}__{}  else
+__{}__{}__{}    jp    m, do{}$1      ; 3:10      __INFO   negative step
+__{}__{}__{}  endif})
+__{}__{}leave{}$1:               ;           __INFO{}dnl
+__{}__{}__ASM_TOKEN_UNLOOP($1)
+__{}__{}exit{}$1:                ;           __INFO}){}dnl
 }){}dnl
 dnl
 dnl
 dnl # step +loop
 dnl # ( stop index -- stop index+step )
 define({__ASM_TOKEN_PUSH_ADDSLOOP},{dnl
-ifelse($#,{0},{
-__{}  .error {$0}($@): Missing parameter!},
-eval($#>1),{1},{
-__{}  .error {$0}($@): Unexpected parameter!},
-{dnl
-__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),{0},{__ASM_TOKEN_NO_NUM_ADDSLOOP($1)},{dnl
-__{}__{}ifelse(eval(__GET_LOOP_STEP($1)),{1},{__ASM_TOKEN_SLOOP($1)},
-__{}__{}eval(__GET_LOOP_STEP($1)),{-1},{__ASM_TOKEN_SUB1_ADDSLOOP($1)},
-__{}__{}eval(__GET_LOOP_STEP($1)),{2},{__ASM_TOKEN_2_ADDSLOOP($1)},
-__{}__{}{__ASM_TOKEN_NUM_ADDSLOOP($1)})}){}dnl
-})}){}dnl
+__{}ifelse($#,{0},{
+__{}__{}  .error {$0}($@): Missing parameter!},
+__{}eval($#>1),{1},{
+__{}__{}  .error {$0}($@): Unexpected parameter!},
+__{}__HAS_PTR(__GET_LOOP_STEP($1)),{1},{__ASM_TOKEN_PTR_ADDSLOOP($1)},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0x0001},{__ASM_TOKEN_SLOOP($1)},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0xFFFF},{__ASM_TOKEN_SUB1_ADDSLOOP($1)},
+__{}__HEX_HL(__GET_LOOP_STEP($1)),{0x0002},{__ASM_TOKEN_2_ADDSLOOP($1)},
+__{}{__ASM_TOKEN_NOPTR_ADDSLOOP($1)}){}dnl
+}){}dnl
 dnl
 dnl
 dnl
