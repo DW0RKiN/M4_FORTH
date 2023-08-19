@@ -1216,36 +1216,12 @@ __{}__{}exit{}$1:                ;           __INFO},
 
 __{}{dnl
 __{}__{}__RESET_SUMS{}dnl
-__{}__{}__ADD_R16_CONST(HL,__GET_LOOP_END($1),{BC =  stop = __GET_LOOP_END($1)},{HL+=  stop = index+step}){}dnl
-__{}__{}define({$0_ADD_STOP},__CODE){}dnl
 __{}__{}define({$0_BC},__LD_R16({BC},__GET_LOOP_STEP($1))){}dnl
-__{}__{}__ADD_R16_CONST(HL,-(__GET_LOOP_END($1)),{BC = -stop = -(__GET_LOOP_END($1))},{HL+= -stop = index-stop}){}dnl
+__{}__{}__ADD_R16_CONST(HL,__SIMPLIFY_EXPRESSION(-(__GET_LOOP_END($1))),{BC = -stop = -(__GET_LOOP_END($1))},{HL+= -stop = index-stop}){}dnl
 __{}__{}define({$0_SUB_STOP},__CODE){}dnl
-__{}__{}ifelse(__POLLUTES,{sz},{
-__{}__{}__{}                       ;[eval(12+__SUM_BYTES):eval(61+__SUM_CLOCKS)]     __INFO   variant: default(sz)
-__{}__{}__{}    exx                 ; 1:4       __INFO
-__{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
-__{}__{}__{}    inc   L             ; 1:4       __INFO
-__{}__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index
-__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
-__{}__{}__{}$0_SUB_STOP{}dnl
-__{}__{}__{}$0_BC   BC =  step = __GET_LOOP_STEP($1)
-__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step{}dnl
-__{}__{}__{}$0_ADD_STOP
-__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
-__{}__{}__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),1,{dnl
-__{}__{}__{}__{}ifelse(eval((__GET_LOOP_STEP($1)) & 0x8000),0,{
-__{}__{}__{}__{}    jp   nc, do{}$1save  ; 3:10      __INFO   positive step},
-__{}__{}__{}__{}{
-__{}__{}__{}__{}    jp    c, do{}$1save  ; 3:10      __INFO   negative step})},
-__{}__{}__{}{
-__{}__{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
-__{}__{}__{}__{}    jp   nc, do{}$1save  ; 3:10      __INFO   positive step
-__{}__{}__{}__{}  else
-__{}__{}__{}__{}    jp    c, do{}$1save  ; 3:10      __INFO   negative step
-__{}__{}__{}__{}  endif})},
-
-__{}__{}{
+__{}__{}__ADD_R16_CONST(HL,__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)),{BC =  stop = __GET_LOOP_END($1)},{HL+=  stop = index+step}){}dnl
+__{}__{}define({$0_ADD_STOP},__CODE){}dnl
+__{}__{}ifelse(__POLLUTES,{c},{
 __{}__{}__{}                       ;[eval(13+__SUM_BYTES):eval(65+__SUM_CLOCKS)]    __INFO   variant: default
 __{}__{}__{}    exx                 ; 1:4       __INFO
 __{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
@@ -1270,6 +1246,30 @@ __{}__{}__{}__{}  else
 __{}__{}__{}__{}    jp    m, do{}$1save  ; 3:10      __INFO   negative step
 __{}__{}__{}__{}  endif{}dnl
 __{}__{}__{}}){}dnl
+__{}__{}},
+__{}__{}{
+__{}__{}__{}                       ;[eval(12+__SUM_BYTES):eval(61+__SUM_CLOCKS)]     __INFO   variant: default(sz)
+__{}__{}__{}    exx                 ; 1:4       __INFO
+__{}__{}__{}    ld    E,[HL]        ; 1:7       __INFO
+__{}__{}__{}    inc   L             ; 1:4       __INFO
+__{}__{}__{}    ld    D,[HL]        ; 1:7       __INFO   DE = index
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO   HL = index, DE = R.A.S.{}dnl
+__{}__{}__{}$0_SUB_STOP{}dnl
+__{}__{}__{}$0_BC   BC =  step = __GET_LOOP_STEP($1)
+__{}__{}__{}    add  HL, BC         ; 1:11      __INFO   HL+=  step = index-stop+step{}dnl
+__{}__{}__{}$0_ADD_STOP
+__{}__{}__{}    ex   DE, HL         ; 1:4       __INFO{}dnl
+__{}__{}__{}ifelse(__IS_NUM(__GET_LOOP_STEP($1)),1,{dnl
+__{}__{}__{}__{}ifelse(eval((__GET_LOOP_STEP($1)) & 0x8000),0,{
+__{}__{}__{}__{}    jp   nc, do{}$1save  ; 3:10      __INFO   positive step},
+__{}__{}__{}__{}{
+__{}__{}__{}__{}    jp    c, do{}$1save  ; 3:10      __INFO   negative step})},
+__{}__{}__{}{
+__{}__{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
+__{}__{}__{}__{}    jp   nc, do{}$1save  ; 3:10      __INFO   positive step
+__{}__{}__{}__{}  else
+__{}__{}__{}__{}    jp    c, do{}$1save  ; 3:10      __INFO   negative step
+__{}__{}__{}__{}  endif}){}dnl
 __{}__{}})
 __{}__{}leave{}$1:               ;           __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
