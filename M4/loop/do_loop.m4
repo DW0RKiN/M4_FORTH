@@ -708,16 +708,16 @@ __{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1),8,36,0,36){}
 __{}__{}define({$0_B2},eval(_TMP_BEST_B+3)){}dnl
 __{}__{}define({$0_C2},eval(_TMP_BEST_C+10)){}dnl
 __{}__{}define({$0_P2},eval($0_C2+__BYTE_PRICE*$0_B2)){}dnl
-__{}__{}ifelse(eval($0_P<=_$0_P2),{1},{
+__{}__{}ifelse(eval($0_P<=$0_P2),{1},{
 __{}__{}__{}__MAKE_BEST_CODE_R16_CP(__INFO,__INFO,BC,__GET_LOOP_END($1)-1,3,10,do{}$1,0){}dnl
 __{}__{}__{}idx{}$1 EQU $+1         ;[$0_B:$0_C]     __INFO   ( __GET_LOOP_END($1) index -- )
 __{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
 __{}__{}__{}    dec  BC             ; 1:6       __INFO   index++
-__{}__{}__{}    ld  [idx{}$1], BC    ; 4:20      __INFO   save index
+__{}__{}__{}    ld  [idx{}$1], BC    ; 4:20      __INFO   save index{}dnl
 __{}__{}__{}_TMP_BEST_CODE},
 __{}__{}{
 __{}__{}__{}idx{}$1 EQU $+1         ;[$0_B2:$0_C2]     __INFO   ( __GET_LOOP_END($1) index -- )
-__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index{}dnl
 __{}__{}__{}_TMP_BEST_CODE
 __{}__{}__{}    dec  BC             ; 1:6       __INFO   index++
 __{}__{}__{}    ld  [idx{}$1], BC    ; 4:20      __INFO   save index{}dnl
@@ -823,6 +823,22 @@ __{}__{}    ld  [idx{}$1],BC     ; 4:20      __INFO   save index
 __{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}stp_hi{}$1 EQU $+1       ;           __INFO
 __{}__{}    sbc   A, 0xFF       ; 2:7       __INFO   hi index - stop-1},
+
+__{}__HAS_PTR(__GET_LOOP_END($1)),1,{
+__{}__{}idx{}$1 EQU $+1          ;           __INFO
+__{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
+__{}__{}    inc  BC             ; 1:6       __INFO   index++
+__{}__{}    ld    A,format({%-12s},__PTR_ADD(__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)),0)); 3:13      __INFO   lo(stop)
+__{}__{}    sub   C             ; 1:4       __INFO   0 or 1?
+__{}__{}    rra                 ; 2:7       __INFO
+__{}__{}    add   A, A          ; 1:4       __INFO   and 0xFE with save carry
+__{}__{}    inc  BC             ; 1:6       __INFO   index++
+__{}__{}    ld  [idx{}$1],BC     ; 4:20      __INFO   save index
+__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO   index++
+__{}__{}    ld    A,format({%-12s},__PTR_ADD(__SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)),1)); 3:13      __INFO   hi(stop)
+__{}__{}    sbc   A, B          ; 1:4       __INFO   0?},
+
 __{}{
 __{}__{}idx{}$1 EQU $+1          ;           __INFO
 __{}__{}    ld   BC, 0x0000     ; 3:10      __INFO   idx always points to a 16-bit index
