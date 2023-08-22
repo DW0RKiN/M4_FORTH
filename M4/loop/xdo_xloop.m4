@@ -814,7 +814,7 @@ __{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x0000,{
 dnl ;# end+(step-((end-begin) mod step))mod step
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )},
@@ -822,7 +822,7 @@ __{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x8000,{
 dnl ;# end+step+((begin-end) mod -step)
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)-__16BIT_TO_ABS(__GET_LOOP_STEP($1))+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod __16BIT_TO_ABS(__GET_LOOP_STEP($1))))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)-__16BIT_TO_ABS(__GET_LOOP_STEP($1))+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod __16BIT_TO_ABS(__GET_LOOP_STEP($1))))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )},
@@ -830,14 +830,14 @@ __{}__{}{
 __{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )
 __{}__{}__{}  else
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+__GET_LOOP_STEP($1)+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod -__GET_LOOP_STEP($1)))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+__GET_LOOP_STEP($1)+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod -__GET_LOOP_STEP($1)))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )
@@ -1125,7 +1125,7 @@ __{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x0000,{
 dnl ;# end+(step-((end-begin) mod step))mod step
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )},
@@ -1133,7 +1133,7 @@ __{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x8000,{
 dnl ;# end+step+((begin-end) mod -step)
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)-__16BIT_TO_ABS(__GET_LOOP_STEP($1))+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod __16BIT_TO_ABS(__GET_LOOP_STEP($1))))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)-__16BIT_TO_ABS(__GET_LOOP_STEP($1))+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod __16BIT_TO_ABS(__GET_LOOP_STEP($1))))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )},
@@ -1141,14 +1141,14 @@ __{}__{}{
 __{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )
 __{}__{}__{}  else
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+__GET_LOOP_STEP($1)+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod -__GET_LOOP_STEP($1)))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+__GET_LOOP_STEP($1)+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod -__GET_LOOP_STEP($1)))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )
@@ -1366,7 +1366,7 @@ __{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x0000,{
 dnl ;# end+(step-((end-begin) mod step))mod step
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )},
@@ -1374,7 +1374,7 @@ __{}__{}__HEX_HL((__GET_LOOP_STEP($1)) & 0x8000),0x8000,{
 dnl ;# end+step+((begin-end) mod -step)
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)-__16BIT_TO_ABS(__GET_LOOP_STEP($1))+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod __16BIT_TO_ABS(__GET_LOOP_STEP($1))))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)-__16BIT_TO_ABS(__GET_LOOP_STEP($1))+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod __16BIT_TO_ABS(__GET_LOOP_STEP($1))))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )},
@@ -1382,14 +1382,14 @@ __{}__{}{
 __{}__{}__{}  if (((__GET_LOOP_STEP($1)) & 0x8000) = 0)
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+(__GET_LOOP_STEP($1)-((__GET_LOOP_END($1)-__GET_LOOP_BEGIN($1))mod __GET_LOOP_STEP($1)))mod __GET_LOOP_STEP($1))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )
 __{}__{}__{}  else
 __{}__{}__{}    ld    A, format({%-11s},low __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+__GET_LOOP_STEP($1)+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod -__GET_LOOP_STEP($1)))); 2:7       __INFO   lo(real_stop)
 __{}__{}__{}    cp    E             ; 1:4       __INFO
-__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO 
+__{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO
 __{}__{}__{}    ld    A, format({%-11s},high __SIMPLIFY_EXPRESSION(__GET_LOOP_END($1)+__GET_LOOP_STEP($1)+((__GET_LOOP_BEGIN($1)-__GET_LOOP_END($1)) mod -__GET_LOOP_STEP($1)))); 2:7       __INFO   hi(real_stop)
 __{}__{}__{}    cp    D             ; 1:4       __INFO
 __{}__{}__{}    jp   nz, do{}$1      ; 3:10      __INFO   ( -- ) ( R: index -- index+__GET_LOOP_STEP($1) )
@@ -1652,7 +1652,7 @@ __{}    pop  HL             ; 1:10      __INFO
 __{}    pop  DE             ; 1:10      __INFO
 __{}    jp    p, do{}$1      ; 3:10      __INFO
                        ;[21:122]},
-                              
+
 __{}__HAS_PTR(__GET_LOOP_END($1)),1,{
 __{}__{}define({$0_STOP},__LD_R16({BC},__GET_LOOP_END($1))){}dnl
 __{}                       ;[eval(20+__BYTES):eval(120+__CLOCKS)]    __INFO   version step from stack and stop is pointer
