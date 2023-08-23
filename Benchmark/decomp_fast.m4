@@ -11,18 +11,18 @@ COLON(_decomp,( n -- ))
     PUSH(2)
     BEGIN  
         _2DUP DUP MUL 
-    UGE_WHILE  
+    UGE WHILE  
         _2DUP UDIVMOD 
-        SWAP_IF 
-            DROP _1ADD PUSH_OR(1) ; next odd number
+        SWAP IF 
+            DROP _1ADD PUSH(1) OR ; next odd number
         ELSE 
-            NROT_NIP
+            NROT NIP
         THEN
     REPEAT
     _2DROP 
 SEMICOLON
 
 SCOLON(_bench,( -- ))
-    PUSH(10000) SFOR SI CALL(_decomp) SNEXT
+    PUSH(10000) FOR(S) I CALL(_decomp) NEXT
 SSEMICOLON
 

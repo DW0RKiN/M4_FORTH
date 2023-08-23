@@ -1,112 +1,112 @@
-ORG 0x8000
+    ORG 0x8000
+
+
+
+
+
+
+
+
+    
+      
+           
+       
+          
+          
+                ; next odd number
+         
+             
+        
+    
+     
+
+
+
+        
+
+
 
 ;   ===  b e g i n  ===
     ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
     ld    L, 0x1A       ; 2:7       init   Upper screen
     call 0x1605         ; 3:17      init   Open channel
-    ld   HL, 60000      ; 3:10      init   Init Return address stack
+    ld   HL, 0xEA60     ; 3:10      init   Return address stack = 60000
     exx                 ; 1:4       init
-
     call _bench         ; 3:17      scall
-
 Stop:                   ;           stop
     ld   SP, 0x0000     ; 3:10      stop   restoring the original SP value when the "bye" word is used
     ld   HL, 0x2758     ; 3:10      stop
     exx                 ; 1:4       stop
     ret                 ; 1:10      stop
 ;   =====  e n d  =====
-
-
-
-
-
 ;   ---  the beginning of a non-recursive function  ---
 _decomp:                ;           ( n -- )
     pop  BC             ; 1:10      : ret
     ld  (_decomp_end+1),BC; 4:20      : ( ret -- )
-    
-    push DE             ; 1:11      push(2)
-    ex   DE, HL         ; 1:4       push(2)
-    ld   HL, 2          ; 3:10      push(2)
-    
-begin101:               ;           begin 101  
-        
+    push DE             ; 1:11      2
+    ex   DE, HL         ; 1:4       2
+    ld   HL, 2          ; 3:10      2
+begin101:               ;           begin(101)
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    push DE             ; 1:11      dup
+    push HL             ; 1:11      2dup   ( b a -- b a b a )
+    push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
+    ld    E, L          ; 1:4       dup
     call MULTIPLY       ; 3:17      *
-    pop  DE             ; 1:10      * 
-    
-    ld    A, E          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> carry if false
-    sub   L             ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> carry if false
-    ld    A, D          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> carry if false
-    sbc   A, H          ; 1:4       u>= while 101    DE>=HL --> DE-HL>=0 --> carry if false
-    pop  HL             ; 1:10      u>= while 101
-    pop  DE             ; 1:10      u>= while 101
-    jp    c, break101   ; 3:10      u>= while 101  
-        
+    pop  DE             ; 1:10      *
+                        ;[9:46]     u>= while(101)   ( x2 x1 -- )
+    ld    A, E          ; 1:4       u>= while(101)   DE>=HL --> DE-HL>=0 --> false if carry
+    sub   L             ; 1:4       u>= while(101)   DE>=HL --> DE-HL>=0 --> false if carry
+    ld    A, D          ; 1:4       u>= while(101)   DE>=HL --> DE-HL>=0 --> false if carry
+    sbc   A, H          ; 1:4       u>= while(101)   DE>=HL --> DE-HL>=0 --> false if carry
+    pop  HL             ; 1:10      u>= while(101)
+    pop  DE             ; 1:10      u>= while(101)
+    jp    c, break101   ; 3:10      u>= while(101)
     push DE             ; 1:11      2dup
-    push HL             ; 1:11      2dup  ( b a -- b a b a ) 
-    call UDIVIDE        ; 3:17      u/mod 
-        
+    push HL             ; 1:11      2dup   ( b a -- b a b a )
+    call UDIVIDE        ; 3:17      u/mod
     ld    A, D          ; 1:4       swap if
     or    E             ; 1:4       swap if
     pop  DE             ; 1:10      swap if
-    jp    z, else101    ; 3:10      swap if 
-            
+    jp    z, else101    ; 3:10      swap if
     ex   DE, HL         ; 1:4       drop
-    pop  DE             ; 1:10      drop ( a -- ) 
-    inc  HL             ; 1:6       1+ 
-                        ;           1 or   (H or 0x00) = H
-    set   0, L          ; 2:8       1 or ; next odd number
-        
+    pop  DE             ; 1:10      drop   ( a -- )
+    inc  HL             ; 1:6       1+
+    set   0, L          ; 2:8       1 or
     jp   endif101       ; 3:10      else
-else101: 
-            
-    pop  AF             ; 1:10      nrot nip
-    ex   DE, HL         ; 1:4       nrot nip ( c b a -- a b )
-        
-endif101:
-    
+else101:                ;           else
+    pop  AF             ; 1:10      nrot nip   ( c b a -- a b )
+    ex   DE, HL         ; 1:4       nrot nip
+endif101:               ;           then
     jp   begin101       ; 3:10      repeat 101
 break101:               ;           repeat 101
-    
-    pop  HL             ; 1:10      2drop
-    pop  DE             ; 1:10      2drop ( b a -- ) 
-
+    pop  HL             ; 1:10      2drop   ( b a -- )
+    pop  DE             ; 1:10      2drop
 _decomp_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
-
-
 ;   ---  the beginning of a data stack function  ---
 _bench:                 ;           ( -- )
-    
-    push DE             ; 1:11      push(10000)
-    ex   DE, HL         ; 1:4       push(10000)
-    ld   HL, 10000      ; 3:10      push(10000) 
-sfor101:                ;           sfor 101 ( index -- index ) 
-    
-    push DE             ; 1:11      dup
-    ld    D, H          ; 1:4       dup
-    ld    E, L          ; 1:4       dup ( a -- a a ) 
-    call _decomp        ; 3:17      call ( -- ) 
-    ld   A, H           ; 1:4       snext 101
-    or   L              ; 1:4       snext 101
-    dec  HL             ; 1:6       snext 101 index--
-    jp  nz, sfor101     ; 3:10      snext 101
-snext101:               ;           snext 101
-    ex   DE, HL         ; 1:4       sfor unloop 101
-    pop  DE             ; 1:10      sfor unloop 101
-
+    push DE             ; 1:11      10000
+    ex   DE, HL         ; 1:4       10000
+    ld   HL, 10000      ; 3:10      10000
+for101:                 ;           for_101(s) ( index -- index )
+                        ;           i_101(s)   ( -- i )
+    push DE             ; 1:11      i_101(s)   ( a -- a a )
+    ld    D, H          ; 1:4       i_101(s)
+    ld    E, L          ; 1:4       i_101(s)
+    call _decomp        ; 3:17      call ( -- )
+    ld    A, H          ; 1:4       next_101(s)
+    or    L             ; 1:4       next_101(s)
+    dec  HL             ; 1:6       next_101(s)   index--
+    jp  nz, for101      ; 3:10      next_101(s)
+leave101:               ;           next_101(s)
+    ex   DE, HL         ; 1:4       unloop_101(s)   ( i -- )
+    pop  DE             ; 1:10      unloop_101(s)
 _bench_end:
     ret                 ; 1:10      s;
 ;   ---------  end of data stack function  ---------
-
-
-;==============================================================================
+;#==============================================================================
 ; Input: HL,DE
 ; Output: HL=HL*DE ((un)signed)
 ; It does not matter whether it is signed or unsigned multiplication.
@@ -256,7 +256,7 @@ MULTIPLY_D0:
     ld    H, A          ; 1:4
     ret                 ; 1:10
 MULTIPLY_SIZE EQU  $-MULTIPLY
-;==============================================================================
+;#==============================================================================
 ; Divide 16-bit unsigned values (with 16-bit result)
 ; In: DE / HL
 ; Out: HL = DE / HL, DE = DE % HL
