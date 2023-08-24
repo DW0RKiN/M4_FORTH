@@ -7491,6 +7491,33 @@ __{}__{}    or    H             ; 1:4       __INFO
 __{}__{}    inc  HL             ; 1:6       __INFO
 __{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO},
 
+__{}__HEX_HL($1),0x0002,{dnl
+__{}__{}define({__BYTES},9){}dnl
+__{}__{}define({__CLOCKS},34){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: <2})
+__{}__{}    ld    A, L          ; 1:4       __INFO
+__{}__{}    srl   A             ; 2:8       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    dec   A             ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO},
+
+__{}__HEX_HL($1),0x0002,{dnl
+__{}__{}define({__BYTES},9){}dnl
+__{}__{}define({__CLOCKS},38){}dnl
+__{}__{}define({__PRICE},eval(__CLOCKS+__BYTE_PRICE*__BYTES)){}dnl
+__{}__{}ifelse(_TMP_STACK_INFO,{},{},{
+__{}__{}__{}format({%36s},;[__BYTES:format({%-8s},__CLOCKS] ))__INFO   _TMP_STACK_INFO variant: <2})
+__{}__{}    ld    B, H          ; 1:4       __INFO
+__{}__{}    ld    C, L          ; 1:4       __INFO
+__{}__{}    dec  BC             ; 1:6       __INFO   zero to negative
+__{}__{}    dec  BC             ; 1:6       __INFO   one to negative
+__{}__{}    ld    A, B          ; 1:4       __INFO
+__{}__{}    or    H             ; 1:4       __INFO
+__{}__{}    jp    p, format({%-11s},$2); 3:10      __INFO},
+
 __{}__HEX_HL($1),0x7FFF,{dnl
 __{}__{}define({__BYTES},8){}dnl
 __{}__{}define({__CLOCKS},29){}dnl
