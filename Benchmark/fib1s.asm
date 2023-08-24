@@ -1,4 +1,4 @@
-    ORG 32768
+        ORG 32768
     
     
        
@@ -19,7 +19,7 @@
     ld  (Stop+1), SP    ; 4:20      init   storing the original SP value when the "bye" word is used
     ld    L, 0x1A       ; 2:7       init   Upper screen
     call 0x1605         ; 3:17      init   Open channel
-    ld   HL, 35000      ; 3:10      init   Init Return address stack
+    ld   HL, 0x88B8     ; 3:10      init   Return address stack = 35000
     exx                 ; 1:4       init
     call fib1s_bench    ; 3:17      scall
 Stop:                   ;           stop
@@ -30,22 +30,21 @@ Stop:                   ;           stop
 ;   =====  e n d  =====
 ;   ---  the beginning of a data stack function  ---
 fib1s:                  ;           ( a -- b )
-    ld    A, H          ; 1:4       dup 2 < if
-    add   A, A          ; 1:4       dup 2 < if
-    jr    c, $+11       ; 2:7/12    dup 2 < if    negative HL < positive constant ---> true
-    ld    A, L          ; 1:4       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
-    sub   low 2         ; 2:7       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
-    ld    A, H          ; 1:4       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
-    sbc   A, high 2     ; 2:7       dup 2 < if    HL<2 --> HL-2<0 --> carry if true
-    jp   nc, else101    ; 3:10      dup 2 < if
+                        ;[9:34]     dup 2 < if   ( x -- x )  flag: x < 2 variant: <2
+    ld    A, L          ; 1:4       dup 2 < if
+    srl   A             ; 2:8       dup 2 < if
+    or    H             ; 1:4       dup 2 < if
+    dec   A             ; 1:4       dup 2 < if
+    or    H             ; 1:4       dup 2 < if
+    jp    p, else101    ; 3:10      dup 2 < if
     ld   HL, 1          ; 3:10      drop 1
     ret                 ; 1:10      sexit
-else101  EQU $          ;           = endif
-endif101:
+else101  EQU $          ;           then  = endif
+endif101:               ;           then
     push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup
-    dec  HL             ; 1:6       1-
+    dec  HL             ; 1:6       1-   ( x -- x-1 )
     call fib1s          ; 3:17      scall
     ex   DE, HL         ; 1:4       swap   ( b a -- a b )
     dec  HL             ; 1:6       2-
