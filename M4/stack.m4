@@ -2448,6 +2448,65 @@ __{}define({__INFO},__COMPILE_INFO)
     pop  AF             ; 1:10      __INFO   ( c b a -- b a )}){}dnl
 dnl
 dnl
+dnl
+dnl # $1 rot
+dnl # ( b a -- a $1 b )
+define({PUSH_ROT},{dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}(): Unexpected parameter!},
+__{}{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH_ROT},{$1 rot},$@){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH_ROT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}(): Unexpected parameter!},
+__{}{
+__{}__{}define({$0_FIRST},__LD_R16({HL},$1)){}dnl
+__{}__{}                        ;format({%-10s},[eval(2+__BYTES):eval(15+__CLOCKS)]) __INFO   ( x1 x0 -- x0 $1 x1 )
+__{}__{}    push HL             ; 1:11      __INFO{}dnl
+__{}__{}$0_FIRST
+__{}__{}    ex   DE, HL         ; 1:4       __INFO}){}dnl
+}){}dnl
+dnl
+dnl
+dnl
+dnl # $1 $2 rot
+dnl # ( a -- $1 $2 a )
+define({PUSH2_ROT},{dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}(): Unexpected parameter!},
+__{}{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_ROT},{$1 $2 rot},$@){}dnl
+__{}}){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_ROT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}ifelse($1,{},{
+__{}__{}  .error {$0}(): Missing parameter!},
+__{}eval($#>2),1,{
+__{}__{}  .error {$0}(): Unexpected parameter!},
+__{}{
+__{}__{}__RESET_SUMS(){}dnl
+__{}__{}define({$0_FIRST},__LD_R16({DE},$1)){}dnl
+__{}__{}define({$0_SECOND},__LD_R16({DE},$2,{DE},$1)){}dnl
+__{}__{}                        ;format({%-10s},[eval(2+__SUM_BYTES):eval(22+__SUM_CLOCKS)]) __INFO   ( x -- $1 $2 x )
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}$0_FIRST
+__{}__{}    push DE             ; 1:11      __INFO{}dnl
+__{}__{}$0_SECOND}){}dnl
+}){}dnl
+dnl
+dnl
 dnl # ( f e d c b a -- d c b a f e )
 dnl # vyjme treti 32-bit polozku a ulozi ji na vrchol
 define({_2ROT},{dnl

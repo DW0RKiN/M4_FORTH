@@ -149,7 +149,7 @@ dnl
 dnl
 dnl # ( -- )
 define({__ASM_TOKEN_XLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO){}dnl
+__{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
 ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)):__IS_NUM(__GET_LOOP_END($1)),1:1,{dnl
 __{}__LOOP_ANALYSIS(1,__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}dnl
 __{}ifelse(_TEMP_X,{1},{
@@ -468,7 +468,7 @@ dnl
 dnl # 2 +loop
 dnl # ( -- )
 define({__ASM_TOKEN_ADD2_ADDXLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(xm)){}dnl
+__{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
 ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)):__IS_NUM(__GET_LOOP_END($1)),1:1,{dnl
 __{}__LOOP_ANALYSIS(2,__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}ifelse(_TEMP_X,{1},{
 __{}__{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant +2.null: positive step and no repeat},
@@ -643,7 +643,7 @@ dnl
 dnl # -2 +loop
 dnl # ( -- )
 define({__ASM_TOKEN_SUB2_ADDXLOOP},{dnl
-__{}define({__INFO},__COMPILE_INFO{}(xm)){}dnl
+__{}define({__INFO},__COMPILE_INFO{(xm)}){}dnl
 ifelse(__IS_NUM(__GET_LOOP_BEGIN($1)):__IS_NUM(__GET_LOOP_END($1)),1:1,{dnl
 __{}__LOOP_ANALYSIS(-2,__GET_LOOP_BEGIN($1),__GET_LOOP_END($1)){}ifelse(_TEMP_X,{1},{
 __{}__{}idx{}$1 EQU do{}$1{}save-2  ;           __INFO   variant -2.null: positive step and no repeat},

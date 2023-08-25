@@ -1609,6 +1609,10 @@ o...,,,
 dnl # R...
 r...,,,
 
+            __T_NAME(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:1:__TOKEN_ROT,         {__SET_TOKEN({__TOKEN_PUSH_ROT},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):__T_ITEMS(0):$1, __TOKEN_PUSHS:2:__TOKEN_ROT,         {__SET_TOKEN({__TOKEN_PUSH2_ROT},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+
+
             __T_NAME(0):$1,{__TOKEN_DUP:__TOKEN_REXECUTE},      {__SET_TOKEN({__TOKEN_DUP_REXECUTE},__CONCATENATE_WITH({ },__T_INFO(0){ }$2))},
             __T_NAME(0):$1,{__TOKEN_OVER:__TOKEN_REXECUTE},     {__SET_TOKEN({__TOKEN_OVER_REXECUTE},__CONCATENATE_WITH({ },__T_INFO(0){ }$2))},
 
