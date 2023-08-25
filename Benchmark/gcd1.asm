@@ -1,4 +1,4 @@
-    ORG 32768
+        ORG 32768
     
     
        
@@ -42,7 +42,7 @@ gcd1:                   ;           ( a b -- gcd )
     ld    A, D          ; 1:4       over if
     or    E             ; 1:4       over if
     jp    z, else101    ; 3:10      over if
-begin101:               ;           begin 101
+begin101:               ;           begin(101)
     ld    A, H          ; 1:4       dup_while 101
     or    L             ; 1:4       dup_while 101
     jp    z, break101   ; 3:10      dup_while 101
@@ -79,43 +79,43 @@ gcd1_end:
 gcd1_bench:             ;           ( -- )
     pop  BC             ; 1:10      : ret
     ld  (gcd1_bench_end+1),BC; 4:20      : ( ret -- )
-    ld   BC, 0          ; 3:10      100 0 do_101(xm)
+    ld   BC, 0x0000     ; 3:10      100 0 do_101(xm)
 do101save:              ;           100 0 do_101(xm)
-    ld  (idx101),BC     ; 4:20      100 0 do_101(xm)
+    ld  [idx101],BC     ; 4:20      100 0 do_101(xm)
 do101:                  ;           100 0 do_101(xm)
-    ld   BC, 0          ; 3:10      100 0 do_102(xm)
+    ld   BC, 0x0000     ; 3:10      100 0 do_102(xm)
 do102save:              ;           100 0 do_102(xm)
-    ld  (idx102),BC     ; 4:20      100 0 do_102(xm)
+    ld  [idx102],BC     ; 4:20      100 0 do_102(xm)
 do102:                  ;           100 0 do_102(xm)
     push DE             ; 1:11      j_101(m)   ( -- j )
     ex   DE, HL         ; 1:4       j_101(m)
-    ld   HL, (idx101)   ; 3:16      j_101(m)   idx always points to a 16-bit index
+    ld   HL, [idx101]   ; 3:16      j_101(m)   idx always points to a 16-bit index
     push DE             ; 1:11      i_102(m)   ( -- i )
     ex   DE, HL         ; 1:4       i_102(m)
-    ld   HL, (idx102)   ; 3:16      i_102(m)   idx always points to a 16-bit index
+    ld   HL, [idx102]   ; 3:16      i_102(m)   idx always points to a 16-bit index
     call gcd1           ; 3:17      call ( -- )
     ex   DE, HL         ; 1:4       drop
     pop  DE             ; 1:10      drop   ( a -- )
-                        ;[12:45]    loop_102   variant +1.B: 0 <= index < stop <= 256, run 100x
-idx102 EQU $+1          ;           loop_102   idx always points to a 16-bit index
-    ld    A, 0          ; 2:7       loop_102   0.. +1 ..(100), real_stop:0x0064
-    nop                 ; 1:4       loop_102   hi(index) = 0 = nop -> idx always points to a 16-bit index.
-    inc   A             ; 1:4       loop_102   index++
-    ld  (idx102),A      ; 3:13      loop_102
-    xor  0x64           ; 2:7       loop_102   lo(real_stop)
-    jp   nz, do102      ; 3:10      loop_102   index-stop
-leave102:               ;           loop_102
-exit102:                ;           loop_102
-                        ;[12:45]    loop_101   variant +1.B: 0 <= index < stop <= 256, run 100x
-idx101 EQU $+1          ;           loop_101   idx always points to a 16-bit index
-    ld    A, 0          ; 2:7       loop_101   0.. +1 ..(100), real_stop:0x0064
-    nop                 ; 1:4       loop_101   hi(index) = 0 = nop -> idx always points to a 16-bit index.
-    inc   A             ; 1:4       loop_101   index++
-    ld  (idx101),A      ; 3:13      loop_101
-    xor  0x64           ; 2:7       loop_101   lo(real_stop)
-    jp   nz, do101      ; 3:10      loop_101   index-stop
-leave101:               ;           loop_101
-exit101:                ;           loop_101
+                        ;[12:45]    loop_102(xm)   variant +1.B: 0 <= index < stop <= 256, run 100x
+idx102 EQU $+1          ;           loop_102(xm)   idx always points to a 16-bit index
+    ld    A, 0          ; 2:7       loop_102(xm)   0.. +1 ..(100), real_stop:0x0064
+    nop                 ; 1:4       loop_102(xm)   hi(index) = 0 = nop -> idx always points to a 16-bit index.
+    inc   A             ; 1:4       loop_102(xm)   index++
+    ld  [idx102],A      ; 3:13      loop_102(xm)
+    xor  0x64           ; 2:7       loop_102(xm)   lo(real_stop)
+    jp   nz, do102      ; 3:10      loop_102(xm)   index-stop
+leave102:               ;           loop_102(xm)
+exit102:                ;           loop_102(xm)
+                        ;[12:45]    loop_101(xm)   variant +1.B: 0 <= index < stop <= 256, run 100x
+idx101 EQU $+1          ;           loop_101(xm)   idx always points to a 16-bit index
+    ld    A, 0          ; 2:7       loop_101(xm)   0.. +1 ..(100), real_stop:0x0064
+    nop                 ; 1:4       loop_101(xm)   hi(index) = 0 = nop -> idx always points to a 16-bit index.
+    inc   A             ; 1:4       loop_101(xm)   index++
+    ld  [idx101],A      ; 3:13      loop_101(xm)
+    xor  0x64           ; 2:7       loop_101(xm)   lo(real_stop)
+    jp   nz, do101      ; 3:10      loop_101(xm)   index-stop
+leave101:               ;           loop_101(xm)
+exit101:                ;           loop_101(xm)
 gcd1_bench_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------

@@ -4,12 +4,12 @@ include(`../M4/FIRST.M4')dnl
     CALL(fib2_bench)
     STOP   
     COLON(fib2,( n1 -- n2 ))
-        PUSH2(0, 1) ROT PUSH(0) QUESTIONDO 
-            OVER_ADD SWAP LOOP 
+        PUSH(0) PUSH(1) ROT PUSH(0) QUESTIONDO 
+            OVER ADD SWAP LOOP 
         DROP
     SEMICOLON
     COLON(fib2_bench,( -- ))
-        XDO(1000,0) 
-            XDO(20,0) XI CALL(fib2) DROP XLOOP
-        XLOOP
+        PUSH(1000) PUSH(0) DO 
+            PUSH(20) PUSH(0) DO I CALL(fib2) DROP LOOP
+        LOOP
     SEMICOLON
