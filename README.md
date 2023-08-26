@@ -24,37 +24,37 @@ The more complex parts are branches and loops.
 - [Implemented words FORTH](#Implemented-words-FORTH)
   - [Stack manipulation](#Stack-manipulation)
   - [Arithmetic](#Arithmetic)
-    - [8bit](#8bit)
-    - [32bit](#32bit)
-    - [Pointer to 32bit number](#Pointer-to-32bit-number)
-    - [Pointer to 1..256 bytes number](#Pointer-to-1..256-bytes-number)
+    - [Arithmetic 8bit](#Arithmetic-8bit)
+    - [Arithmetic 32bit](#Arithmetic-32bit)
+    - [Arithmetic pointer to 32bit number](#Arithmetic-pointer-to-32bit-number)
+    - [Arithmetic pointer to 1..256 bytes number](#Arithmetic-pointer-to-1..256-bytes-number)
   - [Floating-point](#Floating-point)
     - [ZX48 ROM Floating-point](#ZX48-ROM-Floating-point)
   - [Logic](#Logic)
-    - [32bit](#32bit)
-    - [8bit](#8bit)
-    - [Pointer to 32bit number](#Pointer-to-32bit-number)
-    - [Pointer to 1..256 bytes number](#Pointer-to-1..256-bytes-number)
+    - [Logic 32bit](#Logic-32bit)
+    - [Logic 8bit](#Logic-8bit)
+    - [Logic pointer to 32bit number](#Logic-pointer-to-32bit-number)
+    - [Logic pointer to 1..256 bytes number](#Logic-pointer-to-1..256-bytes-number)
   - [Device](#Device)
     - [Pointer to 1..256 bytes number](#Pointer-to-1..256-bytes-number)
   - [IF](#IF)
-    - [8bit](#8bit)
-    - [32bit](#32bit)
+    - [IF 8bit](#IF-8bit)
+    - [IF 32bit](#IF-32bit)
   - [CASE OF ENDOF ENDCASE](#CASE-OF-ENDOF-ENDCASE)
   - [Function](#Function)
   - [LOOP](#LOOP)
     - [Non-recursive](#Non-recursive)
     - [Recursive](#Recursive)
   - [Memory](#Memory)
-    - [Pointer to 1..256 bytes number](#Pointer-to-1..256-bytes-number)
-    - [8bit](#8bit)
-    - [16bit](#16bit)
-    - [32bit](#32bit)
+    - [Memory pointer to 1..256 bytes number](#Memory-pointer-to-1..256-bytes-number)
+    - [Memory 8bit](#Memory-8bit)
+    - [Memory 16bit](#Memory-16bit)
+    - [Memory 32bit](#Memory-32bit)
   - [Other](#Other)
   - [Runtime library](#Runtime-library)
   - [Array](#Array)
-    - [16bit](#16bit)
-    - [8bit](#8bit)
+    - [Array 16bit](#Array-16bit)
+    - [Array 8bit](#Array-8bit)
 - [External links](#External-links)
   - [Forth standard](#Forth-standard)
   - [Forth tutorial and textbook online](#Forth-tutorial-and-textbook-online)
@@ -362,7 +362,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 
 ![Example of how to check the word PUSH_ADD in the terminal using the bash script check_word.sh](PUSH_ADD_check.png)
 
-#### 8bit
+#### Arithmetic 8bit
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |<sub>  Comment                 |
 | :-------------: | :---------------: | :------------------: | :----------------------------- | :---------------------------- |
@@ -375,7 +375,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>            |<sub>    _1HADD    |<sub>                 |<sub>      ( x1 -- x1+`256` )   |
 |<sub>            |<sub>    _1HSUB    |<sub>                 |<sub>      ( x1 -- x1-`256` )   |
 
-#### 32bit
+#### Arithmetic 32bit
 
 ( d32 -- hi16 lo16 )
 
@@ -405,7 +405,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>   D256/    |<sub>   D256DIV    |<sub>                 |<sub>       ( d -- d/256 )      |
 |<sub>    d>s     |<sub>    D_TO_S    |<sub>                 |<sub>    ( 0 x1 -- x1 )         |
 
-#### Pointer to 32bit number
+#### Arithmetic pointer to 32bit number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
 
@@ -418,7 +418,7 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub>                              |<sub>    PD1ADD    |<sub>      ( p1 -- p1 )         |<sub> [p1] += 1
 |<sub>                              |<sub>    PD1SUB    |<sub>      ( p1 -- p1 )         |<sub> [p1] -= 1
 
-#### Pointer to 1..256 bytes number
+#### Arithmetic pointer to 1..256 bytes number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
 
@@ -715,7 +715,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub> `1` `9` lshift or|<sub>    PUSH(`1`<<`9`) OR   |<sub>  PUSH_OR(`1`<<`9`)  |<sub>      ( x1 -- x2 )     |<sub>x2=x1\|2**`9`
 |<sub> `1` `9` lshift or|<sub>    PUSH(`1`<<`9`) OR   |<sub>   PUSH_BITSET(`9`)  |<sub>      ( x1 -- x2 )     |<sub>x2=x1\|2**`9`
 
-#### 32bit
+#### Logic 32bit
 
 ( d_32 -- hi_16 lo_16 )
 
@@ -779,7 +779,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 ![Example of how to check the word D0EQ in the terminal using the bash script check_word.sh](D0EQ_check.png)
 
-#### 8bit
+#### Logic 8bit
 
 |<sub>     Original       |<sub>         M4 FORTH          |<sub>    Optimization     |<sub>            Data stack              |<sub> Comment             |
 | :---------------------: | :----------------------------: | :----------------------: | :-------------------------------------- | :----------------------- |
@@ -787,7 +787,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub> over C@ over @C C= |<sub>OVER_CFETCH_OVER_CFETCH_CEQ|<sub>                     |<sub> ( addr2 addr1 -- addr2 addr1 flag )|<sub> TRUE=-1 FALSE=0
 
 
-#### Pointer to 32bit number
+#### Logic pointer to 32bit number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
 
@@ -810,7 +810,7 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub>      2dup 2@ rot 2@ du<=       |<sub>    PDULE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<= [p2]
 |<sub>      2dup 2@ rot 2@ du>=       |<sub>    PDUGE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>= [p2]
 
-#### Pointer to 1..256 bytes number
+#### Logic pointer to 1..256 bytes number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
 
@@ -1179,14 +1179,14 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>      2dup u>  if     |<sub>              |<sub>        _2DUP_UGT_IF        |<sub>         ( -- )      |                  |
 |<sub>      2dup u>= if     |<sub>              |<sub>        _2DUP_UGE_IF        |<sub>         ( -- )      |                  |
 
-#### 8bit
+#### IF 8bit
 
 |<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub> Comment     |
 | :---------------: | :---------------: | :---------------------: | :----------------------- | :--------------- |
 |<sub>dup `5`  =  if|<sub>              |<sub>DUP_PUSH_CEQ_IF(`5`)|<sub>       (x1 -- x1)    |<sub>unsigned char|
 |<sub>dup `5`  <> if|<sub>              |<sub>DUP_PUSH_CNE_IF(`5`)|<sub>       (x1 -- x1)    |<sub>unsigned char|
 
-#### 32bit
+#### IF 32bit
 
 |<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub> Comment           |
 | :---------------: | :---------------: | :---------------------: | :----------------------- | :--------------------- |
@@ -1611,7 +1611,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>              |<sub>              UNPACK                             |<sub>( from to -- to )         |<sub>set depacker: define({USE_ZX0/USE_LZ_/USE_LZM}) |
 |<sub>              |<sub>BINFILE(path,name,.suffix) PUSH(buff_addr) UNPACK|<sub>        ( -- __file_name )|<sub> suffix sets the depacker type                  |
 
-#### Pointer to 1..256 bytes number
+#### Memory pointer to 1..256 bytes number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
 
@@ -1687,7 +1687,7 @@ Program output:
 
     5 6 10 9
 
-#### 8bit
+#### Memory 8bit
 
 |<sub>     Original     |<sub>        M4 FORTH           |<sub>        Optimization         |<sub>   Data stack                             |<sub> Comment           |
 | :-------------------: | :----------------------------: | :------------------------------: | :-------------------------------------------- | :--------------------- |
@@ -1723,7 +1723,7 @@ Program output:
 |<sub>    a u c fill    |<sub>    PUSH3_FILL(a,u,c)      |<sub>                             |<sub>            ( -- )                        |<sub>8bit, addr++       |
 
 
-#### 16bit
+#### Memory 16bit
 
 |<sub>    Original     |<sub>        M4 FORTH          |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment             |
 | :------------------: | :---------------------------: | :------------------------------: | :---------------------------- | :----------------------- |
@@ -1749,7 +1749,7 @@ Program output:
 |<sub>       +!        |<sub>         ADDSTORE         |<sub>                             |<sub>   ( x addr -- )          |<sub>(addr) += 16bit x    |
 |<sub> `7` `0x8000` +! |<sub>           ...            |<sub> PUSH2_ADDSTORE(`7`,`0x8000`)|<sub>          ( -- )          |<sub>(`0x8000`)+= `0x0007`|
 
-#### 32bit
+#### Memory 32bit
 
 |<sub>    Original     |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment          |
 | :------------------: | :-------------------------: | :------------------------------: | :---------------------------- | :-------------------- |
@@ -1811,7 +1811,7 @@ If, however, there is no free registry available, then it may still be a usable 
 |<sub>       ARRAY_ADD        |<sub>                             |<sub>   ( x -- )          |<sub> index IX + x        |
 |<sub>                        |<sub>   PUSH_ARRAY_ADD(`0x0100`)  |<sub>     ( -- )          |<sub> index IX + `0x0100` |
 
-#### 16bit
+#### Array 16bit
 
 |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment             |
 | :-------------------------: | :------------------------------: | :----------------------- | :----------------------- |
@@ -1820,7 +1820,7 @@ If, however, there is no free registry available, then it may still be a usable 
 |<sub>                        |<sub>    ARRAY_FETCH_ADD(`33`)    |<sub>  ( x1 -- x2 )       |<sub> x2 = x1 + (IX+`33`) |
 |<sub>   ARRAY_STORE(`15`)    |<sub>                             |<sub>   ( x -- )          |<sub> (IX+`15`) = x       |
 
-#### 8bit
+#### Array 8bit
 
 |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment                       |
 | :-------------------------: | :------------------------------: | :----------------------- | :--------------------------------- |
