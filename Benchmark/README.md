@@ -1,8 +1,29 @@
-# M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
+# M4 FORTH benchmarks
+
+## Contents
+
+- [Contents](#Contents)
+- [Testing](#Testing)
+  - [Factorization](#Factorization)
+  - [Gcd 1](#Gcd-1)
+  - [Gcd 2](#Gcd-2)
+  - [Fib 1](#Fib-1)
+  - [Fib 2](#Fib-2)
+  - [Forth Nesting Benchmark](#Forth-Nesting-Benchmark)
+  - [Forth Sieve Benchmark](#Forth-Sieve-Benchmark)
+  - [FILLIN](#FILLIN)
+  - [Pangram Benchmark](#Pangram-Benchmark)
+    - [Forth from Rosettacode](#Forth-from-Rosettacode)
+    - [Double BITSET version](#Double-BITSET-version)
+    - [Double BITSET inline version](#Double-BITSET-inline-version)
+    - [C version](#C-version)
+
 
 ## Testing
 
 There are examples of small benchmarks on the https://theultimatebenchmark.org/ website. Including speeds on individual platforms.
+
+[Back to contents](#contents)
 
 ### Factorization
 
@@ -24,6 +45,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/decomp.c
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:old_fast          | Decompose    | 1m4.75s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | M4_FORTH mul:fast div:old_fast | Decompose    | 43.08s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.1 Ubuntu        | zcc z88dk v16209               | Decompose    | 1m40.47s
+
+[Back to contents](#contents)
 
 ### Gcd 1
 
@@ -68,6 +91,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd1.c
 | Norbert Kehrer    | Mupid II (BTX Decoder)                    | FIG-Forth 1.1           |    GCD1   | 205s
 | Norbert Kehrer    | Mupid II (BTX Decoder)                    | Camel Forth 1.01        |    GCD1   | 116s
 
+[Back to contents](#contents)
+
 ### Gcd 2
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/gcd2.m4
@@ -82,7 +107,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2u.bas
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_gcd2u.asm
 
-I had to manually delete lines starting with: 
+I had to manually delete lines starting with:
 
     #line
 
@@ -119,11 +144,12 @@ Erase the lines:
 | Norbert Kehrer    | Mupid II (BTX Decoder)                    | FIG-Forth 1.1             |   GCD2    | 188s             |
 | Norbert Kehrer    | Mupid II (BTX Decoder)                    | Camel Forth 1.01          |   GCD2    | 135s             |
 
+[Back to contents](#contents)
 
 ### Fib 1
 
-Warning: The code for FORTH and C is adopted and contains an error where it correctly calculates only for positive values. 
-Nevertheless, in both variants, a signed integer is calculated and no one is favored to use an unsigned integer. 
+Warning: The code for FORTH and C is adopted and contains an error where it correctly calculates only for positive values.
+Nevertheless, in both variants, a signed integer is calculated and no one is favored to use an unsigned integer.
 Furthermore, it actually calculates fib(n+1) instead of fib(n). So it returns 1 for negative numbers and zero.
 
     if (n<2)
@@ -131,10 +157,10 @@ Furthermore, it actually calculates fib(n+1) instead of fib(n). So it returns 1 
     else
         return fib(n-1)+fib(n-2);
 
-    DUP PUSH(2) LT IF 
-        DROP PUSH(1) SEXIT 
+    DUP PUSH(2) LT IF
+        DROP PUSH(1) SEXIT
     THEN
-    DUP  _1SUB SCALL(fib1s) 
+    DUP  _1SUB SCALL(fib1s)
     SWAP _2SUB SCALL(fib1s) ADD
 
 It should correctly return from the definition for:
@@ -147,13 +173,13 @@ It should correctly return from the definition for:
         return n;
     else
         return fib(n-1)+fib(n-2);
-        
+
     DUP PUSH(2) LT IF
-        SEXIT 
+        SEXIT
     THEN
-    DUP  _1SUB SCALL(fib1s) 
+    DUP  _1SUB SCALL(fib1s)
     SWAP _2SUB SCALL(fib1s) ADD
-    
+
 Or a faster but incorrect variant for Fib(0) is:
 
     Fib(0) = 0 ... fail
@@ -164,22 +190,22 @@ Or a faster but incorrect variant for Fib(0) is:
     if (n<3)
         return 1;
     return fib(n-1)+fib(n-2);
-        
+
     DUP PUSH(3) LT IF
-        SEXIT 
+        SEXIT
     THEN
-    DUP  _1SUB SCALL(fib1s) 
+    DUP  _1SUB SCALL(fib1s)
     SWAP _2SUB SCALL(fib1s) ADD
 
 or
 
     DUP PUSH(2) GT IF
-        DUP  _1SUB SCALL(fib1s) 
+        DUP  _1SUB SCALL(fib1s)
         SWAP _2SUB SCALL(fib1s) ADD
-        SEXIT 
+        SEXIT
     THEN
     DROP PUSH(1)
-    
+
 And negative values should be counted as positive and the result should be turned to a negative value.
 The algorithm could be greatly speeded up using CASE, but it would have to be used for both C and FORTH to make the results comparable.
 
@@ -213,6 +239,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/fib1.c
 | Thorsten Schoeler | NCR 3150 486SX/25Mhz+FPU=Linux 2.0.0 | gforth 0.3.0            | Fib1        | 1m79s
 | Thorsten Schoeler | MSP430FR5739, 8Mhz DCO intern MSP-EXP430FR5739 Experimenter Board |CamelForth|FIB1| 00'46':39 | 100x
 
+[Back to contents](#contents)
 
 ### Fib 2
 
@@ -296,6 +323,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_fib2.asm
 | Norbert Kehrer    | Mupid II (BTX Decoder)               | FIG-Forth 1.1           | Fib2 (1000) | 210s
 | Norbert Kehrer    | Mupid II (BTX Decoder)               | Camel Forth 1.01        | Fib 2 (1000)| 150s
 
+[Back to contents](#contents)
 
 ### Forth Nesting Benchmark
 
@@ -337,6 +365,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting.c
 | Martin Neitzel    | Asus EeePC 1000h (Atom N270 1.6Ghz)  |FreeBSD 9 FICL Bootloader| Nesting 1mil | 0.66s
 | Helfried Schuerer | robotron K 1510, U 808 D (i8008), 480 kHz (auf FOSY Emulator) | FOSY V1.2P 1988 (FIG) | Nesting 1MILLION | 02:32:05 2h 32min 5s
 
+[Back to contents](#contents)
+
 ### Forth Sieve Benchmark
 
 The algorithm finds all odd prime numbers up to limit
@@ -344,10 +374,10 @@ The algorithm finds all odd prime numbers up to limit
     i = 0..8190
     Prime number = 2*i+3
 
-I changed 
+I changed
 
     I dup + 3 + dup I +
-    
+
     I       ( i )
     dup     ( i i )
     +       ( 2i )
@@ -356,7 +386,7 @@ I changed
     dup     ( 2i+3 2i+3 )
     I       ( 2i+3 2i+3 i )
     +       ( 2i+3 3i+3 )
-    
+
     push DE             ; 1:11      i_101(m)   ( -- i )
     ex   DE, HL         ; 1:4       i_101(m)
     ld   HL, (idx101)   ; 3:16      i_101(m)   idx always points to a 16-bit index
@@ -369,12 +399,12 @@ I changed
     ld   HL,(idx101)    ; 3:16      dup i_101 +(m)
     add  HL, DE         ; 1:11      dup i_101 +(m)
                        ;[14:96]
-    
+
 to
 
     I DUP _1ADD DUP ADD _1ADD SWAP OVER ADD
-    
-    I       ( i ) 
+
+    I       ( i )
     DUP     ( i i )
     _1ADD   ( i i+1 )
     DUP     ( i i+1 i+1 )
@@ -383,7 +413,7 @@ to
     SWAP    ( 2i+3 i )
     OVER    ( 2i+3 i 2i+3 )
     ADD     ( 2i+3 3i+3 )
-    
+
     push DE             ; 1:11      i_101(m)   ( -- i )
     ex   DE, HL         ; 1:4       i_101(m)
     ld   HL, (idx101)   ; 3:16      i_101(m)   idx always points to a 16-bit index
@@ -428,6 +458,8 @@ asm cannot be compiled using pasmo or sjasmplus
 | Norbert Kehrer    | Mupid II (BTX Decoder)               | FIG-Forth 1.1           | Sieve        | 22s              |
 | Norbert Kehrer    | Mupid II (BTX Decoder)               | Camel Forth 1.01        | Sieve        | 15s              |
 
+[Back to contents](#contents)
+
 ### FILLIN
 
 Fill the screen with pixels, and set all attributes to 255.
@@ -470,6 +502,8 @@ Maybe I'm doing the measurements through POKE in BASIC and that has some small c
 |[PUSH3_FILL(0x4000,6912,255)                                                                                                                                                                                     ](./fillin_v15.asm)  |   42  | 0.07s  |
 |[push HL<br />ld   HL, 0xFFFF<br />ld    B, 216<br />di<br />ld  ($+7+16+3),SP<br />ld   SP, 0x5B00<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />push HL<br />djnz $-16<br />ld   SP, 0x0000<br />ei<br />pop  HL](./fillin_v16.asm)  |   58  | 0.01s  |
 
+[Back to contents](#contents)
+
 ### Pangram Benchmark
 
     : pangram? ( addr len -- ? )
@@ -480,10 +514,12 @@ Maybe I'm doing the measurements through POKE in BASIC and that has some small c
         else drop then
       loop
       1 26 lshift 1- = ;
-     
+
     s" The five boxing wizards jump quickly." pangram? .   \ -1
 
 10000x + 1x with print output
+
+[Back to contents](#contents)
 
 #### Forth from Rosettacode
 
@@ -493,7 +529,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_rosettacode.as
 But this code from rosettacode has one trick. The cell is assumed to be 32 bits.
 When rewriting into double cells, we get into a non-standard area. There is no word for double OR - DOR. There is no word for a double logical left shift - DLSHIFT.
 
-    COLON(_pangram_,( addr len -- ? )) 
+    COLON(_pangram_,( addr len -- ? ))
       PUSHDOT_2SWAP(0) OVER_ADD SWAP DO
         I CFETCH PUSH_OR(32) PUSH_SUB('a')
         DUP_PUSH2_WITHIN_IF(0,26)
@@ -502,6 +538,8 @@ When rewriting into double cells, we get into a non-standard area. There is no w
       LOOP
       PUSHDOT_DEQ(0x3FFFFFF) SEMICOLON
 
+[Back to contents](#contents)
+
 #### Double BITSET version
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset.m4
@@ -509,7 +547,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset.asm
 
 Since `1. ROT DLSHIFT DOR` is actually just a bit setting, I wrote an optimized `DSETBIT` word for it.
 
-And replaced the DO LOOP loop with the more efficient `BEGIN WHILE REPEAT`. 
+And replaced the DO LOOP loop with the more efficient `BEGIN WHILE REPEAT`.
 
 That crazy combination of words just says that it should increase the pointer by one and load the character, if it is zero then jump out of the loop, otherwise save a copy of the character in TOS.
 
@@ -521,14 +559,14 @@ The `ROT` moves the third cell to the TOS. So it's a `SWAP` between a 16-bit and
 
 `_2OVER_NIP` creates a copy of NNOS (third cell) to TOS. Similar to `OVER`, but between 16-bit and 32-bit. It seems that there are no standard word for this.
 
-The less the data stack moves up and down between words, the faster and more efficient the program is. 
-Most compound words use this. 
+The less the data stack moves up and down between words, the faster and more efficient the program is.
+Most compound words use this.
 Like for example `SWAP_1ADD_SWAP` does not need to move the stack internally.
 It's easy to check this in the console using the check_word.sh script.
 
-    COLON(_pangram_,( addr -- ? )) 
+    COLON(_pangram_,( addr -- ? ))
       _1SUB
-      PUSHDOT(0) 
+      PUSHDOT(0)
       BEGIN
         ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH
         PUSH_OR(32) PUSH_SUB('a')
@@ -539,14 +577,18 @@ It's easy to check this in the console using the check_word.sh script.
       REPEAT
       PUSHDOT_DEQ(0x3FFFFFF) NIP SEMICOLON
 
+[Back to contents](#contents)
+
 #### Double BITSET inline version
-      
+
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset_inline.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram_dbitset_inline.asm
 
 I only defined at the beginning define({_TYP_DOUBLE},{fast})
 
 In this case, it changed the DBITSET function to inline, so it shortened it because it was only called from one place.
+
+[Back to contents](#contents)
 
 #### C version
 
@@ -555,11 +597,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/Pangram.lst
 
 This is really scary if you look at what kind of code it is. That would be worth writing a whole article about.
-It's hard just figuring out how to compile it and I had to help with the asm function to print the number anyway. 
+It's hard just figuring out how to compile it and I had to help with the asm function to print the number anyway.
 Because printf("%i\n") reboots the ZX Spectrum.
 
 It took me a while to figure out how to write it without mistakes. Because it requires a different notation than pasmo.
-It requires a destination registry, where pasmo only wants the source registry, because there is no other option to confuse it with. 
+It requires a destination registry, where pasmo only wants the source registry, because there is no other option to confuse it with.
 Maybe it's a consequence that it's not only targeted at the Z80, but also at other processors or more modern variants that can also do other instructions.
 
     xor   a, a          ; 1:4       prt_s16   neg
@@ -573,7 +615,7 @@ It didn't take decimal numbers or 'a' characters, just this format and it report
 But he doesn't mind this.
 
     rst   0x10          ; 1:11      bin16_dec   putchar with ZX 48K ROM in, this will print char in A
-    
+
 Labels must only have this numeric format.
 
     jr   nc, 00001$     ; 2:7/12    prt_s16
@@ -587,3 +629,4 @@ Labels must only have this numeric format.
 | Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | M4_FORTH _TYP_DOUBLE:fast | Pangram begin bitset repeat | 27.58s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | sdcc 3.8.0 #10562 (Linux) | Pangram                     | 2m 51.61s
 
+[Back to contents](#contents)
