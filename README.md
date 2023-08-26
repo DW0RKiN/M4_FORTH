@@ -11,6 +11,61 @@ Due to its simplicity, the compiler is suitable for study purposes. Can be easil
 
 The more complex parts are branches and loops.
 
+## Contents
+
+- [Contents](#Contents)
+- [Use registers](#Use-registers)
+- [Branching](#Branching)
+- [Loops](#Loops)
+- [Creating new words](#Creating-new-words)
+- [Compilation](#Compilation)
+- [Hello World!](#Hello-World!)
+- [Limitations of the M4 markup language](#Limitations-of-the-M4-markup-language)
+- [Implemented words FORTH](#Implemented-words-FORTH)
+  - [Stack manipulation](#Stack-manipulation)
+  - [Arithmetic](#Arithmetic)
+    - [8bit](#8bit)
+    - [32bit](#32bit)
+    - [Pointer to 32bit number](#Pointer-to-32bit-number)
+    - [Pointer to 1..256 bytes number](#Pointer-to-1..256-bytes-number)
+  - [Floating-point](#Floating-point)
+    - [ZX48 ROM Floating-point](#ZX48-ROM-Floating-point)
+  - [Logic](#Logic)
+    - [32bit](#32bit)
+    - [8bit](#8bit)
+    - [Pointer to 32bit number](#Pointer-to-32bit-number)
+    - [Pointer to 1..256 bytes number](#Pointer-to-1..256-bytes-number)
+  - [Device](#Device)
+    - [Pointer to 1..256 bytes number](#Pointer-to-1..256-bytes-number)
+  - [IF](#IF)
+    - [8bit](#8bit)
+    - [32bit](#32bit)
+  - [CASE OF ENDOF ENDCASE](#CASE-OF-ENDOF-ENDCASE)
+  - [Function](#Function)
+  - [LOOP](#LOOP)
+    - [Non-recursive](#Non-recursive)
+    - [Recursive](#Recursive)
+  - [Memory](#Memory)
+    - [Pointer to 1..256 bytes number](#Pointer-to-1..256-bytes-number)
+    - [8bit](#8bit)
+    - [16bit](#16bit)
+    - [32bit](#32bit)
+  - [Other](#Other)
+  - [Runtime library](#Runtime-library)
+  - [Array](#Array)
+    - [16bit](#16bit)
+    - [8bit](#8bit)
+- [External links](#External-links)
+  - [Forth standard](#Forth-standard)
+  - [Forth tutorial and textbook online](#Forth-tutorial-and-textbook-online)
+  - [Forth compiler online (gforth v0.7.3)](#Forth-compiler-online-(gforth-v0.7.3))
+  - [Z80 processor instruction set table](#Z80-processor-instruction-set-table)
+  - [GNU M4 macro processor](#GNU-M4-macro-processor)
+  - [Other ZX Spectrum compiler](#Other-ZX-Spectrum-compiler)
+  - [Other links](#Other-links)
+
+
+
 ## Use registers
 
 Internal implementation of data stack and return address stack.
