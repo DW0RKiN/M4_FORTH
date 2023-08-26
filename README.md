@@ -92,17 +92,25 @@ Internal implementation of data stack and return address stack.
 
     Pollutes register: AF, AF', BC, DE', BC'
 
+[Back to contents](#contents)
+
 ## Branching
 
 Branching internally creates new names for the label. This is a simple increase in numbers for `else100` and `endif100`. Numbers start with three digits for better alignment. At the end of the branch, it is determined whether the `else` part has been used. `if` always jumps on `else1..`. If `else1..` was not used it should stack the value with `endif1..`. `endif1..` always exists for potential use to jump out of a branch.`
+
+[Back to contents](#contents)
 
 ## Loops
 
 Looping internally creates new names for the label. `DO` increments the last number used at `do100`. And store it on the stack. `LOOP` reads the last stored number from the stack. This connects DO and LOOP whether they are used in parallel or in series. When the program is executed, the loops store the indexes on the return address stack.
 
+[Back to contents](#contents)
+
 ## Creating new words
 
 It is converted to the creation of new functions. The return value of the function is stored in the return address stack. Recursion is triggered by simply calling yourself.
+
+[Back to contents](#contents)
 
 ## Compilation
 
@@ -112,6 +120,8 @@ It is converted to the creation of new functions. The return value of the functi
 Or use a bash script:
 
     ./compile.sh my_program_name
+
+[Back to contents](#contents)
 
 ## Hello World!
 
@@ -182,6 +192,8 @@ If you have the source file elsewhere it will help to define the path manually u
     PRINT("Hello World!")
     STOP
 
+[Back to contents](#contents)
+
 ## Limitations of the M4 markup language
 
 Macro names cannot be just `.` or `>`, but an alphanumeric name. So must be renamed to `DOT` or `LT`. `2dup` to `_2DUP`. `3` to `PUSH(3)`.
@@ -208,6 +220,8 @@ Words that do not conform to the M4 FORTH standard (such as CASE) will be attemp
 For the remaining unknown words, an error will be displayed, and they will be ignored.
 
 To execute the script, you can use either of the following methods: `./fth2m4.sh filename.fth > filename.m4` or `./fth2m4.sh filename.fth -zfloat > filename.m4`.
+
+[Back to contents](#contents)
 
 ## Implemented words FORTH
 
@@ -282,6 +296,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/stack.m4
 |<sub>           2r@            |<sub>      _2R_FETCH      |<sub>            ( -- b a )        |<sub>    ( b a -- b a )    |
 |<sub>         2rdrop           |<sub>       _2RDROP       |<sub>            ( -- )            |<sub>    ( b a -- )        |
 |<sub>  2r> 2r> 2swap 2>r 2>r   |<sub>       _2RSWAP       |<sub>            ( -- )            |<sub>( d c b a -- b a d c )|
+
+[Back to contents](#contents)
 
 ### Arithmetic
 
@@ -362,6 +378,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 
 ![Example of how to check the word PUSH_ADD in the terminal using the bash script check_word.sh](PUSH_ADD_check.png)
 
+[Back to contents](#contents)
+
 #### Arithmetic 8bit
 
 |<sub> Original   |<sub>   M4 FORTH   |<sub>  Optimization   |<sub>  Data stack               |<sub>  Comment                 |
@@ -374,6 +392,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>            |<sub>    _1CSUB    |<sub>                 |<sub>      ( x1 -- x2 )         |<sub> x2=256*hi(x1)+lo(x1-1)   |
 |<sub>            |<sub>    _1HADD    |<sub>                 |<sub>      ( x1 -- x1+`256` )   |
 |<sub>            |<sub>    _1HSUB    |<sub>                 |<sub>      ( x1 -- x1-`256` )   |
+
+[Back to contents](#contents)
 
 #### Arithmetic 32bit
 
@@ -405,6 +425,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/divmul
 |<sub>   D256/    |<sub>   D256DIV    |<sub>                 |<sub>       ( d -- d/256 )      |
 |<sub>    d>s     |<sub>    D_TO_S    |<sub>                 |<sub>    ( 0 x1 -- x1 )         |
 
+[Back to contents](#contents)
+
 #### Arithmetic pointer to 32bit number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
@@ -417,6 +439,8 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub>                              |<sub>   PDNEGATE   |<sub>      ( p1 -- p1 )         |<sub> [p1] = -[p1]
 |<sub>                              |<sub>    PD1ADD    |<sub>      ( p1 -- p1 )         |<sub> [p1] += 1
 |<sub>                              |<sub>    PD1SUB    |<sub>      ( p1 -- p1 )         |<sub> [p1] -= 1
+
+[Back to contents](#contents)
 
 #### Arithmetic pointer to 1..256 bytes number
 
@@ -436,6 +460,8 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub>            |<sub>   PUMUL(b)   |<sub>( p3 p2 p1 -- p3 p2 p1 )      |<sub> [p1] = [p3] * [p2]
 |<sub>            |<sub> PUDIVMOD(b)  |<sub>( pu3 pu2 pu1 -- pu3 pu2 pu1 )|<sub> [pu1] = [pu2] / [pu3], [pu2] = [pu2] mod [pu3]
 |<sub>            |<sub>  PDIVMOD(b)  |<sub>( p3 p2 p1 -- p3 p2 p1 )      |<sub> [p1] = [p2] / [p3], [p2] = [p2] mod [p3]
+
+[Back to contents](#contents)
 
 ### Floating-point
 
@@ -535,6 +561,8 @@ It doesn't even have a pure zero. Only the +- maximum values and the +- value cl
 |<sub>  `+0e` f0=   |<sub>  PUSH(`+0e`) F0EQ  |<sub>           ( -- true )  |<sub>  true: +0e 0e =              |
 |<sub>  `-0e`  0=   |<sub>  PUSH(`-0e`) _0EQ  |<sub>           ( -- false ) |<sub> false: -0e 0 =               |
 |<sub>  `+0e`  0=   |<sub>  PUSH(`+0e`) _0EQ  |<sub>           ( -- false ) |<sub>  true: +0e 0 =               |
+
+[Back to contents](#contents)
 
 #### ZX48 ROM Floating-point
 
@@ -660,6 +688,7 @@ It can also be a real number represented with a decimal point (`.51`) or by usin
     `0` zpick --> zdup
     `1` zpick --> zover
     
+[Back to contents](#contents)
 
 ### Logic
 
@@ -714,6 +743,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>`1` swap lshift or|<sub>PUSH_SWAP(`1`) LSHIFT OR|<sub>        BITSET       |<sub>    ( x1 u -- x2 )     |<sub>x2=x1\|2**u
 |<sub> `1` `9` lshift or|<sub>    PUSH(`1`<<`9`) OR   |<sub>  PUSH_OR(`1`<<`9`)  |<sub>      ( x1 -- x2 )     |<sub>x2=x1\|2**`9`
 |<sub> `1` `9` lshift or|<sub>    PUSH(`1`<<`9`) OR   |<sub>   PUSH_BITSET(`9`)  |<sub>      ( x1 -- x2 )     |<sub>x2=x1\|2**`9`
+
+[Back to contents](#contents)
 
 #### Logic 32bit
 
@@ -779,6 +810,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 
 ![Example of how to check the word D0EQ in the terminal using the bash script check_word.sh](D0EQ_check.png)
 
+[Back to contents](#contents)
+
 #### Logic 8bit
 
 |<sub>     Original       |<sub>         M4 FORTH          |<sub>    Optimization     |<sub>            Data stack              |<sub> Comment             |
@@ -786,6 +819,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/logic.m4
 |<sub>         C=         |<sub>            CEQ            |<sub>                     |<sub> ( char2 char1 -- flag )            |<sub> TRUE=-1 FALSE=0
 |<sub> over C@ over @C C= |<sub>OVER_CFETCH_OVER_CFETCH_CEQ|<sub>                     |<sub> ( addr2 addr1 -- addr2 addr1 flag )|<sub> TRUE=-1 FALSE=0
 
+[Back to contents](#contents)
 
 #### Logic pointer to 32bit number
 
@@ -810,6 +844,8 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub>      2dup 2@ rot 2@ du<=       |<sub>    PDULE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<= [p2]
 |<sub>      2dup 2@ rot 2@ du>=       |<sub>    PDUGE     |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>= [p2]
 
+[Back to contents](#contents)
+
 #### Logic pointer to 1..256 bytes number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
@@ -825,6 +861,8 @@ Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT(
 |<sub>            |<sub>    PUGT(b)   |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>  [p2]
 |<sub>            |<sub>    PULE(b)   |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u<= [p2]
 |<sub>            |<sub>    PUGE(b)   |<sub> ( pu2 pu1 -- pu2 pu1 f )  |<sub> f = [p1] u>= [p2]
+
+[Back to contents](#contents)
 
 ### Device
 
@@ -1006,6 +1044,8 @@ I'm testing a 5x8 font that changes the output from 8x8 if define({USE_FONT_5x8}
 
 ![Example of 5x8 font](levenshtein.png)
 
+[Back to contents](#contents)
+
 #### Pointer to 1..256 bytes number
 
 Numbers must not be at addresses that divide a 256-byte segment. Use NO_SEGMENT() or ALIGN().
@@ -1117,6 +1157,8 @@ Fortunately, the odd number of braces can be solved by writing `{` as `0x7b` and
 
 If you're trying to insert duplicate text, the translator recognizes it and doesn't create a copy, but a link to the first use. And that includes the word STRING, so watch out if you edit a chain like that. Same sentences where one is terminated by a zero character and the other has no terminating zero character are understood as different strings.
 
+[Back to contents](#contents)
+
 ### IF
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
@@ -1179,12 +1221,16 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>      2dup u>  if     |<sub>              |<sub>        _2DUP_UGT_IF        |<sub>         ( -- )      |                  |
 |<sub>      2dup u>= if     |<sub>              |<sub>        _2DUP_UGE_IF        |<sub>         ( -- )      |                  |
 
+[Back to contents](#contents)
+
 #### IF 8bit
 
 |<sub>   Original   |<sub>   M4 FORTH   |<sub>    Optimization    |<sub>   Data stack        |<sub> Comment     |
 | :---------------: | :---------------: | :---------------------: | :----------------------- | :--------------- |
 |<sub>dup `5`  =  if|<sub>              |<sub>DUP_PUSH_CEQ_IF(`5`)|<sub>       (x1 -- x1)    |<sub>unsigned char|
 |<sub>dup `5`  <> if|<sub>              |<sub>DUP_PUSH_CNE_IF(`5`)|<sub>       (x1 -- x1)    |<sub>unsigned char|
+
+[Back to contents](#contents)
 
 #### IF 32bit
 
@@ -1206,6 +1252,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/if.m4
 |<sub>   Du<= if    |<sub>   DULE IF    |<sub>      DULE_IF       |<sub>  (ud1 ud2 -- )      |                        |
 |<sub>   Du>  if    |<sub>   DUGT IF    |<sub>      DUGT_IF       |<sub>  (ud1 ud2 -- )      |                        |
 |<sub>   Du>= if    |<sub>   DUGE IF    |<sub>      DUGE_IF       |<sub>  (ud1 ud2 -- )      |                        |
+
+[Back to contents](#contents)
 
 ### CASE OF ENDOF ENDCASE
 
@@ -1334,6 +1382,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/case.m4
 |<sub>     endof    |<sub>         ENDOF       |<sub>   HI_ENDOF   |<sub> ( n -- n ) |                    |
 |<sub>              |<sub>  LO_DECLINING_ENDOF |<sub>              |<sub> ( n -- n ) |<sub>C-style switch |
 
+[Back to contents](#contents)
+
 ### Function
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
@@ -1353,6 +1403,7 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/function.m4
 |<sub>    exit    |<sub>                   |<sub>        EXIT        |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
 |<sub>     ;      |<sub>                   |<sub>     SEMICOLON      |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
 
+[Back to contents](#contents)
 
 ### LOOP
 
@@ -1457,7 +1508,10 @@ The RAS and data stack variant, if it knows the immutable END value, does not st
 
 Words like I J K find out for yourself what type of loops and accordingly find where and at what depth they find the index.
 
+[Back to contents](#contents)
+
 #### Non-recursive
+
 The variables are stored in the function memory.
 
 |<sub>     Original    |<sub>   M4 FORTH   |<sub>     Optimization      |<sub>  Data stack                |<sub>  Return address stack |
@@ -1474,7 +1528,10 @@ The variables are stored in the function memory.
 |<sub>      for        |<sub>     FOR      |<sub>                       |<sub>     ( index -- )           |<sub> ( -- ) non-recursive  |
 |<sub>      next       |<sub>     NEXT     |<sub>                       |<sub>           ( -- )           |<sub> ( -- ) non-recursive  |
 
+[Back to contents](#contents)
+
 #### Recursive
+
 The variables are stored in the return address stack.
 
 |<sub>     Original    |<sub>   M4 FORTH   |<sub>     Optimization      |<sub>  Data stack                |<sub>  Return address stack |
@@ -1569,6 +1626,8 @@ The variables are stored in the data stack.
 |<sub>      2dup eq until      |<sub>     _2DUP EQ UNTIL    |<sub>        _2DUP_EQ_UNTIL         |<sub>       ( b a -- b a )       |<sub>              |
 |<sub>    dup `2` eq until     |<sub> DUP PUSH(`2`) EQ UNTIL|<sub>     DUP_PUSH_EQ_UNTIL(`2`)    |<sub>         ( n -- n )         |<sub>              |
 
+[Back to contents](#contents)
+
 ### Memory
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
@@ -1610,6 +1669,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/memory.m4
 |<sub>              |<sub> BINFILE(path,name,.suffix)                      |<sub>        ( -- __file_name )|<sub> __file_name: incbin path/name.suffix           |
 |<sub>              |<sub>              UNPACK                             |<sub>( from to -- to )         |<sub>set depacker: define({USE_ZX0/USE_LZ_/USE_LZM}) |
 |<sub>              |<sub>BINFILE(path,name,.suffix) PUSH(buff_addr) UNPACK|<sub>        ( -- __file_name )|<sub> suffix sets the depacker type                  |
+
+[Back to contents](#contents)
 
 #### Memory pointer to 1..256 bytes number
 
@@ -1687,6 +1748,8 @@ Program output:
 
     5 6 10 9
 
+[Back to contents](#contents)
+    
 #### Memory 8bit
 
 |<sub>     Original     |<sub>        M4 FORTH           |<sub>        Optimization         |<sub>   Data stack                             |<sub> Comment           |
@@ -1722,6 +1785,7 @@ Program output:
 |<sub>     u c fill     |<sub>     PUSH2_FILL(u,c)       |<sub>                             |<sub>       ( addr -- )                        |<sub>8bit, addr++       |
 |<sub>    a u c fill    |<sub>    PUSH3_FILL(a,u,c)      |<sub>                             |<sub>            ( -- )                        |<sub>8bit, addr++       |
 
+[Back to contents](#contents)
 
 #### Memory 16bit
 
@@ -1749,6 +1813,8 @@ Program output:
 |<sub>       +!        |<sub>         ADDSTORE         |<sub>                             |<sub>   ( x addr -- )          |<sub>(addr) += 16bit x    |
 |<sub> `7` `0x8000` +! |<sub>           ...            |<sub> PUSH2_ADDSTORE(`7`,`0x8000`)|<sub>          ( -- )          |<sub>(`0x8000`)+= `0x0007`|
 
+[Back to contents](#contents)
+
 #### Memory 32bit
 
 |<sub>    Original     |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>   Data stack             |<sub> Comment          |
@@ -1758,6 +1824,8 @@ Program output:
 |<sub>       2!        |<sub>         _2STORE        |<sub>                             |<sub>( hi lo adr -- )          |<sub> (addr) = 32 bit  |
 |<sub>     addr 2!     |<sub>                        |<sub>      PUSH_2STORE(addr)      |<sub>    ( hi lo -- )          |<sub> (addr) = 32 bit  |
 |<sub>    x addr 2!    |<sub>                        |<sub>     PUSH2_2STORE(x,addr)    |<sub>       ( hi -- )          |<sub> (addr) = 32 bit  |
+
+[Back to contents](#contents)
 
 ### Other
 
@@ -1772,6 +1840,8 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/other.m4
 |<sub>       rnd       |<sub>           RND          |<sub>                             |<sub>          ( -- random )   |<sub>                  |
 |<sub>     random      |<sub>          RANDOM        |<sub>                             |<sub>      ( max -- random )   |<sub> random < max     |
 |<sub>                 |<sub>         PUTPIXEL       |<sub>                             |<sub>       ( yx -- HL )       |<sub>                  |
+
+[Back to contents](#contents)
 
 ### Runtime library
 
@@ -1793,6 +1863,8 @@ The small Runtime library. I/O, math, etc.
 Variable section.
 String section.
 
+[Back to contents](#contents)
+
 ### Array
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/M4/array.m4
@@ -1811,6 +1883,8 @@ If, however, there is no free registry available, then it may still be a usable 
 |<sub>       ARRAY_ADD        |<sub>                             |<sub>   ( x -- )          |<sub> index IX + x        |
 |<sub>                        |<sub>   PUSH_ARRAY_ADD(`0x0100`)  |<sub>     ( -- )          |<sub> index IX + `0x0100` |
 
+[Back to contents](#contents)
+
 #### Array 16bit
 
 |<sub>        M4 FORTH        |<sub>        Optimization         |<sub>     Data stack      |<sub> Comment             |
@@ -1819,6 +1893,8 @@ If, however, there is no free registry available, then it may still be a usable 
 |<sub>                        |<sub>    DUP_ARRAY_FETCH(`42`)    |<sub>  ( x1 -- x1 x1 x2 ) |<sub> x2 = (IX+`42`)      |
 |<sub>                        |<sub>    ARRAY_FETCH_ADD(`33`)    |<sub>  ( x1 -- x2 )       |<sub> x2 = x1 + (IX+`33`) |
 |<sub>   ARRAY_STORE(`15`)    |<sub>                             |<sub>   ( x -- )          |<sub> (IX+`15`) = x       |
+
+[Back to contents](#contents)
 
 #### Array 8bit
 
@@ -1842,6 +1918,7 @@ This can be used, for example, to set the dimension of an array before the proce
     ...
     ARRAY_CFETCH(`78`,my_label_name_001)    <-- TOS = uint8[`16`] not uint8[`78`]
 
+[Back to contents](#contents)
 
 ## External links
 
@@ -1884,3 +1961,4 @@ https://www.complang.tuwien.ac.at/forth/gforth/Docs-html/
 
 http://www.retroprogramming.com/2012/04/itsy-forth-primitives.html
 
+[Back to contents](#contents)
