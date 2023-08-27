@@ -330,6 +330,11 @@ https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/boriel_fib2.asm
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting.m4
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nesting.asm
 
+Use R.A.S. for function:
+
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nestingr.m4
+https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nestingr.asm
+
 Use data stack for function:
 
 https://github.com/DW0RKiN/M4_FORTH/blob/master/Benchmark/nestings.m4
@@ -624,7 +629,7 @@ Labels must only have this numeric format.
 
 |       Name        |              System              |         Forth / C         |           Benchmark         | Time (sec/round) | Scale |
 | :---------------: | :------------------------------: | :-----------------------: | :-------------------------: | :--------------- | :---: |
-| Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | M4_FORTH                  | Pangram do loop             | 52.04s
+| Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | M4_FORTH                  | Pangram do loop             | 50.41s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | M4_FORTH                  | Pangram begin bitset repeat | 32.26s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | M4_FORTH _TYP_DOUBLE:fast | Pangram begin bitset repeat | 27.58s
 | Dw0rkin           | ZX Spectrum Fuse 1.5.7 Ubuntu    | sdcc 3.8.0 #10562 (Linux) | Pangram                     | 2m 51.61s
