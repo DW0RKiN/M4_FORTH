@@ -2277,7 +2277,7 @@ __{}__ADD_TOKEN({__TOKEN_2OVER_NIP_CFETCH},{2over nip c@},$@){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_CFETCH},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[8:54]     __INFO   ( addr x2 x1 -- addr x2 x1 n )  n = (addr) & 0xFF
+                        ;[8:54]     __INFO   ( addr x2 x1 -- addr x2 x1 n )  n = [addr] & 0xFF
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
     push DE             ; 1:11      __INFO
@@ -2295,7 +2295,7 @@ __{}__ADD_TOKEN({__TOKEN_2OVER_NIP_HFETCH},{2over nip h@},$@){}dnl
 dnl
 define({__ASM_TOKEN_2OVER_NIP_HFETCH},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[8:54]     __INFO   ( addr x2 x1 -- addr x2 x1 x )  x = (addr) << 8
+                        ;[8:54]     __INFO   ( addr x2 x1 -- addr x2 x1 x )  x = [addr] << 8
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
     push DE             ; 1:11      __INFO
@@ -3068,7 +3068,7 @@ __{}__ADD_TOKEN({__TOKEN_NIP},{},$@){}dnl
 dnl
 define({__ASM_TOKEN_TUCK_CSTORE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[2:17]     __INFO   ( x addr -- addr )  (addr) = lo8(x)
+                        ;[2:17]     __INFO   ( x addr -- addr )  [addr] = lo8(x)
     ld  [HL],E          ; 1:7       __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
@@ -3084,7 +3084,7 @@ __{}__ADD_TOKEN({__TOKEN_NIP},{},$@){}dnl
 dnl
 define({__ASM_TOKEN_TUCK_HSTORE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[2:17]     __INFO   ( x addr -- addr )  (addr) = hi8(x)
+                        ;[2:17]     __INFO   ( x addr -- addr )  [addr] = hi8(x)
     ld  [HL],D          ; 1:7       __INFO
     pop  DE             ; 1:10      __INFO}){}dnl
 dnl
@@ -3145,7 +3145,7 @@ __{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE},{2dup c!},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_CSTORE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[1:7]      __INFO   ( char addr -- char addr )  (addr)=lo8(x)
+                        ;[1:7]      __INFO   ( char addr -- char addr )  [addr]=lo8(x)
     ld  [HL],E          ; 1:7       __INFO}){}dnl
 dnl
 dnl
@@ -3158,7 +3158,7 @@ __{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE},{2dup h!},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_HSTORE},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[1:7]      __INFO   ( x addr -- x addr )  (addr)=hi8(x)
+                        ;[1:7]      __INFO   ( x addr -- x addr )  [addr]=hi8(x)
     ld  [HL],D          ; 1:7       __INFO}){}dnl
 dnl
 dnl
@@ -3171,7 +3171,7 @@ __{}__ADD_TOKEN({__TOKEN_2DUP_CSTORE_1ADD},{2dup c! 1+},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_CSTORE_1ADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[2:13]     __INFO   ( x addr -- x addr+1 )  (addr)=lo8(x)
+                        ;[2:13]     __INFO   ( x addr -- x addr+1 )  [addr]=lo8(x)
     ld  [HL],E          ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO}){}dnl
 dnl
@@ -3185,7 +3185,7 @@ __{}__ADD_TOKEN({__TOKEN_2DUP_HSTORE_1ADD},{2dup h! 1+},$@){}dnl
 dnl
 define({__ASM_TOKEN_2DUP_HSTORE_1ADD},{dnl
 __{}define({__INFO},__COMPILE_INFO)
-                        ;[2:13]     __INFO   ( x addr -- x addr+1 )  (addr)=hi8(x)
+                        ;[2:13]     __INFO   ( x addr -- x addr+1 )  [addr]=hi8(x)
     ld  [HL],D          ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO}){}dnl
 dnl
@@ -5573,13 +5573,13 @@ __{}  .error {$0}(): Missing parameter!},
 eval($#>1),1,{
 __{}  .error {$0}($@): Unexpected parameter!},
 __HAS_PTR($1),{1},{
-    push DE             ; 1:11      __INFO   ( addr -- x $1 )  x = (addr)
+    push DE             ; 1:11      __INFO   ( addr -- x $1 )  x = [addr]
     ld    E,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     ld    D,[HL]        ; 1:7       __INFO
     ld   HL,format({%-12s},$1); 3:16      __INFO},
 {
-    push DE             ; 1:11      __INFO   ( addr -- x $1 )  x = (addr)
+    push DE             ; 1:11      __INFO   ( addr -- x $1 )  x = [addr]
     ld    E,[HL]        ; 1:7       __INFO
     inc  HL             ; 1:6       __INFO
     ld    D,[HL]        ; 1:7       __INFO
@@ -6799,13 +6799,13 @@ __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameters!},
 __HAS_PTR($1),1,{define({__INFO},__COMPILE_INFO)
-                        ;[6:41]     __INFO   ( addr x2 x1 -- addr x2 x1 )  lo($1)-->(addr)
+                        ;[6:41]     __INFO   ( addr x2 x1 -- addr x2 x1 )  lo($1)-->[addr]
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
     ld    A,format({%-12s},$1); 3:13      __INFO
     ld  [BC],A          ; 1:7       __INFO},
 __IS_NUM($1),0,{define({__INFO},__COMPILE_INFO)
-                        ;[5:35]     __INFO   ( addr x2 x1 -- addr x2 x1 )  lo($1)-->(addr)
+                        ;[5:35]     __INFO   ( addr x2 x1 -- addr x2 x1 )  lo($1)-->[addr]
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
     ld    A, format({%-11s},low $1); 2:7       __INFO
@@ -6815,7 +6815,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({__CODE},__LD_R_NUM(__INFO{   lo},{A},__HEX_L($1))){}dnl
 __{}define({__B},eval(3+__BYTES)){}dnl
 __{}define({__C},eval(18+__CLOCKS)){}dnl
-                        ;[__B:__C]     __INFO   ( addr x2 x1 -- addr x2 x1 )  lo($1)-->(addr)
+                        ;[__B:__C]     __INFO   ( addr x2 x1 -- addr x2 x1 )  lo($1)-->[addr]
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO{}dnl
 __{}__CODE
@@ -6843,7 +6843,7 @@ __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameters!},
 __HAS_PTR($1),1,{define({__INFO},__COMPILE_INFO)
-                        ;[13:88]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+                        ;[13:88]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->[addr]
     pop  AF             ; 1:10      __INFO
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
@@ -6854,7 +6854,7 @@ __HAS_PTR($1),1,{define({__INFO},__COMPILE_INFO)
     inc  BC             ; 1:6       __INFO
     ld  [BC],A          ; 1:7       __INFO},
 __IS_NUM($1),0,{define({__INFO},__COMPILE_INFO)
-                        ;[11:76]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+                        ;[11:76]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->[addr]
     pop  AF             ; 1:10      __INFO
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
@@ -6872,7 +6872,7 @@ __{}define({__C},eval(62+__CLOCKS)){}dnl
 __{}define({__CODE2},__LD_R_NUM(__INFO{   hi},{A},__HEX_H($1),{A},__HEX_L($1))){}dnl
 __{}define({__B},eval(__B+__BYTES)){}dnl
 __{}define({__C},eval(__C+__CLOCKS)){}dnl
-                        ;[__B:__C]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+                        ;[__B:__C]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->[addr]
     pop  AF             ; 1:10      __INFO
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
@@ -6905,7 +6905,7 @@ __{}  .error {$0}(): Missing parameter!},
 eval($#>1),{1},{
 __{}  .error {$0}($@): Unexpected parameters!},
 __HAS_PTR($1),1,{define({__INFO},__COMPILE_INFO)
-                        ;[8:62]     __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+                        ;[8:62]     __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->[addr]
     pop  AF             ; 1:10      __INFO
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
@@ -6913,7 +6913,7 @@ __HAS_PTR($1),1,{define({__INFO},__COMPILE_INFO)
     ld    A,format({%-12s},$1); 3:13      __INFO
     ld  [BC],A          ; 1:7       __INFO},
 __IS_NUM($1),0,{define({__INFO},__COMPILE_INFO)
-                        ;[7:56]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+                        ;[7:56]    __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->[addr]
     pop  AF             ; 1:10      __INFO
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO
@@ -6925,7 +6925,7 @@ __{}define({__INFO},__COMPILE_INFO){}dnl
 __{}define({__CODE},__LD_R_NUM(__INFO{   lo},{A},__HEX_L($1))){}dnl
 __{}define({__B},eval(5+__BYTES)){}dnl
 __{}define({__C},eval(49+__CLOCKS)){}dnl
-                        ;[__B:__C]     __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->(addr)
+                        ;[__B:__C]     __INFO   ( addr x3 x2 x1 -- addr x3 x2 x1 )  $1-->[addr]
     pop  AF             ; 1:10      __INFO
     pop  BC             ; 1:10      __INFO
     push BC             ; 1:11      __INFO

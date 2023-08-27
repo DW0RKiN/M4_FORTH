@@ -487,6 +487,13 @@ __T_NAME(1):__T_NAME(0):__T_ITEMS(0):$1,         __TOKEN_FILE:__TOKEN_PUSHS:2:__
 
 dnl # D...
 d...,,,
+
+            __T_NAME(0):$1,{__TOKEN_ROT:__TOKEN_DLSHIFT},       {__SET_TOKEN({__TOKEN_ROT_DLSHIFT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+            __T_NAME(0):$1,{__TOKEN_ROT:__TOKEN_DRSHIFT},       {__SET_TOKEN({__TOKEN_ROT_DRSHIFT},__CONCATENATE_WITH({ },__T_INFO(0),$2))},
+
+            __T_NAME(0):$1,{__TOKEN_PUSH2_ROT:__TOKEN_DLSHIFT}, {__SET_TOKEN({__TOKEN_PUSH2_ROT_DLSHIFT},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+            __T_NAME(0):$1,{__TOKEN_PUSH2_ROT:__TOKEN_DRSHIFT}, {__SET_TOKEN({__TOKEN_PUSH2_ROT_DRSHIFT},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
+
             __T_NAME(0):$1,{__TOKEN_UNPACK:__TOKEN_DROP},       {__SET_TOKEN({__TOKEN_UNPACK_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):$1,{__TOKEN_PUSH_UNPACK:__TOKEN_DROP},  {__SET_TOKEN({__TOKEN_PUSH_UNPACK_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
             __T_NAME(0):$1,{__TOKEN_PUSH2_UNPACK:__TOKEN_DROP}, {__SET_TOKEN({__TOKEN_PUSH2_UNPACK_DROP},__CONCATENATE_WITH({ },__T_INFO(0),$2),__T_ARRAY(0))},
@@ -1956,7 +1963,10 @@ dnl
 dnl
 dnl # xxx + pushs = xxx_pushs ( after all pushs + xxx = pushs_xxx rule is done )
 define({__CHECK_TOKEN},{ifelse(dnl
-__T_NAME(1):__T_NAME(0),                     __TOKEN_DROP:__TOKEN_SWAP,             {__SET_CHECK_TOKEN(__TOKEN_DROP_SWAP)},
+__T_NAME(1):__T_NAME(0),                    __TOKEN_DROP:__TOKEN_SWAP,             {__SET_CHECK_TOKEN(__TOKEN_DROP_SWAP)},
+
+__T_NAME(1):__T_NAME(0),                    __TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE:__TOKEN_2OVER_NIP_CFETCH,     {__SET_CHECK_TOKEN2(__TOKEN_ROT_1ADD_NROT_2OVER_NIP_CFETCH_0CNE_WHILE_2OVER_NIP_CFETCH)},
+
 
 __T_NAME(1):__GET_LOOP_TYPE(__T_ARRAY_1(1)):__T_NAME(0),    __TOKEN_DO:R:__TOKEN_I, {__SET_CHECK_TOKEN(__TOKEN_DO_I)},
 

@@ -115,7 +115,9 @@ define({__DEC_D},    {ifelse(__IS_NUM($1),{0},,{eval(0xFF   & (($1)>>24))})}){}d
 define({__DEC_HL},   {ifelse(__IS_NUM($1),{0},,{eval(0xFFFF &  ($1)     )})}){}dnl
 define({__DEC_DE},   {ifelse(__IS_NUM($1),{0},,{eval(0xFFFF & (($1)>>16))})}){}dnl
 define({__DEC_DEHL}, {ifelse(__IS_NUM($1),{0},,{eval(           $1      )})}){}dnl
+define({__DEC_DE_HL},{ifelse(__IS_NUM($1):__IS_NUM($2),{1:1},{eval(__HEX_DE_HL($@))},)}){}dnl
 dnl
+define({__VIEW_DE_HL},{ifelse(__IS_NUM($1):__IS_NUM($2),{1:1},{eval(format({0x%04X},eval($1)){}format({%04X},eval($2)))},__SIMPLIFY_EXPRESSION((65536*$1)+$2))}){}dnl
 dnl
 dnl
 dnl

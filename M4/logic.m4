@@ -4247,14 +4247,30 @@ dnl
 dnl # ( d1 u -- d )  d = d1 << u
 dnl # shifts d1 left u places
 define({ROT_DLSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT_DLSHIFT},{rot_dlshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_DLSHIFT},{rot dlshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ROT_DLSHIFT},{dnl
-__{}define({__INFO},{rot_dlshift}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __def({USE_ROT_DLSHIFT})
-    pop  BC             ; 1:10      rot D<<   ( d1 -- d )  d = d1 << BC
-    call BC_LSHIFT32    ; 3:17      rot D<<}){}dnl
+    pop  BC             ; 1:10      __INFO   ( d1 -- d )  d = d1 << BC
+    call BC_LSHIFT32    ; 3:17      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u -- d )  d = $1. << u
+define({PUSH2_ROT_DLSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_ROT_DLSHIFT},{rot dlshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_ROT_DLSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__def({USE_ROT_DLSHIFT})
+    ld    C, L          ; 1:4       __INFO   ( u -- d )  d = __VIEW_DE_HL($@) << u
+    ld    B, H          ; 1:4       __INFO
+    push  DE            ; 1:11      __INFO{}dnl
+__ASM_TOKEN_2DROP_PUSH2($@)
+    call BC_LSHIFT32    ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl
@@ -4674,14 +4690,30 @@ dnl
 dnl # ( d1 u -- d )  d = d1 >> u
 dnl # shifts d1 right u places
 define({ROT_DRSHIFT},{dnl
-__{}__ADD_TOKEN({__TOKEN_ROT_DRSHIFT},{rot_drshift},$@){}dnl
+__{}__ADD_TOKEN({__TOKEN_ROT_DRSHIFT},{rot drshift},$@){}dnl
 }){}dnl
 dnl
 define({__ASM_TOKEN_ROT_DRSHIFT},{dnl
-__{}define({__INFO},{rot_drshift}){}dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
 __def({USE_ROT_DRSHIFT})
-    pop  BC             ; 1:10      rot D>>   ( d1 -- d )  d = d1 >> BC
-    call BC_RSHIFT32    ; 3:17      rot D>>}){}dnl
+    pop  BC             ; 1:10      __INFO   ( d1 -- d )  d = d1 >> BC
+    call BC_RSHIFT32    ; 3:17      __INFO}){}dnl
+dnl
+dnl
+dnl
+dnl # ( u -- d )  d = $1. >> u
+define({PUSH2_ROT_DRSHIFT},{dnl
+__{}__ADD_TOKEN({__TOKEN_PUSH2_ROT_DRSHIFT},{rot drshift},$@){}dnl
+}){}dnl
+dnl
+define({__ASM_TOKEN_PUSH2_ROT_DRSHIFT},{dnl
+__{}define({__INFO},__COMPILE_INFO){}dnl
+__def({USE_ROT_DRSHIFT})
+    ld    C, L          ; 1:4       __INFO   ( u -- d )  d = __VIEW_DE_HL($@) >> u
+    ld    B, H          ; 1:4       __INFO
+    push  DE            ; 1:11      __INFO{}dnl
+__ASM_TOKEN_2DROP_PUSH2($@)
+    call BC_RSHIFT32    ; 3:17      __INFO}){}dnl
 dnl
 dnl
 dnl
