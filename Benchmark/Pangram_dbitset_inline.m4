@@ -1,5 +1,9 @@
 include(`../M4/FIRST.M4')dnl 
-ORG 0x8000
+  ifdef __ORG
+    org __ORG
+  else
+    org 24576
+  endif
 INIT(60000)
 STRING_Z({"The five boxing wizards jump quickly."})
 define({_TYP_DOUBLE},{fast})

@@ -1,4 +1,8 @@
-    ORG 0x8000
+      ifdef __ORG
+    org __ORG
+  else
+    org 24576
+  endif
 
 
 

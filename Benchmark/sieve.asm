@@ -1,8 +1,14 @@
-ORG 0x8000
+      ifdef __ORG
+    org __ORG
+  else
+    org 24576
+  endif
+
 
 
 
 _size                EQU 8190
+
 _size_add1           EQU 8191
 
 
@@ -45,16 +51,16 @@ do_prime:               ;
     ld   HL, flags      ; 3:10      flags 8191 1   HL = addr from
     ld   DE, flags+1    ; 3:10      flags 8191 1   DE = to
     ld   BC, 0x1FFE     ; 3:10      flags 8191 1   = 8191-1
-    ld  (HL),0x01       ; 2:10      flags 8191 1
+    ld  [HL],0x01       ; 2:10      flags 8191 1
     ldir                ; 2:u*21/16 flags 8191 1
     pop  HL             ; 1:10      flags 8191 1
     pop  DE             ; 1:10      flags 8191 1
     push DE             ; 1:11      0 8190 0 2drop
     ex   DE, HL         ; 1:4       0 8190 0 2drop
     ld   HL, 0          ; 3:10      0 8190 0 2drop
-    ld   BC, 0          ; 3:10      8190 0 do_101(xm)
+    ld   BC, 0x0000     ; 3:10      8190 0 do_101(xm)
 do101save:              ;           8190 0 do_101(xm)
-    ld  (idx101),BC     ; 4:20      8190 0 do_101(xm)
+    ld  [idx101],BC     ; 4:20      8190 0 do_101(xm)
 do101:                  ;           8190 0 do_101(xm)
     push DE             ; 1:11      flags i_101   ( -- flags i )
     push HL             ; 1:11      flags i_101
@@ -62,7 +68,7 @@ do101:                  ;           8190 0 do_101(xm)
     ld   HL, (idx101)   ; 3:16      flags i_101   idx always points to a 16-bit index
     add  HL, DE         ; 1:11      +
     pop  DE             ; 1:10      +
-    ld    L,(HL)        ; 1:7       c@   ( addr -- char )
+    ld    L,[HL]        ; 1:7       c@   ( addr -- char )
     ld    H, 0x00       ; 2:7       c@
     ld    A, H          ; 1:4       if
     or    L             ; 1:4       if
@@ -71,7 +77,7 @@ do101:                  ;           8190 0 do_101(xm)
     jp    z, else101    ; 3:10      if
     push DE             ; 1:11      i_101(m)   ( -- i )
     ex   DE, HL         ; 1:4       i_101(m)
-    ld   HL, (idx101)   ; 3:16      i_101(m)   idx always points to a 16-bit index
+    ld   HL, [idx101]   ; 3:16      i_101(m)   idx always points to a 16-bit index
     push DE             ; 1:11      dup   ( a -- a a )
     ld    D, H          ; 1:4       dup
     ld    E, L          ; 1:4       dup
@@ -79,21 +85,21 @@ do101:                  ;           8190 0 do_101(xm)
     add  HL, HL         ; 1:11      dup +
     inc  HL             ; 1:6       1+
     ex   DE, HL         ; 1:4       swap over +   ( b a -- a b )
-    add  HL, DE         ; 1:11      over +
-begin101:               ;           begin 101
+    add  HL, DE         ; 1:11      swap over +
+begin101:               ;           begin(101)
     ld    A, L          ; 1:4       dup 8191 u< while 101    HL<8191 --> HL-8191<0 --> no carry if false
     sub   low 8191      ; 2:7       dup 8191 u< while 101    HL<8191 --> HL-8191<0 --> no carry if false
     ld    A, H          ; 1:4       dup 8191 u< while 101    HL<8191 --> HL-8191<0 --> no carry if false
     sbc   A, high 8191  ; 2:7       dup 8191 u< while 101    HL<8191 --> HL-8191<0 --> no carry if false
-    jp   nc, break101   ; 3:10      dup 8191 u< while 101
+    jp   nc, break101   ; 3:10      dup 8191 u< while
     push DE             ; 1:11      0 over   ( a -- a 0 a )
     push HL             ; 1:11      0 over
     ld   DE, 0          ; 3:10      0 over
     ; warning M4 does not know the numerical value of >>>flags<<<
     ld   BC, flags      ; 3:10      flags +
     add  HL, BC         ; 1:11      flags +
-                        ;[1:7]      c!   ( char addr -- char addr )  (addr)=lo8(x)
-    ld  (HL),E          ; 1:7       c!
+                        ;[1:7]      c!   ( char addr -- char addr )  [addr]=lo8(x)
+    ld  [HL],E          ; 1:7       c!
     pop  HL             ; 1:10      c!   ( b a -- )
     pop  DE             ; 1:10      c!
     add  HL, DE         ; 1:11      over +
@@ -104,18 +110,18 @@ break101:               ;           repeat 101
     inc  HL             ; 1:6       1+
 else101  EQU $          ;           then  = endif
 endif101:               ;           then
-                        ;[16:57/58] loop_101   variant +1.default: step one, run 8190x
-idx101 EQU $+1          ;           loop_101   idx always points to a 16-bit index
-    ld   BC, 0x0000     ; 3:10      loop_101   0.. +1 ..(8190), real_stop:0x1FFE
-    inc  BC             ; 1:6       loop_101   index++
-    ld    A, C          ; 1:4       loop_101
-    xor  0xFE           ; 2:7       loop_101   lo(real_stop) first (254>31)
-    jp   nz, do101save  ; 3:10      loop_101   31x false positive
-    ld    A, B          ; 1:4       loop_101
-    xor  0x1F           ; 2:7       loop_101   hi(real_stop)
-    jp   nz, do101save  ; 3:10      loop_101   254x false positive if he was first
-leave101:               ;           loop_101
-exit101:                ;           loop_101
+                        ;[16:57/58] loop_101(xm)   variant +1.default: step one, run 8190x
+idx101 EQU $+1          ;           loop_101(xm)   idx always points to a 16-bit index
+    ld   BC, 0x0000     ; 3:10      loop_101(xm)   0.. +1 ..(8190), real_stop:0x1FFE
+    inc  BC             ; 1:6       loop_101(xm)   index++
+    ld    A, C          ; 1:4       loop_101(xm)
+    xor  0xFE           ; 2:7       loop_101(xm)   lo(real_stop) first (254>31)
+    jp   nz, do101save  ; 3:10      loop_101(xm)   31x false positive
+    ld    A, B          ; 1:4       loop_101(xm)
+    xor  0x1F           ; 2:7       loop_101(xm)   hi(real_stop)
+    jp   nz, do101save  ; 3:10      loop_101(xm)   254x false positive if he was first
+leave101:               ;           loop_101(xm)
+exit101:                ;           loop_101(xm)
     call PRT_S16        ; 3:17      .   ( s -- )
     push DE             ; 1:11      print     " PRIMES"
     ld   BC, size101    ; 3:10      print     Length of string101
@@ -127,10 +133,10 @@ exit101:                ;           loop_101
 do_prime_end:
     jp   0x0000         ; 3:10      ;
 ;   ---------  end of non-recursive function  ---------
-;------------------------------------------------------------------------------
-; Input: HL
-; Output: Print signed decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#------------------------------------------------------------------------------
+;# Input: HL
+;# Output: Print signed decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 PRT_S16:                ;           prt_s16
     ld    A, H          ; 1:4       prt_s16
     add   A, A          ; 1:4       prt_s16
@@ -144,10 +150,10 @@ PRT_S16:                ;           prt_s16
     sub   L             ; 1:4       prt_s16   neg
     ld    H, A          ; 1:4       prt_s16   neg
     ; fall to prt_u16
-;------------------------------------------------------------------------------
-; Input: HL
-; Output: Print unsigned decimal number in HL
-; Pollutes: AF, BC, HL <- DE, DE <- (SP)
+;#------------------------------------------------------------------------------
+;# Input: HL
+;# Output: Print unsigned decimal number in HL
+;# Pollutes: AF, BC, HL <- DE, DE <- [SP]
 PRT_U16:                ;           prt_u16
     xor   A             ; 1:4       prt_u16   HL=103 & A=0 => 103, HL = 103 & A='0' => 00103
     ld   BC, -10000     ; 3:10      prt_u16
@@ -160,13 +166,13 @@ PRT_U16:                ;           prt_u16
     call BIN16_DEC      ; 3:17      prt_u16
     ld    A, L          ; 1:4       prt_u16
     pop  HL             ; 1:10      prt_u16   load ret
-    ex  (SP),HL         ; 1:19      prt_u16
+    ex  [SP],HL         ; 1:19      prt_u16
     ex   DE, HL         ; 1:4       prt_u16
     jr   BIN16_DEC_CHAR ; 2:12      prt_u16
-;------------------------------------------------------------------------------
-; Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
-; Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
-; Pollutes: AF, HL
+;#------------------------------------------------------------------------------
+;# Input: A = 0 or A = '0' = 0x30 = 48, HL, IX, BC, DE
+;# Output: if ((HL/(-BC) > 0) || (A >= '0')) print number -HL/BC
+;# Pollutes: AF, HL
     inc   A             ; 1:4       bin16_dec
 BIN16_DEC:              ;           bin16_dec
     add  HL, BC         ; 1:11      bin16_dec
@@ -176,7 +182,7 @@ BIN16_DEC:              ;           bin16_dec
     ret   z             ; 1:5/11    bin16_dec   does not print leading zeros
 BIN16_DEC_CHAR:         ;           bin16_dec
     or   '0'            ; 2:7       bin16_dec   1..9 --> '1'..'9', unchanged '0'..'9'
-    rst   0x10          ; 1:11      bin16_dec   putchar(reg A) with ZX 48K ROM 
+    rst   0x10          ; 1:11      bin16_dec   putchar(reg A) with ZX 48K ROM
     ld    A, '0'        ; 2:7       bin16_dec   reset A to '0'
     ret                 ; 1:10      bin16_dec
 
