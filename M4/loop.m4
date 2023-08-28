@@ -758,7 +758,7 @@ __{}__{}ifelse(__HAS_PTR($1),{1},{
 __{}__{}__{}    ld   DE,format({%-12s},$1); 4:20      __INFO},
 __{}__{}{
 __{}__{}__{}    ld   DE, format({%-11s},$1); 3:10      __INFO})
-__{}__{}    ld   HL, (idx{}$2)   ; 3:16      __INFO   idx always points to a 16-bit index{}dnl
+__{}__{}    ld   HL, [idx{}$2]   ; 3:16      __INFO   idx always points to a 16-bit index{}dnl
 __{}__{}}){}dnl
 }){}dnl
 dnl
@@ -816,7 +816,7 @@ __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__HAS_PTR($1),{1},{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[13:66]    __INFO   ( -- $1 $3 == $1 addr -- )
 __{}__{}    ld    A, format({%-11s},$1); 3:13      __INFO
-__{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, [idx{}$2]   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld  [BC],A          ; 1:7       __INFO
 __{}__{}    ld    A, format({%-11s},($1+1)); 3:13      __INFO
 __{}__{}    inc  BC             ; 1:6       __INFO
@@ -824,7 +824,7 @@ __{}__{}    ld  [BC],A          ; 1:7       __INFO},
 __{}__IS_NUM($1),{0},{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[11:54]    __INFO   ( -- $1 $3 == $1 addr -- )
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       __INFO
-__{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, [idx{}$2]   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld  [BC],A          ; 1:7       __INFO
 __{}__{}    ld    A, high format({%-6s},$1); 2:7       __INFO
 __{}__{}    inc  BC             ; 1:6       __INFO
@@ -838,7 +838,7 @@ __{}__{}define({__TMP_C},eval(__TMP_C+__CLOCKS)){}dnl
 __{}__{}define({__TMP_B},eval(__TMP_B+__BYTES)){}dnl
 __{}__{}                        ;format({%-10s},[__TMP_B:__TMP_C]) __INFO   ( -- )  val=$1, addr=$3{}dnl
 __{}__{}__CODE1
-__{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, [idx{}$2]   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld  [BC],A          ; 1:7       __INFO{}dnl
 __{}__{}__CODE2
 __{}__{}    inc  BC             ; 1:6       __INFO
@@ -898,19 +898,19 @@ __{}eval($#>3),{1},{
 __{}__{}  .error {$0}($@): Unexpected parameter!},
 __{}__HAS_PTR($1),{1},{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[8:40]     __INFO   ( -- $1 $3 == $1 addr -- )
-__{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, [idx{}$2]   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld    A, format({%-11s},$1); 3:13      __INFO
 __{}__{}    ld  [BC],A          ; 1:7       __INFO},
 __{}__IS_NUM($1),{1},{define({__INFO},__COMPILE_INFO)
 __{}__{}define({__CODE1},__LD_R_NUM(__INFO{   lo($1) = __HEX_L($1)},{A},__HEX_L($1))){}dnl
 __{}__{}                        ;format({%-10s},[eval(5+__BYTES):eval(27+__CLOCKS)]) __INFO   ( -- )  val=$1, addr=$3{}dnl
 __{}__{}__CODE1
-__{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, [idx{}$2]   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld  [BC],A          ; 1:7       __INFO},
 
 __{}__{define({__INFO},__COMPILE_INFO)
 __{}__{}                        ;[7:34]     __INFO   ( -- $1 $3 == $1 addr -- )
-__{}__{}    ld   BC, (idx{}$2)   ; 4:20      __INFO   idx always points to a 16-bit index
+__{}__{}    ld   BC, [idx{}$2]   ; 4:20      __INFO   idx always points to a 16-bit index
 __{}__{}    ld    A, low format({%-7s},$1); 2:7       __INFO
 __{}__{}    ld  [BC],A          ; 1:7       __INFO}){}dnl
 }){}dnl
