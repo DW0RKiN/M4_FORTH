@@ -1,9 +1,15 @@
-        ORG 32768
+      ifdef __ORG
+    org __ORG
+  else
+    org 24576
+  endif
     
     
        
     
+            
                
+        
             
            
     

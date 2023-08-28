@@ -1,5 +1,9 @@
 include(`../M4/FIRST.M4')dnl
-    ORG 32768
+  ifdef __ORG
+    org __ORG
+  else
+    org 24576
+  endif
     INIT(35000)
     SCALL(fib1s_bench)
     STOP   

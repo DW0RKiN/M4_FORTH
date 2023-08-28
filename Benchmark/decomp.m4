@@ -1,5 +1,9 @@
 include(`../M4/FIRST.M4')dnl 
-ORG 0x8000
+  ifdef __ORG
+    org __ORG
+  else
+    org 24576
+  endif
 INIT(60000)
 SCALL(_bench)
 STOP
@@ -14,7 +18,7 @@ COLON(_decomp,( n -- ))
     UGE_WHILE  
         _2DUP UDIVMOD 
         SWAP_IF 
-            DROP _1ADD PUSH_OR(1) ; next odd number
+            DROP _1ADD PUSH(1) OR ; next odd number
         ELSE 
             NROT_NIP
         THEN
@@ -23,5 +27,5 @@ COLON(_decomp,( n -- ))
 SEMICOLON
 
 SCOLON(_bench,( -- ))
-    PUSH(10000) SFOR SI CALL(_decomp) SNEXT
+    PUSH(10000) FOR(S) I CALL(_decomp) NEXT
 SSEMICOLON
