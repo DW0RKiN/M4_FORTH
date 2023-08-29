@@ -1,3 +1,5 @@
+<cite>:warning: GitHub users are now required to enable two-factor authentication as an additional security measure. Your activity on GitHub includes you in this requirement. You will need to enable two-factor authentication on your account before October 12, 2023, or be restricted from account actions.</cite>
+
 # M4 FORTH: A Forth compiler for the Z80 CPU and ZX Spectrum
 
 A simple FORTH compiler created using M4 macros. Creates human readable and annotated code in the Z80 assembler. No peephole optimization is used, but a new word with optimized code is created for some frequently related words. For example, for the `dup number condition if`.
